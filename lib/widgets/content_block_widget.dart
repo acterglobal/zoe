@@ -259,13 +259,16 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     ),
                   ),
 
-                // Block type icon
-                Icon(
-                  _getBlockIcon(),
-                  size: 16,
-                  color: AppTheme.getTextSecondary(context),
-                ),
-                const SizedBox(width: 8),
+                // Block type icon (hide for text blocks in view mode)
+                if (widget.isEditing ||
+                    widget.block.type != ContentBlockType.text) ...[
+                  Icon(
+                    _getBlockIcon(),
+                    size: 16,
+                    color: AppTheme.getTextSecondary(context),
+                  ),
+                  const SizedBox(width: 8),
+                ],
 
                 // Block title (editable in edit mode, read-only in view mode)
                 Expanded(child: _buildBlockTitle()),
@@ -295,9 +298,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
 
             // Block content
             Padding(
-              padding: EdgeInsets.only(
-                left: _isMobile ? 20 : 28,
-              ), // Less indent on mobile
+              padding: EdgeInsets.only(left: _getContentPadding()),
               child: _buildContent(),
             ),
           ],
@@ -365,7 +366,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
       }
 
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: EdgeInsets.symmetric(
+          vertical: widget.block.type == ContentBlockType.text ? 4.0 : 8.0,
+        ),
         child: Text(
           title.isEmpty ? 'Untitled' : title,
           style: TextStyle(
@@ -1118,7 +1121,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         style: TextStyle(
           fontSize: 16,
           color: AppTheme.getTextPrimary(context),
-          height: 1.5,
+          height: 1.6,
         ),
         decoration: InputDecoration(
           border: InputBorder.none,
@@ -1132,12 +1135,15 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         },
       );
     } else {
-      return Text(
-        block.content.isEmpty ? 'Type something...' : block.content,
-        style: TextStyle(
-          fontSize: 16,
-          color: AppTheme.getTextPrimary(context),
-          height: 1.5,
+      return Padding(
+        padding: const EdgeInsets.only(top: 4.0),
+        child: Text(
+          block.content.isEmpty ? '' : block.content,
+          style: TextStyle(
+            fontSize: 16,
+            color: AppTheme.getTextPrimary(context),
+            height: 1.6,
+          ),
         ),
       );
     }
@@ -1158,6 +1164,15 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
 
   int _getBlockIndex() {
     return widget.blockIndex;
+  }
+
+  double _getContentPadding() {
+    // Text blocks in view mode don't have icons, so they need less padding
+    if (widget.block.type == ContentBlockType.text && !widget.isEditing) {
+      return 0; // No padding for text blocks in view mode
+    }
+    // Other blocks or text blocks in edit mode get normal padding
+    return _isMobile ? 20 : 28;
   }
 
   Color _getPriorityColor(TodoPriority priority) {
