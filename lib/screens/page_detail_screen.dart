@@ -20,6 +20,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
   late TextEditingController _descriptionController;
   late ZoePage _currentPage;
   bool _showAddMenu = false;
+  bool _isEditing = false; // Add editing state
 
   @override
   void initState() {
@@ -30,6 +31,8 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
     _descriptionController = TextEditingController(
       text: _currentPage.description,
     );
+    // Start in edit mode for new pages, view mode for existing pages
+    _isEditing = widget.page == null;
   }
 
   @override
@@ -52,11 +55,76 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
             color: AppTheme.getTextPrimary(context),
           ),
           onPressed: () {
-            _autoSavePage();
+            if (_isEditing) {
+              _autoSavePage();
+            }
             Navigator.of(context).pop();
           },
         ),
         actions: [
+          // Edit/Save button
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: TextButton(
+              onPressed: () {
+                setState(() {
+                  if (_isEditing) {
+                    // Save and switch to view mode
+                    _autoSavePage();
+                    _isEditing = false;
+                    _showAddMenu =
+                        false; // Hide add menu when switching to view mode
+                  } else {
+                    // Switch to edit mode
+                    _isEditing = true;
+                  }
+                });
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: _isEditing
+                    ? const Color(0xFF3B82F6) // Blue background for Save
+                    : AppTheme.getSurfaceVariant(
+                        context,
+                      ), // Subtle background for Edit
+                foregroundColor: _isEditing
+                    ? Colors
+                          .white // White text for Save
+                    : AppTheme.getTextPrimary(context), // Theme text for Edit
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                minimumSize: const Size(60, 36),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    _isEditing ? Icons.save_rounded : Icons.edit_rounded,
+                    size: 16,
+                    color: _isEditing
+                        ? Colors.white
+                        : AppTheme.getTextPrimary(context),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    _isEditing ? 'Save' : 'Edit',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: _isEditing
+                          ? Colors.white
+                          : AppTheme.getTextPrimary(context),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // More menu (always visible)
           PopupMenuButton<String>(
             icon: Icon(
               Icons.more_vert_rounded,
@@ -73,31 +141,37 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
               }
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'duplicate',
                 child: Row(
                   children: [
                     Icon(
                       Icons.copy_rounded,
                       size: 16,
-                      color: Color(0xFF6B7280),
+                      color: AppTheme.getTextSecondary(context),
                     ),
-                    SizedBox(width: 8),
-                    Text('Duplicate'),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Duplicate',
+                      style: TextStyle(color: AppTheme.getTextPrimary(context)),
+                    ),
                   ],
                 ),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'delete',
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.delete_rounded,
                       size: 16,
                       color: Color(0xFFEF4444),
                     ),
-                    SizedBox(width: 8),
-                    Text('Delete', style: TextStyle(color: Color(0xFFEF4444))),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'Delete',
+                      style: TextStyle(color: Color(0xFFEF4444)),
+                    ),
                   ],
                 ),
               ),
@@ -157,7 +231,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
           children: [
             // Emoji
             GestureDetector(
-              onTap: _showEmojiPicker,
+              onTap: _isEditing ? _showEmojiPicker : null,
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(
@@ -170,30 +244,45 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
 
             // Title
             Expanded(
-              child: TextField(
-                controller: _titleController,
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.getTextPrimary(context),
-                  height: 1.2,
-                ),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Untitled',
-                  hintStyle: TextStyle(
-                    color: AppTheme.getTextSecondary(context),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                maxLines: null,
-                onChanged: (value) {
-                  _currentPage = _currentPage.copyWith(
-                    title: value.trim().isEmpty ? 'Untitled' : value,
-                  );
-                },
-                onEditingComplete: _autoSavePage,
-              ),
+              child: _isEditing
+                  ? TextField(
+                      controller: _titleController,
+                      style: TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.getTextPrimary(context),
+                        height: 1.2,
+                      ),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Untitled',
+                        hintStyle: TextStyle(
+                          color: AppTheme.getTextSecondary(context),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      maxLines: null,
+                      onChanged: (value) {
+                        _currentPage = _currentPage.copyWith(
+                          title: value.trim().isEmpty ? 'Untitled' : value,
+                        );
+                      },
+                      onEditingComplete: _autoSavePage,
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        _currentPage.title.isEmpty
+                            ? 'Untitled'
+                            : _currentPage.title,
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.getTextPrimary(context),
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
             ),
           ],
         ),
@@ -201,26 +290,40 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
         const SizedBox(height: 16),
 
         // Description
-        TextField(
-          controller: _descriptionController,
-          style: TextStyle(
-            fontSize: 16,
-            color: AppTheme.getTextSecondary(context),
-            height: 1.5,
-          ),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: 'Add a description...',
-            hintStyle: TextStyle(
-              color: AppTheme.getTextSecondary(context).withOpacity(0.6),
-            ),
-          ),
-          maxLines: null,
-          onChanged: (value) {
-            _currentPage = _currentPage.copyWith(description: value);
-          },
-          onEditingComplete: _autoSavePage,
-        ),
+        _isEditing
+            ? TextField(
+                controller: _descriptionController,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: AppTheme.getTextSecondary(context),
+                  height: 1.5,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Add a description...',
+                  hintStyle: TextStyle(
+                    color: AppTheme.getTextSecondary(context).withOpacity(0.6),
+                  ),
+                ),
+                maxLines: null,
+                onChanged: (value) {
+                  _currentPage = _currentPage.copyWith(description: value);
+                },
+                onEditingComplete: _autoSavePage,
+              )
+            : _currentPage.description.isNotEmpty
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  _currentPage.description,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppTheme.getTextSecondary(context),
+                    height: 1.5,
+                  ),
+                ),
+              )
+            : const SizedBox.shrink(),
       ],
     );
   }
@@ -248,7 +351,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
           child: ContentBlockWidget(
             block: block,
             blockIndex: index,
-            isEditing: true, // Always in editing mode
+            isEditing: _isEditing, // Use the current editing state
             onUpdate: (updatedBlock) {
               setState(() {
                 _currentPage.updateContentBlock(block.id, updatedBlock);
@@ -268,6 +371,9 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
   }
 
   Widget _buildAddBlockArea() {
+    // Only show add block area in editing mode
+    if (!_isEditing) return const SizedBox.shrink();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -60,9 +60,15 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   void dispose() {
     _titleController.dispose();
     _textBlockController.dispose();
-    _todoControllers.values.forEach((controller) => controller.dispose());
-    _eventControllers.values.forEach((controller) => controller.dispose());
-    _listControllers.values.forEach((controller) => controller.dispose());
+    for (final controller in _todoControllers.values) {
+      controller.dispose();
+    }
+    for (final controller in _eventControllers.values) {
+      controller.dispose();
+    }
+    for (final controller in _listControllers.values) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -233,24 +239,25 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Drag handle (visible on hover or always on mobile)
-                AnimatedOpacity(
-                  opacity: (_isHovered || _isMobile) ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 200),
-                  child: ReorderableDragStartListener(
-                    index: _getBlockIndex(),
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      margin: const EdgeInsets.only(right: 8),
-                      child: Icon(
-                        Icons.drag_indicator,
-                        size: 16,
-                        color: AppTheme.getTextSecondary(context),
+                // Drag handle (visible on hover or always on mobile, only in edit mode)
+                if (widget.isEditing)
+                  AnimatedOpacity(
+                    opacity: (_isHovered || _isMobile) ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 200),
+                    child: ReorderableDragStartListener(
+                      index: _getBlockIndex(),
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        margin: const EdgeInsets.only(right: 8),
+                        child: Icon(
+                          Icons.drag_indicator,
+                          size: 16,
+                          color: AppTheme.getTextSecondary(context),
+                        ),
                       ),
                     ),
                   ),
-                ),
 
                 // Block type icon
                 Icon(
@@ -260,26 +267,27 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 ),
                 const SizedBox(width: 8),
 
-                // Block title (editable)
+                // Block title (editable in edit mode, read-only in view mode)
                 Expanded(child: _buildBlockTitle()),
 
-                // Delete button (visible on hover or always on mobile)
-                AnimatedOpacity(
-                  opacity: (_isHovered || _isMobile) ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 200),
-                  child: IconButton(
-                    icon: const Icon(Icons.delete_outline, size: 16),
-                    color: AppTheme.getTextSecondary(context),
-                    onPressed: widget.onDelete,
-                    padding: EdgeInsets.zero,
-                    constraints: BoxConstraints(
-                      minWidth: _isMobile
-                          ? 32
-                          : 24, // Larger touch target on mobile
-                      minHeight: _isMobile ? 32 : 24,
+                // Delete button (visible on hover or always on mobile, only in edit mode)
+                if (widget.isEditing)
+                  AnimatedOpacity(
+                    opacity: (_isHovered || _isMobile) ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 200),
+                    child: IconButton(
+                      icon: const Icon(Icons.delete_outline, size: 16),
+                      color: AppTheme.getTextSecondary(context),
+                      onPressed: widget.onDelete,
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: _isMobile
+                            ? 32
+                            : 24, // Larger touch target on mobile
+                        minHeight: _isMobile ? 32 : 24,
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
 
@@ -299,38 +307,75 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   }
 
   Widget _buildBlockTitle() {
-    return TextField(
-      controller: _titleController,
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        color: AppTheme.getTextPrimary(context),
-      ),
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        hintText: 'Untitled',
-        hintStyle: TextStyle(color: AppTheme.getTextSecondary(context)),
-        contentPadding: EdgeInsets.zero,
-      ),
-      onChanged: (value) {
-        switch (widget.block.type) {
-          case ContentBlockType.todo:
-            widget.onUpdate((widget.block as TodoBlock).copyWith(title: value));
-            break;
-          case ContentBlockType.event:
-            widget.onUpdate(
-              (widget.block as EventBlock).copyWith(title: value),
-            );
-            break;
-          case ContentBlockType.list:
-            widget.onUpdate((widget.block as ListBlock).copyWith(title: value));
-            break;
-          case ContentBlockType.text:
-            widget.onUpdate((widget.block as TextBlock).copyWith(title: value));
-            break;
-        }
-      },
-    );
+    if (widget.isEditing) {
+      return TextField(
+        controller: _titleController,
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: AppTheme.getTextPrimary(context),
+        ),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Untitled',
+          hintStyle: TextStyle(color: AppTheme.getTextSecondary(context)),
+          contentPadding: EdgeInsets.zero,
+        ),
+        onChanged: (value) {
+          switch (widget.block.type) {
+            case ContentBlockType.todo:
+              widget.onUpdate(
+                (widget.block as TodoBlock).copyWith(title: value),
+              );
+              break;
+            case ContentBlockType.event:
+              widget.onUpdate(
+                (widget.block as EventBlock).copyWith(title: value),
+              );
+              break;
+            case ContentBlockType.list:
+              widget.onUpdate(
+                (widget.block as ListBlock).copyWith(title: value),
+              );
+              break;
+            case ContentBlockType.text:
+              widget.onUpdate(
+                (widget.block as TextBlock).copyWith(title: value),
+              );
+              break;
+          }
+        },
+      );
+    } else {
+      // View mode - show title as text
+      String title = '';
+      switch (widget.block.type) {
+        case ContentBlockType.todo:
+          title = (widget.block as TodoBlock).title;
+          break;
+        case ContentBlockType.event:
+          title = (widget.block as EventBlock).title;
+          break;
+        case ContentBlockType.list:
+          title = (widget.block as ListBlock).title;
+          break;
+        case ContentBlockType.text:
+          title = (widget.block as TextBlock).title;
+          break;
+      }
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Text(
+          title.isEmpty ? 'Untitled' : title,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: AppTheme.getTextPrimary(context),
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildContent() {
@@ -374,11 +419,11 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     margin: const EdgeInsets.only(top: 3),
                     decoration: BoxDecoration(
                       color: todo.isCompleted
-                          ? AppTheme.getSuccess(context)
+                          ? const Color(0xFF10B981)
                           : Colors.transparent,
                       border: Border.all(
                         color: todo.isCompleted
-                            ? AppTheme.getSuccess(context)
+                            ? const Color(0xFF10B981)
                             : AppTheme.getBorder(context),
                         width: 1.5,
                       ),
@@ -410,41 +455,62 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                             ),
                           ),
                           Expanded(
-                            child: TextField(
-                              controller: _todoControllers[todo.id],
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: todo.isCompleted
-                                    ? AppTheme.getTextSecondary(context)
-                                    : AppTheme.getTextPrimary(context),
-                                decoration: todo.isCompleted
-                                    ? TextDecoration.lineThrough
-                                    : TextDecoration.none,
-                                height: 1.4,
-                              ),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'To-do',
-                                hintStyle: TextStyle(
-                                  color: AppTheme.getTextSecondary(context),
-                                ),
-                                contentPadding: EdgeInsets.zero,
-                                isDense: true,
-                              ),
-                              maxLines: null,
-                              onChanged: (value) {
-                                final updatedTodo = todo.copyWith(text: value);
-                                final updatedItems = block.items.map((item) {
-                                  return item.id == todo.id
-                                      ? updatedTodo
-                                      : item;
-                                }).toList();
-                                widget.onUpdate(
-                                  block.copyWith(items: updatedItems),
-                                );
-                              },
-                            ),
+                            child: widget.isEditing
+                                ? TextField(
+                                    controller: _todoControllers[todo.id],
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: todo.isCompleted
+                                          ? AppTheme.getTextSecondary(context)
+                                          : AppTheme.getTextPrimary(context),
+                                      decoration: todo.isCompleted
+                                          ? TextDecoration.lineThrough
+                                          : TextDecoration.none,
+                                      height: 1.4,
+                                    ),
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'To-do',
+                                      hintStyle: TextStyle(
+                                        color: AppTheme.getTextSecondary(
+                                          context,
+                                        ),
+                                      ),
+                                      contentPadding: EdgeInsets.zero,
+                                      isDense: true,
+                                    ),
+                                    maxLines: null,
+                                    onChanged: (value) {
+                                      final updatedTodo = todo.copyWith(
+                                        text: value,
+                                      );
+                                      final updatedItems = block.items.map((
+                                        item,
+                                      ) {
+                                        return item.id == todo.id
+                                            ? updatedTodo
+                                            : item;
+                                      }).toList();
+                                      widget.onUpdate(
+                                        block.copyWith(items: updatedItems),
+                                      );
+                                    },
+                                  )
+                                : Text(
+                                    todo.text.isEmpty ? 'To-do' : todo.text,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: todo.isCompleted
+                                          ? AppTheme.getTextSecondary(context)
+                                          : AppTheme.getTextPrimary(context),
+                                      decoration: todo.isCompleted
+                                          ? TextDecoration.lineThrough
+                                          : TextDecoration.none,
+                                      height: 1.4,
+                                    ),
+                                  ),
                           ),
                         ],
                       ),
@@ -487,52 +553,15 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                           ),
                         ),
 
-                      // Quick actions row
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8, left: 16),
-                        child: Row(
-                          children: [
-                            // Edit button
-                            GestureDetector(
-                              onTap: () => _editTask(todo, block),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.getSurfaceVariant(context),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.edit,
-                                      size: 12,
-                                      color: AppTheme.getTextSecondary(context),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      'Edit',
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        color: AppTheme.getTextSecondary(
-                                          context,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(width: 8),
-
-                            // Quick due date button
-                            if (todo.dueDate == null)
+                      // Quick actions row (only in edit mode)
+                      if (widget.isEditing)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 16),
+                          child: Row(
+                            children: [
+                              // Edit button
                               GestureDetector(
-                                onTap: () => _quickSetDueDate(todo, block),
+                                onTap: () => _editTask(todo, block),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
@@ -546,7 +575,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(
-                                        Icons.schedule,
+                                        Icons.edit,
                                         size: 12,
                                         color: AppTheme.getTextSecondary(
                                           context,
@@ -554,7 +583,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
-                                        'Set Due Date',
+                                        'Edit',
                                         style: TextStyle(
                                           fontSize: 11,
                                           color: AppTheme.getTextSecondary(
@@ -566,15 +595,57 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                   ),
                                 ),
                               ),
-                          ],
+
+                              const SizedBox(width: 8),
+
+                              // Quick due date button
+                              if (todo.dueDate == null)
+                                GestureDetector(
+                                  onTap: () => _quickSetDueDate(todo, block),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.getSurfaceVariant(
+                                        context,
+                                      ),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.schedule,
+                                          size: 12,
+                                          color: AppTheme.getTextSecondary(
+                                            context,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          'Set Due Date',
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            color: AppTheme.getTextSecondary(
+                                              context,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
 
-                // Delete todo button
-                if (_isHovered || _isMobile)
+                // Delete todo button (only in edit mode)
+                if (widget.isEditing && (_isHovered || _isMobile))
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
                     color: AppTheme.getTextSecondary(context),
@@ -595,30 +666,31 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
           );
         }).toList(),
 
-        // Add new todo item
-        TextButton.icon(
-          onPressed: () {
-            final newTodo = TodoItem(text: '');
-            final updatedItems = [...block.items, newTodo];
-            widget.onUpdate(block.copyWith(items: updatedItems));
-          },
-          icon: Icon(
-            Icons.add,
-            size: 16,
-            color: AppTheme.getTextSecondary(context),
-          ),
-          label: Text(
-            'Add a to-do',
-            style: TextStyle(
-              fontSize: 14,
+        // Add new todo item (only in edit mode)
+        if (widget.isEditing)
+          TextButton.icon(
+            onPressed: () {
+              final newTodo = TodoItem(text: '');
+              final updatedItems = [...block.items, newTodo];
+              widget.onUpdate(block.copyWith(items: updatedItems));
+            },
+            icon: Icon(
+              Icons.add,
+              size: 16,
               color: AppTheme.getTextSecondary(context),
             ),
+            label: Text(
+              'Add a to-do',
+              style: TextStyle(
+                fontSize: 14,
+                color: AppTheme.getTextSecondary(context),
+              ),
+            ),
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              minimumSize: Size.zero,
+            ),
           ),
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-            minimumSize: Size.zero,
-          ),
-        ),
       ],
     );
   }
@@ -652,50 +724,64 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Event title
-                      TextField(
-                        controller: _eventControllers[event.id],
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.getTextPrimary(context),
-                          height: 1.4,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Event title',
-                          hintStyle: TextStyle(
-                            color: AppTheme.getHint(context),
-                          ),
-                          contentPadding: EdgeInsets.zero,
-                          isDense: true,
-                        ),
-                        onChanged: (value) {
-                          final updatedEvent = event.copyWith(title: value);
-                          final updatedEvents = block.events.map((item) {
-                            return item.id == event.id ? updatedEvent : item;
-                          }).toList();
-                          widget.onUpdate(
-                            block.copyWith(events: updatedEvents),
-                          );
-                        },
-                      ),
+                      widget.isEditing
+                          ? TextField(
+                              controller: _eventControllers[event.id],
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.getTextPrimary(context),
+                                height: 1.4,
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Event title',
+                                hintStyle: TextStyle(
+                                  color: AppTheme.getTextSecondary(context),
+                                ),
+                                contentPadding: EdgeInsets.zero,
+                                isDense: true,
+                              ),
+                              onChanged: (value) {
+                                final updatedEvent = event.copyWith(
+                                  title: value,
+                                );
+                                final updatedEvents = block.events.map((item) {
+                                  return item.id == event.id
+                                      ? updatedEvent
+                                      : item;
+                                }).toList();
+                                widget.onUpdate(
+                                  block.copyWith(events: updatedEvents),
+                                );
+                              },
+                            )
+                          : Text(
+                              event.title.isEmpty ? 'Event title' : event.title,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.getTextPrimary(context),
+                                height: 1.4,
+                              ),
+                            ),
 
                       const SizedBox(height: 6),
 
                       // Event time range
                       Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.schedule,
                             size: 12,
-                            color: Color(0xFF9CA3AF),
+                            color: AppTheme.getTextSecondary(context),
                           ),
                           const SizedBox(width: 4),
                           Text(
                             _formatEventTime(event),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
-                              color: Color(0xFF9CA3AF),
+                              color: AppTheme.getTextSecondary(context),
                               height: 1.3,
                             ),
                           ),
@@ -708,9 +794,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                           padding: const EdgeInsets.only(top: 6),
                           child: Text(
                             event.description!,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
-                              color: Color(0xFF6B7280),
+                              color: AppTheme.getTextSecondary(context),
                               height: 1.3,
                             ),
                           ),
@@ -810,54 +896,57 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                           ),
                         ),
 
-                      // Quick actions row for events
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Row(
-                          children: [
-                            // Edit button
-                            GestureDetector(
-                              onTap: () => _editEvent(event, block),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.getSurfaceVariant(context),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.edit,
-                                      size: 12,
-                                      color: AppTheme.getTextSecondary(context),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      'Edit',
-                                      style: TextStyle(
-                                        fontSize: 11,
+                      // Quick actions row for events (only in edit mode)
+                      if (widget.isEditing)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Row(
+                            children: [
+                              // Edit button
+                              GestureDetector(
+                                onTap: () => _editEvent(event, block),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.getSurfaceVariant(context),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.edit,
+                                        size: 12,
                                         color: AppTheme.getTextSecondary(
                                           context,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        'Edit',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: AppTheme.getTextSecondary(
+                                            context,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
 
-                // Delete event button
-                if (_isHovered || _isMobile)
+                // Delete event button (only in edit mode)
+                if (widget.isEditing && (_isHovered || _isMobile))
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
                     color: AppTheme.getTextSecondary(context),
@@ -878,30 +967,31 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
           );
         }).toList(),
 
-        // Add new event
-        TextButton.icon(
-          onPressed: () {
-            final newEvent = EventItem(title: '', startTime: DateTime.now());
-            final updatedEvents = [...block.events, newEvent];
-            widget.onUpdate(block.copyWith(events: updatedEvents));
-          },
-          icon: Icon(
-            Icons.add,
-            size: 16,
-            color: AppTheme.getTextSecondary(context),
-          ),
-          label: Text(
-            'Add an event',
-            style: TextStyle(
-              fontSize: 14,
+        // Add new event (only in edit mode)
+        if (widget.isEditing)
+          TextButton.icon(
+            onPressed: () {
+              final newEvent = EventItem(title: '', startTime: DateTime.now());
+              final updatedEvents = [...block.events, newEvent];
+              widget.onUpdate(block.copyWith(events: updatedEvents));
+            },
+            icon: Icon(
+              Icons.add,
+              size: 16,
               color: AppTheme.getTextSecondary(context),
             ),
+            label: Text(
+              'Add an event',
+              style: TextStyle(
+                fontSize: 14,
+                color: AppTheme.getTextSecondary(context),
+              ),
+            ),
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              minimumSize: Size.zero,
+            ),
           ),
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-            minimumSize: Size.zero,
-          ),
-        ),
       ],
     );
   }
@@ -936,31 +1026,44 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
 
                 // List item text
                 Expanded(
-                  child: TextField(
-                    controller: _listControllers[index],
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppTheme.getTextPrimary(context),
-                      height: 1.4, // Better line height
-                    ),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'List item',
-                      hintStyle: TextStyle(color: AppTheme.getHint(context)),
-                      contentPadding: EdgeInsets.zero,
-                      isDense: true, // Reduce padding
-                    ),
-                    maxLines: null,
-                    onChanged: (value) {
-                      final updatedItems = [...block.items];
-                      updatedItems[index] = value;
-                      widget.onUpdate(block.copyWith(items: updatedItems));
-                    },
-                  ),
+                  child: widget.isEditing
+                      ? TextField(
+                          controller: _listControllers[index],
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppTheme.getTextPrimary(context),
+                            height: 1.4, // Better line height
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'List item',
+                            hintStyle: TextStyle(
+                              color: AppTheme.getTextSecondary(context),
+                            ),
+                            contentPadding: EdgeInsets.zero,
+                            isDense: true, // Reduce padding
+                          ),
+                          maxLines: null,
+                          onChanged: (value) {
+                            final updatedItems = [...block.items];
+                            updatedItems[index] = value;
+                            widget.onUpdate(
+                              block.copyWith(items: updatedItems),
+                            );
+                          },
+                        )
+                      : Text(
+                          item.isEmpty ? 'List item' : item,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppTheme.getTextPrimary(context),
+                            height: 1.4,
+                          ),
+                        ),
                 ),
 
-                // Delete list item button
-                if (_isHovered || _isMobile)
+                // Delete list item button (only in edit mode)
+                if (widget.isEditing && (_isHovered || _isMobile))
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
                     color: AppTheme.getTextSecondary(context),
@@ -980,52 +1083,64 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
           );
         }).toList(),
 
-        // Add new list item
-        TextButton.icon(
-          onPressed: () {
-            final updatedItems = [...block.items, ''];
-            widget.onUpdate(block.copyWith(items: updatedItems));
-          },
-          icon: Icon(
-            Icons.add,
-            size: 16,
-            color: AppTheme.getTextTertiary(context),
-          ),
-          label: Text(
-            'Add an item',
-            style: TextStyle(
-              fontSize: 14,
-              color: AppTheme.getTextTertiary(context),
+        // Add new list item (only in edit mode)
+        if (widget.isEditing)
+          TextButton.icon(
+            onPressed: () {
+              final updatedItems = [...block.items, ''];
+              widget.onUpdate(block.copyWith(items: updatedItems));
+            },
+            icon: Icon(
+              Icons.add,
+              size: 16,
+              color: AppTheme.getTextSecondary(context),
+            ),
+            label: Text(
+              'Add an item',
+              style: TextStyle(
+                fontSize: 14,
+                color: AppTheme.getTextSecondary(context),
+              ),
+            ),
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              minimumSize: Size.zero,
             ),
           ),
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-            minimumSize: Size.zero,
-          ),
-        ),
       ],
     );
   }
 
   Widget _buildTextBlock(TextBlock block) {
-    return TextField(
-      controller: _textBlockController,
-      style: TextStyle(
-        fontSize: 16,
-        color: AppTheme.getTextPrimary(context),
-        height: 1.5,
-      ),
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        hintText: 'Type something...',
-        hintStyle: TextStyle(color: AppTheme.getHint(context)),
-        contentPadding: EdgeInsets.zero,
-      ),
-      maxLines: null,
-      onChanged: (value) {
-        widget.onUpdate(block.copyWith(content: value));
-      },
-    );
+    if (widget.isEditing) {
+      return TextField(
+        controller: _textBlockController,
+        style: TextStyle(
+          fontSize: 16,
+          color: AppTheme.getTextPrimary(context),
+          height: 1.5,
+        ),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Type something...',
+          hintStyle: TextStyle(color: AppTheme.getTextSecondary(context)),
+          contentPadding: EdgeInsets.zero,
+        ),
+        maxLines: null,
+        onChanged: (value) {
+          widget.onUpdate(block.copyWith(content: value));
+        },
+      );
+    } else {
+      return Text(
+        block.content.isEmpty ? 'Type something...' : block.content,
+        style: TextStyle(
+          fontSize: 16,
+          color: AppTheme.getTextPrimary(context),
+          height: 1.5,
+        ),
+      );
+    }
   }
 
   IconData _getBlockIcon() {
