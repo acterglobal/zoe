@@ -22,6 +22,197 @@ class ContentBlockWidget extends StatefulWidget {
 
 class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   bool _isHovered = false;
+  bool _isMobile = false;
+
+  // Text controllers for managing cursor position
+  late TextEditingController _titleController;
+  late TextEditingController _textBlockController;
+  Map<String, TextEditingController> _todoControllers = {};
+  Map<String, TextEditingController> _eventControllers = {};
+  Map<int, TextEditingController> _listControllers = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeControllers();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _isMobile = MediaQuery.of(context).size.width < 600;
+  }
+
+  @override
+  void didUpdateWidget(ContentBlockWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.block != widget.block) {
+      _updateControllers();
+    }
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _textBlockController.dispose();
+    _todoControllers.values.forEach((controller) => controller.dispose());
+    _eventControllers.values.forEach((controller) => controller.dispose());
+    _listControllers.values.forEach((controller) => controller.dispose());
+    super.dispose();
+  }
+
+  void _initializeControllers() {
+    // Initialize title controller
+    String title = '';
+    switch (widget.block.type) {
+      case ContentBlockType.todo:
+        title = (widget.block as TodoBlock).title;
+        break;
+      case ContentBlockType.event:
+        title = (widget.block as EventBlock).title;
+        break;
+      case ContentBlockType.list:
+        title = (widget.block as ListBlock).title;
+        break;
+      case ContentBlockType.text:
+        title = '';
+        break;
+    }
+    _titleController = TextEditingController(text: title);
+
+    // Initialize text block controller
+    if (widget.block.type == ContentBlockType.text) {
+      _textBlockController = TextEditingController(
+        text: (widget.block as TextBlock).content,
+      );
+    } else {
+      _textBlockController = TextEditingController();
+    }
+
+    // Initialize item controllers
+    _updateItemControllers();
+  }
+
+  void _updateControllers() {
+    // Update title controller
+    String title = '';
+    switch (widget.block.type) {
+      case ContentBlockType.todo:
+        title = (widget.block as TodoBlock).title;
+        break;
+      case ContentBlockType.event:
+        title = (widget.block as EventBlock).title;
+        break;
+      case ContentBlockType.list:
+        title = (widget.block as ListBlock).title;
+        break;
+      case ContentBlockType.text:
+        title = '';
+        break;
+    }
+
+    if (_titleController.text != title) {
+      final selection = _titleController.selection;
+      _titleController.text = title;
+      if (selection.isValid && selection.end <= title.length) {
+        _titleController.selection = selection;
+      }
+    }
+
+    // Update text block controller
+    if (widget.block.type == ContentBlockType.text) {
+      final content = (widget.block as TextBlock).content;
+      if (_textBlockController.text != content) {
+        final selection = _textBlockController.selection;
+        _textBlockController.text = content;
+        if (selection.isValid && selection.end <= content.length) {
+          _textBlockController.selection = selection;
+        }
+      }
+    }
+
+    // Update item controllers
+    _updateItemControllers();
+  }
+
+  void _updateItemControllers() {
+    switch (widget.block.type) {
+      case ContentBlockType.todo:
+        final block = widget.block as TodoBlock;
+        // Clean up old controllers
+        final oldIds = _todoControllers.keys.toSet();
+        final newIds = block.items.map((item) => item.id).toSet();
+        for (final id in oldIds.difference(newIds)) {
+          _todoControllers[id]?.dispose();
+          _todoControllers.remove(id);
+        }
+        // Create new controllers
+        for (final item in block.items) {
+          if (!_todoControllers.containsKey(item.id)) {
+            _todoControllers[item.id] = TextEditingController(text: item.text);
+          } else if (_todoControllers[item.id]!.text != item.text) {
+            final selection = _todoControllers[item.id]!.selection;
+            _todoControllers[item.id]!.text = item.text;
+            if (selection.isValid && selection.end <= item.text.length) {
+              _todoControllers[item.id]!.selection = selection;
+            }
+          }
+        }
+        break;
+      case ContentBlockType.event:
+        final block = widget.block as EventBlock;
+        // Clean up old controllers
+        final oldIds = _eventControllers.keys.toSet();
+        final newIds = block.events.map((event) => event.id).toSet();
+        for (final id in oldIds.difference(newIds)) {
+          _eventControllers[id]?.dispose();
+          _eventControllers.remove(id);
+        }
+        // Create new controllers
+        for (final event in block.events) {
+          if (!_eventControllers.containsKey(event.id)) {
+            _eventControllers[event.id] = TextEditingController(
+              text: event.title,
+            );
+          } else if (_eventControllers[event.id]!.text != event.title) {
+            final selection = _eventControllers[event.id]!.selection;
+            _eventControllers[event.id]!.text = event.title;
+            if (selection.isValid && selection.end <= event.title.length) {
+              _eventControllers[event.id]!.selection = selection;
+            }
+          }
+        }
+        break;
+      case ContentBlockType.list:
+        final block = widget.block as ListBlock;
+        // Clean up old controllers
+        final oldIndices = _listControllers.keys.toSet();
+        final newIndices = List.generate(
+          block.items.length,
+          (index) => index,
+        ).toSet();
+        for (final index in oldIndices.difference(newIndices)) {
+          _listControllers[index]?.dispose();
+          _listControllers.remove(index);
+        }
+        // Create new controllers
+        for (int i = 0; i < block.items.length; i++) {
+          if (!_listControllers.containsKey(i)) {
+            _listControllers[i] = TextEditingController(text: block.items[i]);
+          } else if (_listControllers[i]!.text != block.items[i]) {
+            final selection = _listControllers[i]!.selection;
+            _listControllers[i]!.text = block.items[i];
+            if (selection.isValid && selection.end <= block.items[i].length) {
+              _listControllers[i]!.selection = selection;
+            }
+          }
+        }
+        break;
+      case ContentBlockType.text:
+        // Already handled above
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +228,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Drag handle (visible on hover)
+                // Drag handle (visible on hover or always on mobile)
                 AnimatedOpacity(
-                  opacity: _isHovered ? 1.0 : 0.0,
+                  opacity: (_isHovered || _isMobile) ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 200),
                   child: Container(
                     width: 20,
@@ -60,18 +251,20 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 // Block title (editable)
                 Expanded(child: _buildBlockTitle()),
 
-                // Delete button (visible on hover)
+                // Delete button (visible on hover or always on mobile)
                 AnimatedOpacity(
-                  opacity: _isHovered ? 1.0 : 0.0,
+                  opacity: (_isHovered || _isMobile) ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 200),
                   child: IconButton(
                     icon: const Icon(Icons.delete_outline, size: 16),
                     color: const Color(0xFF9CA3AF),
                     onPressed: widget.onDelete,
                     padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(
-                      minWidth: 24,
-                      minHeight: 24,
+                    constraints: BoxConstraints(
+                      minWidth: _isMobile
+                          ? 32
+                          : 24, // Larger touch target on mobile
+                      minHeight: _isMobile ? 32 : 24,
                     ),
                   ),
                 ),
@@ -82,7 +275,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
 
             // Block content
             Padding(
-              padding: const EdgeInsets.only(left: 28), // Align with title
+              padding: EdgeInsets.only(
+                left: _isMobile ? 20 : 28,
+              ), // Less indent on mobile
               child: _buildContent(),
             ),
           ],
@@ -92,23 +287,12 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   }
 
   Widget _buildBlockTitle() {
-    String title = '';
-    switch (widget.block.type) {
-      case ContentBlockType.todo:
-        title = (widget.block as TodoBlock).title;
-        break;
-      case ContentBlockType.event:
-        title = (widget.block as EventBlock).title;
-        break;
-      case ContentBlockType.list:
-        title = (widget.block as ListBlock).title;
-        break;
-      case ContentBlockType.text:
-        return const SizedBox.shrink(); // Text blocks don't have titles
+    if (widget.block.type == ContentBlockType.text) {
+      return const SizedBox.shrink(); // Text blocks don't have titles
     }
 
     return TextField(
-      controller: TextEditingController(text: title),
+      controller: _titleController,
       style: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
@@ -178,7 +362,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                   child: Container(
                     width: 18,
                     height: 18,
-                    margin: const EdgeInsets.only(top: 2),
+                    margin: const EdgeInsets.only(
+                      top: 3,
+                    ), // Better alignment with text
                     decoration: BoxDecoration(
                       color: todo.isCompleted
                           ? const Color(0xFF10B981)
@@ -201,7 +387,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 // Todo text
                 Expanded(
                   child: TextField(
-                    controller: TextEditingController(text: todo.text),
+                    controller: _todoControllers[todo.id],
                     style: TextStyle(
                       fontSize: 14,
                       color: todo.isCompleted
@@ -210,12 +396,14 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                       decoration: todo.isCompleted
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
+                      height: 1.4, // Better line height
                     ),
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'To-do',
                       hintStyle: TextStyle(color: Color(0xFFD1D5DB)),
                       contentPadding: EdgeInsets.zero,
+                      isDense: true, // Reduce padding
                     ),
                     maxLines: null,
                     onChanged: (value) {
@@ -229,7 +417,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 ),
 
                 // Delete todo button
-                if (_isHovered)
+                if (_isHovered || _isMobile)
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
                     color: const Color(0xFF9CA3AF),
@@ -240,9 +428,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                       widget.onUpdate(block.copyWith(items: updatedItems));
                     },
                     padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(
-                      minWidth: 20,
-                      minHeight: 20,
+                    constraints: BoxConstraints(
+                      minWidth: _isMobile ? 28 : 20,
+                      minHeight: _isMobile ? 28 : 20,
                     ),
                   ),
               ],
@@ -278,7 +466,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         // Event items
         ...block.events.map((event) {
           return Container(
-            margin: const EdgeInsets.only(bottom: 12),
+            margin: const EdgeInsets.only(bottom: 16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -286,7 +474,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 Container(
                   width: 8,
                   height: 8,
-                  margin: const EdgeInsets.only(top: 6),
+                  margin: const EdgeInsets.only(
+                    top: 8,
+                  ), // Better alignment with text
                   decoration: const BoxDecoration(
                     color: Color(0xFF8B5CF6),
                     shape: BoxShape.circle,
@@ -301,17 +491,19 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     children: [
                       // Event title
                       TextField(
-                        controller: TextEditingController(text: event.title),
+                        controller: _eventControllers[event.id],
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Color(0xFF374151),
+                          height: 1.4, // Better line height
                         ),
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Event title',
                           hintStyle: TextStyle(color: Color(0xFFD1D5DB)),
                           contentPadding: EdgeInsets.zero,
+                          isDense: true, // Reduce padding
                         ),
                         onChanged: (value) {
                           final updatedEvent = event.copyWith(title: value);
@@ -324,6 +516,8 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                         },
                       ),
 
+                      const SizedBox(height: 4),
+
                       // Event time
                       Text(
                         DateFormat(
@@ -332,6 +526,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                         style: const TextStyle(
                           fontSize: 12,
                           color: Color(0xFF9CA3AF),
+                          height: 1.3,
                         ),
                       ),
 
@@ -344,6 +539,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                             style: const TextStyle(
                               fontSize: 12,
                               color: Color(0xFF6B7280),
+                              height: 1.3,
                             ),
                           ),
                         ),
@@ -352,7 +548,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 ),
 
                 // Delete event button
-                if (_isHovered)
+                if (_isHovered || _isMobile)
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
                     color: const Color(0xFF9CA3AF),
@@ -363,9 +559,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                       widget.onUpdate(block.copyWith(events: updatedEvents));
                     },
                     padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(
-                      minWidth: 20,
-                      minHeight: 20,
+                    constraints: BoxConstraints(
+                      minWidth: _isMobile ? 28 : 20,
+                      minHeight: _isMobile ? 28 : 20,
                     ),
                   ),
               ],
@@ -412,7 +608,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 Container(
                   width: 6,
                   height: 6,
-                  margin: const EdgeInsets.only(top: 8),
+                  margin: const EdgeInsets.only(
+                    top: 9,
+                  ), // Better alignment with text
                   decoration: const BoxDecoration(
                     color: Color(0xFF6B7280),
                     shape: BoxShape.circle,
@@ -423,16 +621,18 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 // List item text
                 Expanded(
                   child: TextField(
-                    controller: TextEditingController(text: item),
+                    controller: _listControllers[index],
                     style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xFF374151),
+                      height: 1.4, // Better line height
                     ),
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'List item',
                       hintStyle: TextStyle(color: Color(0xFFD1D5DB)),
                       contentPadding: EdgeInsets.zero,
+                      isDense: true, // Reduce padding
                     ),
                     maxLines: null,
                     onChanged: (value) {
@@ -444,7 +644,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 ),
 
                 // Delete list item button
-                if (_isHovered)
+                if (_isHovered || _isMobile)
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
                     color: const Color(0xFF9CA3AF),
@@ -454,9 +654,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                       widget.onUpdate(block.copyWith(items: updatedItems));
                     },
                     padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(
-                      minWidth: 20,
-                      minHeight: 20,
+                    constraints: BoxConstraints(
+                      minWidth: _isMobile ? 28 : 20,
+                      minHeight: _isMobile ? 28 : 20,
                     ),
                   ),
               ],
@@ -486,7 +686,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
 
   Widget _buildTextBlock(TextBlock block) {
     return TextField(
-      controller: TextEditingController(text: block.content),
+      controller: _textBlockController,
       style: const TextStyle(
         fontSize: 16,
         color: Color(0xFF374151),

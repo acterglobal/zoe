@@ -112,19 +112,24 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
           }
         },
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(
-            32,
+          padding: EdgeInsets.fromLTRB(
+            MediaQuery.of(context).size.width > 600
+                ? 32
+                : 16, // Less padding on mobile
             16,
-            32,
+            MediaQuery.of(context).size.width > 600
+                ? 32
+                : 16, // Less padding on mobile
             100,
-          ), // Single sheet padding
+          ), // Responsive padding
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Page Header
               _buildPageHeader(),
-              const SizedBox(height: 48),
-
+              SizedBox(
+                height: MediaQuery.of(context).size.width > 600 ? 48 : 32,
+              ), // Less spacing on mobile
               // Content Blocks
               _buildContentBlocks(),
 
