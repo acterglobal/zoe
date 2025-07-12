@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../common/providers/app_state_provider.dart';
@@ -131,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Row(
                 children: [
-                  Text(emoji, style: const TextStyle(fontSize: 32)),
+                  Text(emoji, style: TextStyle(fontSize: 32)),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -139,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Text(
                           '$greeting, ${appState.userName}!',
-                          style: GoogleFonts.inter(
+                          style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -148,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 4),
                         Text(
                           DateFormat('EEEE, MMMM d').format(DateTime.now()),
-                          style: GoogleFonts.inter(
+                          style: TextStyle(
                             fontSize: 14,
                             color: Colors.white.withOpacity(0.8),
                           ),
@@ -161,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
               Text(
                 'Ready to be productive?',
-                style: GoogleFonts.inter(
+                style: TextStyle(
                   fontSize: 16,
                   color: Colors.white.withOpacity(0.9),
                 ),
@@ -189,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text(
                       'Today\'s Tasks',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: const Color(0xFF1F2937),
@@ -208,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: Text(
                           '$completedCount/$totalCount',
-                          style: GoogleFonts.inter(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                             color: const Color(0xFF10B981),
@@ -242,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 12),
                         Text(
                           'All caught up!',
-                          style: GoogleFonts.inter(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: const Color(0xFF1F2937),
@@ -251,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 4),
                         Text(
                           'No tasks for today. Time to relax!',
-                          style: GoogleFonts.inter(
+                          style: TextStyle(
                             fontSize: 14,
                             color: const Color(0xFF6B7280),
                           ),
@@ -275,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Text(
                       'View all ${todaysTodos.length} tasks',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFF6366F1),
@@ -303,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   'Today\'s Events',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF1F2937),
@@ -339,7 +338,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   'This Week',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF1F2937),
@@ -361,7 +360,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Text(
                       'View all upcoming events',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFF6366F1),
@@ -383,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               'Quick Actions',
-              style: GoogleFonts.inter(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF1F2937),
@@ -482,7 +481,7 @@ class _QuickActionCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               title,
-              style: GoogleFonts.inter(
+              style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xFF1F2937),

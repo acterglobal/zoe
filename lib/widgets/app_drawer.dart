@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../common/providers/app_state_provider.dart';
 import '../screens/page_detail_screen.dart';
@@ -51,7 +50,7 @@ class AppDrawer extends StatelessWidget {
                               builder: (context, appState, child) {
                                 return Text(
                                   appState.userName,
-                                  style: GoogleFonts.inter(
+                                  style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
@@ -61,7 +60,7 @@ class AppDrawer extends StatelessWidget {
                             ),
                             Text(
                               'Your workspace',
-                              style: GoogleFonts.inter(
+                              style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.white.withOpacity(0.8),
                               ),
@@ -88,7 +87,7 @@ class AppDrawer extends StatelessWidget {
                           children: [
                             Text(
                               'Pages',
-                              style: GoogleFonts.inter(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: const Color(0xFF1F2937),
@@ -127,13 +126,13 @@ class AppDrawer extends StatelessWidget {
                                 child: Center(
                                   child: Text(
                                     page.emoji ?? '📄',
-                                    style: const TextStyle(fontSize: 16),
+                                    style: TextStyle(fontSize: 16),
                                   ),
                                 ),
                               ),
                               title: Text(
                                 page.title,
-                                style: GoogleFonts.inter(
+                                style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: const Color(0xFF1F2937),
@@ -142,7 +141,7 @@ class AppDrawer extends StatelessWidget {
                               subtitle: page.description.isNotEmpty
                                   ? Text(
                                       page.description,
-                                      style: GoogleFonts.inter(
+                                      style: TextStyle(
                                         fontSize: 12,
                                         color: const Color(0xFF6B7280),
                                       ),
@@ -184,7 +183,7 @@ class AppDrawer extends StatelessWidget {
                     leading: const Icon(Icons.settings_rounded, size: 20),
                     title: Text(
                       'Settings',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: const Color(0xFF1F2937),
@@ -198,7 +197,7 @@ class AppDrawer extends StatelessWidget {
                     leading: const Icon(Icons.person_rounded, size: 20),
                     title: Text(
                       'Profile',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: const Color(0xFF1F2937),

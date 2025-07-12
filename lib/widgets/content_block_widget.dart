@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../common/models/content_block.dart';
+import '../common/theme/app_theme.dart';
 
 class ContentBlockWidget extends StatefulWidget {
   final ContentBlock block;
@@ -59,10 +59,8 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                   const SizedBox(width: 8),
                   Text(
                     _getBlockTypeName(),
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF6366F1),
+                    style: AppTheme.labelMedium.copyWith(
+                      color: AppTheme.primary,
                     ),
                   ),
                   const Spacer(),
@@ -105,7 +103,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         widget.isEditing
             ? TextField(
                 controller: TextEditingController(text: block.title),
-                style: GoogleFonts.inter(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xFF1F2937),
@@ -120,7 +118,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
               )
             : Text(
                 block.title,
-                style: GoogleFonts.inter(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xFF1F2937),
@@ -174,7 +172,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     child: widget.isEditing
                         ? TextField(
                             controller: TextEditingController(text: todo.text),
-                            style: GoogleFonts.inter(
+                            style: TextStyle(
                               fontSize: 14,
                               color: todo.isCompleted
                                   ? const Color(0xFF9CA3AF)
@@ -199,7 +197,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                           )
                         : Text(
                             todo.text,
-                            style: GoogleFonts.inter(
+                            style: TextStyle(
                               fontSize: 14,
                               color: todo.isCompleted
                                   ? const Color(0xFF9CA3AF)
@@ -252,7 +250,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         widget.isEditing
             ? TextField(
                 controller: TextEditingController(text: block.title),
-                style: GoogleFonts.inter(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xFF1F2937),
@@ -267,7 +265,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
               )
             : Text(
                 block.title,
-                style: GoogleFonts.inter(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xFF1F2937),
@@ -300,7 +298,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                   controller: TextEditingController(
                                     text: event.title,
                                   ),
-                                  style: GoogleFonts.inter(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: const Color(0xFF1F2937),
@@ -327,7 +325,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                 )
                               : Text(
                                   event.title,
-                                  style: GoogleFonts.inter(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: const Color(0xFF1F2937),
@@ -354,7 +352,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     const SizedBox(height: 4),
                     Text(
                       DateFormat('MMM d, y • h:mm a').format(event.startTime),
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         fontSize: 12,
                         color: const Color(0xFF6B7280),
                       ),
@@ -364,7 +362,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                       const SizedBox(height: 4),
                       Text(
                         event.description!,
-                        style: GoogleFonts.inter(
+                        style: TextStyle(
                           fontSize: 12,
                           color: const Color(0xFF6B7280),
                         ),
@@ -403,7 +401,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         widget.isEditing
             ? TextField(
                 controller: TextEditingController(text: block.title),
-                style: GoogleFonts.inter(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xFF1F2937),
@@ -418,7 +416,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
               )
             : Text(
                 block.title,
-                style: GoogleFonts.inter(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xFF1F2937),
@@ -449,7 +447,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     child: widget.isEditing
                         ? TextField(
                             controller: TextEditingController(text: item),
-                            style: GoogleFonts.inter(
+                            style: TextStyle(
                               fontSize: 14,
                               color: const Color(0xFF1F2937),
                             ),
@@ -467,7 +465,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                           )
                         : Text(
                             item,
-                            style: GoogleFonts.inter(
+                            style: TextStyle(
                               fontSize: 14,
                               color: const Color(0xFF1F2937),
                             ),
@@ -509,7 +507,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     return widget.isEditing
         ? TextField(
             controller: TextEditingController(text: block.content),
-            style: GoogleFonts.inter(
+            style: TextStyle(
               fontSize: 14,
               color: const Color(0xFF1F2937),
             ),
@@ -524,7 +522,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
           )
         : Text(
             block.content,
-            style: GoogleFonts.inter(
+            style: TextStyle(
               fontSize: 14,
               color: const Color(0xFF1F2937),
             ),

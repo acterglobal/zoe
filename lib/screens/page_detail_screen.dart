@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../common/providers/app_state_provider.dart';
 import '../common/models/page.dart';
@@ -152,7 +151,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                 child: Center(
                   child: Text(
                     _currentPage.emoji ?? '📄',
-                    style: const TextStyle(fontSize: 24),
+                    style: TextStyle(fontSize: 24),
                   ),
                 ),
               ),
@@ -162,7 +161,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
               child: _isEditing
                   ? TextField(
                       controller: _titleController,
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: const Color(0xFF1F2937),
@@ -174,7 +173,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                     )
                   : Text(
                       _currentPage.title,
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: const Color(0xFF1F2937),
@@ -189,7 +188,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
         _isEditing
             ? TextField(
                 controller: _descriptionController,
-                style: GoogleFonts.inter(
+                style: TextStyle(
                   fontSize: 16,
                   color: const Color(0xFF6B7280),
                 ),
@@ -202,7 +201,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
             : _currentPage.description.isNotEmpty
             ? Text(
                 _currentPage.description,
-                style: GoogleFonts.inter(
+                style: TextStyle(
                   fontSize: 16,
                   color: const Color(0xFF6B7280),
                 ),
@@ -435,7 +434,7 @@ class _AddBlockOption extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: GoogleFonts.inter(
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: const Color(0xFF1F2937),
@@ -444,7 +443,7 @@ class _AddBlockOption extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     description,
-                    style: GoogleFonts.inter(
+                    style: TextStyle(
                       fontSize: 12,
                       color: const Color(0xFF6B7280),
                     ),

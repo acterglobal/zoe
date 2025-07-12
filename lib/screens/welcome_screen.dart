@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../common/providers/app_state_provider.dart';
+import '../common/theme/app_theme.dart';
 import 'home_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -55,14 +55,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     const SizedBox(height: 48),
 
                     // Welcome text
-                    Text(
-                          'Welcome to Zoe',
-                          style: GoogleFonts.inter(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF1F2937),
-                          ),
-                        )
+                    Text('Welcome to Zoe', style: AppTheme.heading1)
                         .animate()
                         .fadeIn(delay: 400.ms, duration: 600.ms)
                         .slideY(begin: 0.3, end: 0),
@@ -73,9 +66,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     Text(
                           'Your personal workspace for organizing thoughts, tasks, and ideas with beautiful simplicity.',
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.inter(
-                            fontSize: 16,
-                            color: const Color(0xFF6B7280),
+                          style: AppTheme.bodyLarge.copyWith(
+                            color: AppTheme.textSecondary,
                             height: 1.5,
                           ),
                         )
@@ -143,9 +135,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         children: [
                           Text(
                             'Let\'s get started',
-                            style: GoogleFonts.inter(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                            style: AppTheme.labelLarge.copyWith(
+                              color: Colors.white,
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -234,23 +225,12 @@ class _FeatureCard extends StatelessWidget {
             child: Icon(icon, size: 24, color: color),
           ),
           const SizedBox(height: 12),
-          Text(
-            title,
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF1F2937),
-            ),
-          ),
+          Text(title, style: AppTheme.labelLarge),
           const SizedBox(height: 4),
           Text(
             description,
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
-              fontSize: 12,
-              color: const Color(0xFF6B7280),
-              height: 1.4,
-            ),
+            style: AppTheme.bodySmall.copyWith(height: 1.4),
           ),
         ],
       ),

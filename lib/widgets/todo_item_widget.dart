@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../common/models/content_block.dart';
 
@@ -62,7 +61,7 @@ class TodoItemWidget extends StatelessWidget {
               children: [
                 Text(
                   todo.text,
-                  style: GoogleFonts.inter(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: todo.isCompleted
@@ -85,7 +84,7 @@ class TodoItemWidget extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         _formatDueDate(),
-                        style: GoogleFonts.inter(
+                        style: TextStyle(
                           fontSize: 12,
                           color: _getDueDateColor(),
                           fontWeight: FontWeight.w500,

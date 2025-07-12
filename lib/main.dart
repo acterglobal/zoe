@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:zoey/src/rust/frb_generated.dart';
 import 'common/providers/app_state_provider.dart';
 import 'screens/welcome_screen.dart';
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
             brightness: Brightness.light,
           ),
           useMaterial3: true,
-          textTheme: GoogleFonts.interTextTheme(),
+          fontFamily: 'SF Pro Display', // Use system font on Apple platforms
           scaffoldBackgroundColor: const Color(0xFFF8F9FE),
         ),
         home: Consumer<AppStateProvider>(
