@@ -44,15 +44,18 @@ class _HomeScreenState extends State<HomeScreen> {
               // Recent pages section
               _buildRecentPages(context, appStateProvider),
 
-              // Quick actions
-              _buildQuickActions(context),
-
               const SizedBox(height: 24),
             ],
           ),
         ),
       ),
       drawer: const AppDrawer(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _createNewPage(context),
+        backgroundColor: const Color(0xFF8B5CF6),
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.add_rounded),
+      ),
     );
   }
 
@@ -275,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildSectionHeader(context, 'Tasks', Icons.check_circle_outline),
               ...todayTasks
                   .take(3)
-                  .map((task) => _buildTaskItem(context, task)),
+                  .map((taskWithPage) => _buildTaskItem(context, taskWithPage)),
               if (todayTasks.length > 3)
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
@@ -294,7 +297,9 @@ class _HomeScreenState extends State<HomeScreen> {
             // Today's events
             if (todayEvents.isNotEmpty) ...[
               _buildSectionHeader(context, 'Events', Icons.event_outlined),
-              ...todayEvents.map((event) => _buildEventItem(context, event)),
+              ...todayEvents.map(
+                (eventWithPage) => _buildEventItem(context, eventWithPage),
+              ),
             ],
           ],
         ],
@@ -330,7 +335,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildTaskItem(BuildContext context, TodoItem task) {
+  Widget _buildTaskItem(BuildContext context, TodoWithPage taskWithPage) {
+    final task = taskWithPage.todo;
+    final page = taskWithPage.page;
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(16),
@@ -374,18 +381,31 @@ class _HomeScreenState extends State<HomeScreen> {
                         : null,
                   ),
                 ),
-                if (task.dueDate != null) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    'Due ${_formatDate(task.dueDate!)}',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: _isOverdue(task.dueDate!)
-                          ? Colors.red
-                          : AppTheme.getTextSecondary(context),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text(
+                      '${page.emoji ?? '📄'} ${page.title}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppTheme.getTextSecondary(context),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                ],
+                    if (task.dueDate != null) ...[
+                      const SizedBox(width: 8),
+                      Text(
+                        '• Due ${_formatDate(task.dueDate!)}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: _isOverdue(task.dueDate!)
+                              ? Colors.red
+                              : AppTheme.getTextSecondary(context),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ],
             ),
           ),
@@ -410,7 +430,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildEventItem(BuildContext context, EventItem event) {
+  Widget _buildEventItem(BuildContext context, EventWithPage eventWithPage) {
+    final event = eventWithPage.event;
+    final page = eventWithPage.page;
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(16),
@@ -444,9 +466,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
+                  '${page.emoji ?? '📄'} ${page.title}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppTheme.getTextSecondary(context),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
                   _formatEventTime(event),
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 12,
                     color: AppTheme.getTextSecondary(context),
                   ),
                 ),
@@ -455,7 +486,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     event.location!.physical!,
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 11,
                       color: AppTheme.getTextSecondary(context),
                     ),
                   ),
@@ -550,7 +581,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const Spacer(),
               if (appStateProvider.pages.length > 3)
                 GestureDetector(
-                  onTap: () => _openPagesView(context),
+                  onTap: () => Scaffold.of(context).openDrawer(),
                   child: Text(
                     'View all',
                     style: TextStyle(
@@ -642,101 +673,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildQuickActions(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Quick Actions',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.getTextPrimary(context),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: _buildActionCard(
-                  context,
-                  icon: Icons.add_rounded,
-                  title: 'New Page',
-                  color: const Color(0xFF8B5CF6),
-                  onTap: () => _createNewPage(context),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _buildActionCard(
-                  context,
-                  icon: Icons.folder_open_rounded,
-                  title: 'Pages',
-                  color: const Color(0xFF3B82F6),
-                  onTap: () => _openPagesView(context),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _buildActionCard(
-                  context,
-                  icon: Icons.search_rounded,
-                  title: 'Search',
-                  color: const Color(0xFF10B981),
-                  onTap: () => _openSearch(context),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionCard(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: AppTheme.getSurface(context),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppTheme.getBorder(context)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: color, size: 24),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: AppTheme.getTextPrimary(context),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   String _getGreeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) return 'Good morning! 🌅';
@@ -802,21 +738,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => PageDetailScreen(page: newPage)),
-    );
-  }
-
-  void _openPagesView(BuildContext context) {
-    // Open the drawer to show pages list
-    Scaffold.of(context).openDrawer();
-  }
-
-  void _openSearch(BuildContext context) {
-    // TODO: Implement search functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Search functionality coming soon!'),
-        backgroundColor: Colors.blue,
-      ),
     );
   }
 

@@ -2,6 +2,21 @@ import 'package:flutter/foundation.dart';
 import '../models/page.dart';
 import '../models/content_block.dart';
 
+// Wrapper classes to include page information
+class TodoWithPage {
+  final TodoItem todo;
+  final ZoePage page;
+
+  TodoWithPage({required this.todo, required this.page});
+}
+
+class EventWithPage {
+  final EventItem event;
+  final ZoePage page;
+
+  EventWithPage({required this.event, required this.page});
+}
+
 class AppStateProvider extends ChangeNotifier {
   List<ZoePage> _pages = [];
   String _userName = 'Zoe';
@@ -478,12 +493,12 @@ class AppStateProvider extends ChangeNotifier {
   }
 
   // Get today's todos across all pages
-  List<TodoItem> getTodaysTodos() {
+  List<TodoWithPage> getTodaysTodos() {
     final today = DateTime.now();
     final todayStart = DateTime(today.year, today.month, today.day);
     final todayEnd = todayStart.add(const Duration(days: 1));
 
-    List<TodoItem> todaysTodos = [];
+    List<TodoWithPage> todaysTodos = [];
 
     for (final page in _pages) {
       for (final todoBlock in page.todoBlocks) {
@@ -491,10 +506,10 @@ class AppStateProvider extends ChangeNotifier {
           if (todo.dueDate != null &&
               todo.dueDate!.isAfter(todayStart) &&
               todo.dueDate!.isBefore(todayEnd)) {
-            todaysTodos.add(todo);
+            todaysTodos.add(TodoWithPage(todo: todo, page: page));
           } else if (todo.dueDate == null && !todo.isCompleted) {
             // Include todos without due dates that are not completed
-            todaysTodos.add(todo);
+            todaysTodos.add(TodoWithPage(todo: todo, page: page));
           }
         }
       }
@@ -504,50 +519,52 @@ class AppStateProvider extends ChangeNotifier {
   }
 
   // Get upcoming events across all pages
-  List<EventItem> getUpcomingEvents() {
+  List<EventWithPage> getUpcomingEvents() {
     final now = DateTime.now();
     final nextWeek = now.add(const Duration(days: 7));
 
-    List<EventItem> upcomingEvents = [];
+    List<EventWithPage> upcomingEvents = [];
 
     for (final page in _pages) {
       for (final eventBlock in page.eventBlocks) {
         for (final event in eventBlock.events) {
           if (event.startTime.isAfter(now) &&
               event.startTime.isBefore(nextWeek)) {
-            upcomingEvents.add(event);
+            upcomingEvents.add(EventWithPage(event: event, page: page));
           }
         }
       }
     }
 
     // Sort by start time
-    upcomingEvents.sort((a, b) => a.startTime.compareTo(b.startTime));
+    upcomingEvents.sort(
+      (a, b) => a.event.startTime.compareTo(b.event.startTime),
+    );
 
     return upcomingEvents;
   }
 
   // Get today's events
-  List<EventItem> getTodaysEvents() {
+  List<EventWithPage> getTodaysEvents() {
     final today = DateTime.now();
     final todayStart = DateTime(today.year, today.month, today.day);
     final todayEnd = todayStart.add(const Duration(days: 1));
 
-    List<EventItem> todaysEvents = [];
+    List<EventWithPage> todaysEvents = [];
 
     for (final page in _pages) {
       for (final eventBlock in page.eventBlocks) {
         for (final event in eventBlock.events) {
           if (event.startTime.isAfter(todayStart) &&
               event.startTime.isBefore(todayEnd)) {
-            todaysEvents.add(event);
+            todaysEvents.add(EventWithPage(event: event, page: page));
           }
         }
       }
     }
 
     // Sort by start time
-    todaysEvents.sort((a, b) => a.startTime.compareTo(b.startTime));
+    todaysEvents.sort((a, b) => a.event.startTime.compareTo(b.event.startTime));
 
     return todaysEvents;
   }
