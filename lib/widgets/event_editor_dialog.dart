@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../common/models/content_block.dart';
+import '../common/theme/app_theme.dart';
 
 class EventEditorBottomSheet extends StatefulWidget {
   final EventItem event;
@@ -97,9 +98,9 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
       children: [
         Container(
           height: screenHeight * 0.9,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: AppTheme.getSurface(context),
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
@@ -112,7 +113,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                 height: 4,
                 margin: const EdgeInsets.only(top: 12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE5E7EB),
+                  color: AppTheme.getBorder(context),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -122,19 +123,19 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                 padding: const EdgeInsets.all(20),
                 child: Row(
                   children: [
-                    const Text(
+                    Text(
                       'Edit Event',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF374151),
+                        color: AppTheme.getTextPrimary(context),
                       ),
                     ),
                     const Spacer(),
                     IconButton(
                       onPressed: () => Navigator.of(context).pop(),
                       icon: const Icon(Icons.close),
-                      color: const Color(0xFF9CA3AF),
+                      color: AppTheme.getTextSecondary(context),
                     ),
                   ],
                 ),
@@ -157,7 +158,10 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                       TextField(
                         controller: _titleController,
                         decoration: _buildInputDecoration('Enter event title'),
-                        style: const TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppTheme.getTextPrimary(context),
+                        ),
                       ),
                       const SizedBox(height: 20),
 
@@ -170,7 +174,10 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                           'Add a description...',
                         ),
                         maxLines: 3,
-                        style: const TextStyle(fontSize: 14),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppTheme.getTextPrimary(context),
+                        ),
                       ),
                       const SizedBox(height: 20),
 
@@ -183,11 +190,11 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                                 setState(() => _isAllDay = value ?? false),
                             activeColor: const Color(0xFF8B5CF6),
                           ),
-                          const Text(
+                          Text(
                             'All Day Event',
                             style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xFF374151),
+                              color: AppTheme.getTextPrimary(context),
                             ),
                           ),
                         ],
@@ -229,7 +236,10 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                         decoration: _buildInputDecoration(
                           'Physical location (e.g., Conference Room A)',
                         ),
-                        style: const TextStyle(fontSize: 14),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppTheme.getTextPrimary(context),
+                        ),
                       ),
                       const SizedBox(height: 12),
                       TextField(
@@ -237,7 +247,10 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                         decoration: _buildInputDecoration(
                           'Virtual location (e.g., Zoom link)',
                         ),
-                        style: const TextStyle(fontSize: 14),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppTheme.getTextPrimary(context),
+                        ),
                       ),
                       const SizedBox(height: 20),
 
@@ -250,11 +263,11 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                                 setState(() => _requiresRSVP = value ?? false),
                             activeColor: const Color(0xFF8B5CF6),
                           ),
-                          const Text(
+                          Text(
                             'Requires RSVP',
                             style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xFF374151),
+                              color: AppTheme.getTextPrimary(context),
                             ),
                           ),
                         ],
@@ -276,10 +289,10 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w600,
-        color: Color(0xFF374151),
+        color: AppTheme.getTextPrimary(context),
       ),
     );
   }
@@ -287,10 +300,10 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
   InputDecoration _buildInputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
+      hintStyle: TextStyle(color: AppTheme.getHint(context)),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+        borderSide: BorderSide(color: AppTheme.getBorderInput(context)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
@@ -315,15 +328,15 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFE5E7EB)),
+                border: Border.all(color: AppTheme.getBorderInput(context)),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.calendar_today,
                     size: 16,
-                    color: Color(0xFF6B7280),
+                    color: AppTheme.getTextSecondary(context),
                   ),
                   const SizedBox(width: 8),
                   Text(
@@ -333,8 +346,8 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                     style: TextStyle(
                       fontSize: 14,
                       color: date != null
-                          ? const Color(0xFF374151)
-                          : const Color(0xFF9CA3AF),
+                          ? AppTheme.getTextPrimary(context)
+                          : AppTheme.getHint(context),
                     ),
                   ),
                 ],
@@ -355,9 +368,11 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xFFE5E7EB)),
+                  border: Border.all(color: AppTheme.getBorder(context)),
                   borderRadius: BorderRadius.circular(8),
-                  color: date == null ? const Color(0xFFF9FAFB) : null,
+                  color: date == null
+                      ? AppTheme.getSurfaceVariant(context)
+                      : null,
                 ),
                 child: Row(
                   children: [
@@ -365,8 +380,8 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                       Icons.access_time,
                       size: 16,
                       color: date != null
-                          ? const Color(0xFF6B7280)
-                          : const Color(0xFFD1D5DB),
+                          ? AppTheme.getTextSecondary(context)
+                          : AppTheme.getHint(context),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -374,8 +389,8 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                       style: TextStyle(
                         fontSize: 14,
                         color: time != null
-                            ? const Color(0xFF374151)
-                            : const Color(0xFF9CA3AF),
+                            ? AppTheme.getTextPrimary(context)
+                            : AppTheme.getHint(context),
                       ),
                     ),
                   ],
@@ -393,7 +408,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
               }
             }),
             icon: const Icon(Icons.clear, size: 16),
-            color: const Color(0xFF9CA3AF),
+            color: AppTheme.getTextTertiary(context),
           ),
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../common/models/content_block.dart';
+import '../common/theme/app_theme.dart';
 
 class TodoItemWidget extends StatelessWidget {
   final TodoItem todo;
@@ -13,11 +14,13 @@ class TodoItemWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.getSurface(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(
+              Theme.of(context).brightness == Brightness.dark ? 0.3 : 0.05,
+            ),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -37,12 +40,12 @@ class TodoItemWidget extends StatelessWidget {
               height: 20,
               decoration: BoxDecoration(
                 color: todo.isCompleted
-                    ? const Color(0xFF10B981)
+                    ? AppTheme.getSuccess(context)
                     : Colors.transparent,
                 border: Border.all(
                   color: todo.isCompleted
-                      ? const Color(0xFF10B981)
-                      : const Color(0xFFD1D5DB),
+                      ? AppTheme.getSuccess(context)
+                      : AppTheme.getBorder(context),
                   width: 2,
                 ),
                 borderRadius: BorderRadius.circular(4),
@@ -65,8 +68,8 @@ class TodoItemWidget extends StatelessWidget {
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: todo.isCompleted
-                        ? const Color(0xFF9CA3AF)
-                        : const Color(0xFF1F2937),
+                        ? AppTheme.getTextTertiary(context)
+                        : AppTheme.getTextPrimary(context),
                     decoration: todo.isCompleted
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
@@ -79,14 +82,14 @@ class TodoItemWidget extends StatelessWidget {
                       Icon(
                         Icons.schedule_rounded,
                         size: 12,
-                        color: _getDueDateColor(),
+                        color: _getDueDateColor(context),
                       ),
                       const SizedBox(width: 4),
                       Text(
                         _formatDueDate(),
                         style: TextStyle(
                           fontSize: 12,
-                          color: _getDueDateColor(),
+                          color: _getDueDateColor(context),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -101,21 +104,21 @@ class TodoItemWidget extends StatelessWidget {
     );
   }
 
-  Color _getDueDateColor() {
-    if (todo.dueDate == null) return const Color(0xFF6B7280);
+  Color _getDueDateColor(BuildContext context) {
+    if (todo.dueDate == null) return AppTheme.getTextSecondary(context);
 
     final now = DateTime.now();
     final dueDate = todo.dueDate!;
     final difference = dueDate.difference(now).inDays;
 
     if (difference < 0) {
-      return const Color(0xFFEF4444); // Red - overdue
+      return AppTheme.getError(context); // Red - overdue
     } else if (difference == 0) {
-      return const Color(0xFFF59E0B); // Amber - due today
+      return AppTheme.getWarning(context); // Amber - due today
     } else if (difference <= 3) {
       return const Color(0xFF8B5CF6); // Purple - due soon
     } else {
-      return const Color(0xFF6B7280); // Gray - future
+      return AppTheme.getTextSecondary(context); // Gray - future
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
+  // Light Theme Colors
   static const Color primary = Color(0xFF6366F1);
   static const Color background = Color(0xFFF8F9FE);
   static const Color surface = Colors.white;
@@ -11,74 +12,159 @@ class AppTheme {
   static const Color error = Color(0xFFEF4444);
   static const Color purple = Color(0xFF8B5CF6);
 
-  // Text Styles
-  static const TextStyle heading1 = TextStyle(
+  // Dark Theme Colors - Enhanced for better contrast
+  static const Color darkPrimary = Color(0xFF6366F1);
+  static const Color darkBackground = Color(0xFF0F172A);
+  static const Color darkSurface = Color(0xFF1E293B);
+  static const Color darkSurfaceVariant = Color(0xFF334155);
+  static const Color darkTextPrimary = Color(0xFFF8FAFC); // Brighter white
+  static const Color darkTextSecondary = Color(
+    0xFFCBD5E1,
+  ); // Brighter secondary
+  static const Color darkTextTertiary = Color(0xFF94A3B8); // Dimmer tertiary
+  static const Color darkSuccess = Color(0xFF22C55E); // Brighter green
+  static const Color darkWarning = Color(0xFFF59E0B);
+  static const Color darkError = Color(0xFFEF4444);
+  static const Color darkPurple = Color(0xFF8B5CF6);
+  static const Color darkBorder = Color(0xFF475569);
+  static const Color darkBorderInput = Color(
+    0xFF64748B,
+  ); // Brighter input borders
+  static const Color darkHint = Color(0xFF94A3B8); // Better hint color
+
+  // Context-aware color getters
+  static Color getBackground(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkBackground
+        : background;
+  }
+
+  static Color getSurface(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkSurface
+        : surface;
+  }
+
+  static Color getSurfaceVariant(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkSurfaceVariant
+        : const Color(0xFFF3F4F6);
+  }
+
+  static Color getTextPrimary(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkTextPrimary
+        : textPrimary;
+  }
+
+  static Color getTextSecondary(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkTextSecondary
+        : textSecondary;
+  }
+
+  static Color getBorder(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkBorder
+        : const Color(0xFFE5E7EB);
+  }
+
+  static Color getBorderInput(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkBorderInput
+        : const Color(0xFFD1D5DB);
+  }
+
+  static Color getTextTertiary(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkTextTertiary
+        : const Color(0xFF9CA3AF);
+  }
+
+  static Color getHint(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkHint
+        : const Color(0xFF9CA3AF);
+  }
+
+  static Color getSuccess(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkSuccess
+        : success;
+  }
+
+  static Color getWarning(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkWarning
+        : warning;
+  }
+
+  static Color getError(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark ? darkError : error;
+  }
+
+  // Text Styles - Context-aware
+  static TextStyle heading1(BuildContext context) => TextStyle(
     fontSize: 32,
     fontWeight: FontWeight.bold,
-    color: textPrimary,
+    color: getTextPrimary(context),
   );
 
-  static const TextStyle heading2 = TextStyle(
+  static TextStyle heading2(BuildContext context) => TextStyle(
     fontSize: 28,
     fontWeight: FontWeight.bold,
-    color: textPrimary,
+    color: getTextPrimary(context),
   );
 
-  static const TextStyle heading3 = TextStyle(
+  static TextStyle heading3(BuildContext context) => TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
-    color: textPrimary,
+    color: getTextPrimary(context),
   );
 
-  static const TextStyle heading4 = TextStyle(
+  static TextStyle heading4(BuildContext context) => TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.bold,
-    color: textPrimary,
+    color: getTextPrimary(context),
   );
 
-  static const TextStyle heading5 = TextStyle(
+  static TextStyle heading5(BuildContext context) => TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.bold,
-    color: textPrimary,
+    color: getTextPrimary(context),
   );
 
-  static const TextStyle heading6 = TextStyle(
+  static TextStyle heading6(BuildContext context) => TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w600,
-    color: textPrimary,
+    color: getTextPrimary(context),
   );
 
-  static const TextStyle bodyLarge = TextStyle(
-    fontSize: 16,
-    color: textPrimary,
-  );
+  static TextStyle bodyLarge(BuildContext context) =>
+      TextStyle(fontSize: 16, color: getTextPrimary(context));
 
-  static const TextStyle bodyMedium = TextStyle(
-    fontSize: 14,
-    color: textPrimary,
-  );
+  static TextStyle bodyMedium(BuildContext context) =>
+      TextStyle(fontSize: 14, color: getTextPrimary(context));
 
-  static const TextStyle bodySmall = TextStyle(
-    fontSize: 12,
-    color: textSecondary,
-  );
+  static TextStyle bodySmall(BuildContext context) =>
+      TextStyle(fontSize: 12, color: getTextSecondary(context));
 
-  static const TextStyle labelLarge = TextStyle(
+  static TextStyle labelLarge(BuildContext context) => TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w600,
-    color: textPrimary,
+    color: getTextPrimary(context),
   );
 
-  static const TextStyle labelMedium = TextStyle(
+  static TextStyle labelMedium(BuildContext context) => TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w600,
-    color: textPrimary,
+    color: getTextPrimary(context),
   );
 
-  static const TextStyle labelSmall = TextStyle(
+  static TextStyle labelSmall(BuildContext context) => TextStyle(
     fontSize: 10,
     fontWeight: FontWeight.w600,
-    color: textPrimary,
+    color: getTextPrimary(context),
   );
 
   // Button Styles

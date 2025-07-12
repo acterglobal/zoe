@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../common/providers/app_state_provider.dart';
 import '../common/models/page.dart';
 import '../common/models/content_block.dart';
+import '../common/theme/app_theme.dart';
 import '../widgets/content_block_widget.dart';
 
 class PageDetailScreen extends StatefulWidget {
@@ -41,12 +42,15 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Pure white paper background
+      backgroundColor: AppTheme.getSurface(context),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.getSurface(context),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, color: Color(0xFF374151)),
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: AppTheme.getTextPrimary(context),
+          ),
           onPressed: () {
             _autoSavePage();
             Navigator.of(context).pop();
@@ -54,7 +58,10 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
         ),
         actions: [
           PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert_rounded, color: Color(0xFF374151)),
+            icon: Icon(
+              Icons.more_vert_rounded,
+              color: AppTheme.getTextPrimary(context),
+            ),
             onSelected: (value) {
               switch (value) {
                 case 'delete':
@@ -165,17 +172,17 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
             Expanded(
               child: TextField(
                 controller: _titleController,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF111827),
+                  color: AppTheme.getTextPrimary(context),
                   height: 1.2,
                 ),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Untitled',
                   hintStyle: TextStyle(
-                    color: Color(0xFF9CA3AF),
+                    color: AppTheme.getTextSecondary(context),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -196,15 +203,17 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
         // Description
         TextField(
           controller: _descriptionController,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
-            color: Color(0xFF6B7280),
+            color: AppTheme.getTextSecondary(context),
             height: 1.5,
           ),
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             border: InputBorder.none,
             hintText: 'Add a description...',
-            hintStyle: TextStyle(color: Color(0xFFD1D5DB)),
+            hintStyle: TextStyle(
+              color: AppTheme.getTextSecondary(context).withOpacity(0.6),
+            ),
           ),
           maxLines: null,
           onChanged: (value) {
@@ -276,14 +285,14 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                 Icon(
                   _showAddMenu ? Icons.close : Icons.add,
                   size: 20,
-                  color: const Color(0xFF9CA3AF),
+                  color: AppTheme.getTextSecondary(context),
                 ),
                 const SizedBox(width: 8),
                 Text(
                   _showAddMenu ? 'Cancel' : 'Add a block',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: Color(0xFF9CA3AF),
+                    color: AppTheme.getTextSecondary(context),
                   ),
                 ),
               ],
@@ -297,9 +306,9 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
             margin: const EdgeInsets.only(top: 8),
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFFFBFBFB),
+              color: AppTheme.getSurface(context),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: const Color(0xFFE5E7EB)),
+              border: Border.all(color: AppTheme.getBorder(context)),
             ),
             child: Column(
               children: [
@@ -493,7 +502,7 @@ class _AddBlockOption extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
-            Icon(icon, size: 18, color: const Color(0xFF6B7280)),
+            Icon(icon, size: 18, color: AppTheme.getTextSecondary(context)),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -501,18 +510,18 @@ class _AddBlockOption extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF374151),
+                      color: AppTheme.getTextPrimary(context),
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     description,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: Color(0xFF9CA3AF),
+                      color: AppTheme.getTextSecondary(context),
                     ),
                   ),
                 ],

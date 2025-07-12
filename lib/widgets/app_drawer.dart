@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../common/providers/app_state_provider.dart';
+import '../common/theme/app_theme.dart';
 import '../screens/page_detail_screen.dart';
+import '../screens/settings_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -9,7 +11,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.getSurface(context),
       child: SafeArea(
         child: Column(
           children: [
@@ -90,7 +92,7 @@ class AppDrawer extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: const Color(0xFF1F2937),
+                                color: AppTheme.getTextPrimary(context),
                               ),
                             ),
                             const Spacer(),
@@ -135,7 +137,7 @@ class AppDrawer extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF1F2937),
+                                  color: AppTheme.getTextPrimary(context),
                                 ),
                               ),
                               subtitle: page.description.isNotEmpty
@@ -143,7 +145,9 @@ class AppDrawer extends StatelessWidget {
                                       page.description,
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: const Color(0xFF6B7280),
+                                        color: AppTheme.getTextSecondary(
+                                          context,
+                                        ),
                                       ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
@@ -172,9 +176,7 @@ class AppDrawer extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 border: Border(
-                  top: BorderSide(
-                    color: const Color(0xFF6B7280).withOpacity(0.2),
-                  ),
+                  top: BorderSide(color: AppTheme.getBorder(context)),
                 ),
               ),
               child: Column(
@@ -186,11 +188,15 @@ class AppDrawer extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0xFF1F2937),
+                        color: AppTheme.getTextPrimary(context),
                       ),
                     ),
                     onTap: () {
-                      // TODO: Navigate to settings
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsScreen(),
+                        ),
+                      );
                     },
                   ),
                   ListTile(
@@ -200,7 +206,7 @@ class AppDrawer extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0xFF1F2937),
+                        color: AppTheme.getTextPrimary(context),
                       ),
                     ),
                     onTap: () {

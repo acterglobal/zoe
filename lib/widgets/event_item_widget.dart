@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../common/models/content_block.dart';
+import '../common/theme/app_theme.dart';
 
 class EventItemWidget extends StatelessWidget {
   final EventItem event;
@@ -15,11 +16,13 @@ class EventItemWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.getSurface(context),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withOpacity(
+                Theme.of(context).brightness == Brightness.dark ? 0.3 : 0.05,
+              ),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -48,7 +51,7 @@ class EventItemWidget extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF1F2937),
+                      color: AppTheme.getTextPrimary(context),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -57,14 +60,14 @@ class EventItemWidget extends StatelessWidget {
                       Icon(
                         Icons.schedule_rounded,
                         size: 12,
-                        color: const Color(0xFF6B7280),
+                        color: AppTheme.getTextSecondary(context),
                       ),
                       const SizedBox(width: 4),
                       Text(
                         _formatEventTime(),
                         style: TextStyle(
                           fontSize: 12,
-                          color: const Color(0xFF6B7280),
+                          color: AppTheme.getTextSecondary(context),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -77,7 +80,7 @@ class EventItemWidget extends StatelessWidget {
                       event.description!,
                       style: TextStyle(
                         fontSize: 12,
-                        color: const Color(0xFF6B7280),
+                        color: AppTheme.getTextSecondary(context),
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -117,7 +120,7 @@ class EventItemWidget extends StatelessWidget {
     if (now.isAfter(eventEnd)) {
       return const Color(0xFF6B7280); // Gray - past
     } else if (now.isAfter(eventStart) && now.isBefore(eventEnd)) {
-      return const Color(0xFF10B981); // Green - ongoing
+      return const Color(0xFF22C55E); // Green - ongoing (brighter)
     } else if (eventStart.difference(now).inHours <= 1) {
       return const Color(0xFFEF4444); // Red - starting soon
     } else if (eventStart.difference(now).inHours <= 24) {

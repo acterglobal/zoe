@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../common/models/content_block.dart';
+import '../common/theme/app_theme.dart';
 
 class TaskEditorBottomSheet extends StatefulWidget {
   final TodoItem task;
@@ -78,9 +79,9 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
       children: [
         Container(
           height: screenHeight * 0.9,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: AppTheme.getSurface(context),
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
@@ -93,7 +94,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                 height: 4,
                 margin: const EdgeInsets.only(top: 12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE5E7EB),
+                  color: AppTheme.getBorder(context),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -103,19 +104,19 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                 padding: const EdgeInsets.all(20),
                 child: Row(
                   children: [
-                    const Text(
+                    Text(
                       'Edit Task',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF374151),
+                        color: AppTheme.getTextPrimary(context),
                       ),
                     ),
                     const Spacer(),
                     IconButton(
                       onPressed: () => Navigator.of(context).pop(),
                       icon: const Icon(Icons.close),
-                      color: const Color(0xFF9CA3AF),
+                      color: AppTheme.getTextSecondary(context),
                     ),
                   ],
                 ),
@@ -138,7 +139,10 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                       TextField(
                         controller: _titleController,
                         decoration: _buildInputDecoration('Enter task title'),
-                        style: const TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppTheme.getTextPrimary(context),
+                        ),
                       ),
                       const SizedBox(height: 20),
 
@@ -151,7 +155,10 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                           'Add a description...',
                         ),
                         maxLines: 3,
-                        style: const TextStyle(fontSize: 14),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppTheme.getTextPrimary(context),
+                        ),
                       ),
                       const SizedBox(height: 20),
 
@@ -194,10 +201,10 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w600,
-        color: Color(0xFF374151),
+        color: AppTheme.getTextPrimary(context),
       ),
     );
   }
@@ -205,10 +212,10 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
   InputDecoration _buildInputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
+      hintStyle: TextStyle(color: AppTheme.getHint(context)),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+        borderSide: BorderSide(color: AppTheme.getBorderInput(context)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
@@ -235,7 +242,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
               border: Border.all(
                 color: isSelected
                     ? _getPriorityColor(priority)
-                    : const Color(0xFFE5E7EB),
+                    : AppTheme.getBorder(context),
               ),
               borderRadius: BorderRadius.circular(6),
             ),
@@ -258,7 +265,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                     color: isSelected
                         ? _getPriorityColor(priority)
-                        : const Color(0xFF6B7280),
+                        : AppTheme.getTextSecondary(context),
                   ),
                 ),
               ],
@@ -283,15 +290,15 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                     vertical: 12,
                   ),
                   decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xFFE5E7EB)),
+                    border: Border.all(color: AppTheme.getBorderInput(context)),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.calendar_today,
                         size: 16,
-                        color: Color(0xFF6B7280),
+                        color: AppTheme.getTextSecondary(context),
                       ),
                       const SizedBox(width: 8),
                       Expanded(
@@ -304,8 +311,8 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                           style: TextStyle(
                             fontSize: 14,
                             color: _selectedDueDate != null
-                                ? const Color(0xFF374151)
-                                : const Color(0xFF9CA3AF),
+                                ? AppTheme.getTextPrimary(context)
+                                : AppTheme.getHint(context),
                           ),
                         ),
                       ),
@@ -322,7 +329,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                   _selectedTime = null;
                 }),
                 icon: const Icon(Icons.clear, size: 16),
-                color: const Color(0xFF9CA3AF),
+                color: AppTheme.getTextTertiary(context),
               ),
             ],
           ],
@@ -334,15 +341,15 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFE5E7EB)),
+                border: Border.all(color: AppTheme.getBorderInput(context)),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.access_time,
                     size: 16,
-                    color: Color(0xFF6B7280),
+                    color: AppTheme.getTextSecondary(context),
                   ),
                   const SizedBox(width: 8),
                   Text(
@@ -352,8 +359,8 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                     style: TextStyle(
                       fontSize: 14,
                       color: _selectedTime != null
-                          ? const Color(0xFF374151)
-                          : const Color(0xFF9CA3AF),
+                          ? AppTheme.getTextPrimary(context)
+                          : AppTheme.getHint(context),
                     ),
                   ),
                 ],
@@ -377,6 +384,10 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                 controller: _assigneeController,
                 decoration: _buildInputDecoration('Enter assignee name'),
                 onSubmitted: _addAssignee,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppTheme.getTextPrimary(context),
+                ),
               ),
             ),
             const SizedBox(width: 8),
@@ -397,32 +408,32 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF3F4F6),
+                  color: AppTheme.getSurfaceVariant(context),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.person,
                       size: 12,
-                      color: Color(0xFF6B7280),
+                      color: AppTheme.getTextSecondary(context),
                     ),
                     const SizedBox(width: 4),
                     Text(
                       assignee,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: Color(0xFF6B7280),
+                        color: AppTheme.getTextSecondary(context),
                       ),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () => _removeAssignee(assignee),
-                      child: const Icon(
+                      child: Icon(
                         Icons.close,
                         size: 12,
-                        color: Color(0xFF9CA3AF),
+                        color: AppTheme.getTextTertiary(context),
                       ),
                     ),
                   ],
@@ -446,6 +457,10 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                 controller: _tagController,
                 decoration: _buildInputDecoration('Enter tag name'),
                 onSubmitted: _addTag,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppTheme.getTextPrimary(context),
+                ),
               ),
             ),
             const SizedBox(width: 8),
@@ -466,7 +481,9 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEDE9FE),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? const Color(0xFF3B3B7A) // Dark purple for dark mode
+                      : const Color(0xFFEDE9FE), // Light purple for light mode
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Row(
@@ -474,18 +491,24 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                   children: [
                     Text(
                       '#$tag',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: Color(0xFF7C3AED),
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? const Color(
+                                0xFFB8A9FF,
+                              ) // Light purple text for dark mode
+                            : const Color(
+                                0xFF7C3AED,
+                              ), // Dark purple text for light mode
                       ),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () => _removeTag(tag),
-                      child: const Icon(
+                      child: Icon(
                         Icons.close,
                         size: 12,
-                        color: Color(0xFF9CA3AF),
+                        color: AppTheme.getTextTertiary(context),
                       ),
                     ),
                   ],

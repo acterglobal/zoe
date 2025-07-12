@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../common/providers/app_state_provider.dart';
+import '../common/theme/app_theme.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/todo_item_widget.dart';
 import '../widgets/event_item_widget.dart';
@@ -22,25 +23,28 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: const Color(0xFFF8F9FE),
+      backgroundColor: AppTheme.getBackground(context),
       drawer: const AppDrawer(),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
             // App Bar
             SliverAppBar(
-              backgroundColor: const Color(0xFFF8F9FE),
+              backgroundColor: AppTheme.getBackground(context),
               elevation: 0,
               floating: true,
               leading: IconButton(
-                icon: const Icon(Icons.menu_rounded, color: Color(0xFF1F2937)),
+                icon: Icon(
+                  Icons.menu_rounded,
+                  color: AppTheme.getTextPrimary(context),
+                ),
                 onPressed: () => _scaffoldKey.currentState?.openDrawer(),
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.search_rounded,
-                    color: Color(0xFF1F2937),
+                    color: AppTheme.getTextPrimary(context),
                   ),
                   onPressed: () {
                     // TODO: Implement search
@@ -137,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '$greeting, ${appState.userName}!',
+                          '$greeting!',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -191,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1F2937),
+                        color: AppTheme.getTextPrimary(context),
                       ),
                     ),
                     const Spacer(),
@@ -244,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: const Color(0xFF1F2937),
+                            color: AppTheme.getTextPrimary(context),
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -252,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           'No tasks for today. Time to relax!',
                           style: TextStyle(
                             fontSize: 14,
-                            color: const Color(0xFF6B7280),
+                            color: AppTheme.getTextSecondary(context),
                           ),
                         ),
                       ],
@@ -305,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F2937),
+                    color: AppTheme.getTextPrimary(context),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -341,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F2937),
+                    color: AppTheme.getTextPrimary(context),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -385,7 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF1F2937),
+                color: AppTheme.getTextPrimary(context),
               ),
             ),
             const SizedBox(height: 16),
@@ -457,11 +461,13 @@ class _QuickActionCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.getSurface(context),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withOpacity(
+                Theme.of(context).brightness == Brightness.dark ? 0.3 : 0.05,
+              ),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -484,7 +490,7 @@ class _QuickActionCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFF1F2937),
+                color: AppTheme.getTextPrimary(context),
               ),
             ),
           ],

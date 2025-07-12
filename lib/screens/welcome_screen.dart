@@ -16,7 +16,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FE),
+      backgroundColor: AppTheme.getBackground(context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -55,7 +55,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     const SizedBox(height: 48),
 
                     // Welcome text
-                    Text('Welcome to Zoe', style: AppTheme.heading1)
+                    Text('Welcome to Zoe', style: AppTheme.heading1(context))
                         .animate()
                         .fadeIn(delay: 400.ms, duration: 600.ms)
                         .slideY(begin: 0.3, end: 0),
@@ -66,8 +66,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     Text(
                           'Your personal workspace for organizing thoughts, tasks, and ideas with beautiful simplicity.',
                           textAlign: TextAlign.center,
-                          style: AppTheme.bodyLarge.copyWith(
-                            color: AppTheme.textSecondary,
+                          style: AppTheme.bodyLarge(context).copyWith(
+                            color: AppTheme.getTextSecondary(context),
                             height: 1.5,
                           ),
                         )
@@ -135,9 +135,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         children: [
                           Text(
                             'Let\'s get started',
-                            style: AppTheme.labelLarge.copyWith(
-                              color: Colors.white,
-                            ),
+                            style: AppTheme.labelLarge(
+                              context,
+                            ).copyWith(color: Colors.white),
                           ),
                           const SizedBox(width: 8),
                           const Icon(Icons.arrow_forward_rounded, size: 20),
@@ -203,11 +203,13 @@ class _FeatureCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.getSurface(context),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(
+              Theme.of(context).brightness == Brightness.dark ? 0.3 : 0.05,
+            ),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -225,12 +227,12 @@ class _FeatureCard extends StatelessWidget {
             child: Icon(icon, size: 24, color: color),
           ),
           const SizedBox(height: 12),
-          Text(title, style: AppTheme.labelLarge),
+          Text(title, style: AppTheme.labelLarge(context)),
           const SizedBox(height: 4),
           Text(
             description,
             textAlign: TextAlign.center,
-            style: AppTheme.bodySmall.copyWith(height: 1.4),
+            style: AppTheme.bodySmall(context).copyWith(height: 1.4),
           ),
         ],
       ),
