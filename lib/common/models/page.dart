@@ -74,6 +74,14 @@ class ZoePage {
     }
   }
 
+  void reorderContentBlocks(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+    final ContentBlock item = contentBlocks.removeAt(oldIndex);
+    contentBlocks.insert(newIndex, item);
+  }
+
   // Get specific types of content blocks
   List<TodoBlock> get todoBlocks => contentBlocks
       .where((block) => block is TodoBlock)

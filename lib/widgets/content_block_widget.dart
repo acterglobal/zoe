@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../common/models/content_block.dart';
+import 'task_editor_dialog.dart';
+import 'event_editor_dialog.dart';
 
 class ContentBlockWidget extends StatefulWidget {
   final ContentBlock block;
+  final int blockIndex;
   final bool isEditing;
   final Function(ContentBlock) onUpdate;
   final VoidCallback onDelete;
@@ -11,6 +14,7 @@ class ContentBlockWidget extends StatefulWidget {
   const ContentBlockWidget({
     super.key,
     required this.block,
+    required this.blockIndex,
     required this.isEditing,
     required this.onUpdate,
     required this.onDelete,
@@ -75,7 +79,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         title = (widget.block as ListBlock).title;
         break;
       case ContentBlockType.text:
-        title = '';
+        title = (widget.block as TextBlock).title;
         break;
     }
     _titleController = TextEditingController(text: title);
@@ -107,7 +111,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         title = (widget.block as ListBlock).title;
         break;
       case ContentBlockType.text:
-        title = '';
+        title = (widget.block as TextBlock).title;
         break;
     }
 
@@ -232,14 +236,17 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 AnimatedOpacity(
                   opacity: (_isHovered || _isMobile) ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 200),
-                  child: Container(
-                    width: 20,
-                    height: 20,
-                    margin: const EdgeInsets.only(right: 8),
-                    child: Icon(
-                      Icons.drag_indicator,
-                      size: 16,
-                      color: const Color(0xFF9CA3AF),
+                  child: ReorderableDragStartListener(
+                    index: _getBlockIndex(),
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      margin: const EdgeInsets.only(right: 8),
+                      child: Icon(
+                        Icons.drag_indicator,
+                        size: 16,
+                        color: const Color(0xFF9CA3AF),
+                      ),
                     ),
                   ),
                 ),
@@ -287,10 +294,6 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   }
 
   Widget _buildBlockTitle() {
-    if (widget.block.type == ContentBlockType.text) {
-      return const SizedBox.shrink(); // Text blocks don't have titles
-    }
-
     return TextField(
       controller: _titleController,
       style: const TextStyle(
@@ -318,6 +321,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
             widget.onUpdate((widget.block as ListBlock).copyWith(title: value));
             break;
           case ContentBlockType.text:
+            widget.onUpdate((widget.block as TextBlock).copyWith(title: value));
             break;
         }
       },
@@ -343,8 +347,8 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
       children: [
         // Todo items
         ...block.items.map((todo) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+          return Container(
+            margin: const EdgeInsets.only(bottom: 12),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -362,9 +366,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                   child: Container(
                     width: 18,
                     height: 18,
-                    margin: const EdgeInsets.only(
-                      top: 3,
-                    ), // Better alignment with text
+                    margin: const EdgeInsets.only(top: 3),
                     decoration: BoxDecoration(
                       color: todo.isCompleted
                           ? const Color(0xFF10B981)
@@ -384,35 +386,177 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 ),
                 const SizedBox(width: 12),
 
-                // Todo text
+                // Todo content
                 Expanded(
-                  child: TextField(
-                    controller: _todoControllers[todo.id],
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: todo.isCompleted
-                          ? const Color(0xFF9CA3AF)
-                          : const Color(0xFF374151),
-                      decoration: todo.isCompleted
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none,
-                      height: 1.4, // Better line height
-                    ),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'To-do',
-                      hintStyle: TextStyle(color: Color(0xFFD1D5DB)),
-                      contentPadding: EdgeInsets.zero,
-                      isDense: true, // Reduce padding
-                    ),
-                    maxLines: null,
-                    onChanged: (value) {
-                      final updatedTodo = todo.copyWith(text: value);
-                      final updatedItems = block.items.map((item) {
-                        return item.id == todo.id ? updatedTodo : item;
-                      }).toList();
-                      widget.onUpdate(block.copyWith(items: updatedItems));
-                    },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Todo title with priority indicator
+                      Row(
+                        children: [
+                          // Priority indicator
+                          Container(
+                            width: 8,
+                            height: 8,
+                            margin: const EdgeInsets.only(right: 8, top: 3),
+                            decoration: BoxDecoration(
+                              color: _getPriorityColor(todo.priority),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: _todoControllers[todo.id],
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: todo.isCompleted
+                                    ? const Color(0xFF9CA3AF)
+                                    : const Color(0xFF374151),
+                                decoration: todo.isCompleted
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none,
+                                height: 1.4,
+                              ),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'To-do',
+                                hintStyle: TextStyle(color: Color(0xFFD1D5DB)),
+                                contentPadding: EdgeInsets.zero,
+                                isDense: true,
+                              ),
+                              maxLines: null,
+                              onChanged: (value) {
+                                final updatedTodo = todo.copyWith(text: value);
+                                final updatedItems = block.items.map((item) {
+                                  return item.id == todo.id
+                                      ? updatedTodo
+                                      : item;
+                                }).toList();
+                                widget.onUpdate(
+                                  block.copyWith(items: updatedItems),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // Description
+                      if (todo.description?.isNotEmpty == true)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4, left: 16),
+                          child: Text(
+                            todo.description!,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF6B7280),
+                              height: 1.3,
+                            ),
+                          ),
+                        ),
+
+                      // Metadata row
+                      if (todo.assignees.isNotEmpty ||
+                          todo.dueDate != null ||
+                          todo.tags.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6, left: 16),
+                          child: Wrap(
+                            spacing: 8,
+                            runSpacing: 4,
+                            children: [
+                              // Assignees
+                              if (todo.assignees.isNotEmpty)
+                                _buildAssigneesChip(todo.assignees),
+
+                              // Due date
+                              if (todo.dueDate != null)
+                                _buildDueDateChip(todo.dueDate!),
+
+                              // Tags
+                              ...todo.tags.map((tag) => _buildTagChip(tag)),
+                            ],
+                          ),
+                        ),
+
+                      // Quick actions row
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8, left: 16),
+                        child: Row(
+                          children: [
+                            // Edit button
+                            GestureDetector(
+                              onTap: () => _editTask(todo, block),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFF3F4F6),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.edit,
+                                      size: 12,
+                                      color: Color(0xFF6B7280),
+                                    ),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      'Edit',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Color(0xFF6B7280),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(width: 8),
+
+                            // Quick due date button
+                            if (todo.dueDate == null)
+                              GestureDetector(
+                                onTap: () => _quickSetDueDate(todo, block),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFF3F4F6),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.schedule,
+                                        size: 12,
+                                        color: Color(0xFF6B7280),
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        'Set Due Date',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: Color(0xFF6B7280),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
@@ -466,7 +610,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         // Event items
         ...block.events.map((event) {
           return Container(
-            margin: const EdgeInsets.only(bottom: 16),
+            margin: const EdgeInsets.only(bottom: 20),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -474,9 +618,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 Container(
                   width: 8,
                   height: 8,
-                  margin: const EdgeInsets.only(
-                    top: 8,
-                  ), // Better alignment with text
+                  margin: const EdgeInsets.only(top: 8),
                   decoration: const BoxDecoration(
                     color: Color(0xFF8B5CF6),
                     shape: BoxShape.circle,
@@ -494,16 +636,16 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                         controller: _eventControllers[event.id],
                         style: const TextStyle(
                           fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           color: Color(0xFF374151),
-                          height: 1.4, // Better line height
+                          height: 1.4,
                         ),
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Event title',
                           hintStyle: TextStyle(color: Color(0xFFD1D5DB)),
                           contentPadding: EdgeInsets.zero,
-                          isDense: true, // Reduce padding
+                          isDense: true,
                         ),
                         onChanged: (value) {
                           final updatedEvent = event.copyWith(title: value);
@@ -516,24 +658,32 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                         },
                       ),
 
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
 
-                      // Event time
-                      Text(
-                        DateFormat(
-                          'MMM dd, yyyy • h:mm a',
-                        ).format(event.startTime),
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF9CA3AF),
-                          height: 1.3,
-                        ),
+                      // Event time range
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.schedule,
+                            size: 12,
+                            color: Color(0xFF9CA3AF),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            _formatEventTime(event),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF9CA3AF),
+                              height: 1.3,
+                            ),
+                          ),
+                        ],
                       ),
 
-                      // Event description (if any)
+                      // Event description
                       if (event.description?.isNotEmpty == true)
                         Padding(
-                          padding: const EdgeInsets.only(top: 4),
+                          padding: const EdgeInsets.only(top: 6),
                           child: Text(
                             event.description!,
                             style: const TextStyle(
@@ -543,6 +693,137 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                             ),
                           ),
                         ),
+
+                      // Location
+                      if (event.location?.physical?.isNotEmpty == true ||
+                          event.location?.virtual?.isNotEmpty == true)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (event.location?.physical?.isNotEmpty == true)
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on,
+                                      size: 12,
+                                      color: Color(0xFF9CA3AF),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Expanded(
+                                      child: Text(
+                                        event.location!.physical!,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF6B7280),
+                                          height: 1.3,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              if (event.location?.virtual?.isNotEmpty == true)
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    top:
+                                        event.location?.physical?.isNotEmpty ==
+                                            true
+                                        ? 4
+                                        : 0,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.videocam,
+                                        size: 12,
+                                        color: Color(0xFF9CA3AF),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Expanded(
+                                        child: Text(
+                                          event.location!.virtual!,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF3B82F6),
+                                            height: 1.3,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+
+                      // RSVP Section
+                      if (event.requiresRSVP && event.rsvpResponses.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'RSVP Responses:',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF6B7280),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Wrap(
+                                spacing: 6,
+                                runSpacing: 4,
+                                children: event.rsvpResponses.map((response) {
+                                  return _buildRSVPChip(response);
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      // Quick actions row for events
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Row(
+                          children: [
+                            // Edit button
+                            GestureDetector(
+                              onTap: () => _editEvent(event, block),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFF3F4F6),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.edit,
+                                      size: 12,
+                                      color: Color(0xFF6B7280),
+                                    ),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      'Edit',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Color(0xFF6B7280),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -716,5 +997,225 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
       case ContentBlockType.text:
         return Icons.text_fields;
     }
+  }
+
+  int _getBlockIndex() {
+    return widget.blockIndex;
+  }
+
+  Color _getPriorityColor(TodoPriority priority) {
+    switch (priority) {
+      case TodoPriority.low:
+        return const Color(0xFF10B981); // Green
+      case TodoPriority.medium:
+        return const Color(0xFF3B82F6); // Blue
+      case TodoPriority.high:
+        return const Color(0xFFF59E0B); // Orange
+      case TodoPriority.urgent:
+        return const Color(0xFFEF4444); // Red
+    }
+  }
+
+  Widget _buildAssigneesChip(List<String> assignees) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF3F4F6),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.person, size: 10, color: Color(0xFF6B7280)),
+          const SizedBox(width: 4),
+          Text(
+            assignees.length == 1
+                ? assignees.first
+                : '${assignees.length} people',
+            style: const TextStyle(fontSize: 10, color: Color(0xFF6B7280)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDueDateChip(DateTime dueDate) {
+    final now = DateTime.now();
+    final isOverdue = dueDate.isBefore(now);
+    final isToday =
+        dueDate.day == now.day &&
+        dueDate.month == now.month &&
+        dueDate.year == now.year;
+
+    Color backgroundColor;
+    Color textColor;
+
+    if (isOverdue) {
+      backgroundColor = const Color(0xFFFEE2E2);
+      textColor = const Color(0xFFEF4444);
+    } else if (isToday) {
+      backgroundColor = const Color(0xFFFEF3C7);
+      textColor = const Color(0xFFF59E0B);
+    } else {
+      backgroundColor = const Color(0xFFF3F4F6);
+      textColor = const Color(0xFF6B7280);
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.schedule, size: 10, color: textColor),
+          const SizedBox(width: 4),
+          Text(
+            _formatDueDate(dueDate),
+            style: TextStyle(fontSize: 10, color: textColor),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTagChip(String tag) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: const Color(0xFFEDE9FE),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        '#$tag',
+        style: const TextStyle(fontSize: 10, color: Color(0xFF7C3AED)),
+      ),
+    );
+  }
+
+  String _formatDueDate(DateTime dueDate) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final tomorrow = today.add(const Duration(days: 1));
+    final dueDay = DateTime(dueDate.year, dueDate.month, dueDate.day);
+
+    if (dueDay == today) {
+      return 'Today';
+    } else if (dueDay == tomorrow) {
+      return 'Tomorrow';
+    } else if (dueDay.isBefore(today)) {
+      return 'Overdue';
+    } else {
+      return DateFormat('MMM dd').format(dueDate);
+    }
+  }
+
+  String _formatEventTime(EventItem event) {
+    final startFormat = DateFormat('MMM dd, yyyy • h:mm a');
+    final endFormat = DateFormat('h:mm a');
+
+    if (event.endTime != null) {
+      final isSameDay =
+          event.startTime.day == event.endTime!.day &&
+          event.startTime.month == event.endTime!.month &&
+          event.startTime.year == event.endTime!.year;
+
+      if (isSameDay) {
+        return '${startFormat.format(event.startTime)} - ${endFormat.format(event.endTime!)}';
+      } else {
+        return '${startFormat.format(event.startTime)} - ${startFormat.format(event.endTime!)}';
+      }
+    } else {
+      return startFormat.format(event.startTime);
+    }
+  }
+
+  Widget _buildRSVPChip(RSVPResponse response) {
+    Color backgroundColor;
+    Color textColor;
+    IconData icon;
+
+    switch (response.status) {
+      case RSVPStatus.yes:
+        backgroundColor = const Color(0xFFDCFCE7);
+        textColor = const Color(0xFF16A34A);
+        icon = Icons.check_circle;
+        break;
+      case RSVPStatus.no:
+        backgroundColor = const Color(0xFFFEE2E2);
+        textColor = const Color(0xFFEF4444);
+        icon = Icons.cancel;
+        break;
+      case RSVPStatus.maybe:
+        backgroundColor = const Color(0xFFFEF3C7);
+        textColor = const Color(0xFFF59E0B);
+        icon = Icons.help_outline;
+        break;
+      case RSVPStatus.pending:
+        backgroundColor = const Color(0xFFF3F4F6);
+        textColor = const Color(0xFF6B7280);
+        icon = Icons.schedule;
+        break;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 10, color: textColor),
+          const SizedBox(width: 4),
+          Text(
+            response.userName,
+            style: TextStyle(
+              fontSize: 10,
+              color: textColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _editTask(TodoItem task, TodoBlock block) {
+    TaskEditorBottomSheet.show(context, task, (updatedTask) {
+      final updatedItems = block.items.map((item) {
+        return item.id == task.id ? updatedTask : item;
+      }).toList();
+      widget.onUpdate(block.copyWith(items: updatedItems));
+    });
+  }
+
+  void _quickSetDueDate(TodoItem task, TodoBlock block) {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    ).then((selectedDate) {
+      if (selectedDate != null) {
+        final updatedTask = task.copyWith(dueDate: selectedDate);
+        final updatedItems = block.items.map((item) {
+          return item.id == task.id ? updatedTask : item;
+        }).toList();
+        widget.onUpdate(block.copyWith(items: updatedItems));
+      }
+    });
+  }
+
+  void _editEvent(EventItem event, EventBlock block) {
+    EventEditorBottomSheet.show(context, event, (updatedEvent) {
+      final updatedEvents = block.events.map((item) {
+        return item.id == event.id ? updatedEvent : item;
+      }).toList();
+      widget.onUpdate(block.copyWith(events: updatedEvents));
+    });
   }
 }

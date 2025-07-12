@@ -225,12 +225,24 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
       return const SizedBox.shrink();
     }
 
-    return Column(
-      children: _currentPage.contentBlocks.map((block) {
+    return ReorderableListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: _currentPage.contentBlocks.length,
+      onReorder: (oldIndex, newIndex) {
+        setState(() {
+          _currentPage.reorderContentBlocks(oldIndex, newIndex);
+        });
+        _autoSavePage();
+      },
+      itemBuilder: (context, index) {
+        final block = _currentPage.contentBlocks[index];
         return Padding(
+          key: ValueKey(block.id),
           padding: const EdgeInsets.only(bottom: 24),
           child: ContentBlockWidget(
             block: block,
+            blockIndex: index,
             isEditing: true, // Always in editing mode
             onUpdate: (updatedBlock) {
               setState(() {
@@ -246,7 +258,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
             },
           ),
         );
-      }).toList(),
+      },
     );
   }
 
@@ -346,7 +358,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
         newBlock = ListBlock(title: 'List', items: ['']);
         break;
       case ContentBlockType.text:
-        newBlock = TextBlock(content: '');
+        newBlock = TextBlock(title: 'Text Block', content: '');
         break;
     }
 

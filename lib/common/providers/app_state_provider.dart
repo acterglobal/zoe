@@ -21,18 +21,48 @@ class AppStateProvider extends ChangeNotifier {
         emoji: '🎉',
         contentBlocks: [
           TextBlock(
+            title: 'Welcome Note',
             content:
                 'Welcome to Zoe! This is your first page. You can add different types of content blocks to organize your thoughts and tasks.',
+          ),
+          ListBlock(
+            title: 'Getting Started Tips',
+            items: [
+              'Click the + button to add new content blocks',
+              'Tap on any text to edit it inline',
+              'Use the emoji picker to customize your pages',
+              'Drag and drop to reorder content blocks',
+              'Set priorities and due dates for tasks',
+              'Add locations and RSVP options to events',
+            ],
           ),
           TodoBlock(
             title: 'Today\'s Tasks',
             items: [
-              TodoItem(text: 'Complete project setup', isCompleted: true),
-              TodoItem(text: 'Review meeting notes', isCompleted: false),
+              TodoItem(
+                text: 'Complete project setup',
+                isCompleted: true,
+                priority: TodoPriority.high,
+                assignees: ['John Doe'],
+                description:
+                    'Set up the initial project structure and dependencies',
+              ),
+              TodoItem(
+                text: 'Review meeting notes',
+                isCompleted: false,
+                priority: TodoPriority.medium,
+                assignees: ['Jane Smith', 'Bob Wilson'],
+                dueDate: DateTime.now().add(const Duration(hours: 6)),
+                tags: ['meeting', 'review'],
+              ),
               TodoItem(
                 text: 'Plan vacation trip',
                 isCompleted: false,
+                priority: TodoPriority.low,
+                assignees: ['Alice Johnson'],
                 dueDate: DateTime.now().add(const Duration(days: 2)),
+                description: 'Research destinations and create itinerary',
+                tags: ['personal', 'travel'],
               ),
             ],
           ),
@@ -41,16 +71,40 @@ class AppStateProvider extends ChangeNotifier {
             events: [
               EventItem(
                 title: 'Team Meeting',
-                description: 'Weekly sync with the team',
+                description:
+                    'Weekly sync with the team to discuss project progress',
                 startTime: DateTime.now().add(const Duration(hours: 2)),
                 endTime: DateTime.now().add(const Duration(hours: 3)),
+                location: EventLocation(
+                  physical: 'Conference Room A',
+                  virtual: 'https://zoom.us/j/123456789',
+                ),
+                requiresRSVP: true,
+                rsvpResponses: [
+                  RSVPResponse(
+                    userId: '1',
+                    userName: 'John Doe',
+                    status: RSVPStatus.yes,
+                  ),
+                  RSVPResponse(
+                    userId: '2',
+                    userName: 'Jane Smith',
+                    status: RSVPStatus.maybe,
+                  ),
+                ],
               ),
               EventItem(
                 title: 'Lunch with Sarah',
+                description:
+                    'Catch up over lunch at the new Italian restaurant',
                 startTime: DateTime.now().add(
                   const Duration(days: 1, hours: 12),
                 ),
                 endTime: DateTime.now().add(const Duration(days: 1, hours: 13)),
+                location: EventLocation(
+                  physical: 'Bella Vista Restaurant, 123 Main St',
+                ),
+                requiresRSVP: false,
               ),
             ],
           ),
@@ -62,6 +116,7 @@ class AppStateProvider extends ChangeNotifier {
         emoji: '🏖️',
         contentBlocks: [
           TextBlock(
+            title: 'Trip Overview',
             content:
                 'Planning an amazing vacation to explore new places and create wonderful memories.',
           ),
@@ -77,10 +132,88 @@ class AppStateProvider extends ChangeNotifier {
           TodoBlock(
             title: 'Trip Planning Checklist',
             items: [
-              TodoItem(text: 'Research destinations', isCompleted: true),
-              TodoItem(text: 'Book flights', isCompleted: false),
-              TodoItem(text: 'Reserve accommodations', isCompleted: false),
-              TodoItem(text: 'Plan activities', isCompleted: false),
+              TodoItem(
+                text: 'Research destinations',
+                isCompleted: true,
+                priority: TodoPriority.high,
+                assignees: ['Travel Agent'],
+                description:
+                    'Compare different vacation destinations and their attractions',
+                tags: ['research', 'travel'],
+              ),
+              TodoItem(
+                text: 'Book flights',
+                isCompleted: false,
+                priority: TodoPriority.urgent,
+                assignees: ['Self'],
+                dueDate: DateTime.now().add(const Duration(days: 3)),
+                description: 'Find and book the best flight deals',
+                tags: ['booking', 'urgent'],
+              ),
+              TodoItem(
+                text: 'Reserve accommodations',
+                isCompleted: false,
+                priority: TodoPriority.high,
+                assignees: ['Self'],
+                dueDate: DateTime.now().add(const Duration(days: 5)),
+                description: 'Book hotel or vacation rental',
+                tags: ['booking', 'accommodation'],
+              ),
+              TodoItem(
+                text: 'Plan activities',
+                isCompleted: false,
+                priority: TodoPriority.medium,
+                assignees: ['Self', 'Travel Companion'],
+                dueDate: DateTime.now().add(const Duration(days: 7)),
+                description: 'Create itinerary for daily activities and tours',
+                tags: ['planning', 'activities'],
+              ),
+            ],
+          ),
+          EventBlock(
+            title: 'Travel Schedule',
+            events: [
+              EventItem(
+                title: 'Flight Departure',
+                description: 'Departure from home airport to destination',
+                startTime: DateTime.now().add(
+                  const Duration(days: 14, hours: 8),
+                ),
+                endTime: DateTime.now().add(
+                  const Duration(days: 14, hours: 14),
+                ),
+                location: EventLocation(
+                  physical: 'International Airport Terminal 2',
+                  virtual: 'Flight Tracker: AA1234',
+                ),
+                requiresRSVP: false,
+              ),
+              EventItem(
+                title: 'Welcome Dinner',
+                description: 'Group dinner at the resort restaurant',
+                startTime: DateTime.now().add(
+                  const Duration(days: 14, hours: 19),
+                ),
+                endTime: DateTime.now().add(
+                  const Duration(days: 14, hours: 21),
+                ),
+                location: EventLocation(
+                  physical: 'Sunset Terrace Restaurant, Ocean View Resort',
+                ),
+                requiresRSVP: true,
+                rsvpResponses: [
+                  RSVPResponse(
+                    userId: '1',
+                    userName: 'Travel Companion',
+                    status: RSVPStatus.yes,
+                  ),
+                  RSVPResponse(
+                    userId: '2',
+                    userName: 'Self',
+                    status: RSVPStatus.yes,
+                  ),
+                ],
+              ),
             ],
           ),
         ],
