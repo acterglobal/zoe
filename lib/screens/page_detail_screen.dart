@@ -80,24 +80,20 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                   ],
                 ),
               ),
-              if (widget.page != null)
-                const PopupMenuItem(
-                  value: 'delete',
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.delete_rounded,
-                        size: 16,
-                        color: Color(0xFFEF4444),
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        'Delete',
-                        style: TextStyle(color: Color(0xFFEF4444)),
-                      ),
-                    ],
-                  ),
+              const PopupMenuItem(
+                value: 'delete',
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.delete_rounded,
+                      size: 16,
+                      color: Color(0xFFEF4444),
+                    ),
+                    SizedBox(width: 8),
+                    Text('Delete', style: TextStyle(color: Color(0xFFEF4444))),
+                  ],
                 ),
+              ),
             ],
           ),
         ],
@@ -418,14 +414,14 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
   }
 
   void _deletePage() {
-    if (widget.page == null) return;
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Page'),
-        content: const Text(
-          'Are you sure you want to delete this page? This action cannot be undone.',
+        title: Text(widget.page == null ? 'Discard Page' : 'Delete Page'),
+        content: Text(
+          widget.page == null
+              ? 'Are you sure you want to discard this page? Any unsaved changes will be lost.'
+              : 'Are you sure you want to delete this page? This action cannot be undone.',
         ),
         actions: [
           TextButton(
@@ -434,17 +430,21 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
           ),
           TextButton(
             onPressed: () {
-              final appState = Provider.of<AppStateProvider>(
-                context,
-                listen: false,
-              );
-              appState.deletePage(widget.page!.id);
+              if (widget.page != null) {
+                // Delete existing page
+                final appState = Provider.of<AppStateProvider>(
+                  context,
+                  listen: false,
+                );
+                appState.deletePage(widget.page!.id);
+              }
+              // For both new and existing pages, close dialog and page
               Navigator.of(context).pop(); // Close dialog
               Navigator.of(context).pop(); // Close page
             },
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: Color(0xFFEF4444)),
+            child: Text(
+              widget.page == null ? 'Discard' : 'Delete',
+              style: const TextStyle(color: Color(0xFFEF4444)),
             ),
           ),
         ],
