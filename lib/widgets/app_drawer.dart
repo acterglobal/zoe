@@ -99,6 +99,7 @@ class AppDrawer extends StatelessWidget {
                             IconButton(
                               icon: const Icon(Icons.add_rounded, size: 20),
                               onPressed: () {
+                                Navigator.of(context).pop(); // Close drawer
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
@@ -154,6 +155,7 @@ class AppDrawer extends StatelessWidget {
                                     )
                                   : null,
                               onTap: () {
+                                Navigator.of(context).pop(); // Close drawer
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
@@ -192,6 +194,7 @@ class AppDrawer extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
+                      Navigator.of(context).pop(); // Close drawer
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const SettingsScreen(),
@@ -210,6 +213,7 @@ class AppDrawer extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
+                      Navigator.of(context).pop(); // Close drawer
                       // TODO: Navigate to profile
                     },
                   ),

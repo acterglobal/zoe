@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
+import '../common/models/page.dart';
+import '../common/models/content_block.dart';
 import '../common/providers/app_state_provider.dart';
 import '../common/theme/app_theme.dart';
 import '../widgets/app_drawer.dart';
-import '../widgets/todo_item_widget.dart';
-import '../widgets/event_item_widget.dart';
-import 'page_detail_screen.dart';
+import '../screens/page_detail_screen.dart';
+import '../screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,478 +16,717 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
+    final appStateProvider = Provider.of<AppStateProvider>(context);
+
     return Scaffold(
-      key: _scaffoldKey,
       backgroundColor: AppTheme.getBackground(context),
-      drawer: const AppDrawer(),
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // App Bar
-            SliverAppBar(
-              backgroundColor: AppTheme.getBackground(context),
-              elevation: 0,
-              floating: true,
-              leading: IconButton(
-                icon: Icon(
-                  Icons.menu_rounded,
-                  color: AppTheme.getTextPrimary(context),
-                ),
-                onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-              ),
-              actions: [
-                IconButton(
-                  icon: Icon(
-                    Icons.search_rounded,
-                    color: AppTheme.getTextPrimary(context),
-                  ),
-                  onPressed: () {
-                    // TODO: Implement search
-                  },
-                ),
-                const SizedBox(width: 8),
-              ],
-            ),
-
-            // Content
-            SliverPadding(
-              padding: const EdgeInsets.all(24),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate([
-                  // Greeting Section
-                  _buildGreetingSection(),
-                  const SizedBox(height: 32),
-
-                  // Today's Tasks Section
-                  _buildTodaysTasksSection(),
-                  const SizedBox(height: 24),
-
-                  // Today's Events Section
-                  _buildTodaysEventsSection(),
-                  const SizedBox(height: 24),
-
-                  // Upcoming Events Section
-                  _buildUpcomingEventsSection(),
-                  const SizedBox(height: 24),
-
-                  // Quick Actions Section
-                  _buildQuickActionsSection(),
-                  const SizedBox(height: 100), // Bottom padding
-                ]),
-              ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _createNewPage(context),
-        backgroundColor: const Color(0xFF6366F1),
-        foregroundColor: Colors.white,
-        elevation: 4,
-        child: const Icon(Icons.add_rounded, size: 28),
-      ),
-    );
-  }
-
-  Widget _buildGreetingSection() {
-    return Consumer<AppStateProvider>(
-      builder: (context, appState, child) {
-        final hour = DateTime.now().hour;
-        String greeting;
-        String emoji;
-
-        if (hour < 12) {
-          greeting = 'Good morning';
-          emoji = '🌅';
-        } else if (hour < 17) {
-          greeting = 'Good afternoon';
-          emoji = '☀️';
-        } else {
-          greeting = 'Good evening';
-          emoji = '🌙';
-        }
-
-        return Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF6366F1).withOpacity(0.3),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
-              ),
-            ],
-          ),
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(emoji, style: TextStyle(fontSize: 32)),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '$greeting!',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          DateFormat('EEEE, MMMM d').format(DateTime.now()),
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Ready to be productive?',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white.withOpacity(0.9),
-                ),
-              ),
+              // Header with app name and menu
+              _buildHeader(context),
+
+              // Greeting section
+              _buildGreetingSection(context),
+
+              const SizedBox(height: 24),
+
+              // Quick stats cards
+              _buildQuickStats(context, appStateProvider),
+
+              // Today's priority section
+              _buildTodaySection(context, appStateProvider),
+
+              // Recent pages section
+              _buildRecentPages(context, appStateProvider),
+
+              // Quick actions
+              _buildQuickActions(context),
+
+              const SizedBox(height: 24),
             ],
           ),
-        ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.3, end: 0);
-      },
+        ),
+      ),
+      drawer: const AppDrawer(),
     );
   }
 
-  Widget _buildTodaysTasksSection() {
-    return Consumer<AppStateProvider>(
-      builder: (context, appState, child) {
-        final todaysTodos = appState.getTodaysTodos();
-        final completedCount = todaysTodos
-            .where((todo) => todo.isCompleted)
-            .length;
-        final totalCount = todaysTodos.length;
-
-        return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'Today\'s Tasks',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.getTextPrimary(context),
-                      ),
-                    ),
-                    const Spacer(),
-                    if (totalCount > 0)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF10B981).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          '$completedCount/$totalCount',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xFF10B981),
-                          ),
-                        ),
-                      ),
-                  ],
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: Row(
+        children: [
+          Builder(
+            builder: (context) => GestureDetector(
+              onTap: () => Scaffold.of(context).openDrawer(),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppTheme.getSurface(context),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppTheme.getBorder(context)),
                 ),
-                const SizedBox(height: 16),
-                if (todaysTodos.isEmpty)
-                  Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.check_circle_outline_rounded,
-                          size: 48,
-                          color: const Color(0xFF10B981).withOpacity(0.7),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          'All caught up!',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.getTextPrimary(context),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'No tasks for today. Time to relax!',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppTheme.getTextSecondary(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                else
-                  Column(
-                    children: todaysTodos.take(3).map((todo) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: TodoItemWidget(todo: todo),
-                      );
-                    }).toList(),
-                  ),
-                if (todaysTodos.length > 3)
-                  TextButton(
-                    onPressed: () {
-                      // TODO: Navigate to all tasks view
-                    },
-                    child: Text(
-                      'View all ${todaysTodos.length} tasks',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF6366F1),
-                      ),
-                    ),
-                  ),
-              ],
-            )
-            .animate()
-            .fadeIn(delay: 200.ms, duration: 600.ms)
-            .slideY(begin: 0.3, end: 0);
-      },
-    );
-  }
-
-  Widget _buildTodaysEventsSection() {
-    return Consumer<AppStateProvider>(
-      builder: (context, appState, child) {
-        final todaysEvents = appState.getTodaysEvents();
-
-        if (todaysEvents.isEmpty) return const SizedBox.shrink();
-
-        return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Today\'s Events',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.getTextPrimary(context),
-                  ),
+                child: Icon(
+                  Icons.menu_rounded,
+                  color: AppTheme.getTextSecondary(context),
+                  size: 20,
                 ),
-                const SizedBox(height: 16),
-                Column(
-                  children: todaysEvents.map((event) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: EventItemWidget(event: event),
-                    );
-                  }).toList(),
-                ),
-              ],
-            )
-            .animate()
-            .fadeIn(delay: 400.ms, duration: 600.ms)
-            .slideY(begin: 0.3, end: 0);
-      },
-    );
-  }
-
-  Widget _buildUpcomingEventsSection() {
-    return Consumer<AppStateProvider>(
-      builder: (context, appState, child) {
-        final upcomingEvents = appState.getUpcomingEvents();
-
-        if (upcomingEvents.isEmpty) return const SizedBox.shrink();
-
-        return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'This Week',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.getTextPrimary(context),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Column(
-                  children: upcomingEvents.take(3).map((event) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: EventItemWidget(event: event),
-                    );
-                  }).toList(),
-                ),
-                if (upcomingEvents.length > 3)
-                  TextButton(
-                    onPressed: () {
-                      // TODO: Navigate to all events view
-                    },
-                    child: Text(
-                      'View all upcoming events',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF6366F1),
-                      ),
-                    ),
-                  ),
-              ],
-            )
-            .animate()
-            .fadeIn(delay: 600.ms, duration: 600.ms)
-            .slideY(begin: 0.3, end: 0);
-      },
-    );
-  }
-
-  Widget _buildQuickActionsSection() {
-    return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Quick Actions',
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              'Zoey',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.getTextPrimary(context),
               ),
             ),
-            const SizedBox(height: 16),
-            Row(
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGreetingSection(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _getGreeting(),
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.getTextPrimary(context),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            _getFormattedDate(),
+            style: TextStyle(
+              fontSize: 16,
+              color: AppTheme.getTextSecondary(context),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuickStats(
+    BuildContext context,
+    AppStateProvider appStateProvider,
+  ) {
+    final completedTasks = _getCompletedTasks(appStateProvider);
+    final totalTasks = _getTotalTasks(appStateProvider);
+    final totalEvents = _getTotalEvents(appStateProvider);
+    final totalPages = appStateProvider.pages.length;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildStatCard(
+              context,
+              icon: Icons.check_circle_rounded,
+              title: 'Tasks',
+              value: totalTasks > 0 ? '$completedTasks/$totalTasks' : '0',
+              subtitle: totalTasks > 0
+                  ? '${((completedTasks / totalTasks) * 100).round()}% done'
+                  : 'No tasks',
+              color: Colors.green,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: _buildStatCard(
+              context,
+              icon: Icons.event_rounded,
+              title: 'Events',
+              value: '$totalEvents',
+              subtitle: totalEvents > 0 ? 'scheduled' : 'none today',
+              color: Colors.blue,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: _buildStatCard(
+              context,
+              icon: Icons.description_rounded,
+              title: 'Pages',
+              value: '$totalPages',
+              subtitle: 'created',
+              color: Colors.purple,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String value,
+    required String subtitle,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.getSurface(context),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.getBorder(context)),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 24),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.getTextPrimary(context),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.getTextPrimary(context),
+            ),
+          ),
+          Text(
+            subtitle,
+            style: TextStyle(
+              fontSize: 12,
+              color: AppTheme.getTextSecondary(context),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTodaySection(
+    BuildContext context,
+    AppStateProvider appStateProvider,
+  ) {
+    final todayTasks = appStateProvider.getTodaysTodos();
+    final todayEvents = appStateProvider.getTodaysEvents();
+    final totalItems = todayTasks.length + todayEvents.length;
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Simple header
+          Row(
+            children: [
+              Text(
+                'Today\'s Focus',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.getTextPrimary(context),
+                ),
+              ),
+              const Spacer(),
+              if (totalItems > 0)
+                Text(
+                  '$totalItems ${totalItems == 1 ? 'item' : 'items'}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.getTextSecondary(context),
+                  ),
+                ),
+            ],
+          ),
+
+          const SizedBox(height: 16),
+
+          if (todayTasks.isEmpty && todayEvents.isEmpty)
+            _buildEmptyState(context)
+          else ...[
+            // Today's tasks
+            if (todayTasks.isNotEmpty) ...[
+              _buildSectionHeader(context, 'Tasks', Icons.check_circle_outline),
+              ...todayTasks
+                  .take(3)
+                  .map((task) => _buildTaskItem(context, task)),
+              if (todayTasks.length > 3)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    '+ ${todayTasks.length - 3} more tasks',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.getTextSecondary(context),
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 20),
+            ],
+
+            // Today's events
+            if (todayEvents.isNotEmpty) ...[
+              _buildSectionHeader(context, 'Events', Icons.event_outlined),
+              ...todayEvents.map((event) => _buildEventItem(context, event)),
+            ],
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(
+    BuildContext context,
+    String title,
+    IconData icon,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 18,
+            color: title == 'Tasks' ? Colors.green : Colors.blue,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.getTextPrimary(context),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTaskItem(BuildContext context, TodoItem task) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.getSurface(context),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppTheme.getBorder(context)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 18,
+            height: 18,
+            decoration: BoxDecoration(
+              color: task.isCompleted ? Colors.green : Colors.transparent,
+              borderRadius: BorderRadius.circular(9),
+              border: Border.all(
+                color: task.isCompleted ? Colors.green : Colors.grey.shade400,
+                width: 2,
+              ),
+            ),
+            child: task.isCompleted
+                ? Icon(Icons.check, color: Colors.white, size: 12)
+                : null,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: _QuickActionCard(
-                    icon: Icons.add_task_rounded,
-                    title: 'Add Task',
-                    color: const Color(0xFF10B981),
-                    onTap: () {
-                      // TODO: Add quick task
-                    },
+                Text(
+                  task.text,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: task.isCompleted
+                        ? AppTheme.getTextSecondary(context)
+                        : AppTheme.getTextPrimary(context),
+                    decoration: task.isCompleted
+                        ? TextDecoration.lineThrough
+                        : null,
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _QuickActionCard(
-                    icon: Icons.event_rounded,
-                    title: 'Schedule Event',
-                    color: const Color(0xFF8B5CF6),
-                    onTap: () {
-                      // TODO: Add quick event
-                    },
+                if (task.dueDate != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    'Due ${_formatDate(task.dueDate!)}',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: _isOverdue(task.dueDate!)
+                          ? Colors.red
+                          : AppTheme.getTextSecondary(context),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _QuickActionCard(
-                    icon: Icons.note_add_rounded,
-                    title: 'New Page',
-                    color: const Color(0xFF6366F1),
-                    onTap: () => _createNewPage(context),
-                  ),
-                ),
+                ],
               ],
             ),
-          ],
-        )
-        .animate()
-        .fadeIn(delay: 800.ms, duration: 600.ms)
-        .slideY(begin: 0.3, end: 0);
-  }
-
-  void _createNewPage(BuildContext context) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => const PageDetailScreen()));
-  }
-}
-
-class _QuickActionCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _QuickActionCard({
-    required this.icon,
-    required this.title,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppTheme.getSurface(context),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(
-                Theme.of(context).brightness == Brightness.dark ? 0.3 : 0.05,
+          ),
+          if (task.priority == TodoPriority.urgent)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(4),
               ),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              child: Text(
+                'Urgent',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.red,
+                ),
+              ),
             ),
-          ],
-        ),
-        child: Column(
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEventItem(BuildContext context, EventItem event) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.getSurface(context),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppTheme.getBorder(context)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 3,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  event.title,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.getTextPrimary(context),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _formatEventTime(event),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: AppTheme.getTextSecondary(context),
+                  ),
+                ),
+                if (event.location?.physical?.isNotEmpty == true) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    event.location!.physical!,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.getTextSecondary(context),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: _isEventSoon(event.startTime)
+                  ? Colors.orange.withOpacity(0.1)
+                  : Colors.blue.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              _isEventSoon(event.startTime) ? 'Soon' : 'Today',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: _isEventSoon(event.startTime)
+                    ? Colors.orange
+                    : Colors.blue,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: AppTheme.getSurface(context),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppTheme.getBorder(context)),
+      ),
+      child: Column(
+        children: [
+          Text('🎉', style: const TextStyle(fontSize: 48)),
+          const SizedBox(height: 16),
+          Text(
+            'All caught up!',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.getTextPrimary(context),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'No tasks or events for today.\nTime to relax or create something new!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: AppTheme.getTextSecondary(context),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRecentPages(
+    BuildContext context,
+    AppStateProvider appStateProvider,
+  ) {
+    // Get the most recent pages (limit to 3)
+    final recentPages = appStateProvider.pages.take(3).toList();
+
+    if (recentPages.isEmpty) {
+      return const SizedBox.shrink(); // Don't show section if no pages
+    }
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                'Recent Pages',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.getTextPrimary(context),
+                ),
+              ),
+              const Spacer(),
+              if (appStateProvider.pages.length > 3)
+                GestureDetector(
+                  onTap: () => _openPagesView(context),
+                  child: Text(
+                    'View all',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          ...recentPages.map((page) => _buildPageItem(context, page)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPageItem(BuildContext context, ZoePage page) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.getSurface(context),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppTheme.getBorder(context)),
+      ),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PageDetailScreen(page: page),
+            ),
+          );
+        },
+        child: Row(
           children: [
             Container(
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: Colors.blue.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, size: 20, color: color),
+              child: Center(
+                child: Text(
+                  page.emoji ?? '📄',
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    page.title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.getTextPrimary(context),
+                    ),
+                  ),
+                  if (page.description.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      page.description,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppTheme.getTextSecondary(context),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            Icon(
+              Icons.chevron_right_rounded,
+              color: AppTheme.getTextSecondary(context),
+              size: 20,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickActions(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Quick Actions',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.getTextPrimary(context),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: _buildActionCard(
+                  context,
+                  icon: Icons.add_rounded,
+                  title: 'New Page',
+                  color: const Color(0xFF8B5CF6),
+                  onTap: () => _createNewPage(context),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _buildActionCard(
+                  context,
+                  icon: Icons.folder_open_rounded,
+                  title: 'Pages',
+                  color: const Color(0xFF3B82F6),
+                  onTap: () => _openPagesView(context),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _buildActionCard(
+                  context,
+                  icon: Icons.search_rounded,
+                  title: 'Search',
+                  color: const Color(0xFF10B981),
+                  onTap: () => _openSearch(context),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionCard(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppTheme.getSurface(context),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.getBorder(context)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color, size: 24),
+            ),
+            const SizedBox(height: 12),
             Text(
               title,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: AppTheme.getTextPrimary(context),
               ),
@@ -497,5 +735,132 @@ class _QuickActionCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'Good morning! 🌅';
+    if (hour < 17) return 'Good afternoon! ☀️';
+    return 'Good evening! 🌙';
+  }
+
+  String _getFormattedDate() {
+    final now = DateTime.now();
+    final weekdays = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ];
+    final months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    return '${weekdays[now.weekday - 1]}, ${months[now.month - 1]} ${now.day}';
+  }
+
+  String _formatEventTime(EventItem event) {
+    final start = _formatTime(event.startTime);
+    final end = event.endTime != null ? _formatTime(event.endTime!) : null;
+    return end != null ? '$start - $end' : start;
+  }
+
+  bool _isEventSoon(DateTime eventTime) {
+    final now = DateTime.now();
+    final difference = eventTime.difference(now).inHours;
+    return difference >= 0 && difference <= 2;
+  }
+
+  bool _isOverdue(DateTime dueDate) {
+    return dueDate.isBefore(DateTime.now());
+  }
+
+  void _createNewPage(BuildContext context) {
+    final newPage = ZoePage(
+      title: 'Untitled',
+      description: '',
+      emoji: '📄',
+      contentBlocks: [],
+    );
+
+    Provider.of<AppStateProvider>(context, listen: false).addPage(newPage);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PageDetailScreen(page: newPage)),
+    );
+  }
+
+  void _openPagesView(BuildContext context) {
+    // Open the drawer to show pages list
+    Scaffold.of(context).openDrawer();
+  }
+
+  void _openSearch(BuildContext context) {
+    // TODO: Implement search functionality
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Search functionality coming soon!'),
+        backgroundColor: Colors.blue,
+      ),
+    );
+  }
+
+  // Helper methods
+  int _getTotalTasks(AppStateProvider appStateProvider) {
+    return appStateProvider.pages
+        .expand((page) => page.todoBlocks)
+        .expand((block) => block.items)
+        .length;
+  }
+
+  int _getCompletedTasks(AppStateProvider appStateProvider) {
+    return appStateProvider.pages
+        .expand((page) => page.todoBlocks)
+        .expand((block) => block.items)
+        .where((todo) => todo.isCompleted)
+        .length;
+  }
+
+  int _getTotalEvents(AppStateProvider appStateProvider) {
+    return appStateProvider.pages
+        .expand((page) => page.eventBlocks)
+        .expand((block) => block.events)
+        .length;
+  }
+
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final tomorrow = today.add(const Duration(days: 1));
+    final dateOnly = DateTime(date.year, date.month, date.day);
+
+    if (dateOnly == today) return 'today';
+    if (dateOnly == tomorrow) return 'tomorrow';
+    if (dateOnly.isBefore(today)) return 'overdue';
+    return '${date.day}/${date.month}';
+  }
+
+  String _formatTime(DateTime time) {
+    final hour = time.hour;
+    final minute = time.minute;
+    final period = hour >= 12 ? 'PM' : 'AM';
+    final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+
+    return '${displayHour}:${minute.toString().padLeft(2, '0')} $period';
   }
 }
