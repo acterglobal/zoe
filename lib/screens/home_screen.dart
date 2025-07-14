@@ -530,6 +530,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildTaskItem(BuildContext context, TodoWithPage taskWithPage) {
     final task = taskWithPage.todo;
     final page = taskWithPage.page;
+    final appStateProvider = Provider.of<AppStateProvider>(
+      context,
+      listen: false,
+    );
+
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(16),
@@ -540,20 +545,67 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: Row(
         children: [
-          Container(
-            width: 18,
-            height: 18,
-            decoration: BoxDecoration(
-              color: task.isCompleted ? Colors.green : Colors.transparent,
-              borderRadius: BorderRadius.circular(9),
-              border: Border.all(
-                color: task.isCompleted ? Colors.green : Colors.grey.shade400,
-                width: 2,
+          GestureDetector(
+            onTap: () {
+              // Find the todo block containing this task and update it
+              for (final block in page.contentBlocks) {
+                if (block.type == ContentBlockType.todo) {
+                  final todoBlock = block as TodoBlock;
+                  final todoIndex = todoBlock.items.indexWhere(
+                    (item) => item.id == task.id,
+                  );
+
+                  if (todoIndex != -1) {
+                    // Create updated todo with toggled completion status
+                    final updatedTodo = task.copyWith(
+                      isCompleted: !task.isCompleted,
+                    );
+
+                    // Create updated items list
+                    final updatedItems = List<TodoItem>.from(todoBlock.items);
+                    updatedItems[todoIndex] = updatedTodo;
+
+                    // Create updated block
+                    final updatedBlock = todoBlock.copyWith(
+                      items: updatedItems,
+                    );
+
+                    // Update the page
+                    page.updateContentBlock(block.id, updatedBlock);
+
+                    // Save the page
+                    final updatedPage = page.copyWith(
+                      updatedAt: DateTime.now(),
+                    );
+                    appStateProvider.updatePage(updatedPage);
+
+                    break;
+                  }
+                }
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.all(
+                2,
+              ), // Add padding for better tap area
+              child: Container(
+                width: 18,
+                height: 18,
+                decoration: BoxDecoration(
+                  color: task.isCompleted ? Colors.green : Colors.transparent,
+                  borderRadius: BorderRadius.circular(9),
+                  border: Border.all(
+                    color: task.isCompleted
+                        ? Colors.green
+                        : Colors.grey.shade400,
+                    width: 2,
+                  ),
+                ),
+                child: task.isCompleted
+                    ? Icon(Icons.check, color: Colors.white, size: 12)
+                    : null,
               ),
             ),
-            child: task.isCompleted
-                ? Icon(Icons.check, color: Colors.white, size: 12)
-                : null,
           ),
           const SizedBox(width: 12),
           Expanded(
