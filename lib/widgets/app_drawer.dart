@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 import '../common/providers/app_state_provider.dart';
 import '../common/providers/navigation_provider.dart';
 import '../common/theme/app_theme.dart';
-import '../screens/page_detail_screen.dart';
-import '../screens/settings_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
