@@ -564,14 +564,11 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
               // For both new and existing pages, close dialog and page
               Navigator.of(context).pop(); // Close dialog
 
-              if (widget.isEmbedded) {
-                Provider.of<NavigationProvider>(
-                  context,
-                  listen: false,
-                ).navigateBack();
-              } else {
-                Navigator.of(context).pop(); // Close page
-              }
+              // Always use NavigationProvider for consistent navigation
+              Provider.of<NavigationProvider>(
+                context,
+                listen: false,
+              ).navigateBack();
             },
             child: Text(
               widget.page == null ? 'Discard' : 'Delete',

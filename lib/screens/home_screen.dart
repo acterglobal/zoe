@@ -651,32 +651,121 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: AppTheme.getSurface(context),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppTheme.getBorder(context)),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFF6366F1).withValues(alpha: 0.05),
+            const Color(0xFF8B5CF6).withValues(alpha: 0.05),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: const Color(0xFF6366F1).withValues(alpha: 0.1),
+        ),
       ),
       child: Column(
         children: [
-          Text('🎉', style: const TextStyle(fontSize: 48)),
-          const SizedBox(height: 16),
+          // Animated emoji
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: const Color(0xFF6366F1).withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: const Text('🎉', style: TextStyle(fontSize: 32)),
+          ),
+          const SizedBox(height: 20),
+
           Text(
             'All caught up!',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
               color: AppTheme.getTextPrimary(context),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
+
           Text(
-            'No tasks or events for today.\nTime to relax or create something new!',
+            'No tasks or events for today.',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
               color: AppTheme.getTextSecondary(context),
+              fontWeight: FontWeight.w500,
             ),
           ),
+          const SizedBox(height: 8),
+
+          Text(
+            'Time to relax or create something new!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              color: AppTheme.getTextSecondary(context),
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // Action suggestions
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildSuggestionChip(
+                context,
+                '📝 Create Page',
+                () => _createNewPage(context),
+              ),
+              const SizedBox(width: 12),
+              _buildSuggestionChip(context, '📚 Browse Pages', () {
+                // Open drawer on mobile or navigate to first page on desktop
+                if (widget.isEmbedded) {
+                  final appState = Provider.of<AppStateProvider>(
+                    context,
+                    listen: false,
+                  );
+                  if (appState.pages.isNotEmpty) {
+                    Provider.of<NavigationProvider>(
+                      context,
+                      listen: false,
+                    ).navigateToPage(appState.pages.first);
+                  }
+                } else {
+                  Scaffold.of(context).openDrawer();
+                }
+              }),
+            ],
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSuggestionChip(
+    BuildContext context,
+    String label,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: const Color(0xFF6366F1).withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: const Color(0xFF6366F1).withValues(alpha: 0.2),
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: const Color(0xFF6366F1),
+          ),
+        ),
       ),
     );
   }
@@ -734,19 +823,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _createNewPage(BuildContext context) {
-    if (widget.isEmbedded) {
-      // Use navigation provider for embedded mode
-      Provider.of<NavigationProvider>(
-        context,
-        listen: false,
-      ).navigateToNewPage();
-    } else {
-      // Use traditional navigation for mobile
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const PageDetailScreen()),
-      );
-    }
+    // Always use NavigationProvider for consistent navigation
+    Provider.of<NavigationProvider>(context, listen: false).navigateToNewPage();
   }
 
   // Helper methods
