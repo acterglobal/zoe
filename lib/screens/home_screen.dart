@@ -690,18 +690,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _createNewPage(BuildContext context) {
-    final newPage = ZoePage(
-      title: 'Untitled',
-      description: '',
-      emoji: '📄',
-      contentBlocks: [],
-    );
-
-    Provider.of<AppStateProvider>(context, listen: false).addPage(newPage);
-
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PageDetailScreen(page: newPage)),
+      MaterialPageRoute(builder: (context) => const PageDetailScreen()),
     );
   }
 
