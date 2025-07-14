@@ -670,10 +670,14 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: const Color(0xFF6366F1).withValues(alpha: 0.1),
+              color: const Color(0xFF10B981).withValues(alpha: 0.15),
               shape: BoxShape.circle,
             ),
-            child: const Text('🎉', style: TextStyle(fontSize: 32)),
+            child: const Icon(
+              Icons.check_circle_outline_rounded,
+              size: 32,
+              color: Color(0xFF10B981), // Green color for completion/success
+            ),
           ),
           const SizedBox(height: 20),
 
@@ -714,27 +718,35 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               _buildSuggestionChip(
                 context,
-                '📝 Create Page',
+                Icons.add_rounded,
+                'Create Page',
+                const Color(0xFF10B981), // Green for create action
                 () => _createNewPage(context),
               ),
               const SizedBox(width: 12),
-              _buildSuggestionChip(context, '📚 Browse Pages', () {
-                // Open drawer on mobile or navigate to first page on desktop
-                if (widget.isEmbedded) {
-                  final appState = Provider.of<AppStateProvider>(
-                    context,
-                    listen: false,
-                  );
-                  if (appState.pages.isNotEmpty) {
-                    Provider.of<NavigationProvider>(
+              _buildSuggestionChip(
+                context,
+                Icons.menu_book_rounded,
+                'Browse Pages',
+                const Color(0xFF3B82F6), // Blue for browse action
+                () {
+                  // Open drawer on mobile or navigate to first page on desktop
+                  if (widget.isEmbedded) {
+                    final appState = Provider.of<AppStateProvider>(
                       context,
                       listen: false,
-                    ).navigateToPage(appState.pages.first);
+                    );
+                    if (appState.pages.isNotEmpty) {
+                      Provider.of<NavigationProvider>(
+                        context,
+                        listen: false,
+                      ).navigateToPage(appState.pages.first);
+                    }
+                  } else {
+                    Scaffold.of(context).openDrawer();
                   }
-                } else {
-                  Scaffold.of(context).openDrawer();
-                }
-              }),
+                },
+              ),
             ],
           ),
         ],
@@ -744,7 +756,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildSuggestionChip(
     BuildContext context,
+    IconData icon,
     String label,
+    Color color,
     VoidCallback onTap,
   ) {
     return GestureDetector(
@@ -752,19 +766,24 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: const Color(0xFF6366F1).withValues(alpha: 0.1),
+          color: color.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: const Color(0xFF6366F1).withValues(alpha: 0.2),
-          ),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF6366F1),
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 14, color: color),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: color,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -772,9 +791,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String _getGreeting() {
     final hour = DateTime.now().hour;
-    if (hour < 12) return 'Good morning! 🌅';
-    if (hour < 17) return 'Good afternoon! ☀️';
-    return 'Good evening! 🌙';
+    if (hour < 12) return 'Good morning!';
+    if (hour < 17) return 'Good afternoon!';
+    return 'Good evening!';
   }
 
   String _getFormattedDate() {
