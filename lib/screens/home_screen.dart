@@ -246,29 +246,17 @@ class _HomeScreenState extends State<HomeScreen> {
             constraints: const BoxConstraints(minHeight: 140),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  color.withValues(alpha: 0.08),
-                  color.withValues(alpha: 0.12),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(24),
+              color: color.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: color.withValues(alpha: 0.2),
-                width: 1.5,
+                color: color.withValues(alpha: 0.15),
+                width: 1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: color.withValues(alpha: 0.15),
-                  blurRadius: 24,
-                  offset: const Offset(0, 8),
-                ),
-                BoxShadow(
-                  color: color.withValues(alpha: 0.1),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
+                  color: color.withValues(alpha: 0.08),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
@@ -280,19 +268,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(6),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         gradient: gradient,
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: color.withValues(alpha: 0.4),
-                            blurRadius: 8,
+                            color: color.withValues(alpha: 0.2),
+                            blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
                         ],
                       ),
-                      child: Icon(icon, color: Colors.white, size: 16),
+                      child: Icon(icon, color: Colors.white, size: 18),
                     ),
                     const SizedBox(width: 10),
                     Flexible(
@@ -334,12 +322,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       // Percentage badge
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 2,
+                          horizontal: 8,
+                          vertical: 3,
                         ),
                         decoration: BoxDecoration(
-                          color: color.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(8),
+                          color: color.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           '${(progress * 100).round()}% complete',
@@ -347,6 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
                             color: color,
+                            letterSpacing: 0.3,
                           ),
                         ),
                       ),
@@ -371,10 +360,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 // Progress bar for tasks or status indicator for events
                 if (title == 'Tasks' && progress > 0) ...[
                   Container(
-                    height: 3,
+                    height: 4,
                     decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(2),
+                      color: color.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: FractionallySizedBox(
                       alignment: Alignment.centerLeft,
@@ -384,14 +373,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         curve: Curves.easeOutCubic,
                         decoration: BoxDecoration(
                           gradient: gradient,
-                          borderRadius: BorderRadius.circular(2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: color.withValues(alpha: 0.3),
-                              blurRadius: 3,
-                              offset: const Offset(0, 1),
-                            ),
-                          ],
+                          borderRadius: BorderRadius.circular(4),
                         ),
                       ),
                     ),
@@ -400,32 +382,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 ] else ...[
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 3,
+                      horizontal: 8,
+                      vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(6),
+                      color: color.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          width: 4,
-                          height: 4,
+                          width: 6,
+                          height: 6,
                           decoration: BoxDecoration(
                             color: color,
                             shape: BoxShape.circle,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 6),
                         Flexible(
                           child: Text(
                             subtitle,
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 11,
                               fontWeight: FontWeight.w600,
                               color: color,
+                              letterSpacing: 0.2,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -873,9 +856,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String _getGreeting() {
     final hour = DateTime.now().hour;
-    if (hour < 12) return 'Good morning!';
-    if (hour < 17) return 'Good afternoon!';
-    return 'Good evening!';
+    if (hour < 6) return '🌙 Good night!';
+    if (hour < 12) return '☀️ Good morning!';
+    if (hour < 17) return '☀️ Good afternoon!';
+    if (hour < 21) return '🌇 Good evening!';
+    return '🌙 Good night!';
   }
 
   String _getFormattedDate() {
