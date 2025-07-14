@@ -302,7 +302,9 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                   border: InputBorder.none,
                   hintText: 'Add a description...',
                   hintStyle: TextStyle(
-                    color: AppTheme.getTextSecondary(context).withOpacity(0.6),
+                    color: AppTheme.getTextSecondary(
+                      context,
+                    ).withValues(alpha: 0.6),
                   ),
                 ),
                 maxLines: null,

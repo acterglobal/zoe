@@ -83,23 +83,15 @@ class ZoePage {
   }
 
   // Get specific types of content blocks
-  List<TodoBlock> get todoBlocks => contentBlocks
-      .where((block) => block is TodoBlock)
-      .cast<TodoBlock>()
-      .toList();
+  List<TodoBlock> get todoBlocks =>
+      contentBlocks.whereType<TodoBlock>().toList();
 
-  List<EventBlock> get eventBlocks => contentBlocks
-      .where((block) => block is EventBlock)
-      .cast<EventBlock>()
-      .toList();
+  List<EventBlock> get eventBlocks =>
+      contentBlocks.whereType<EventBlock>().toList();
 
-  List<ListBlock> get listBlocks => contentBlocks
-      .where((block) => block is ListBlock)
-      .cast<ListBlock>()
-      .toList();
+  List<ListBlock> get listBlocks =>
+      contentBlocks.whereType<ListBlock>().toList();
 
-  List<TextBlock> get textBlocks => contentBlocks
-      .where((block) => block is TextBlock)
-      .cast<TextBlock>()
-      .toList();
+  List<TextBlock> get textBlocks =>
+      contentBlocks.whereType<TextBlock>().toList();
 }

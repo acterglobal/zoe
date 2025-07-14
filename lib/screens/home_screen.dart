@@ -6,7 +6,6 @@ import '../common/providers/app_state_provider.dart';
 import '../common/theme/app_theme.dart';
 import '../widgets/app_drawer.dart';
 import '../screens/page_detail_screen.dart';
-import '../screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -207,12 +206,12 @@ class _HomeScreenState extends State<HomeScreen> {
               color: AppTheme.getSurface(context),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: AppTheme.getBorder(context).withOpacity(0.3),
+                color: AppTheme.getBorder(context).withValues(alpha: 0.3),
                 width: 1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: color.withOpacity(0.08),
+                  color: color.withValues(alpha: 0.08),
                   blurRadius: 20,
                   offset: const Offset(0, 4),
                 ),
@@ -233,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: color.withOpacity(0.3),
+                            color: color.withValues(alpha: 0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
@@ -280,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                     height: 6,
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.1),
+                      color: color.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(3),
                     ),
                     child: FractionallySizedBox(
@@ -499,7 +498,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
+                color: Colors.red.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
@@ -584,8 +583,8 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: _isEventSoon(event.startTime)
-                  ? Colors.orange.withOpacity(0.1)
-                  : Colors.blue.withOpacity(0.1),
+                  ? Colors.orange.withValues(alpha: 0.1)
+                  : Colors.blue.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
@@ -747,6 +746,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final period = hour >= 12 ? 'PM' : 'AM';
     final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
 
-    return '${displayHour}:${minute.toString().padLeft(2, '0')} $period';
+    return '$displayHour:${minute.toString().padLeft(2, '0')} $period';
   }
 }

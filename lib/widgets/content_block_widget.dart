@@ -32,9 +32,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   // Text controllers for managing cursor position
   late TextEditingController _titleController;
   late TextEditingController _textBlockController;
-  Map<String, TextEditingController> _todoControllers = {};
-  Map<String, TextEditingController> _eventControllers = {};
-  Map<int, TextEditingController> _listControllers = {};
+  final Map<String, TextEditingController> _todoControllers = {};
+  final Map<String, TextEditingController> _eventControllers = {};
+  final Map<int, TextEditingController> _listControllers = {};
 
   @override
   void initState() {
@@ -230,7 +230,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -667,7 +667,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
               ],
             ),
           );
-        }).toList(),
+        }),
 
         // Add new todo item (only in edit mode)
         if (widget.isEditing)
@@ -968,7 +968,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
               ],
             ),
           );
-        }).toList(),
+        }),
 
         // Add new event (only in edit mode)
         if (widget.isEditing)
@@ -1084,7 +1084,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
               ],
             ),
           );
-        }).toList(),
+        }),
 
         // Add new list item (only in edit mode)
         if (widget.isEditing)

@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
               ),
               cardTheme: CardThemeData(
                 color: Colors.white,
-                shadowColor: Colors.black.withOpacity(0.05),
+                shadowColor: Colors.black.withValues(alpha: 0.05),
                 elevation: 2,
               ),
             ),
@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
               ),
               cardTheme: CardThemeData(
                 color: const Color(0xFF1E293B),
-                shadowColor: Colors.black.withOpacity(0.3),
+                shadowColor: Colors.black.withValues(alpha: 0.3),
                 elevation: 2,
               ),
               drawerTheme: const DrawerThemeData(

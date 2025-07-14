@@ -114,8 +114,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(
-              Theme.of(context).brightness == Brightness.dark ? 0.3 : 0.05,
+            color: Colors.black.withValues(
+              alpha: Theme.of(context).brightness == Brightness.dark
+                  ? 0.3
+                  : 0.05,
             ),
             blurRadius: 10,
             offset: const Offset(0, 2),
@@ -133,7 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF6366F1).withOpacity(0.1),
+              color: const Color(0xFF6366F1).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(
@@ -174,7 +176,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppTheme.getSuccess(context).withOpacity(0.1),
+              color: AppTheme.getSuccess(context).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
@@ -213,7 +215,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color(0xFF8B5CF6).withOpacity(0.1),
+          color: const Color(0xFF8B5CF6).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: const Icon(
@@ -250,7 +252,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color(0xFFF59E0B).withOpacity(0.1),
+          color: const Color(0xFFF59E0B).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: const Icon(
@@ -287,7 +289,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color(0xFFEF4444).withOpacity(0.1),
+          color: const Color(0xFFEF4444).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: const Icon(
@@ -324,7 +326,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color(0xFF6B7280).withOpacity(0.1),
+          color: const Color(0xFF6B7280).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: const Icon(
@@ -473,13 +475,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _rateApp() async {
-    // App Store URL for iOS
-    const iosUrl = 'https://apps.apple.com/app/id123456789';
-    // Google Play URL for Android
-    const androidUrl =
-        'https://play.google.com/store/apps/details?id=com.example.zoey';
-
     // For demo purposes, we'll use a generic URL
+    // In production, you would conditionally use:
+    // iOS: 'https://apps.apple.com/app/id123456789'
+    // Android: 'https://play.google.com/store/apps/details?id=com.example.zoey'
     const url = 'https://example.com/rate-zoe-app';
 
     try {

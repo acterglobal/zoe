@@ -3,7 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import '../common/providers/app_state_provider.dart';
 import '../common/theme/app_theme.dart';
-import 'home_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -35,7 +34,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             borderRadius: BorderRadius.circular(30),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF6366F1).withOpacity(0.3),
+                                color: const Color(
+                                  0xFF6366F1,
+                                ).withValues(alpha: 0.3),
                                 blurRadius: 20,
                                 offset: const Offset(0, 10),
                               ),
@@ -187,8 +188,10 @@ class _FeatureCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(
-              Theme.of(context).brightness == Brightness.dark ? 0.3 : 0.05,
+            color: Colors.black.withValues(
+              alpha: Theme.of(context).brightness == Brightness.dark
+                  ? 0.3
+                  : 0.05,
             ),
             blurRadius: 10,
             offset: const Offset(0, 4),
@@ -201,7 +204,7 @@ class _FeatureCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, size: 24, color: color),

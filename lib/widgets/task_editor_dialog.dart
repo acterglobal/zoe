@@ -237,7 +237,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
               color: isSelected
-                  ? _getPriorityColor(priority).withOpacity(0.1)
+                  ? _getPriorityColor(priority).withValues(alpha: 0.1)
                   : Colors.transparent,
               border: Border.all(
                 color: isSelected
