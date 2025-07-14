@@ -503,12 +503,10 @@ class AppStateProvider extends ChangeNotifier {
     for (final page in _pages) {
       for (final todoBlock in page.todoBlocks) {
         for (final todo in todoBlock.items) {
+          // Only include tasks that are specifically due today
           if (todo.dueDate != null &&
               todo.dueDate!.isAfter(todayStart) &&
               todo.dueDate!.isBefore(todayEnd)) {
-            todaysTodos.add(TodoWithPage(todo: todo, page: page));
-          } else if (todo.dueDate == null && !todo.isCompleted) {
-            // Include todos without due dates that are not completed
             todaysTodos.add(TodoWithPage(todo: todo, page: page));
           }
         }

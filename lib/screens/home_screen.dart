@@ -168,6 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
     BuildContext context,
     AppStateProvider appStateProvider,
   ) {
+    // Overview: All tasks and events from all pages (not date-specific)
     final completedTasks = _getCompletedTasks(appStateProvider);
     final totalTasks = _getTotalTasks(appStateProvider);
     final totalEvents = _getTotalEvents(appStateProvider);
@@ -184,8 +185,8 @@ class _HomeScreenState extends State<HomeScreen> {
               title: 'Tasks',
               value: totalTasks > 0 ? '$completedTasks/$totalTasks' : '0',
               subtitle: totalTasks > 0
-                  ? '${(tasksProgress * 100).round()}% complete'
-                  : 'No tasks for today',
+                  ? '${(tasksProgress * 100).round()}% complete overall'
+                  : 'No tasks yet',
               color: const Color(0xFF10B981),
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
@@ -202,11 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icons.event_available_rounded,
               title: 'Events',
               value: '$totalEvents',
-              subtitle: totalEvents == 0
-                  ? 'Free day ahead'
-                  : totalEvents == 1
-                  ? '1 event today'
-                  : '$totalEvents events today',
+              subtitle: totalEvents == 0 ? 'No events yet' : 'Across all pages',
               color: const Color(0xFF3B82F6),
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
@@ -430,6 +427,7 @@ class _HomeScreenState extends State<HomeScreen> {
     BuildContext context,
     AppStateProvider appStateProvider,
   ) {
+    // Today's Focus: Only tasks and events specifically due/scheduled for today
     final todayTasks = appStateProvider.getTodaysTodos();
     final todayEvents = appStateProvider.getTodaysEvents();
     final totalItems = todayTasks.length + todayEvents.length;
