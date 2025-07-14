@@ -339,6 +339,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: _currentPage.contentBlocks.length,
+      buildDefaultDragHandles: false, // Disable default drag handles
       onReorder: (oldIndex, newIndex) {
         setState(() {
           _currentPage.reorderContentBlocks(oldIndex, newIndex);
