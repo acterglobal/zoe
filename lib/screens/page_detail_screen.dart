@@ -23,6 +23,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
   late ZoePage _currentPage;
   bool _showAddMenu = false;
   bool _isEditing = false; // Add editing state
+  bool _hasBeenSaved = false; // Track if page has been saved
 
   @override
   void initState() {
@@ -35,6 +36,8 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
     );
     // Start in edit mode for new pages, view mode for existing pages
     _isEditing = widget.page == null;
+    // Existing pages are already saved
+    _hasBeenSaved = widget.page != null;
   }
 
   @override
@@ -57,9 +60,8 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
             color: AppTheme.getTextPrimary(context),
           ),
           onPressed: () {
-            if (_isEditing) {
-              _autoSavePage();
-            }
+            // For new pages that haven't been saved, just discard
+            // For existing pages, they remain saved
             Provider.of<NavigationProvider>(
               context,
               listen: false,
@@ -74,8 +76,8 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
               onPressed: () {
                 setState(() {
                   if (_isEditing) {
-                    // Save and switch to view mode
-                    _autoSavePage();
+                    // Save the page and switch to view mode
+                    _savePage();
                     _isEditing = false;
                     _showAddMenu =
                         false; // Hide add menu when switching to view mode
@@ -272,7 +274,6 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                           title: value.trim().isEmpty ? 'Untitled' : value,
                         );
                       },
-                      onEditingComplete: _autoSavePage,
                     )
                   : Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -316,7 +317,6 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                 onChanged: (value) {
                   _currentPage = _currentPage.copyWith(description: value);
                 },
-                onEditingComplete: _autoSavePage,
               )
             : _currentPage.description.isNotEmpty
             ? Padding(
@@ -349,7 +349,6 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
         setState(() {
           _currentPage.reorderContentBlocks(oldIndex, newIndex);
         });
-        _autoSavePage();
       },
       itemBuilder: (context, index) {
         final block = _currentPage.contentBlocks[index];
@@ -364,13 +363,11 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
               setState(() {
                 _currentPage.updateContentBlock(block.id, updatedBlock);
               });
-              _autoSavePage();
             },
             onDelete: () {
               setState(() {
                 _currentPage.removeContentBlock(block.id);
               });
-              _autoSavePage();
             },
           ),
         );
@@ -485,7 +482,6 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
       _currentPage.addContentBlock(newBlock);
       _showAddMenu = false;
     });
-    _autoSavePage();
   }
 
   void _showEmojiPicker() {
@@ -512,10 +508,9 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
     setState(() {
       _currentPage = _currentPage.copyWith(emoji: emojis[nextIndex]);
     });
-    _autoSavePage();
   }
 
-  void _autoSavePage() {
+  void _savePage() {
     final updatedPage = _currentPage.copyWith(
       title: _titleController.text.trim().isEmpty
           ? 'Untitled'
@@ -525,9 +520,10 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
 
     final appState = Provider.of<AppStateProvider>(context, listen: false);
 
-    if (widget.page == null) {
-      // New page
+    if (!_hasBeenSaved) {
+      // New page - add to state
       appState.addPage(updatedPage);
+      _hasBeenSaved = true;
     } else {
       // Update existing page
       appState.updatePage(updatedPage);
