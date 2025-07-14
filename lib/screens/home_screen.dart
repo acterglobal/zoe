@@ -176,42 +176,58 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: _buildEnhancedStatCard(
-              context,
-              icon: Icons.task_alt_rounded,
-              title: 'Tasks',
-              value: totalTasks > 0 ? '$completedTasks/$totalTasks' : '0',
-              subtitle: totalTasks > 0
-                  ? '${(tasksProgress * 100).round()}% complete overall'
-                  : 'No tasks yet',
-              color: const Color(0xFF10B981),
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFF10B981), Color(0xFF059669)],
-              ),
-              progress: tasksProgress,
+          Text(
+            'Overview',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.getTextPrimary(context),
             ),
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: _buildEnhancedStatCard(
-              context,
-              icon: Icons.event_available_rounded,
-              title: 'Events',
-              value: '$totalEvents',
-              subtitle: totalEvents == 0 ? 'No events yet' : 'Across all pages',
-              color: const Color(0xFF3B82F6),
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFF3B82F6), Color(0xFF1D4ED8)],
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: _buildEnhancedStatCard(
+                  context,
+                  icon: Icons.task_alt_rounded,
+                  title: 'Tasks',
+                  value: totalTasks > 0 ? '$completedTasks/$totalTasks' : '0',
+                  subtitle: totalTasks > 0
+                      ? '${(tasksProgress * 100).round()}% complete overall'
+                      : 'No tasks yet',
+                  color: const Color(0xFF10B981),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF10B981), Color(0xFF059669)],
+                  ),
+                  progress: tasksProgress,
+                ),
               ),
-              progress: totalEvents > 0 ? 1.0 : 0.0,
-            ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _buildEnhancedStatCard(
+                  context,
+                  icon: Icons.event_available_rounded,
+                  title: 'Events',
+                  value: '$totalEvents',
+                  subtitle: totalEvents == 0
+                      ? 'No events yet'
+                      : 'Across all pages',
+                  color: const Color(0xFF3B82F6),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF3B82F6), Color(0xFF1D4ED8)],
+                  ),
+                  progress: totalEvents > 0 ? 1.0 : 0.0,
+                ),
+              ),
+            ],
           ),
         ],
       ),
