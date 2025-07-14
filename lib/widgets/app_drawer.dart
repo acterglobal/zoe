@@ -61,10 +61,11 @@ class AppDrawer extends StatelessWidget {
                               },
                             ),
                             Text(
-                              'Your workspace',
+                              'Organize • Plan • Create',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.white.withValues(alpha: 0.8),
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
