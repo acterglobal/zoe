@@ -5,7 +5,6 @@ import '../common/providers/app_state_provider.dart';
 import '../common/providers/navigation_provider.dart';
 import '../common/theme/app_theme.dart';
 import '../widgets/app_drawer.dart';
-import '../screens/page_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isEmbedded;
@@ -186,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
               value: totalTasks > 0 ? '$completedTasks/$totalTasks' : '0',
               subtitle: totalTasks > 0
                   ? '${(tasksProgress * 100).round()}% complete'
-                  : 'No tasks yet',
+                  : 'No tasks for today',
               color: const Color(0xFF10B981),
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
@@ -238,26 +237,38 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
           onTap: () {
             // Add subtle haptic feedback
             // HapticFeedback.lightImpact();
           },
           child: Container(
-            height: 160, // Reduced height to prevent overflow
+            constraints: const BoxConstraints(minHeight: 140),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppTheme.getSurface(context),
-              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  color.withValues(alpha: 0.08),
+                  color.withValues(alpha: 0.12),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color: AppTheme.getBorder(context).withValues(alpha: 0.3),
-                width: 1,
+                color: color.withValues(alpha: 0.2),
+                width: 1.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: color.withValues(alpha: 0.08),
-                  blurRadius: 20,
-                  offset: const Offset(0, 4),
+                  color: color.withValues(alpha: 0.15),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                ),
+                BoxShadow(
+                  color: color.withValues(alpha: 0.1),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
@@ -265,9 +276,8 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Header with icon only
+                // Header with icon and title
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(6),
@@ -276,83 +286,155 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: color.withValues(alpha: 0.3),
+                            color: color.withValues(alpha: 0.4),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
                         ],
                       ),
-                      child: Icon(icon, color: Colors.white, size: 18),
+                      child: Icon(icon, color: Colors.white, size: 16),
+                    ),
+                    const SizedBox(width: 10),
+                    Flexible(
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: color,
+                          letterSpacing: 0.2,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
 
-                // Value
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.getTextPrimary(context),
-                    letterSpacing: -0.5,
+                // Value with percentage badge for tasks (only when tasks exist)
+                if (title == 'Tasks' &&
+                    value.contains('/') &&
+                    progress > 0) ...[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Main value
+                      Text(
+                        value,
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w900,
+                          color: color,
+                          letterSpacing: -1.0,
+                          height: 1.0,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      // Percentage badge
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: color.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '${(progress * 100).round()}% complete',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: color,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-
-                const SizedBox(height: 1),
-
-                // Title
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.getTextPrimary(context),
+                ] else ...[
+                  // Simple value for events or tasks with no progress
+                  Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w900,
+                      color: color,
+                      letterSpacing: -1.0,
+                      height: 1.0,
+                    ),
                   ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
+                ],
 
-                const Spacer(),
+                const SizedBox(height: 12),
 
-                // Progress indicator (only for tasks)
+                // Progress bar for tasks or status indicator for events
                 if (title == 'Tasks' && progress > 0) ...[
                   Container(
-                    height: 6,
+                    height: 3,
                     decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(3),
+                      color: color.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(2),
                     ),
                     child: FractionallySizedBox(
                       alignment: Alignment.centerLeft,
                       widthFactor: progress,
                       child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 800),
+                        duration: const Duration(milliseconds: 1200),
                         curve: Curves.easeOutCubic,
                         decoration: BoxDecoration(
                           gradient: gradient,
-                          borderRadius: BorderRadius.circular(3),
+                          borderRadius: BorderRadius.circular(2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: color.withValues(alpha: 0.3),
+                              blurRadius: 3,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 6),
-                ],
-
-                // Subtitle
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: AppTheme.getTextSecondary(context),
-                    fontWeight: FontWeight.w500,
+                  const SizedBox(height: 8),
+                ] else ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 4,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: color,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            subtitle,
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: color,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
+                  const SizedBox(height: 4),
+                ],
               ],
             ),
           ),
