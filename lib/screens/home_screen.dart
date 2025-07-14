@@ -41,9 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
               // Today's priority section
               _buildTodaySection(context, appStateProvider),
 
-              // Recent pages section
-              _buildRecentPages(context, appStateProvider),
-
               const SizedBox(height: 24),
             ],
           ),
@@ -132,44 +129,49 @@ class _HomeScreenState extends State<HomeScreen> {
     final completedTasks = _getCompletedTasks(appStateProvider);
     final totalTasks = _getTotalTasks(appStateProvider);
     final totalEvents = _getTotalEvents(appStateProvider);
-    final totalPages = appStateProvider.pages.length;
+    final tasksProgress = totalTasks > 0 ? completedTasks / totalTasks : 0.0;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         children: [
           Expanded(
-            child: _buildStatCard(
+            child: _buildEnhancedStatCard(
               context,
-              icon: Icons.check_circle_rounded,
+              icon: Icons.task_alt_rounded,
               title: 'Tasks',
               value: totalTasks > 0 ? '$completedTasks/$totalTasks' : '0',
               subtitle: totalTasks > 0
-                  ? '${((completedTasks / totalTasks) * 100).round()}% done'
-                  : 'No tasks',
-              color: Colors.green,
+                  ? '${(tasksProgress * 100).round()}% complete'
+                  : 'No tasks yet',
+              color: const Color(0xFF10B981),
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF10B981), Color(0xFF059669)],
+              ),
+              progress: tasksProgress,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 16),
           Expanded(
-            child: _buildStatCard(
+            child: _buildEnhancedStatCard(
               context,
-              icon: Icons.event_rounded,
+              icon: Icons.event_available_rounded,
               title: 'Events',
               value: '$totalEvents',
-              subtitle: totalEvents > 0 ? 'scheduled' : 'none today',
-              color: Colors.blue,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: _buildStatCard(
-              context,
-              icon: Icons.description_rounded,
-              title: 'Pages',
-              value: '$totalPages',
-              subtitle: 'created',
-              color: Colors.purple,
+              subtitle: totalEvents == 0
+                  ? 'Free day ahead'
+                  : totalEvents == 1
+                  ? '1 event today'
+                  : '$totalEvents events today',
+              color: const Color(0xFF3B82F6),
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF3B82F6), Color(0xFF1D4ED8)],
+              ),
+              progress: totalEvents > 0 ? 1.0 : 0.0,
             ),
           ),
         ],
@@ -177,57 +179,141 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildStatCard(
+  Widget _buildEnhancedStatCard(
     BuildContext context, {
     required IconData icon,
     required String title,
     required String value,
     required String subtitle,
     required Color color,
+    required LinearGradient gradient,
+    required double progress,
   }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.getSurface(context),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.getBorder(context)),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: () {
+            // Add subtle haptic feedback
+            // HapticFeedback.lightImpact();
+          },
+          child: Container(
+            height: 160, // Reduced height to prevent overflow
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              color: AppTheme.getSurface(context),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: AppTheme.getBorder(context).withOpacity(0.3),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: color.withOpacity(0.08),
+                  blurRadius: 20,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            child: Icon(icon, color: color, size: 24),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.getTextPrimary(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header with icon only
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        gradient: gradient,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: color.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Icon(icon, color: Colors.white, size: 18),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 8),
+
+                // Value
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.getTextPrimary(context),
+                    letterSpacing: -0.5,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+
+                const SizedBox(height: 1),
+
+                // Title
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.getTextPrimary(context),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+
+                const Spacer(),
+
+                // Progress indicator (only for tasks)
+                if (title == 'Tasks' && progress > 0) ...[
+                  Container(
+                    height: 6,
+                    decoration: BoxDecoration(
+                      color: color.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    child: FractionallySizedBox(
+                      alignment: Alignment.centerLeft,
+                      widthFactor: progress,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 800),
+                        curve: Curves.easeOutCubic,
+                        decoration: BoxDecoration(
+                          gradient: gradient,
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                ],
+
+                // Subtitle
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: AppTheme.getTextSecondary(context),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: AppTheme.getTextPrimary(context),
-            ),
-          ),
-          Text(
-            subtitle,
-            style: TextStyle(
-              fontSize: 12,
-              color: AppTheme.getTextSecondary(context),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -548,127 +634,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildRecentPages(
-    BuildContext context,
-    AppStateProvider appStateProvider,
-  ) {
-    // Get the most recent pages (limit to 3)
-    final recentPages = appStateProvider.pages.take(3).toList();
-
-    if (recentPages.isEmpty) {
-      return const SizedBox.shrink(); // Don't show section if no pages
-    }
-
-    return Container(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                'Recent Pages',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.getTextPrimary(context),
-                ),
-              ),
-              const Spacer(),
-              if (appStateProvider.pages.length > 3)
-                GestureDetector(
-                  onTap: () => Scaffold.of(context).openDrawer(),
-                  child: Text(
-                    'View all',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ...recentPages.map((page) => _buildPageItem(context, page)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPageItem(BuildContext context, ZoePage page) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.getSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.getBorder(context)),
-      ),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PageDetailScreen(page: page),
-            ),
-          );
-        },
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  page.emoji ?? '📄',
-                  style: const TextStyle(fontSize: 20),
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    page.title,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.getTextPrimary(context),
-                    ),
-                  ),
-                  if (page.description.isNotEmpty) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      page.description,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: AppTheme.getTextSecondary(context),
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            Icon(
-              Icons.chevron_right_rounded,
-              color: AppTheme.getTextSecondary(context),
-              size: 20,
-            ),
-          ],
-        ),
       ),
     );
   }
