@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../common/providers/app_state_provider.dart';
+import '../common/providers/navigation_provider.dart';
 import '../common/models/page.dart';
 import '../common/models/content_block.dart';
 import '../common/theme/app_theme.dart';
@@ -8,8 +9,9 @@ import '../widgets/content_block_widget.dart';
 
 class PageDetailScreen extends StatefulWidget {
   final ZoePage? page;
+  final bool isEmbedded;
 
-  const PageDetailScreen({super.key, this.page});
+  const PageDetailScreen({super.key, this.page, this.isEmbedded = false});
 
   @override
   State<PageDetailScreen> createState() => _PageDetailScreenState();
@@ -58,7 +60,10 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
             if (_isEditing) {
               _autoSavePage();
             }
-            Navigator.of(context).pop();
+            Provider.of<NavigationProvider>(
+              context,
+              listen: false,
+            ).navigateBack();
           },
         ),
         actions: [
@@ -558,7 +563,15 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
               }
               // For both new and existing pages, close dialog and page
               Navigator.of(context).pop(); // Close dialog
-              Navigator.of(context).pop(); // Close page
+
+              if (widget.isEmbedded) {
+                Provider.of<NavigationProvider>(
+                  context,
+                  listen: false,
+                ).navigateBack();
+              } else {
+                Navigator.of(context).pop(); // Close page
+              }
             },
             child: Text(
               widget.page == null ? 'Discard' : 'Delete',

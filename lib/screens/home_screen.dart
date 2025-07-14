@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../common/models/content_block.dart';
 import '../common/providers/app_state_provider.dart';
+import '../common/providers/navigation_provider.dart';
 import '../common/theme/app_theme.dart';
 import '../widgets/app_drawer.dart';
 import '../screens/page_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final bool isEmbedded;
+
+  const HomeScreen({super.key, this.isEmbedded = false});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -18,6 +21,38 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final appStateProvider = Provider.of<AppStateProvider>(context);
 
+    if (widget.isEmbedded) {
+      // Embedded mode for responsive layout
+      return Container(
+        color: AppTheme.getBackground(context),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header without drawer button
+                _buildEmbeddedHeader(context),
+
+                // Greeting section
+                _buildGreetingSection(context),
+
+                const SizedBox(height: 24),
+
+                // Quick stats cards
+                _buildQuickStats(context, appStateProvider),
+
+                // Today's priority section
+                _buildTodaySection(context, appStateProvider),
+
+                const SizedBox(height: 24),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Traditional mobile layout
     return Scaffold(
       backgroundColor: AppTheme.getBackground(context),
       body: SafeArea(
@@ -45,12 +80,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       drawer: const AppDrawer(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _createNewPage(context),
-        backgroundColor: const Color(0xFF8B5CF6),
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add_rounded),
-      ),
+      floatingActionButton: widget.isEmbedded
+          ? null
+          : FloatingActionButton(
+              heroTag: "home_screen_fab",
+              onPressed: () => _createNewPage(context),
+              backgroundColor: const Color(0xFF8B5CF6),
+              foregroundColor: Colors.white,
+              child: const Icon(Icons.add_rounded),
+            ),
     );
   }
 
@@ -85,6 +123,42 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.getTextPrimary(context),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmbeddedHeader(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              'Zoey',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.getTextPrimary(context),
+              ),
+            ),
+          ),
+          // Add new page button for desktop
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFF8B5CF6),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: GestureDetector(
+              onTap: () => _createNewPage(context),
+              child: const Icon(
+                Icons.add_rounded,
+                color: Colors.white,
+                size: 20,
               ),
             ),
           ),
@@ -689,10 +763,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _createNewPage(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const PageDetailScreen()),
-    );
+    if (widget.isEmbedded) {
+      // Use navigation provider for embedded mode
+      Provider.of<NavigationProvider>(
+        context,
+        listen: false,
+      ).navigateToNewPage();
+    } else {
+      // Use traditional navigation for mobile
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const PageDetailScreen()),
+      );
+    }
   }
 
   // Helper methods

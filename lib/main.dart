@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zoey/src/rust/frb_generated.dart';
 import 'common/providers/app_state_provider.dart';
+import 'common/providers/navigation_provider.dart';
 import 'common/providers/settings_provider.dart';
 import 'screens/welcome_screen.dart';
-import 'screens/home_screen.dart';
+import 'widgets/responsive_layout.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AppStateProvider()),
+        ChangeNotifierProvider(create: (context) => NavigationProvider()),
         ChangeNotifierProvider(create: (context) => SettingsProvider()),
       ],
       child: Consumer<SettingsProvider>(
@@ -80,7 +82,7 @@ class MyApp extends StatelessWidget {
               builder: (context, appState, child) {
                 return appState.isFirstLaunch
                     ? const WelcomeScreen()
-                    : const HomeScreen();
+                    : const ResponsiveLayout();
               },
             ),
           );

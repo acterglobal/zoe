@@ -4,10 +4,13 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../common/providers/settings_provider.dart';
+import '../common/providers/navigation_provider.dart';
 import '../common/theme/app_theme.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  final bool isEmbedded;
+
+  const SettingsScreen({super.key, this.isEmbedded = false});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -41,7 +44,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Icons.arrow_back_rounded,
             color: AppTheme.getTextPrimary(context),
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Provider.of<NavigationProvider>(
+              context,
+              listen: false,
+            ).navigateBack();
+          },
         ),
         title: Text(
           'Settings',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../common/providers/app_state_provider.dart';
+import '../common/providers/navigation_provider.dart';
 import '../common/theme/app_theme.dart';
 import '../screens/page_detail_screen.dart';
 import '../screens/settings_screen.dart';
@@ -101,12 +102,10 @@ class AppDrawer extends StatelessWidget {
                               icon: const Icon(Icons.add_rounded, size: 20),
                               onPressed: () {
                                 Navigator.of(context).pop(); // Close drawer
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const PageDetailScreen(),
-                                  ),
-                                );
+                                Provider.of<NavigationProvider>(
+                                  context,
+                                  listen: false,
+                                ).navigateToNewPage();
                               },
                             ),
                           ],
@@ -157,12 +156,10 @@ class AppDrawer extends StatelessWidget {
                                   : null,
                               onTap: () {
                                 Navigator.of(context).pop(); // Close drawer
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PageDetailScreen(page: page),
-                                  ),
-                                );
+                                Provider.of<NavigationProvider>(
+                                  context,
+                                  listen: false,
+                                ).navigateToPage(page);
                               },
                             );
                           },
@@ -196,11 +193,10 @@ class AppDrawer extends StatelessWidget {
                     ),
                     onTap: () {
                       Navigator.of(context).pop(); // Close drawer
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsScreen(),
-                        ),
-                      );
+                      Provider.of<NavigationProvider>(
+                        context,
+                        listen: false,
+                      ).navigateToSettings();
                     },
                   ),
                   ListTile(
@@ -215,7 +211,10 @@ class AppDrawer extends StatelessWidget {
                     ),
                     onTap: () {
                       Navigator.of(context).pop(); // Close drawer
-                      // TODO: Navigate to profile
+                      Provider.of<NavigationProvider>(
+                        context,
+                        listen: false,
+                      ).navigateToProfile();
                     },
                   ),
                 ],
