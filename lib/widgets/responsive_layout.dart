@@ -59,6 +59,15 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
           Expanded(child: _buildMainContent(navigationProvider)),
         ],
       ),
+      floatingActionButton: navigationProvider.currentScreen == AppScreen.home
+          ? FloatingActionButton(
+              heroTag: "responsive_layout_fab",
+              onPressed: () => navigationProvider.navigateToNewPage(),
+              backgroundColor: const Color(0xFF8B5CF6),
+              foregroundColor: Colors.white,
+              child: const Icon(Icons.add_rounded),
+            )
+          : null,
     );
   }
 

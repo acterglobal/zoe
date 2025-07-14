@@ -152,9 +152,24 @@ class AppSidebar extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? const Color(0xFF6366F1).withValues(alpha: 0.1)
+                    ? const Color(0xFF6366F1).withValues(alpha: 0.15)
+                    : null,
+                border: isSelected
+                    ? Border.all(
+                        color: const Color(0xFF6366F1).withValues(alpha: 0.3),
+                        width: 1,
+                      )
                     : null,
                 borderRadius: BorderRadius.circular(8),
+                boxShadow: isSelected
+                    ? [
+                        BoxShadow(
+                          color: const Color(0xFF6366F1).withValues(alpha: 0.1),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ]
+                    : null,
               ),
               child: ListTile(
                 leading: Container(
@@ -162,9 +177,17 @@ class AppSidebar extends StatelessWidget {
                   height: 32,
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? const Color(0xFF6366F1).withValues(alpha: 0.2)
+                        ? const Color(0xFF6366F1).withValues(alpha: 0.3)
                         : const Color(0xFF6366F1).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
+                    border: isSelected
+                        ? Border.all(
+                            color: const Color(
+                              0xFF6366F1,
+                            ).withValues(alpha: 0.4),
+                            width: 1,
+                          )
+                        : null,
                   ),
                   child: Center(
                     child: Text(
@@ -177,9 +200,15 @@ class AppSidebar extends StatelessWidget {
                   page.title,
                   style: TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                     color: isSelected
-                        ? const Color(0xFF6366F1)
+                        ? (Theme.of(context).brightness == Brightness.dark
+                              ? const Color(
+                                  0xFF818CF8,
+                                ) // Lighter blue for dark theme
+                              : const Color(
+                                  0xFF6366F1,
+                                )) // Original blue for light theme
                         : AppTheme.getTextPrimary(context),
                   ),
                 ),

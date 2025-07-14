@@ -134,36 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildEmbeddedHeader(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(24),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              'Zoey',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.getTextPrimary(context),
-              ),
-            ),
-          ),
-          // Add new page button for desktop
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xFF8B5CF6),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: GestureDetector(
-              onTap: () => _createNewPage(context),
-              child: const Icon(
-                Icons.add_rounded,
-                color: Colors.white,
-                size: 20,
-              ),
-            ),
-          ),
-        ],
-      ),
+      child: const SizedBox.shrink(), // Just spacing without content
     );
   }
 
