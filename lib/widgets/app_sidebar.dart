@@ -223,6 +223,7 @@ class AppSidebar extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       )
                     : null,
+
                 onTap: () {
                   if (!isPersistent) {
                     Navigator.of(context).pop(); // Close drawer on mobile

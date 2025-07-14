@@ -10,6 +10,7 @@ class ZoePage {
   final DateTime updatedAt;
   final String? emoji;
   final String? coverImage;
+  final bool isWhatsAppConnected;
 
   ZoePage({
     String? id,
@@ -20,6 +21,7 @@ class ZoePage {
     DateTime? updatedAt,
     this.emoji,
     this.coverImage,
+    this.isWhatsAppConnected = false,
   }) : id = id ?? const Uuid().v4(),
        contentBlocks = contentBlocks ?? [],
        createdAt = createdAt ?? DateTime.now(),
@@ -35,6 +37,7 @@ class ZoePage {
       'updatedAt': updatedAt.toIso8601String(),
       'emoji': emoji,
       'coverImage': coverImage,
+      'isWhatsAppConnected': isWhatsAppConnected,
     };
   }
 
@@ -45,6 +48,7 @@ class ZoePage {
     DateTime? updatedAt,
     String? emoji,
     String? coverImage,
+    bool? isWhatsAppConnected,
   }) {
     return ZoePage(
       id: id,
@@ -55,6 +59,7 @@ class ZoePage {
       updatedAt: updatedAt ?? DateTime.now(),
       emoji: emoji ?? this.emoji,
       coverImage: coverImage ?? this.coverImage,
+      isWhatsAppConnected: isWhatsAppConnected ?? this.isWhatsAppConnected,
     );
   }
 

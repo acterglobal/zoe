@@ -6,6 +6,7 @@ import '../common/models/page.dart';
 import '../common/models/content_block.dart';
 import '../common/theme/app_theme.dart';
 import '../widgets/content_block_widget.dart';
+import '../widgets/whatsapp_integration_bottomsheet.dart';
 
 class PageDetailScreen extends StatefulWidget {
   final ZoePage? page;
@@ -129,6 +130,30 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
                   ),
                 ],
               ),
+            ),
+          ),
+          // WhatsApp Integration button
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: IconButton(
+              onPressed: _showWhatsAppIntegration,
+              style: IconButton.styleFrom(
+                backgroundColor: _currentPage.isWhatsAppConnected
+                    ? const Color(0xFF25D366).withValues(alpha: 0.1)
+                    : AppTheme.getSurfaceVariant(context),
+                foregroundColor: _currentPage.isWhatsAppConnected
+                    ? const Color(0xFF25D366)
+                    : AppTheme.getTextSecondary(context),
+                padding: const EdgeInsets.all(8),
+                minimumSize: const Size(40, 40),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              icon: _buildWhatsAppIcon(),
+              tooltip: _currentPage.isWhatsAppConnected
+                  ? 'WhatsApp Connected'
+                  : 'Connect to WhatsApp',
             ),
           ),
           // More menu (always visible)
@@ -589,6 +614,53 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Page duplicated successfully')),
+    );
+  }
+
+  void _showWhatsAppIntegration() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => WhatsAppIntegrationBottomSheet(
+        currentPage: _currentPage,
+        onConnectionChanged: (isConnected) {
+          setState(() {
+            _currentPage = _currentPage.copyWith(
+              isWhatsAppConnected: isConnected,
+            );
+          });
+
+          // Update the page in app state if it has been saved
+          if (_hasBeenSaved) {
+            final appState = Provider.of<AppStateProvider>(
+              context,
+              listen: false,
+            );
+            appState.updatePage(_currentPage);
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildWhatsAppIcon() {
+    final color = _currentPage.isWhatsAppConnected
+        ? const Color(0xFF25D366)
+        : AppTheme.getTextSecondary(context);
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Background circle (WhatsApp green or gray)
+        Container(
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        ),
+        // Phone icon in white
+        Icon(Icons.phone_rounded, size: 12, color: Colors.white),
+      ],
     );
   }
 }

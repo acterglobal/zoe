@@ -34,6 +34,7 @@ class AppStateProvider extends ChangeNotifier {
         title: 'Getting Started Guide',
         description: 'Learn how to use Zoey effectively',
         emoji: '🚀',
+        isWhatsAppConnected: true,
         contentBlocks: [
           TextBlock(
             title: 'Welcome to Zoey!',
