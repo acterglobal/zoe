@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import '../common/models/content_block.dart';
 import '../common/theme/app_theme.dart';
@@ -27,7 +28,9 @@ class ContentBlockWidget extends StatefulWidget {
 
 class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   bool _isHovered = false;
-  bool _isMobile = false;
+  bool get _isTouchDevice =>
+      defaultTargetPlatform == TargetPlatform.iOS ||
+      defaultTargetPlatform == TargetPlatform.android;
 
   // Text controllers for managing cursor position
   late TextEditingController _titleController;
@@ -40,12 +43,6 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   void initState() {
     super.initState();
     _initializeControllers();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _isMobile = MediaQuery.of(context).size.width < 600;
   }
 
   @override
@@ -239,10 +236,10 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Drag handle (visible on hover or always on mobile, only in edit mode)
+                // Drag handle (visible on hover or always on touch devices, only in edit mode)
                 if (widget.isEditing)
                   AnimatedOpacity(
-                    opacity: (_isHovered || _isMobile) ? 1.0 : 0.0,
+                    opacity: (_isHovered || _isTouchDevice) ? 1.0 : 0.0,
                     duration: const Duration(milliseconds: 200),
                     child: ReorderableDragStartListener(
                       index: _getBlockIndex(),
@@ -273,10 +270,10 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 // Block title (editable in edit mode, read-only in view mode)
                 Expanded(child: _buildBlockTitle()),
 
-                // Delete button (visible on hover or always on mobile, only in edit mode)
+                // Delete button (visible on hover or always on touch devices, only in edit mode)
                 if (widget.isEditing)
                   AnimatedOpacity(
-                    opacity: (_isHovered || _isMobile) ? 1.0 : 0.0,
+                    opacity: (_isHovered || _isTouchDevice) ? 1.0 : 0.0,
                     duration: const Duration(milliseconds: 200),
                     child: IconButton(
                       icon: const Icon(Icons.delete_outline, size: 16),
@@ -284,10 +281,10 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                       onPressed: widget.onDelete,
                       padding: EdgeInsets.zero,
                       constraints: BoxConstraints(
-                        minWidth: _isMobile
+                        minWidth: _isTouchDevice
                             ? 32
-                            : 24, // Larger touch target on mobile
-                        minHeight: _isMobile ? 32 : 24,
+                            : 24, // Larger touch target on touch devices
+                        minHeight: _isTouchDevice ? 32 : 24,
                       ),
                     ),
                   ),
@@ -648,7 +645,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 ),
 
                 // Delete todo button (only in edit mode)
-                if (widget.isEditing && (_isHovered || _isMobile))
+                if (widget.isEditing && (_isHovered || _isTouchDevice))
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
                     color: AppTheme.getTextSecondary(context),
@@ -660,8 +657,8 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     },
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints(
-                      minWidth: _isMobile ? 28 : 20,
-                      minHeight: _isMobile ? 28 : 20,
+                      minWidth: _isTouchDevice ? 28 : 20,
+                      minHeight: _isTouchDevice ? 28 : 20,
                     ),
                   ),
               ],
@@ -949,7 +946,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 ),
 
                 // Delete event button (only in edit mode)
-                if (widget.isEditing && (_isHovered || _isMobile))
+                if (widget.isEditing && (_isHovered || _isTouchDevice))
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
                     color: AppTheme.getTextSecondary(context),
@@ -961,8 +958,8 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     },
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints(
-                      minWidth: _isMobile ? 28 : 20,
-                      minHeight: _isMobile ? 28 : 20,
+                      minWidth: _isTouchDevice ? 28 : 20,
+                      minHeight: _isTouchDevice ? 28 : 20,
                     ),
                   ),
               ],
@@ -1066,7 +1063,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 ),
 
                 // Delete list item button (only in edit mode)
-                if (widget.isEditing && (_isHovered || _isMobile))
+                if (widget.isEditing && (_isHovered || _isTouchDevice))
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
                     color: AppTheme.getTextSecondary(context),
@@ -1077,8 +1074,8 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     },
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints(
-                      minWidth: _isMobile ? 28 : 20,
-                      minHeight: _isMobile ? 28 : 20,
+                      minWidth: _isTouchDevice ? 28 : 20,
+                      minHeight: _isTouchDevice ? 28 : 20,
                     ),
                   ),
               ],
@@ -1172,7 +1169,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
       return 0; // No padding for text blocks in view mode
     }
     // Other blocks or text blocks in edit mode get normal padding
-    return _isMobile ? 20 : 28;
+    return _isTouchDevice ? 20 : 28;
   }
 
   Color _getPriorityColor(TodoPriority priority) {
