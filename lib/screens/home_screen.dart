@@ -536,116 +536,274 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: AppTheme.getSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.getBorder(context)),
-      ),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              // Find the todo block containing this task and update it
-              for (final block in page.contentBlocks) {
-                if (block.type == ContentBlockType.todo) {
-                  final todoBlock = block as TodoBlock;
-                  final todoIndex = todoBlock.items.indexWhere(
-                    (item) => item.id == task.id,
-                  );
-
-                  if (todoIndex != -1) {
-                    // Create updated todo with toggled completion status
-                    final updatedTodo = task.copyWith(
-                      isCompleted: !task.isCompleted,
-                    );
-
-                    // Create updated items list
-                    final updatedItems = List<TodoItem>.from(todoBlock.items);
-                    updatedItems[todoIndex] = updatedTodo;
-
-                    // Create updated block
-                    final updatedBlock = todoBlock.copyWith(
-                      items: updatedItems,
-                    );
-
-                    // Update the page
-                    page.updateContentBlock(block.id, updatedBlock);
-
-                    // Save the page
-                    final updatedPage = page.copyWith(
-                      updatedAt: DateTime.now(),
-                    );
-                    appStateProvider.updatePage(updatedPage);
-
-                    break;
-                  }
-                }
-              }
-            },
-            child: Container(
-              padding: const EdgeInsets.all(
-                2,
-              ), // Add padding for better tap area
-              child: Container(
-                width: 18,
-                height: 18,
-                decoration: BoxDecoration(
-                  color: task.isCompleted ? Colors.green : Colors.transparent,
-                  borderRadius: BorderRadius.circular(9),
-                  border: Border.all(
-                    color: task.isCompleted
-                        ? Colors.green
-                        : Colors.grey.shade400,
-                    width: 2,
-                  ),
-                ),
-                child: task.isCompleted
-                    ? Icon(Icons.check, color: Colors.white, size: 12)
-                    : null,
-              ),
-            ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: task.isCompleted
+              ? Colors.green.withValues(alpha: 0.2)
+              : AppTheme.getBorder(context),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: task.isCompleted
+                ? Colors.green.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () {
+            // Navigate to page detail
+            final navigationProvider = Provider.of<NavigationProvider>(
+              context,
+              listen: false,
+            );
+            navigationProvider.navigateToPage(page);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
               children: [
-                Text(
-                  task.text,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: task.isCompleted
-                        ? AppTheme.getTextSecondary(context)
-                        : AppTheme.getTextPrimary(context),
-                    decoration: task.isCompleted
-                        ? TextDecoration.lineThrough
-                        : null,
+                // Enhanced checkbox with better design
+                GestureDetector(
+                  onTap: () {
+                    // Find the todo block containing this task and update it
+                    for (final block in page.contentBlocks) {
+                      if (block.type == ContentBlockType.todo) {
+                        final todoBlock = block as TodoBlock;
+                        final todoIndex = todoBlock.items.indexWhere(
+                          (item) => item.id == task.id,
+                        );
+
+                        if (todoIndex != -1) {
+                          // Create updated todo with toggled completion status
+                          final updatedTodo = task.copyWith(
+                            isCompleted: !task.isCompleted,
+                          );
+
+                          // Create updated items list
+                          final updatedItems = List<TodoItem>.from(
+                            todoBlock.items,
+                          );
+                          updatedItems[todoIndex] = updatedTodo;
+
+                          // Create updated block
+                          final updatedBlock = todoBlock.copyWith(
+                            items: updatedItems,
+                          );
+
+                          // Update the page
+                          page.updateContentBlock(block.id, updatedBlock);
+
+                          // Save the page
+                          final updatedPage = page.copyWith(
+                            updatedAt: DateTime.now(),
+                          );
+                          appStateProvider.updatePage(updatedPage);
+
+                          break;
+                        }
+                      }
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        color: task.isCompleted
+                            ? Colors.green
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(11),
+                        border: Border.all(
+                          color: task.isCompleted
+                              ? Colors.green
+                              : Colors.grey.shade400,
+                          width: 2,
+                        ),
+                        boxShadow: task.isCompleted
+                            ? [
+                                BoxShadow(
+                                  color: Colors.green.withValues(alpha: 0.3),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ]
+                            : null,
+                      ),
+                      child: task.isCompleted
+                          ? Icon(Icons.check, color: Colors.white, size: 14)
+                          : null,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      '${page.emoji ?? '📄'} ${page.title}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppTheme.getTextSecondary(context),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    if (task.dueDate != null) ...[
-                      const SizedBox(width: 8),
+
+                const SizedBox(width: 16),
+
+                // Enhanced content area
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Task title
                       Text(
-                        '• Due ${_formatDate(task.dueDate!)}',
+                        task.text,
                         style: TextStyle(
-                          fontSize: 12,
-                          color: _isOverdue(task.dueDate!)
-                              ? Colors.red
-                              : AppTheme.getTextSecondary(context),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: task.isCompleted
+                              ? AppTheme.getTextSecondary(context)
+                              : AppTheme.getTextPrimary(context),
+                          decoration: task.isCompleted
+                              ? TextDecoration.lineThrough
+                              : null,
+                          height: 1.3,
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      // Page and due date info
+                      Row(
+                        children: [
+                          // Page indicator
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(
+                                0xFF6366F1,
+                              ).withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  page.emoji ?? '📄',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  page.title,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xFF6366F1),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          if (task.dueDate != null) ...[
+                            const SizedBox(width: 12),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: _isOverdue(task.dueDate!)
+                                    ? Colors.red.withValues(alpha: 0.1)
+                                    : Colors.orange.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.schedule,
+                                    size: 12,
+                                    color: _isOverdue(task.dueDate!)
+                                        ? Colors.red
+                                        : Colors.orange,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    _formatDate(task.dueDate!),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: _isOverdue(task.dueDate!)
+                                          ? Colors.red
+                                          : Colors.orange,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Priority and status indicators
+                Column(
+                  children: [
+                    if (task.priority == TodoPriority.urgent) ...[
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.red.withValues(alpha: 0.8),
+                              Colors.red,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.red.withValues(alpha: 0.3),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.priority_high,
+                              color: Colors.white,
+                              size: 12,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              'URGENT',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ] else ...[
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 14,
+                        color: AppTheme.getTextSecondary(context),
                       ),
                     ],
                   ],
@@ -653,23 +811,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          if (task.priority == TodoPriority.urgent)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: Colors.red.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Text(
-                'Urgent',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.red,
-                ),
-              ),
-            ),
-        ],
+        ),
       ),
     );
   }
@@ -677,87 +819,242 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildEventItem(BuildContext context, EventWithPage eventWithPage) {
     final event = eventWithPage.event;
     final page = eventWithPage.page;
+    final isEventSoon = _isEventSoon(event.startTime);
+    final eventColor = isEventSoon ? Colors.orange : const Color(0xFF3B82F6);
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: AppTheme.getSurface(context),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppTheme.getBorder(context)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 3,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(2),
-            ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () {
+            // Navigate to page detail
+            final navigationProvider = Provider.of<NavigationProvider>(
+              context,
+              listen: false,
+            );
+            navigationProvider.navigateToPage(page);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  event.title,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.getTextPrimary(context),
+                // Enhanced time indicator
+                Container(
+                  width: 64,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: eventColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: eventColor.withValues(alpha: 0.3),
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              _formatTimeHour(event.startTime),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                                color: eventColor,
+                                height: 1.0,
+                              ),
+                            ),
+                            Text(
+                              _formatTimePeriod(event.startTime),
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: eventColor.withValues(alpha: 0.8),
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppTheme.getTextSecondary(
+                            context,
+                          ).withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          _getEventDuration(event),
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.getTextSecondary(context),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  '${page.emoji ?? '📄'} ${page.title}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.getTextSecondary(context),
-                    fontWeight: FontWeight.w500,
+
+                // Enhanced accent line with dot
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: eventColor,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: eventColor.withValues(alpha: 0.4),
+                              blurRadius: 4,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 2,
+                        height: 32,
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              eventColor,
+                              eventColor.withValues(alpha: 0.3),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(1),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  _formatEventTime(event),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.getTextSecondary(context),
+
+                // Content area
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Event title
+                      Text(
+                        event.title,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.getTextPrimary(context),
+                          height: 1.2,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      // Page and location info
+                      Row(
+                        children: [
+                          // Page indicator
+                          Text(
+                            '${page.emoji ?? '📄'} ${page.title}',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.getTextSecondary(context),
+                            ),
+                          ),
+
+                          if (event.location?.physical?.isNotEmpty == true) ...[
+                            Text(
+                              ' • ',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: AppTheme.getTextSecondary(context),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                event.location!.physical!,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.getTextSecondary(context),
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                if (event.location?.physical?.isNotEmpty == true) ...[
-                  const SizedBox(height: 2),
-                  Text(
-                    event.location!.physical!,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: AppTheme.getTextSecondary(context),
+
+                // Status badge
+                if (isEventSoon) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
                     ),
+                    decoration: BoxDecoration(
+                      color: Colors.orange.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: Colors.orange.withValues(alpha: 0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Text(
+                      'Soon',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ),
+                ] else ...[
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 14,
+                    color: AppTheme.getTextSecondary(context),
                   ),
                 ],
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: _isEventSoon(event.startTime)
-                  ? Colors.orange.withValues(alpha: 0.1)
-                  : Colors.blue.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              _isEventSoon(event.startTime) ? 'Soon' : 'Today',
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
-                color: _isEventSoon(event.startTime)
-                    ? Colors.orange
-                    : Colors.blue,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -1005,5 +1302,43 @@ class _HomeScreenState extends State<HomeScreen> {
     final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
 
     return '$displayHour:${minute.toString().padLeft(2, '0')} $period';
+  }
+
+  String _formatEventTimeShort(DateTime time) {
+    final hour = time.hour;
+    if (hour < 12) return 'AM';
+    return 'PM';
+  }
+
+  String _getEventDuration(EventItem event) {
+    if (event.endTime == null) return '1h';
+
+    final duration = event.endTime!.difference(event.startTime);
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes % 60;
+
+    if (hours == 0) {
+      return '${minutes}m';
+    } else if (minutes == 0) {
+      return '${hours}h';
+    } else {
+      return '${hours}h ${minutes}m';
+    }
+  }
+
+  String _formatTimeHour(DateTime time) {
+    final hour = time.hour;
+    final minute = time.minute;
+    final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+
+    if (minute == 0) {
+      return displayHour.toString();
+    } else {
+      return '$displayHour:${minute.toString().padLeft(2, '0')}';
+    }
+  }
+
+  String _formatTimePeriod(DateTime time) {
+    return time.hour >= 12 ? 'PM' : 'AM';
   }
 }
