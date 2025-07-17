@@ -16,51 +16,25 @@ class FeatureItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
-    return Container(
+    return Card(
       margin: const EdgeInsets.only(bottom: 16),
-      child: Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: BorderSide(
-            color: colorScheme.outline.withValues(alpha: 0.1),
-            width: 1,
-          ),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                colorScheme.surface,
-                colorScheme.surface.withValues(alpha: 0.8),
-              ],
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              children: [
-                _buildIconContainer(context, colorScheme, isDark),
-                const SizedBox(width: 16),
-                Expanded(child: _buildContent(context, theme)),
-              ],
-            ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(20),
+        leading: _buildIconContainer(context, colorScheme),
+        title: Text(title, style: theme.textTheme.titleMedium),
+        subtitle: Text(
+          description,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurface.withValues(alpha: 0.7),
+            height: 1.4,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildIconContainer(
-    BuildContext context,
-    ColorScheme colorScheme,
-    bool isDark,
-  ) {
+  Widget _buildIconContainer(BuildContext context, ColorScheme colorScheme) {
     return Container(
       width: 56,
       height: 56,
@@ -80,29 +54,6 @@ class FeatureItem extends StatelessWidget {
         ),
       ),
       child: Icon(icon, color: colorScheme.primary, size: 28),
-    );
-  }
-
-  Widget _buildContent(BuildContext context, ThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          description,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-            height: 1.4,
-          ),
-        ),
-      ],
     );
   }
 }
