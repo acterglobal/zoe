@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/routing/app_router.dart';
 import 'core/rust/frb_generated.dart';
-import 'common/providers/app_state_provider.dart';
 import 'common/providers/settings_provider.dart';
 
 Future<void> main() async {
@@ -17,7 +16,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
-    final appState = ref.watch(appStateProvider);
+    final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
       title: 'Zoey',
@@ -61,7 +60,7 @@ class MyApp extends ConsumerWidget {
         ),
       ),
       themeMode: settings.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      routerConfig: AppRouter.createRouter(appState),
+      routerConfig: router,
     );
   }
 }
