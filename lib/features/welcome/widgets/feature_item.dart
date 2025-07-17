@@ -23,13 +23,7 @@ class FeatureItem extends StatelessWidget {
         contentPadding: const EdgeInsets.all(20),
         leading: _buildIconContainer(context, colorScheme),
         title: Text(title, style: theme.textTheme.titleMedium),
-        subtitle: Text(
-          description,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: colorScheme.onSurface.withValues(alpha: 0.7),
-            height: 1.4,
-          ),
-        ),
+        subtitle: Text(description, style: theme.textTheme.titleSmall),
       ),
     );
   }
@@ -43,13 +37,13 @@ class FeatureItem extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            colorScheme.primary.withValues(alpha: 0.1),
-            colorScheme.primary.withValues(alpha: 0.05),
+            colorScheme.primary.withValues(alpha: 0.07),
+            colorScheme.primary.withValues(alpha: 0.02),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: colorScheme.primary.withValues(alpha: 0.1),
+          color: colorScheme.primary.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
