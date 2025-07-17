@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/core/theme/app_theme.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
@@ -17,35 +16,39 @@ class SheetMoreMenuWidget extends ConsumerWidget {
         Icons.more_vert_rounded,
         color: Theme.of(context).colorScheme.onSurface,
       ),
-      onSelected: (value) => _handleMenuSelection(context, ref, value),
+      onSelected: (value) {
+        final currentSheet = ref.watch(sheetProvider(sheetId));
+        switch (value) {
+          case 'Duplicate':
+            duplicateSheet(context, ref, currentSheet: currentSheet);
+            break;
+          case 'Delete':
+            showDeleteSheetDialog(context, ref, sheetId: sheetId);
+            break;
+        }
+      },
       itemBuilder: (context) => [
         _buildMenuItem(
-          context,
-          'duplicate',
           Icons.copy_rounded,
           'Duplicate',
-          AppTheme.getTextSecondary(context),
+          Theme.of(context).colorScheme.onSurface,
         ),
         _buildMenuItem(
-          context,
-          'delete',
           Icons.delete_rounded,
           'Delete',
-          const Color(0xFFEF4444),
+          Theme.of(context).colorScheme.error,
         ),
       ],
     );
   }
 
   PopupMenuItem<String> _buildMenuItem(
-    BuildContext context,
-    String value,
     IconData icon,
     String text,
     Color color,
   ) {
     return PopupMenuItem(
-      value: value,
+      value: text,
       child: Row(
         children: [
           Icon(icon, size: 16, color: color),
@@ -54,17 +57,5 @@ class SheetMoreMenuWidget extends ConsumerWidget {
         ],
       ),
     );
-  }
-
-  void _handleMenuSelection(BuildContext context, WidgetRef ref, String value) {
-    final currentSheet = ref.watch(sheetProvider(sheetId));
-    switch (value) {
-      case 'delete':
-        showDeleteSheetDialog(context, ref, sheetId: sheetId);
-        break;
-      case 'duplicate':
-        duplicateSheet(context, ref, currentSheet: currentSheet);
-        break;
-    }
   }
 }
