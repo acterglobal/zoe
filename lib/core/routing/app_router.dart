@@ -67,16 +67,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SettingsScreen(),
       ),
     ],
-    errorBuilder: (context, state) => Scaffold(
-      appBar: AppBar(
-        title: const Text('Page Not Found'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => context.go(AppRoutes.home.route),
-        ),
-      ),
-      body: Center(child: Text('Page Not Found')),
-    ),
+    errorBuilder: (context, state) => const RouteNotFoundScreen(),
   );
 });
 
@@ -84,3 +75,22 @@ final routerProvider = Provider<GoRouter>((ref) {
 final navigatorKeyProvider = Provider<GlobalKey<NavigatorState>>((ref) {
   return _rootNavigatorKey;
 });
+
+// Helper screen to display when a route is not found
+class RouteNotFoundScreen extends StatelessWidget {
+  const RouteNotFoundScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Route Not Found'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => context.go(AppRoutes.home.route),
+        ),
+      ),
+      body: Center(child: Text('Route Not Found')),
+    );
+  }
+}
