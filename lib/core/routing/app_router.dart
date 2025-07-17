@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/models/page.dart';
 import '../../common/providers/app_state_provider.dart';
 import 'app_routes.dart';
-import '../../features/home/home_screen.dart';
+import '../../features/home/screens/home_screen.dart';
 import '../../features/sheet/page_detail_screen.dart';
-import '../../features/settings/settings_screen.dart';
-import '../../features/welcome/welcome_screen.dart';
+import '../../features/settings/screens/settings_screen.dart';
+import '../../features/welcome/screens/welcome_screen.dart';
 
 // Global navigator key for accessing the router
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
