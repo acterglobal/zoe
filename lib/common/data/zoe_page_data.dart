@@ -1,0 +1,107 @@
+import 'package:zoey/common/models/content_block.dart';
+import 'package:zoey/common/models/page.dart';
+
+final gettingStartedPage = ZoePage(
+  title: 'Getting Started Guide',
+  description: 'Learn how to use Zoey effectively',
+  emoji: '🚀',
+  isWhatsAppConnected: true,
+  contentBlocks: [
+    TextBlock(
+      title: 'Welcome to Zoey!',
+      content:
+          'Zoey is your personal workspace for organizing thoughts, tasks, and ideas. This guide will help you understand all the features and get the most out of your experience.',
+    ),
+    ListBlock(
+      title: 'Key Features Overview',
+      items: [
+        '📄 Create unlimited pages with custom titles and emojis',
+        '📝 Add different content blocks: text, tasks, events, and lists',
+        '✏️ Edit content inline by tapping on any text',
+        '🎨 Customize pages with emojis and descriptions',
+        '📱 Access everything from the home dashboard',
+        '🔍 Quick actions for common tasks',
+      ],
+    ),
+    TodoBlock(
+      title: 'Quick Start Checklist',
+      items: [
+        TodoItem(
+          text: 'Explore this Getting Started page',
+          isCompleted: true,
+          priority: TodoPriority.high,
+          description: 'Read through this guide to understand Zoey\'s features',
+          tags: ['tutorial', 'getting-started'],
+        ),
+        TodoItem(
+          text: 'Check out the Productivity Workspace example',
+          isCompleted: false,
+          priority: TodoPriority.high,
+          description:
+              'See how to organize a real project with tasks and events',
+          tags: ['tutorial', 'example'],
+        ),
+        TodoItem(
+          text: 'Create your first custom page',
+          isCompleted: false,
+          priority: TodoPriority.medium,
+          dueDate: DateTime.now().add(const Duration(hours: 2)),
+          description: 'Try creating a page for a personal project or goal',
+          tags: ['hands-on', 'practice'],
+        ),
+        TodoItem(
+          text: 'Add different content blocks',
+          isCompleted: false,
+          priority: TodoPriority.medium,
+          description: 'Experiment with text, tasks, events, and lists',
+          tags: ['practice', 'content-blocks'],
+        ),
+        TodoItem(
+          text: 'Customize your workspace',
+          isCompleted: false,
+          priority: TodoPriority.low,
+          dueDate: DateTime.now().add(const Duration(days: 1)),
+          description: 'Add emojis, organize pages, and make it your own',
+          tags: ['customization', 'personal'],
+        ),
+      ],
+    ),
+    TextBlock(
+      title: 'How to Use Content Blocks',
+      content:
+          'Content blocks are the building blocks of your pages. Tap the + button to add new blocks:\n\n• Text Blocks: For notes, ideas, and documentation\n• Task Lists: For to-dos with priorities and due dates\n• Event Blocks: For scheduling and calendar items\n• List Blocks: For simple bullet points and collections\n\nYou can drag and drop blocks to reorder them, and edit any text by tapping on it.',
+    ),
+    EventBlock(
+      title: 'Learning Schedule',
+      events: [
+        EventItem(
+          title: 'Explore Getting Started Guide',
+          description: 'Read through this guide and try the features',
+          startTime: DateTime.now(),
+          endTime: DateTime.now().add(const Duration(minutes: 30)),
+          location: EventLocation(physical: 'Your current location'),
+          requiresRSVP: false,
+        ),
+        EventItem(
+          title: 'Practice Session',
+          description: 'Create your first custom page and add content',
+          startTime: DateTime.now().add(const Duration(hours: 1)),
+          endTime: DateTime.now().add(const Duration(hours: 2)),
+          location: EventLocation(physical: 'Anywhere you\'re comfortable'),
+          requiresRSVP: false,
+        ),
+      ],
+    ),
+    ListBlock(
+      title: 'Pro Tips',
+      items: [
+        'Use emojis to quickly identify different types of pages',
+        'Set due dates on tasks to stay organized',
+        'Add descriptions to tasks for more context',
+        'Use tags to categorize and find content later',
+        'Check the home dashboard for today\'s priorities',
+        'The drawer menu shows all your pages for quick access',
+      ],
+    ),
+  ],
+);
