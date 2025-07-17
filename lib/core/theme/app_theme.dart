@@ -3,6 +3,7 @@ import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/core/theme/colors/colors_cheme.dart';
 import 'package:zoey/core/theme/components/app_bar_theme_data.dart';
 import 'package:zoey/core/theme/components/button_theme_data.dart';
+import 'package:zoey/core/theme/components/floating_action_button_theme_data.dart';
 import 'package:zoey/core/theme/components/text_theme_data.dart';
 
 class AppTheme {
@@ -12,6 +13,7 @@ class AppTheme {
       brightness: Brightness.light,
       colorScheme: lightColorScheme,
       scaffoldBackgroundColor: AppColors.lightBackground,
+      floatingActionButtonTheme: floatingActionButtonTheme(darkColorScheme),
       appBarTheme: appBarTheme(lightColorScheme),
       dividerTheme: DividerThemeData(
         color: lightColorScheme.onSurface.withValues(alpha: 0.1),
@@ -29,6 +31,7 @@ class AppTheme {
       brightness: Brightness.dark,
       colorScheme: darkColorScheme,
       scaffoldBackgroundColor: AppColors.darkBackground,
+      floatingActionButtonTheme: floatingActionButtonTheme(darkColorScheme),
       appBarTheme: appBarTheme(darkColorScheme),
       dividerTheme: DividerThemeData(
         color: darkColorScheme.onSurface.withValues(alpha: 0.1),
