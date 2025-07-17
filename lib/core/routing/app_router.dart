@@ -69,35 +69,13 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
     errorBuilder: (context, state) => Scaffold(
       appBar: AppBar(
-        title: const Text('Sheet Not Found'),
+        title: const Text('Page Not Found'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.go(AppRoutes.home.route),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 64, color: Colors.grey),
-            const SizedBox(height: 16),
-            const Text(
-              'Sheet Not Found',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'The sheet you requested could not be found.',
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () => context.go(AppRoutes.home.route),
-              child: const Text('Go Home'),
-            ),
-          ],
-        ),
-      ),
+      body: Center(child: Text('Page Not Found')),
     ),
   );
 });
