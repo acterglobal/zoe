@@ -67,10 +67,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
     return Text(
       'Your personal workspace for organizing thoughts, tasks, and ideas with beautiful simplicity.',
       textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-        height: 1.5,
-      ),
+      style: Theme.of(context).textTheme.bodyLarge,
     );
   }
 
@@ -83,15 +80,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
           sheetListNotifier.initializeWithSampleData();
           context.go(AppRoutes.home.route);
         },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Text(
-            'Get Started',
-            style: Theme.of(
-              context,
-            ).textTheme.labelLarge!.copyWith(color: Colors.white),
-          ),
-        ),
+        child: const Text('Get Started'),
       ),
     );
   }

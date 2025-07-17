@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/core/theme/colors/colors_cheme.dart';
 import 'package:zoey/core/theme/components/button_theme_data.dart';
+import 'package:zoey/core/theme/components/text_theme_data.dart';
 
 class AppTheme {
   static ThemeData get lightTheme {
@@ -11,6 +12,7 @@ class AppTheme {
       colorScheme: lightColorScheme,
       scaffoldBackgroundColor: AppColors.lightBackground,
       elevatedButtonTheme: elevatedButtonTheme(lightColorScheme),
+      textTheme: textTheme(lightColorScheme),
     );
   }
 
@@ -21,6 +23,7 @@ class AppTheme {
       colorScheme: darkColorScheme,
       scaffoldBackgroundColor: AppColors.darkBackground,
       elevatedButtonTheme: elevatedButtonTheme(darkColorScheme),
+      textTheme: textTheme(darkColorScheme),
     );
   }
 
