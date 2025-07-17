@@ -3,7 +3,7 @@ import '../../core/theme/app_theme.dart';
 import '../models/zoe_sheet_model.dart';
 
 class WhatsAppIntegrationBottomSheet extends StatefulWidget {
-  final ZoeSheet currentSheet;
+  final ZoeSheetModel currentSheet;
   final Function(bool isConnected) onConnectionChanged;
 
   const WhatsAppIntegrationBottomSheet({

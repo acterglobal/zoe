@@ -1,22 +1,26 @@
 import 'package:uuid/uuid.dart';
-import 'content_block.dart';
+import 'package:zoey/common/models/content_block/Todo_block_model.dart';
+import 'package:zoey/common/models/content_block/event_block_model.dart';
+import 'package:zoey/common/models/content_block/list_block_model.dart';
+import 'package:zoey/common/models/content_block/text_block_model.dart';
+import 'content_block/content_block.dart';
 
-class ZoeSheet {
+class ZoeSheetModel {
   final String id;
   final String title;
   final String description;
-  final List<ContentBlock> contentBlocks;
+  final List<ContentBlockModel> contentBlocks;
   final DateTime createdAt;
   final DateTime updatedAt;
   final String? emoji;
   final String? coverImage;
   final bool isWhatsAppConnected;
 
-  ZoeSheet({
+  ZoeSheetModel({
     String? id,
     required this.title,
     this.description = '',
-    List<ContentBlock>? contentBlocks,
+    List<ContentBlockModel>? contentBlocks,
     DateTime? createdAt,
     DateTime? updatedAt,
     this.emoji,
@@ -41,16 +45,16 @@ class ZoeSheet {
     };
   }
 
-  ZoeSheet copyWith({
+  ZoeSheetModel copyWith({
     String? title,
     String? description,
-    List<ContentBlock>? contentBlocks,
+    List<ContentBlockModel>? contentBlocks,
     DateTime? updatedAt,
     String? emoji,
     String? coverImage,
     bool? isWhatsAppConnected,
   }) {
-    return ZoeSheet(
+    return ZoeSheetModel(
       id: id,
       title: title ?? this.title,
       description: description ?? this.description,
@@ -64,7 +68,7 @@ class ZoeSheet {
   }
 
   // Helper methods for content blocks
-  void addContentBlock(ContentBlock block) {
+  void addContentBlock(ContentBlockModel block) {
     contentBlocks.add(block);
   }
 
@@ -72,7 +76,7 @@ class ZoeSheet {
     contentBlocks.removeWhere((block) => block.id == blockId);
   }
 
-  void updateContentBlock(String blockId, ContentBlock updatedBlock) {
+  void updateContentBlock(String blockId, ContentBlockModel updatedBlock) {
     final index = contentBlocks.indexWhere((block) => block.id == blockId);
     if (index != -1) {
       contentBlocks[index] = updatedBlock;
@@ -83,20 +87,20 @@ class ZoeSheet {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
-    final ContentBlock item = contentBlocks.removeAt(oldIndex);
+    final ContentBlockModel item = contentBlocks.removeAt(oldIndex);
     contentBlocks.insert(newIndex, item);
   }
 
   // Get specific types of content blocks
-  List<TodoBlock> get todoBlocks =>
-      contentBlocks.whereType<TodoBlock>().toList();
+  List<TodoBlockModel> get todoBlocks =>
+      contentBlocks.whereType<TodoBlockModel>().toList();
 
-  List<EventBlock> get eventBlocks =>
-      contentBlocks.whereType<EventBlock>().toList();
+  List<EventBlockModel> get eventBlocks =>
+      contentBlocks.whereType<EventBlockModel>().toList();
 
-  List<ListBlock> get listBlocks =>
-      contentBlocks.whereType<ListBlock>().toList();
+  List<ListBlockModel> get listBlocks =>
+      contentBlocks.whereType<ListBlockModel>().toList();
 
-  List<TextBlock> get textBlocks =>
-      contentBlocks.whereType<TextBlock>().toList();
+  List<TextBlockModel> get textBlocks =>
+      contentBlocks.whereType<TextBlockModel>().toList();
 }

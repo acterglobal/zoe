@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-import '../models/content_block.dart';
+import 'package:zoey/common/models/content_block/Todo_block_model.dart';
+import 'package:zoey/common/models/content_block/event_block_model.dart';
+import 'package:zoey/common/models/content_block/list_block_model.dart';
+import 'package:zoey/common/models/content_block/text_block_model.dart';
+import '../models/content_block/content_block.dart';
 import '../../core/theme/app_theme.dart';
 import 'task_editor_dialog.dart';
 import 'event_editor_dialog.dart';
 
 class ContentBlockWidget extends StatefulWidget {
-  final ContentBlock block;
+  final ContentBlockModel block;
   final int blockIndex;
   final bool isEditing;
-  final Function(ContentBlock) onUpdate;
+  final Function(ContentBlockModel) onUpdate;
   final VoidCallback onDelete;
 
   const ContentBlockWidget({
@@ -74,16 +78,16 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     String title = '';
     switch (widget.block.type) {
       case ContentBlockType.todo:
-        title = (widget.block as TodoBlock).title;
+        title = (widget.block as TodoBlockModel).title;
         break;
       case ContentBlockType.event:
-        title = (widget.block as EventBlock).title;
+        title = (widget.block as EventBlockModel).title;
         break;
       case ContentBlockType.list:
-        title = (widget.block as ListBlock).title;
+        title = (widget.block as ListBlockModel).title;
         break;
       case ContentBlockType.text:
-        title = (widget.block as TextBlock).title;
+        title = (widget.block as TextBlockModel).title;
         break;
     }
     _titleController = TextEditingController(text: title);
@@ -91,7 +95,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     // Initialize text block controller
     if (widget.block.type == ContentBlockType.text) {
       _textBlockController = TextEditingController(
-        text: (widget.block as TextBlock).content,
+        text: (widget.block as TextBlockModel).content,
       );
     } else {
       _textBlockController = TextEditingController();
@@ -106,16 +110,16 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     String title = '';
     switch (widget.block.type) {
       case ContentBlockType.todo:
-        title = (widget.block as TodoBlock).title;
+        title = (widget.block as TodoBlockModel).title;
         break;
       case ContentBlockType.event:
-        title = (widget.block as EventBlock).title;
+        title = (widget.block as EventBlockModel).title;
         break;
       case ContentBlockType.list:
-        title = (widget.block as ListBlock).title;
+        title = (widget.block as ListBlockModel).title;
         break;
       case ContentBlockType.text:
-        title = (widget.block as TextBlock).title;
+        title = (widget.block as TextBlockModel).title;
         break;
     }
 
@@ -129,7 +133,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
 
     // Update text block controller
     if (widget.block.type == ContentBlockType.text) {
-      final content = (widget.block as TextBlock).content;
+      final content = (widget.block as TextBlockModel).content;
       if (_textBlockController.text != content) {
         final selection = _textBlockController.selection;
         _textBlockController.text = content;
@@ -146,7 +150,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   void _updateItemControllers() {
     switch (widget.block.type) {
       case ContentBlockType.todo:
-        final block = widget.block as TodoBlock;
+        final block = widget.block as TodoBlockModel;
         // Clean up old controllers
         final oldIds = _todoControllers.keys.toSet();
         final newIds = block.items.map((item) => item.id).toSet();
@@ -168,7 +172,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         }
         break;
       case ContentBlockType.event:
-        final block = widget.block as EventBlock;
+        final block = widget.block as EventBlockModel;
         // Clean up old controllers
         final oldIds = _eventControllers.keys.toSet();
         final newIds = block.events.map((event) => event.id).toSet();
@@ -192,7 +196,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         }
         break;
       case ContentBlockType.list:
-        final block = widget.block as ListBlock;
+        final block = widget.block as ListBlockModel;
         // Clean up old controllers
         final oldIndices = _listControllers.keys.toSet();
         final newIndices = List.generate(
@@ -323,22 +327,22 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
           switch (widget.block.type) {
             case ContentBlockType.todo:
               widget.onUpdate(
-                (widget.block as TodoBlock).copyWith(title: value),
+                (widget.block as TodoBlockModel).copyWith(title: value),
               );
               break;
             case ContentBlockType.event:
               widget.onUpdate(
-                (widget.block as EventBlock).copyWith(title: value),
+                (widget.block as EventBlockModel).copyWith(title: value),
               );
               break;
             case ContentBlockType.list:
               widget.onUpdate(
-                (widget.block as ListBlock).copyWith(title: value),
+                (widget.block as ListBlockModel).copyWith(title: value),
               );
               break;
             case ContentBlockType.text:
               widget.onUpdate(
-                (widget.block as TextBlock).copyWith(title: value),
+                (widget.block as TextBlockModel).copyWith(title: value),
               );
               break;
           }
@@ -349,16 +353,16 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
       String title = '';
       switch (widget.block.type) {
         case ContentBlockType.todo:
-          title = (widget.block as TodoBlock).title;
+          title = (widget.block as TodoBlockModel).title;
           break;
         case ContentBlockType.event:
-          title = (widget.block as EventBlock).title;
+          title = (widget.block as EventBlockModel).title;
           break;
         case ContentBlockType.list:
-          title = (widget.block as ListBlock).title;
+          title = (widget.block as ListBlockModel).title;
           break;
         case ContentBlockType.text:
-          title = (widget.block as TextBlock).title;
+          title = (widget.block as TextBlockModel).title;
           break;
       }
 
@@ -381,17 +385,17 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   Widget _buildContent() {
     switch (widget.block.type) {
       case ContentBlockType.todo:
-        return _buildTodoBlock(widget.block as TodoBlock);
+        return _buildTodoBlock(widget.block as TodoBlockModel);
       case ContentBlockType.event:
-        return _buildEventBlock(widget.block as EventBlock);
+        return _buildEventBlock(widget.block as EventBlockModel);
       case ContentBlockType.list:
-        return _buildListBlock(widget.block as ListBlock);
+        return _buildListBlock(widget.block as ListBlockModel);
       case ContentBlockType.text:
-        return _buildTextBlock(widget.block as TextBlock);
+        return _buildTextBlock(widget.block as TextBlockModel);
     }
   }
 
-  Widget _buildTodoBlock(TodoBlock block) {
+  Widget _buildTodoBlock(TodoBlockModel block) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -695,7 +699,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     );
   }
 
-  Widget _buildEventBlock(EventBlock block) {
+  Widget _buildEventBlock(EventBlockModel block) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -996,7 +1000,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     );
   }
 
-  Widget _buildListBlock(ListBlock block) {
+  Widget _buildListBlock(ListBlockModel block) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1111,7 +1115,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     );
   }
 
-  Widget _buildTextBlock(TextBlock block) {
+  Widget _buildTextBlock(TextBlockModel block) {
     if (widget.isEditing) {
       return TextField(
         controller: _textBlockController,
@@ -1379,7 +1383,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     );
   }
 
-  void _editTask(TodoItem task, TodoBlock block) {
+  void _editTask(TodoItem task, TodoBlockModel block) {
     TaskEditorBottomSheet.show(context, task, (updatedTask) {
       final updatedItems = block.items.map((item) {
         return item.id == task.id ? updatedTask : item;
@@ -1388,7 +1392,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     });
   }
 
-  void _quickSetDueDate(TodoItem task, TodoBlock block) {
+  void _quickSetDueDate(TodoItem task, TodoBlockModel block) {
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -1405,7 +1409,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     });
   }
 
-  void _editEvent(EventItem event, EventBlock block) {
+  void _editEvent(EventItem event, EventBlockModel block) {
     EventEditorBottomSheet.show(context, event, (updatedEvent) {
       final updatedEvents = block.events.map((item) {
         return item.id == event.id ? updatedEvent : item;

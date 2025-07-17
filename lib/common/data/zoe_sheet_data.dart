@@ -1,18 +1,22 @@
-import 'package:zoey/common/models/content_block.dart';
+import 'package:zoey/common/models/content_block/Todo_block_model.dart';
+import 'package:zoey/common/models/content_block/content_block.dart';
+import 'package:zoey/common/models/content_block/event_block_model.dart';
+import 'package:zoey/common/models/content_block/list_block_model.dart';
+import 'package:zoey/common/models/content_block/text_block_model.dart';
 import 'package:zoey/common/models/zoe_sheet_model.dart';
 
-final gettingStartedSheet = ZoeSheet(
+final gettingStartedSheet = ZoeSheetModel(
   title: 'Getting Started Guide',
   description: 'Learn how to use Zoey effectively',
   emoji: '🚀',
   isWhatsAppConnected: true,
   contentBlocks: [
-    TextBlock(
+    TextBlockModel(
       title: 'Welcome to Zoey!',
       content:
           'Zoey is your personal workspace for organizing thoughts, tasks, and ideas. This guide will help you understand all the features and get the most out of your experience.',
     ),
-    ListBlock(
+    ListBlockModel(
       title: 'Key Features Overview',
       items: [
         '📄 Create unlimited sheets with custom titles and emojis',
@@ -23,7 +27,7 @@ final gettingStartedSheet = ZoeSheet(
         '🔍 Quick actions for common tasks',
       ],
     ),
-    TodoBlock(
+    TodoBlockModel(
       title: 'Quick Start Checklist',
       items: [
         TodoItem(
@@ -66,12 +70,12 @@ final gettingStartedSheet = ZoeSheet(
         ),
       ],
     ),
-    TextBlock(
+    TextBlockModel(
       title: 'How to Use Content Blocks',
       content:
           'Content blocks are the building blocks of your sheets. Tap the + button to add new blocks:\n\n• Text Blocks: For notes, ideas, and documentation\n• Task Lists: For to-dos with priorities and due dates\n• Event Blocks: For scheduling and calendar items\n• List Blocks: For simple bullet points and collections\n\nYou can drag and drop blocks to reorder them, and edit any text by tapping on it.',
     ),
-    EventBlock(
+    EventBlockModel(
       title: 'Learning Schedule',
       events: [
         EventItem(
@@ -92,7 +96,7 @@ final gettingStartedSheet = ZoeSheet(
         ),
       ],
     ),
-    ListBlock(
+    ListBlockModel(
       title: 'Pro Tips',
       items: [
         'Use emojis to quickly identify different types of sheets',

@@ -48,12 +48,12 @@ final routerProvider = Provider<GoRouter>((ref) {
               final appState = ref.read(appStateProvider);
 
               // Find the sheet by ID
-              ZoeSheet? sheet;
+              ZoeSheetModel? sheet;
               if (sheetId != null && sheetId != 'new') {
                 sheet = appState.sheets.firstWhere(
                   (s) => s.id == sheetId,
                   orElse: () =>
-                      ZoeSheet(title: 'Sheet Not Found', description: ''),
+                      ZoeSheetModel(title: 'Sheet Not Found', description: ''),
                 );
               }
 

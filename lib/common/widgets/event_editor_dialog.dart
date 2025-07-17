@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/content_block.dart';
+import 'package:zoey/common/models/content_block/event_block_model.dart';
+import '../models/content_block/content_block.dart';
 import '../../core/theme/app_theme.dart';
 
 class EventEditorBottomSheet extends StatefulWidget {

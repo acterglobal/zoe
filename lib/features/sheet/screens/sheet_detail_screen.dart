@@ -1,16 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoey/common/models/content_block/Todo_block_model.dart';
+import 'package:zoey/common/models/content_block/event_block_model.dart';
+import 'package:zoey/common/models/content_block/list_block_model.dart';
+import 'package:zoey/common/models/content_block/text_block_model.dart';
 import '../../../common/providers/app_state_provider.dart';
 import '../../../common/models/zoe_sheet_model.dart';
-import '../../../common/models/content_block.dart';
+import '../../../common/models/content_block/content_block.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routing/app_routes.dart';
 import '../../../common/widgets/content_block_widget.dart';
 import '../../../common/widgets/whatsapp_integration_bottomsheet.dart';
 
 class SheetDetailScreen extends ConsumerStatefulWidget {
-  final ZoeSheet? page;
+  final ZoeSheetModel? page;
   final bool isEmbedded;
 
   const SheetDetailScreen({super.key, this.page, this.isEmbedded = false});
@@ -22,7 +26,7 @@ class SheetDetailScreen extends ConsumerStatefulWidget {
 class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
-  late ZoeSheet _currentPage;
+  late ZoeSheetModel _currentPage;
   bool _showAddMenu = false;
   bool _isEditing = false; // Add editing state
   bool _hasBeenSaved = false; // Track if page has been saved
@@ -32,7 +36,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
     super.initState();
     _currentPage =
         widget.page ??
-        ZoeSheet(title: 'Untitled', description: '', emoji: '📄');
+        ZoeSheetModel(title: 'Untitled', description: '', emoji: '📄');
     _titleController = TextEditingController(text: _currentPage.title);
     _descriptionController = TextEditingController(
       text: _currentPage.description,
@@ -476,25 +480,25 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
   }
 
   void _addContentBlock(ContentBlockType type) {
-    ContentBlock newBlock;
+    ContentBlockModel newBlock;
     switch (type) {
       case ContentBlockType.todo:
-        newBlock = TodoBlock(
+        newBlock = TodoBlockModel(
           title: 'To-do',
           items: [TodoItem(text: '')],
         );
         break;
       case ContentBlockType.event:
-        newBlock = EventBlock(
+        newBlock = EventBlockModel(
           title: 'Events',
           events: [EventItem(title: '', startTime: DateTime.now())],
         );
         break;
       case ContentBlockType.list:
-        newBlock = ListBlock(title: 'List', items: ['']);
+        newBlock = ListBlockModel(title: 'List', items: ['']);
         break;
       case ContentBlockType.text:
-        newBlock = TextBlock(title: 'Text Block', content: '');
+        newBlock = TextBlockModel(title: 'Text Block', content: '');
         break;
     }
 
@@ -591,7 +595,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
   }
 
   void _duplicatePage() {
-    final duplicatedPage = ZoeSheet(
+    final duplicatedPage = ZoeSheetModel(
       title: '${_currentPage.title} (Copy)',
       description: _currentPage.description,
       emoji: _currentPage.emoji,

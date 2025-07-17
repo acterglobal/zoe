@@ -3,7 +3,7 @@ import 'package:zoey/common/data/zoe_sheet_data.dart';
 import '../models/zoe_sheet_model.dart';
 
 class AppState {
-  final List<ZoeSheet> sheets;
+  final List<ZoeSheetModel> sheets;
   final String userName;
   final bool isFirstLaunch;
 
@@ -14,7 +14,7 @@ class AppState {
   });
 
   AppState copyWith({
-    List<ZoeSheet>? sheets,
+    List<ZoeSheetModel>? sheets,
     String? userName,
     bool? isFirstLaunch,
   }) {
@@ -37,11 +37,11 @@ class AppStateNotifier extends StateNotifier<AppState> {
   }
 
   // Sheet management
-  void addSheet(ZoeSheet sheet) {
+  void addSheet(ZoeSheetModel sheet) {
     state = state.copyWith(sheets: [...state.sheets, sheet]);
   }
 
-  void updateSheet(ZoeSheet updatedSheet) {
+  void updateSheet(ZoeSheetModel updatedSheet) {
     final updatedSheets = state.sheets.map((sheet) {
       return sheet.id == updatedSheet.id ? updatedSheet : sheet;
     }).toList();
@@ -55,7 +55,7 @@ class AppStateNotifier extends StateNotifier<AppState> {
     state = state.copyWith(sheets: updatedSheets);
   }
 
-  ZoeSheet? getSheetById(String sheetId) {
+  ZoeSheetModel? getSheetById(String sheetId) {
     try {
       return state.sheets.firstWhere((sheet) => sheet.id == sheetId);
     } catch (e) {
