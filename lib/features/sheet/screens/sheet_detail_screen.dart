@@ -1,67 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/state/sheet_state_manager.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/app_bar/sheet_detail_app_bar.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_page_header.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/content/sheet_content_blocks.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/add_block/sheet_add_block.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/blocks/whatsapp_integration_bottomsheet.dart';
 
-class SheetDetailScreen extends ConsumerStatefulWidget {
+class SheetDetailScreen extends ConsumerWidget {
   final String? sheetId;
 
   const SheetDetailScreen({super.key, this.sheetId});
 
   @override
-  ConsumerState<SheetDetailScreen> createState() => _SheetDetailScreenState();
-}
-
-class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
-  late SheetStateManager _stateManager;
-
-  @override
-  void initState() {
-    super.initState();
-    _stateManager = SheetStateManager(ref: ref, sheetId: widget.sheetId);
-    _stateManager.initialize();
-  }
-
-  @override
-  void dispose() {
-    _stateManager.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar(), body: _buildBody());
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      appBar: _buildAppBar(context, ref),
+      body: _buildBody(context, ref),
+    );
   }
 
   /// Builds the app bar
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar(BuildContext context, WidgetRef ref) {
+    final currentSheet = ref.watch(sheetProvider(sheetId));
+    final isEditing = ref.watch(isEditingProvider(sheetId));
+    final hasBeenSaved = ref.watch(hasBeenSavedProvider(sheetId));
+
     return SheetDetailAppBar(
-      currentSheet: _stateManager.currentSheet,
-      isEditing: _stateManager.isEditing,
-      hasBeenSaved: _stateManager.hasBeenSaved,
-      sheetId: widget.sheetId,
-      onEditSaveToggle: _handleEditSaveToggle,
-      onWhatsAppTap: _showWhatsAppIntegration,
+      currentSheet: currentSheet,
+      isEditing: isEditing,
+      hasBeenSaved: hasBeenSaved,
+      sheetId: sheetId,
+      onEditSaveToggle: () =>
+          ref.read(sheetDetailProvider(sheetId).notifier).toggleEditSave(),
+      onWhatsAppTap: () => _showWhatsAppIntegration(context, ref),
     );
   }
 
   /// Builds the main body
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context, WidgetRef ref) {
+    final showAddMenu = ref.watch(showAddMenuProvider(sheetId));
+
     return GestureDetector(
-      onTap: _handleBodyTap,
+      onTap: () => _handleBodyTap(ref, showAddMenu),
       child: SingleChildScrollView(
-        padding: _getBodyPadding(),
+        padding: _getBodyPadding(context),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildPageHeader(),
-            _getHeaderSpacing(),
-            _buildContentBlocks(),
-            _buildAddBlockArea(),
+            _buildPageHeader(context, ref),
+            _getHeaderSpacing(context),
+            _buildContentBlocks(context, ref),
+            _buildAddBlockArea(context, ref),
             const SizedBox(height: 200),
           ],
         ),
@@ -70,134 +60,98 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
   }
 
   /// Builds the page header
-  Widget _buildPageHeader() {
+  Widget _buildPageHeader(BuildContext context, WidgetRef ref) {
+    final currentSheet = ref.watch(sheetProvider(sheetId));
+    final isEditing = ref.watch(isEditingProvider(sheetId));
+    final titleController = ref.watch(titleControllerProvider(sheetId));
+    final descriptionController = ref.watch(
+      descriptionControllerProvider(sheetId),
+    );
+
     return SheetPageHeader(
-      currentSheet: _stateManager.currentSheet,
-      isEditing: _stateManager.isEditing,
-      titleController: _stateManager.titleController,
-      descriptionController: _stateManager.descriptionController,
-      onTitleChanged: _handleTitleChange,
-      onDescriptionChanged: _handleDescriptionChange,
-      onEmojiTap: _handleEmojiTap,
+      currentSheet: currentSheet,
+      isEditing: isEditing,
+      titleController: titleController,
+      descriptionController: descriptionController,
+      onTitleChanged: (value) =>
+          ref.read(sheetDetailProvider(sheetId).notifier).updateTitle(value),
+      onDescriptionChanged: (value) => ref
+          .read(sheetDetailProvider(sheetId).notifier)
+          .updateDescription(value),
+      onEmojiTap: () =>
+          ref.read(sheetDetailProvider(sheetId).notifier).updateEmoji(),
     );
   }
 
   /// Builds the content blocks
-  Widget _buildContentBlocks() {
+  Widget _buildContentBlocks(BuildContext context, WidgetRef ref) {
+    final currentSheet = ref.watch(sheetProvider(sheetId));
+    final isEditing = ref.watch(isEditingProvider(sheetId));
+
     return SheetContentBlocks(
-      currentSheet: _stateManager.currentSheet,
-      isEditing: _stateManager.isEditing,
-      onReorder: _handleContentBlockReorder,
-      onUpdate: _handleContentBlockUpdate,
-      onDelete: _handleContentBlockDelete,
+      currentSheet: currentSheet,
+      isEditing: isEditing,
+      onReorder: (oldIndex, newIndex) => ref
+          .read(sheetDetailProvider(sheetId).notifier)
+          .reorderContentBlocks(oldIndex, newIndex),
+      onUpdate: (blockId, updatedBlock) => ref
+          .read(sheetDetailProvider(sheetId).notifier)
+          .updateContentBlock(blockId, updatedBlock),
+      onDelete: (blockId) => ref
+          .read(sheetDetailProvider(sheetId).notifier)
+          .deleteContentBlock(blockId),
     );
   }
 
   /// Builds the add block area
-  Widget _buildAddBlockArea() {
+  Widget _buildAddBlockArea(BuildContext context, WidgetRef ref) {
+    final isEditing = ref.watch(isEditingProvider(sheetId));
+    final showAddMenu = ref.watch(showAddMenuProvider(sheetId));
+
     return SheetAddBlock(
-      isEditing: _stateManager.isEditing,
-      showAddMenu: _stateManager.showAddMenu,
-      onTriggerTap: _handleAddBlockTriggerTap,
-      onAddBlock: _handleAddContentBlock,
+      isEditing: isEditing,
+      showAddMenu: showAddMenu,
+      onTriggerTap: () =>
+          ref.read(sheetDetailProvider(sheetId).notifier).toggleAddMenu(),
+      onAddBlock: (type) =>
+          ref.read(sheetDetailProvider(sheetId).notifier).addContentBlock(type),
     );
   }
 
   /// Gets responsive padding for the body
-  EdgeInsets _getBodyPadding() {
+  EdgeInsets _getBodyPadding(BuildContext context) {
     final isWideScreen = MediaQuery.of(context).size.width > 600;
     final horizontalPadding = isWideScreen ? 32.0 : 16.0;
     return EdgeInsets.fromLTRB(horizontalPadding, 16, horizontalPadding, 100);
   }
 
   /// Gets responsive spacing after header
-  Widget _getHeaderSpacing() {
+  Widget _getHeaderSpacing(BuildContext context) {
     final isWideScreen = MediaQuery.of(context).size.width > 600;
     return SizedBox(height: isWideScreen ? 48 : 32);
   }
 
-  // Event Handlers
-
-  /// Handles edit/save toggle
-  void _handleEditSaveToggle() {
-    setState(() {
-      _stateManager.toggleEditSave();
-    });
-  }
-
   /// Handles body tap to hide add menu
-  void _handleBodyTap() {
-    if (_stateManager.showAddMenu) {
-      setState(() {
-        _stateManager.hideAddMenu();
-      });
+  void _handleBodyTap(WidgetRef ref, bool showAddMenu) {
+    if (showAddMenu) {
+      ref.read(sheetDetailProvider(sheetId).notifier).hideAddMenu();
     }
   }
 
-  /// Handles emoji tap
-  void _handleEmojiTap() {
-    setState(() {
-      _stateManager.handleEmojiTap();
-    });
-  }
-
-  /// Handles title changes
-  void _handleTitleChange(String value) {
-    _stateManager.handleTitleChange(value);
-  }
-
-  /// Handles description changes
-  void _handleDescriptionChange(String value) {
-    _stateManager.handleDescriptionChange(value);
-  }
-
-  /// Handles content block reordering
-  void _handleContentBlockReorder(int oldIndex, int newIndex) {
-    setState(() {
-      _stateManager.handleContentBlockReorder(oldIndex, newIndex);
-    });
-  }
-
-  /// Handles content block updates
-  void _handleContentBlockUpdate(String blockId, updatedBlock) {
-    setState(() {
-      _stateManager.handleContentBlockUpdate(blockId, updatedBlock);
-    });
-  }
-
-  /// Handles content block deletion
-  void _handleContentBlockDelete(String blockId) {
-    setState(() {
-      _stateManager.handleContentBlockDelete(blockId);
-    });
-  }
-
-  /// Handles add block trigger tap
-  void _handleAddBlockTriggerTap() {
-    setState(() {
-      _stateManager.toggleAddMenu();
-    });
-  }
-
-  /// Handles adding a new content block
-  void _handleAddContentBlock(type) {
-    setState(() {
-      _stateManager.addContentBlock(type);
-    });
-  }
-
   /// Shows WhatsApp integration bottom sheet
-  void _showWhatsAppIntegration() {
+  void _showWhatsAppIntegration(BuildContext context, WidgetRef ref) {
+    final currentSheet = ref.read(sheetProvider(sheetId));
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => WhatsAppIntegrationBottomSheet(
-        currentSheet: _stateManager.currentSheet,
+        currentSheet: currentSheet,
         onConnectionChanged: (isConnected) {
-          setState(() {
-            _stateManager.handleWhatsAppConnectionChange(isConnected);
-          });
+          ref
+              .read(sheetDetailProvider(sheetId).notifier)
+              .updateWhatsAppConnection(isConnected);
         },
       ),
     );
