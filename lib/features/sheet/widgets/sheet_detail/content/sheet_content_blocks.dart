@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/models/content_block/content_block.dart';
-import 'package:zoey/features/sheet/widgets/sheeting_details/content_block_widget.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/blocks/content_block_widget.dart';
 
 /// Content blocks widget for sheet detail screen
 class SheetContentBlocks extends StatelessWidget {

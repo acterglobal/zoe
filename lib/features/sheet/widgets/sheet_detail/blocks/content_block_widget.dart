@@ -7,8 +7,8 @@ import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
 import 'package:zoey/core/theme/app_theme.dart';
-import 'package:zoey/features/sheet/widgets/sheeting_details/event_editor_dialog.dart';
-import 'package:zoey/features/sheet/widgets/sheeting_details/task_editor_dialog.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/blocks/event_editor_dialog.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/blocks/task_editor_dialog.dart';
 
 class ContentBlockWidget extends StatefulWidget {
   final ContentBlockModel block;

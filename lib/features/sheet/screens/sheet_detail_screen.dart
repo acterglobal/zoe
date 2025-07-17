@@ -5,7 +5,7 @@ import 'package:zoey/features/sheet/widgets/sheet_detail/app_bar/sheet_detail_ap
 import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_page_header.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/content/sheet_content_blocks.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/add_block/sheet_add_block.dart';
-import 'package:zoey/features/sheet/widgets/sheeting_details/whatsapp_integration_bottomsheet.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/blocks/whatsapp_integration_bottomsheet.dart';
 
 class SheetDetailScreen extends ConsumerStatefulWidget {
   final String? sheetId;
