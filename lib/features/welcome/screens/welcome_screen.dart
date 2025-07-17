@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoey/common/widgets/app_icon_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/welcome/data/feature_data.dart';
@@ -24,7 +25,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              _buildAppIcon(),
+              const AppIconWidget(),
               const SizedBox(height: 32),
               _buildAppTitle(),
               const SizedBox(height: 8),
@@ -52,18 +53,6 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
             ),
           )
           .toList(),
-    );
-  }
-
-  Widget _buildAppIcon() {
-    return Container(
-      width: 80,
-      height: 80,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: const Icon(Icons.note_alt_rounded, size: 40, color: Colors.white),
     );
   }
 
