@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../common/providers/app_state_provider.dart';
-import '../../../common/models/page.dart';
+import '../../../common/models/zoe_sheet_model.dart';
 import '../../../common/models/content_block.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routing/app_routes.dart';

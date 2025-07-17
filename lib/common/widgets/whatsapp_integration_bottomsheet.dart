@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
-import '../models/page.dart';
+import '../models/zoe_sheet_model.dart';
 
 class WhatsAppIntegrationBottomSheet extends StatefulWidget {
   final ZoeSheet currentSheet;

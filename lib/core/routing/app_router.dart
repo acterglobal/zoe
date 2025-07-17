@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../common/models/page.dart';
+import '../../common/models/zoe_sheet_model.dart';
 import '../../common/providers/app_state_provider.dart';
 import 'app_routes.dart';
 import '../../features/home/screens/home_screen.dart';

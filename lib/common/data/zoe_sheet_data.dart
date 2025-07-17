@@ -1,5 +1,5 @@
 import 'package:zoey/common/models/content_block.dart';
-import 'package:zoey/common/models/page.dart';
+import 'package:zoey/common/models/zoe_sheet_model.dart';
 
 final gettingStartedSheet = ZoeSheet(
   title: 'Getting Started Guide',
