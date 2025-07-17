@@ -14,10 +14,10 @@ import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 
 class SheetDetailScreen extends ConsumerStatefulWidget {
-  final ZoeSheetModel? page;
+  final String? sheetId; // null for new sheets, string ID for existing sheets
   final bool isEmbedded;
 
-  const SheetDetailScreen({super.key, this.page, this.isEmbedded = false});
+  const SheetDetailScreen({super.key, this.sheetId, this.isEmbedded = false});
 
   @override
   ConsumerState<SheetDetailScreen> createState() => _SheetDetailScreenState();
@@ -30,21 +30,56 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
   bool _showAddMenu = false;
   bool _isEditing = false; // Add editing state
   bool _hasBeenSaved = false; // Track if page has been saved
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _currentPage =
-        widget.page ??
-        ZoeSheetModel(title: 'Untitled', description: '', emoji: '📄');
+    _initializeSheet();
+  }
+
+  void _initializeSheet() {
+    setState(() {
+      _isLoading = true;
+    });
+
+    // If sheetId is null or 'new', create a new sheet
+    if (widget.sheetId == null || widget.sheetId == 'new') {
+      _currentPage = ZoeSheetModel(
+        title: 'Untitled',
+        description: '',
+        emoji: '📄',
+      );
+      _isEditing = true; // Start in edit mode for new sheets
+      _hasBeenSaved = false;
+    } else {
+      // Try to find existing sheet
+      final sheetListNotifier = ref.read(sheetListProvider.notifier);
+      final existingSheet = sheetListNotifier.getSheetById(widget.sheetId!);
+
+      if (existingSheet != null) {
+        _currentPage = existingSheet;
+        _isEditing = false; // Start in view mode for existing sheets
+        _hasBeenSaved = true;
+      } else {
+        // Sheet not found, create a fallback
+        _currentPage = ZoeSheetModel(
+          title: 'Sheet Not Found',
+          description: 'The requested sheet could not be found.',
+        );
+        _isEditing = false;
+        _hasBeenSaved = false;
+      }
+    }
+
     _titleController = TextEditingController(text: _currentPage.title);
     _descriptionController = TextEditingController(
       text: _currentPage.description,
     );
-    // Start in edit mode for new pages, view mode for existing pages
-    _isEditing = widget.page == null;
-    // Existing pages are already saved
-    _hasBeenSaved = widget.page != null;
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -56,6 +91,24 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: AppTheme.getSurface(context),
+        appBar: AppBar(
+          backgroundColor: AppTheme.getSurface(context),
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              color: AppTheme.getTextPrimary(context),
+            ),
+            onPressed: () => context.go(AppRoutes.home.route),
+          ),
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppTheme.getSurface(context),
       appBar: AppBar(
@@ -560,9 +613,13 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(widget.page == null ? 'Discard Page' : 'Delete Page'),
+        title: Text(
+          widget.sheetId == null || widget.sheetId == 'new'
+              ? 'Discard Page'
+              : 'Delete Page',
+        ),
         content: Text(
-          widget.page == null
+          widget.sheetId == null || widget.sheetId == 'new'
               ? 'Are you sure you want to discard this page? Any unsaved changes will be lost.'
               : 'Are you sure you want to delete this page? This action cannot be undone.',
         ),
@@ -573,10 +630,12 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
           ),
           TextButton(
             onPressed: () {
-              if (widget.page != null) {
+              if (widget.sheetId != null &&
+                  widget.sheetId != 'new' &&
+                  _hasBeenSaved) {
                 // Delete existing page
                 final sheetListNotifier = ref.read(sheetListProvider.notifier);
-                sheetListNotifier.deleteSheet(widget.page!.id);
+                sheetListNotifier.deleteSheet(widget.sheetId!);
               }
               // For both new and existing pages, close dialog and page
               Navigator.of(context).pop(); // Close dialog
@@ -585,7 +644,9 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
               context.go(AppRoutes.home.route);
             },
             child: Text(
-              widget.page == null ? 'Discard' : 'Delete',
+              widget.sheetId == null || widget.sheetId == 'new'
+                  ? 'Discard'
+                  : 'Delete',
               style: const TextStyle(color: Color(0xFFEF4444)),
             ),
           ),
