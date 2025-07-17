@@ -51,8 +51,3 @@ final routerProvider = Provider<GoRouter>((ref) {
     errorBuilder: (context, state) => const PageNotFoundScreen(),
   );
 });
-
-// Helper provider to access the root navigator key if needed
-final navigatorKeyProvider = Provider<GlobalKey<NavigatorState>>((ref) {
-  return _rootNavigatorKey;
-});
