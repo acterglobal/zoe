@@ -10,3 +10,13 @@ ElevatedButtonThemeData elevatedButtonTheme(ColorScheme colorScheme) =>
         foregroundColor: Colors.white,
       ),
     );
+
+TextButtonThemeData textButtonTheme(ColorScheme colorScheme) =>
+    TextButtonThemeData(
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        minimumSize: Size.zero,
+        backgroundColor: Colors.transparent,
+        foregroundColor: colorScheme.onSurface.withValues(alpha: 0.6),
+      ),
+    );

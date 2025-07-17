@@ -23,6 +23,7 @@ class AppTheme {
       ),
       inputDecorationTheme: inputDecorationTheme(lightColorScheme),
       elevatedButtonTheme: elevatedButtonTheme(lightColorScheme),
+      textButtonTheme: textButtonTheme(lightColorScheme),
       textTheme: textTheme(lightColorScheme),
     );
   }
@@ -42,6 +43,7 @@ class AppTheme {
       ),
       inputDecorationTheme: inputDecorationTheme(darkColorScheme),
       elevatedButtonTheme: elevatedButtonTheme(darkColorScheme),
+      textButtonTheme: textButtonTheme(darkColorScheme),
       textTheme: textTheme(darkColorScheme),
     );
   }
