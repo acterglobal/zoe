@@ -15,7 +15,6 @@ class SheetActionsNotifier extends StateNotifier<void> {
   Future<void> deleteSheet({
     required BuildContext context,
     required String? sheetId,
-    required bool hasBeenSaved,
   }) async {
     final result = await showDialog<bool>(
       context: context,
@@ -45,7 +44,7 @@ class SheetActionsNotifier extends StateNotifier<void> {
     );
 
     if (result == true) {
-      if (sheetId != null && sheetId != 'new' && hasBeenSaved) {
+      if (sheetId != null && sheetId != 'new') {
         // Delete existing sheet
         final sheetListNotifier = ref.read(sheetListProvider.notifier);
         sheetListNotifier.deleteSheet(sheetId);
@@ -99,10 +98,10 @@ class SheetActionsNotifier extends StateNotifier<void> {
   }
 
   /// Save a sheet (used by sheet detail provider)
-  void saveSheet({required ZoeSheetModel sheet, required bool hasBeenSaved}) {
+  void saveSheet({required ZoeSheetModel sheet, required String? sheetId}) {
     final sheetListNotifier = ref.read(sheetListProvider.notifier);
 
-    if (hasBeenSaved) {
+    if (sheetId != null && sheetId != 'new') {
       sheetListNotifier.updateSheet(sheet);
     } else {
       sheetListNotifier.addSheet(sheet);

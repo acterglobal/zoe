@@ -13,7 +13,6 @@ import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 class SheetDetailState {
   final ZoeSheetModel sheet;
   final bool isEditing;
-  final bool hasBeenSaved;
   final bool showAddMenu;
   final TextEditingController titleController;
   final TextEditingController descriptionController;
@@ -21,7 +20,6 @@ class SheetDetailState {
   SheetDetailState({
     required this.sheet,
     required this.isEditing,
-    required this.hasBeenSaved,
     required this.showAddMenu,
     required this.titleController,
     required this.descriptionController,
@@ -30,7 +28,6 @@ class SheetDetailState {
   SheetDetailState copyWith({
     ZoeSheetModel? sheet,
     bool? isEditing,
-    bool? hasBeenSaved,
     bool? showAddMenu,
     TextEditingController? titleController,
     TextEditingController? descriptionController,
@@ -38,7 +35,6 @@ class SheetDetailState {
     return SheetDetailState(
       sheet: sheet ?? this.sheet,
       isEditing: isEditing ?? this.isEditing,
-      hasBeenSaved: hasBeenSaved ?? this.hasBeenSaved,
       showAddMenu: showAddMenu ?? this.showAddMenu,
       titleController: titleController ?? this.titleController,
       descriptionController:
@@ -59,12 +55,10 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   static SheetDetailState _createInitialState(Ref ref, String? sheetId) {
     ZoeSheetModel sheet;
     bool isEditing;
-    bool hasBeenSaved;
 
     if (sheetId == null || sheetId == 'new') {
       sheet = ZoeSheetModel(title: 'Untitled', description: '', emoji: '📄');
       isEditing = true;
-      hasBeenSaved = false;
     } else {
       final sheetListNotifier = ref.read(sheetListProvider.notifier);
       final existingSheet = sheetListNotifier.getSheetById(sheetId);
@@ -72,21 +66,18 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
       if (existingSheet != null) {
         sheet = existingSheet;
         isEditing = false;
-        hasBeenSaved = true;
       } else {
         sheet = ZoeSheetModel(
           title: 'Sheet Not Found',
           description: 'The requested sheet could not be found.',
         );
         isEditing = false;
-        hasBeenSaved = false;
       }
     }
 
     return SheetDetailState(
       sheet: sheet,
       isEditing: isEditing,
-      hasBeenSaved: hasBeenSaved,
       showAddMenu: false,
       titleController: TextEditingController(text: sheet.title),
       descriptionController: TextEditingController(text: sheet.description),
@@ -198,13 +189,13 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
 
     final sheetListNotifier = ref.read(sheetListProvider.notifier);
 
-    if (!state.hasBeenSaved) {
+    if (sheetId == null || sheetId == 'new') {
       sheetListNotifier.addSheet(updatedSheet);
-      state = state.copyWith(sheet: updatedSheet, hasBeenSaved: true);
     } else {
       sheetListNotifier.updateSheet(updatedSheet);
-      state = state.copyWith(sheet: updatedSheet);
     }
+
+    state = state.copyWith(sheet: updatedSheet);
   }
 }
 
@@ -227,10 +218,6 @@ final isEditingProvider = Provider.family<bool, String?>((ref, sheetId) {
 
 final showAddMenuProvider = Provider.family<bool, String?>((ref, sheetId) {
   return ref.watch(sheetDetailProvider(sheetId)).showAddMenu;
-});
-
-final hasBeenSavedProvider = Provider.family<bool, String?>((ref, sheetId) {
-  return ref.watch(sheetDetailProvider(sheetId)).hasBeenSaved;
 });
 
 final titleControllerProvider = Provider.family<TextEditingController, String?>(

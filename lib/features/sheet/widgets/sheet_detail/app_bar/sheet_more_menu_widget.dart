@@ -8,13 +8,11 @@ import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 class SheetMoreMenuWidget extends ConsumerWidget {
   final ZoeSheetModel currentSheet;
   final String? sheetId;
-  final bool hasBeenSaved;
 
   const SheetMoreMenuWidget({
     super.key,
     required this.currentSheet,
     required this.sheetId,
-    required this.hasBeenSaved,
   });
 
   @override
@@ -66,12 +64,7 @@ class SheetMoreMenuWidget extends ConsumerWidget {
   void _handleMenuSelection(BuildContext context, WidgetRef ref, String value) {
     switch (value) {
       case 'delete':
-        showDeleteSheetDialog(
-          context,
-          ref,
-          sheetId: sheetId,
-          hasBeenSaved: hasBeenSaved,
-        );
+        showDeleteSheetDialog(context, ref, sheetId: sheetId);
         break;
       case 'duplicate':
         duplicateSheet(context, ref, currentSheet: currentSheet);

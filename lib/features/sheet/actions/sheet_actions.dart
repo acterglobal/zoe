@@ -8,14 +8,9 @@ void showDeleteSheetDialog(
   BuildContext context,
   WidgetRef ref, {
   required String? sheetId,
-  required bool hasBeenSaved,
 }) {
   final sheetActions = ref.read(sheetActionsNotifierProvider);
-  sheetActions.deleteSheet(
-    context: context,
-    sheetId: sheetId,
-    hasBeenSaved: hasBeenSaved,
-  );
+  sheetActions.deleteSheet(context: context, sheetId: sheetId);
 }
 
 /// Duplicates a sheet and shows a success message

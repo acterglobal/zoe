@@ -10,7 +10,6 @@ import 'package:zoey/features/sheet/widgets/sheet_detail/app_bar/sheet_more_menu
 class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final ZoeSheetModel currentSheet;
   final bool isEditing;
-  final bool hasBeenSaved;
   final String? sheetId;
   final VoidCallback onEditSaveToggle;
 
@@ -18,7 +17,6 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
     super.key,
     required this.currentSheet,
     required this.isEditing,
-    required this.hasBeenSaved,
     required this.sheetId,
     required this.onEditSaveToggle,
   });
@@ -29,11 +27,7 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
       leading: _buildBackButton(context),
       actions: [
         EditSaveButtonWidget(isEditing: isEditing, onPressed: onEditSaveToggle),
-        SheetMoreMenuWidget(
-          currentSheet: currentSheet,
-          sheetId: sheetId,
-          hasBeenSaved: hasBeenSaved,
-        ),
+        SheetMoreMenuWidget(currentSheet: currentSheet, sheetId: sheetId),
       ],
     );
   }

@@ -23,12 +23,10 @@ class SheetDetailScreen extends ConsumerWidget {
   PreferredSizeWidget _buildAppBar(BuildContext context, WidgetRef ref) {
     final currentSheet = ref.watch(sheetProvider(sheetId));
     final isEditing = ref.watch(isEditingProvider(sheetId));
-    final hasBeenSaved = ref.watch(hasBeenSavedProvider(sheetId));
 
     return SheetDetailAppBar(
       currentSheet: currentSheet,
       isEditing: isEditing,
-      hasBeenSaved: hasBeenSaved,
       sheetId: sheetId,
       onEditSaveToggle: () =>
           ref.read(sheetDetailProvider(sheetId).notifier).toggleEditSave(),
