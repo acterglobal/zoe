@@ -42,16 +42,12 @@ final routerProvider = Provider<GoRouter>((ref) {
           return Consumer(
             builder: (context, ref, child) {
               final sheetListNotifier = ref.read(sheetListProvider.notifier);
-
               // Find the sheet by ID
               ZoeSheetModel? sheet;
               if (sheetId != null && sheetId != 'new') {
                 sheet = sheetListNotifier.getSheetById(sheetId);
                 // If sheet not found, create a fallback
-                sheet ??= ZoeSheetModel(
-                  title: 'Sheet Not Found',
-                  description: '',
-                );
+                sheet ??= ZoeSheetModel(title: 'Sheet Not Found');
               }
 
               return SheetDetailScreen(page: sheet);
@@ -67,7 +63,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SettingsScreen(),
       ),
     ],
-    errorBuilder: (context, state) => const RouteNotFoundScreen(),
+    errorBuilder: (context, state) => const PageNotFoundScreen(),
   );
 });
 
@@ -77,20 +73,20 @@ final navigatorKeyProvider = Provider<GlobalKey<NavigatorState>>((ref) {
 });
 
 // Helper screen to display when a route is not found
-class RouteNotFoundScreen extends StatelessWidget {
-  const RouteNotFoundScreen({super.key});
+class PageNotFoundScreen extends StatelessWidget {
+  const PageNotFoundScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Route Not Found'),
+        title: const Text('Page Not Found'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.go(AppRoutes.home.route),
         ),
       ),
-      body: Center(child: Text('Route Not Found')),
+      body: Center(child: Text('Page Not Found')),
     );
   }
 }
