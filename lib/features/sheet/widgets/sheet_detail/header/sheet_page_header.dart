@@ -10,9 +10,7 @@ class SheetPageHeader extends StatelessWidget {
   final bool isEditing;
   final TextEditingController titleController;
   final TextEditingController descriptionController;
-  final ValueChanged<String> onTitleChanged;
   final ValueChanged<String> onDescriptionChanged;
-  final VoidCallback onEmojiTap;
 
   const SheetPageHeader({
     super.key,
@@ -20,9 +18,7 @@ class SheetPageHeader extends StatelessWidget {
     required this.isEditing,
     required this.titleController,
     required this.descriptionController,
-    required this.onTitleChanged,
     required this.onDescriptionChanged,
-    required this.onEmojiTap,
   });
 
   @override
@@ -46,20 +42,9 @@ class SheetPageHeader extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SheetEmojiWidget(
-          emoji: currentSheet.emoji ?? '📄',
-          isEditing: isEditing,
-          onTap: onEmojiTap,
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: SheetTitleWidget(
-            currentSheet: currentSheet,
-            isEditing: isEditing,
-            controller: titleController,
-            onChanged: onTitleChanged,
-          ),
-        ),
+        SheetEmojiWidget(sheetId: currentSheet.id),
+        const SizedBox(width: 4),
+        Expanded(child: SheetTitleWidget(sheetId: currentSheet.id)),
       ],
     );
   }

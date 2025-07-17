@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/core/theme/app_theme.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// Title widget for sheet header
-class SheetTitleWidget extends StatelessWidget {
-  final ZoeSheetModel currentSheet;
-  final bool isEditing;
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
+class SheetTitleWidget extends ConsumerWidget {
+  final String sheetId;
 
-  const SheetTitleWidget({
-    super.key,
-    required this.currentSheet,
-    required this.isEditing,
-    required this.controller,
-    required this.onChanged,
-  });
+  const SheetTitleWidget({super.key, required this.sheetId});
 
   @override
-  Widget build(BuildContext context) {
-    return isEditing ? _buildTitleTextField(context) : _buildTitleText(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentSheet = ref.watch(sheetProvider(sheetId));
+    final isEditing = ref.watch(isEditingProvider(sheetId));
+    return isEditing
+        ? _buildTitleTextField(context, ref)
+        : _buildTitleText(context, currentSheet);
   }
 
-  Widget _buildTitleTextField(BuildContext context) {
+  Widget _buildTitleTextField(BuildContext context, WidgetRef ref) {
+    final controller = ref.watch(titleControllerProvider(sheetId));
+
     return TextField(
       controller: controller,
       style: _getTitleTextStyle(context),
@@ -39,11 +38,12 @@ class SheetTitleWidget extends StatelessWidget {
         contentPadding: const EdgeInsets.all(8.0),
       ),
       maxLines: null,
-      onChanged: onChanged,
+      onChanged: (value) =>
+          ref.read(sheetDetailProvider(sheetId).notifier).updateTitle(value),
     );
   }
 
-  Widget _buildTitleText(BuildContext context) {
+  Widget _buildTitleText(BuildContext context, ZoeSheetModel currentSheet) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(

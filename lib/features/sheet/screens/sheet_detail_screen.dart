@@ -55,8 +55,6 @@ class SheetDetailScreen extends ConsumerWidget {
       onDescriptionChanged: (value) => ref
           .read(sheetDetailProvider(sheetId).notifier)
           .updateDescription(value),
-      onEmojiTap: () =>
-          ref.read(sheetDetailProvider(sheetId).notifier).updateEmoji(),
     );
   }
 
