@@ -7,23 +7,10 @@ enum AppScreen { home, page, settings, profile }
 class NavigationProvider extends ChangeNotifier {
   AppScreen _currentScreen = AppScreen.home;
   ZoePage? _currentPage;
-  bool _isDesktop = false;
 
   // Getters
   AppScreen get currentScreen => _currentScreen;
   ZoePage? get currentPage => _currentPage;
-  bool get isDesktop => _isDesktop;
-  bool get shouldShowPersistentSidebar => _isDesktop;
-
-  // Update screen size detection
-  void updateScreenSize(double width) {
-    final wasDesktop = _isDesktop;
-    _isDesktop = width >= 1024; // Desktop breakpoint
-
-    if (wasDesktop != _isDesktop) {
-      notifyListeners();
-    }
-  }
 
   // Navigate to home screen
   void navigateToHome() {
@@ -66,14 +53,9 @@ class NavigationProvider extends ChangeNotifier {
     }
   }
 
-  // Handle back navigation - always goes to home on desktop
+  // Handle back navigation - always goes to home
   void navigateBack() {
-    if (_isDesktop) {
-      navigateToHome();
-    } else {
-      // On mobile, we'll use traditional navigation
-      navigateToHome();
-    }
+    navigateToHome();
   }
 
   // Check if we can show back button
@@ -91,5 +73,10 @@ class NavigationProvider extends ChangeNotifier {
       case AppScreen.profile:
         return 'Profile';
     }
+  }
+
+  // Update screen size detection (kept for potential future use)
+  void updateScreenSize(double width) {
+    // No longer needed but kept for compatibility
   }
 }

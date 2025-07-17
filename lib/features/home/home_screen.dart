@@ -4,7 +4,6 @@ import '../../common/models/content_block.dart';
 import '../../common/providers/app_state_provider.dart';
 import '../../common/providers/navigation_provider.dart';
 import '../../common/theme/app_theme.dart';
-import '../../common/widgets/app_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isEmbedded;
@@ -20,38 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final appStateProvider = Provider.of<AppStateProvider>(context);
 
-    if (widget.isEmbedded) {
-      // Embedded mode for responsive layout
-      return Container(
-        color: AppTheme.getBackground(context),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header without drawer button
-                _buildEmbeddedHeader(context),
-
-                // Greeting section
-                _buildGreetingSection(context),
-
-                const SizedBox(height: 24),
-
-                // Quick stats cards
-                _buildQuickStats(context, appStateProvider),
-
-                // Today's priority section
-                _buildTodaySection(context, appStateProvider),
-
-                const SizedBox(height: 24),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
-    // Traditional mobile layout
     return Scaffold(
       backgroundColor: AppTheme.getBackground(context),
       body: SafeArea(
@@ -59,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header with app name and menu
+              // Header with app name (no drawer button)
               _buildHeader(context),
 
               // Greeting section
@@ -70,6 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
               // Quick stats cards
               _buildQuickStats(context, appStateProvider),
 
+              const SizedBox(height: 24),
+
+              // Pages section (moved from drawer)
+              _buildPagesSection(context, appStateProvider),
+
+              const SizedBox(height: 24),
+
               // Today's priority section
               _buildTodaySection(context, appStateProvider),
 
@@ -78,16 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      drawer: const AppDrawer(),
-      floatingActionButton: widget.isEmbedded
-          ? null
-          : FloatingActionButton(
-              heroTag: "home_screen_fab",
-              onPressed: () => _createNewPage(context),
-              backgroundColor: const Color(0xFF8B5CF6),
-              foregroundColor: Colors.white,
-              child: const Icon(Icons.add_rounded),
-            ),
     );
   }
 
@@ -96,25 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(24),
       child: Row(
         children: [
-          Builder(
-            builder: (context) => GestureDetector(
-              onTap: () => Scaffold.of(context).openDrawer(),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppTheme.getSurface(context),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppTheme.getBorder(context)),
-                ),
-                child: Icon(
-                  Icons.menu_rounded,
-                  color: AppTheme.getTextSecondary(context),
-                  size: 20,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 16),
           Expanded(
             child: Text(
               'Zoey',
@@ -125,15 +70,279 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+          // Settings button
+          GestureDetector(
+            onTap: () {
+              Provider.of<NavigationProvider>(
+                context,
+                listen: false,
+              ).navigateToSettings();
+            },
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.getSurface(context),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppTheme.getBorder(context)),
+              ),
+              child: Icon(
+                Icons.settings_rounded,
+                color: AppTheme.getTextSecondary(context),
+                size: 20,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildEmbeddedHeader(BuildContext context) {
+  Widget _buildPagesSection(BuildContext context, AppStateProvider appState) {
     return Container(
-      padding: const EdgeInsets.all(24),
-      child: const SizedBox.shrink(), // Just spacing without content
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      decoration: BoxDecoration(
+        color: AppTheme.getSurface(context),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppTheme.getBorder(context)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.auto_awesome,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Your Pages',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        'Organize • Plan • Create',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white.withValues(alpha: 0.8),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Add page button
+                GestureDetector(
+                  onTap: () => _createNewPage(context),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.add_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Pages list
+          if (appState.pages.isEmpty)
+            _buildEmptyPagesState(context)
+          else
+            _buildPagesList(context, appState),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyPagesState(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        children: [
+          Container(
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              color: const Color(0xFF6366F1).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(32),
+            ),
+            child: Icon(
+              Icons.note_add_rounded,
+              size: 32,
+              color: const Color(0xFF6366F1).withValues(alpha: 0.7),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'No pages yet',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.getTextPrimary(context),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Create your first page to get started with organizing your thoughts and tasks.',
+            style: TextStyle(
+              fontSize: 14,
+              color: AppTheme.getTextSecondary(context),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          _buildSuggestionChip(
+            context,
+            Icons.add_rounded,
+            'Create Your First Page',
+            const Color(0xFF10B981),
+            () => _createNewPage(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPagesList(BuildContext context, AppStateProvider appState) {
+    return Container(
+      constraints: const BoxConstraints(maxHeight: 300),
+      child: ListView.builder(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(16),
+        itemCount: appState.pages.length,
+        itemBuilder: (context, index) {
+          final page = appState.pages[index];
+          return Consumer<NavigationProvider>(
+            builder: (context, navProvider, child) {
+              final isSelected =
+                  navProvider.currentScreen == AppScreen.page &&
+                  navProvider.currentPage?.id == page.id;
+
+              return Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? const Color(0xFF6366F1).withValues(alpha: 0.15)
+                      : AppTheme.getBackground(context),
+                  border: isSelected
+                      ? Border.all(
+                          color: const Color(0xFF6366F1).withValues(alpha: 0.3),
+                          width: 1,
+                        )
+                      : Border.all(color: AppTheme.getBorder(context)),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: isSelected
+                      ? [
+                          BoxShadow(
+                            color: const Color(
+                              0xFF6366F1,
+                            ).withValues(alpha: 0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  leading: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? const Color(0xFF6366F1).withValues(alpha: 0.3)
+                          : const Color(0xFF6366F1).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(10),
+                      border: isSelected
+                          ? Border.all(
+                              color: const Color(
+                                0xFF6366F1,
+                              ).withValues(alpha: 0.4),
+                              width: 1,
+                            )
+                          : null,
+                    ),
+                    child: Center(
+                      child: Text(
+                        page.emoji ?? '📄',
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ),
+                  title: Text(
+                    page.title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w500,
+                      color: isSelected
+                          ? (Theme.of(context).brightness == Brightness.dark
+                                ? const Color(0xFF818CF8)
+                                : const Color(0xFF6366F1))
+                          : AppTheme.getTextPrimary(context),
+                    ),
+                  ),
+                  subtitle: page.description.isNotEmpty
+                      ? Text(
+                          page.description,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppTheme.getTextSecondary(context),
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      : null,
+                  onTap: () {
+                    navProvider.navigateToPage(page);
+                  },
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -1158,20 +1367,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 'Browse Pages',
                 const Color(0xFF3B82F6), // Blue for browse action
                 () {
-                  // Open drawer on mobile or navigate to first page on desktop
-                  if (widget.isEmbedded) {
-                    final appState = Provider.of<AppStateProvider>(
+                  // Navigate to first page if available
+                  final appState = Provider.of<AppStateProvider>(
+                    context,
+                    listen: false,
+                  );
+                  if (appState.pages.isNotEmpty) {
+                    Provider.of<NavigationProvider>(
                       context,
                       listen: false,
-                    );
-                    if (appState.pages.isNotEmpty) {
-                      Provider.of<NavigationProvider>(
-                        context,
-                        listen: false,
-                      ).navigateToPage(appState.pages.first);
-                    }
-                  } else {
-                    Scaffold.of(context).openDrawer();
+                    ).navigateToPage(appState.pages.first);
                   }
                 },
               ),

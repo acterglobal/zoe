@@ -5,7 +5,6 @@ import '../theme/app_theme.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/paper_sheet/page_detail_screen.dart';
 import '../../features/settings/settings_screen.dart';
-import 'app_sidebar.dart';
 
 class ResponsiveLayout extends StatefulWidget {
   const ResponsiveLayout({super.key});
@@ -33,148 +32,65 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
   Widget build(BuildContext context) {
     return Consumer<NavigationProvider>(
       builder: (context, navigationProvider, child) {
-        final isDesktop = navigationProvider.shouldShowPersistentSidebar;
-
-        if (isDesktop) {
-          return _buildDesktopLayout(navigationProvider);
-        } else {
-          return _buildMobileLayout(navigationProvider);
-        }
+        return Scaffold(
+          backgroundColor: AppTheme.getBackground(context),
+          body: _buildMainContent(navigationProvider),
+          floatingActionButton:
+              navigationProvider.currentScreen == AppScreen.home
+              ? FloatingActionButton(
+                  heroTag: "responsive_layout_fab",
+                  onPressed: () => navigationProvider.navigateToNewPage(),
+                  backgroundColor: const Color(0xFF8B5CF6),
+                  foregroundColor: Colors.white,
+                  child: const Icon(Icons.add_rounded),
+                )
+              : null,
+        );
       },
-    );
-  }
-
-  Widget _buildDesktopLayout(NavigationProvider navigationProvider) {
-    return Scaffold(
-      backgroundColor: AppTheme.getBackground(context),
-      body: Row(
-        children: [
-          // Persistent Sidebar
-          const SizedBox(width: 280, child: AppSidebar(isPersistent: true)),
-
-          // Divider
-          Container(width: 1, color: AppTheme.getBorder(context)),
-
-          // Main Content Area
-          Expanded(child: _buildMainContent(navigationProvider)),
-        ],
-      ),
-      floatingActionButton: navigationProvider.currentScreen == AppScreen.home
-          ? FloatingActionButton(
-              heroTag: "responsive_layout_fab",
-              onPressed: () => navigationProvider.navigateToNewPage(),
-              backgroundColor: const Color(0xFF8B5CF6),
-              foregroundColor: Colors.white,
-              child: const Icon(Icons.add_rounded),
-            )
-          : null,
-    );
-  }
-
-  Widget _buildMobileLayout(NavigationProvider navigationProvider) {
-    return Scaffold(
-      backgroundColor: AppTheme.getBackground(context),
-      drawer: const SizedBox(
-        width: 280,
-        child: AppSidebar(isPersistent: false),
-      ),
-      body: _buildMainContent(navigationProvider),
-      floatingActionButton: navigationProvider.currentScreen == AppScreen.home
-          ? FloatingActionButton(
-              heroTag: "responsive_layout_fab",
-              onPressed: () => navigationProvider.navigateToNewPage(),
-              backgroundColor: const Color(0xFF8B5CF6),
-              foregroundColor: Colors.white,
-              child: const Icon(Icons.add_rounded),
-            )
-          : null,
     );
   }
 
   Widget _buildMainContent(NavigationProvider navigationProvider) {
     switch (navigationProvider.currentScreen) {
       case AppScreen.home:
-        return HomeScreen(
-          key: const ValueKey('home'),
-          isEmbedded: navigationProvider.isDesktop,
-        );
+        return const HomeScreen(key: ValueKey('home'), isEmbedded: false);
       case AppScreen.page:
         return PageDetailScreen(
           key: ValueKey('page_${navigationProvider.currentPage?.id}'),
           page: navigationProvider.currentPage,
-          isEmbedded: navigationProvider.isDesktop,
+          isEmbedded: false,
         );
       case AppScreen.settings:
-        return SettingsScreen(
-          key: const ValueKey('settings'),
-          isEmbedded: navigationProvider.isDesktop,
+        return const SettingsScreen(
+          key: ValueKey('settings'),
+          isEmbedded: false,
         );
       case AppScreen.profile:
         return Container(
           key: const ValueKey('profile'),
-          child: _buildProfileScreen(navigationProvider.isDesktop),
+          child: _buildProfileScreen(),
         );
     }
   }
 
-  Widget _buildProfileScreen(bool isEmbedded) {
+  Widget _buildProfileScreen() {
     return Scaffold(
-      backgroundColor: AppTheme.getBackground(context),
       appBar: AppBar(
+        title: const Text('Profile'),
         backgroundColor: AppTheme.getBackground(context),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: AppTheme.getTextPrimary(context),
-          ),
+          icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () {
             Provider.of<NavigationProvider>(
               context,
               listen: false,
-            ).navigateBack();
+            ).navigateToHome();
           },
         ),
-        title: Text(
-          'Profile',
-          style: TextStyle(
-            color: AppTheme.getTextPrimary(context),
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        centerTitle: false,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.person_rounded,
-              size: 64,
-              color: AppTheme.getTextSecondary(context),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Profile Coming Soon',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: AppTheme.getTextPrimary(context),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'User profile management will be available in a future update.',
-              style: TextStyle(
-                fontSize: 16,
-                color: AppTheme.getTextSecondary(context),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+      backgroundColor: AppTheme.getBackground(context),
+      body: const Center(child: Text('Profile Screen - Coming Soon')),
     );
   }
 }
