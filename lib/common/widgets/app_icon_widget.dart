@@ -13,7 +13,7 @@ class AppIconWidget extends StatelessWidget {
         color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Icon(Icons.note_alt_rounded, size: 40, color: Colors.white),
+      child: Icon(Icons.note_alt_rounded, size: size / 2, color: Colors.white),
     );
   }
 }
