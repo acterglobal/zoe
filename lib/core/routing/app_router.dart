@@ -61,13 +61,6 @@ class AppRouter {
           name: AppRoutes.settings.name,
           builder: (context, state) => const SettingsScreen(),
         ),
-
-        // Profile route (not in enum yet, keeping it for compatibility)
-        GoRoute(
-          path: '/profile',
-          name: 'profile',
-          builder: (context, state) => const ProfileScreen(),
-        ),
       ],
       errorBuilder: (context, state) => Scaffold(
         appBar: AppBar(
@@ -101,25 +94,6 @@ class AppRouter {
           ),
         ),
       ),
-    );
-  }
-}
-
-// Simple profile screen widget
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => context.go(AppRoutes.home.route),
-        ),
-      ),
-      body: const Center(child: Text('Profile Screen - Coming Soon')),
     );
   }
 }
