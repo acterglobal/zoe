@@ -251,11 +251,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                         width: 20,
                         height: 20,
                         margin: const EdgeInsets.only(right: 8),
-                        child: Icon(
-                          Icons.drag_indicator,
-                          size: 16,
-                          color: AppTheme.getTextSecondary(context),
-                        ),
+                        child: Icon(Icons.drag_indicator, size: 16),
                       ),
                     ),
                   ),
@@ -263,11 +259,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 // Block type icon (hide for text blocks in view mode)
                 if (widget.isEditing ||
                     widget.block.type != ContentBlockType.text) ...[
-                  Icon(
-                    _getBlockIcon(),
-                    size: 16,
-                    color: AppTheme.getTextSecondary(context),
-                  ),
+                  Icon(_getBlockIcon(), size: 16),
                   const SizedBox(width: 8),
                 ],
 
@@ -281,7 +273,6 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     duration: const Duration(milliseconds: 200),
                     child: IconButton(
                       icon: const Icon(Icons.delete_outline, size: 16),
-                      color: AppTheme.getTextSecondary(context),
                       onPressed: widget.onDelete,
                       padding: EdgeInsets.zero,
                       constraints: BoxConstraints(
@@ -323,7 +314,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
           focusedBorder: InputBorder.none,
           filled: false,
           hintText: 'Untitled',
-          hintStyle: TextStyle(color: AppTheme.getTextSecondary(context)),
+          hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           contentPadding: EdgeInsets.zero,
         ),
         onChanged: (value) {
@@ -484,11 +475,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                       focusedBorder: InputBorder.none,
                                       filled: false,
                                       hintText: 'To-do',
-                                      hintStyle: TextStyle(
-                                        color: AppTheme.getTextSecondary(
-                                          context,
-                                        ),
-                                      ),
+                                      hintStyle: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall,
                                       contentPadding: EdgeInsets.zero,
                                       isDense: true,
                                     ),
@@ -515,7 +504,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: todo.isCompleted
-                                          ? AppTheme.getTextSecondary(context)
+                                          ? Theme.of(
+                                              context,
+                                            ).colorScheme.onSurface
                                           : Theme.of(
                                               context,
                                             ).colorScheme.onSurface,
@@ -535,11 +526,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                           padding: const EdgeInsets.only(top: 4, left: 16),
                           child: Text(
                             todo.description!,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppTheme.getTextSecondary(context),
-                              height: 1.3,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),
 
@@ -635,18 +622,18 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                         Icon(
                                           Icons.schedule,
                                           size: 12,
-                                          color: AppTheme.getTextSecondary(
+                                          color: Theme.of(
                                             context,
-                                          ),
+                                          ).colorScheme.onSurface,
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
                                           'Set Due Date',
                                           style: TextStyle(
                                             fontSize: 11,
-                                            color: AppTheme.getTextSecondary(
+                                            color: Theme.of(
                                               context,
-                                            ),
+                                            ).colorScheme.onSurface,
                                           ),
                                         ),
                                       ],
@@ -664,7 +651,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 if (widget.isEditing && (_isHovered || _isTouchDevice))
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
-                    color: AppTheme.getTextSecondary(context),
+                    color: Theme.of(context).colorScheme.onSurface,
                     onPressed: () {
                       final updatedItems = block.items
                           .where((item) => item.id != todo.id)
@@ -690,18 +677,8 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
               final updatedItems = [...block.items, newTodo];
               widget.onUpdate(block.copyWith(items: updatedItems));
             },
-            icon: Icon(
-              Icons.add,
-              size: 16,
-              color: AppTheme.getTextSecondary(context),
-            ),
-            label: Text(
-              'Add a to-do',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppTheme.getTextSecondary(context),
-              ),
-            ),
+            icon: Icon(Icons.add, size: 16),
+            label: Text('Add a to-do'),
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               minimumSize: Size.zero,
@@ -727,8 +704,8 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                   width: 8,
                   height: 8,
                   margin: const EdgeInsets.only(top: 8),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF8B5CF6),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onSurface,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -750,14 +727,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                 height: 1.4,
                               ),
                               decoration: InputDecoration(
-                                border: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                filled: false,
                                 hintText: 'Event title',
-                                hintStyle: TextStyle(
-                                  color: AppTheme.getTextSecondary(context),
-                                ),
                                 contentPadding: EdgeInsets.zero,
                                 isDense: true,
                               ),
@@ -793,16 +763,12 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                           Icon(
                             Icons.schedule,
                             size: 12,
-                            color: AppTheme.getTextSecondary(context),
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             _formatEventTime(event),
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppTheme.getTextSecondary(context),
-                              height: 1.3,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
                       ),
@@ -813,11 +779,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                           padding: const EdgeInsets.only(top: 6),
                           child: Text(
                             event.description!,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppTheme.getTextSecondary(context),
-                              height: 1.3,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),
 
@@ -835,19 +797,17 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                     Icon(
                                       Icons.location_on,
                                       size: 12,
-                                      color: AppTheme.getTextSecondary(context),
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
                                     ),
                                     const SizedBox(width: 4),
                                     Expanded(
                                       child: Text(
                                         event.location!.physical!,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: AppTheme.getTextSecondary(
-                                            context,
-                                          ),
-                                          height: 1.3,
-                                        ),
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodySmall,
                                       ),
                                     ),
                                   ],
@@ -970,7 +930,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 if (widget.isEditing && (_isHovered || _isTouchDevice))
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
-                    color: AppTheme.getTextSecondary(context),
+                    color: Theme.of(context).colorScheme.onSurface,
                     onPressed: () {
                       final updatedEvents = block.events
                           .where((item) => item.id != event.id)
@@ -996,18 +956,8 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
               final updatedEvents = [...block.events, newEvent];
               widget.onUpdate(block.copyWith(events: updatedEvents));
             },
-            icon: Icon(
-              Icons.add,
-              size: 16,
-              color: AppTheme.getTextSecondary(context),
-            ),
-            label: Text(
-              'Add an event',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppTheme.getTextSecondary(context),
-              ),
-            ),
+            icon: Icon(Icons.add, size: 16),
+            label: Text('Add an event'),
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               minimumSize: Size.zero,
@@ -1039,7 +989,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                     top: 9,
                   ), // Better alignment with text
                   decoration: BoxDecoration(
-                    color: AppTheme.getTextSecondary(context),
+                    color: Theme.of(context).colorScheme.onSurface,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -1090,7 +1040,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 if (widget.isEditing && (_isHovered || _isTouchDevice))
                   IconButton(
                     icon: const Icon(Icons.close, size: 14),
-                    color: AppTheme.getTextSecondary(context),
+                    color: Theme.of(context).colorScheme.onSurface,
                     onPressed: () {
                       final updatedItems = [...block.items];
                       updatedItems.removeAt(index);
@@ -1114,19 +1064,10 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
               final updatedItems = [...block.items, ''];
               widget.onUpdate(block.copyWith(items: updatedItems));
             },
-            icon: Icon(
-              Icons.add,
-              size: 16,
-              color: AppTheme.getTextSecondary(context),
-            ),
-            label: Text(
-              'Add an item',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppTheme.getTextSecondary(context),
-              ),
-            ),
+            icon: Icon(Icons.add, size: 16),
+            label: Text('Add an item'),
             style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.bodyMedium,
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               minimumSize: Size.zero,
             ),
@@ -1139,18 +1080,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     if (widget.isEditing) {
       return TextField(
         controller: _textBlockController,
-        style: TextStyle(
-          fontSize: 16,
-          color: Theme.of(context).colorScheme.onSurface,
-          height: 1.6,
-        ),
+        style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration(
-          border: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          filled: false,
           hintText: 'Type something...',
-          hintStyle: TextStyle(color: AppTheme.getTextSecondary(context)),
           contentPadding: EdgeInsets.zero,
         ),
         maxLines: null,
@@ -1163,11 +1095,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         padding: const EdgeInsets.only(top: 4.0),
         child: Text(
           block.content.isEmpty ? '' : block.content,
-          style: TextStyle(
-            fontSize: 16,
-            color: Theme.of(context).colorScheme.onSurface,
-            height: 1.6,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       );
     }
