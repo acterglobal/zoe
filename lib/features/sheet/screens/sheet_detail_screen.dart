@@ -14,22 +14,8 @@ class SheetDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: _buildAppBar(context, ref),
+      appBar: SheetDetailAppBar(sheetId: sheetId ?? 'new'),
       body: _buildBody(context, ref),
-    );
-  }
-
-  /// Builds the app bar
-  PreferredSizeWidget _buildAppBar(BuildContext context, WidgetRef ref) {
-    final currentSheet = ref.watch(sheetProvider(sheetId));
-    final isEditing = ref.watch(isEditingProvider(sheetId));
-
-    return SheetDetailAppBar(
-      currentSheet: currentSheet,
-      isEditing: isEditing,
-      sheetId: sheetId,
-      onEditSaveToggle: () =>
-          ref.read(sheetDetailProvider(sheetId).notifier).toggleEditSave(),
     );
   }
 

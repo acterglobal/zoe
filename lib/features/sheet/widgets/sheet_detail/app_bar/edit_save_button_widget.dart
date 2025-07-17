@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// Edit/Save button widget for sheet detail app bar
-class EditSaveButtonWidget extends StatelessWidget {
-  final bool isEditing;
-  final VoidCallback onPressed;
+class EditSaveButtonWidget extends ConsumerWidget {
+  final String sheetId;
 
-  const EditSaveButtonWidget({
-    super.key,
-    required this.isEditing,
-    required this.onPressed,
-  });
+  const EditSaveButtonWidget({super.key, required this.sheetId});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isEditing = ref.watch(isEditingProvider(sheetId));
     return Container(
       margin: const EdgeInsets.only(right: 8),
       child: TextButton(
-        onPressed: onPressed,
+        onPressed: () =>
+            ref.read(sheetDetailProvider(sheetId).notifier).toggleEditSave(),
         style: TextButton.styleFrom(
           backgroundColor: isEditing
-              ? const Color(0xFF3B82F6)
+              ? Theme.of(context).colorScheme.primary
               : Theme.of(context).colorScheme.surfaceContainerHighest,
           foregroundColor: isEditing
-              ? Colors.white
+              ? Theme.of(context).colorScheme.onPrimary
               : Theme.of(context).colorScheme.onSurface,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           shape: RoundedRectangleBorder(
@@ -36,9 +35,7 @@ class EditSaveButtonWidget extends StatelessWidget {
             Icon(
               isEditing ? Icons.save_rounded : Icons.edit_rounded,
               size: 16,
-              color: isEditing
-                  ? Colors.white
-                  : Theme.of(context).colorScheme.onSurface,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             const SizedBox(width: 6),
             Text(
@@ -46,9 +43,7 @@ class EditSaveButtonWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: isEditing
-                    ? Colors.white
-                    : Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ],

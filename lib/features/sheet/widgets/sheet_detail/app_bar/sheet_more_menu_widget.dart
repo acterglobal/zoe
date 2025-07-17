@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/core/theme/app_theme.dart';
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// More menu widget for sheet detail app bar
 class SheetMoreMenuWidget extends ConsumerWidget {
-  final ZoeSheetModel currentSheet;
-  final String? sheetId;
+  final String sheetId;
 
-  const SheetMoreMenuWidget({
-    super.key,
-    required this.currentSheet,
-    required this.sheetId,
-  });
+  const SheetMoreMenuWidget({super.key, required this.sheetId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -62,6 +57,7 @@ class SheetMoreMenuWidget extends ConsumerWidget {
   }
 
   void _handleMenuSelection(BuildContext context, WidgetRef ref, String value) {
+    final currentSheet = ref.watch(sheetProvider(sheetId));
     switch (value) {
       case 'delete':
         showDeleteSheetDialog(context, ref, sheetId: sheetId);
