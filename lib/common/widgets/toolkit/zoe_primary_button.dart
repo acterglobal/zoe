@@ -4,6 +4,7 @@ class ZoePrimaryButton extends StatelessWidget {
   final String? text;
   final VoidCallback onPressed;
   final IconData? icon;
+  final Color? backgroundColor;
   final EdgeInsetsGeometry? contentPadding;
 
   const ZoePrimaryButton({
@@ -11,13 +12,17 @@ class ZoePrimaryButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     this.icon,
+    this.backgroundColor,
     this.contentPadding,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(padding: contentPadding),
+      style: ElevatedButton.styleFrom(
+        padding: contentPadding,
+        backgroundColor: backgroundColor,
+      ),
       onPressed: onPressed,
       child: Row(
         mainAxisSize: MainAxisSize.min,

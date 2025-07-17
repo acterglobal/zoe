@@ -18,6 +18,9 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
         ZoePrimaryButton(
           text: isEditing ? 'Save' : 'Edit',
           icon: isEditing ? Icons.save_rounded : Icons.edit_rounded,
+          backgroundColor: isEditing
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           onPressed: () =>
               ref.read(sheetDetailProvider(sheetId).notifier).toggleEditSave(),
