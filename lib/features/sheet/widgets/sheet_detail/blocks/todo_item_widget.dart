@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/core/theme/app_theme.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
 
@@ -59,9 +58,7 @@ class TodoItemWidget extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
-            color: todo.isCompleted
-                ? AppTheme.getTextTertiary(context)
-                : Theme.of(context).colorScheme.onSurface,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         trailing: onDelete != null

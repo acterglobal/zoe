@@ -7,7 +7,6 @@ import 'package:zoey/features/sheet/models/content_block/event_block_model.dart'
 import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
-import 'package:zoey/core/theme/app_theme.dart';
 
 class ContentBlockWidget extends StatefulWidget {
   final ContentBlockModel block;
@@ -725,14 +724,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                             height: 1.4,
                           ),
                           decoration: InputDecoration(
-                            border: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            filled: false,
                             hintText: 'List item',
-                            hintStyle: TextStyle(
-                              color: AppTheme.getTextSecondary(context),
-                            ),
                             contentPadding: EdgeInsets.zero,
                             isDense: true,
                           ),

@@ -47,17 +47,4 @@ class AppTheme {
       textTheme: textTheme(darkColorScheme),
     );
   }
-
-  // Helper methods for theme-dependent colors
-  static Color getTextSecondary(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark
-        ? darkColorScheme.secondary
-        : lightColorScheme.secondary;
-  }
-
-  static Color getTextTertiary(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.dark
-        ? darkColorScheme.secondary
-        : lightColorScheme.secondary;
-  }
 }
