@@ -4,6 +4,7 @@ import 'package:zoey/core/theme/colors/colors_cheme.dart';
 import 'package:zoey/core/theme/components/app_bar_theme_data.dart';
 import 'package:zoey/core/theme/components/button_theme_data.dart';
 import 'package:zoey/core/theme/components/floating_action_button_theme_data.dart';
+import 'package:zoey/core/theme/components/input_decoration.dart';
 import 'package:zoey/core/theme/components/text_theme_data.dart';
 
 class AppTheme {
@@ -20,6 +21,7 @@ class AppTheme {
         thickness: 0.5,
         space: 1,
       ),
+      inputDecorationTheme: inputDecorationTheme(lightColorScheme),
       elevatedButtonTheme: elevatedButtonTheme(lightColorScheme),
       textTheme: textTheme(lightColorScheme),
     );
@@ -38,6 +40,7 @@ class AppTheme {
         thickness: 0.5,
         space: 1,
       ),
+      inputDecorationTheme: inputDecorationTheme(darkColorScheme),
       elevatedButtonTheme: elevatedButtonTheme(darkColorScheme),
       textTheme: textTheme(darkColorScheme),
     );

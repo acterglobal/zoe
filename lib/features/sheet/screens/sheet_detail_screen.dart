@@ -50,8 +50,6 @@ class SheetDetailScreen extends ConsumerWidget {
       isEditing: isEditing,
       titleController: titleController,
       descriptionController: descriptionController,
-      onTitleChanged: (value) =>
-          ref.read(sheetDetailProvider(sheetId).notifier).updateTitle(value),
       onDescriptionChanged: (value) => ref
           .read(sheetDetailProvider(sheetId).notifier)
           .updateDescription(value),
