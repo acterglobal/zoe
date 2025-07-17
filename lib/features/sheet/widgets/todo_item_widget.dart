@@ -1,146 +1,123 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:zoey/core/theme/app_theme.dart';
 import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
 
 class TodoItemWidget extends StatelessWidget {
   final TodoItem todo;
-  final Function(bool)? onChanged;
+  final VoidCallback onToggle;
+  final VoidCallback onTap;
+  final VoidCallback? onDelete;
 
-  const TodoItemWidget({super.key, required this.todo, this.onChanged});
+  const TodoItemWidget({
+    super.key,
+    required this.todo,
+    required this.onToggle,
+    required this.onTap,
+    this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: AppTheme.getSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(
-              alpha: Theme.of(context).brightness == Brightness.dark
-                  ? 0.3
-                  : 0.05,
-            ),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Colors.black.withValues(
+            alpha: Theme.of(context).brightness == Brightness.dark ? 0.2 : 0.1,
           ),
-        ],
+        ),
       ),
-      child: Row(
-        children: [
-          // Checkbox
-          GestureDetector(
-            onTap: () {
-              if (onChanged != null) {
-                onChanged!(!todo.isCompleted);
-              }
-            },
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        leading: GestureDetector(
+          onTap: onToggle,
+          child: Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              color: todo.isCompleted
+                  ? AppTheme.successColor
+                  : Colors.transparent,
+              border: Border.all(
                 color: todo.isCompleted
-                    ? AppTheme.getSuccess(context)
-                    : Colors.transparent,
-                border: Border.all(
-                  color: todo.isCompleted
-                      ? AppTheme.getSuccess(context)
-                      : AppTheme.getBorder(context),
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(4),
+                    ? AppTheme.successColor
+                    : Theme.of(context).colorScheme.outline,
+                width: 2,
               ),
-              child: todo.isCompleted
-                  ? const Icon(Icons.check, size: 14, color: Colors.white)
-                  : null,
+              borderRadius: BorderRadius.circular(4),
             ),
+            child: todo.isCompleted
+                ? const Icon(Icons.check, size: 14, color: Colors.white)
+                : null,
           ),
-          const SizedBox(width: 12),
-
-          // Content
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  todo.text,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: todo.isCompleted
-                        ? AppTheme.getTextTertiary(context)
-                        : AppTheme.getTextPrimary(context),
-                    decoration: todo.isCompleted
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none,
-                  ),
+        ),
+        title: Text(
+          todo.text,
+          style: TextStyle(
+            fontSize: 16,
+            decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
+            color: todo.isCompleted
+                ? AppTheme.getTextTertiary(context)
+                : Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        subtitle: todo.dueDate != null
+            ? Text(
+                _formatDueDate(todo.dueDate!),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: _getDueDateColor(context, todo.dueDate!),
                 ),
-                if (todo.dueDate != null) ...[
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.schedule_rounded,
-                        size: 12,
-                        color: _getDueDateColor(context),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        _formatDueDate(),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: _getDueDateColor(context),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ],
+              )
+            : null,
+        trailing: onDelete != null
+            ? IconButton(
+                icon: const Icon(Icons.close, size: 16),
+                onPressed: onDelete,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              )
+            : null,
+        onTap: onTap,
       ),
     );
   }
 
-  Color _getDueDateColor(BuildContext context) {
-    if (todo.dueDate == null) return AppTheme.getTextSecondary(context);
-
+  String _formatDueDate(DateTime dueDate) {
     final now = DateTime.now();
-    final dueDate = todo.dueDate!;
-    final difference = dueDate.difference(now).inDays;
+    final today = DateTime(now.year, now.month, now.day);
+    final tomorrow = today.add(const Duration(days: 1));
+    final dueDateOnly = DateTime(dueDate.year, dueDate.month, dueDate.day);
 
-    if (difference < 0) {
-      return AppTheme.getError(context); // Red - overdue
-    } else if (difference == 0) {
-      return AppTheme.getWarning(context); // Amber - due today
-    } else if (difference <= 3) {
-      return const Color(0xFF8B5CF6); // Purple - due soon
+    if (dueDateOnly == today) {
+      return 'Due today';
+    } else if (dueDateOnly == tomorrow) {
+      return 'Due tomorrow';
+    } else if (dueDateOnly.isBefore(today)) {
+      final difference = today.difference(dueDateOnly).inDays;
+      return 'Overdue by $difference day${difference == 1 ? '' : 's'}';
     } else {
-      return AppTheme.getTextSecondary(context); // Gray - future
+      final difference = dueDateOnly.difference(today).inDays;
+      return 'Due in $difference day${difference == 1 ? '' : 's'}';
     }
   }
 
-  String _formatDueDate() {
-    if (todo.dueDate == null) return '';
-
+  Color _getDueDateColor(BuildContext context, DateTime dueDate) {
     final now = DateTime.now();
-    final dueDate = todo.dueDate!;
-    final difference = dueDate.difference(now).inDays;
+    final today = DateTime(now.year, now.month, now.day);
+    final dueDateOnly = DateTime(dueDate.year, dueDate.month, dueDate.day);
 
-    if (difference < 0) {
-      return 'Overdue';
-    } else if (difference == 0) {
-      return 'Due today';
-    } else if (difference == 1) {
-      return 'Due tomorrow';
-    } else if (difference <= 7) {
-      return 'Due in $difference days';
+    if (todo.dueDate == null) return AppTheme.getTextSecondary(context);
+
+    if (dueDateOnly.isBefore(today)) {
+      return Theme.of(context).colorScheme.error; // Red - overdue
+    } else if (dueDateOnly == today) {
+      return AppTheme.warningColor; // Amber - due today
     } else {
-      return DateFormat('MMM d').format(dueDate);
+      // Future dates
+      return AppTheme.getTextSecondary(context); // Gray - future
     }
   }
 }

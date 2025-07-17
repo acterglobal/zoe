@@ -80,7 +80,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
         Container(
           height: screenHeight * 0.9,
           decoration: BoxDecoration(
-            color: AppTheme.getSurface(context),
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
@@ -94,7 +94,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                 height: 4,
                 margin: const EdgeInsets.only(top: 12),
                 decoration: BoxDecoration(
-                  color: AppTheme.getBorder(context),
+                  color: Theme.of(context).colorScheme.outline,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -109,7 +109,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
-                        color: AppTheme.getTextPrimary(context),
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     const Spacer(),
@@ -141,7 +141,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                         decoration: _buildInputDecoration('Enter task title'),
                         style: TextStyle(
                           fontSize: 16,
-                          color: AppTheme.getTextPrimary(context),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -157,7 +157,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                         maxLines: 3,
                         style: TextStyle(
                           fontSize: 14,
-                          color: AppTheme.getTextPrimary(context),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -204,7 +204,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
       style: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w600,
-        color: AppTheme.getTextPrimary(context),
+        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }
@@ -212,10 +212,10 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
   InputDecoration _buildInputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: TextStyle(color: AppTheme.getHint(context)),
+      hintStyle: TextStyle(color: AppTheme.getTextSecondary(context)),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: AppTheme.getBorderInput(context)),
+        borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
@@ -242,7 +242,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
               border: Border.all(
                 color: isSelected
                     ? _getPriorityColor(priority)
-                    : AppTheme.getBorder(context),
+                    : Theme.of(context).colorScheme.outline,
               ),
               borderRadius: BorderRadius.circular(6),
             ),
@@ -290,7 +290,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                     vertical: 12,
                   ),
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppTheme.getBorderInput(context)),
+                    border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -311,8 +311,8 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                           style: TextStyle(
                             fontSize: 14,
                             color: _selectedDueDate != null
-                                ? AppTheme.getTextPrimary(context)
-                                : AppTheme.getHint(context),
+                                ? Theme.of(context).colorScheme.onSurface
+                                : AppTheme.getTextSecondary(context),
                           ),
                         ),
                       ),
@@ -341,7 +341,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               decoration: BoxDecoration(
-                border: Border.all(color: AppTheme.getBorderInput(context)),
+                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -359,8 +359,8 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                     style: TextStyle(
                       fontSize: 14,
                       color: _selectedTime != null
-                          ? AppTheme.getTextPrimary(context)
-                          : AppTheme.getHint(context),
+                          ? Theme.of(context).colorScheme.onSurface
+                          : AppTheme.getTextSecondary(context),
                     ),
                   ),
                 ],
@@ -386,7 +386,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                 onSubmitted: _addAssignee,
                 style: TextStyle(
                   fontSize: 14,
-                  color: AppTheme.getTextPrimary(context),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
@@ -408,7 +408,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppTheme.getSurfaceVariant(context),
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Row(
@@ -459,7 +459,7 @@ class _TaskEditorBottomSheetState extends State<TaskEditorBottomSheet> {
                 onSubmitted: _addTag,
                 style: TextStyle(
                   fontSize: 14,
-                  color: AppTheme.getTextPrimary(context),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),

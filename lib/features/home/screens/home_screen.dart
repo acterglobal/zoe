@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../features/sheet/providers/sheet_list_provider.dart';
 import '../../../features/sheet/models/zoe_sheet_model.dart';
-import '../../../core/theme/app_theme.dart';
 import '../../../core/routing/app_routes.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -21,7 +20,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final sheets = ref.watch(sheetListProvider);
 
     return Scaffold(
-      backgroundColor: AppTheme.getBackground(context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -56,7 +54,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: AppTheme.getTextPrimary(context),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),
@@ -65,7 +63,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           onPressed: () => context.go(AppRoutes.settings.route),
           icon: Icon(
             Icons.settings_rounded,
-            color: AppTheme.getTextSecondary(context),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.7),
           ),
         ),
       ],
@@ -81,7 +81,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
-            color: AppTheme.getTextPrimary(context),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 4),
@@ -89,7 +89,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           _getFormattedDate(),
           style: TextStyle(
             fontSize: 16,
-            color: AppTheme.getTextSecondary(context),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.7),
           ),
         ),
       ],
@@ -111,7 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
-                  color: AppTheme.getTextPrimary(context),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const Spacer(),
@@ -147,7 +149,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: AppTheme.getTextPrimary(context),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       subtitle: page.description.isNotEmpty
@@ -155,7 +157,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               page.description,
                               style: TextStyle(
                                 fontSize: 14,
-                                color: AppTheme.getTextSecondary(context),
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.7),
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -183,7 +187,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Icon(
               Icons.note_add_rounded,
               size: 64,
-              color: AppTheme.getTextSecondary(context),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 16),
             Text(
@@ -191,7 +197,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: AppTheme.getTextPrimary(context),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 8),
@@ -199,7 +205,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               'Create your first page to get started',
               style: TextStyle(
                 fontSize: 14,
-                color: AppTheme.getTextSecondary(context),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 24),

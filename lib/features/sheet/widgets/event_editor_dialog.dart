@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:zoey/core/theme/app_theme.dart';
-import 'package:zoey/features/sheet/models/content_block/content_block.dart';
 import 'package:zoey/features/sheet/models/content_block/event_block_model.dart';
 
 class EventEditorBottomSheet extends StatefulWidget {
@@ -100,7 +99,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
         Container(
           height: screenHeight * 0.9,
           decoration: BoxDecoration(
-            color: AppTheme.getSurface(context),
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
@@ -114,7 +113,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                 height: 4,
                 margin: const EdgeInsets.only(top: 12),
                 decoration: BoxDecoration(
-                  color: AppTheme.getBorder(context),
+                  color: Theme.of(context).colorScheme.outline,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -129,7 +128,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
-                        color: AppTheme.getTextPrimary(context),
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     const Spacer(),
@@ -161,7 +160,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                         decoration: _buildInputDecoration('Enter event title'),
                         style: TextStyle(
                           fontSize: 16,
-                          color: AppTheme.getTextPrimary(context),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -177,7 +176,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                         maxLines: 3,
                         style: TextStyle(
                           fontSize: 14,
-                          color: AppTheme.getTextPrimary(context),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -195,7 +194,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                             'All Day Event',
                             style: TextStyle(
                               fontSize: 14,
-                              color: AppTheme.getTextPrimary(context),
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -239,7 +238,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                         ),
                         style: TextStyle(
                           fontSize: 14,
-                          color: AppTheme.getTextPrimary(context),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -250,7 +249,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                         ),
                         style: TextStyle(
                           fontSize: 14,
-                          color: AppTheme.getTextPrimary(context),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -268,7 +267,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                             'Requires RSVP',
                             style: TextStyle(
                               fontSize: 14,
-                              color: AppTheme.getTextPrimary(context),
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -293,7 +292,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
       style: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w600,
-        color: AppTheme.getTextPrimary(context),
+        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }
@@ -301,10 +300,12 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
   InputDecoration _buildInputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: TextStyle(color: AppTheme.getHint(context)),
+      hintStyle: TextStyle(color: AppTheme.getTextSecondary(context)),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: AppTheme.getBorderInput(context)),
+        borderSide: BorderSide(
+          color: Theme.of(context).colorScheme.outlineVariant,
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
@@ -329,7 +330,9 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               decoration: BoxDecoration(
-                border: Border.all(color: AppTheme.getBorderInput(context)),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -347,8 +350,8 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                     style: TextStyle(
                       fontSize: 14,
                       color: date != null
-                          ? AppTheme.getTextPrimary(context)
-                          : AppTheme.getHint(context),
+                          ? Theme.of(context).colorScheme.onSurface
+                          : AppTheme.getTextSecondary(context),
                     ),
                   ),
                 ],
@@ -369,10 +372,12 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppTheme.getBorder(context)),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
                   borderRadius: BorderRadius.circular(8),
                   color: date == null
-                      ? AppTheme.getSurfaceVariant(context)
+                      ? Theme.of(context).colorScheme.surfaceContainerHighest
                       : null,
                 ),
                 child: Row(
@@ -382,7 +387,7 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                       size: 16,
                       color: date != null
                           ? AppTheme.getTextSecondary(context)
-                          : AppTheme.getHint(context),
+                          : AppTheme.getTextSecondary(context),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -390,8 +395,8 @@ class _EventEditorBottomSheetState extends State<EventEditorBottomSheet> {
                       style: TextStyle(
                         fontSize: 14,
                         color: time != null
-                            ? AppTheme.getTextPrimary(context)
-                            : AppTheme.getHint(context),
+                            ? Theme.of(context).colorScheme.onSurface
+                            : AppTheme.getTextSecondary(context),
                       ),
                     ),
                   ],

@@ -15,7 +15,24 @@ class PageNotFoundScreen extends StatelessWidget {
           onPressed: () => context.go(AppRoutes.home.route),
         ),
       ),
-      body: Center(child: Text('Page Not Found')),
+      body: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, size: 64),
+            SizedBox(height: 16),
+            Text(
+              'Page Not Found',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'The page you requested could not be found.',
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

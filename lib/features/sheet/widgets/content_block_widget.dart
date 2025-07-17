@@ -6,9 +6,9 @@ import 'package:zoey/features/sheet/models/content_block/event_block_model.dart'
 import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
-import '../../../core/theme/app_theme.dart';
-import 'task_editor_dialog.dart';
-import 'event_editor_dialog.dart';
+import 'package:zoey/core/theme/app_theme.dart';
+import 'package:zoey/features/sheet/widgets/event_editor_dialog.dart';
+import 'package:zoey/features/sheet/widgets/task_editor_dialog.dart';
 
 class ContentBlockWidget extends StatefulWidget {
   final ContentBlockModel block;
@@ -315,10 +315,13 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w600,
-          color: AppTheme.getTextPrimary(context),
+          color: Theme.of(context).colorScheme.onSurface,
         ),
         decoration: InputDecoration(
           border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          filled: false,
           hintText: 'Untitled',
           hintStyle: TextStyle(color: AppTheme.getTextSecondary(context)),
           contentPadding: EdgeInsets.zero,
@@ -375,7 +378,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: AppTheme.getTextPrimary(context),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
       );
@@ -428,7 +431,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                       border: Border.all(
                         color: todo.isCompleted
                             ? const Color(0xFF10B981)
-                            : AppTheme.getBorder(context),
+                            : Theme.of(context).colorScheme.outline,
                         width: 1.5,
                       ),
                       borderRadius: BorderRadius.circular(3),
@@ -467,7 +470,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                       fontWeight: FontWeight.w500,
                                       color: todo.isCompleted
                                           ? AppTheme.getTextSecondary(context)
-                                          : AppTheme.getTextPrimary(context),
+                                          : Theme.of(
+                                              context,
+                                            ).colorScheme.onSurface,
                                       decoration: todo.isCompleted
                                           ? TextDecoration.lineThrough
                                           : TextDecoration.none,
@@ -475,6 +480,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                     ),
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      filled: false,
                                       hintText: 'To-do',
                                       hintStyle: TextStyle(
                                         color: AppTheme.getTextSecondary(
@@ -508,7 +516,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                       fontWeight: FontWeight.w500,
                                       color: todo.isCompleted
                                           ? AppTheme.getTextSecondary(context)
-                                          : AppTheme.getTextPrimary(context),
+                                          : Theme.of(
+                                              context,
+                                            ).colorScheme.onSurface,
                                       decoration: todo.isCompleted
                                           ? TextDecoration.lineThrough
                                           : TextDecoration.none,
@@ -572,7 +582,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                     vertical: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: AppTheme.getSurfaceVariant(context),
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surfaceContainerHighest,
                                     borderRadius: BorderRadius.circular(4),
                                   ),
                                   child: Row(
@@ -612,9 +624,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                       vertical: 4,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: AppTheme.getSurfaceVariant(
+                                      color: Theme.of(
                                         context,
-                                      ),
+                                      ).colorScheme.surfaceContainerHighest,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Row(
@@ -734,11 +746,14 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
-                                color: AppTheme.getTextPrimary(context),
+                                color: Theme.of(context).colorScheme.onSurface,
                                 height: 1.4,
                               ),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                filled: false,
                                 hintText: 'Event title',
                                 hintStyle: TextStyle(
                                   color: AppTheme.getTextSecondary(context),
@@ -765,7 +780,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
-                                color: AppTheme.getTextPrimary(context),
+                                color: Theme.of(context).colorScheme.onSurface,
                                 height: 1.4,
                               ),
                             ),
@@ -915,7 +930,9 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                                     vertical: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: AppTheme.getSurfaceVariant(context),
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surfaceContainerHighest,
                                     borderRadius: BorderRadius.circular(4),
                                   ),
                                   child: Row(
@@ -1035,11 +1052,14 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                           controller: _listControllers[index],
                           style: TextStyle(
                             fontSize: 14,
-                            color: AppTheme.getTextPrimary(context),
+                            color: Theme.of(context).colorScheme.onSurface,
                             height: 1.4, // Better line height
                           ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            filled: false,
                             hintText: 'List item',
                             hintStyle: TextStyle(
                               color: AppTheme.getTextSecondary(context),
@@ -1060,7 +1080,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                           item.isEmpty ? 'List item' : item,
                           style: TextStyle(
                             fontSize: 14,
-                            color: AppTheme.getTextPrimary(context),
+                            color: Theme.of(context).colorScheme.onSurface,
                             height: 1.4,
                           ),
                         ),
@@ -1121,11 +1141,14 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         controller: _textBlockController,
         style: TextStyle(
           fontSize: 16,
-          color: AppTheme.getTextPrimary(context),
+          color: Theme.of(context).colorScheme.onSurface,
           height: 1.6,
         ),
         decoration: InputDecoration(
           border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          filled: false,
           hintText: 'Type something...',
           hintStyle: TextStyle(color: AppTheme.getTextSecondary(context)),
           contentPadding: EdgeInsets.zero,
@@ -1142,7 +1165,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
           block.content.isEmpty ? '' : block.content,
           style: TextStyle(
             fontSize: 16,
-            color: AppTheme.getTextPrimary(context),
+            color: Theme.of(context).colorScheme.onSurface,
             height: 1.6,
           ),
         ),
@@ -1193,7 +1216,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: AppTheme.getSurfaceVariant(context),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
@@ -1242,7 +1265,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
           : const Color(0xFFFEF3C7);
       textColor = isDark ? const Color(0xFFFBBF24) : const Color(0xFFF59E0B);
     } else {
-      backgroundColor = AppTheme.getSurfaceVariant(context);
+      backgroundColor = Theme.of(context).colorScheme.surfaceContainerHighest;
       textColor = AppTheme.getTextSecondary(context);
     }
 
@@ -1353,7 +1376,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         icon = Icons.help_outline;
         break;
       case RSVPStatus.pending:
-        backgroundColor = AppTheme.getSurfaceVariant(context);
+        backgroundColor = Theme.of(context).colorScheme.surfaceContainerHighest;
         textColor = AppTheme.getTextSecondary(context);
         icon = Icons.schedule;
         break;

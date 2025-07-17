@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/core/theme/app_theme.dart';
 
 class WelcomeScreen extends ConsumerStatefulWidget {
-  const WelcomeScreen({super.key});
+  final bool isEmbedded;
+
+  const WelcomeScreen({super.key, this.isEmbedded = false});
 
   @override
   ConsumerState<WelcomeScreen> createState() => _WelcomeScreenState();
@@ -17,143 +17,172 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.getBackground(context),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Logo/Icon with animation
-                    Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF6366F1),
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(
-                                  0xFF6366F1,
-                                ).withValues(alpha: 0.3),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
-                          ),
-                          child: const Icon(
-                            Icons.auto_awesome,
-                            size: 60,
-                            color: Colors.white,
-                          ),
-                        )
-                        .animate()
-                        .scale(delay: 200.ms, duration: 600.ms)
-                        .then()
-                        .shimmer(delay: 400.ms, duration: 1000.ms),
+              const Spacer(),
 
-                    const SizedBox(height: 48),
+              // App Icon and Title
+              Column(
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(context).colorScheme.secondary,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Icon(
+                      Icons.note_alt_rounded,
+                      size: 40,
+                      color: Colors.white,
+                    ),
+                  ),
 
-                    // Welcome text
-                    Text('Welcome to Zoe', style: AppTheme.heading1(context))
-                        .animate()
-                        .fadeIn(delay: 400.ms, duration: 600.ms)
-                        .slideY(begin: 0.3, end: 0),
+                  const SizedBox(height: 32),
 
-                    const SizedBox(height: 16),
+                  Text(
+                    'Welcome to Zoe',
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
 
-                    // Description
-                    Text(
-                          'Your personal workspace for organizing thoughts, tasks, and ideas with beautiful simplicity.',
-                          textAlign: TextAlign.center,
-                          style: AppTheme.bodyLarge(context).copyWith(
-                            color: AppTheme.getTextSecondary(context),
-                            height: 1.5,
-                          ),
-                        )
-                        .animate()
-                        .fadeIn(delay: 600.ms, duration: 600.ms)
-                        .slideY(begin: 0.3, end: 0),
+                  const SizedBox(height: 16),
 
-                    const SizedBox(height: 64),
+                  Text(
+                    'Your personal workspace for organizing thoughts, tasks, and ideas with beautiful simplicity.',
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
 
-                    // Feature cards
-                    Row(
-                          children: [
-                            Expanded(
-                              child: _FeatureCard(
-                                icon: Icons.checklist_rounded,
-                                title: 'Organize',
-                                description:
-                                    'Keep your tasks and ideas structured',
-                                color: const Color(0xFF10B981),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: _FeatureCard(
-                                icon: Icons.event_note_rounded,
-                                title: 'Plan',
-                                description: 'Schedule and track your events',
-                                color: const Color(0xFF8B5CF6),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: _FeatureCard(
-                                icon: Icons.lightbulb_rounded,
-                                title: 'Create',
-                                description: 'Capture and develop your ideas',
-                                color: const Color(0xFFF59E0B),
-                              ),
-                            ),
-                          ],
-                        )
-                        .animate()
-                        .fadeIn(delay: 800.ms, duration: 600.ms)
-                        .slideY(begin: 0.3, end: 0),
-                  ],
+              const SizedBox(height: 48),
+
+              // Features List
+              _buildFeaturesList(),
+
+              const Spacer(),
+
+              // Get Started Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => _getStarted(context),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Text(
+                      'Get Started',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.labelLarge!.copyWith(color: Colors.white),
+                    ),
+                  ),
                 ),
               ),
 
-              // Get Started button
-              SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => _getStarted(context),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF6366F1),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Let\'s get started',
-                            style: AppTheme.labelLarge(
-                              context,
-                            ).copyWith(color: Colors.white),
-                          ),
-                          const SizedBox(width: 8),
-                          const Icon(Icons.arrow_forward_rounded, size: 20),
-                        ],
-                      ),
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(delay: 1000.ms, duration: 600.ms)
-                  .slideY(begin: 0.3, end: 0),
+              const SizedBox(height: 32),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildFeaturesList() {
+    final features = [
+      {
+        'icon': Icons.dashboard_customize_rounded,
+        'title': 'Mixed Content Blocks',
+        'description': 'Combine todos, events, lists, and text in one place',
+      },
+      {
+        'icon': Icons.palette_rounded,
+        'title': 'Beautiful Design',
+        'description': 'Modern, joyful interface with smooth animations',
+      },
+      {
+        'icon': Icons.devices_rounded,
+        'title': 'Cross-Platform',
+        'description': 'Works seamlessly on all your devices',
+      },
+    ];
+
+    return Column(
+      children: features
+          .map(
+            (feature) => _buildFeatureItem(
+              feature['icon'] as IconData,
+              feature['title'] as String,
+              feature['description'] as String,
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Widget _buildFeatureItem(IconData icon, String title, String description) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 24),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(
+                    alpha: Theme.of(context).brightness == Brightness.dark
+                        ? 0.3
+                        : 0.1,
+                  ),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Icon(
+              icon,
+              color: Theme.of(context).colorScheme.primary,
+              size: 24,
+            ),
+          ),
+
+          const SizedBox(width: 16),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: Theme.of(context).textTheme.labelLarge),
+                const SizedBox(height: 4),
+                Text(
+                  description,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall!.copyWith(height: 1.4),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -165,62 +194,5 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
 
     // Navigate to home screen
     context.go(AppRoutes.home.route);
-  }
-}
-
-class _FeatureCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String description;
-  final Color color;
-
-  const _FeatureCard({
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppTheme.getSurface(context),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(
-              alpha: Theme.of(context).brightness == Brightness.dark
-                  ? 0.3
-                  : 0.05,
-            ),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, size: 24, color: color),
-          ),
-          const SizedBox(height: 12),
-          Text(title, style: AppTheme.labelLarge(context)),
-          const SizedBox(height: 4),
-          Text(
-            description,
-            textAlign: TextAlign.center,
-            style: AppTheme.bodySmall(context).copyWith(height: 1.4),
-          ),
-        ],
-      ),
-    );
   }
 }

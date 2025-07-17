@@ -1,5 +1,5 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/widgets/content_block_widget.dart';
@@ -93,14 +93,12 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return Scaffold(
-        backgroundColor: AppTheme.getSurface(context),
         appBar: AppBar(
-          backgroundColor: AppTheme.getSurface(context),
           elevation: 0,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_rounded,
-              color: AppTheme.getTextPrimary(context),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             onPressed: () => context.go(AppRoutes.home.route),
           ),
@@ -110,14 +108,13 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
     }
 
     return Scaffold(
-      backgroundColor: AppTheme.getSurface(context),
       appBar: AppBar(
-        backgroundColor: AppTheme.getSurface(context),
         elevation: 0,
+        backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_rounded,
-            color: AppTheme.getTextPrimary(context),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
           onPressed: () => context.go(AppRoutes.home.route),
         ),
@@ -143,13 +140,15 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
               style: TextButton.styleFrom(
                 backgroundColor: _isEditing
                     ? const Color(0xFF3B82F6) // Blue background for Save
-                    : AppTheme.getSurfaceVariant(
-                        context,
-                      ), // Subtle background for Edit
+                    : Theme.of(context)
+                          .colorScheme
+                          .surfaceContainerHighest, // Subtle background for Edit
                 foregroundColor: _isEditing
                     ? Colors
                           .white // White text for Save
-                    : AppTheme.getTextPrimary(context), // Theme text for Edit
+                    : Theme.of(
+                        context,
+                      ).colorScheme.onSurface, // Theme text for Edit
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 8,
@@ -167,7 +166,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
                     size: 16,
                     color: _isEditing
                         ? Colors.white
-                        : AppTheme.getTextPrimary(context),
+                        : Theme.of(context).colorScheme.onSurface,
                   ),
                   const SizedBox(width: 6),
                   Text(
@@ -177,7 +176,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
                       fontWeight: FontWeight.w500,
                       color: _isEditing
                           ? Colors.white
-                          : AppTheme.getTextPrimary(context),
+                          : Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                 ],
@@ -192,7 +191,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
               style: IconButton.styleFrom(
                 backgroundColor: _currentPage.isWhatsAppConnected
                     ? const Color(0xFF25D366).withValues(alpha: 0.1)
-                    : AppTheme.getSurfaceVariant(context),
+                    : Theme.of(context).colorScheme.surfaceContainerHighest,
                 foregroundColor: _currentPage.isWhatsAppConnected
                     ? const Color(0xFF25D366)
                     : AppTheme.getTextSecondary(context),
@@ -212,7 +211,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
           PopupMenuButton<String>(
             icon: Icon(
               Icons.more_vert_rounded,
-              color: AppTheme.getTextPrimary(context),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             onSelected: (value) {
               switch (value) {
@@ -237,7 +236,9 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
                     const SizedBox(width: 8),
                     Text(
                       'Duplicate',
-                      style: TextStyle(color: AppTheme.getTextPrimary(context)),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ],
                 ),
@@ -334,16 +335,20 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
                       style: TextStyle(
                         fontSize: 36,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.getTextPrimary(context),
+                        color: Theme.of(context).colorScheme.onSurface,
                         height: 1.2,
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        filled: false,
                         hintText: 'Untitled',
                         hintStyle: TextStyle(
                           color: AppTheme.getTextSecondary(context),
                           fontWeight: FontWeight.bold,
                         ),
+                        contentPadding: const EdgeInsets.all(8.0),
                       ),
                       maxLines: null,
                       onChanged: (value) {
@@ -361,7 +366,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.getTextPrimary(context),
+                          color: Theme.of(context).colorScheme.onSurface,
                           height: 1.2,
                         ),
                       ),
@@ -383,12 +388,16 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
                 ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  filled: false,
                   hintText: 'Add a description...',
                   hintStyle: TextStyle(
                     color: AppTheme.getTextSecondary(
                       context,
                     ).withValues(alpha: 0.6),
                   ),
+                  contentPadding: const EdgeInsets.all(8.0),
                 ),
                 maxLines: null,
                 onChanged: (value) {
@@ -494,9 +503,9 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
             margin: const EdgeInsets.only(top: 8),
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppTheme.getSurface(context),
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppTheme.getBorder(context)),
+              border: Border.all(color: Theme.of(context).colorScheme.outline),
             ),
             child: Column(
               children: [
@@ -751,7 +760,7 @@ class _AddBlockOption extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: AppTheme.getTextPrimary(context),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 2),

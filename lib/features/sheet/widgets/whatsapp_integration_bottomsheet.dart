@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:zoey/core/theme/app_theme.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
-import '../../../core/theme/app_theme.dart';
 
 class WhatsAppIntegrationBottomSheet extends StatefulWidget {
   final ZoeSheetModel currentSheet;
-  final Function(bool isConnected) onConnectionChanged;
+  final Function(bool) onConnectionChanged;
 
   const WhatsAppIntegrationBottomSheet({
     super.key,
@@ -19,14 +19,17 @@ class WhatsAppIntegrationBottomSheet extends StatefulWidget {
 
 class _WhatsAppIntegrationBottomSheetState
     extends State<WhatsAppIntegrationBottomSheet> {
-  int _currentStep = 0;
-  final TextEditingController _groupNameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  late bool _isConnected;
-  bool _notifyOnTaskChanges = true;
-  bool _notifyOnEventChanges = true;
-  bool _notifyOnSheetUpdates = false;
-  bool _dailySummary = true;
+  bool _isConnecting = false;
+  bool _isConnected = false;
+  String _phoneNumber = '';
+  String _selectedContact = '';
+  final List<String> _contacts = [
+    'John Doe',
+    'Jane Smith',
+    'Mike Johnson',
+    'Sarah Wilson',
+    'David Brown',
+  ];
 
   @override
   void initState() {
@@ -35,67 +38,223 @@ class _WhatsAppIntegrationBottomSheetState
   }
 
   @override
-  void dispose() {
-    _groupNameController.dispose();
-    _phoneController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      initialChildSize: 0.9,
-      minChildSize: 0.5,
-      maxChildSize: 0.95,
-      expand: false,
-      builder: (context, scrollController) => Container(
-        decoration: BoxDecoration(
-          color: AppTheme.getSurface(context),
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildHandle(),
-            _buildHeader(),
-            Expanded(
-              child: SingleChildScrollView(
-                controller: scrollController,
-                padding: const EdgeInsets.all(24),
-                child: _buildContent(),
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.85,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        children: [
+          // Handle bar
+          Container(
+            margin: const EdgeInsets.only(top: 8),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          // Header
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF25D366).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.phone_rounded,
+                    color: Color(0xFF25D366),
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'WhatsApp Integration',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _isConnected
+                            ? 'Connected to WhatsApp'
+                            : 'Connect your WhatsApp to sync messages',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppTheme.getTextSecondary(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close_rounded),
+                ),
+              ],
+            ),
+          ),
+
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (!_isConnected) ...[
+                    _buildConnectionSection(),
+                    const SizedBox(height: 32),
+                  ],
+
+                  if (_isConnected) ...[
+                    _buildConnectedSection(),
+                    const SizedBox(height: 32),
+                    _buildContactsSection(),
+                    const SizedBox(height: 32),
+                    _buildSyncOptionsSection(),
+                    const SizedBox(height: 32),
+                  ],
+
+                  _buildFeaturesSection(),
+                  const SizedBox(height: 32),
+                ],
               ),
             ),
-            _buildActions(),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildConnectionSection() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
         ),
       ),
-    );
-  }
-
-  Widget _buildHandle() {
-    return Container(
-      margin: const EdgeInsets.only(top: 12, bottom: 8),
-      width: 40,
-      height: 4,
-      decoration: BoxDecoration(
-        color: AppTheme.getTextSecondary(context).withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.phone_rounded,
+                color: const Color(0xFF25D366),
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Connect WhatsApp',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Enter your phone number to connect your WhatsApp account',
+            style: TextStyle(
+              fontSize: 14,
+              color: AppTheme.getTextSecondary(context),
+            ),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            decoration: InputDecoration(
+              labelText: 'Phone Number',
+              hintText: '+1 (555) 123-4567',
+              prefixIcon: const Icon(Icons.phone_outlined),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            keyboardType: TextInputType.phone,
+            onChanged: (value) {
+              setState(() {
+                _phoneNumber = value;
+              });
+            },
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _phoneNumber.isNotEmpty && !_isConnecting
+                  ? _connectWhatsApp
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF25D366),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: _isConnecting
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : const Text(
+                      'Connect WhatsApp',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildConnectedSection() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppTheme.successColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.successColor.withValues(alpha: 0.3)),
+      ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF25D366).withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
+              color: AppTheme.successColor,
+              borderRadius: BorderRadius.circular(8),
             ),
-            child: _buildWhatsAppIcon(24),
+            child: const Icon(
+              Icons.check_rounded,
+              color: Colors.white,
+              size: 16,
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -103,15 +262,16 @@ class _WhatsAppIntegrationBottomSheetState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'WhatsApp Integration',
+                  'WhatsApp Connected',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: AppTheme.getTextPrimary(context),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  'Connect this sheet to your WhatsApp group',
+                  'Connected to $_phoneNumber',
                   style: TextStyle(
                     fontSize: 14,
                     color: AppTheme.getTextSecondary(context),
@@ -120,206 +280,172 @@ class _WhatsAppIntegrationBottomSheetState
               ],
             ),
           ),
+          TextButton(
+            onPressed: _disconnectWhatsApp,
+            child: const Text(
+              'Disconnect',
+              style: TextStyle(
+                color: Color(0xFFEF4444),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildContent() {
-    if (_isConnected) {
-      return _buildConnectedView();
-    }
-
-    return _buildSetupStepper();
-  }
-
-  Widget _buildSetupStepper() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Progress indicator
-        _buildProgressIndicator(),
-        const SizedBox(height: 32),
-        // Step content
-        _buildStepContent(),
-      ],
-    );
-  }
-
-  Widget _buildProgressIndicator() {
-    return Row(
-      children: List.generate(2, (index) {
-        final isActive = index <= _currentStep;
-        final isCompleted = index < _currentStep;
-
-        return Expanded(
-          child: Row(
-            children: [
-              Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  color: isActive
-                      ? const Color(0xFF25D366)
-                      : AppTheme.getSurfaceVariant(context),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Center(
-                  child: isCompleted
-                      ? const Icon(
-                          Icons.check_rounded,
-                          color: Colors.white,
-                          size: 16,
-                        )
-                      : Text(
-                          '${index + 1}',
-                          style: TextStyle(
-                            color: isActive
-                                ? Colors.white
-                                : AppTheme.getTextSecondary(context),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                ),
-              ),
-              if (index < 1)
-                Expanded(
-                  child: Container(
-                    height: 2,
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                      color: index < _currentStep
-                          ? const Color(0xFF25D366)
-                          : AppTheme.getSurfaceVariant(context),
-                      borderRadius: BorderRadius.circular(1),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        );
-      }),
-    );
-  }
-
-  Widget _buildStepContent() {
-    switch (_currentStep) {
-      case 0:
-        return _buildStep1(); // Bot Setup
-      case 1:
-        return _buildStep3(); // Notification Settings
-      default:
-        return const SizedBox.shrink();
-    }
-  }
-
-  Widget _buildStep1() {
+  Widget _buildContactsSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'Step 1: Add Zoey Bot',
+          'Select Contact',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: AppTheme.getTextPrimary(context),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        const SizedBox(height: 8),
-        Text(
-          'Add our WhatsApp bot to your group to receive notifications',
-          style: TextStyle(
-            fontSize: 14,
-            color: AppTheme.getTextSecondary(context),
-          ),
-        ),
-        const SizedBox(height: 24),
-
+        const SizedBox(height: 16),
         Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppTheme.getSurfaceVariant(context),
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppTheme.getBorder(context)),
+            border: Border.all(
+              color: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.3),
+            ),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+            children: _contacts.map((contact) {
+              final isSelected = _selectedContact == contact;
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: isSelected
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.surfaceContainerHighest,
+                  child: Text(
+                    contact.split(' ').map((name) => name[0]).join(),
+                    style: TextStyle(
+                      color: isSelected
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                title: Text(
+                  contact,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+                trailing: isSelected
+                    ? Icon(
+                        Icons.check_circle_rounded,
+                        color: Theme.of(context).colorScheme.primary,
+                      )
+                    : null,
+                onTap: () {
+                  setState(() {
+                    _selectedContact = contact;
+                  });
+                },
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSyncOptionsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Sync Options',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.3),
+            ),
+          ),
+          child: Column(
             children: [
-              Row(
-                children: [
-                  const Icon(
-                    Icons.phone_rounded,
-                    size: 20,
-                    color: Color(0xFF25D366),
+              SwitchListTile(
+                title: Text(
+                  'Auto-sync messages',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'Zoey Bot Number',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.getTextPrimary(context),
-                      ),
-                    ),
+                ),
+                subtitle: Text(
+                  'Automatically sync new messages',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.getTextSecondary(context),
                   ),
-                ],
+                ),
+                value: true,
+                onChanged: (value) {},
               ),
-              const SizedBox(height: 12),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppTheme.getSurface(context),
-                  borderRadius: BorderRadius.circular(8),
+              const Divider(height: 1),
+              SwitchListTile(
+                title: Text(
+                  'Sync media files',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '+1 (555) 123-ZOEY',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppTheme.getTextPrimary(context),
-                          fontFamily: 'monospace',
-                        ),
-                      ),
-                    ),
-                    TextButton.icon(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Phone number copied to clipboard'),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.copy_rounded, size: 16),
-                      label: const Text('Copy'),
-                      style: TextButton.styleFrom(
-                        foregroundColor: const Color(0xFF25D366),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                    ),
-                  ],
+                subtitle: Text(
+                  'Include photos and videos',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.getTextSecondary(context),
+                  ),
                 ),
+                value: false,
+                onChanged: (value) {},
               ),
-              const SizedBox(height: 12),
-              Text(
-                '1. Copy the bot number above\n2. Add it to your WhatsApp group\n3. The bot will send a confirmation message',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppTheme.getTextSecondary(context),
+              const Divider(height: 1),
+              SwitchListTile(
+                title: Text(
+                  'Notifications',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
+                subtitle: Text(
+                  'Get notified of new messages',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.getTextSecondary(context),
+                  ),
+                ),
+                value: true,
+                onChanged: (value) {},
               ),
             ],
           ),
@@ -328,96 +454,79 @@ class _WhatsAppIntegrationBottomSheetState
     );
   }
 
-  Widget _buildStep3() {
+  Widget _buildFeaturesSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'Step 2: Notification Settings',
+          'Features',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: AppTheme.getTextPrimary(context),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        const SizedBox(height: 8),
-        Text(
-          'Choose what updates you want to receive in WhatsApp',
-          style: TextStyle(
-            fontSize: 14,
-            color: AppTheme.getTextSecondary(context),
-          ),
+        const SizedBox(height: 16),
+        _buildFeatureItem(
+          icon: Icons.sync_rounded,
+          title: 'Message Sync',
+          description: 'Automatically sync your WhatsApp messages',
         ),
-        const SizedBox(height: 24),
-
-        _buildNotificationToggle(
-          'Task Updates',
-          'Get notified when tasks are added, completed, or modified',
-          Icons.check_box_rounded,
-          _notifyOnTaskChanges,
-          (value) => setState(() => _notifyOnTaskChanges = value),
+        _buildFeatureItem(
+          icon: Icons.search_rounded,
+          title: 'Smart Search',
+          description: 'Search through your messages easily',
         ),
-
-        _buildNotificationToggle(
-          'Event Updates',
-          'Receive notifications for new events and schedule changes',
-          Icons.event_rounded,
-          _notifyOnEventChanges,
-          (value) => setState(() => _notifyOnEventChanges = value),
+        _buildFeatureItem(
+          icon: Icons.backup_rounded,
+          title: 'Backup & Restore',
+          description: 'Keep your messages safe and secure',
         ),
-
-        _buildNotificationToggle(
-          'Sheet Updates',
-          'Get notified when sheet content is modified',
-          Icons.edit_rounded,
-          _notifyOnSheetUpdates,
-          (value) => setState(() => _notifyOnSheetUpdates = value),
-        ),
-
-        _buildNotificationToggle(
-          'Daily Summary',
-          'Receive a daily summary of sheet activity',
-          Icons.today_rounded,
-          _dailySummary,
-          (value) => setState(() => _dailySummary = value),
+        _buildFeatureItem(
+          icon: Icons.analytics_rounded,
+          title: 'Message Analytics',
+          description: 'Get insights about your conversations',
         ),
       ],
     );
   }
 
-  Widget _buildNotificationToggle(
-    String title,
-    String description,
-    IconData icon,
-    bool value,
-    ValueChanged<bool> onChanged,
-  ) {
+  Widget _buildFeatureItem({
+    required IconData icon,
+    required String title,
+    required String description,
+  }) {
     return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.getSurfaceVariant(context),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.getBorder(context)),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
+        ),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: AppTheme.getTextSecondary(context), size: 20),
-          const SizedBox(width: 12),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF25D366).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, color: const Color(0xFF25D366), size: 20),
+          ),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   title,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: AppTheme.getTextPrimary(context),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -431,263 +540,34 @@ class _WhatsAppIntegrationBottomSheetState
               ],
             ),
           ),
-          const SizedBox(width: 12),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-            activeColor: const Color(0xFF25D366),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
         ],
       ),
     );
   }
 
-  Widget _buildConnectedView() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: const Color(0xFF25D366).withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: const Color(0xFF25D366).withValues(alpha: 0.2),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(
-                Icons.check_circle_rounded,
-                color: Color(0xFF25D366),
-                size: 48,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Successfully Connected!',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.getTextPrimary(context),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Your sheet is now connected to your WhatsApp group',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppTheme.getTextSecondary(context),
-                ),
-              ),
-            ],
-          ),
-        ),
+  void _connectWhatsApp() async {
+    setState(() {
+      _isConnecting = true;
+    });
 
-        const SizedBox(height: 24),
+    // Simulate connection process
+    await Future.delayed(const Duration(seconds: 2));
 
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Active Notifications',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: AppTheme.getTextPrimary(context),
-            ),
-          ),
-        ),
+    setState(() {
+      _isConnecting = false;
+      _isConnected = true;
+    });
 
-        const SizedBox(height: 12),
-
-        if (_notifyOnTaskChanges) _buildActiveNotification('Task Updates'),
-        if (_notifyOnEventChanges) _buildActiveNotification('Event Updates'),
-        if (_notifyOnSheetUpdates) _buildActiveNotification('Sheet Updates'),
-        if (_dailySummary) _buildActiveNotification('Daily Summary'),
-      ],
-    );
+    widget.onConnectionChanged(true);
   }
 
-  Widget _buildActiveNotification(String type) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: AppTheme.getSurfaceVariant(context),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.check_rounded, color: Color(0xFF25D366), size: 16),
-          const SizedBox(width: 8),
-          Text(
-            type,
-            style: TextStyle(
-              fontSize: 14,
-              color: AppTheme.getTextPrimary(context),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  void _disconnectWhatsApp() {
+    setState(() {
+      _isConnected = false;
+      _phoneNumber = '';
+      _selectedContact = '';
+    });
 
-  Widget _buildActions() {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: AppTheme.getSurface(context),
-        border: Border(
-          top: BorderSide(color: AppTheme.getBorder(context), width: 1),
-        ),
-      ),
-      child: SafeArea(
-        top: false,
-        child: _isConnected ? _buildConnectedActions() : _buildSetupActions(),
-      ),
-    );
-  }
-
-  Widget _buildConnectedActions() {
-    return Row(
-      children: [
-        Expanded(
-          child: OutlinedButton(
-            onPressed: () {
-              setState(() {
-                _isConnected = false;
-                _currentStep = 0;
-              });
-
-              // Notify parent about disconnection
-              widget.onConnectionChanged(false);
-            },
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text('Disconnect'),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF25D366),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text('Done'),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSetupActions() {
-    return Row(
-      children: [
-        if (_currentStep > 0)
-          Expanded(
-            child: OutlinedButton(
-              onPressed: () {
-                setState(() {
-                  _currentStep--;
-                });
-              },
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text('Previous'),
-            ),
-          ),
-        if (_currentStep > 0) const SizedBox(width: 12),
-        Expanded(
-          flex: _currentStep > 0 ? 1 : 2,
-          child: ElevatedButton(
-            onPressed: _canProceed() ? _handleNext : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF25D366),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: Text(_currentStep == 1 ? 'Connect' : 'Next'),
-          ),
-        ),
-      ],
-    );
-  }
-
-  bool _canProceed() {
-    switch (_currentStep) {
-      case 0:
-        return true; // Always can proceed from step 1 (bot setup is manual)
-      case 1:
-        return _notifyOnTaskChanges ||
-            _notifyOnEventChanges ||
-            _notifyOnSheetUpdates ||
-            _dailySummary;
-      default:
-        return false;
-    }
-  }
-
-  void _handleNext() {
-    if (_currentStep < 1) {
-      setState(() {
-        _currentStep++;
-      });
-    } else {
-      // Final step - simulate connection
-      setState(() {
-        _isConnected = true;
-      });
-
-      // Notify parent about connection change
-      widget.onConnectionChanged(true);
-
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('WhatsApp integration activated successfully!'),
-          backgroundColor: Color(0xFF25D366),
-        ),
-      );
-    }
-  }
-
-  Widget _buildWhatsAppIcon(double size) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        // Background circle (always WhatsApp green in header)
-        Container(
-          width: size,
-          height: size,
-          decoration: const BoxDecoration(
-            color: Color(0xFF25D366),
-            shape: BoxShape.circle,
-          ),
-        ),
-        // Phone icon in white
-        Icon(Icons.phone_rounded, size: size * 0.6, color: Colors.white),
-      ],
-    );
+    widget.onConnectionChanged(false);
   }
 }

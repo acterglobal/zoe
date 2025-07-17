@@ -36,21 +36,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppTheme.getBackground(context),
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_rounded,
-            color: AppTheme.getTextPrimary(context),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
           onPressed: () => context.go(AppRoutes.home.route),
         ),
         title: Text(
           'Settings',
           style: TextStyle(
-            color: AppTheme.getTextPrimary(context),
+            color: Theme.of(context).colorScheme.onSurface,
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
@@ -114,7 +112,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Widget _buildSettingsCard(List<Widget> children) {
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.getSurface(context),
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -152,7 +150,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: AppTheme.getTextPrimary(context),
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
       subtitle: Text(
@@ -176,12 +174,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: AppTheme.getSuccess(context).withValues(alpha: 0.1),
+          color: AppTheme.successColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(
           Icons.language_rounded,
-          color: AppTheme.getSuccess(context),
+          color: AppTheme.successColor,
           size: 20,
         ),
       ),
@@ -190,7 +188,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: AppTheme.getTextPrimary(context),
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
       subtitle: Text(
@@ -227,7 +225,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: AppTheme.getTextPrimary(context),
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
       subtitle: Text(
@@ -250,21 +248,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color(0xFFF59E0B).withValues(alpha: 0.1),
+          color: AppTheme.warningColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: const Icon(
-          Icons.star_rounded,
-          color: Color(0xFFF59E0B),
-          size: 20,
-        ),
+        child: Icon(Icons.star_rounded, color: AppTheme.warningColor, size: 20),
       ),
       title: Text(
         'Rate App',
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: AppTheme.getTextPrimary(context),
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
       subtitle: Text(
@@ -287,12 +281,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color(0xFFEF4444).withValues(alpha: 0.1),
+          color: Theme.of(context).colorScheme.error.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: const Icon(
+        child: Icon(
           Icons.mail_outline_rounded,
-          color: Color(0xFFEF4444),
+          color: Theme.of(context).colorScheme.error,
           size: 20,
         ),
       ),
@@ -301,7 +295,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: AppTheme.getTextPrimary(context),
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
       subtitle: Text(
@@ -324,27 +318,25 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color(0xFF6B7280).withValues(alpha: 0.1),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: const Icon(
+        child: Icon(
           Icons.info_outline_rounded,
-          color: Color(0xFF6B7280),
+          color: Theme.of(context).colorScheme.primary,
           size: 20,
         ),
       ),
       title: Text(
-        'App Version',
+        'Version',
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: AppTheme.getTextPrimary(context),
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
       subtitle: Text(
-        _packageInfo != null
-            ? '${_packageInfo!.version} (${_packageInfo!.buildNumber})'
-            : 'Loading...',
+        _packageInfo?.version ?? 'Loading...',
         style: TextStyle(
           fontSize: 14,
           color: AppTheme.getTextSecondary(context),
@@ -357,9 +349,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Divider(
       height: 1,
       thickness: 1,
-      color: AppTheme.getBorder(context),
-      indent: 16,
-      endIndent: 16,
+      color: Theme.of(context).colorScheme.outline,
     );
   }
 
@@ -472,60 +462,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  void _rateApp() async {
-    // For demo purposes, we'll use a generic URL
-    // In production, you would conditionally use:
-    // iOS: 'https://apps.apple.com/app/id123456789'
-    // Android: 'https://play.google.com/store/apps/details?id=com.example.zoey'
-    const url = 'https://example.com/rate-zoe-app';
-
-    try {
-      if (await canLaunchUrl(Uri.parse(url))) {
-        await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Could not open rating page')),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not open rating page')),
-        );
-      }
-    }
+  void _rateApp() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Rate app functionality coming soon!')),
+    );
   }
 
-  void _contactUs() async {
-    const email = 'support@zoeapp.com';
-    const subject = 'Zoe App Support';
-    const body = 'Hi Zoe team,\n\nI would like to get in touch regarding:\n\n';
-
-    final emailUrl = Uri(
+  void _contactUs() {
+    final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: email,
-      query:
-          'subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}',
+      path: 'support@zoeapp.com',
+      query: 'subject=Zoe App Feedback',
     );
 
-    try {
-      if (await canLaunchUrl(emailUrl)) {
-        await launchUrl(emailUrl);
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Could not open email app')),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not open email app')),
-        );
-      }
-    }
+    launchUrl(emailLaunchUri);
   }
 }
