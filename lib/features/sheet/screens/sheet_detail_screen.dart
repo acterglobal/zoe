@@ -1,25 +1,25 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../common/providers/app_state_provider.dart';
-import '../../common/models/page.dart';
-import '../../common/models/content_block.dart';
-import '../../core/theme/app_theme.dart';
-import '../../core/routing/app_routes.dart';
-import '../../common/widgets/content_block_widget.dart';
-import '../../common/widgets/whatsapp_integration_bottomsheet.dart';
+import '../../../common/providers/app_state_provider.dart';
+import '../../../common/models/page.dart';
+import '../../../common/models/content_block.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/routing/app_routes.dart';
+import '../../../common/widgets/content_block_widget.dart';
+import '../../../common/widgets/whatsapp_integration_bottomsheet.dart';
 
-class PageDetailScreen extends ConsumerStatefulWidget {
+class SheetDetailScreen extends ConsumerStatefulWidget {
   final ZoePage? page;
   final bool isEmbedded;
 
-  const PageDetailScreen({super.key, this.page, this.isEmbedded = false});
+  const SheetDetailScreen({super.key, this.page, this.isEmbedded = false});
 
   @override
-  ConsumerState<PageDetailScreen> createState() => _PageDetailScreenState();
+  ConsumerState<SheetDetailScreen> createState() => _SheetDetailScreenState();
 }
 
-class _PageDetailScreenState extends ConsumerState<PageDetailScreen> {
+class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
   late ZoePage _currentPage;
