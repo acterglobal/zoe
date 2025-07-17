@@ -870,7 +870,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Enhanced time indicator
-                Container(
+                SizedBox(
                   width: 64,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -1255,12 +1255,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return '${weekdays[now.weekday - 1]}, ${months[now.month - 1]} ${now.day}';
   }
 
-  String _formatEventTime(EventItem event) {
-    final start = _formatTime(event.startTime);
-    final end = event.endTime != null ? _formatTime(event.endTime!) : null;
-    return end != null ? '$start - $end' : start;
-  }
-
   bool _isEventSoon(DateTime eventTime) {
     final now = DateTime.now();
     final difference = eventTime.difference(now).inHours;
@@ -1309,21 +1303,6 @@ class _HomeScreenState extends State<HomeScreen> {
     if (dateOnly == tomorrow) return 'tomorrow';
     if (dateOnly.isBefore(today)) return 'overdue';
     return '${date.day}/${date.month}';
-  }
-
-  String _formatTime(DateTime time) {
-    final hour = time.hour;
-    final minute = time.minute;
-    final period = hour >= 12 ? 'PM' : 'AM';
-    final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
-
-    return '$displayHour:${minute.toString().padLeft(2, '0')} $period';
-  }
-
-  String _formatEventTimeShort(DateTime time) {
-    final hour = time.hour;
-    if (hour < 12) return 'AM';
-    return 'PM';
   }
 
   String _getEventDuration(EventItem event) {
