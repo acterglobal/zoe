@@ -16,7 +16,12 @@ class SettingsScreen extends ConsumerWidget {
       appBar: AppBar(title: Text('Settings'), centerTitle: false),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: _buildSettingsBodyUI(context, ref),
+        child: Center(
+          child: Container(
+            constraints: BoxConstraints(maxWidth: 600),
+            child: _buildSettingsBodyUI(context, ref),
+          ),
+        ),
       ),
     );
   }
