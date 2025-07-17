@@ -8,6 +8,7 @@ final lightColorScheme = ColorScheme.light(
   onSurface: AppColors.lightOnSurface,
   onPrimary: AppColors.lightOnSurface,
   error: AppColors.errorColor,
+  outline: AppColors.lightOnSurface.withValues(alpha: 0.1),
 );
 
 final darkColorScheme = ColorScheme.dark(
@@ -17,4 +18,5 @@ final darkColorScheme = ColorScheme.dark(
   onSurface: AppColors.darkOnSurface,
   onPrimary: AppColors.darkOnSurface,
   error: AppColors.errorColor,
+  outline: AppColors.darkOnSurface.withValues(alpha: 0.1),
 );

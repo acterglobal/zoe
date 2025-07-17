@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/core/theme/app_theme.dart';
 
 /// A reusable widget for add block options in the sheet detail screen
 class AddBlockOptionWidget extends StatelessWidget {
@@ -27,27 +26,23 @@ class AddBlockOptionWidget extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
-            Icon(icon, size: 18, color: AppTheme.getTextSecondary(context)),
+            Icon(
+              icon,
+              size: 18,
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.7),
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
+                  Text(title, style: Theme.of(context).textTheme.bodyMedium),
                   const SizedBox(height: 2),
                   Text(
                     description,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppTheme.getTextSecondary(context),
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),

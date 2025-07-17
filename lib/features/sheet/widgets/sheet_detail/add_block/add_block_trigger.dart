@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/core/theme/app_theme.dart';
 
 /// Add block trigger widget
 class AddBlockTrigger extends StatelessWidget {
@@ -20,19 +19,9 @@ class AddBlockTrigger extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
         child: Row(
           children: [
-            Icon(
-              showAddMenu ? Icons.close : Icons.add,
-              size: 20,
-              color: AppTheme.getTextSecondary(context),
-            ),
+            Icon(showAddMenu ? Icons.close : Icons.add, size: 20),
             const SizedBox(width: 8),
-            Text(
-              showAddMenu ? 'Cancel' : 'Add a block',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppTheme.getTextSecondary(context),
-              ),
-            ),
+            Text(showAddMenu ? 'Cancel' : 'Add a block'),
           ],
         ),
       ),
