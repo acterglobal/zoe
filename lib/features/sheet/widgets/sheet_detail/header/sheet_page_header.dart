@@ -1,25 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_emoji_widget.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_title_widget.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_description_widget.dart';
 
 /// Page header widget for sheet detail screen
 class SheetPageHeader extends StatelessWidget {
-  final ZoeSheetModel currentSheet;
-  final bool isEditing;
-  final TextEditingController titleController;
-  final TextEditingController descriptionController;
-  final ValueChanged<String> onDescriptionChanged;
+  final String sheetId;
 
-  const SheetPageHeader({
-    super.key,
-    required this.currentSheet,
-    required this.isEditing,
-    required this.titleController,
-    required this.descriptionController,
-    required this.onDescriptionChanged,
-  });
+  const SheetPageHeader({super.key, required this.sheetId});
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +16,7 @@ class SheetPageHeader extends StatelessWidget {
       children: [
         _buildEmojiAndTitleRow(context),
         const SizedBox(height: 16),
-        SheetDescriptionWidget(
-          currentSheet: currentSheet,
-          isEditing: isEditing,
-          controller: descriptionController,
-          onChanged: onDescriptionChanged,
-        ),
+        SheetDescriptionWidget(sheetId: sheetId),
       ],
     );
   }
@@ -42,9 +25,9 @@ class SheetPageHeader extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SheetEmojiWidget(sheetId: currentSheet.id),
+        SheetEmojiWidget(sheetId: sheetId),
         const SizedBox(width: 4),
-        Expanded(child: SheetTitleWidget(sheetId: currentSheet.id)),
+        Expanded(child: SheetTitleWidget(sheetId: sheetId)),
       ],
     );
   }

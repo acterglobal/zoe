@@ -1,50 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/core/theme/app_theme.dart';
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// Description widget for sheet header
-class SheetDescriptionWidget extends StatelessWidget {
-  final ZoeSheetModel currentSheet;
-  final bool isEditing;
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
+class SheetDescriptionWidget extends ConsumerWidget {
+  final String sheetId;
 
-  const SheetDescriptionWidget({
-    super.key,
-    required this.currentSheet,
-    required this.isEditing,
-    required this.controller,
-    required this.onChanged,
-  });
+  const SheetDescriptionWidget({super.key, required this.sheetId});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isEditing = ref.watch(isEditingProvider(sheetId));
     return isEditing
-        ? _buildDescriptionTextField(context)
-        : _buildDescriptionText(context);
+        ? _buildDescriptionTextField(context, ref)
+        : _buildDescriptionText(context, ref);
   }
 
-  Widget _buildDescriptionTextField(BuildContext context) {
+  Widget _buildDescriptionTextField(BuildContext context, WidgetRef ref) {
+    final controller = ref.watch(descriptionControllerProvider(sheetId));
     return TextField(
       controller: controller,
-      style: _getDescriptionTextStyle(context),
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        filled: false,
-        hintText: 'Add a description...',
-        hintStyle: TextStyle(
-          color: AppTheme.getTextSecondary(context).withValues(alpha: 0.6),
-        ),
-        contentPadding: const EdgeInsets.all(8.0),
-      ),
+      style: Theme.of(context).textTheme.bodyLarge!,
+      decoration: InputDecoration(hintText: 'Add a description...'),
       maxLines: null,
-      onChanged: onChanged,
+      onChanged: (value) => ref
+          .read(sheetDetailProvider(sheetId).notifier)
+          .updateDescription(value),
     );
   }
 
-  Widget _buildDescriptionText(BuildContext context) {
+  Widget _buildDescriptionText(BuildContext context, WidgetRef ref) {
+    final currentSheet = ref.watch(sheetProvider(sheetId));
     if (currentSheet.description.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -53,16 +39,8 @@ class SheetDescriptionWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Text(
         currentSheet.description,
-        style: _getDescriptionTextStyle(context),
+        style: Theme.of(context).textTheme.bodyLarge!,
       ),
-    );
-  }
-
-  TextStyle _getDescriptionTextStyle(BuildContext context) {
-    return TextStyle(
-      fontSize: 16,
-      color: AppTheme.getTextSecondary(context),
-      height: 1.5,
     );
   }
 }

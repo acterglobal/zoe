@@ -26,33 +26,13 @@ class SheetDetailScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildPageHeader(context, ref),
+          SheetPageHeader(sheetId: sheetId ?? 'new'),
           _getHeaderSpacing(context),
           _buildContentBlocks(context, ref),
           _buildAddBlockArea(context, ref),
           const SizedBox(height: 200),
         ],
       ),
-    );
-  }
-
-  /// Builds the page header
-  Widget _buildPageHeader(BuildContext context, WidgetRef ref) {
-    final currentSheet = ref.watch(sheetProvider(sheetId));
-    final isEditing = ref.watch(isEditingProvider(sheetId));
-    final titleController = ref.watch(titleControllerProvider(sheetId));
-    final descriptionController = ref.watch(
-      descriptionControllerProvider(sheetId),
-    );
-
-    return SheetPageHeader(
-      currentSheet: currentSheet,
-      isEditing: isEditing,
-      titleController: titleController,
-      descriptionController: descriptionController,
-      onDescriptionChanged: (value) => ref
-          .read(sheetDetailProvider(sheetId).notifier)
-          .updateDescription(value),
     );
   }
 
