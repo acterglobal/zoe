@@ -27,7 +27,7 @@ class SheetDetailScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SheetPageHeader(sheetId: sheetId ?? 'new'),
-          _getHeaderSpacing(context),
+          const SizedBox(height: 16),
           _buildContentBlocks(context, ref),
           _buildAddBlockArea(context, ref),
           const SizedBox(height: 200),
@@ -69,11 +69,5 @@ class SheetDetailScreen extends ConsumerWidget {
       onAddBlock: (type) =>
           ref.read(sheetDetailProvider(sheetId).notifier).addContentBlock(type),
     );
-  }
-
-  /// Gets responsive spacing after header
-  Widget _getHeaderSpacing(BuildContext context) {
-    final isWideScreen = MediaQuery.of(context).size.width > 600;
-    return SizedBox(height: isWideScreen ? 48 : 32);
   }
 }
