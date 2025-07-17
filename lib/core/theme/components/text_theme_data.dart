@@ -5,4 +5,13 @@ TextTheme textTheme(ColorScheme colorScheme) => TextTheme(
     fontWeight: FontWeight.w400,
     color: colorScheme.onSurface.withValues(alpha: 0.8),
   ),
+  labelMedium: TextStyle(fontWeight: FontWeight.w400),
+  labelSmall: TextStyle(
+    fontWeight: FontWeight.w400,
+    color: colorScheme.onSurface.withValues(alpha: 0.6),
+  ),
+  bodyLarge: TextStyle(
+    fontWeight: FontWeight.w400,
+    color: colorScheme.onSurface.withValues(alpha: 0.8),
+  ),
 );

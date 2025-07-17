@@ -22,19 +22,26 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Spacer(),
-              const AppIconWidget(),
               const SizedBox(height: 32),
-              _buildAppTitle(),
-              const SizedBox(height: 8),
-              _buildAppDescription(),
-              const SizedBox(height: 48),
-              _buildFeaturesList(),
-              const Spacer(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const AppIconWidget(),
+                      const SizedBox(height: 32),
+                      _buildAppTitle(),
+                      const SizedBox(height: 8),
+                      _buildAppDescription(),
+                      const SizedBox(height: 48),
+                      _buildFeaturesList(),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 32),
               _buildGetStartedButton(),
-              const SizedBox(height: 32),
             ],
           ),
         ),
@@ -67,7 +74,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
     return Text(
       'Your personal workspace for organizing thoughts, tasks, and ideas with beautiful simplicity.',
       textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.bodyLarge,
+      style: Theme.of(context).textTheme.titleMedium,
     );
   }
 
