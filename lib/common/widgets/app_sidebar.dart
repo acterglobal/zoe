@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../common/providers/app_state_provider.dart';
-import '../common/providers/navigation_provider.dart';
-import '../common/theme/app_theme.dart';
+import '../providers/app_state_provider.dart';
+import '../providers/navigation_provider.dart';
+import '../theme/app_theme.dart';
 
 class AppSidebar extends StatelessWidget {
   final bool isPersistent;

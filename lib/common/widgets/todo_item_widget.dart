@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../common/models/content_block.dart';
-import '../common/theme/app_theme.dart';
+import '../models/content_block.dart';
+import '../theme/app_theme.dart';
 
 class TodoItemWidget extends StatelessWidget {
   final TodoItem todo;

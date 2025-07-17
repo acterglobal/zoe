@@ -5,8 +5,8 @@ import '../../common/providers/navigation_provider.dart';
 import '../../common/models/page.dart';
 import '../../common/models/content_block.dart';
 import '../../common/theme/app_theme.dart';
-import '../../widgets/content_block_widget.dart';
-import '../../widgets/whatsapp_integration_bottomsheet.dart';
+import '../../common/widgets/content_block_widget.dart';
+import '../../common/widgets/whatsapp_integration_bottomsheet.dart';
 
 class PageDetailScreen extends StatefulWidget {
   final ZoePage? page;
