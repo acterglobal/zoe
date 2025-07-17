@@ -60,7 +60,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         // Settings button
         IconButton(
-          onPressed: () => context.go(AppRoutes.settings.route),
+          onPressed: () => context.push(AppRoutes.settings.route),
           icon: Icon(
             Icons.settings_rounded,
             color: Theme.of(

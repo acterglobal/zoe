@@ -14,4 +14,8 @@ TextTheme textTheme(ColorScheme colorScheme) => TextTheme(
     fontWeight: FontWeight.w400,
     color: colorScheme.onSurface.withValues(alpha: 0.8),
   ),
+  bodySmall: TextStyle(
+    fontWeight: FontWeight.w400,
+    color: colorScheme.onSurface.withValues(alpha: 0.6),
+  ),
 );

@@ -11,6 +11,15 @@ class AppTheme {
       brightness: Brightness.light,
       colorScheme: lightColorScheme,
       scaffoldBackgroundColor: AppColors.lightBackground,
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      dividerTheme: DividerThemeData(
+        color: lightColorScheme.onSurface.withValues(alpha: 0.1),
+        thickness: 1,
+        space: 1,
+      ),
       elevatedButtonTheme: elevatedButtonTheme(lightColorScheme),
       textTheme: textTheme(lightColorScheme),
     );
@@ -22,6 +31,15 @@ class AppTheme {
       brightness: Brightness.dark,
       colorScheme: darkColorScheme,
       scaffoldBackgroundColor: AppColors.darkBackground,
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      dividerTheme: DividerThemeData(
+        color: darkColorScheme.onSurface.withValues(alpha: 0.1),
+        thickness: 1,
+        space: 1,
+      ),
       elevatedButtonTheme: elevatedButtonTheme(darkColorScheme),
       textTheme: textTheme(darkColorScheme),
     );

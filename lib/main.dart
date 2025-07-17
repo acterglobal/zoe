@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/core/constants/app_constants.dart';
+import 'package:zoey/features/settings/providers/theme_provider.dart';
 import 'core/routing/app_router.dart';
 import 'core/rust/frb_generated.dart';
 import 'core/theme/app_theme.dart';
-import 'features/settings/providers/settings_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,15 +17,15 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(settingsProvider);
+    final theme = ref.watch(themeProvider);
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: 'Zoey',
+      title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: settings.themeMode,
+      themeMode: theme.themeMode,
       routerConfig: router,
     );
   }
