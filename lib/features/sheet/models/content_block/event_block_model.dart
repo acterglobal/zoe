@@ -1,5 +1,5 @@
 import 'package:uuid/uuid.dart';
-import 'package:zoey/common/models/content_block/content_block.dart';
+import 'package:zoey/features/sheet/models/content_block/content_block.dart';
 
 class EventBlockModel extends ContentBlockModel {
   final String title;

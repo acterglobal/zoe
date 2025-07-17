@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/data/zoe_sheet_data.dart';
-import '../models/zoe_sheet_model.dart';
+import 'package:zoey/features/sheet/data/zoe_sheet_data.dart';
+import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 
 class AppState {
   final List<ZoeSheetModel> sheets;

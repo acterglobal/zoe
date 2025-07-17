@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:zoey/common/models/content_block/Todo_block_model.dart';
-import '../../core/theme/app_theme.dart';
+import 'package:zoey/core/theme/app_theme.dart';
+import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
 
 class TaskEditorBottomSheet extends StatefulWidget {
   final TodoItem task;

@@ -1,9 +1,9 @@
-import 'package:zoey/common/models/content_block/Todo_block_model.dart';
-import 'package:zoey/common/models/content_block/content_block.dart';
-import 'package:zoey/common/models/content_block/event_block_model.dart';
-import 'package:zoey/common/models/content_block/list_block_model.dart';
-import 'package:zoey/common/models/content_block/text_block_model.dart';
-import 'package:zoey/common/models/zoe_sheet_model.dart';
+import 'package:zoey/features/sheet/models/content_block/content_block.dart';
+import 'package:zoey/features/sheet/models/content_block/event_block_model.dart';
+import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
+import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
+import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
+import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 
 final gettingStartedSheet = ZoeSheetModel(
   title: 'Getting Started Guide',

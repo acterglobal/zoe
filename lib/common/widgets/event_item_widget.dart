@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:zoey/common/models/content_block/event_block_model.dart';
-import '../../core/theme/app_theme.dart';
+import 'package:zoey/core/theme/app_theme.dart';
+import 'package:zoey/features/sheet/models/content_block/event_block_model.dart';
 
 class EventItemWidget extends StatelessWidget {
   final EventItem event;

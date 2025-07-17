@@ -1,16 +1,16 @@
-import 'package:zoey/common/models/content_block/content_block.dart';
+import 'package:zoey/features/sheet/models/content_block/content_block.dart';
 
-class ListBlockModel extends ContentBlockModel {
+class TextBlockModel extends ContentBlockModel {
   final String title;
-  final List<String> items;
+  final String content;
 
-  ListBlockModel({
+  TextBlockModel({
     super.id,
     required this.title,
-    required this.items,
+    required this.content,
     super.createdAt,
     super.updatedAt,
-  }) : super(type: ContentBlockType.list);
+  }) : super(type: ContentBlockType.text);
 
   @override
   Map<String, dynamic> toJson() {
@@ -18,22 +18,22 @@ class ListBlockModel extends ContentBlockModel {
       'id': id,
       'type': type.name,
       'title': title,
-      'items': items,
+      'content': content,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
   }
 
   @override
-  ListBlockModel copyWith({
+  TextBlockModel copyWith({
     String? title,
-    List<String>? items,
+    String? content,
     DateTime? updatedAt,
   }) {
-    return ListBlockModel(
+    return TextBlockModel(
       id: id,
       title: title ?? this.title,
-      items: items ?? this.items,
+      content: content ?? this.content,
       createdAt: createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
     );

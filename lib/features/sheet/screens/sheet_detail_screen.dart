@@ -1,17 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/models/content_block/Todo_block_model.dart';
-import 'package:zoey/common/models/content_block/event_block_model.dart';
-import 'package:zoey/common/models/content_block/list_block_model.dart';
-import 'package:zoey/common/models/content_block/text_block_model.dart';
-import '../../../common/providers/app_state_provider.dart';
-import '../../../common/models/zoe_sheet_model.dart';
-import '../../../common/models/content_block/content_block.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/routing/app_routes.dart';
-import '../../../common/widgets/content_block_widget.dart';
-import '../../../common/widgets/whatsapp_integration_bottomsheet.dart';
+import 'package:zoey/common/providers/app_state_provider.dart';
+import 'package:zoey/common/widgets/content_block_widget.dart';
+import 'package:zoey/common/widgets/whatsapp_integration_bottomsheet.dart';
+import 'package:zoey/core/routing/app_routes.dart';
+import 'package:zoey/core/theme/app_theme.dart';
+import 'package:zoey/features/sheet/models/content_block/content_block.dart';
+import 'package:zoey/features/sheet/models/content_block/event_block_model.dart';
+import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
+import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
+import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
+import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 
 class SheetDetailScreen extends ConsumerStatefulWidget {
   final ZoeSheetModel? page;
