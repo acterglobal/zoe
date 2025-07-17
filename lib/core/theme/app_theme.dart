@@ -17,7 +17,7 @@ class AppTheme {
       ),
       dividerTheme: DividerThemeData(
         color: lightColorScheme.onSurface.withValues(alpha: 0.1),
-        thickness: 1,
+        thickness: 0.5,
         space: 1,
       ),
       elevatedButtonTheme: elevatedButtonTheme(lightColorScheme),
@@ -37,7 +37,7 @@ class AppTheme {
       ),
       dividerTheme: DividerThemeData(
         color: darkColorScheme.onSurface.withValues(alpha: 0.1),
-        thickness: 1,
+        thickness: 0.5,
         space: 1,
       ),
       elevatedButtonTheme: elevatedButtonTheme(darkColorScheme),
