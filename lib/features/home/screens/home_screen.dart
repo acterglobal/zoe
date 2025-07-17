@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../common/providers/app_state_provider.dart';
+import '../../../features/sheet/providers/sheet_list_provider.dart';
+import '../../../features/sheet/models/zoe_sheet_model.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routing/app_routes.dart';
 
@@ -17,7 +18,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final appState = ref.watch(appStateProvider);
+    final sheets = ref.watch(sheetListProvider);
 
     return Scaffold(
       backgroundColor: AppTheme.getBackground(context),
@@ -38,7 +39,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(height: 32),
 
               // Simple pages list
-              _buildSimplePagesList(context, appState),
+              _buildSimplePagesList(context, sheets),
             ],
           ),
         ),
@@ -95,7 +96,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildSimplePagesList(BuildContext context, AppState appState) {
+  Widget _buildSimplePagesList(
+    BuildContext context,
+    List<ZoeSheetModel> sheets,
+  ) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,14 +127,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
           const SizedBox(height: 16),
 
-          if (appState.sheets.isEmpty)
+          if (sheets.isEmpty)
             _buildEmptyState(context)
           else
             Expanded(
               child: ListView.builder(
-                itemCount: appState.sheets.length,
+                itemCount: sheets.length,
                 itemBuilder: (context, index) {
-                  final page = appState.sheets[index];
+                  final page = sheets[index];
                   return Card(
                     margin: const EdgeInsets.only(bottom: 8),
                     child: ListTile(

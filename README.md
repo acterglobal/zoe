@@ -4,80 +4,18 @@ A modern, joyful Flutter app for organizing thoughts, tasks, and ideas with beau
 
 ## Features
 
-### 🎉 Welcome Experience
-- Beautiful onboarding screen with smooth animations
-- Joyful design with modern UI elements
-- Automatic setup with sample data
-
-### 🏠 Home Dashboard
-- Personalized greetings based on time of day
-- Today's tasks overview with progress tracking
-- Upcoming events and this week's schedule
-- Quick actions for common tasks
-
-### 📄 Pages System
-- Create unlimited pages with custom titles and descriptions
-- Add custom emojis to pages
-- Organize content with different block types
-- Inline editing like Notion
-
-### 📋 Content Blocks
-- **To-do Lists**: Track tasks with checkboxes and due dates
-- **Events**: Schedule and manage events with dates and descriptions
-- **Lists**: Create simple bullet-point lists
-- **Text**: Add rich text content
-
-### 🎨 Modern Design
-- Clean, minimalist interface
-- Smooth animations and transitions
-- Consistent color scheme and typography
-- Responsive layout
-
-## Getting Started
-
-### Prerequisites
-- Flutter SDK (latest stable version)
-- Rust toolchain (for flutter_rust_bridge)
-- macOS, iOS, Android, or Web platform support
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd zoey
-   ```
-
-2. Install dependencies:
-   ```bash
-   flutter pub get
-   ```
-
-3. Run the app:
-   ```bash
-   flutter run
-   ```
+- **Personal Organization**: Create sheets for different aspects of your life
+- **Mixed Content Blocks**: Combine todos, events, lists, and text in one place
+- **Beautiful UI**: Modern design with smooth animations
+- **Cross-platform**: Works on iOS, Android, Web, and Desktop
+- **WhatsApp Integration**: Connect sheets to WhatsApp groups (UI demo)
 
 ## Architecture
 
-### State Management
-- Uses Provider for state management
-- Centralized app state with `AppStateProvider`
-- Reactive UI updates
+The app follows a clean architecture pattern with:
 
-### Project Structure
-```
-lib/
-├── common/
-│   ├── models/          # Data models
-│   └── providers/       # State management
-├── screens/            # Main app screens
-├── widgets/            # Reusable UI components
-└── main.dart          # App entry point
-```
-
-### Key Components
-- **AppStateProvider**: Manages global app state
+- **SheetListProvider**: Manages all sheet operations and state
+- **FirstLaunchProvider**: Handles first-time user experience
 - **ZoeSheet**: Core sheet model with content blocks
 - **ContentBlock**: Abstract base for different content types
 - **Modern Widgets**: Custom UI components with animations

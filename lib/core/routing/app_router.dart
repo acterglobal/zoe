@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
-import '../../common/providers/app_state_provider.dart';
+import '../../features/sheet/providers/sheet_list_provider.dart';
 import 'app_routes.dart';
 import '../../features/home/screens/home_screen.dart';
 import '../../features/sheet/screens/sheet_detail_screen.dart';
@@ -12,15 +12,11 @@ import '../../features/welcome/screens/welcome_screen.dart';
 // Global navigator key for accessing the router
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
-// Router provider that watches app state for dynamic routing
+// Router provider that always starts with welcome screen
 final routerProvider = Provider<GoRouter>((ref) {
-  final appState = ref.watch(appStateProvider);
-
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: appState.isFirstLaunch
-        ? AppRoutes.welcome.route
-        : AppRoutes.home.route,
+    initialLocation: AppRoutes.welcome.route,
     routes: [
       // Welcome route
       GoRoute(
@@ -45,15 +41,16 @@ final routerProvider = Provider<GoRouter>((ref) {
 
           return Consumer(
             builder: (context, ref, child) {
-              final appState = ref.read(appStateProvider);
+              final sheetListNotifier = ref.read(sheetListProvider.notifier);
 
               // Find the sheet by ID
               ZoeSheetModel? sheet;
               if (sheetId != null && sheetId != 'new') {
-                sheet = appState.sheets.firstWhere(
-                  (s) => s.id == sheetId,
-                  orElse: () =>
-                      ZoeSheetModel(title: 'Sheet Not Found', description: ''),
+                sheet = sheetListNotifier.getSheetById(sheetId);
+                // If sheet not found, create a fallback
+                sheet ??= ZoeSheetModel(
+                  title: 'Sheet Not Found',
+                  description: '',
                 );
               }
 

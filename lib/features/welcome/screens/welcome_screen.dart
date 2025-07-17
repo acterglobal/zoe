@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/providers/app_state_provider.dart';
+import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/core/theme/app_theme.dart';
 
@@ -159,9 +159,9 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
   }
 
   void _getStarted(BuildContext context) {
-    final appStateNotifier = ref.read(appStateProvider.notifier);
-    appStateNotifier.initializeWithSampleData();
-    appStateNotifier.completeFirstLaunch();
+    final sheetListNotifier = ref.read(sheetListProvider.notifier);
+
+    sheetListNotifier.initializeWithSampleData();
 
     // Navigate to home screen
     context.go(AppRoutes.home.route);

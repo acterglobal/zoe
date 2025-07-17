@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/providers/app_state_provider.dart';
+import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/common/widgets/content_block_widget.dart';
 import 'package:zoey/common/widgets/whatsapp_integration_bottomsheet.dart';
 import 'package:zoey/core/routing/app_routes.dart';
@@ -542,15 +542,15 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
       description: _descriptionController.text.trim(),
     );
 
-    final appStateNotifier = ref.read(appStateProvider.notifier);
+    final sheetListNotifier = ref.read(sheetListProvider.notifier);
 
     if (!_hasBeenSaved) {
       // New page - add to state
-      appStateNotifier.addSheet(updatedPage);
+      sheetListNotifier.addSheet(updatedPage);
       _hasBeenSaved = true;
     } else {
       // Update existing page
-      appStateNotifier.updateSheet(updatedPage);
+      sheetListNotifier.updateSheet(updatedPage);
     }
 
     _currentPage = updatedPage;
@@ -575,8 +575,8 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
             onPressed: () {
               if (widget.page != null) {
                 // Delete existing page
-                final appStateNotifier = ref.read(appStateProvider.notifier);
-                appStateNotifier.deleteSheet(widget.page!.id);
+                final sheetListNotifier = ref.read(sheetListProvider.notifier);
+                sheetListNotifier.deleteSheet(widget.page!.id);
               }
               // For both new and existing pages, close dialog and page
               Navigator.of(context).pop(); // Close dialog
@@ -602,8 +602,8 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
       contentBlocks: _currentPage.contentBlocks,
     );
 
-    final appStateNotifier = ref.read(appStateProvider.notifier);
-    appStateNotifier.addSheet(duplicatedPage);
+    final sheetListNotifier = ref.read(sheetListProvider.notifier);
+    sheetListNotifier.addSheet(duplicatedPage);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Page duplicated successfully')),
@@ -624,10 +624,10 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
             );
           });
 
-          // Update the page in app state if it has been saved
+          // Update the page in sheet list if it has been saved
           if (_hasBeenSaved) {
-            final appStateNotifier = ref.read(appStateProvider.notifier);
-            appStateNotifier.updateSheet(_currentPage);
+            final sheetListNotifier = ref.read(sheetListProvider.notifier);
+            sheetListNotifier.updateSheet(_currentPage);
           }
         },
       ),
