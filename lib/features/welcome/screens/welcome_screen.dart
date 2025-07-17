@@ -19,9 +19,12 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: _buildWelcomeBodyUI(),
+        child: Center(
+          child: Container(
+            constraints: BoxConstraints(maxWidth: 600),
+            padding: const EdgeInsets.all(24),
+            child: _buildWelcomeBodyUI(),
+          ),
         ),
       ),
     );
