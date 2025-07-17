@@ -14,7 +14,6 @@ class ZoeSheetModel {
   final DateTime updatedAt;
   final String? emoji;
   final String? coverImage;
-  final bool isWhatsAppConnected;
 
   ZoeSheetModel({
     String? id,
@@ -25,7 +24,6 @@ class ZoeSheetModel {
     DateTime? updatedAt,
     this.emoji,
     this.coverImage,
-    this.isWhatsAppConnected = false,
   }) : id = id ?? const Uuid().v4(),
        contentBlocks = contentBlocks ?? [],
        createdAt = createdAt ?? DateTime.now(),
@@ -41,7 +39,6 @@ class ZoeSheetModel {
       'updatedAt': updatedAt.toIso8601String(),
       'emoji': emoji,
       'coverImage': coverImage,
-      'isWhatsAppConnected': isWhatsAppConnected,
     };
   }
 
@@ -52,7 +49,6 @@ class ZoeSheetModel {
     DateTime? updatedAt,
     String? emoji,
     String? coverImage,
-    bool? isWhatsAppConnected,
   }) {
     return ZoeSheetModel(
       id: id,
@@ -63,7 +59,6 @@ class ZoeSheetModel {
       updatedAt: updatedAt ?? DateTime.now(),
       emoji: emoji ?? this.emoji,
       coverImage: coverImage ?? this.coverImage,
-      isWhatsAppConnected: isWhatsAppConnected ?? this.isWhatsAppConnected,
     );
   }
 

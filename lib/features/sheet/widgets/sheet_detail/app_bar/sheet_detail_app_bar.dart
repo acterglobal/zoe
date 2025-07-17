@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/app_bar/edit_save_button_widget.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/app_bar/whatsapp_button_widget.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/app_bar/sheet_more_menu_widget.dart';
 
 /// App bar widget for sheet detail screen
@@ -14,7 +13,6 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final bool hasBeenSaved;
   final String? sheetId;
   final VoidCallback onEditSaveToggle;
-  final VoidCallback onWhatsAppTap;
 
   const SheetDetailAppBar({
     super.key,
@@ -23,7 +21,6 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
     required this.hasBeenSaved,
     required this.sheetId,
     required this.onEditSaveToggle,
-    required this.onWhatsAppTap,
   });
 
   @override
@@ -32,10 +29,6 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
       leading: _buildBackButton(context),
       actions: [
         EditSaveButtonWidget(isEditing: isEditing, onPressed: onEditSaveToggle),
-        WhatsAppButtonWidget(
-          isConnected: currentSheet.isWhatsAppConnected,
-          onPressed: onWhatsAppTap,
-        ),
         SheetMoreMenuWidget(
           currentSheet: currentSheet,
           sheetId: sheetId,

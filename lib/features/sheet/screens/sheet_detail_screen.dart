@@ -5,7 +5,6 @@ import 'package:zoey/features/sheet/widgets/sheet_detail/app_bar/sheet_detail_ap
 import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_page_header.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/content/sheet_content_blocks.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/add_block/sheet_add_block.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/blocks/whatsapp_integration_bottomsheet.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
   final String? sheetId;
@@ -33,7 +32,6 @@ class SheetDetailScreen extends ConsumerWidget {
       sheetId: sheetId,
       onEditSaveToggle: () =>
           ref.read(sheetDetailProvider(sheetId).notifier).toggleEditSave(),
-      onWhatsAppTap: () => _showWhatsAppIntegration(context, ref),
     );
   }
 
@@ -136,24 +134,5 @@ class SheetDetailScreen extends ConsumerWidget {
     if (showAddMenu) {
       ref.read(sheetDetailProvider(sheetId).notifier).hideAddMenu();
     }
-  }
-
-  /// Shows WhatsApp integration bottom sheet
-  void _showWhatsAppIntegration(BuildContext context, WidgetRef ref) {
-    final currentSheet = ref.read(sheetProvider(sheetId));
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => WhatsAppIntegrationBottomSheet(
-        currentSheet: currentSheet,
-        onConnectionChanged: (isConnected) {
-          ref
-              .read(sheetDetailProvider(sheetId).notifier)
-              .updateWhatsAppConnection(isConnected);
-        },
-      ),
-    );
   }
 }

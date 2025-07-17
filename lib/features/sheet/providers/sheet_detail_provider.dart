@@ -167,18 +167,6 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     state = state.copyWith(sheet: updatedSheet, showAddMenu: false);
   }
 
-  /// Update WhatsApp connection status
-  void updateWhatsAppConnection(bool isConnected) {
-    final updatedSheet = state.sheet.copyWith(isWhatsAppConnected: isConnected);
-    state = state.copyWith(sheet: updatedSheet);
-
-    // Update in sheet list if saved
-    if (state.hasBeenSaved) {
-      final sheetListNotifier = ref.read(sheetListProvider.notifier);
-      sheetListNotifier.updateSheet(updatedSheet);
-    }
-  }
-
   /// Create content block based on type
   ContentBlockModel _createContentBlock(ContentBlockType type) {
     switch (type) {

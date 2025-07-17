@@ -8,7 +8,6 @@ final gettingStartedSheet = ZoeSheetModel(
   title: 'Getting Started Guide',
   description: 'Learn how to use Zoey effectively',
   emoji: '🚀',
-  isWhatsAppConnected: true,
   contentBlocks: [
     TextBlockModel(
       title: 'Welcome to Zoey!',

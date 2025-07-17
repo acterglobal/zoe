@@ -8,7 +8,6 @@ A modern, joyful Flutter app for organizing thoughts, tasks, and ideas with beau
 - **Mixed Content Blocks**: Combine todos, events, lists, and text in one place
 - **Beautiful UI**: Modern design with smooth animations
 - **Cross-platform**: Works on iOS, Android, Web, and Desktop
-- **WhatsApp Integration**: Connect sheets to WhatsApp groups (UI demo)
 
 ## Architecture
 
