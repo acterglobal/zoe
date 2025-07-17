@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:zoey/core/theme/colors/color_constants.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 import '../providers/settings_provider.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/routing/app_routes.dart';
@@ -175,10 +175,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: successColor.withValues(alpha: 0.1),
+          color: AppColors.successColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Icon(Icons.language_rounded, color: successColor, size: 20),
+        child: Icon(
+          Icons.language_rounded,
+          color: AppColors.successColor,
+          size: 20,
+        ),
       ),
       title: Text(
         'Language',
@@ -245,10 +249,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: warningColor.withValues(alpha: 0.1),
+          color: AppColors.warningColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Icon(Icons.star_rounded, color: warningColor, size: 20),
+        child: Icon(
+          Icons.star_rounded,
+          color: AppColors.warningColor,
+          size: 20,
+        ),
       ),
       title: Text(
         'Rate App',

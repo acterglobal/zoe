@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zoey/core/theme/app_theme.dart';
-import 'package:zoey/core/theme/colors/color_constants.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 
 class WhatsAppIntegrationBottomSheet extends StatefulWidget {
@@ -239,16 +239,18 @@ class _WhatsAppIntegrationBottomSheetState
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: successColor.withValues(alpha: 0.1),
+        color: AppColors.successColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: successColor.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: AppColors.successColor.withValues(alpha: 0.3),
+        ),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: successColor,
+              color: AppColors.successColor,
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(

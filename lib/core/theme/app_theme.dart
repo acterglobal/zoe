@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/core/theme/colors/color_constants.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/core/theme/colors/colors_cheme.dart';
 import 'package:zoey/core/theme/components/button_theme_data.dart';
 
@@ -9,7 +9,7 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: lightColorScheme,
-      scaffoldBackgroundColor: lightBackground,
+      scaffoldBackgroundColor: AppColors.lightBackground,
       elevatedButtonTheme: elevatedButtonTheme(lightColorScheme),
     );
   }
@@ -19,7 +19,7 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: darkColorScheme,
-      scaffoldBackgroundColor: darkBackground,
+      scaffoldBackgroundColor: AppColors.darkBackground,
       elevatedButtonTheme: elevatedButtonTheme(darkColorScheme),
     );
   }

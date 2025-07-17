@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/core/theme/colors/color_constants.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 
 final lightColorScheme = ColorScheme.light(
-  primary: primaryColor,
-  secondary: secondaryColor,
-  surface: lightSurface,
-  error: errorColor,
+  primary: AppColors.primaryColor,
+  secondary: AppColors.secondaryColor,
+  surface: AppColors.lightSurface,
+  error: AppColors.errorColor,
 );
 
 final darkColorScheme = ColorScheme.dark(
-  primary: primaryColor,
-  secondary: secondaryColor,
-  surface: darkSurface,
-  error: errorColor,
+  primary: AppColors.primaryColor,
+  secondary: AppColors.secondaryColor,
+  surface: AppColors.darkSurface,
+  error: AppColors.errorColor,
 );
