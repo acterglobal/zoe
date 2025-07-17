@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
-import 'package:zoey/features/sheet/widgets/sheet_list_item_widget.dart';
+import 'package:zoey/features/sheet/widgets/sheet_list/sheet_list_item_widget.dart';
 
 class SheetListWidget extends ConsumerWidget {
   final bool shrinkWrap;

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
-import 'package:zoey/features/sheet/widgets/content_block_widget.dart';
-import 'package:zoey/features/sheet/widgets/whatsapp_integration_bottomsheet.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/core/theme/app_theme.dart';
 import 'package:zoey/features/sheet/models/content_block/content_block.dart';
@@ -12,6 +10,8 @@ import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:zoey/features/sheet/widgets/sheeting_details/content_block_widget.dart';
+import 'package:zoey/features/sheet/widgets/sheeting_details/whatsapp_integration_bottomsheet.dart';
 
 class SheetDetailScreen extends ConsumerStatefulWidget {
   final String? sheetId; // null for new sheets, string ID for existing sheets
