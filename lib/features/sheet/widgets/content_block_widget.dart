@@ -6,7 +6,7 @@ import 'package:zoey/features/sheet/models/content_block/event_block_model.dart'
 import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
-import '../../core/theme/app_theme.dart';
+import '../../../core/theme/app_theme.dart';
 import 'task_editor_dialog.dart';
 import 'event_editor_dialog.dart';
 
