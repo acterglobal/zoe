@@ -21,22 +21,17 @@ class SheetDetailScreen extends ConsumerWidget {
 
   /// Builds the main body
   Widget _buildBody(BuildContext context, WidgetRef ref) {
-    final showAddMenu = ref.watch(showAddMenuProvider(sheetId));
-
-    return GestureDetector(
-      onTap: () => _handleBodyTap(ref, showAddMenu),
-      child: SingleChildScrollView(
-        padding: _getBodyPadding(context),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildPageHeader(context, ref),
-            _getHeaderSpacing(context),
-            _buildContentBlocks(context, ref),
-            _buildAddBlockArea(context, ref),
-            const SizedBox(height: 200),
-          ],
-        ),
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildPageHeader(context, ref),
+          _getHeaderSpacing(context),
+          _buildContentBlocks(context, ref),
+          _buildAddBlockArea(context, ref),
+          const SizedBox(height: 200),
+        ],
       ),
     );
   }
@@ -100,23 +95,9 @@ class SheetDetailScreen extends ConsumerWidget {
     );
   }
 
-  /// Gets responsive padding for the body
-  EdgeInsets _getBodyPadding(BuildContext context) {
-    final isWideScreen = MediaQuery.of(context).size.width > 600;
-    final horizontalPadding = isWideScreen ? 32.0 : 16.0;
-    return EdgeInsets.fromLTRB(horizontalPadding, 16, horizontalPadding, 100);
-  }
-
   /// Gets responsive spacing after header
   Widget _getHeaderSpacing(BuildContext context) {
     final isWideScreen = MediaQuery.of(context).size.width > 600;
     return SizedBox(height: isWideScreen ? 48 : 32);
-  }
-
-  /// Handles body tap to hide add menu
-  void _handleBodyTap(WidgetRef ref, bool showAddMenu) {
-    if (showAddMenu) {
-      ref.read(sheetDetailProvider(sheetId).notifier).hideAddMenu();
-    }
   }
 }
