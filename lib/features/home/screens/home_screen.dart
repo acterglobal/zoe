@@ -113,7 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const Spacer(),
               IconButton(
                 onPressed: () => context.go(
-                  AppRoutes.page.route.replaceAll(':pageId', 'new'),
+                  AppRoutes.sheet.route.replaceAll(':sheetId', 'new'),
                 ),
                 icon: const Icon(Icons.add_rounded),
                 tooltip: 'Create New Page',
@@ -123,14 +123,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
           const SizedBox(height: 16),
 
-          if (appState.pages.isEmpty)
+          if (appState.sheets.isEmpty)
             _buildEmptyState(context)
           else
             Expanded(
               child: ListView.builder(
-                itemCount: appState.pages.length,
+                itemCount: appState.sheets.length,
                 itemBuilder: (context, index) {
-                  final page = appState.pages[index];
+                  final page = appState.sheets[index];
                   return Card(
                     margin: const EdgeInsets.only(bottom: 8),
                     child: ListTile(
@@ -158,7 +158,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             )
                           : null,
                       onTap: () => context.go(
-                        AppRoutes.page.route.replaceAll(':pageId', page.id),
+                        AppRoutes.sheet.route.replaceAll(':sheetId', page.id),
                       ),
                     ),
                   );
@@ -200,8 +200,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: () =>
-                  context.go(AppRoutes.page.route.replaceAll(':pageId', 'new')),
+              onPressed: () => context.go(
+                AppRoutes.sheet.route.replaceAll(':sheetId', 'new'),
+              ),
               icon: const Icon(Icons.add_rounded),
               label: const Text('Create Page'),
             ),

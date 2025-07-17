@@ -1,7 +1,7 @@
 import 'package:zoey/common/models/content_block.dart';
 import 'package:zoey/common/models/page.dart';
 
-final gettingStartedPage = ZoePage(
+final gettingStartedSheet = ZoeSheet(
   title: 'Getting Started Guide',
   description: 'Learn how to use Zoey effectively',
   emoji: '🚀',
@@ -15,10 +15,10 @@ final gettingStartedPage = ZoePage(
     ListBlock(
       title: 'Key Features Overview',
       items: [
-        '📄 Create unlimited pages with custom titles and emojis',
+        '📄 Create unlimited sheets with custom titles and emojis',
         '📝 Add different content blocks: text, tasks, events, and lists',
         '✏️ Edit content inline by tapping on any text',
-        '🎨 Customize pages with emojis and descriptions',
+        '🎨 Customize sheets with emojis and descriptions',
         '📱 Access everything from the home dashboard',
         '🔍 Quick actions for common tasks',
       ],
@@ -27,7 +27,7 @@ final gettingStartedPage = ZoePage(
       title: 'Quick Start Checklist',
       items: [
         TodoItem(
-          text: 'Explore this Getting Started page',
+          text: 'Explore this Getting Started sheet',
           isCompleted: true,
           priority: TodoPriority.high,
           description: 'Read through this guide to understand Zoey\'s features',
@@ -42,11 +42,11 @@ final gettingStartedPage = ZoePage(
           tags: ['tutorial', 'example'],
         ),
         TodoItem(
-          text: 'Create your first custom page',
+          text: 'Create your first custom sheet',
           isCompleted: false,
           priority: TodoPriority.medium,
           dueDate: DateTime.now().add(const Duration(hours: 2)),
-          description: 'Try creating a page for a personal project or goal',
+          description: 'Try creating a sheet for a personal project or goal',
           tags: ['hands-on', 'practice'],
         ),
         TodoItem(
@@ -61,7 +61,7 @@ final gettingStartedPage = ZoePage(
           isCompleted: false,
           priority: TodoPriority.low,
           dueDate: DateTime.now().add(const Duration(days: 1)),
-          description: 'Add emojis, organize pages, and make it your own',
+          description: 'Add emojis, organize sheets, and make it your own',
           tags: ['customization', 'personal'],
         ),
       ],
@@ -69,7 +69,7 @@ final gettingStartedPage = ZoePage(
     TextBlock(
       title: 'How to Use Content Blocks',
       content:
-          'Content blocks are the building blocks of your pages. Tap the + button to add new blocks:\n\n• Text Blocks: For notes, ideas, and documentation\n• Task Lists: For to-dos with priorities and due dates\n• Event Blocks: For scheduling and calendar items\n• List Blocks: For simple bullet points and collections\n\nYou can drag and drop blocks to reorder them, and edit any text by tapping on it.',
+          'Content blocks are the building blocks of your sheets. Tap the + button to add new blocks:\n\n• Text Blocks: For notes, ideas, and documentation\n• Task Lists: For to-dos with priorities and due dates\n• Event Blocks: For scheduling and calendar items\n• List Blocks: For simple bullet points and collections\n\nYou can drag and drop blocks to reorder them, and edit any text by tapping on it.',
     ),
     EventBlock(
       title: 'Learning Schedule',
@@ -84,7 +84,7 @@ final gettingStartedPage = ZoePage(
         ),
         EventItem(
           title: 'Practice Session',
-          description: 'Create your first custom page and add content',
+          description: 'Create your first custom sheet and add content',
           startTime: DateTime.now().add(const Duration(hours: 1)),
           endTime: DateTime.now().add(const Duration(hours: 2)),
           location: EventLocation(physical: 'Anywhere you\'re comfortable'),
@@ -95,12 +95,12 @@ final gettingStartedPage = ZoePage(
     ListBlock(
       title: 'Pro Tips',
       items: [
-        'Use emojis to quickly identify different types of pages',
+        'Use emojis to quickly identify different types of sheets',
         'Set due dates on tasks to stay organized',
         'Add descriptions to tasks for more context',
         'Use tags to categorize and find content later',
         'Check the home dashboard for today\'s priorities',
-        'The drawer menu shows all your pages for quick access',
+        'The drawer menu shows all your sheets for quick access',
       ],
     ),
   ],

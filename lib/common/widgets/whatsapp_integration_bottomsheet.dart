@@ -3,12 +3,12 @@ import '../../core/theme/app_theme.dart';
 import '../models/page.dart';
 
 class WhatsAppIntegrationBottomSheet extends StatefulWidget {
-  final ZoePage currentPage;
+  final ZoeSheet currentSheet;
   final Function(bool isConnected) onConnectionChanged;
 
   const WhatsAppIntegrationBottomSheet({
     super.key,
-    required this.currentPage,
+    required this.currentSheet,
     required this.onConnectionChanged,
   });
 
@@ -25,13 +25,13 @@ class _WhatsAppIntegrationBottomSheetState
   late bool _isConnected;
   bool _notifyOnTaskChanges = true;
   bool _notifyOnEventChanges = true;
-  bool _notifyOnPageUpdates = false;
+  bool _notifyOnSheetUpdates = false;
   bool _dailySummary = true;
 
   @override
   void initState() {
     super.initState();
-    _isConnected = widget.currentPage.isWhatsAppConnected;
+    _isConnected = widget.currentSheet.isWhatsAppConnected;
   }
 
   @override
@@ -111,7 +111,7 @@ class _WhatsAppIntegrationBottomSheetState
                   ),
                 ),
                 Text(
-                  'Connect this page to your WhatsApp group',
+                  'Connect this sheet to your WhatsApp group',
                   style: TextStyle(
                     fontSize: 14,
                     color: AppTheme.getTextSecondary(context),
@@ -368,16 +368,16 @@ class _WhatsAppIntegrationBottomSheetState
         ),
 
         _buildNotificationToggle(
-          'Page Updates',
-          'Get notified when page content is modified',
+          'Sheet Updates',
+          'Get notified when sheet content is modified',
           Icons.edit_rounded,
-          _notifyOnPageUpdates,
-          (value) => setState(() => _notifyOnPageUpdates = value),
+          _notifyOnSheetUpdates,
+          (value) => setState(() => _notifyOnSheetUpdates = value),
         ),
 
         _buildNotificationToggle(
           'Daily Summary',
-          'Receive a daily summary of page activity',
+          'Receive a daily summary of sheet activity',
           Icons.today_rounded,
           _dailySummary,
           (value) => setState(() => _dailySummary = value),
@@ -476,7 +476,7 @@ class _WhatsAppIntegrationBottomSheetState
               ),
               const SizedBox(height: 8),
               Text(
-                'Your page is now connected to your WhatsApp group',
+                'Your sheet is now connected to your WhatsApp group',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
@@ -505,7 +505,7 @@ class _WhatsAppIntegrationBottomSheetState
 
         if (_notifyOnTaskChanges) _buildActiveNotification('Task Updates'),
         if (_notifyOnEventChanges) _buildActiveNotification('Event Updates'),
-        if (_notifyOnPageUpdates) _buildActiveNotification('Page Updates'),
+        if (_notifyOnSheetUpdates) _buildActiveNotification('Sheet Updates'),
         if (_dailySummary) _buildActiveNotification('Daily Summary'),
       ],
     );
@@ -641,7 +641,7 @@ class _WhatsAppIntegrationBottomSheetState
       case 1:
         return _notifyOnTaskChanges ||
             _notifyOnEventChanges ||
-            _notifyOnPageUpdates ||
+            _notifyOnSheetUpdates ||
             _dailySummary;
       default:
         return false;

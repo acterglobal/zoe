@@ -1,7 +1,7 @@
 enum AppRoutes {
   welcome('/welcome'),
   home('/'),
-  page('/page/:pageId'),
+  sheet('/sheet/:sheetId'),
   settings('/settings');
 
   final String route;

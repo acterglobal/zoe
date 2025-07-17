@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 import 'content_block.dart';
 
-class ZoePage {
+class ZoeSheet {
   final String id;
   final String title;
   final String description;
@@ -12,7 +12,7 @@ class ZoePage {
   final String? coverImage;
   final bool isWhatsAppConnected;
 
-  ZoePage({
+  ZoeSheet({
     String? id,
     required this.title,
     this.description = '',
@@ -41,7 +41,7 @@ class ZoePage {
     };
   }
 
-  ZoePage copyWith({
+  ZoeSheet copyWith({
     String? title,
     String? description,
     List<ContentBlock>? contentBlocks,
@@ -50,7 +50,7 @@ class ZoePage {
     String? coverImage,
     bool? isWhatsAppConnected,
   }) {
-    return ZoePage(
+    return ZoeSheet(
       id: id,
       title: title ?? this.title,
       description: description ?? this.description,

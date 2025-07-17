@@ -1,25 +1,25 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/data/zoe_page_data.dart';
+import 'package:zoey/common/data/zoe_sheet_data.dart';
 import '../models/page.dart';
 
 class AppState {
-  final List<ZoePage> pages;
+  final List<ZoeSheet> sheets;
   final String userName;
   final bool isFirstLaunch;
 
   const AppState({
-    required this.pages,
+    required this.sheets,
     required this.userName,
     required this.isFirstLaunch,
   });
 
   AppState copyWith({
-    List<ZoePage>? pages,
+    List<ZoeSheet>? sheets,
     String? userName,
     bool? isFirstLaunch,
   }) {
     return AppState(
-      pages: pages ?? this.pages,
+      sheets: sheets ?? this.sheets,
       userName: userName ?? this.userName,
       isFirstLaunch: isFirstLaunch ?? this.isFirstLaunch,
     );
@@ -28,36 +28,36 @@ class AppState {
 
 class AppStateNotifier extends StateNotifier<AppState> {
   AppStateNotifier()
-    : super(const AppState(pages: [], userName: 'Zoe', isFirstLaunch: true));
+    : super(const AppState(sheets: [], userName: 'Zoe', isFirstLaunch: true));
 
   // Initialize with sample data
   void initializeWithSampleData() {
-    final samplePages = [gettingStartedPage];
-    state = state.copyWith(pages: samplePages, isFirstLaunch: false);
+    final sampleSheets = [gettingStartedSheet];
+    state = state.copyWith(sheets: sampleSheets, isFirstLaunch: false);
   }
 
-  // Page management
-  void addPage(ZoePage page) {
-    state = state.copyWith(pages: [...state.pages, page]);
+  // Sheet management
+  void addSheet(ZoeSheet sheet) {
+    state = state.copyWith(sheets: [...state.sheets, sheet]);
   }
 
-  void updatePage(ZoePage updatedPage) {
-    final updatedPages = state.pages.map((page) {
-      return page.id == updatedPage.id ? updatedPage : page;
+  void updateSheet(ZoeSheet updatedSheet) {
+    final updatedSheets = state.sheets.map((sheet) {
+      return sheet.id == updatedSheet.id ? updatedSheet : sheet;
     }).toList();
-    state = state.copyWith(pages: updatedPages);
+    state = state.copyWith(sheets: updatedSheets);
   }
 
-  void deletePage(String pageId) {
-    final updatedPages = state.pages
-        .where((page) => page.id != pageId)
+  void deleteSheet(String sheetId) {
+    final updatedSheets = state.sheets
+        .where((sheet) => sheet.id != sheetId)
         .toList();
-    state = state.copyWith(pages: updatedPages);
+    state = state.copyWith(sheets: updatedSheets);
   }
 
-  ZoePage? getPageById(String pageId) {
+  ZoeSheet? getSheetById(String sheetId) {
     try {
-      return state.pages.firstWhere((page) => page.id == pageId);
+      return state.sheets.firstWhere((sheet) => sheet.id == sheetId);
     } catch (e) {
       return null;
     }

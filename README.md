@@ -78,7 +78,7 @@ lib/
 
 ### Key Components
 - **AppStateProvider**: Manages global app state
-- **ZoePage**: Core page model with content blocks
+- **ZoeSheet**: Core sheet model with content blocks
 - **ContentBlock**: Abstract base for different content types
 - **Modern Widgets**: Custom UI components with animations
 

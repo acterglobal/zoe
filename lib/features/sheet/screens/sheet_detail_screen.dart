@@ -10,7 +10,7 @@ import '../../../common/widgets/content_block_widget.dart';
 import '../../../common/widgets/whatsapp_integration_bottomsheet.dart';
 
 class SheetDetailScreen extends ConsumerStatefulWidget {
-  final ZoePage? page;
+  final ZoeSheet? page;
   final bool isEmbedded;
 
   const SheetDetailScreen({super.key, this.page, this.isEmbedded = false});
@@ -22,7 +22,7 @@ class SheetDetailScreen extends ConsumerStatefulWidget {
 class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
-  late ZoePage _currentPage;
+  late ZoeSheet _currentPage;
   bool _showAddMenu = false;
   bool _isEditing = false; // Add editing state
   bool _hasBeenSaved = false; // Track if page has been saved
@@ -31,7 +31,8 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
   void initState() {
     super.initState();
     _currentPage =
-        widget.page ?? ZoePage(title: 'Untitled', description: '', emoji: '📄');
+        widget.page ??
+        ZoeSheet(title: 'Untitled', description: '', emoji: '📄');
     _titleController = TextEditingController(text: _currentPage.title);
     _descriptionController = TextEditingController(
       text: _currentPage.description,
@@ -541,11 +542,11 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
 
     if (!_hasBeenSaved) {
       // New page - add to state
-      appStateNotifier.addPage(updatedPage);
+      appStateNotifier.addSheet(updatedPage);
       _hasBeenSaved = true;
     } else {
       // Update existing page
-      appStateNotifier.updatePage(updatedPage);
+      appStateNotifier.updateSheet(updatedPage);
     }
 
     _currentPage = updatedPage;
@@ -571,7 +572,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
               if (widget.page != null) {
                 // Delete existing page
                 final appStateNotifier = ref.read(appStateProvider.notifier);
-                appStateNotifier.deletePage(widget.page!.id);
+                appStateNotifier.deleteSheet(widget.page!.id);
               }
               // For both new and existing pages, close dialog and page
               Navigator.of(context).pop(); // Close dialog
@@ -590,7 +591,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
   }
 
   void _duplicatePage() {
-    final duplicatedPage = ZoePage(
+    final duplicatedPage = ZoeSheet(
       title: '${_currentPage.title} (Copy)',
       description: _currentPage.description,
       emoji: _currentPage.emoji,
@@ -598,7 +599,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
     );
 
     final appStateNotifier = ref.read(appStateProvider.notifier);
-    appStateNotifier.addPage(duplicatedPage);
+    appStateNotifier.addSheet(duplicatedPage);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Page duplicated successfully')),
@@ -611,7 +612,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => WhatsAppIntegrationBottomSheet(
-        currentPage: _currentPage,
+        currentSheet: _currentPage,
         onConnectionChanged: (isConnected) {
           setState(() {
             _currentPage = _currentPage.copyWith(
@@ -622,7 +623,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
           // Update the page in app state if it has been saved
           if (_hasBeenSaved) {
             final appStateNotifier = ref.read(appStateProvider.notifier);
-            appStateNotifier.updatePage(_currentPage);
+            appStateNotifier.updateSheet(_currentPage);
           }
         },
       ),

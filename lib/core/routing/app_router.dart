@@ -36,28 +36,28 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const HomeScreen(),
       ),
 
-      // Page detail route
+      // Sheet detail route
       GoRoute(
-        path: AppRoutes.page.route,
-        name: AppRoutes.page.name,
+        path: AppRoutes.sheet.route,
+        name: AppRoutes.sheet.name,
         builder: (context, state) {
-          final pageId = state.pathParameters['pageId'];
+          final sheetId = state.pathParameters['sheetId'];
 
           return Consumer(
             builder: (context, ref, child) {
               final appState = ref.read(appStateProvider);
 
-              // Find the page by ID
-              ZoePage? page;
-              if (pageId != null && pageId != 'new') {
-                page = appState.pages.firstWhere(
-                  (p) => p.id == pageId,
+              // Find the sheet by ID
+              ZoeSheet? sheet;
+              if (sheetId != null && sheetId != 'new') {
+                sheet = appState.sheets.firstWhere(
+                  (s) => s.id == sheetId,
                   orElse: () =>
-                      ZoePage(title: 'Page Not Found', description: ''),
+                      ZoeSheet(title: 'Sheet Not Found', description: ''),
                 );
               }
 
-              return PageDetailScreen(page: page);
+              return SheetDetailScreen(page: sheet);
             },
           );
         },
@@ -72,7 +72,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
     errorBuilder: (context, state) => Scaffold(
       appBar: AppBar(
-        title: const Text('Page Not Found'),
+        title: const Text('Sheet Not Found'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.go(AppRoutes.home.route),
@@ -85,12 +85,12 @@ final routerProvider = Provider<GoRouter>((ref) {
             const Icon(Icons.error_outline, size: 64, color: Colors.grey),
             const SizedBox(height: 16),
             const Text(
-              'Page Not Found',
+              'Sheet Not Found',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             const Text(
-              'The page you requested could not be found.',
+              'The sheet you requested could not be found.',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 24),
