@@ -4,7 +4,7 @@ import 'package:zoey/src/rust/frb_generated.dart';
 import 'common/providers/app_state_provider.dart';
 import 'common/providers/navigation_provider.dart';
 import 'common/providers/settings_provider.dart';
-import 'screens/welcome_screen.dart';
+import 'features/welcome/welcome_screen.dart';
 import 'widgets/responsive_layout.dart';
 
 Future<void> main() async {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
-import '../common/providers/app_state_provider.dart';
-import '../common/theme/app_theme.dart';
+import '../../common/providers/app_state_provider.dart';
+import '../../common/theme/app_theme.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../common/providers/navigation_provider.dart';
 import '../common/theme/app_theme.dart';
-import '../screens/home_screen.dart';
-import '../screens/page_detail_screen.dart';
-import '../screens/settings_screen.dart';
+import '../features/home/home_screen.dart';
+import '../features/paper_sheet/page_detail_screen.dart';
+import '../features/settings/settings_screen.dart';
 import 'app_sidebar.dart';
 
 class ResponsiveLayout extends StatefulWidget {

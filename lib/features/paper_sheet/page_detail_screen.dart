@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../common/providers/app_state_provider.dart';
-import '../common/providers/navigation_provider.dart';
-import '../common/models/page.dart';
-import '../common/models/content_block.dart';
-import '../common/theme/app_theme.dart';
-import '../widgets/content_block_widget.dart';
-import '../widgets/whatsapp_integration_bottomsheet.dart';
+import '../../common/providers/app_state_provider.dart';
+import '../../common/providers/navigation_provider.dart';
+import '../../common/models/page.dart';
+import '../../common/models/content_block.dart';
+import '../../common/theme/app_theme.dart';
+import '../../widgets/content_block_widget.dart';
+import '../../widgets/whatsapp_integration_bottomsheet.dart';
 
 class PageDetailScreen extends StatefulWidget {
   final ZoePage? page;
