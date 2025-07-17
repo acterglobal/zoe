@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../../common/providers/app_state_provider.dart';
-import '../../common/theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
+import '../../core/routing/app_routes.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -161,8 +163,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     appState.initializeWithSampleData();
     appState.completeFirstLaunch();
 
-    // The Consumer in main.dart will automatically handle the navigation
-    // when isFirstLaunch becomes false, so we don't need to navigate manually
+    // Navigate to home screen
+    context.go(AppRoutes.home.route);
   }
 }
 

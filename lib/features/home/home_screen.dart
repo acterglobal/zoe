@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../../common/providers/app_state_provider.dart';
-import '../../common/providers/navigation_provider.dart';
-import '../../common/theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
+import '../../core/routing/app_routes.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isEmbedded;
@@ -60,12 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         // Settings button
         IconButton(
-          onPressed: () {
-            Provider.of<NavigationProvider>(
-              context,
-              listen: false,
-            ).navigateToSettings();
-          },
+          onPressed: () => context.go(AppRoutes.settings.route),
           icon: Icon(
             Icons.settings_rounded,
             color: AppTheme.getTextSecondary(context),
@@ -107,13 +103,25 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Pages',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: AppTheme.getTextPrimary(context),
-            ),
+          Row(
+            children: [
+              Text(
+                'Pages',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.getTextPrimary(context),
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: () => context.go(
+                  AppRoutes.page.route.replaceAll(':pageId', 'new'),
+                ),
+                icon: const Icon(Icons.add_rounded),
+                tooltip: 'Create New Page',
+              ),
+            ],
           ),
 
           const SizedBox(height: 16),
@@ -152,12 +160,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               overflow: TextOverflow.ellipsis,
                             )
                           : null,
-                      onTap: () {
-                        Provider.of<NavigationProvider>(
-                          context,
-                          listen: false,
-                        ).navigateToPage(page);
-                      },
+                      onTap: () => context.go(
+                        AppRoutes.page.route.replaceAll(':pageId', page.id),
+                      ),
                     ),
                   );
                 },
@@ -198,7 +203,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: () => _createNewPage(context),
+              onPressed: () =>
+                  context.go(AppRoutes.page.route.replaceAll(':pageId', 'new')),
               icon: const Icon(Icons.add_rounded),
               label: const Text('Create Page'),
             ),
@@ -246,9 +252,5 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     return '${weekdays[now.weekday - 1]}, ${months[now.month - 1]} ${now.day}';
-  }
-
-  void _createNewPage(BuildContext context) {
-    Provider.of<NavigationProvider>(context, listen: false).navigateToNewPage();
   }
 }

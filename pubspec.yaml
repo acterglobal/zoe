@@ -41,6 +41,9 @@ dependencies:
   # State management
   provider: ^6.1.2
   
+  # Routing
+  go_router: ^16.0.0
+  
   # UI and animations
   flutter_animate: ^4.5.0
   lottie: ^3.1.2

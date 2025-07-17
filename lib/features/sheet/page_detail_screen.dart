@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../../common/providers/app_state_provider.dart';
-import '../../common/providers/navigation_provider.dart';
 import '../../common/models/page.dart';
 import '../../common/models/content_block.dart';
-import '../../common/theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
+import '../../core/routing/app_routes.dart';
 import '../../common/widgets/content_block_widget.dart';
 import '../../common/widgets/whatsapp_integration_bottomsheet.dart';
 
@@ -60,14 +61,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
             Icons.arrow_back_rounded,
             color: AppTheme.getTextPrimary(context),
           ),
-          onPressed: () {
-            // For new pages that haven't been saved, just discard
-            // For existing pages, they remain saved
-            Provider.of<NavigationProvider>(
-              context,
-              listen: false,
-            ).navigateBack();
-          },
+          onPressed: () => context.go(AppRoutes.home.route),
         ),
         actions: [
           // Edit/Save button
@@ -585,11 +579,8 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
               // For both new and existing pages, close dialog and page
               Navigator.of(context).pop(); // Close dialog
 
-              // Always use NavigationProvider for consistent navigation
-              Provider.of<NavigationProvider>(
-                context,
-                listen: false,
-              ).navigateBack();
+              // Navigate back to home
+              context.go(AppRoutes.home.route);
             },
             child: Text(
               widget.page == null ? 'Discard' : 'Delete',

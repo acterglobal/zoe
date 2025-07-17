@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import '../models/content_block.dart';
-import '../theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
 import 'task_editor_dialog.dart';
 import 'event_editor_dialog.dart';
 

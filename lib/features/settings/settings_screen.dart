@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../common/providers/settings_provider.dart';
-import '../../common/providers/navigation_provider.dart';
-import '../../common/theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
+import '../../core/routing/app_routes.dart';
 
 class SettingsScreen extends StatefulWidget {
   final bool isEmbedded;
@@ -44,12 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Icons.arrow_back_rounded,
             color: AppTheme.getTextPrimary(context),
           ),
-          onPressed: () {
-            Provider.of<NavigationProvider>(
-              context,
-              listen: false,
-            ).navigateBack();
-          },
+          onPressed: () => context.go(AppRoutes.home.route),
         ),
         title: Text(
           'Settings',
