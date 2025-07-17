@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../common/providers/app_state_provider.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/routing/app_routes.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   final bool isEmbedded;
 
   const HomeScreen({super.key, this.isEmbedded = false});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final appStateProvider = Provider.of<AppStateProvider>(context);
+    final appState = ref.watch(appStateProvider);
 
     return Scaffold(
       backgroundColor: AppTheme.getBackground(context),
@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 32),
 
               // Simple pages list
-              _buildSimplePagesList(context, appStateProvider),
+              _buildSimplePagesList(context, appState),
             ],
           ),
         ),
@@ -95,10 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildSimplePagesList(
-    BuildContext context,
-    AppStateProvider appState,
-  ) {
+  Widget _buildSimplePagesList(BuildContext context, AppState appState) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

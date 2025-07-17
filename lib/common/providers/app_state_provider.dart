@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/page.dart';
 import '../models/content_block.dart';
 
@@ -17,19 +17,37 @@ class EventWithPage {
   EventWithPage({required this.event, required this.page});
 }
 
-class AppStateProvider extends ChangeNotifier {
-  List<ZoePage> _pages = [];
-  String _userName = 'Zoe';
-  bool _isFirstLaunch = true;
+class AppState {
+  final List<ZoePage> pages;
+  final String userName;
+  final bool isFirstLaunch;
 
-  // Getters
-  List<ZoePage> get pages => _pages;
-  String get userName => _userName;
-  bool get isFirstLaunch => _isFirstLaunch;
+  const AppState({
+    required this.pages,
+    required this.userName,
+    required this.isFirstLaunch,
+  });
+
+  AppState copyWith({
+    List<ZoePage>? pages,
+    String? userName,
+    bool? isFirstLaunch,
+  }) {
+    return AppState(
+      pages: pages ?? this.pages,
+      userName: userName ?? this.userName,
+      isFirstLaunch: isFirstLaunch ?? this.isFirstLaunch,
+    );
+  }
+}
+
+class AppStateNotifier extends StateNotifier<AppState> {
+  AppStateNotifier()
+    : super(const AppState(pages: [], userName: 'Zoe', isFirstLaunch: true));
 
   // Initialize with sample data
   void initializeWithSampleData() {
-    _pages = [
+    final samplePages = [
       ZoePage(
         title: 'Getting Started Guide',
         description: 'Learn how to use Zoey effectively',
@@ -462,32 +480,31 @@ class AppStateProvider extends ChangeNotifier {
         ],
       ),
     ];
-    _isFirstLaunch = false;
-    notifyListeners();
+    state = state.copyWith(pages: samplePages, isFirstLaunch: false);
   }
 
   // Page management
   void addPage(ZoePage page) {
-    _pages.add(page);
-    notifyListeners();
+    state = state.copyWith(pages: [...state.pages, page]);
   }
 
   void updatePage(ZoePage updatedPage) {
-    final index = _pages.indexWhere((page) => page.id == updatedPage.id);
-    if (index != -1) {
-      _pages[index] = updatedPage;
-      notifyListeners();
-    }
+    final updatedPages = state.pages.map((page) {
+      return page.id == updatedPage.id ? updatedPage : page;
+    }).toList();
+    state = state.copyWith(pages: updatedPages);
   }
 
   void deletePage(String pageId) {
-    _pages.removeWhere((page) => page.id == pageId);
-    notifyListeners();
+    final updatedPages = state.pages
+        .where((page) => page.id != pageId)
+        .toList();
+    state = state.copyWith(pages: updatedPages);
   }
 
   ZoePage? getPageById(String pageId) {
     try {
-      return _pages.firstWhere((page) => page.id == pageId);
+      return state.pages.firstWhere((page) => page.id == pageId);
     } catch (e) {
       return null;
     }
@@ -501,7 +518,7 @@ class AppStateProvider extends ChangeNotifier {
 
     List<TodoWithPage> todaysTodos = [];
 
-    for (final page in _pages) {
+    for (final page in state.pages) {
       for (final todoBlock in page.todoBlocks) {
         for (final todo in todoBlock.items) {
           // Only include tasks that are specifically due today
@@ -524,7 +541,7 @@ class AppStateProvider extends ChangeNotifier {
 
     List<EventWithPage> upcomingEvents = [];
 
-    for (final page in _pages) {
+    for (final page in state.pages) {
       for (final eventBlock in page.eventBlocks) {
         for (final event in eventBlock.events) {
           if (event.startTime.isAfter(now) &&
@@ -551,7 +568,7 @@ class AppStateProvider extends ChangeNotifier {
 
     List<EventWithPage> todaysEvents = [];
 
-    for (final page in _pages) {
+    for (final page in state.pages) {
       for (final eventBlock in page.eventBlocks) {
         for (final event in eventBlock.events) {
           if (event.startTime.isAfter(todayStart) &&
@@ -570,12 +587,42 @@ class AppStateProvider extends ChangeNotifier {
 
   // User settings
   void updateUserName(String name) {
-    _userName = name;
-    notifyListeners();
+    state = state.copyWith(userName: name);
   }
 
   void completeFirstLaunch() {
-    _isFirstLaunch = false;
-    notifyListeners();
+    state = state.copyWith(isFirstLaunch: false);
   }
 }
+
+// Riverpod providers
+final appStateProvider = StateNotifierProvider<AppStateNotifier, AppState>((
+  ref,
+) {
+  return AppStateNotifier();
+});
+
+// Convenience providers for frequently accessed data
+final pagesProvider = Provider<List<ZoePage>>((ref) {
+  return ref.watch(appStateProvider).pages;
+});
+
+final userNameProvider = Provider<String>((ref) {
+  return ref.watch(appStateProvider).userName;
+});
+
+final isFirstLaunchProvider = Provider<bool>((ref) {
+  return ref.watch(appStateProvider).isFirstLaunch;
+});
+
+final todaysTodosProvider = Provider<List<TodoWithPage>>((ref) {
+  return ref.watch(appStateProvider.notifier).getTodaysTodos();
+});
+
+final upcomingEventsProvider = Provider<List<EventWithPage>>((ref) {
+  return ref.watch(appStateProvider.notifier).getUpcomingEvents();
+});
+
+final todaysEventsProvider = Provider<List<EventWithPage>>((ref) {
+  return ref.watch(appStateProvider.notifier).getTodaysEvents();
+});

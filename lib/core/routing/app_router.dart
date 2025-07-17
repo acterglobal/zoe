@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/models/page.dart';
 import '../../common/providers/app_state_provider.dart';
 import 'app_routes.dart';
@@ -13,10 +13,10 @@ class AppRouter {
   static final GlobalKey<NavigatorState> _rootNavigatorKey =
       GlobalKey<NavigatorState>();
 
-  static GoRouter createRouter(AppStateProvider appStateProvider) {
+  static GoRouter createRouter(AppState appState) {
     return GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: appStateProvider.isFirstLaunch
+      initialLocation: appState.isFirstLaunch
           ? AppRoutes.welcome.route
           : AppRoutes.home.route,
       routes: [
@@ -40,18 +40,24 @@ class AppRouter {
           name: AppRoutes.page.name,
           builder: (context, state) {
             final pageId = state.pathParameters['pageId'];
-            final appState = context.read<AppStateProvider>();
 
-            // Find the page by ID
-            ZoePage? page;
-            if (pageId != null && pageId != 'new') {
-              page = appState.pages.firstWhere(
-                (p) => p.id == pageId,
-                orElse: () => ZoePage(title: 'Page Not Found', description: ''),
-              );
-            }
+            return Consumer(
+              builder: (context, ref, child) {
+                final appState = ref.read(appStateProvider);
 
-            return PageDetailScreen(page: page);
+                // Find the page by ID
+                ZoePage? page;
+                if (pageId != null && pageId != 'new') {
+                  page = appState.pages.firstWhere(
+                    (p) => p.id == pageId,
+                    orElse: () =>
+                        ZoePage(title: 'Page Not Found', description: ''),
+                  );
+                }
+
+                return PageDetailScreen(page: page);
+              },
+            );
           },
         ),
 

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../common/providers/app_state_provider.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/routing/app_routes.dart';
 
-class WelcomeScreen extends StatefulWidget {
+class WelcomeScreen extends ConsumerStatefulWidget {
   const WelcomeScreen({super.key});
 
   @override
-  State<WelcomeScreen> createState() => _WelcomeScreenState();
+  ConsumerState<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,9 +159,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void _getStarted(BuildContext context) {
-    final appState = Provider.of<AppStateProvider>(context, listen: false);
-    appState.initializeWithSampleData();
-    appState.completeFirstLaunch();
+    final appStateNotifier = ref.read(appStateProvider.notifier);
+    appStateNotifier.initializeWithSampleData();
+    appStateNotifier.completeFirstLaunch();
 
     // Navigate to home screen
     context.go(AppRoutes.home.route);

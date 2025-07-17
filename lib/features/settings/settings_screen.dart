@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
@@ -8,16 +8,16 @@ import '../../common/providers/settings_provider.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/routing/app_routes.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   final bool isEmbedded;
 
   const SettingsScreen({super.key, this.isEmbedded = false});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   PackageInfo? _packageInfo;
 
   @override
@@ -133,84 +133,78 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildThemeOption() {
-    return Consumer<SettingsProvider>(
-      builder: (context, settings, child) {
-        return ListTile(
-          leading: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: const Color(0xFF6366F1).withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(
-              Icons.palette_outlined,
-              color: Color(0xFF6366F1),
-              size: 20,
-            ),
-          ),
-          title: Text(
-            'Theme',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: AppTheme.getTextPrimary(context),
-            ),
-          ),
-          subtitle: Text(
-            settings.themeName,
-            style: TextStyle(
-              fontSize: 14,
-              color: AppTheme.getTextSecondary(context),
-            ),
-          ),
-          trailing: Icon(
-            Icons.chevron_right_rounded,
-            color: AppTheme.getTextTertiary(context),
-          ),
-          onTap: () => _showThemeDialog(context, settings),
-        );
-      },
+    final settings = ref.watch(settingsProvider);
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: const Color(0xFF6366F1).withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: const Icon(
+          Icons.palette_outlined,
+          color: Color(0xFF6366F1),
+          size: 20,
+        ),
+      ),
+      title: Text(
+        'Theme',
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: AppTheme.getTextPrimary(context),
+        ),
+      ),
+      subtitle: Text(
+        settings.themeName,
+        style: TextStyle(
+          fontSize: 14,
+          color: AppTheme.getTextSecondary(context),
+        ),
+      ),
+      trailing: Icon(
+        Icons.chevron_right_rounded,
+        color: AppTheme.getTextTertiary(context),
+      ),
+      onTap: () => _showThemeDialog(context, settings),
     );
   }
 
   Widget _buildLanguageOption() {
-    return Consumer<SettingsProvider>(
-      builder: (context, settings, child) {
-        return ListTile(
-          leading: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppTheme.getSuccess(context).withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              Icons.language_rounded,
-              color: AppTheme.getSuccess(context),
-              size: 20,
-            ),
-          ),
-          title: Text(
-            'Language',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: AppTheme.getTextPrimary(context),
-            ),
-          ),
-          subtitle: Text(
-            settings.languageName,
-            style: TextStyle(
-              fontSize: 14,
-              color: AppTheme.getTextSecondary(context),
-            ),
-          ),
-          trailing: Icon(
-            Icons.chevron_right_rounded,
-            color: AppTheme.getTextTertiary(context),
-          ),
-          onTap: () => _showLanguageDialog(context, settings),
-        );
-      },
+    final settings = ref.watch(settingsProvider);
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppTheme.getSuccess(context).withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(
+          Icons.language_rounded,
+          color: AppTheme.getSuccess(context),
+          size: 20,
+        ),
+      ),
+      title: Text(
+        'Language',
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: AppTheme.getTextPrimary(context),
+        ),
+      ),
+      subtitle: Text(
+        settings.languageName,
+        style: TextStyle(
+          fontSize: 14,
+          color: AppTheme.getTextSecondary(context),
+        ),
+      ),
+      trailing: Icon(
+        Icons.chevron_right_rounded,
+        color: AppTheme.getTextTertiary(context),
+      ),
+      onTap: () => _showLanguageDialog(context, settings),
     );
   }
 
@@ -369,7 +363,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _showThemeDialog(BuildContext context, SettingsProvider settings) {
+  void _showThemeDialog(BuildContext context, SettingsState settings) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -384,7 +378,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               groupValue: settings.theme,
               onChanged: (value) {
                 if (value != null) {
-                  settings.updateTheme(value);
+                  ref.read(settingsProvider.notifier).updateTheme(value);
                   Navigator.of(context).pop();
                 }
               },
@@ -401,7 +395,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _showLanguageDialog(BuildContext context, SettingsProvider settings) {
+  void _showLanguageDialog(BuildContext context, SettingsState settings) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -415,7 +409,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               groupValue: settings.language,
               onChanged: (value) {
                 if (value != null) {
-                  settings.updateLanguage(value);
+                  ref.read(settingsProvider.notifier).updateLanguage(value);
                   Navigator.of(context).pop();
                 }
               },

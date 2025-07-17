@@ -1,5 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../../common/providers/app_state_provider.dart';
 import '../../common/models/page.dart';
@@ -9,17 +9,17 @@ import '../../core/routing/app_routes.dart';
 import '../../common/widgets/content_block_widget.dart';
 import '../../common/widgets/whatsapp_integration_bottomsheet.dart';
 
-class PageDetailScreen extends StatefulWidget {
+class PageDetailScreen extends ConsumerStatefulWidget {
   final ZoePage? page;
   final bool isEmbedded;
 
   const PageDetailScreen({super.key, this.page, this.isEmbedded = false});
 
   @override
-  State<PageDetailScreen> createState() => _PageDetailScreenState();
+  ConsumerState<PageDetailScreen> createState() => _PageDetailScreenState();
 }
 
-class _PageDetailScreenState extends State<PageDetailScreen> {
+class _PageDetailScreenState extends ConsumerState<PageDetailScreen> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
   late ZoePage _currentPage;
@@ -537,15 +537,15 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
       description: _descriptionController.text.trim(),
     );
 
-    final appState = Provider.of<AppStateProvider>(context, listen: false);
+    final appStateNotifier = ref.read(appStateProvider.notifier);
 
     if (!_hasBeenSaved) {
       // New page - add to state
-      appState.addPage(updatedPage);
+      appStateNotifier.addPage(updatedPage);
       _hasBeenSaved = true;
     } else {
       // Update existing page
-      appState.updatePage(updatedPage);
+      appStateNotifier.updatePage(updatedPage);
     }
 
     _currentPage = updatedPage;
@@ -570,11 +570,8 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
             onPressed: () {
               if (widget.page != null) {
                 // Delete existing page
-                final appState = Provider.of<AppStateProvider>(
-                  context,
-                  listen: false,
-                );
-                appState.deletePage(widget.page!.id);
+                final appStateNotifier = ref.read(appStateProvider.notifier);
+                appStateNotifier.deletePage(widget.page!.id);
               }
               // For both new and existing pages, close dialog and page
               Navigator.of(context).pop(); // Close dialog
@@ -600,8 +597,8 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
       contentBlocks: _currentPage.contentBlocks,
     );
 
-    final appState = Provider.of<AppStateProvider>(context, listen: false);
-    appState.addPage(duplicatedPage);
+    final appStateNotifier = ref.read(appStateProvider.notifier);
+    appStateNotifier.addPage(duplicatedPage);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Page duplicated successfully')),
@@ -624,11 +621,8 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
 
           // Update the page in app state if it has been saved
           if (_hasBeenSaved) {
-            final appState = Provider.of<AppStateProvider>(
-              context,
-              listen: false,
-            );
-            appState.updatePage(_currentPage);
+            final appStateNotifier = ref.read(appStateProvider.notifier);
+            appStateNotifier.updatePage(_currentPage);
           }
         },
       ),
