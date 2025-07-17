@@ -41,50 +41,19 @@ class EventBlockModel extends ContentBlockModel {
   }
 }
 
-class RSVPResponse {
-  final String userId;
-  final String userName;
-  final RSVPStatus status;
-  final DateTime respondedAt;
-
-  RSVPResponse({
-    required this.userId,
-    required this.userName,
-    required this.status,
-    DateTime? respondedAt,
-  }) : respondedAt = respondedAt ?? DateTime.now();
-
-  Map<String, dynamic> toJson() {
-    return {
-      'userId': userId,
-      'userName': userName,
-      'status': status.name,
-      'respondedAt': respondedAt.toIso8601String(),
-    };
-  }
-}
-
 class EventItem {
   final String id;
   final String title;
   final String? description;
-  final DateTime startTime;
-  final DateTime? endTime;
-  final bool isAllDay;
-  final EventLocation? location;
-  final List<RSVPResponse> rsvpResponses;
-  final bool requiresRSVP;
+  final DateTime? startDate;
+  final DateTime? endDate;
 
   EventItem({
     String? id,
     required this.title,
     this.description,
-    required this.startTime,
-    this.endTime,
-    this.isAllDay = false,
-    this.location,
-    this.rsvpResponses = const [],
-    this.requiresRSVP = false,
+    this.startDate,
+    this.endDate,
   }) : id = id ?? const Uuid().v4();
 
   Map<String, dynamic> toJson() {
@@ -92,55 +61,23 @@ class EventItem {
       'id': id,
       'title': title,
       'description': description,
-      'startTime': startTime.toIso8601String(),
-      'endTime': endTime?.toIso8601String(),
-      'isAllDay': isAllDay,
-      'location': location?.toJson(),
-      'rsvpResponses': rsvpResponses.map((r) => r.toJson()).toList(),
-      'requiresRSVP': requiresRSVP,
+      'startDate': startDate?.toIso8601String(),
+      'endDate': endDate?.toIso8601String(),
     };
   }
 
   EventItem copyWith({
     String? title,
     String? description,
-    DateTime? startTime,
-    DateTime? endTime,
-    bool? isAllDay,
-    EventLocation? location,
-    List<RSVPResponse>? rsvpResponses,
-    bool? requiresRSVP,
+    DateTime? startDate,
+    DateTime? endDate,
   }) {
     return EventItem(
       id: id,
       title: title ?? this.title,
       description: description ?? this.description,
-      startTime: startTime ?? this.startTime,
-      endTime: endTime ?? this.endTime,
-      isAllDay: isAllDay ?? this.isAllDay,
-      location: location ?? this.location,
-      rsvpResponses: rsvpResponses ?? this.rsvpResponses,
-      requiresRSVP: requiresRSVP ?? this.requiresRSVP,
-    );
-  }
-}
-
-enum RSVPStatus { pending, yes, no, maybe }
-
-class EventLocation {
-  final String? physical;
-  final String? virtual;
-
-  EventLocation({this.physical, this.virtual});
-
-  Map<String, dynamic> toJson() {
-    return {'physical': physical, 'virtual': virtual};
-  }
-
-  EventLocation copyWith({String? physical, String? virtual}) {
-    return EventLocation(
-      physical: physical ?? this.physical,
-      virtual: virtual ?? this.virtual,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
     );
   }
 }

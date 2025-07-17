@@ -55,7 +55,7 @@ class TodoItemWidget extends StatelessWidget {
           ),
         ),
         title: Text(
-          todo.text,
+          todo.title,
           style: TextStyle(
             fontSize: 16,
             decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
@@ -64,15 +64,6 @@ class TodoItemWidget extends StatelessWidget {
                 : Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        subtitle: todo.dueDate != null
-            ? Text(
-                _formatDueDate(todo.dueDate!),
-                style: TextStyle(
-                  fontSize: 12,
-                  color: _getDueDateColor(context, todo.dueDate!),
-                ),
-              )
-            : null,
         trailing: onDelete != null
             ? IconButton(
                 icon: const Icon(Icons.close, size: 16),
@@ -84,41 +75,5 @@ class TodoItemWidget extends StatelessWidget {
         onTap: onTap,
       ),
     );
-  }
-
-  String _formatDueDate(DateTime dueDate) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final tomorrow = today.add(const Duration(days: 1));
-    final dueDateOnly = DateTime(dueDate.year, dueDate.month, dueDate.day);
-
-    if (dueDateOnly == today) {
-      return 'Due today';
-    } else if (dueDateOnly == tomorrow) {
-      return 'Due tomorrow';
-    } else if (dueDateOnly.isBefore(today)) {
-      final difference = today.difference(dueDateOnly).inDays;
-      return 'Overdue by $difference day${difference == 1 ? '' : 's'}';
-    } else {
-      final difference = dueDateOnly.difference(today).inDays;
-      return 'Due in $difference day${difference == 1 ? '' : 's'}';
-    }
-  }
-
-  Color _getDueDateColor(BuildContext context, DateTime dueDate) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final dueDateOnly = DateTime(dueDate.year, dueDate.month, dueDate.day);
-
-    if (todo.dueDate == null) return AppTheme.getTextSecondary(context);
-
-    if (dueDateOnly.isBefore(today)) {
-      return Theme.of(context).colorScheme.error; // Red - overdue
-    } else if (dueDateOnly == today) {
-      return AppColors.warningColor; // Amber - due today
-    } else {
-      // Future dates
-      return AppTheme.getTextSecondary(context); // Gray - future
-    }
   }
 }

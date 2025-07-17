@@ -164,12 +164,12 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
       case ContentBlockType.todo:
         return TodoBlockModel(
           title: 'To-do',
-          items: [TodoItem(text: '')],
+          items: [TodoItem(title: '')],
         );
       case ContentBlockType.event:
         return EventBlockModel(
           title: 'Events',
-          events: [EventItem(title: '', startTime: DateTime.now())],
+          events: [EventItem(title: '')],
         );
       case ContentBlockType.list:
         return ListBlockModel(title: 'List', items: ['']);

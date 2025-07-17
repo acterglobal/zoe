@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/sheet/models/content_block/content_block.dart';
 import 'package:zoey/features/sheet/models/content_block/event_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
 import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
 import 'package:zoey/core/theme/app_theme.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/blocks/event_editor_dialog.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/blocks/task_editor_dialog.dart';
 
 class ContentBlockWidget extends StatefulWidget {
   final ContentBlockModel block;
@@ -161,11 +160,11 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         // Create new controllers
         for (final item in block.items) {
           if (!_todoControllers.containsKey(item.id)) {
-            _todoControllers[item.id] = TextEditingController(text: item.text);
-          } else if (_todoControllers[item.id]!.text != item.text) {
+            _todoControllers[item.id] = TextEditingController(text: item.title);
+          } else if (_todoControllers[item.id]!.text != item.title) {
             final selection = _todoControllers[item.id]!.selection;
-            _todoControllers[item.id]!.text = item.text;
-            if (selection.isValid && selection.end <= item.text.length) {
+            _todoControllers[item.id]!.text = item.title;
+            if (selection.isValid && selection.end <= item.title.length) {
               _todoControllers[item.id]!.selection = selection;
             }
           }
@@ -396,7 +395,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         // Todo items
         ...block.items.map((todo) {
           return Container(
-            margin: const EdgeInsets.only(bottom: 12),
+            margin: const EdgeInsets.only(bottom: 16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -439,207 +438,82 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Todo title with priority indicator
-                      Row(
-                        children: [
-                          // Priority indicator
-                          Container(
-                            width: 8,
-                            height: 8,
-                            margin: const EdgeInsets.only(right: 8, top: 3),
-                            decoration: BoxDecoration(
-                              color: _getPriorityColor(todo.priority),
-                              shape: BoxShape.circle,
+                      // Todo title
+                      widget.isEditing
+                          ? TextField(
+                              controller: _todoControllers[todo.id],
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.onSurface,
+                                decoration: todo.isCompleted
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none,
+                                height: 1.4,
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                filled: false,
+                                hintText: 'To-do',
+                                hintStyle: Theme.of(
+                                  context,
+                                ).textTheme.bodySmall,
+                                contentPadding: EdgeInsets.zero,
+                                isDense: true,
+                              ),
+                              maxLines: null,
+                              onChanged: (value) {
+                                final updatedTodo = todo.copyWith(title: value);
+                                final updatedItems = block.items.map((item) {
+                                  return item.id == todo.id
+                                      ? updatedTodo
+                                      : item;
+                                }).toList();
+                                widget.onUpdate(
+                                  block.copyWith(items: updatedItems),
+                                );
+                              },
+                            )
+                          : Text(
+                              todo.title.isEmpty ? 'To-do' : todo.title,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.onSurface,
+                                decoration: todo.isCompleted
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none,
+                                height: 1.4,
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            child: widget.isEditing
-                                ? TextField(
-                                    controller: _todoControllers[todo.id],
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: todo.isCompleted
-                                          ? AppTheme.getTextSecondary(context)
-                                          : Theme.of(
-                                              context,
-                                            ).colorScheme.onSurface,
-                                      decoration: todo.isCompleted
-                                          ? TextDecoration.lineThrough
-                                          : TextDecoration.none,
-                                      height: 1.4,
-                                    ),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      filled: false,
-                                      hintText: 'To-do',
-                                      hintStyle: Theme.of(
-                                        context,
-                                      ).textTheme.bodySmall,
-                                      contentPadding: EdgeInsets.zero,
-                                      isDense: true,
-                                    ),
-                                    maxLines: null,
-                                    onChanged: (value) {
-                                      final updatedTodo = todo.copyWith(
-                                        text: value,
-                                      );
-                                      final updatedItems = block.items.map((
-                                        item,
-                                      ) {
-                                        return item.id == todo.id
-                                            ? updatedTodo
-                                            : item;
-                                      }).toList();
-                                      widget.onUpdate(
-                                        block.copyWith(items: updatedItems),
-                                      );
-                                    },
-                                  )
-                                : Text(
-                                    todo.text.isEmpty ? 'To-do' : todo.text,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: todo.isCompleted
-                                          ? Theme.of(
-                                              context,
-                                            ).colorScheme.onSurface
-                                          : Theme.of(
-                                              context,
-                                            ).colorScheme.onSurface,
-                                      decoration: todo.isCompleted
-                                          ? TextDecoration.lineThrough
-                                          : TextDecoration.none,
-                                      height: 1.4,
-                                    ),
-                                  ),
-                          ),
-                        ],
-                      ),
 
                       // Description
                       if (todo.description?.isNotEmpty == true)
                         Padding(
-                          padding: const EdgeInsets.only(top: 4, left: 16),
+                          padding: const EdgeInsets.only(top: 4),
                           child: Text(
                             todo.description!,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),
 
-                      // Metadata row
-                      if (todo.assignees.isNotEmpty ||
-                          todo.dueDate != null ||
-                          todo.tags.isNotEmpty)
+                      // Due date and assignees
+                      if (todo.dueDate != null || todo.assignees.isNotEmpty)
                         Padding(
-                          padding: const EdgeInsets.only(top: 6, left: 16),
+                          padding: const EdgeInsets.only(top: 6),
                           child: Wrap(
                             spacing: 8,
                             runSpacing: 4,
                             children: [
-                              // Assignees
-                              if (todo.assignees.isNotEmpty)
-                                _buildAssigneesChip(todo.assignees),
-
                               // Due date
                               if (todo.dueDate != null)
                                 _buildDueDateChip(todo.dueDate!),
 
-                              // Tags
-                              ...todo.tags.map((tag) => _buildTagChip(tag)),
-                            ],
-                          ),
-                        ),
-
-                      // Quick actions row (only in edit mode)
-                      if (widget.isEditing)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8, left: 16),
-                          child: Row(
-                            children: [
-                              // Edit button
-                              GestureDetector(
-                                onTap: () => _editTask(todo, block),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.surfaceContainerHighest,
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.edit,
-                                        size: 12,
-                                        color: AppTheme.getTextSecondary(
-                                          context,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        'Edit',
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          color: AppTheme.getTextSecondary(
-                                            context,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-
-                              const SizedBox(width: 8),
-
-                              // Quick due date button
-                              if (todo.dueDate == null)
-                                GestureDetector(
-                                  onTap: () => _quickSetDueDate(todo, block),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.surfaceContainerHighest,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.schedule,
-                                          size: 12,
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onSurface,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          'Set Due Date',
-                                          style: TextStyle(
-                                            fontSize: 11,
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.onSurface,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                              // Assignees
+                              if (todo.assignees.isNotEmpty)
+                                _buildAssigneesChip(todo.assignees),
                             ],
                           ),
                         ),
@@ -673,7 +547,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         if (widget.isEditing)
           TextButton.icon(
             onPressed: () {
-              final newTodo = TodoItem(text: '');
+              final newTodo = TodoItem(title: '');
               final updatedItems = [...block.items, newTodo];
               widget.onUpdate(block.copyWith(items: updatedItems));
             },
@@ -700,15 +574,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Time indicator
-                Container(
-                  width: 8,
-                  height: 8,
-                  margin: const EdgeInsets.only(top: 8),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    shape: BoxShape.circle,
-                  ),
-                ),
+                Icon(Icons.calendar_month, size: 24),
                 const SizedBox(width: 12),
 
                 // Event content
@@ -755,170 +621,25 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                               ),
                             ),
 
-                      const SizedBox(height: 6),
-
-                      // Event time range
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.schedule,
-                            size: 12,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            _formatEventTime(event),
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-
-                      // Event description
+                      // Description
                       if (event.description?.isNotEmpty == true)
                         Padding(
-                          padding: const EdgeInsets.only(top: 6),
+                          padding: const EdgeInsets.only(top: 4),
                           child: Text(
                             event.description!,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),
 
-                      // Location
-                      if (event.location?.physical?.isNotEmpty == true ||
-                          event.location?.virtual?.isNotEmpty == true)
+                      // Date range
+                      if (event.startDate != null || event.endDate != null)
                         Padding(
                           padding: const EdgeInsets.only(top: 6),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (event.location?.physical?.isNotEmpty == true)
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.location_on,
-                                      size: 12,
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Expanded(
-                                      child: Text(
-                                        event.location!.physical!,
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              if (event.location?.virtual?.isNotEmpty == true)
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top:
-                                        event.location?.physical?.isNotEmpty ==
-                                            true
-                                        ? 4
-                                        : 0,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.videocam,
-                                        size: 12,
-                                        color: AppTheme.getTextSecondary(
-                                          context,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Expanded(
-                                        child: Text(
-                                          event.location!.virtual!,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFF3B82F6),
-                                            height: 1.3,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-
-                      // RSVP Section
-                      if (event.requiresRSVP && event.rsvpResponses.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'RSVP Responses:',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppTheme.getTextSecondary(context),
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Wrap(
-                                spacing: 6,
-                                runSpacing: 4,
-                                children: event.rsvpResponses.map((response) {
-                                  return _buildRSVPChip(response);
-                                }).toList(),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                      // Quick actions row for events (only in edit mode)
-                      if (widget.isEditing)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
                           child: Row(
                             children: [
-                              // Edit button
-                              GestureDetector(
-                                onTap: () => _editEvent(event, block),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.surfaceContainerHighest,
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.edit,
-                                        size: 12,
-                                        color: AppTheme.getTextSecondary(
-                                          context,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        'Edit',
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          color: AppTheme.getTextSecondary(
-                                            context,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              Icon(Icons.schedule, size: 12),
+                              const SizedBox(width: 4),
+                              Text(_formatEventDateRange(event)),
                             ],
                           ),
                         ),
@@ -952,7 +673,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
         if (widget.isEditing)
           TextButton.icon(
             onPressed: () {
-              final newEvent = EventItem(title: '', startTime: DateTime.now());
+              final newEvent = EventItem(title: '');
               final updatedEvents = [...block.events, newEvent];
               widget.onUpdate(block.copyWith(events: updatedEvents));
             },
@@ -985,9 +706,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                 Container(
                   width: 6,
                   height: 6,
-                  margin: const EdgeInsets.only(
-                    top: 9,
-                  ), // Better alignment with text
+                  margin: const EdgeInsets.only(top: 9),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.onSurface,
                     shape: BoxShape.circle,
@@ -1003,7 +722,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                           style: TextStyle(
                             fontSize: 14,
                             color: Theme.of(context).colorScheme.onSurface,
-                            height: 1.4, // Better line height
+                            height: 1.4,
                           ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -1015,7 +734,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
                               color: AppTheme.getTextSecondary(context),
                             ),
                             contentPadding: EdgeInsets.zero,
-                            isDense: true, // Reduce padding
+                            isDense: true,
                           ),
                           maxLines: null,
                           onChanged: (value) {
@@ -1101,6 +820,119 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     }
   }
 
+  Widget _buildDueDateChip(DateTime dueDate) {
+    final now = DateTime.now();
+    final isOverdue = dueDate.isBefore(now);
+    final isToday =
+        dueDate.day == now.day &&
+        dueDate.month == now.month &&
+        dueDate.year == now.year;
+
+    Color backgroundColor;
+    Color textColor;
+
+    textColor = Theme.of(context).colorScheme.onSurface;
+    if (isOverdue) {
+      backgroundColor = Theme.of(context).colorScheme.errorContainer;
+    } else if (isToday) {
+      backgroundColor = AppColors.warningColor;
+    } else {
+      backgroundColor = Theme.of(context).colorScheme.surfaceContainerLowest;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.schedule, size: 10, color: textColor),
+          const SizedBox(width: 4),
+          Text(
+            _formatDueDate(dueDate),
+            style: TextStyle(fontSize: 10, color: textColor),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAssigneesChip(List<String> assignees) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.person,
+            size: 10,
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            assignees.length == 1
+                ? assignees.first
+                : '${assignees.length} people',
+            style: TextStyle(
+              fontSize: 10,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDueDate(DateTime dueDate) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final tomorrow = today.add(const Duration(days: 1));
+    final dueDay = DateTime(dueDate.year, dueDate.month, dueDate.day);
+
+    if (dueDay == today) {
+      return 'Today';
+    } else if (dueDay == tomorrow) {
+      return 'Tomorrow';
+    } else if (dueDay.isBefore(today)) {
+      return 'Overdue';
+    } else {
+      return DateFormat('MMM dd').format(dueDate);
+    }
+  }
+
+  String _formatEventDateRange(EventItem event) {
+    if (event.startDate == null && event.endDate == null) {
+      return 'No date set';
+    }
+
+    if (event.startDate != null && event.endDate != null) {
+      final startFormat = DateFormat('MMM dd, yyyy • h:mm a');
+      final endFormat = DateFormat('h:mm a');
+
+      final isSameDay =
+          event.startDate!.day == event.endDate!.day &&
+          event.startDate!.month == event.endDate!.month &&
+          event.startDate!.year == event.endDate!.year;
+
+      if (isSameDay) {
+        return '${startFormat.format(event.startDate!)} - ${endFormat.format(event.endDate!)}';
+      } else {
+        return '${startFormat.format(event.startDate!)} - ${startFormat.format(event.endDate!)}';
+      }
+    } else if (event.startDate != null) {
+      return DateFormat('MMM dd, yyyy • h:mm a').format(event.startDate!);
+    } else {
+      return 'Ends ${DateFormat('MMM dd, yyyy • h:mm a').format(event.endDate!)}';
+    }
+  }
+
   IconData _getBlockIcon() {
     switch (widget.block.type) {
       case ContentBlockType.todo:
@@ -1125,247 +957,5 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     }
     // Other blocks or text blocks in edit mode get normal padding
     return _isTouchDevice ? 20 : 28;
-  }
-
-  Color _getPriorityColor(TodoPriority priority) {
-    switch (priority) {
-      case TodoPriority.low:
-        return const Color(0xFF10B981); // Green
-      case TodoPriority.medium:
-        return const Color(0xFF3B82F6); // Blue
-      case TodoPriority.high:
-        return const Color(0xFFF59E0B); // Orange
-      case TodoPriority.urgent:
-        return const Color(0xFFEF4444); // Red
-    }
-  }
-
-  Widget _buildAssigneesChip(List<String> assignees) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.person,
-            size: 10,
-            color: AppTheme.getTextSecondary(context),
-          ),
-          const SizedBox(width: 4),
-          Text(
-            assignees.length == 1
-                ? assignees.first
-                : '${assignees.length} people',
-            style: TextStyle(
-              fontSize: 10,
-              color: AppTheme.getTextSecondary(context),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDueDateChip(DateTime dueDate) {
-    final now = DateTime.now();
-    final isOverdue = dueDate.isBefore(now);
-    final isToday =
-        dueDate.day == now.day &&
-        dueDate.month == now.month &&
-        dueDate.year == now.year;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    Color backgroundColor;
-    Color textColor;
-
-    if (isOverdue) {
-      backgroundColor = isDark
-          ? const Color(0xFF4A1F1F)
-          : const Color(0xFFFEE2E2);
-      textColor = isDark ? const Color(0xFFF87171) : const Color(0xFFEF4444);
-    } else if (isToday) {
-      backgroundColor = isDark
-          ? const Color(0xFF4A3A1F)
-          : const Color(0xFFFEF3C7);
-      textColor = isDark ? const Color(0xFFFBBF24) : const Color(0xFFF59E0B);
-    } else {
-      backgroundColor = Theme.of(context).colorScheme.surfaceContainerHighest;
-      textColor = AppTheme.getTextSecondary(context);
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.schedule, size: 10, color: textColor),
-          const SizedBox(width: 4),
-          Text(
-            _formatDueDate(dueDate),
-            style: TextStyle(fontSize: 10, color: textColor),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTagChip(String tag) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? const Color(0xFF3B3B7A) // Dark purple for dark mode
-            : const Color(0xFFEDE9FE), // Light purple for light mode
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        '#$tag',
-        style: TextStyle(
-          fontSize: 10,
-          color: Theme.of(context).brightness == Brightness.dark
-              ? const Color(0xFFB8A9FF) // Light purple text for dark mode
-              : const Color(0xFF7C3AED), // Dark purple text for light mode
-        ),
-      ),
-    );
-  }
-
-  String _formatDueDate(DateTime dueDate) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final tomorrow = today.add(const Duration(days: 1));
-    final dueDay = DateTime(dueDate.year, dueDate.month, dueDate.day);
-
-    if (dueDay == today) {
-      return 'Today';
-    } else if (dueDay == tomorrow) {
-      return 'Tomorrow';
-    } else if (dueDay.isBefore(today)) {
-      return 'Overdue';
-    } else {
-      return DateFormat('MMM dd').format(dueDate);
-    }
-  }
-
-  String _formatEventTime(EventItem event) {
-    final startFormat = DateFormat('MMM dd, yyyy • h:mm a');
-    final endFormat = DateFormat('h:mm a');
-
-    if (event.endTime != null) {
-      final isSameDay =
-          event.startTime.day == event.endTime!.day &&
-          event.startTime.month == event.endTime!.month &&
-          event.startTime.year == event.endTime!.year;
-
-      if (isSameDay) {
-        return '${startFormat.format(event.startTime)} - ${endFormat.format(event.endTime!)}';
-      } else {
-        return '${startFormat.format(event.startTime)} - ${startFormat.format(event.endTime!)}';
-      }
-    } else {
-      return startFormat.format(event.startTime);
-    }
-  }
-
-  Widget _buildRSVPChip(RSVPResponse response) {
-    Color backgroundColor;
-    Color textColor;
-    IconData icon;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    switch (response.status) {
-      case RSVPStatus.yes:
-        backgroundColor = isDark
-            ? const Color(0xFF1F4A3C)
-            : const Color(0xFFDCFCE7);
-        textColor = isDark ? const Color(0xFF4ADE80) : const Color(0xFF16A34A);
-        icon = Icons.check_circle;
-        break;
-      case RSVPStatus.no:
-        backgroundColor = isDark
-            ? const Color(0xFF4A1F1F)
-            : const Color(0xFFFEE2E2);
-        textColor = isDark ? const Color(0xFFF87171) : const Color(0xFFEF4444);
-        icon = Icons.cancel;
-        break;
-      case RSVPStatus.maybe:
-        backgroundColor = isDark
-            ? const Color(0xFF4A3A1F)
-            : const Color(0xFFFEF3C7);
-        textColor = isDark ? const Color(0xFFFBBF24) : const Color(0xFFF59E0B);
-        icon = Icons.help_outline;
-        break;
-      case RSVPStatus.pending:
-        backgroundColor = Theme.of(context).colorScheme.surfaceContainerHighest;
-        textColor = AppTheme.getTextSecondary(context);
-        icon = Icons.schedule;
-        break;
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 10, color: textColor),
-          const SizedBox(width: 4),
-          Text(
-            response.userName,
-            style: TextStyle(
-              fontSize: 10,
-              color: textColor,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _editTask(TodoItem task, TodoBlockModel block) {
-    TaskEditorBottomSheet.show(context, task, (updatedTask) {
-      final updatedItems = block.items.map((item) {
-        return item.id == task.id ? updatedTask : item;
-      }).toList();
-      widget.onUpdate(block.copyWith(items: updatedItems));
-    });
-  }
-
-  void _quickSetDueDate(TodoItem task, TodoBlockModel block) {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-    ).then((selectedDate) {
-      if (selectedDate != null) {
-        final updatedTask = task.copyWith(dueDate: selectedDate);
-        final updatedItems = block.items.map((item) {
-          return item.id == task.id ? updatedTask : item;
-        }).toList();
-        widget.onUpdate(block.copyWith(items: updatedItems));
-      }
-    });
-  }
-
-  void _editEvent(EventItem event, EventBlockModel block) {
-    EventEditorBottomSheet.show(context, event, (updatedEvent) {
-      final updatedEvents = block.events.map((item) {
-        return item.id == event.id ? updatedEvent : item;
-      }).toList();
-      widget.onUpdate(block.copyWith(events: updatedEvents));
-    });
   }
 }
