@@ -22,7 +22,7 @@ class SheetDetailScreen extends ConsumerWidget {
   /// Builds the main body
   Widget _buildBody(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
