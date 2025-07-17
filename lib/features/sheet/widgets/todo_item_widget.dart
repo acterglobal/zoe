@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zoey/core/theme/app_theme.dart';
+import 'package:zoey/core/theme/colors/color_constants.dart';
 import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
 
 class TodoItemWidget extends StatelessWidget {
@@ -37,12 +38,10 @@ class TodoItemWidget extends StatelessWidget {
             width: 20,
             height: 20,
             decoration: BoxDecoration(
-              color: todo.isCompleted
-                  ? AppTheme.successColor
-                  : Colors.transparent,
+              color: todo.isCompleted ? successColor : Colors.transparent,
               border: Border.all(
                 color: todo.isCompleted
-                    ? AppTheme.successColor
+                    ? successColor
                     : Theme.of(context).colorScheme.outline,
                 width: 2,
               ),
@@ -114,7 +113,7 @@ class TodoItemWidget extends StatelessWidget {
     if (dueDateOnly.isBefore(today)) {
       return Theme.of(context).colorScheme.error; // Red - overdue
     } else if (dueDateOnly == today) {
-      return AppTheme.warningColor; // Amber - due today
+      return warningColor; // Amber - due today
     } else {
       // Future dates
       return AppTheme.getTextSecondary(context); // Gray - future
