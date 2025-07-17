@@ -21,31 +21,35 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Column(
-            children: [
-              const SizedBox(height: 32),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const AppIconWidget(),
-                      const SizedBox(height: 32),
-                      _buildAppTitle(),
-                      const SizedBox(height: 8),
-                      _buildAppDescription(),
-                      const SizedBox(height: 48),
-                      _buildFeaturesList(),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 32),
-              _buildGetStartedButton(),
-            ],
-          ),
+          child: _buildWelcomeBodyUI(),
         ),
       ),
+    );
+  }
+
+  Widget _buildWelcomeBodyUI() {
+    return Column(
+      children: [
+        const SizedBox(height: 32),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const AppIconWidget(),
+                const SizedBox(height: 32),
+                _buildAppTitle(),
+                const SizedBox(height: 8),
+                _buildAppDescription(),
+                const SizedBox(height: 48),
+                _buildFeaturesList(),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 32),
+        _buildGetStartedButton(),
+      ],
     );
   }
 
