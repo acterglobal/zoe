@@ -825,9 +825,11 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
 
     textColor = Theme.of(context).colorScheme.onSurface;
     if (isOverdue) {
-      backgroundColor = Theme.of(context).colorScheme.errorContainer;
+      backgroundColor = Theme.of(
+        context,
+      ).colorScheme.errorContainer.withValues(alpha: 0.3);
     } else if (isToday) {
-      backgroundColor = AppColors.warningColor;
+      backgroundColor = AppColors.warningColor.withValues(alpha: 0.3);
     } else {
       backgroundColor = Theme.of(context).colorScheme.surfaceContainerLowest;
     }
@@ -856,7 +858,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
