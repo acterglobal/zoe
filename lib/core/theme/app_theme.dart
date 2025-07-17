@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:zoey/core/theme/components/button_theme_data.dart';
 
 class AppTheme {
   // Color Palette
@@ -69,15 +70,7 @@ class AppTheme {
       ),
 
       // Elevated Button - Custom styling
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-      ),
+      elevatedButtonTheme: lightButtonThemeData,
 
       // Text Button - Custom styling
       textButtonTheme: TextButtonThemeData(
@@ -171,15 +164,7 @@ class AppTheme {
       ),
 
       // Elevated Button - Custom styling
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-      ),
+      elevatedButtonTheme: darkButtonThemeData,
 
       // Text Button - Custom styling
       textButtonTheme: TextButtonThemeData(
