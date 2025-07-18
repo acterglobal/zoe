@@ -19,16 +19,28 @@ class TodosContentWidget extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        ZoeInlineTextEditWidget(
-          hintText: 'Todo list title',
-          isEditing: isEditing,
-          controller: ref.watch(
-            todosContentTitleControllerProvider(todosContentId),
-          ),
-          textStyle: Theme.of(context).textTheme.titleMedium,
-          onTextChanged: (value) => ref
-              .read(todosContentUpdateProvider)
-              .call(todosContentId, title: value),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Icon(Icons.checklist, size: 16),
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: ZoeInlineTextEditWidget(
+                hintText: 'Todo list title',
+                isEditing: isEditing,
+                controller: ref.watch(
+                  todosContentTitleControllerProvider(todosContentId),
+                ),
+                textStyle: Theme.of(context).textTheme.titleMedium,
+                onTextChanged: (value) => ref
+                    .read(todosContentUpdateProvider)
+                    .call(todosContentId, title: value),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 6),
         _buildTodosList(context, ref),
