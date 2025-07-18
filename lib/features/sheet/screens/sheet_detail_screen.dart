@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/add_content_menu.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_detail_app_bar.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_description_widget.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_description_widget.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_contents.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_title_widget.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_title_widget.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
   final String? sheetId;
