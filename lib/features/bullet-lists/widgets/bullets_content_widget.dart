@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullet-lists/models/bullets_content_model.dart';
 import 'package:zoey/features/bullet-lists/providers/bullets_content_item_proivder.dart';
@@ -41,9 +43,9 @@ class BulletsContentWidget extends ConsumerWidget {
                     .call(bulletsContentId, title: value),
               ),
             ),
-            if (isEditing) ...[
-              const SizedBox(width: 6),
-              GestureDetector(
+            const SizedBox(width: 6),
+            if (isEditing)
+              ZoeDeleteButtonWidget(
                 onTap: () {
                   final bulletsContent = ref.read(
                     bulletsContentItemProvider(bulletsContentId),
@@ -54,9 +56,7 @@ class BulletsContentWidget extends ConsumerWidget {
                       )
                       .deleteContent(bulletsContentId);
                 },
-                child: const Icon(Icons.delete_outlined, size: 16),
               ),
-            ],
           ],
         ),
         const SizedBox(height: 6),
@@ -110,19 +110,20 @@ class BulletsContentWidget extends ConsumerWidget {
                 ),
           ),
         ),
-        if (isEditing) ...[
-          const SizedBox(width: 6),
-          GestureDetector(
+        const SizedBox(width: 6),
+        if (isEditing)
+          ZoeCloseButtonWidget(
             onTap: () {
-              final updatedItems = [...bulletsContent.bullets];
+              final currentBulletsContent = ref.read(
+                bulletsContentItemProvider(bulletsContentId),
+              );
+              final updatedItems = [...currentBulletsContent.bullets];
               updatedItems.removeAt(index);
               ref
                   .read(bulletsContentUpdateProvider)
                   .call(bulletsContentId, bullets: updatedItems);
             },
-            child: const Icon(Icons.close, size: 16),
           ),
-        ],
       ],
     );
   }
