@@ -14,6 +14,7 @@ class TextContentWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textContent = ref.watch(textContentItemProvider(textContentId));
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -50,7 +51,7 @@ class TextContentWidget extends ConsumerWidget {
         focusedBorder: InputBorder.none,
       ),
       onChanged: (value) {
-        updateContent(textContentId, title: value);
+        updateContent(textContentId, 'title', value);
       },
     );
   }
@@ -72,7 +73,7 @@ class TextContentWidget extends ConsumerWidget {
         focusedBorder: InputBorder.none,
       ),
       onChanged: (value) {
-        updateContent(textContentId, data: value);
+        updateContent(textContentId, 'data', value);
       },
     );
   }

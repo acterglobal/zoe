@@ -35,7 +35,9 @@ class TodosContentWidget extends ConsumerWidget {
     WidgetRef ref,
     String title,
   ) {
-    final controller = TextEditingController(text: title);
+    final controller = ref.watch(
+      todosContentTitleControllerProvider(todosContentId),
+    );
     final updateContent = ref.read(todosContentUpdateProvider);
 
     return TextField(
@@ -64,9 +66,12 @@ class TodosContentWidget extends ConsumerWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        final titleController = TextEditingController(text: items[index].title);
-        final descriptionController = TextEditingController(
-          text: items[index].description,
+        final titleControllerKey = '$todosContentId-$index';
+        final titleController = ref.watch(
+          todosContentItemTitleControllerProvider(titleControllerKey),
+        );
+        final descriptionController = ref.watch(
+          todosContentItemDescriptionControllerProvider(titleControllerKey),
         );
         final updateContent = ref.read(todosContentUpdateProvider);
 

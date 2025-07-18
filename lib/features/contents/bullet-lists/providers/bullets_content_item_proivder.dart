@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/contents/bullet-lists/data/bullets_content_list.dart';
 import 'package:zoey/features/contents/bullet-lists/models/bullets_content_model.dart';
 import 'package:zoey/features/contents/bullet-lists/providers/bullets_content_list_provider.dart';
 
@@ -22,13 +21,12 @@ final bulletsContentItemProvider = Provider.family<BulletsContentModel, String>(
   },
 );
 
-// Provider for title controller
-final bulletsContentTitleControllerProvider =
-    Provider.family<TextEditingController, String>((ref, String id) {
-      final bulletsContent = ref.watch(bulletsContentItemProvider(id));
-      final controller = TextEditingController(text: bulletsContent.title);
+// Simple controller providers that create controllers once and keep them stable
+final bulletsContentTitleControllerProvider = Provider.family
+    .autoDispose<TextEditingController, String>((ref, String id) {
+      final content = ref.read(bulletsContentItemProvider(id));
+      final controller = TextEditingController(text: content.title);
 
-      // Dispose controller when provider is disposed
       ref.onDispose(() {
         controller.dispose();
       });
@@ -36,21 +34,19 @@ final bulletsContentTitleControllerProvider =
       return controller;
     });
 
-// Provider for bullet controllers (one per bullet item)
-final bulletsContentBulletControllerProvider =
-    Provider.family<TextEditingController, String>((ref, String key) {
+final bulletsContentBulletControllerProvider = Provider.family
+    .autoDispose<TextEditingController, String>((ref, String key) {
       // key format: "contentId-bulletIndex"
       final parts = key.split('-');
       final contentId = parts.sublist(0, parts.length - 1).join('-');
       final bulletIndex = int.parse(parts.last);
 
-      final bulletsContent = ref.watch(bulletsContentItemProvider(contentId));
-      final bulletText = bulletIndex < bulletsContent.bullets.length
-          ? bulletsContent.bullets[bulletIndex]
+      final content = ref.read(bulletsContentItemProvider(contentId));
+      final bulletText = bulletIndex < content.bullets.length
+          ? content.bullets[bulletIndex]
           : '';
       final controller = TextEditingController(text: bulletText);
 
-      // Dispose controller when provider is disposed
       ref.onDispose(() {
         controller.dispose();
       });
@@ -58,27 +54,15 @@ final bulletsContentBulletControllerProvider =
       return controller;
     });
 
-// Provider to update bullets content
+// Direct update provider - saves immediately using StateNotifier
 final bulletsContentUpdateProvider =
     Provider<void Function(String, {String? title, List<String>? bullets})>((
       ref,
     ) {
-      return (String id, {String? title, List<String>? bullets}) {
-        final index = bulletsContentList.indexWhere(
-          (element) => element.id == id,
-        );
-        if (index != -1) {
-          final currentContent = bulletsContentList[index];
-          final updatedContent = currentContent.copyWith(
-            title: title,
-            bullets: bullets,
-          );
-          bulletsContentList[index] = updatedContent;
-
-          // Refresh the list provider to notify listeners
-          ref.invalidate(bulletsContentListProvider);
-          // Also invalidate the specific item provider to ensure UI updates
-          ref.invalidate(bulletsContentItemProvider(id));
-        }
+      return (String contentId, {String? title, List<String>? bullets}) {
+        // Update using the StateNotifier for immediate reactivity
+        ref
+            .read(bulletsContentListProvider.notifier)
+            .updateContent(contentId, title: title, bullets: bullets);
       };
     });

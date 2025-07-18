@@ -35,7 +35,9 @@ class EventsContentWidget extends ConsumerWidget {
     WidgetRef ref,
     String title,
   ) {
-    final controller = TextEditingController(text: title);
+    final controller = ref.watch(
+      eventsContentTitleControllerProvider(eventsContentId),
+    );
     final updateContent = ref.read(eventsContentUpdateProvider);
 
     return TextField(
@@ -64,11 +66,12 @@ class EventsContentWidget extends ConsumerWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        final titleController = TextEditingController(
-          text: events[index].title,
+        final titleControllerKey = '$eventsContentId-$index';
+        final titleController = ref.watch(
+          eventsContentItemTitleControllerProvider(titleControllerKey),
         );
-        final descriptionController = TextEditingController(
-          text: events[index].description,
+        final descriptionController = ref.watch(
+          eventsContentItemDescriptionControllerProvider(titleControllerKey),
         );
         final updateContent = ref.read(eventsContentUpdateProvider);
 

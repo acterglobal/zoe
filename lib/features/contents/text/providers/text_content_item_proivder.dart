@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/contents/text/models/text_content_model.dart';
 import 'package:zoey/features/contents/text/providers/text_content_list_provider.dart';
-import 'package:zoey/features/contents/text/data/text_content_list.dart';
 
 final textContentItemProvider = Provider.family<TextContentModel, String>((
   ref,
@@ -23,13 +22,12 @@ final textContentItemProvider = Provider.family<TextContentModel, String>((
   }
 });
 
-// Provider for title controller
-final textContentTitleControllerProvider =
-    Provider.family<TextEditingController, String>((ref, String id) {
-      final textContent = ref.watch(textContentItemProvider(id));
-      final controller = TextEditingController(text: textContent.title);
+// Simple controller providers that create controllers once and keep them stable
+final textContentTitleControllerProvider = Provider.family
+    .autoDispose<TextEditingController, String>((ref, String id) {
+      final content = ref.read(textContentItemProvider(id));
+      final controller = TextEditingController(text: content.title);
 
-      // Dispose controller when provider is disposed
       ref.onDispose(() {
         controller.dispose();
       });
@@ -37,13 +35,11 @@ final textContentTitleControllerProvider =
       return controller;
     });
 
-// Provider for data controller
-final textContentDataControllerProvider =
-    Provider.family<TextEditingController, String>((ref, String id) {
-      final textContent = ref.watch(textContentItemProvider(id));
-      final controller = TextEditingController(text: textContent.data);
+final textContentDataControllerProvider = Provider.family
+    .autoDispose<TextEditingController, String>((ref, String id) {
+      final content = ref.read(textContentItemProvider(id));
+      final controller = TextEditingController(text: content.data);
 
-      // Dispose controller when provider is disposed
       ref.onDispose(() {
         controller.dispose();
       });
@@ -51,23 +47,19 @@ final textContentDataControllerProvider =
       return controller;
     });
 
-// Provider to update text content
+// Direct update provider - saves immediately using StateNotifier
 final textContentUpdateProvider =
-    Provider<void Function(String, {String? title, String? data})>((ref) {
-      return (String id, {String? title, String? data}) {
-        final index = textContentList.indexWhere((element) => element.id == id);
-        if (index != -1) {
-          final currentContent = textContentList[index];
-          final updatedContent = currentContent.copyWith(
-            title: title,
-            data: data,
-          );
-          textContentList[index] = updatedContent;
-
-          // Refresh the list provider to notify listeners
-          ref.invalidate(textContentListProvider);
-          // Also invalidate the specific item provider to ensure UI updates
-          ref.invalidate(textContentItemProvider(id));
+    Provider<void Function(String, String, String)>((ref) {
+      return (String contentId, String fieldType, String value) {
+        // Update using the StateNotifier for immediate reactivity
+        if (fieldType == 'title') {
+          ref
+              .read(textContentListProvider.notifier)
+              .updateContent(contentId, title: value);
+        } else {
+          ref
+              .read(textContentListProvider.notifier)
+              .updateContent(contentId, data: value);
         }
       };
     });

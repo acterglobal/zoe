@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/contents/todos/data/todos_content_list.dart';
 import 'package:zoey/features/contents/todos/models/todos_content_model.dart';
 import 'package:zoey/features/contents/todos/providers/todos_content_list_provider.dart';
 
@@ -28,27 +28,68 @@ final todosContentItemProvider = Provider.family<TodosContentModel, String>((
   }
 });
 
-// Provider to update todos content
+// Simple controller providers that create controllers once and keep them stable
+final todosContentTitleControllerProvider = Provider.family
+    .autoDispose<TextEditingController, String>((ref, String id) {
+      final content = ref.read(todosContentItemProvider(id));
+      final controller = TextEditingController(text: content.title);
+
+      ref.onDispose(() {
+        controller.dispose();
+      });
+
+      return controller;
+    });
+
+final todosContentItemTitleControllerProvider = Provider.family
+    .autoDispose<TextEditingController, String>((ref, String key) {
+      // key format: "contentId-itemIndex"
+      final parts = key.split('-');
+      final contentId = parts.sublist(0, parts.length - 1).join('-');
+      final itemIndex = int.parse(parts.last);
+
+      final content = ref.read(todosContentItemProvider(contentId));
+      final itemTitle = itemIndex < content.items.length
+          ? content.items[itemIndex].title
+          : '';
+      final controller = TextEditingController(text: itemTitle);
+
+      ref.onDispose(() {
+        controller.dispose();
+      });
+
+      return controller;
+    });
+
+final todosContentItemDescriptionControllerProvider = Provider.family
+    .autoDispose<TextEditingController, String>((ref, String key) {
+      // key format: "contentId-itemIndex"
+      final parts = key.split('-');
+      final contentId = parts.sublist(0, parts.length - 1).join('-');
+      final itemIndex = int.parse(parts.last);
+
+      final content = ref.read(todosContentItemProvider(contentId));
+      final itemDescription = itemIndex < content.items.length
+          ? (content.items[itemIndex].description ?? '')
+          : '';
+      final controller = TextEditingController(text: itemDescription);
+
+      ref.onDispose(() {
+        controller.dispose();
+      });
+
+      return controller;
+    });
+
+// Direct update provider - saves immediately using StateNotifier
 final todosContentUpdateProvider =
     Provider<void Function(String, {String? title, List<TodoItem>? items})>((
       ref,
     ) {
-      return (String id, {String? title, List<TodoItem>? items}) {
-        final index = todosContentList.indexWhere(
-          (element) => element.id == id,
-        );
-        if (index != -1) {
-          final currentContent = todosContentList[index];
-          final updatedContent = currentContent.copyWith(
-            title: title,
-            items: items,
-          );
-          todosContentList[index] = updatedContent;
-
-          // Refresh the list provider to notify listeners
-          ref.invalidate(todosContentListProvider);
-          // Also invalidate the specific item provider to ensure UI updates
-          ref.invalidate(todosContentItemProvider(id));
-        }
+      return (String contentId, {String? title, List<TodoItem>? items}) {
+        // Update using the StateNotifier for immediate reactivity
+        ref
+            .read(todosContentListProvider.notifier)
+            .updateContent(contentId, title: title, items: items);
       };
     });
