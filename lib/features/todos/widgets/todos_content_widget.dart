@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/todos/models/todos_content_model.dart';
 import 'package:zoey/features/todos/providers/todos_content_item_proivder.dart';
 
@@ -40,6 +41,20 @@ class TodosContentWidget extends ConsumerWidget {
                     .call(todosContentId, title: value),
               ),
             ),
+            if (isEditing) ...[
+              const SizedBox(width: 6),
+              GestureDetector(
+                onTap: () {
+                  final todosContent = ref.read(
+                    todosContentItemProvider(todosContentId),
+                  );
+                  ref
+                      .read(sheetDetailProvider(todosContent.parentId).notifier)
+                      .deleteContent(todosContentId);
+                },
+                child: const Icon(Icons.delete_outlined, size: 16),
+              ),
+            ],
           ],
         ),
         const SizedBox(height: 6),
@@ -107,6 +122,19 @@ class TodosContentWidget extends ConsumerWidget {
                 ),
           ),
         ),
+        if (isEditing) ...[
+          const SizedBox(width: 6),
+          GestureDetector(
+            onTap: () {
+              final updatedItems = [...todosContent.items];
+              updatedItems.removeAt(index);
+              ref
+                  .read(todosContentUpdateProvider)
+                  .call(todosContentId, items: updatedItems);
+            },
+            child: const Icon(Icons.close, size: 16),
+          ),
+        ],
       ],
     );
   }
