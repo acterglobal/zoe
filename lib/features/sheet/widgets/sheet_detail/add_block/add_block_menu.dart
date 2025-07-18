@@ -6,7 +6,7 @@ import 'package:zoey/features/sheet/widgets/sheet_detail/add_block/add_block_opt
 
 /// Add block menu widget
 class AddBlockMenu extends ConsumerWidget {
-  final String sheetId;
+  final String? sheetId;
 
   const AddBlockMenu({super.key, required this.sheetId});
 

@@ -8,14 +8,9 @@ import 'package:zoey/features/bullet-lists/widgets/bullets_content_widget.dart';
 
 /// Content blocks widget for sheet detail screen
 class SheetContentBlocks extends ConsumerWidget {
-  final String sheetId;
-  final bool isEditing;
+  final String? sheetId;
 
-  const SheetContentBlocks({
-    super.key,
-    required this.sheetId,
-    required this.isEditing,
-  });
+  const SheetContentBlocks({super.key, required this.sheetId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,16 +32,17 @@ class SheetContentBlocks extends ConsumerWidget {
   }
 
   Widget _buildContentItem(BuildContext context, WidgetRef ref, int index) {
+    final isEditing = ref.watch(isEditingProvider(sheetId));
     final contentId = ref.watch(sheetProvider(sheetId)).contentList[index];
 
     return Padding(
       key: ValueKey(contentId),
       padding: const EdgeInsets.only(bottom: 24),
-      child: _buildContentWidget(contentId),
+      child: _buildContentWidget(contentId, isEditing),
     );
   }
 
-  Widget _buildContentWidget(String contentId) {
+  Widget _buildContentWidget(String contentId, bool isEditing) {
     // Determine content type from ID prefix
     if (contentId.startsWith('text-')) {
       return TextContentWidget(textContentId: contentId, isEditing: isEditing);

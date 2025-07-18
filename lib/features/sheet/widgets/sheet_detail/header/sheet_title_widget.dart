@@ -4,7 +4,7 @@ import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// Title widget for sheet header
 class SheetTitleWidget extends ConsumerWidget {
-  final String sheetId;
+  final String? sheetId;
 
   const SheetTitleWidget({super.key, required this.sheetId});
 

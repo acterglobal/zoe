@@ -6,7 +6,7 @@ import 'package:zoey/features/sheet/widgets/sheet_detail/add_block/add_block_tri
 
 /// Add block widget for sheet detail screen
 class SheetAddBlock extends ConsumerWidget {
-  final String sheetId;
+  final String? sheetId;
 
   const SheetAddBlock({super.key, required this.sheetId});
 

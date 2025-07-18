@@ -5,7 +5,7 @@ import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// More menu widget for sheet detail app bar
 class SheetMoreMenuWidget extends ConsumerWidget {
-  final String sheetId;
+  final String? sheetId;
 
   const SheetMoreMenuWidget({super.key, required this.sheetId});
 

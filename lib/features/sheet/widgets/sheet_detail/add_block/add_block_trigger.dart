@@ -4,7 +4,7 @@ import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// Add block trigger widget
 class AddBlockTrigger extends ConsumerWidget {
-  final String sheetId;
+  final String? sheetId;
 
   const AddBlockTrigger({super.key, required this.sheetId});
 

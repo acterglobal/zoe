@@ -4,7 +4,7 @@ import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// Description widget for sheet header
 class SheetDescriptionWidget extends ConsumerWidget {
-  final String sheetId;
+  final String? sheetId;
 
   const SheetDescriptionWidget({super.key, required this.sheetId});
 

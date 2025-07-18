@@ -6,7 +6,7 @@ import 'package:zoey/features/sheet/widgets/sheet_detail/app_bar/sheet_more_menu
 
 /// App bar widget for sheet detail screen
 class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
-  final String sheetId;
+  final String? sheetId;
 
   const SheetDetailAppBar({super.key, required this.sheetId});
 

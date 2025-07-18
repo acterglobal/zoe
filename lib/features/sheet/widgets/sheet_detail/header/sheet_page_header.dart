@@ -5,7 +5,7 @@ import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_descriptio
 
 /// Page header widget for sheet detail screen
 class SheetPageHeader extends StatelessWidget {
-  final String sheetId;
+  final String? sheetId;
 
   const SheetPageHeader({super.key, required this.sheetId});
 

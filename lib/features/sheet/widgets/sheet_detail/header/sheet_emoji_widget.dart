@@ -4,7 +4,7 @@ import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// Emoji widget for sheet header
 class SheetEmojiWidget extends ConsumerWidget {
-  final String sheetId;
+  final String? sheetId;
 
   const SheetEmojiWidget({super.key, required this.sheetId});
 
