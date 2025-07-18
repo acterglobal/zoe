@@ -110,6 +110,19 @@ class EventsContentWidget extends ConsumerWidget {
                 ),
           ),
         ),
+        if (isEditing) ...[
+          const SizedBox(width: 6),
+          GestureDetector(
+            onTap: () {
+              final updatedItems = [...eventsContent.events];
+              updatedItems.removeAt(index);
+              ref
+                  .read(eventsContentUpdateProvider)
+                  .call(eventsContentId, events: updatedItems);
+            },
+            child: const Icon(Icons.close, size: 16),
+          ),
+        ],
       ],
     );
   }
