@@ -1,4 +1,4 @@
-import 'package:zoey/features/contents/bullet-lists/model/bullets_content_model.dart';
+import 'package:zoey/features/contents/bullet-lists/models/bullets_content_model.dart';
 
 final bulletsContentList = [
   BulletsContentModel(

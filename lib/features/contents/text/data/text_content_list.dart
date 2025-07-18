@@ -1,4 +1,4 @@
-import 'package:zoey/features/contents/text/model/text_content_model.dart';
+import 'package:zoey/features/contents/text/models/text_content_model.dart';
 
 final textContentList = [
   TextContentModel(
