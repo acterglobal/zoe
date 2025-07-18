@@ -27,7 +27,13 @@ class TodosContentWidget extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 4),
-              child: Icon(Icons.checklist, size: 16),
+              child: Icon(
+                Icons.checklist,
+                size: 16,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
             ),
             const SizedBox(width: 6),
             Expanded(
@@ -37,7 +43,7 @@ class TodosContentWidget extends ConsumerWidget {
                 controller: ref.watch(
                   todosContentTitleControllerProvider(todosContentId),
                 ),
-                textStyle: Theme.of(context).textTheme.titleMedium,
+                textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(todosContentUpdateProvider)
                     .call(todosContentId, title: value),
@@ -87,6 +93,13 @@ class TodosContentWidget extends ConsumerWidget {
     return Row(
       children: [
         Checkbox(
+          activeColor: Theme.of(context).colorScheme.primary,
+          checkColor: Theme.of(context).colorScheme.onPrimary,
+          side: BorderSide(
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.6),
+          ),
           value: todosContent.items[index].isCompleted,
           onChanged: (value) => ref
               .read(todosContentUpdateProvider)

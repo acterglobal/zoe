@@ -27,7 +27,13 @@ class BulletsContentWidget extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 4),
-              child: Icon(Icons.list, size: 16),
+              child: Icon(
+                Icons.list,
+                size: 16,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
             ),
             const SizedBox(width: 6),
             Expanded(
@@ -37,7 +43,7 @@ class BulletsContentWidget extends ConsumerWidget {
                 controller: ref.watch(
                   bulletsContentTitleControllerProvider(bulletsContentId),
                 ),
-                textStyle: Theme.of(context).textTheme.titleMedium,
+                textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(bulletsContentUpdateProvider)
                     .call(bulletsContentId, title: value),
@@ -90,7 +96,11 @@ class BulletsContentWidget extends ConsumerWidget {
     );
     return Row(
       children: [
-        Icon(Icons.circle, size: 8),
+        Icon(
+          Icons.circle,
+          size: 8,
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+        ),
         const SizedBox(width: 6),
         Expanded(
           child: ZoeInlineTextEditWidget(

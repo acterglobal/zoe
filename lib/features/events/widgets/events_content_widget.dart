@@ -24,7 +24,13 @@ class EventsContentWidget extends ConsumerWidget {
       children: [
         Row(
           children: [
-            Icon(Icons.calendar_month, size: 16),
+            Icon(
+              Icons.calendar_month,
+              size: 16,
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
             const SizedBox(width: 6),
             Expanded(
               child: ZoeInlineTextEditWidget(
@@ -33,7 +39,7 @@ class EventsContentWidget extends ConsumerWidget {
                 controller: ref.watch(
                   eventsContentTitleControllerProvider(eventsContentId),
                 ),
-                textStyle: Theme.of(context).textTheme.titleMedium,
+                textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(eventsContentUpdateProvider)
                     .call(eventsContentId, title: value),
@@ -82,49 +88,75 @@ class EventsContentWidget extends ConsumerWidget {
     final titleController = ref.watch(
       eventsContentItemTitleControllerProvider(titleControllerKey),
     );
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Icon(Icons.event, size: 12),
-        ),
-        const SizedBox(width: 6),
-        Expanded(
-          child: ZoeInlineTextEditWidget(
-            hintText: 'Event name',
-            isEditing: isEditing,
-            controller: titleController,
-            textStyle: Theme.of(context).textTheme.bodyMedium,
-            onTextChanged: (value) => ref
-                .read(eventsContentUpdateProvider)
-                .call(
-                  eventsContentId,
-                  events: [
-                    ...eventsContent.events.asMap().entries.map(
-                      (entry) => entry.key == index
-                          ? entry.value.copyWith(title: value)
-                          : entry.value,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8, top: 8, left: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Icon(
+              Icons.event,
+              size: 24,
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
+          ),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: ZoeInlineTextEditWidget(
+                        hintText: 'Event name',
+                        isEditing: isEditing,
+                        controller: titleController,
+                        textStyle: Theme.of(context).textTheme.bodyMedium,
+                        onTextChanged: (value) => ref
+                            .read(eventsContentUpdateProvider)
+                            .call(
+                              eventsContentId,
+                              events: [
+                                ...eventsContent.events.asMap().entries.map(
+                                  (entry) => entry.key == index
+                                      ? entry.value.copyWith(title: value)
+                                      : entry.value,
+                                ),
+                              ],
+                            ),
+                      ),
                     ),
+                    const SizedBox(width: 6),
+                    if (isEditing)
+                      ZoeCloseButtonWidget(
+                        onTap: () {
+                          final currentEventsContent = ref.read(
+                            eventsContentItemProvider(eventsContentId),
+                          );
+                          final updatedItems = [...currentEventsContent.events];
+                          updatedItems.removeAt(index);
+                          ref
+                              .read(eventsContentUpdateProvider)
+                              .call(eventsContentId, events: updatedItems);
+                        },
+                      ),
                   ],
                 ),
+                Text(
+                  '${eventsContent.events[index].description}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(width: 6),
-        if (isEditing)
-          ZoeCloseButtonWidget(
-            onTap: () {
-              final currentEventsContent = ref.read(
-                eventsContentItemProvider(eventsContentId),
-              );
-              final updatedItems = [...currentEventsContent.events];
-              updatedItems.removeAt(index);
-              ref
-                  .read(eventsContentUpdateProvider)
-                  .call(eventsContentId, events: updatedItems);
-            },
-          ),
-      ],
+        ],
+      ),
     );
   }
 }
