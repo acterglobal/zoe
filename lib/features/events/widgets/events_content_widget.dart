@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/events/models/events_content_model.dart';
 import 'package:zoey/features/events/providers/events_content_item_proivder.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 class EventsContentWidget extends ConsumerWidget {
   final String eventsContentId;
@@ -36,6 +37,22 @@ class EventsContentWidget extends ConsumerWidget {
                     .call(eventsContentId, title: value),
               ),
             ),
+            if (isEditing) ...[
+              const SizedBox(width: 6),
+              GestureDetector(
+                onTap: () {
+                  final eventsContent = ref.read(
+                    eventsContentItemProvider(eventsContentId),
+                  );
+                  ref
+                      .read(
+                        sheetDetailProvider(eventsContent.parentId).notifier,
+                      )
+                      .deleteContent(eventsContentId);
+                },
+                child: const Icon(Icons.delete_outlined, size: 16),
+              ),
+            ],
           ],
         ),
         const SizedBox(height: 6),

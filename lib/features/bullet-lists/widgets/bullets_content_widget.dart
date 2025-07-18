@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullet-lists/models/bullets_content_model.dart';
 import 'package:zoey/features/bullet-lists/providers/bullets_content_item_proivder.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 class BulletsContentWidget extends ConsumerWidget {
   final String bulletsContentId;
@@ -40,6 +41,22 @@ class BulletsContentWidget extends ConsumerWidget {
                     .call(bulletsContentId, title: value),
               ),
             ),
+            if (isEditing) ...[
+              const SizedBox(width: 6),
+              GestureDetector(
+                onTap: () {
+                  final bulletsContent = ref.read(
+                    bulletsContentItemProvider(bulletsContentId),
+                  );
+                  ref
+                      .read(
+                        sheetDetailProvider(bulletsContent.parentId).notifier,
+                      )
+                      .deleteContent(bulletsContentId);
+                },
+                child: const Icon(Icons.delete_outlined, size: 16),
+              ),
+            ],
           ],
         ),
         const SizedBox(height: 6),
@@ -93,6 +110,19 @@ class BulletsContentWidget extends ConsumerWidget {
                 ),
           ),
         ),
+        if (isEditing) ...[
+          const SizedBox(width: 6),
+          GestureDetector(
+            onTap: () {
+              final updatedItems = [...bulletsContent.bullets];
+              updatedItems.removeAt(index);
+              ref
+                  .read(bulletsContentUpdateProvider)
+                  .call(bulletsContentId, bullets: updatedItems);
+            },
+            child: const Icon(Icons.close, size: 16),
+          ),
+        ],
       ],
     );
   }

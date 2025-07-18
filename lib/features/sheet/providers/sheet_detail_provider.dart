@@ -136,6 +136,17 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     final updatedSheet = state.sheet.copyWith();
     updatedSheet.removeContentId(contentId);
     state = state.copyWith(sheet: updatedSheet);
+
+    // Also remove from the appropriate content list provider
+    if (contentId.startsWith('text-')) {
+      ref.read(textContentListProvider.notifier).removeContent(contentId);
+    } else if (contentId.startsWith('todos-')) {
+      ref.read(todosContentListProvider.notifier).removeContent(contentId);
+    } else if (contentId.startsWith('events-')) {
+      ref.read(eventsContentListProvider.notifier).removeContent(contentId);
+    } else if (contentId.startsWith('bullets-')) {
+      ref.read(bulletsContentListProvider.notifier).removeContent(contentId);
+    }
   }
 
   /// Toggle add menu

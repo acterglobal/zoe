@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/text/providers/text_content_item_proivder.dart';
 
 class TextContentWidget extends ConsumerWidget {
@@ -39,6 +40,20 @@ class TextContentWidget extends ConsumerWidget {
                     .call(textContentId, 'title', value),
               ),
             ),
+            if (isEditing) ...[
+              const SizedBox(width: 6),
+              GestureDetector(
+                onTap: () {
+                  final textContent = ref.read(
+                    textContentItemProvider(textContentId),
+                  );
+                  ref
+                      .read(sheetDetailProvider(textContent.parentId).notifier)
+                      .deleteContent(textContentId);
+                },
+                child: const Icon(Icons.delete_outlined, size: 16),
+              ),
+            ],
           ],
         ),
         const SizedBox(height: 6),
