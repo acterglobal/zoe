@@ -57,6 +57,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         Text('Sheets', style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 16),
         SheetListWidget(shrinkWrap: true),
+        const SizedBox(height: 16),
       ],
     );
   }
