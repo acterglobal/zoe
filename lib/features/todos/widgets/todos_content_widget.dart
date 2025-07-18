@@ -120,7 +120,11 @@ class TodosContentWidget extends ConsumerWidget {
             hintText: 'Todo item',
             isEditing: isEditing,
             controller: titleController,
-            textStyle: Theme.of(context).textTheme.bodyMedium,
+            textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              decoration: todosContent.items[index].isCompleted
+                  ? TextDecoration.lineThrough
+                  : TextDecoration.none,
+            ),
             onTextChanged: (value) => ref
                 .read(todosContentUpdateProvider)
                 .call(
