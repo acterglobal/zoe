@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/add_content/add_content_menu.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/app_bar/sheet_detail_app_bar.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/add_content_menu.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_detail_app_bar.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_description_widget.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_emoji_widget.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/content/sheet_contents.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_contents.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_title_widget.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
@@ -46,7 +45,17 @@ class SheetDetailScreen extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SheetEmojiWidget(sheetId: sheetId),
+            GestureDetector(
+              onTap: () =>
+                  ref.read(sheetDetailProvider(sheetId).notifier).updateEmoji(),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  ref.watch(sheetProvider(sheetId)).emoji ?? '📄',
+                  style: const TextStyle(fontSize: 32),
+                ),
+              ),
+            ),
             const SizedBox(width: 4),
             Expanded(child: SheetTitleWidget(sheetId: sheetId)),
           ],
