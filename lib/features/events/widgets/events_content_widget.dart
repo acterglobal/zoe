@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/events/models/events_content_model.dart';
 import 'package:zoey/features/events/providers/events_content_item_proivder.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
@@ -166,7 +168,23 @@ class EventsContentWidget extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(width: 6),
-                    if (isEditing)
+                    if (isEditing) ...[
+                      GestureDetector(
+                        onTap: () => context.push(
+                          AppRoutes.eventDetail.route.replaceAll(
+                            ':eventId',
+                            eventsContent.events[index].id,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.edit,
+                          size: 16,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.4),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
                       ZoeCloseButtonWidget(
                         onTap: () {
                           final currentEventsContent = ref.read(
@@ -179,6 +197,7 @@ class EventsContentWidget extends ConsumerWidget {
                               .call(eventsContentId, events: updatedItems);
                         },
                       ),
+                    ],
                   ],
                 ),
                 Text(
