@@ -2,6 +2,9 @@ enum AppRoutes {
   welcome('/welcome'),
   home('/'),
   sheet('/sheet/:sheetId'),
+  taskDetail('/task/:taskId'),
+  eventDetail('/event/:eventId'),
+  bulletDetail('/bullet/:bulletId'),
   settings('/settings');
 
   final String route;

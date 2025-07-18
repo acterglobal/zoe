@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/todos/models/todos_content_model.dart';
@@ -176,7 +178,23 @@ class TodosContentWidget extends ConsumerWidget {
           ),
         ),
         const SizedBox(width: 6),
-        if (isEditing)
+        if (isEditing) ...[
+          GestureDetector(
+            onTap: () => context.push(
+              AppRoutes.taskDetail.route.replaceAll(
+                ':taskId',
+                todosContent.items[index].id,
+              ),
+            ),
+            child: Icon(
+              Icons.edit,
+              size: 16,
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.4),
+            ),
+          ),
+          const SizedBox(width: 6),
           ZoeCloseButtonWidget(
             onTap: () {
               final currentTodosContent = ref.read(
@@ -189,6 +207,7 @@ class TodosContentWidget extends ConsumerWidget {
                   .call(todosContentId, items: updatedItems);
             },
           ),
+        ],
       ],
     );
   }
