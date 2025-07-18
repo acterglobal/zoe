@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoey/features/bullet-lists/models/bullets_content_model.dart';
 import 'package:zoey/features/bullet-lists/providers/bullets_content_item_proivder.dart';
 
 class BulletsContentWidget extends ConsumerWidget {
@@ -13,117 +15,71 @@ class BulletsContentWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bulletsContent = ref.watch(
-      bulletsContentItemProvider(bulletsContentId),
-    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        isEditing
-            ? _buildTitleTextField(context, ref, bulletsContent.title)
-            : _buildTitleText(context, ref, bulletsContent.title),
+        ZoeInlineTextEditWidget(
+          isEditing: isEditing,
+          controller: ref.watch(
+            bulletsContentTitleControllerProvider(bulletsContentId),
+          ),
+          textStyle: Theme.of(context).textTheme.titleMedium,
+          onTextChanged: (value) => ref
+              .read(bulletsContentUpdateProvider)
+              .call(bulletsContentId, title: value),
+        ),
         const SizedBox(height: 6),
-        isEditing
-            ? _buildDataTextField(context, ref, bulletsContent.bullets)
-            : _buildDataText(context, ref, bulletsContent.bullets),
+        _buildBulletsList(context, ref),
       ],
     );
   }
 
-  Widget _buildTitleTextField(
-    BuildContext context,
-    WidgetRef ref,
-    String title,
-  ) {
-    final controller = ref.watch(
-      bulletsContentTitleControllerProvider(bulletsContentId),
+  Widget _buildBulletsList(BuildContext context, WidgetRef ref) {
+    final bulletsContent = ref.watch(
+      bulletsContentItemProvider(bulletsContentId),
     );
-    final updateContent = ref.read(bulletsContentUpdateProvider);
-
-    return TextField(
-      controller: controller,
-      maxLines: null,
-      style: Theme.of(context).textTheme.titleMedium,
-      decoration: const InputDecoration(
-        hintText: 'Title',
-        border: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
-      ),
-      onChanged: (value) {
-        updateContent(bulletsContentId, title: value);
-      },
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: bulletsContent.bullets.length,
+      itemBuilder: (context, index) =>
+          _buildBulletItem(context, ref, bulletsContent, index),
     );
   }
 
-  Widget _buildDataTextField(
+  Widget _buildBulletItem(
     BuildContext context,
     WidgetRef ref,
-    List<String> bullets,
+    BulletsContentModel bulletsContent,
+    int index,
   ) {
-    return ListView.builder(
-      itemCount: bullets.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        final controllerKey = '$bulletsContentId-$index';
-        final controller = ref.watch(
-          bulletsContentBulletControllerProvider(controllerKey),
-        );
-        final updateContent = ref.read(bulletsContentUpdateProvider);
-
-        return Row(
-          children: [
-            const Icon(Icons.circle, size: 6),
-            const SizedBox(width: 8),
-            Expanded(
-              child: TextField(
-                controller: controller,
-                style: Theme.of(context).textTheme.bodyMedium,
-                maxLines: null,
-                decoration: const InputDecoration(
-                  hintText: 'Bullet point...',
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
+    final controllerKey = '$bulletsContentId-$index';
+    final titleController = ref.watch(
+      bulletsContentBulletControllerProvider(controllerKey),
+    );
+    return Row(
+      children: [
+        Icon(Icons.circle, size: 8),
+        const SizedBox(width: 6),
+        Expanded(
+          child: ZoeInlineTextEditWidget(
+            isEditing: isEditing,
+            controller: titleController,
+            textStyle: Theme.of(context).textTheme.bodyMedium,
+            onTextChanged: (value) => ref
+                .read(bulletsContentUpdateProvider)
+                .call(
+                  bulletsContentId,
+                  bullets: [
+                    ...bulletsContent.bullets.asMap().entries.map(
+                      (entry) => entry.key == index ? value : entry.value,
+                    ),
+                  ],
                 ),
-                onChanged: (value) {
-                  final updatedBullets = List<String>.from(bullets);
-                  updatedBullets[index] = value;
-                  updateContent(bulletsContentId, bullets: updatedBullets);
-                },
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildTitleText(BuildContext context, WidgetRef ref, String title) {
-    return Text(
-      title.isEmpty ? 'Untitled' : title,
-      style: Theme.of(context).textTheme.titleMedium,
-    );
-  }
-
-  Widget _buildDataText(
-    BuildContext context,
-    WidgetRef ref,
-    List<String> bullets,
-  ) {
-    return ListView.builder(
-      itemCount: bullets.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) => Row(
-        children: [
-          const Icon(Icons.circle, size: 6),
-          const SizedBox(width: 8),
-          Expanded(child: Text(bullets[index])),
-        ],
-      ),
+          ),
+        ),
+      ],
     );
   }
 }
