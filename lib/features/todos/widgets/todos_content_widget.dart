@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/todos/models/todos_content_model.dart';
 import 'package:zoey/features/todos/providers/todos_content_item_proivder.dart';
@@ -128,7 +129,7 @@ class TodosContentWidget extends ConsumerWidget {
     return Row(
       children: [
         Checkbox(
-          activeColor: Theme.of(context).colorScheme.primary,
+          activeColor: AppColors.successColor,
           checkColor: Colors.white,
           side: BorderSide(
             color: Theme.of(
