@@ -30,7 +30,7 @@ class ZoeInlineTextEditWidget extends StatelessWidget {
             maxLines: null,
             onChanged: onTextChanged,
           )
-        : Text(
+        : SelectableText(
             controller.text.isEmpty ? (hintText ?? '') : controller.text,
             style: controller.text.isEmpty && hintText != null
                 ? textStyle?.copyWith(color: Theme.of(context).hintColor)
