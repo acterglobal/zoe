@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/text/widgets/text_content_widget.dart';
@@ -24,9 +25,12 @@ class SheetContents extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: currentSheet.contentList.length,
       buildDefaultDragHandles: false,
-      onReorder: (oldIndex, newIndex) => ref
-          .read(sheetDetailProvider(sheetId).notifier)
-          .reorderContent(oldIndex, newIndex),
+      onReorder: (oldIndex, newIndex) {
+        HapticFeedback.mediumImpact();
+        ref
+            .read(sheetDetailProvider(sheetId).notifier)
+            .reorderContent(oldIndex, newIndex);
+      },
       itemBuilder: (context, index) => _buildContentItem(context, ref, index),
     );
   }
@@ -35,10 +39,33 @@ class SheetContents extends ConsumerWidget {
     final isEditing = ref.watch(isEditingProvider(sheetId));
     final contentId = ref.watch(sheetProvider(sheetId)).contentList[index];
 
-    return Padding(
+    return Container(
       key: ValueKey(contentId),
-      padding: const EdgeInsets.only(bottom: 24),
-      child: _buildContentWidget(contentId, isEditing),
+      margin: const EdgeInsets.only(bottom: 24),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Drag handle - only visible in editing mode
+          if (isEditing)
+            Padding(
+              padding: const EdgeInsets.only(top: 4, right: 4),
+              child: ReorderableDragStartListener(
+                index: index,
+                child: GestureDetector(
+                  onTapDown: (_) => HapticFeedback.lightImpact(),
+                  child: Icon(
+                    Icons.drag_indicator_rounded,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.4),
+                    size: 20,
+                  ),
+                ),
+              ),
+            ),
+          Expanded(child: _buildContentWidget(contentId, isEditing)),
+        ],
+      ),
     );
   }
 
