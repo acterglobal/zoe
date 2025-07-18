@@ -215,7 +215,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           parentId: state.sheet.id,
           id: formattedId,
           title: 'List',
-          bullets: [''],
+          bullets: [BulletItem(title: '')],
         );
         ref.read(bulletsContentListProvider.notifier).addContent(newBullets);
         break;

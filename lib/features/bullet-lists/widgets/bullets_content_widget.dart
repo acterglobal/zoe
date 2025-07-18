@@ -77,7 +77,10 @@ class BulletsContentWidget extends ConsumerWidget {
                 final currentBulletsContent = ref.read(
                   bulletsContentItemProvider(bulletsContentId),
                 );
-                final updatedBullets = [...currentBulletsContent.bullets, ''];
+                final updatedBullets = [
+                  ...currentBulletsContent.bullets,
+                  BulletItem(title: ''),
+                ];
                 ref
                     .read(bulletsContentUpdateProvider)
                     .call(bulletsContentId, bullets: updatedBullets);
@@ -124,9 +127,9 @@ class BulletsContentWidget extends ConsumerWidget {
     BulletsContentModel bulletsContent,
     int index,
   ) {
-    final controllerKey = '$bulletsContentId-$index';
+    final bulletItem = bulletsContent.bullets[index];
     final titleController = ref.watch(
-      bulletsContentBulletControllerProvider(controllerKey),
+      bulletsContentBulletControllerProvider(bulletItem.id),
     );
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -151,8 +154,10 @@ class BulletsContentWidget extends ConsumerWidget {
                   .call(
                     bulletsContentId,
                     bullets: [
-                      ...bulletsContent.bullets.asMap().entries.map(
-                        (entry) => entry.key == index ? value : entry.value,
+                      ...bulletsContent.bullets.map(
+                        (bullet) => bullet.id == bulletItem.id
+                            ? bullet.copyWith(title: value)
+                            : bullet,
                       ),
                     ],
                   ),
@@ -164,7 +169,7 @@ class BulletsContentWidget extends ConsumerWidget {
               onTap: () => context.push(
                 AppRoutes.bulletDetail.route.replaceAll(
                   ':bulletId',
-                  bulletsContent.bullets[index],
+                  bulletItem.id,
                 ),
               ),
               child: Icon(
@@ -178,11 +183,9 @@ class BulletsContentWidget extends ConsumerWidget {
             const SizedBox(width: 6),
             ZoeCloseButtonWidget(
               onTap: () {
-                final currentBulletsContent = ref.read(
-                  bulletsContentItemProvider(bulletsContentId),
-                );
-                final updatedItems = [...currentBulletsContent.bullets];
-                updatedItems.removeAt(index);
+                final updatedItems = bulletsContent.bullets
+                    .where((bullet) => bullet.id != bulletItem.id)
+                    .toList();
                 ref
                     .read(bulletsContentUpdateProvider)
                     .call(bulletsContentId, bullets: updatedItems);

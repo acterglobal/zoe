@@ -15,7 +15,9 @@ final bulletsContentItemProvider = Provider.family<BulletsContentModel, String>(
         parentId: 'default',
         id: id,
         title: 'Content not found',
-        bullets: ['The content with ID "$id" could not be found.'],
+        bullets: [
+          BulletItem(title: 'The content with ID "$id" could not be found.'),
+        ],
       );
     }
   },
@@ -35,16 +37,22 @@ final bulletsContentTitleControllerProvider = Provider.family
     });
 
 final bulletsContentBulletControllerProvider = Provider.family
-    .autoDispose<TextEditingController, String>((ref, String key) {
-      // key format: "contentId-bulletIndex"
-      final parts = key.split('-');
-      final contentId = parts.sublist(0, parts.length - 1).join('-');
-      final bulletIndex = int.parse(parts.last);
+    .autoDispose<TextEditingController, String>((ref, String bulletId) {
+      // Find the bullet item by ID across all content
+      final allBulletsContent = ref.read(bulletsContentListProvider);
 
-      final content = ref.read(bulletsContentItemProvider(contentId));
-      final bulletText = bulletIndex < content.bullets.length
-          ? content.bullets[bulletIndex]
-          : '';
+      BulletItem? bulletItem;
+      for (final content in allBulletsContent) {
+        for (final bullet in content.bullets) {
+          if (bullet.id == bulletId) {
+            bulletItem = bullet;
+            break;
+          }
+        }
+        if (bulletItem != null) break;
+      }
+
+      final bulletText = bulletItem?.title ?? '';
       final controller = TextEditingController(text: bulletText);
 
       ref.onDispose(() {
@@ -54,15 +62,51 @@ final bulletsContentBulletControllerProvider = Provider.family
       return controller;
     });
 
+// Provider to find a specific BulletItem by ID across all bullets content
+final bulletItemProvider = Provider.family<BulletItem?, String>((
+  ref,
+  String bulletId,
+) {
+  final allBulletsContent = ref.watch(bulletsContentListProvider);
+
+  for (final content in allBulletsContent) {
+    for (final bullet in content.bullets) {
+      if (bullet.id == bulletId) {
+        return bullet;
+      }
+    }
+  }
+
+  return null; // Return null if not found
+});
+
+// Provider to find the parent BulletsContentModel for a specific BulletItem
+final bulletItemParentProvider = Provider.family<BulletsContentModel?, String>((
+  ref,
+  String bulletId,
+) {
+  final allBulletsContent = ref.watch(bulletsContentListProvider);
+
+  for (final content in allBulletsContent) {
+    for (final bullet in content.bullets) {
+      if (bullet.id == bulletId) {
+        return content;
+      }
+    }
+  }
+
+  return null; // Return null if not found
+});
+
 // Direct update provider - saves immediately using StateNotifier
 final bulletsContentUpdateProvider =
-    Provider<void Function(String, {String? title, List<String>? bullets})>((
-      ref,
-    ) {
-      return (String contentId, {String? title, List<String>? bullets}) {
-        // Update using the StateNotifier for immediate reactivity
-        ref
-            .read(bulletsContentListProvider.notifier)
-            .updateContent(contentId, title: title, bullets: bullets);
-      };
-    });
+    Provider<void Function(String, {String? title, List<BulletItem>? bullets})>(
+      (ref) {
+        return (String contentId, {String? title, List<BulletItem>? bullets}) {
+          // Update using the StateNotifier for immediate reactivity
+          ref
+              .read(bulletsContentListProvider.notifier)
+              .updateContent(contentId, title: title, bullets: bullets);
+        };
+      },
+    );
