@@ -61,8 +61,8 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     ZoeSheetModel sheet;
     bool isEditing;
 
-    if (sheetId == null || sheetId == 'new') {
-      sheet = ZoeSheetModel(title: 'Untitled', description: '', emoji: '📄');
+    if (sheetId == null) {
+      sheet = ZoeSheetModel(title: '', description: '', emoji: '📄');
       isEditing = true;
     } else {
       final sheetListNotifier = ref.read(sheetListProvider.notifier);
@@ -70,13 +70,14 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
 
       if (existingSheet != null) {
         sheet = existingSheet;
-        isEditing = false;
+        isEditing = true;
       } else {
         sheet = ZoeSheetModel(
           title: 'Sheet Not Found',
           description: 'The requested sheet could not be found.',
+          emoji: '📄',
         );
-        isEditing = false;
+        isEditing = true;
       }
     }
 
@@ -110,18 +111,39 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   /// Update sheet emoji
   void updateEmoji() {
     final newEmoji = getNextEmoji(state.sheet.emoji);
-    state = state.copyWith(sheet: state.sheet.copyWith(emoji: newEmoji));
+    final updatedSheet = state.sheet.copyWith(emoji: newEmoji);
+    state = state.copyWith(sheet: updatedSheet);
+
+    // Immediately update the sheet list if this is an existing sheet
+    if (sheetId != null && sheetId != 'new') {
+      final sheetListNotifier = ref.read(sheetListProvider.notifier);
+      sheetListNotifier.updateSheet(updatedSheet);
+    }
   }
 
   /// Update sheet title
   void updateTitle(String value) {
     final newTitle = value.trim().isEmpty ? 'Untitled' : value;
-    state = state.copyWith(sheet: state.sheet.copyWith(title: newTitle));
+    final updatedSheet = state.sheet.copyWith(title: newTitle);
+    state = state.copyWith(sheet: updatedSheet);
+
+    // Immediately update the sheet list if this is an existing sheet
+    if (sheetId != null && sheetId != 'new') {
+      final sheetListNotifier = ref.read(sheetListProvider.notifier);
+      sheetListNotifier.updateSheet(updatedSheet);
+    }
   }
 
   /// Update sheet description
   void updateDescription(String value) {
-    state = state.copyWith(sheet: state.sheet.copyWith(description: value));
+    final updatedSheet = state.sheet.copyWith(description: value);
+    state = state.copyWith(sheet: updatedSheet);
+
+    // Immediately update the sheet list if this is an existing sheet
+    if (sheetId != null && sheetId != 'new') {
+      final sheetListNotifier = ref.read(sheetListProvider.notifier);
+      sheetListNotifier.updateSheet(updatedSheet);
+    }
   }
 
   /// Reorder content
