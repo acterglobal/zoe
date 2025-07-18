@@ -20,6 +20,7 @@ class EventsContentWidget extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ZoeInlineTextEditWidget(
+          hintText: 'Event list title',
           isEditing: isEditing,
           controller: ref.watch(
             eventsContentTitleControllerProvider(eventsContentId),
@@ -62,6 +63,7 @@ class EventsContentWidget extends ConsumerWidget {
         const SizedBox(width: 6),
         Expanded(
           child: ZoeInlineTextEditWidget(
+            hintText: 'Event name',
             isEditing: isEditing,
             controller: titleController,
             textStyle: Theme.of(context).textTheme.bodyMedium,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ZoeInlineTextEditWidget extends StatelessWidget {
+  final String? hintText;
   final TextEditingController controller;
   final Function(String) onTextChanged;
   final bool isEditing;
@@ -8,6 +9,7 @@ class ZoeInlineTextEditWidget extends StatelessWidget {
 
   const ZoeInlineTextEditWidget({
     super.key,
+    this.hintText,
     required this.controller,
     required this.onTextChanged,
     this.isEditing = false,
@@ -20,7 +22,10 @@ class ZoeInlineTextEditWidget extends StatelessWidget {
         ? TextField(
             controller: controller,
             style: textStyle,
-            decoration: const InputDecoration(hintText: 'Title'),
+            decoration: InputDecoration(
+              hintText: hintText,
+              contentPadding: EdgeInsets.zero,
+            ),
             maxLines: null,
             onChanged: onTextChanged,
           )

@@ -20,6 +20,7 @@ class BulletsContentWidget extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ZoeInlineTextEditWidget(
+          hintText: 'List title',
           isEditing: isEditing,
           controller: ref.watch(
             bulletsContentTitleControllerProvider(bulletsContentId),
@@ -64,6 +65,7 @@ class BulletsContentWidget extends ConsumerWidget {
         const SizedBox(width: 6),
         Expanded(
           child: ZoeInlineTextEditWidget(
+            hintText: 'List item',
             isEditing: isEditing,
             controller: titleController,
             textStyle: Theme.of(context).textTheme.bodyMedium,

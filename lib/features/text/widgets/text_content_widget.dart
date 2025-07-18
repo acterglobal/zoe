@@ -19,6 +19,7 @@ class TextContentWidget extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ZoeInlineTextEditWidget(
+          hintText: 'Text content title',
           isEditing: isEditing,
           controller: ref.watch(
             textContentTitleControllerProvider(textContentId),
@@ -30,6 +31,7 @@ class TextContentWidget extends ConsumerWidget {
         ),
         const SizedBox(height: 6),
         ZoeInlineTextEditWidget(
+          hintText: 'Type something...',
           isEditing: isEditing,
           controller: ref.watch(
             textContentDataControllerProvider(textContentId),
