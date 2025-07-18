@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/add_content_menu.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_detail_app_bar.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_description_widget.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_contents.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_title_widget.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
   final String? sheetId;
@@ -57,11 +56,32 @@ class SheetDetailScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: 4),
-            Expanded(child: SheetTitleWidget(sheetId: sheetId)),
+            Expanded(
+              child: ZoeInlineTextEditWidget(
+                isEditing: ref.watch(isEditingProvider(sheetId)),
+                controller: ref.watch(titleControllerProvider(sheetId)),
+                textStyle: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  height: 1.2,
+                ),
+                onTextChanged: (value) => ref
+                    .read(sheetDetailProvider(sheetId).notifier)
+                    .updateTitle(value),
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 16),
-        SheetDescriptionWidget(sheetId: sheetId),
+        ZoeInlineTextEditWidget(
+          isEditing: ref.watch(isEditingProvider(sheetId)),
+          controller: ref.watch(descriptionControllerProvider(sheetId)),
+          textStyle: Theme.of(context).textTheme.bodyLarge,
+          onTextChanged: (value) => ref
+              .read(sheetDetailProvider(sheetId).notifier)
+              .updateDescription(value),
+        ),
       ],
     );
   }
