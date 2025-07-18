@@ -126,47 +126,52 @@ class BulletsContentWidget extends ConsumerWidget {
     final titleController = ref.watch(
       bulletsContentBulletControllerProvider(controllerKey),
     );
-    return Row(
-      children: [
-        Icon(
-          Icons.circle,
-          size: 8,
-          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-        ),
-        const SizedBox(width: 6),
-        Expanded(
-          child: ZoeInlineTextEditWidget(
-            hintText: 'List item',
-            isEditing: isEditing,
-            controller: titleController,
-            textStyle: Theme.of(context).textTheme.bodyMedium,
-            onTextChanged: (value) => ref
-                .read(bulletsContentUpdateProvider)
-                .call(
-                  bulletsContentId,
-                  bullets: [
-                    ...bulletsContent.bullets.asMap().entries.map(
-                      (entry) => entry.key == index ? value : entry.value,
-                    ),
-                  ],
-                ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Icon(
+            Icons.circle,
+            size: 8,
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.6),
           ),
-        ),
-        const SizedBox(width: 6),
-        if (isEditing)
-          ZoeCloseButtonWidget(
-            onTap: () {
-              final currentBulletsContent = ref.read(
-                bulletsContentItemProvider(bulletsContentId),
-              );
-              final updatedItems = [...currentBulletsContent.bullets];
-              updatedItems.removeAt(index);
-              ref
+          const SizedBox(width: 10),
+          Expanded(
+            child: ZoeInlineTextEditWidget(
+              hintText: 'List item',
+              isEditing: isEditing,
+              controller: titleController,
+              textStyle: Theme.of(context).textTheme.bodyMedium,
+              onTextChanged: (value) => ref
                   .read(bulletsContentUpdateProvider)
-                  .call(bulletsContentId, bullets: updatedItems);
-            },
+                  .call(
+                    bulletsContentId,
+                    bullets: [
+                      ...bulletsContent.bullets.asMap().entries.map(
+                        (entry) => entry.key == index ? value : entry.value,
+                      ),
+                    ],
+                  ),
+            ),
           ),
-      ],
+          const SizedBox(width: 6),
+          if (isEditing)
+            ZoeCloseButtonWidget(
+              onTap: () {
+                final currentBulletsContent = ref.read(
+                  bulletsContentItemProvider(bulletsContentId),
+                );
+                final updatedItems = [...currentBulletsContent.bullets];
+                updatedItems.removeAt(index);
+                ref
+                    .read(bulletsContentUpdateProvider)
+                    .call(bulletsContentId, bullets: updatedItems);
+              },
+            ),
+        ],
+      ),
     );
   }
 }
