@@ -58,6 +58,7 @@ class SheetDetailScreen extends ConsumerWidget {
             const SizedBox(width: 4),
             Expanded(
               child: ZoeInlineTextEditWidget(
+                hintText: 'Title',
                 isEditing: ref.watch(isEditingProvider(sheetId)),
                 controller: ref.watch(titleControllerProvider(sheetId)),
                 textStyle: TextStyle(
@@ -75,6 +76,7 @@ class SheetDetailScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         ZoeInlineTextEditWidget(
+          hintText: 'Add a description',
           isEditing: ref.watch(isEditingProvider(sheetId)),
           controller: ref.watch(descriptionControllerProvider(sheetId)),
           textStyle: Theme.of(context).textTheme.bodyLarge,

@@ -20,6 +20,7 @@ class TodosContentWidget extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ZoeInlineTextEditWidget(
+          hintText: 'Todo list title',
           isEditing: isEditing,
           controller: ref.watch(
             todosContentTitleControllerProvider(todosContentId),
@@ -74,6 +75,7 @@ class TodosContentWidget extends ConsumerWidget {
         const SizedBox(width: 6),
         Expanded(
           child: ZoeInlineTextEditWidget(
+            hintText: 'Todo item',
             isEditing: isEditing,
             controller: titleController,
             textStyle: Theme.of(context).textTheme.bodyMedium,
