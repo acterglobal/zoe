@@ -72,8 +72,10 @@ class EventsContentWidget extends ConsumerWidget {
                 .call(
                   eventsContentId,
                   events: [
-                    ...eventsContent.events.map(
-                      (e) => e.copyWith(title: value),
+                    ...eventsContent.events.asMap().entries.map(
+                      (entry) => entry.key == index
+                          ? entry.value.copyWith(title: value)
+                          : entry.value,
                     ),
                   ],
                 ),

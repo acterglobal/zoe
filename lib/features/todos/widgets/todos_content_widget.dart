@@ -66,8 +66,10 @@ class TodosContentWidget extends ConsumerWidget {
               .call(
                 todosContentId,
                 items: [
-                  ...todosContent.items.map(
-                    (e) => e.copyWith(isCompleted: value),
+                  ...todosContent.items.asMap().entries.map(
+                    (entry) => entry.key == index
+                        ? entry.value.copyWith(isCompleted: value)
+                        : entry.value,
                   ),
                 ],
               ),
@@ -84,7 +86,11 @@ class TodosContentWidget extends ConsumerWidget {
                 .call(
                   todosContentId,
                   items: [
-                    ...todosContent.items.map((e) => e.copyWith(title: value)),
+                    ...todosContent.items.asMap().entries.map(
+                      (entry) => entry.key == index
+                          ? entry.value.copyWith(title: value)
+                          : entry.value,
+                    ),
                   ],
                 ),
           ),
