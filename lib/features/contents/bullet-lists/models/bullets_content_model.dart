@@ -12,7 +12,7 @@ class BulletsContentModel extends ContentBlockModel {
     required this.bullets,
     super.createdAt,
     super.updatedAt,
-  }) : super(type: ContentBlockType.list);
+  }) : super(type: ContentType.bullet);
 
   @override
   Map<String, dynamic> toJson() {

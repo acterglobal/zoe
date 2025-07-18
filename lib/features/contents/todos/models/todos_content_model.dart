@@ -13,7 +13,7 @@ class TodosContentModel extends ContentBlockModel {
     required this.items,
     super.createdAt,
     super.updatedAt,
-  }) : super(type: ContentBlockType.todo);
+  }) : super(type: ContentType.todo);
 
   @override
   Map<String, dynamic> toJson() {

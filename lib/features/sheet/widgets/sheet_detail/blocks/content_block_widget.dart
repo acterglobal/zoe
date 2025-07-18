@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:zoey/features/sheet/models/content_block/content_block.dart';
-import 'package:zoey/features/sheet/models/content_block/event_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
+import 'package:zoey/features/contents/text/models/text_content_model.dart';
+import 'package:zoey/features/contents/todos/models/todos_content_model.dart';
+import 'package:zoey/features/contents/events/models/events_content_model.dart';
+import 'package:zoey/features/contents/bullet-lists/models/bullets_content_model.dart';
 import 'package:zoey/features/contents/text/widgets/text_content_widget.dart';
 import 'package:zoey/features/contents/todos/widgets/todos_content_widget.dart';
 import 'package:zoey/features/contents/events/widgets/events_content_widget.dart';
@@ -124,10 +124,10 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
             ),
           ),
           // Only add spacing if block icon will be shown
-          if (widget.block.type != ContentBlockType.text || widget.isEditing)
+          if (widget.block.type != ContentType.text || widget.isEditing)
             const SizedBox(width: 2),
           // Block type icon (aligned with content)
-          if (widget.block.type != ContentBlockType.text || widget.isEditing)
+          if (widget.block.type != ContentType.text || widget.isEditing)
             Container(
               margin: const EdgeInsets.only(top: 3),
               child: Icon(
@@ -209,31 +209,31 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   bool _hasEmbeddedContent() {
     // Check if the block has embedded content based on its type
     switch (widget.block.type) {
-      case ContentBlockType.text:
-        return widget.block is TextBlockModel;
-      case ContentBlockType.todo:
-        return widget.block is TodoBlockModel;
-      case ContentBlockType.event:
-        return widget.block is EventBlockModel;
-      case ContentBlockType.list:
-        return widget.block is ListBlockModel;
+      case ContentType.text:
+        return widget.block is TextContentModel;
+      case ContentType.todo:
+        return widget.block is TodosContentModel;
+      case ContentType.event:
+        return widget.block is EventsContentModel;
+      case ContentType.bullet:
+        return widget.block is BulletsContentModel;
     }
   }
 
   Widget _buildEmbeddedContentWidget() {
     // Handle embedded content blocks (backward compatibility)
     switch (widget.block.type) {
-      case ContentBlockType.text:
-        final textBlock = widget.block as TextBlockModel;
+      case ContentType.text:
+        final textBlock = widget.block as TextContentModel;
         return _buildInlineTextContent(textBlock);
-      case ContentBlockType.todo:
-        final todoBlock = widget.block as TodoBlockModel;
+      case ContentType.todo:
+        final todoBlock = widget.block as TodosContentModel;
         return _buildInlineTodoContent(todoBlock);
-      case ContentBlockType.event:
-        final eventBlock = widget.block as EventBlockModel;
+      case ContentType.event:
+        final eventBlock = widget.block as EventsContentModel;
         return _buildInlineEventContent(eventBlock);
-      case ContentBlockType.list:
-        final listBlock = widget.block as ListBlockModel;
+      case ContentType.bullet:
+        final listBlock = widget.block as BulletsContentModel;
         return _buildInlineListContent(listBlock);
     }
   }
@@ -241,22 +241,22 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   Widget _buildSeparateContentWidget() {
     // Map content block types to their respective specialized widgets (new system)
     switch (widget.block.type) {
-      case ContentBlockType.text:
+      case ContentType.text:
         return TextContentWidget(
           textContentId: widget.block.id,
           isEditing: widget.isEditing,
         );
-      case ContentBlockType.todo:
+      case ContentType.todo:
         return TodosContentWidget(
           todosContentId: widget.block.id,
           isEditing: widget.isEditing,
         );
-      case ContentBlockType.event:
+      case ContentType.event:
         return EventsContentWidget(
           eventsContentId: widget.block.id,
           isEditing: widget.isEditing,
         );
-      case ContentBlockType.list:
+      case ContentType.bullet:
         return BulletsContentWidget(
           bulletsContentId: widget.block.id,
           isEditing: widget.isEditing,
@@ -265,23 +265,26 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
   }
 
   // Inline content builders for embedded content (backward compatibility)
-  Widget _buildInlineTextContent(TextBlockModel block) {
+  Widget _buildInlineTextContent(TextContentModel block) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.isEditing || widget.block.type != ContentBlockType.text) ...[
+        if (widget.isEditing || widget.block.type != ContentType.text) ...[
           Text(
             block.title,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
         ],
-        Text(block.content, style: Theme.of(context).textTheme.bodyMedium),
+        Text(
+          block.data, // Changed from content to data
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
       ],
     );
   }
 
-  Widget _buildInlineTodoContent(TodoBlockModel block) {
+  Widget _buildInlineTodoContent(TodosContentModel block) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -350,7 +353,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     );
   }
 
-  Widget _buildInlineEventContent(EventBlockModel block) {
+  Widget _buildInlineEventContent(EventsContentModel block) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -397,7 +400,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
     );
   }
 
-  Widget _buildInlineListContent(ListBlockModel block) {
+  Widget _buildInlineListContent(BulletsContentModel block) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -406,7 +409,8 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 12),
-        ...block.items.map(
+        ...block.bullets.map(
+          // Changed from items to bullets
           (item) => Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: Row(
@@ -435,13 +439,13 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
 
   IconData _getBlockIcon() {
     switch (widget.block.type) {
-      case ContentBlockType.todo:
+      case ContentType.todo:
         return Icons.check_box_outlined;
-      case ContentBlockType.event:
+      case ContentType.event:
         return Icons.event_outlined;
-      case ContentBlockType.list:
+      case ContentType.bullet:
         return Icons.format_list_bulleted;
-      case ContentBlockType.text:
+      case ContentType.text:
         return Icons.text_fields;
     }
   }
@@ -452,7 +456,7 @@ class _ContentBlockWidgetState extends State<ContentBlockWidget> {
       return 0; // No extra padding in edit mode since controls provide spacing
     }
     // In view mode, provide minimal left padding for proper alignment
-    if (widget.block.type == ContentBlockType.text) {
+    if (widget.block.type == ContentType.text) {
       return 2; // Minimal indent for text blocks
     }
     return 24; // Reduced further - Other block types get moderate indent

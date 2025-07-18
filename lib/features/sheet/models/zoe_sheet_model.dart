@@ -1,8 +1,8 @@
 import 'package:uuid/uuid.dart';
-import 'package:zoey/features/sheet/models/content_block/event_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
+import 'package:zoey/features/contents/text/models/text_content_model.dart';
+import 'package:zoey/features/contents/todos/models/todos_content_model.dart';
+import 'package:zoey/features/contents/events/models/events_content_model.dart';
+import 'package:zoey/features/contents/bullet-lists/models/bullets_content_model.dart';
 import 'content_block/content_block.dart';
 
 class ZoeSheetModel {
@@ -87,15 +87,15 @@ class ZoeSheetModel {
   }
 
   // Get specific types of content blocks
-  List<TodoBlockModel> get todoBlocks =>
-      contentBlocks.whereType<TodoBlockModel>().toList();
+  List<TodosContentModel> get todosBlocks =>
+      contentBlocks.whereType<TodosContentModel>().toList();
 
-  List<EventBlockModel> get eventBlocks =>
-      contentBlocks.whereType<EventBlockModel>().toList();
+  List<EventsContentModel> get eventsBlocks =>
+      contentBlocks.whereType<EventsContentModel>().toList();
 
-  List<ListBlockModel> get listBlocks =>
-      contentBlocks.whereType<ListBlockModel>().toList();
+  List<BulletsContentModel> get bulletsBlocks =>
+      contentBlocks.whereType<BulletsContentModel>().toList();
 
-  List<TextBlockModel> get textBlocks =>
-      contentBlocks.whereType<TextBlockModel>().toList();
+  List<TextContentModel> get textBlocks =>
+      contentBlocks.whereType<TextContentModel>().toList();
 }

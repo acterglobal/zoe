@@ -12,7 +12,7 @@ class TextContentModel extends ContentBlockModel {
     required this.data,
     super.createdAt,
     super.updatedAt,
-  }) : super(type: ContentBlockType.text);
+  }) : super(type: ContentType.text);
 
   @override
   Map<String, dynamic> toJson() {

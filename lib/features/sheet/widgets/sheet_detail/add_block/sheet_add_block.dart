@@ -8,7 +8,7 @@ class SheetAddBlock extends StatelessWidget {
   final bool isEditing;
   final bool showAddMenu;
   final VoidCallback onTriggerTap;
-  final Function(ContentBlockType type) onAddBlock;
+  final Function(ContentType type) onAddBlock;
 
   const SheetAddBlock({
     super.key,

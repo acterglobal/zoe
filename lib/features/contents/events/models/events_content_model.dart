@@ -13,7 +13,7 @@ class EventsContentModel extends ContentBlockModel {
     required this.events,
     super.createdAt,
     super.updatedAt,
-  }) : super(type: ContentBlockType.event);
+  }) : super(type: ContentType.event);
 
   @override
   Map<String, dynamic> toJson() {

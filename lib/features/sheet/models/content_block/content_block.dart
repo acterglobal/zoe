@@ -1,10 +1,10 @@
 import 'package:uuid/uuid.dart';
 
-enum ContentBlockType { todo, event, list, text }
+enum ContentType { todo, event, bullet, text }
 
 abstract class ContentBlockModel {
   final String id;
-  final ContentBlockType type;
+  final ContentType type;
   final DateTime createdAt;
   final DateTime updatedAt;
 

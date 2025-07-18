@@ -1,7 +1,7 @@
-import 'package:zoey/features/sheet/models/content_block/event_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
+import 'package:zoey/features/contents/text/models/text_content_model.dart';
+import 'package:zoey/features/contents/todos/models/todos_content_model.dart';
+import 'package:zoey/features/contents/events/models/events_content_model.dart';
+import 'package:zoey/features/contents/bullet-lists/models/bullets_content_model.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 
 final gettingStartedSheet = ZoeSheetModel(
@@ -10,14 +10,18 @@ final gettingStartedSheet = ZoeSheetModel(
   description: 'Learn how to use Zoey effectively',
   emoji: '🚀',
   contentBlocks: [
-    TextBlockModel(
+    TextContentModel(
+      parentId: 'sheet-1',
+      id: 'text-content-1',
       title: 'Welcome to Zoey!',
-      content:
+      data:
           'Zoey is your personal workspace for organizing thoughts, tasks, and ideas. This guide will help you understand all the features and get the most out of your experience.',
     ),
-    ListBlockModel(
+    BulletsContentModel(
+      parentId: 'sheet-1',
+      id: 'bullets-content-1',
       title: 'Key Features Overview',
-      items: [
+      bullets: [
         '📄 Create unlimited sheets with custom titles and emojis',
         '📝 Add different content blocks: text, tasks, events, and lists',
         '✏️ Edit content inline by tapping on any text',
@@ -26,7 +30,9 @@ final gettingStartedSheet = ZoeSheetModel(
         '🔍 Quick actions for common tasks',
       ],
     ),
-    TodoBlockModel(
+    TodosContentModel(
+      parentId: 'sheet-1',
+      id: 'todos-content-1',
       title: 'Quick Start Checklist',
       items: [
         TodoItem(
@@ -67,12 +73,16 @@ final gettingStartedSheet = ZoeSheetModel(
         ),
       ],
     ),
-    TextBlockModel(
+    TextContentModel(
+      parentId: 'sheet-1',
+      id: 'text-content-2',
       title: 'How to Use Content Blocks',
-      content:
+      data:
           'Content blocks are the building blocks of your sheets. Tap the + button to add new blocks:\n\n• Text Blocks: For notes, ideas, and documentation\n• Task Lists: For to-dos with descriptions and due dates\n• Event Blocks: For scheduling with start and end dates\n• List Blocks: For simple bullet points and collections\n\nYou can drag and drop blocks to reorder them, and edit any text by tapping on it.',
     ),
-    EventBlockModel(
+    EventsContentModel(
+      parentId: 'sheet-1',
+      id: 'events-content-1',
       title: 'Learning Schedule',
       events: [
         EventItem(
@@ -95,9 +105,11 @@ final gettingStartedSheet = ZoeSheetModel(
         ),
       ],
     ),
-    ListBlockModel(
+    BulletsContentModel(
+      parentId: 'sheet-1',
+      id: 'bullets-content-2',
       title: 'Pro Tips',
-      items: [
+      bullets: [
         'Use emojis to quickly identify different types of sheets',
         'Add detailed descriptions to tasks for better context',
         'Set due dates to stay organized and on track',

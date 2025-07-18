@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/models/content_block/content_block.dart';
-import 'package:zoey/features/sheet/models/content_block/event_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/list_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/text_block_model.dart';
-import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
+import 'package:zoey/features/contents/text/models/text_content_model.dart';
+import 'package:zoey/features/contents/todos/models/todos_content_model.dart';
+import 'package:zoey/features/contents/events/models/events_content_model.dart';
+import 'package:zoey/features/contents/bullet-lists/models/bullets_content_model.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
@@ -151,7 +151,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   }
 
   /// Add content block
-  void addContentBlock(ContentBlockType type) {
+  void addContentBlock(ContentType type) {
     final newBlock = _createContentBlock(type);
     final updatedSheet = state.sheet.copyWith();
     updatedSheet.addContentBlock(newBlock);
@@ -159,22 +159,32 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   }
 
   /// Create content block based on type
-  ContentBlockModel _createContentBlock(ContentBlockType type) {
+  ContentBlockModel _createContentBlock(ContentType type) {
     switch (type) {
-      case ContentBlockType.todo:
-        return TodoBlockModel(
+      case ContentType.todo:
+        return TodosContentModel(
+          parentId: state.sheet.id,
           title: 'To-do',
           items: [TodoItem(title: '')],
         );
-      case ContentBlockType.event:
-        return EventBlockModel(
+      case ContentType.event:
+        return EventsContentModel(
+          parentId: state.sheet.id,
           title: 'Events',
           events: [EventItem(title: '')],
         );
-      case ContentBlockType.list:
-        return ListBlockModel(title: 'List', items: ['']);
-      case ContentBlockType.text:
-        return TextBlockModel(title: 'Text Block', content: '');
+      case ContentType.bullet:
+        return BulletsContentModel(
+          parentId: state.sheet.id,
+          title: 'List',
+          bullets: [''],
+        );
+      case ContentType.text:
+        return TextContentModel(
+          parentId: state.sheet.id,
+          title: 'Text Block',
+          data: '',
+        );
     }
   }
 
