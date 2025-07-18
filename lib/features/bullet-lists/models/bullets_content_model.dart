@@ -49,24 +49,34 @@ class BulletItem {
   final String id;
   final String title;
   final String? description;
+  final List<String> contentList;
 
-  BulletItem({String? id, required this.title, this.description})
-    : id = id ?? const Uuid().v4();
+  BulletItem({
+    String? id,
+    required this.title,
+    this.description,
+    this.contentList = const [],
+  }) : id = id ?? const Uuid().v4();
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'title': title, 'description': description};
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'contentList': contentList,
+    };
   }
 
   BulletItem copyWith({
     String? title,
     String? description,
-    DateTime? startDate,
-    DateTime? endDate,
+    List<String>? contentList,
   }) {
     return BulletItem(
       id: id,
       title: title ?? this.title,
       description: description ?? this.description,
+      contentList: contentList ?? this.contentList,
     );
   }
 }
