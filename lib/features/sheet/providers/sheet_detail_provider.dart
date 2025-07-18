@@ -159,7 +159,25 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   /// Create content and return its ID
   String _createContent(ContentType type) {
     final contentId = const Uuid().v4();
-    final formattedId = '${type.name}-$contentId';
+
+    // Use correct prefixes that match the content detection logic
+    String prefix;
+    switch (type) {
+      case ContentType.todo:
+        prefix = 'todos';
+        break;
+      case ContentType.event:
+        prefix = 'events';
+        break;
+      case ContentType.bullet:
+        prefix = 'bullets';
+        break;
+      case ContentType.text:
+        prefix = 'text';
+        break;
+    }
+
+    final formattedId = '$prefix-$contentId';
 
     // Create actual content in the appropriate content list
     switch (type) {
