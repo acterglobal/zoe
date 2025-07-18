@@ -3,7 +3,7 @@ import 'package:zoey/features/contents/events/models/events_content_model.dart';
 final eventsContentList = [
   EventsContentModel(
     parentId: 'sheet-1',
-    id: 'events-list-1',
+    id: 'events-content-1',
     title: 'Learning Schedule',
     events: [
       EventItem(
@@ -28,7 +28,7 @@ final eventsContentList = [
   ),
   EventsContentModel(
     parentId: 'sheet-1',
-    id: 'events-list-2',
+    id: 'events-content-2',
     title: 'Meeting Schedule',
     events: [
       EventItem(

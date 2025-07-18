@@ -66,7 +66,7 @@ class SheetActionsNotifier extends StateNotifier<void> {
       title: '${currentSheet.title} (Copy)',
       description: currentSheet.description,
       emoji: currentSheet.emoji,
-      contentBlocks: currentSheet.contentBlocks,
+      contentList: currentSheet.contentList,
     );
 
     final sheetListNotifier = ref.read(sheetListProvider.notifier);

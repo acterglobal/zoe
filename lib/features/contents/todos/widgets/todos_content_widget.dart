@@ -36,11 +36,21 @@ class TodosContentWidget extends ConsumerWidget {
     String title,
   ) {
     final controller = TextEditingController(text: title);
+    final updateContent = ref.read(todosContentUpdateProvider);
+
     return TextField(
       controller: controller,
       maxLines: null,
       style: Theme.of(context).textTheme.titleMedium,
-      decoration: InputDecoration(hintText: 'Title'),
+      decoration: const InputDecoration(
+        hintText: 'Title',
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+      ),
+      onChanged: (value) {
+        updateContent(todosContentId, title: value);
+      },
     );
   }
 
@@ -58,10 +68,17 @@ class TodosContentWidget extends ConsumerWidget {
         final descriptionController = TextEditingController(
           text: items[index].description,
         );
+        final updateContent = ref.read(todosContentUpdateProvider);
+
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.check_circle, size: 20),
+            Icon(
+              items[index].isCompleted
+                  ? Icons.check_box
+                  : Icons.check_box_outline_blank,
+              size: 20,
+            ),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
@@ -71,19 +88,35 @@ class TodosContentWidget extends ConsumerWidget {
                     controller: titleController,
                     style: Theme.of(context).textTheme.titleMedium,
                     maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: 'Title',
-                      contentPadding: EdgeInsets.zero,
+                    decoration: const InputDecoration(
+                      hintText: 'Task title...',
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                     ),
+                    onChanged: (value) {
+                      final updatedItems = List<TodoItem>.from(items);
+                      updatedItems[index] = items[index].copyWith(title: value);
+                      updateContent(todosContentId, items: updatedItems);
+                    },
                   ),
                   TextField(
                     controller: descriptionController,
                     style: Theme.of(context).textTheme.bodySmall,
                     maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: 'Description',
-                      contentPadding: EdgeInsets.zero,
+                    decoration: const InputDecoration(
+                      hintText: 'Description...',
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                     ),
+                    onChanged: (value) {
+                      final updatedItems = List<TodoItem>.from(items);
+                      updatedItems[index] = items[index].copyWith(
+                        description: value,
+                      );
+                      updateContent(todosContentId, items: updatedItems);
+                    },
                   ),
                 ],
               ),
@@ -95,7 +128,10 @@ class TodosContentWidget extends ConsumerWidget {
   }
 
   Widget _buildTitleText(BuildContext context, WidgetRef ref, String title) {
-    return Text(title, style: Theme.of(context).textTheme.titleMedium);
+    return Text(
+      title.isEmpty ? 'Untitled' : title,
+      style: Theme.of(context).textTheme.titleMedium,
+    );
   }
 
   Widget _buildDataText(
@@ -109,7 +145,12 @@ class TodosContentWidget extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) => Row(
         children: [
-          Icon(Icons.check_circle, size: 20),
+          Icon(
+            items[index].isCompleted
+                ? Icons.check_box
+                : Icons.check_box_outline_blank,
+            size: 20,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -119,10 +160,11 @@ class TodosContentWidget extends ConsumerWidget {
                   items[index].title,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                Text(
-                  items[index].description ?? '',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
+                if (items[index].description?.isNotEmpty == true)
+                  Text(
+                    items[index].description!,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
               ],
             ),
           ),

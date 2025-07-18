@@ -36,12 +36,24 @@ class BulletsContentWidget extends ConsumerWidget {
     WidgetRef ref,
     String title,
   ) {
-    final controller = TextEditingController(text: title);
+    final controller = ref.watch(
+      bulletsContentTitleControllerProvider(bulletsContentId),
+    );
+    final updateContent = ref.read(bulletsContentUpdateProvider);
+
     return TextField(
       controller: controller,
       maxLines: null,
       style: Theme.of(context).textTheme.titleMedium,
-      decoration: InputDecoration(hintText: 'Title'),
+      decoration: const InputDecoration(
+        hintText: 'Title',
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+      ),
+      onChanged: (value) {
+        updateContent(bulletsContentId, title: value);
+      },
     );
   }
 
@@ -55,17 +67,32 @@ class BulletsContentWidget extends ConsumerWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        final controller = TextEditingController(text: bullets[index]);
+        final controllerKey = '$bulletsContentId-$index';
+        final controller = ref.watch(
+          bulletsContentBulletControllerProvider(controllerKey),
+        );
+        final updateContent = ref.read(bulletsContentUpdateProvider);
+
         return Row(
           children: [
-            Icon(Icons.circle_sharp, size: 20),
+            const Icon(Icons.circle, size: 6),
             const SizedBox(width: 8),
             Expanded(
               child: TextField(
                 controller: controller,
                 style: Theme.of(context).textTheme.bodyMedium,
                 maxLines: null,
-                decoration: InputDecoration(hintText: 'Bullets'),
+                decoration: const InputDecoration(
+                  hintText: 'Bullet point...',
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+                onChanged: (value) {
+                  final updatedBullets = List<String>.from(bullets);
+                  updatedBullets[index] = value;
+                  updateContent(bulletsContentId, bullets: updatedBullets);
+                },
               ),
             ),
           ],
@@ -75,7 +102,10 @@ class BulletsContentWidget extends ConsumerWidget {
   }
 
   Widget _buildTitleText(BuildContext context, WidgetRef ref, String title) {
-    return Text(title, style: Theme.of(context).textTheme.titleMedium);
+    return Text(
+      title.isEmpty ? 'Untitled' : title,
+      style: Theme.of(context).textTheme.titleMedium,
+    );
   }
 
   Widget _buildDataText(
@@ -89,7 +119,7 @@ class BulletsContentWidget extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) => Row(
         children: [
-          Icon(Icons.circle_sharp, size: 6),
+          const Icon(Icons.circle, size: 6),
           const SizedBox(width: 8),
           Expanded(child: Text(bullets[index])),
         ],

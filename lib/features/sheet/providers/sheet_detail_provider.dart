@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/models/content_block/content_block.dart';
+import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
+import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 import 'package:zoey/features/contents/text/models/text_content_model.dart';
 import 'package:zoey/features/contents/todos/models/todos_content_model.dart';
 import 'package:zoey/features/contents/events/models/events_content_model.dart';
 import 'package:zoey/features/contents/bullet-lists/models/bullets_content_model.dart';
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
-import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
-import 'package:zoey/features/sheet/actions/sheet_actions.dart';
+import 'package:zoey/features/contents/text/data/text_content_list.dart';
+import 'package:zoey/features/contents/todos/data/todos_content_list.dart';
+import 'package:zoey/features/contents/events/data/events_content_list.dart';
+import 'package:zoey/features/contents/bullet-lists/data/bullets_content_list.dart';
+import 'package:uuid/uuid.dart';
 
 /// State class for sheet detail
 class SheetDetailState {
@@ -119,24 +124,17 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     state = state.copyWith(sheet: state.sheet.copyWith(description: value));
   }
 
-  /// Reorder content blocks
-  void reorderContentBlocks(int oldIndex, int newIndex) {
+  /// Reorder content
+  void reorderContent(int oldIndex, int newIndex) {
     final updatedSheet = state.sheet.copyWith();
-    updatedSheet.reorderContentBlocks(oldIndex, newIndex);
+    updatedSheet.reorderContent(oldIndex, newIndex);
     state = state.copyWith(sheet: updatedSheet);
   }
 
-  /// Update content block
-  void updateContentBlock(String blockId, ContentBlockModel updatedBlock) {
+  /// Delete content by ID
+  void deleteContent(String contentId) {
     final updatedSheet = state.sheet.copyWith();
-    updatedSheet.updateContentBlock(blockId, updatedBlock);
-    state = state.copyWith(sheet: updatedSheet);
-  }
-
-  /// Delete content block
-  void deleteContentBlock(String blockId) {
-    final updatedSheet = state.sheet.copyWith();
-    updatedSheet.removeContentBlock(blockId);
+    updatedSheet.removeContentId(contentId);
     state = state.copyWith(sheet: updatedSheet);
   }
 
@@ -150,42 +148,60 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     state = state.copyWith(showAddMenu: false);
   }
 
-  /// Add content block
-  void addContentBlock(ContentType type) {
-    final newBlock = _createContentBlock(type);
+  /// Add content by type
+  void addContent(ContentType type) {
+    final contentId = _createContent(type);
     final updatedSheet = state.sheet.copyWith();
-    updatedSheet.addContentBlock(newBlock);
+    updatedSheet.addContentId(contentId);
     state = state.copyWith(sheet: updatedSheet, showAddMenu: false);
   }
 
-  /// Create content block based on type
-  ContentBlockModel _createContentBlock(ContentType type) {
+  /// Create content and return its ID
+  String _createContent(ContentType type) {
+    final contentId = const Uuid().v4();
+    final formattedId = '${type.name}-$contentId';
+
+    // Create actual content in the appropriate content list
     switch (type) {
       case ContentType.todo:
-        return TodosContentModel(
+        final newTodo = TodosContentModel(
           parentId: state.sheet.id,
+          id: formattedId,
           title: 'To-do',
           items: [TodoItem(title: '')],
         );
+        todosContentList.add(newTodo);
+        break;
       case ContentType.event:
-        return EventsContentModel(
+        final newEvent = EventsContentModel(
           parentId: state.sheet.id,
+          id: formattedId,
           title: 'Events',
           events: [EventItem(title: '')],
         );
+        eventsContentList.add(newEvent);
+        break;
       case ContentType.bullet:
-        return BulletsContentModel(
+        final newBullets = BulletsContentModel(
           parentId: state.sheet.id,
+          id: formattedId,
           title: 'List',
           bullets: [''],
         );
+        bulletsContentList.add(newBullets);
+        break;
       case ContentType.text:
-        return TextContentModel(
+        final newText = TextContentModel(
           parentId: state.sheet.id,
+          id: formattedId,
           title: 'Text Block',
           data: '',
         );
+        textContentList.add(newText);
+        break;
     }
+
+    return formattedId;
   }
 
   /// Save the current sheet

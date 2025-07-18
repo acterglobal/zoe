@@ -36,11 +36,21 @@ class EventsContentWidget extends ConsumerWidget {
     String title,
   ) {
     final controller = TextEditingController(text: title);
+    final updateContent = ref.read(eventsContentUpdateProvider);
+
     return TextField(
       controller: controller,
       maxLines: null,
       style: Theme.of(context).textTheme.titleMedium,
-      decoration: InputDecoration(hintText: 'Title'),
+      decoration: const InputDecoration(
+        hintText: 'Title',
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+      ),
+      onChanged: (value) {
+        updateContent(eventsContentId, title: value);
+      },
     );
   }
 
@@ -60,10 +70,12 @@ class EventsContentWidget extends ConsumerWidget {
         final descriptionController = TextEditingController(
           text: events[index].description,
         );
+        final updateContent = ref.read(eventsContentUpdateProvider);
+
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.calendar_month, size: 20),
+            const Icon(Icons.event, size: 20),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
@@ -73,19 +85,37 @@ class EventsContentWidget extends ConsumerWidget {
                     controller: titleController,
                     style: Theme.of(context).textTheme.titleMedium,
                     maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: 'Title',
-                      contentPadding: EdgeInsets.zero,
+                    decoration: const InputDecoration(
+                      hintText: 'Event title...',
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                     ),
+                    onChanged: (value) {
+                      final updatedEvents = List<EventItem>.from(events);
+                      updatedEvents[index] = events[index].copyWith(
+                        title: value,
+                      );
+                      updateContent(eventsContentId, events: updatedEvents);
+                    },
                   ),
                   TextField(
                     controller: descriptionController,
                     style: Theme.of(context).textTheme.bodySmall,
                     maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: 'Description',
-                      contentPadding: EdgeInsets.zero,
+                    decoration: const InputDecoration(
+                      hintText: 'Description...',
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                     ),
+                    onChanged: (value) {
+                      final updatedEvents = List<EventItem>.from(events);
+                      updatedEvents[index] = events[index].copyWith(
+                        description: value,
+                      );
+                      updateContent(eventsContentId, events: updatedEvents);
+                    },
                   ),
                 ],
               ),
@@ -97,7 +127,10 @@ class EventsContentWidget extends ConsumerWidget {
   }
 
   Widget _buildTitleText(BuildContext context, WidgetRef ref, String title) {
-    return Text(title, style: Theme.of(context).textTheme.titleMedium);
+    return Text(
+      title.isEmpty ? 'Untitled' : title,
+      style: Theme.of(context).textTheme.titleMedium,
+    );
   }
 
   Widget _buildDataText(
@@ -111,7 +144,7 @@ class EventsContentWidget extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) => Row(
         children: [
-          Icon(Icons.calendar_month, size: 20),
+          const Icon(Icons.event, size: 20),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -121,10 +154,11 @@ class EventsContentWidget extends ConsumerWidget {
                   events[index].title,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                Text(
-                  events[index].description ?? '',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
+                if (events[index].description?.isNotEmpty == true)
+                  Text(
+                    events[index].description!,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
               ],
             ),
           ),

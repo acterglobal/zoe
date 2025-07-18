@@ -1,15 +1,10 @@
 import 'package:uuid/uuid.dart';
-import 'package:zoey/features/contents/text/models/text_content_model.dart';
-import 'package:zoey/features/contents/todos/models/todos_content_model.dart';
-import 'package:zoey/features/contents/events/models/events_content_model.dart';
-import 'package:zoey/features/contents/bullet-lists/models/bullets_content_model.dart';
-import 'content_block/content_block.dart';
 
 class ZoeSheetModel {
   final String id;
   final String title;
   final String description;
-  final List<ContentBlockModel> contentBlocks;
+  final List<String> contentList;
   final DateTime createdAt;
   final DateTime updatedAt;
   final String? emoji;
@@ -19,13 +14,13 @@ class ZoeSheetModel {
     String? id,
     required this.title,
     this.description = '',
-    List<ContentBlockModel>? contentBlocks,
+    List<String>? contentList,
     DateTime? createdAt,
     DateTime? updatedAt,
     this.emoji,
     this.coverImage,
   }) : id = id ?? const Uuid().v4(),
-       contentBlocks = contentBlocks ?? [],
+       contentList = contentList ?? [], // Changed to contentList
        createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now();
 
@@ -34,7 +29,7 @@ class ZoeSheetModel {
       'id': id,
       'title': title,
       'description': description,
-      'contentBlocks': contentBlocks.map((block) => block.toJson()).toList(),
+      'contentList': contentList, // Changed to store IDs directly
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
       'emoji': emoji,
@@ -42,10 +37,28 @@ class ZoeSheetModel {
     };
   }
 
+  factory ZoeSheetModel.fromJson(Map<String, dynamic> json) {
+    return ZoeSheetModel(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String? ?? '',
+      contentList:
+          (json['contentList']
+                  as List<dynamic>?) // Changed to handle List<String>
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      emoji: json['emoji'] as String?,
+      coverImage: json['coverImage'] as String?,
+    );
+  }
+
   ZoeSheetModel copyWith({
     String? title,
     String? description,
-    List<ContentBlockModel>? contentBlocks,
+    List<String>? contentList, // Changed to List<String>
     DateTime? updatedAt,
     String? emoji,
     String? coverImage,
@@ -54,7 +67,7 @@ class ZoeSheetModel {
       id: id,
       title: title ?? this.title,
       description: description ?? this.description,
-      contentBlocks: contentBlocks ?? this.contentBlocks,
+      contentList: contentList ?? this.contentList, // Changed to contentList
       createdAt: createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
       emoji: emoji ?? this.emoji,
@@ -62,40 +75,22 @@ class ZoeSheetModel {
     );
   }
 
-  // Helper methods for content blocks
-  void addContentBlock(ContentBlockModel block) {
-    contentBlocks.add(block);
+  // Utility method to add content ID
+  void addContentId(String contentId) {
+    contentList.add(contentId);
   }
 
-  void removeContentBlock(String blockId) {
-    contentBlocks.removeWhere((block) => block.id == blockId);
+  // Utility method to remove content ID
+  void removeContentId(String contentId) {
+    contentList.remove(contentId);
   }
 
-  void updateContentBlock(String blockId, ContentBlockModel updatedBlock) {
-    final index = contentBlocks.indexWhere((block) => block.id == blockId);
-    if (index != -1) {
-      contentBlocks[index] = updatedBlock;
-    }
-  }
-
-  void reorderContentBlocks(int oldIndex, int newIndex) {
+  // Utility method to reorder content IDs
+  void reorderContent(int oldIndex, int newIndex) {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
-    final ContentBlockModel item = contentBlocks.removeAt(oldIndex);
-    contentBlocks.insert(newIndex, item);
+    final String item = contentList.removeAt(oldIndex);
+    contentList.insert(newIndex, item);
   }
-
-  // Get specific types of content blocks
-  List<TodosContentModel> get todosBlocks =>
-      contentBlocks.whereType<TodosContentModel>().toList();
-
-  List<EventsContentModel> get eventsBlocks =>
-      contentBlocks.whereType<EventsContentModel>().toList();
-
-  List<BulletsContentModel> get bulletsBlocks =>
-      contentBlocks.whereType<BulletsContentModel>().toList();
-
-  List<TextContentModel> get textBlocks =>
-      contentBlocks.whereType<TextContentModel>().toList();
 }

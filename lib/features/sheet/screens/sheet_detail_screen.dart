@@ -46,13 +46,10 @@ class SheetDetailScreen extends ConsumerWidget {
       isEditing: isEditing,
       onReorder: (oldIndex, newIndex) => ref
           .read(sheetDetailProvider(sheetId).notifier)
-          .reorderContentBlocks(oldIndex, newIndex),
-      onUpdate: (blockId, updatedBlock) => ref
+          .reorderContent(oldIndex, newIndex),
+      onDelete: (contentId) => ref
           .read(sheetDetailProvider(sheetId).notifier)
-          .updateContentBlock(blockId, updatedBlock),
-      onDelete: (blockId) => ref
-          .read(sheetDetailProvider(sheetId).notifier)
-          .deleteContentBlock(blockId),
+          .deleteContent(contentId),
     );
   }
 
@@ -67,7 +64,7 @@ class SheetDetailScreen extends ConsumerWidget {
       onTriggerTap: () =>
           ref.read(sheetDetailProvider(sheetId).notifier).toggleAddMenu(),
       onAddBlock: (type) =>
-          ref.read(sheetDetailProvider(sheetId).notifier).addContentBlock(type),
+          ref.read(sheetDetailProvider(sheetId).notifier).addContent(type),
     );
   }
 }

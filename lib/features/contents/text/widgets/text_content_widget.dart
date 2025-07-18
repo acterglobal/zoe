@@ -34,30 +34,60 @@ class TextContentWidget extends ConsumerWidget {
     WidgetRef ref,
     String title,
   ) {
-    final controller = TextEditingController(text: title);
+    final controller = ref.watch(
+      textContentTitleControllerProvider(textContentId),
+    );
+    final updateContent = ref.read(textContentUpdateProvider);
+
     return TextField(
       controller: controller,
       maxLines: null,
       style: Theme.of(context).textTheme.titleMedium,
-      decoration: InputDecoration(hintText: 'Title'),
+      decoration: const InputDecoration(
+        hintText: 'Title',
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+      ),
+      onChanged: (value) {
+        updateContent(textContentId, title: value);
+      },
     );
   }
 
   Widget _buildDataTextField(BuildContext context, WidgetRef ref, String data) {
-    final controller = TextEditingController(text: data);
+    final controller = ref.watch(
+      textContentDataControllerProvider(textContentId),
+    );
+    final updateContent = ref.read(textContentUpdateProvider);
+
     return TextField(
       controller: controller,
       style: Theme.of(context).textTheme.bodyMedium,
       maxLines: null,
-      decoration: InputDecoration(hintText: 'Data'),
+      decoration: const InputDecoration(
+        hintText: 'Type something...',
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+      ),
+      onChanged: (value) {
+        updateContent(textContentId, data: value);
+      },
     );
   }
 
   Widget _buildTitleText(BuildContext context, WidgetRef ref, String title) {
-    return Text(title, style: Theme.of(context).textTheme.titleMedium);
+    return Text(
+      title.isEmpty ? 'Untitled' : title,
+      style: Theme.of(context).textTheme.titleMedium,
+    );
   }
 
   Widget _buildDataText(BuildContext context, WidgetRef ref, String data) {
-    return Text(data, style: Theme.of(context).textTheme.bodyMedium);
+    return Text(
+      data.isEmpty ? '' : data,
+      style: Theme.of(context).textTheme.bodyMedium,
+    );
   }
 }
