@@ -65,6 +65,41 @@ class TodosContentWidget extends ConsumerWidget {
         ),
         const SizedBox(height: 6),
         _buildTodosList(context, ref),
+        if (isEditing)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: GestureDetector(
+              onTap: () {
+                final currentTodosContent = ref.read(
+                  todosContentItemProvider(todosContentId),
+                );
+                final updatedItems = [
+                  ...currentTodosContent.items,
+                  TodoItem(title: ''),
+                ];
+                ref
+                    .read(todosContentUpdateProvider)
+                    .call(todosContentId, items: updatedItems);
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.add,
+                    size: 16,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Add to-do',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
       ],
     );
   }

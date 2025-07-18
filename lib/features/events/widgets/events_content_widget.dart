@@ -63,6 +63,41 @@ class EventsContentWidget extends ConsumerWidget {
         ),
         const SizedBox(height: 6),
         _buildEventsList(context, ref),
+        if (isEditing)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: GestureDetector(
+              onTap: () {
+                final currentEventsContent = ref.read(
+                  eventsContentItemProvider(eventsContentId),
+                );
+                final updatedEvents = [
+                  ...currentEventsContent.events,
+                  EventItem(title: ''),
+                ];
+                ref
+                    .read(eventsContentUpdateProvider)
+                    .call(eventsContentId, events: updatedEvents);
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.add,
+                    size: 16,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Add event',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -147,7 +182,7 @@ class EventsContentWidget extends ConsumerWidget {
                   ],
                 ),
                 Text(
-                  '${eventsContent.events[index].description}',
+                  eventsContent.events[index].description ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall,
