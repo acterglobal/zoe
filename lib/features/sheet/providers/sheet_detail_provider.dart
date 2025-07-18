@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/models/content_block/content_block.dart';
+import 'package:zoey/features/sheet/models/content_block.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
-import 'package:zoey/features/contents/text/models/text_content_model.dart';
-import 'package:zoey/features/contents/todos/models/todos_content_model.dart';
-import 'package:zoey/features/contents/events/models/events_content_model.dart';
-import 'package:zoey/features/contents/bullet-lists/models/bullets_content_model.dart';
-import 'package:zoey/features/contents/text/data/text_content_list.dart';
-import 'package:zoey/features/contents/todos/data/todos_content_list.dart';
-import 'package:zoey/features/contents/events/data/events_content_list.dart';
-import 'package:zoey/features/contents/bullet-lists/data/bullets_content_list.dart';
+import 'package:zoey/features/text/models/text_content_model.dart';
+import 'package:zoey/features/todos/models/todos_content_model.dart';
+import 'package:zoey/features/events/models/events_content_model.dart';
+import 'package:zoey/features/bullet-lists/models/bullets_content_model.dart';
+import 'package:zoey/features/text/data/text_content_list.dart';
+import 'package:zoey/features/todos/data/todos_content_list.dart';
+import 'package:zoey/features/events/data/events_content_list.dart';
+import 'package:zoey/features/bullet-lists/data/bullets_content_list.dart';
 import 'package:uuid/uuid.dart';
 
 /// State class for sheet detail

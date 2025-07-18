@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/features/sheet/models/content_block/content_block.dart';
+import 'package:zoey/features/sheet/models/content_block.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/add_block/add_block_option_widget.dart';
 
 /// Add block menu widget

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
-import 'package:zoey/features/contents/text/widgets/text_content_widget.dart';
-import 'package:zoey/features/contents/todos/widgets/todos_content_widget.dart';
-import 'package:zoey/features/contents/events/widgets/events_content_widget.dart';
-import 'package:zoey/features/contents/bullet-lists/widgets/bullets_content_widget.dart';
+import 'package:zoey/features/text/widgets/text_content_widget.dart';
+import 'package:zoey/features/todos/widgets/todos_content_widget.dart';
+import 'package:zoey/features/events/widgets/events_content_widget.dart';
+import 'package:zoey/features/bullet-lists/widgets/bullets_content_widget.dart';
 
 /// Content blocks widget for sheet detail screen
 class SheetContentBlocks extends StatelessWidget {
