@@ -25,7 +25,13 @@ class TextContentWidget extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 4),
-              child: Icon(Icons.text_fields, size: 16),
+              child: Icon(
+                Icons.text_fields,
+                size: 16,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
             ),
             const SizedBox(width: 6),
             Expanded(
@@ -35,7 +41,7 @@ class TextContentWidget extends ConsumerWidget {
                 controller: ref.watch(
                   textContentTitleControllerProvider(textContentId),
                 ),
-                textStyle: Theme.of(context).textTheme.titleMedium,
+                textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(textContentUpdateProvider)
                     .call(textContentId, 'title', value),

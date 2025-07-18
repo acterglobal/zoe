@@ -91,25 +91,41 @@ class SheetDetailScreen extends ConsumerWidget {
   /// Builds the add content area
   Widget _buildAddContentArea(BuildContext context, WidgetRef ref) {
     final showAddMenu = ref.watch(sheetDetailProvider(sheetId)).showAddMenu;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GestureDetector(
-          onTap: () =>
-              ref.read(sheetDetailProvider(sheetId).notifier).toggleAddMenu(),
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-            child: Row(
-              children: [
-                Icon(showAddMenu ? Icons.close : Icons.add, size: 20),
-                const SizedBox(width: 8),
-                Text(showAddMenu ? 'Cancel' : 'Add content'),
-              ],
-            ),
-          ),
-        ),
-        if (showAddMenu) AddContentMenu(sheetId: sheetId),
-      ],
-    );
+    final isEditing = ref.watch(isEditingProvider(sheetId));
+    return isEditing
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () => ref
+                    .read(sheetDetailProvider(sheetId).notifier)
+                    .toggleAddMenu(),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 4,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        showAddMenu ? Icons.close : Icons.add,
+                        size: 20,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        showAddMenu ? 'Cancel' : 'Add content',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (showAddMenu) AddContentMenu(sheetId: sheetId),
+            ],
+          )
+        : const SizedBox.shrink();
   }
 }

@@ -27,7 +27,13 @@ class BulletsContentWidget extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 4),
-              child: Icon(Icons.list, size: 16),
+              child: Icon(
+                Icons.list,
+                size: 16,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
             ),
             const SizedBox(width: 6),
             Expanded(
@@ -37,7 +43,7 @@ class BulletsContentWidget extends ConsumerWidget {
                 controller: ref.watch(
                   bulletsContentTitleControllerProvider(bulletsContentId),
                 ),
-                textStyle: Theme.of(context).textTheme.titleMedium,
+                textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(bulletsContentUpdateProvider)
                     .call(bulletsContentId, title: value),
@@ -61,6 +67,38 @@ class BulletsContentWidget extends ConsumerWidget {
         ),
         const SizedBox(height: 6),
         _buildBulletsList(context, ref),
+        if (isEditing)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: GestureDetector(
+              onTap: () {
+                final currentBulletsContent = ref.read(
+                  bulletsContentItemProvider(bulletsContentId),
+                );
+                final updatedBullets = [...currentBulletsContent.bullets, ''];
+                ref
+                    .read(bulletsContentUpdateProvider)
+                    .call(bulletsContentId, bullets: updatedBullets);
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.add,
+                    size: 16,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Add item',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -90,7 +128,11 @@ class BulletsContentWidget extends ConsumerWidget {
     );
     return Row(
       children: [
-        Icon(Icons.circle, size: 8),
+        Icon(
+          Icons.circle,
+          size: 8,
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+        ),
         const SizedBox(width: 6),
         Expanded(
           child: ZoeInlineTextEditWidget(

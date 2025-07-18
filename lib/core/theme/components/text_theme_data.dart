@@ -12,10 +12,14 @@ TextTheme textTheme(ColorScheme colorScheme) => TextTheme(
   ),
   bodyLarge: TextStyle(
     fontWeight: FontWeight.w400,
-    color: colorScheme.onSurface.withValues(alpha: 0.8),
+    color: colorScheme.onSurface.withValues(alpha: 0.7),
+  ),
+  bodyMedium: TextStyle(
+    fontWeight: FontWeight.w400,
+    color: colorScheme.onSurface.withValues(alpha: 0.7),
   ),
   bodySmall: TextStyle(
     fontWeight: FontWeight.w400,
-    color: colorScheme.onSurface.withValues(alpha: 0.6),
+    color: colorScheme.onSurface.withValues(alpha: 0.7),
   ),
 );

@@ -27,7 +27,13 @@ class TodosContentWidget extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 4),
-              child: Icon(Icons.checklist, size: 16),
+              child: Icon(
+                Icons.checklist,
+                size: 16,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
             ),
             const SizedBox(width: 6),
             Expanded(
@@ -37,7 +43,7 @@ class TodosContentWidget extends ConsumerWidget {
                 controller: ref.watch(
                   todosContentTitleControllerProvider(todosContentId),
                 ),
-                textStyle: Theme.of(context).textTheme.titleMedium,
+                textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(todosContentUpdateProvider)
                     .call(todosContentId, title: value),
@@ -59,6 +65,41 @@ class TodosContentWidget extends ConsumerWidget {
         ),
         const SizedBox(height: 6),
         _buildTodosList(context, ref),
+        if (isEditing)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: GestureDetector(
+              onTap: () {
+                final currentTodosContent = ref.read(
+                  todosContentItemProvider(todosContentId),
+                );
+                final updatedItems = [
+                  ...currentTodosContent.items,
+                  TodoItem(title: ''),
+                ];
+                ref
+                    .read(todosContentUpdateProvider)
+                    .call(todosContentId, items: updatedItems);
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.add,
+                    size: 16,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Add to-do',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -87,6 +128,13 @@ class TodosContentWidget extends ConsumerWidget {
     return Row(
       children: [
         Checkbox(
+          activeColor: Theme.of(context).colorScheme.primary,
+          checkColor: Colors.white,
+          side: BorderSide(
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.6),
+          ),
           value: todosContent.items[index].isCompleted,
           onChanged: (value) => ref
               .read(todosContentUpdateProvider)
@@ -107,7 +155,11 @@ class TodosContentWidget extends ConsumerWidget {
             hintText: 'Todo item',
             isEditing: isEditing,
             controller: titleController,
-            textStyle: Theme.of(context).textTheme.bodyMedium,
+            textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              decoration: todosContent.items[index].isCompleted
+                  ? TextDecoration.lineThrough
+                  : TextDecoration.none,
+            ),
             onTextChanged: (value) => ref
                 .read(todosContentUpdateProvider)
                 .call(
