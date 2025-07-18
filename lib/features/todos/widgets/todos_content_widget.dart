@@ -94,7 +94,7 @@ class TodosContentWidget extends ConsumerWidget {
       children: [
         Checkbox(
           activeColor: Theme.of(context).colorScheme.primary,
-          checkColor: Theme.of(context).colorScheme.onPrimary,
+          checkColor: Colors.white,
           side: BorderSide(
             color: Theme.of(
               context,

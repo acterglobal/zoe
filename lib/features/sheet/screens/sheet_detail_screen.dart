@@ -101,9 +101,18 @@ class SheetDetailScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
             child: Row(
               children: [
-                Icon(showAddMenu ? Icons.close : Icons.add, size: 20),
+                Icon(
+                  showAddMenu ? Icons.close : Icons.add,
+                  size: 20,
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.6),
+                ),
                 const SizedBox(width: 8),
-                Text(showAddMenu ? 'Cancel' : 'Add content'),
+                Text(
+                  showAddMenu ? 'Cancel' : 'Add content',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ],
             ),
           ),
