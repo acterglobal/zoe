@@ -8,10 +8,10 @@ import 'package:zoey/features/text/models/text_content_model.dart';
 import 'package:zoey/features/todos/models/todos_content_model.dart';
 import 'package:zoey/features/events/models/events_content_model.dart';
 import 'package:zoey/features/bullet-lists/models/bullets_content_model.dart';
-import 'package:zoey/features/text/data/text_content_list.dart';
-import 'package:zoey/features/todos/data/todos_content_list.dart';
-import 'package:zoey/features/events/data/events_content_list.dart';
-import 'package:zoey/features/bullet-lists/data/bullets_content_list.dart';
+import 'package:zoey/features/text/providers/text_content_list_provider.dart';
+import 'package:zoey/features/todos/providers/todos_content_list_provider.dart';
+import 'package:zoey/features/events/providers/events_content_list_provider.dart';
+import 'package:zoey/features/bullet-lists/providers/bullets_content_list_provider.dart';
 import 'package:uuid/uuid.dart';
 
 /// State class for sheet detail
@@ -179,7 +179,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
 
     final formattedId = '$prefix-$contentId';
 
-    // Create actual content in the appropriate content list
+    // Create actual content using StateNotifier providers
     switch (type) {
       case ContentType.todo:
         final newTodo = TodosContentModel(
@@ -188,7 +188,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           title: 'To-do',
           items: [TodoItem(title: '')],
         );
-        todosContentList.add(newTodo);
+        ref.read(todosContentListProvider.notifier).addContent(newTodo);
         break;
       case ContentType.event:
         final newEvent = EventsContentModel(
@@ -197,7 +197,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           title: 'Events',
           events: [EventItem(title: '')],
         );
-        eventsContentList.add(newEvent);
+        ref.read(eventsContentListProvider.notifier).addContent(newEvent);
         break;
       case ContentType.bullet:
         final newBullets = BulletsContentModel(
@@ -206,7 +206,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           title: 'List',
           bullets: [''],
         );
-        bulletsContentList.add(newBullets);
+        ref.read(bulletsContentListProvider.notifier).addContent(newBullets);
         break;
       case ContentType.text:
         final newText = TextContentModel(
@@ -215,7 +215,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           title: 'Text Block',
           data: '',
         );
-        textContentList.add(newText);
+        ref.read(textContentListProvider.notifier).addContent(newText);
         break;
     }
 
