@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/models/sheet_content_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/add_content/add_content_option_widget.dart';
 
 /// Add content menu widget
 class AddContentMenu extends ConsumerWidget {
@@ -21,7 +20,9 @@ class AddContentMenu extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          AddContentOptionWidget(
+          _buildAddContentOption(
+            context,
+            ref,
             icon: Icons.text_fields,
             title: 'Text',
             description: 'Start writing with plain text',
@@ -29,7 +30,9 @@ class AddContentMenu extends ConsumerWidget {
                 .read(sheetDetailProvider(sheetId).notifier)
                 .addContent(ContentType.text),
           ),
-          AddContentOptionWidget(
+          _buildAddContentOption(
+            context,
+            ref,
             icon: Icons.check_box_outlined,
             title: 'To-do list',
             description: 'Track tasks with checkboxes',
@@ -37,7 +40,9 @@ class AddContentMenu extends ConsumerWidget {
                 .read(sheetDetailProvider(sheetId).notifier)
                 .addContent(ContentType.todo),
           ),
-          AddContentOptionWidget(
+          _buildAddContentOption(
+            context,
+            ref,
             icon: Icons.event_outlined,
             title: 'Event',
             description: 'Schedule and track events',
@@ -45,7 +50,9 @@ class AddContentMenu extends ConsumerWidget {
                 .read(sheetDetailProvider(sheetId).notifier)
                 .addContent(ContentType.event),
           ),
-          AddContentOptionWidget(
+          _buildAddContentOption(
+            context,
+            ref,
             icon: Icons.list,
             title: 'Bulleted list',
             description: 'Create a simple bulleted list',
@@ -55,6 +62,49 @@ class AddContentMenu extends ConsumerWidget {
             isLast: true,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAddContentOption(
+    BuildContext context,
+    WidgetRef ref, {
+    required IconData icon,
+    required String title,
+    required String description,
+    required VoidCallback onTap,
+    bool isLast = false,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(6),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              size: 18,
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.7),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: Theme.of(context).textTheme.bodyMedium),
+                  const SizedBox(height: 2),
+                  Text(
+                    description,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
