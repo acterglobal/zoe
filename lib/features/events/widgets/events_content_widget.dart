@@ -19,16 +19,24 @@ class EventsContentWidget extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        ZoeInlineTextEditWidget(
-          hintText: 'Event list title',
-          isEditing: isEditing,
-          controller: ref.watch(
-            eventsContentTitleControllerProvider(eventsContentId),
-          ),
-          textStyle: Theme.of(context).textTheme.titleMedium,
-          onTextChanged: (value) => ref
-              .read(eventsContentUpdateProvider)
-              .call(eventsContentId, title: value),
+        Row(
+          children: [
+            Icon(Icons.calendar_month, size: 16),
+            const SizedBox(width: 6),
+            Expanded(
+              child: ZoeInlineTextEditWidget(
+                hintText: 'Event list title',
+                isEditing: isEditing,
+                controller: ref.watch(
+                  eventsContentTitleControllerProvider(eventsContentId),
+                ),
+                textStyle: Theme.of(context).textTheme.titleMedium,
+                onTextChanged: (value) => ref
+                    .read(eventsContentUpdateProvider)
+                    .call(eventsContentId, title: value),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 6),
         _buildEventsList(context, ref),
@@ -58,8 +66,12 @@ class EventsContentWidget extends ConsumerWidget {
       eventsContentItemTitleControllerProvider(titleControllerKey),
     );
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(Icons.event),
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Icon(Icons.event, size: 12),
+        ),
         const SizedBox(width: 6),
         Expanded(
           child: ZoeInlineTextEditWidget(
