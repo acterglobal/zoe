@@ -5,6 +5,7 @@ import 'package:zoey/features/sheet/models/content_block/todo_block_model.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 
 final gettingStartedSheet = ZoeSheetModel(
+  id: 'sheet-1',
   title: 'Getting Started Guide',
   description: 'Learn how to use Zoey effectively',
   emoji: '🚀',
