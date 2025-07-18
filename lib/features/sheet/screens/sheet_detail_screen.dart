@@ -21,6 +21,7 @@ class SheetDetailScreen extends ConsumerWidget {
 
   /// Builds the main body
   Widget _buildBody(BuildContext context, WidgetRef ref) {
+    final isEditing = ref.watch(isEditingProvider(sheetId ?? 'new'));
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -28,33 +29,11 @@ class SheetDetailScreen extends ConsumerWidget {
         children: [
           SheetPageHeader(sheetId: sheetId ?? 'new'),
           const SizedBox(height: 16),
-          _buildContentBlocks(context, ref),
-          _buildAddBlockArea(context, ref),
+          SheetContentBlocks(sheetId: sheetId ?? 'new', isEditing: isEditing),
+          SheetAddBlock(sheetId: sheetId ?? 'new'),
           const SizedBox(height: 200),
         ],
       ),
-    );
-  }
-
-  /// Builds the content blocks
-  Widget _buildContentBlocks(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditingProvider(sheetId));
-
-    return SheetContentBlocks(sheetId: sheetId ?? 'new', isEditing: isEditing);
-  }
-
-  /// Builds the add block area
-  Widget _buildAddBlockArea(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditingProvider(sheetId));
-    final showAddMenu = ref.watch(showAddMenuProvider(sheetId));
-
-    return SheetAddBlock(
-      isEditing: isEditing,
-      showAddMenu: showAddMenu,
-      onTriggerTap: () =>
-          ref.read(sheetDetailProvider(sheetId).notifier).toggleAddMenu(),
-      onAddBlock: (type) =>
-          ref.read(sheetDetailProvider(sheetId).notifier).addContent(type),
     );
   }
 }

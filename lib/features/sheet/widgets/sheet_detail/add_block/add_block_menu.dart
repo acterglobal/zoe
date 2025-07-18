@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/models/content_block.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/add_block/add_block_option_widget.dart';
 
 /// Add block menu widget
-class AddBlockMenu extends StatelessWidget {
-  final Function(ContentType type) onAddBlock;
+class AddBlockMenu extends ConsumerWidget {
+  final String sheetId;
 
-  const AddBlockMenu({super.key, required this.onAddBlock});
+  const AddBlockMenu({super.key, required this.sheetId});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.all(8),
@@ -23,25 +25,33 @@ class AddBlockMenu extends StatelessWidget {
             icon: Icons.text_fields,
             title: 'Text',
             description: 'Start writing with plain text',
-            onTap: () => onAddBlock(ContentType.text),
+            onTap: () => ref
+                .read(sheetDetailProvider(sheetId).notifier)
+                .addContent(ContentType.text),
           ),
           AddBlockOptionWidget(
             icon: Icons.check_box_outlined,
             title: 'To-do list',
             description: 'Track tasks with checkboxes',
-            onTap: () => onAddBlock(ContentType.todo),
+            onTap: () => ref
+                .read(sheetDetailProvider(sheetId).notifier)
+                .addContent(ContentType.todo),
           ),
           AddBlockOptionWidget(
             icon: Icons.event_outlined,
             title: 'Event',
             description: 'Schedule and track events',
-            onTap: () => onAddBlock(ContentType.event),
+            onTap: () => ref
+                .read(sheetDetailProvider(sheetId).notifier)
+                .addContent(ContentType.event),
           ),
           AddBlockOptionWidget(
             icon: Icons.list,
             title: 'Bulleted list',
             description: 'Create a simple bulleted list',
-            onTap: () => onAddBlock(ContentType.bullet),
+            onTap: () => ref
+                .read(sheetDetailProvider(sheetId).notifier)
+                .addContent(ContentType.bullet),
             isLast: true,
           ),
         ],

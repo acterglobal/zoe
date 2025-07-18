@@ -1,32 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/features/sheet/models/content_block.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/add_block/add_block_menu.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/add_block/add_block_trigger.dart';
 
 /// Add block widget for sheet detail screen
-class SheetAddBlock extends StatelessWidget {
-  final bool isEditing;
-  final bool showAddMenu;
-  final VoidCallback onTriggerTap;
-  final Function(ContentType type) onAddBlock;
+class SheetAddBlock extends ConsumerWidget {
+  final String sheetId;
 
-  const SheetAddBlock({
-    super.key,
-    required this.isEditing,
-    required this.showAddMenu,
-    required this.onTriggerTap,
-    required this.onAddBlock,
-  });
+  const SheetAddBlock({super.key, required this.sheetId});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final showAddMenu = ref.watch(sheetDetailProvider(sheetId)).showAddMenu;
+    final isEditing = ref.watch(isEditingProvider(sheetId));
+
     if (!isEditing) return const SizedBox.shrink();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AddBlockTrigger(showAddMenu: showAddMenu, onTap: onTriggerTap),
-        if (showAddMenu) AddBlockMenu(onAddBlock: onAddBlock),
+        AddBlockTrigger(sheetId: sheetId),
+        if (showAddMenu) AddBlockMenu(sheetId: sheetId),
       ],
     );
   }
