@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/text/widgets/text_content_widget.dart';
 import 'package:zoey/features/todos/widgets/todos_content_widget.dart';
 import 'package:zoey/features/events/widgets/events_content_widget.dart';
 import 'package:zoey/features/bullet-lists/widgets/bullets_content_widget.dart';
 
 /// Content blocks widget for sheet detail screen
-class SheetContentBlocks extends StatelessWidget {
-  final ZoeSheetModel currentSheet;
+class SheetContentBlocks extends ConsumerWidget {
+  final String sheetId;
   final bool isEditing;
-  final Function(int oldIndex, int newIndex) onReorder;
-  final Function(String contentId) onDelete;
 
   const SheetContentBlocks({
     super.key,
-    required this.currentSheet,
+    required this.sheetId,
     required this.isEditing,
-    required this.onReorder,
-    required this.onDelete,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentSheet = ref.watch(sheetProvider(sheetId));
     if (currentSheet.contentList.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -31,13 +29,15 @@ class SheetContentBlocks extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: currentSheet.contentList.length,
       buildDefaultDragHandles: false,
-      onReorder: onReorder,
-      itemBuilder: _buildContentItem,
+      onReorder: (oldIndex, newIndex) => ref
+          .read(sheetDetailProvider(sheetId).notifier)
+          .reorderContent(oldIndex, newIndex),
+      itemBuilder: (context, index) => _buildContentItem(context, ref, index),
     );
   }
 
-  Widget _buildContentItem(BuildContext context, int index) {
-    final contentId = currentSheet.contentList[index];
+  Widget _buildContentItem(BuildContext context, WidgetRef ref, int index) {
+    final contentId = ref.watch(sheetProvider(sheetId)).contentList[index];
 
     return Padding(
       key: ValueKey(contentId),

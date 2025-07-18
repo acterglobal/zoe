@@ -38,19 +38,9 @@ class SheetDetailScreen extends ConsumerWidget {
 
   /// Builds the content blocks
   Widget _buildContentBlocks(BuildContext context, WidgetRef ref) {
-    final currentSheet = ref.watch(sheetProvider(sheetId));
     final isEditing = ref.watch(isEditingProvider(sheetId));
 
-    return SheetContentBlocks(
-      currentSheet: currentSheet,
-      isEditing: isEditing,
-      onReorder: (oldIndex, newIndex) => ref
-          .read(sheetDetailProvider(sheetId).notifier)
-          .reorderContent(oldIndex, newIndex),
-      onDelete: (contentId) => ref
-          .read(sheetDetailProvider(sheetId).notifier)
-          .deleteContent(contentId),
-    );
+    return SheetContentBlocks(sheetId: sheetId ?? 'new', isEditing: isEditing);
   }
 
   /// Builds the add block area
