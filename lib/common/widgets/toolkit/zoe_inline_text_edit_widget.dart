@@ -24,11 +24,17 @@ class ZoeInlineTextEditWidget extends StatelessWidget {
             style: textStyle,
             decoration: InputDecoration(
               hintText: hintText,
+              isDense: true,
               contentPadding: EdgeInsets.zero,
             ),
             maxLines: null,
             onChanged: onTextChanged,
           )
-        : Text(controller.text, style: textStyle);
+        : Text(
+            controller.text.isEmpty ? (hintText ?? '') : controller.text,
+            style: controller.text.isEmpty && hintText != null
+                ? textStyle?.copyWith(color: Theme.of(context).hintColor)
+                : textStyle,
+          );
   }
 }
