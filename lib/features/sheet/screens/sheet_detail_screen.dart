@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/add_block/add_block_menu.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/add_content/add_content_menu.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/app_bar/sheet_detail_app_bar.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_description_widget.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_emoji_widget.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/content/sheet_content_blocks.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/content/sheet_contents.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/header/sheet_title_widget.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
@@ -30,8 +30,8 @@ class SheetDetailScreen extends ConsumerWidget {
         children: [
           _buildHeader(context, ref),
           const SizedBox(height: 16),
-          SheetContentBlocks(sheetId: sheetId),
-          _buildContentBlocks(context, ref),
+          SheetContents(sheetId: sheetId),
+          _buildAddContentArea(context, ref),
           const SizedBox(height: 200),
         ],
       ),
@@ -57,8 +57,8 @@ class SheetDetailScreen extends ConsumerWidget {
     );
   }
 
-  /// Builds the content blocks
-  Widget _buildContentBlocks(BuildContext context, WidgetRef ref) {
+  /// Builds the add content area
+  Widget _buildAddContentArea(BuildContext context, WidgetRef ref) {
     final showAddMenu = ref.watch(sheetDetailProvider(sheetId)).showAddMenu;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,12 +72,12 @@ class SheetDetailScreen extends ConsumerWidget {
               children: [
                 Icon(showAddMenu ? Icons.close : Icons.add, size: 20),
                 const SizedBox(width: 8),
-                Text(showAddMenu ? 'Cancel' : 'Add a block'),
+                Text(showAddMenu ? 'Cancel' : 'Add content'),
               ],
             ),
           ),
         ),
-        if (showAddMenu) AddBlockMenu(sheetId: sheetId),
+        if (showAddMenu) AddContentMenu(sheetId: sheetId),
       ],
     );
   }

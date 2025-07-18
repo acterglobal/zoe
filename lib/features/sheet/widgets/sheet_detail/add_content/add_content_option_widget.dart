@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// A reusable widget for add block options in the sheet detail screen
-class AddBlockOptionWidget extends StatelessWidget {
+/// A reusable widget for add content options in the sheet detail screen
+class AddContentOptionWidget extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
   final VoidCallback onTap;
   final bool isLast;
 
-  const AddBlockOptionWidget({
+  const AddContentOptionWidget({
     super.key,
     required this.icon,
     required this.title,

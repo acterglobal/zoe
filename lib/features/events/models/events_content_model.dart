@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
-import 'package:zoey/features/sheet/models/content_block.dart';
+import 'package:zoey/features/sheet/models/sheet_content_model.dart';
 
-class EventsContentModel extends ContentBlockModel {
+class EventsContentModel extends SheetContentModel {
   final String parentId;
   final String title;
   final List<EventItem> events;

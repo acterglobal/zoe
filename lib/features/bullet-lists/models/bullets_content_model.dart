@@ -1,6 +1,6 @@
-import 'package:zoey/features/sheet/models/content_block.dart';
+import 'package:zoey/features/sheet/models/sheet_content_model.dart';
 
-class BulletsContentModel extends ContentBlockModel {
+class BulletsContentModel extends SheetContentModel {
   final String parentId;
   final String title;
   final List<String> bullets;

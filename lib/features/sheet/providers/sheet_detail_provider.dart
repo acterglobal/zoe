@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/models/content_block.dart';
+import 'package:zoey/features/sheet/models/sheet_content_model.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';

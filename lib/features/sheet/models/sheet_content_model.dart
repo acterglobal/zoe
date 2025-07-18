@@ -2,13 +2,13 @@ import 'package:uuid/uuid.dart';
 
 enum ContentType { todo, event, bullet, text }
 
-abstract class ContentBlockModel {
+abstract class SheetContentModel {
   final String id;
   final ContentType type;
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  ContentBlockModel({
+  SheetContentModel({
     String? id,
     required this.type,
     DateTime? createdAt,
@@ -18,5 +18,5 @@ abstract class ContentBlockModel {
        updatedAt = updatedAt ?? DateTime.now();
 
   Map<String, dynamic> toJson();
-  ContentBlockModel copyWith({DateTime? updatedAt});
+  SheetContentModel copyWith({DateTime? updatedAt});
 }

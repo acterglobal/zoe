@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/models/content_block.dart';
+import 'package:zoey/features/sheet/models/sheet_content_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/add_block/add_block_option_widget.dart';
+import 'package:zoey/features/sheet/widgets/sheet_detail/add_content/add_content_option_widget.dart';
 
-/// Add block menu widget
-class AddBlockMenu extends ConsumerWidget {
+/// Add content menu widget
+class AddContentMenu extends ConsumerWidget {
   final String? sheetId;
 
-  const AddBlockMenu({super.key, required this.sheetId});
+  const AddContentMenu({super.key, required this.sheetId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +21,7 @@ class AddBlockMenu extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          AddBlockOptionWidget(
+          AddContentOptionWidget(
             icon: Icons.text_fields,
             title: 'Text',
             description: 'Start writing with plain text',
@@ -29,7 +29,7 @@ class AddBlockMenu extends ConsumerWidget {
                 .read(sheetDetailProvider(sheetId).notifier)
                 .addContent(ContentType.text),
           ),
-          AddBlockOptionWidget(
+          AddContentOptionWidget(
             icon: Icons.check_box_outlined,
             title: 'To-do list',
             description: 'Track tasks with checkboxes',
@@ -37,7 +37,7 @@ class AddBlockMenu extends ConsumerWidget {
                 .read(sheetDetailProvider(sheetId).notifier)
                 .addContent(ContentType.todo),
           ),
-          AddBlockOptionWidget(
+          AddContentOptionWidget(
             icon: Icons.event_outlined,
             title: 'Event',
             description: 'Schedule and track events',
@@ -45,7 +45,7 @@ class AddBlockMenu extends ConsumerWidget {
                 .read(sheetDetailProvider(sheetId).notifier)
                 .addContent(ContentType.event),
           ),
-          AddBlockOptionWidget(
+          AddContentOptionWidget(
             icon: Icons.list,
             title: 'Bulleted list',
             description: 'Create a simple bulleted list',

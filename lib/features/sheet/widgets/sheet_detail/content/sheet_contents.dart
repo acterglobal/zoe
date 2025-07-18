@@ -6,11 +6,11 @@ import 'package:zoey/features/todos/widgets/todos_content_widget.dart';
 import 'package:zoey/features/events/widgets/events_content_widget.dart';
 import 'package:zoey/features/bullet-lists/widgets/bullets_content_widget.dart';
 
-/// Content blocks widget for sheet detail screen
-class SheetContentBlocks extends ConsumerWidget {
+/// Contents widget for sheet detail screen
+class SheetContents extends ConsumerWidget {
   final String? sheetId;
 
-  const SheetContentBlocks({super.key, required this.sheetId});
+  const SheetContents({super.key, required this.sheetId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
