@@ -161,8 +161,8 @@ class ListBlockWidget extends ConsumerWidget {
           if (isEditing) ...[
             GestureDetector(
               onTap: () => context.push(
-                AppRoutes.listBlockDetail.route.replaceAll(
-                  ':listBlockId',
+                AppRoutes.listItemDetail.route.replaceAll(
+                  ':listItemId',
                   listItem.id,
                 ),
               ),

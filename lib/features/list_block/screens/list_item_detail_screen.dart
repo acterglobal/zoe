@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ListBlockDetailScreen extends ConsumerWidget {
-  final String? listBlockId;
+class ListItemDetailScreen extends ConsumerWidget {
+  final String? listItemId;
 
-  const ListBlockDetailScreen({super.key, this.listBlockId});
+  const ListItemDetailScreen({super.key, this.listItemId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
