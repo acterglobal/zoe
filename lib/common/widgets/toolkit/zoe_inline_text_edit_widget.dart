@@ -59,7 +59,7 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
             initialContent: controller.text,
             initialRichContent: widget.text,
             isEditing: widget.isEditing,
-            placeholder: widget.hintText,
+            hintText: widget.hintText,
             textStyle: widget.textStyle,
             onContentChanged: (plainText, richTextJson) {
               widget.onHtmlChanged!(plainText, richTextJson);

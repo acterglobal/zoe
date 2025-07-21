@@ -3,15 +3,14 @@ import 'package:flutter_quill/flutter_quill.dart';
 
 /// Centralized configuration for QuillEditor styling and behavior
 class QuillEditorStyles {
-  
   /// Get the default QuillEditor configuration for editing mode
   QuillEditorConfig getEditingConfig({
-    String? placeholder,
+    String? hintText,
     EdgeInsets? padding,
     bool autoFocus = false,
   }) {
     return QuillEditorConfig(
-      placeholder: placeholder ?? 'Start writing...',
+      placeholder: hintText ?? '',
       padding: padding ?? const EdgeInsets.all(16),
       autoFocus: autoFocus,
       expands: false,
@@ -21,9 +20,7 @@ class QuillEditorStyles {
   }
 
   /// Get the default QuillEditor configuration for view mode
-  QuillEditorConfig getViewConfig({
-    EdgeInsets? padding,
-  }) {
+  QuillEditorConfig getViewConfig({EdgeInsets? padding}) {
     return QuillEditorConfig(
       padding: padding ?? EdgeInsets.zero,
       autoFocus: false,
@@ -36,9 +33,7 @@ class QuillEditorStyles {
   /// Get the default QuillController configuration
   QuillControllerConfig getControllerConfig() {
     return QuillControllerConfig(
-      clipboardConfig: QuillClipboardConfig(
-        enableExternalRichPaste: true,
-      ),
+      clipboardConfig: QuillClipboardConfig(enableExternalRichPaste: true),
     );
   }
 
@@ -57,10 +52,7 @@ class QuillEditorStyles {
         BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: Colors.grey.shade700,
-            width: 1,
-          ),
+          border: Border.all(color: Colors.grey.shade700, width: 1),
         ),
       ),
     );

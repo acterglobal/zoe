@@ -8,7 +8,7 @@ class ZoeHtmlTextEditWidget extends StatefulWidget {
   final String? initialContent;
   final String? initialRichContent;
   final bool isEditing;
-  final String? placeholder;
+  final String? hintText;
   final EdgeInsets? padding;
   final bool autoFocus;
   final Function(String plainText, String richTextJson)? onContentChanged;
@@ -20,7 +20,7 @@ class ZoeHtmlTextEditWidget extends StatefulWidget {
     this.initialContent,
     this.initialRichContent,
     required this.isEditing,
-    this.placeholder,
+    this.hintText,
     this.padding,
     this.autoFocus = false,
     this.onContentChanged,
@@ -129,7 +129,7 @@ class _ZoeHtmlTextEditWidgetState extends State<ZoeHtmlTextEditWidget> {
         scrollController: _editorManager.scrollController!,
         controller: _editorManager.controller!,
         config: _editorStyles.getEditingConfig(
-          placeholder: widget.placeholder,
+          hintText: widget.hintText,
           padding: widget.padding,
           autoFocus: widget.autoFocus,
         ),
@@ -167,7 +167,10 @@ class _ZoeHtmlTextEditWidgetState extends State<ZoeHtmlTextEditWidget> {
         ),
       );
     } else {
-      return const SizedBox.shrink();
+      return Text(
+        widget.hintText ?? '',
+        style: widget.textStyle?.copyWith(color: Theme.of(context).hintColor),
+      );
     }
   }
 }
