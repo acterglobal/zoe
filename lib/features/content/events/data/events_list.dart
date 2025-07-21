@@ -1,4 +1,4 @@
-import 'package:zoey/features/events/models/events_model.dart';
+import 'package:zoey/features/content/events/models/events_model.dart';
 
 final eventsList = [
   EventModel(

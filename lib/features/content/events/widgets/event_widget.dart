@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/events/models/events_model.dart';
-import 'package:zoey/features/events/providers/events_proivder.dart';
+import 'package:zoey/features/content/events/models/events_model.dart';
+import 'package:zoey/features/content/events/providers/events_proivder.dart';
 
 class EventWidget extends ConsumerWidget {
   final String eventsId;

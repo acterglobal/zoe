@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/todos/data/todos_content_list.dart';
-import 'package:zoey/features/todos/models/todos_content_model.dart';
+import 'package:zoey/features/content/list/list_todos/data/todos_content_list.dart';
+import 'package:zoey/features/content/list/list_todos/models/todos_content_model.dart';
 
 // StateNotifier for managing the todos content list
 class TodosContentListNotifier extends StateNotifier<List<TodosContentModel>> {

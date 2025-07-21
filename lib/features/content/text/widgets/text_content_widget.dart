@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/text/providers/text_content_proivder.dart';
+import 'package:zoey/features/content/text/providers/text_content_proivder.dart';
 
 class TextContentWidget extends ConsumerWidget {
   final String textContentId;

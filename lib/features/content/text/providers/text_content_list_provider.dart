@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/text/data/text_content_list.dart';
-import 'package:zoey/features/text/models/text_content_model.dart';
+import 'package:zoey/features/content/text/data/text_content_list.dart';
+import 'package:zoey/features/content/text/models/text_content_model.dart';
 
 // StateNotifier provider for the text content list
 final textContentListProvider =

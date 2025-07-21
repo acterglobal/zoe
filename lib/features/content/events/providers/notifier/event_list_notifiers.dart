@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/events/data/events_list.dart';
-import 'package:zoey/features/events/models/events_model.dart';
+import 'package:zoey/features/content/events/data/events_list.dart';
+import 'package:zoey/features/content/events/models/events_model.dart';
 
 class EventsListNotifier extends StateNotifier<List<EventModel>> {
   EventsListNotifier() : super(eventsList);

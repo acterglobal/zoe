@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/bullets/providers/bullet_item_provider.dart';
+import 'package:zoey/features/content/list/list_bullets/providers/bullet_item_provider.dart';
 
 class BulletItemWidget extends ConsumerWidget {
   final String bulletItemId;

@@ -1,4 +1,4 @@
-import 'package:zoey/features/todos/models/todos_content_model.dart';
+import 'package:zoey/features/content/list/list_todos/models/todos_content_model.dart';
 
 final todosContentList = [
   TodosContentModel(

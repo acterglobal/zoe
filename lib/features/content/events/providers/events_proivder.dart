@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/events/models/events_model.dart';
-import 'package:zoey/features/events/providers/events_list_provider.dart';
+import 'package:zoey/features/content/events/models/events_model.dart';
+import 'package:zoey/features/content/events/providers/events_list_provider.dart';
 
 final eventsProvider = Provider.family<EventModel, String>((ref, String id) {
   try {

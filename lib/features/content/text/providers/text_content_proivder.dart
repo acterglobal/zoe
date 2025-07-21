@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/text/models/text_content_model.dart';
-import 'package:zoey/features/text/providers/text_content_list_provider.dart';
+import 'package:zoey/features/content/text/models/text_content_model.dart';
+import 'package:zoey/features/content/text/providers/text_content_list_provider.dart';
 
 final textContentProvider = Provider.family<TextContentModel?, String>((
   ref,

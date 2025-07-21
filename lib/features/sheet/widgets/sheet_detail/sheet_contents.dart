@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/events/widgets/event_widget.dart';
+import 'package:zoey/features/content/events/widgets/event_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/text/widgets/text_content_widget.dart';
-import 'package:zoey/features/todos/widgets/todos_content_widget.dart';
-import 'package:zoey/features/list/widgets/list_widget.dart';
+import 'package:zoey/features/content/text/widgets/text_content_widget.dart';
+import 'package:zoey/features/content/list/list_todos/widgets/todos_content_widget.dart';
+import 'package:zoey/features/content/list/widgets/list_widget.dart';
 
 /// Contents widget for sheet detail screen
 class SheetContents extends ConsumerWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/todos/models/todos_content_model.dart';
-import 'package:zoey/features/todos/providers/todos_content_list_provider.dart';
+import 'package:zoey/features/content/list/list_todos/models/todos_content_model.dart';
+import 'package:zoey/features/content/list/list_todos/providers/todos_content_list_provider.dart';
 
 final todosContentItemProvider = Provider.family<TodosContentModel, String>((
   ref,

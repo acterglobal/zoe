@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/features/bullets/providers/bullet_list_providers.dart';
-import 'package:zoey/features/list/providers/list_proivder.dart';
-import 'package:zoey/features/bullets/widgets/bullet_list_widget.dart';
+import 'package:zoey/features/content/list/list_bullets/providers/bullet_list_providers.dart';
+import 'package:zoey/features/content/list/providers/list_proivder.dart';
+import 'package:zoey/features/content/list/list_bullets/widgets/bullet_list_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 class ListWidget extends ConsumerWidget {

@@ -7,8 +7,8 @@ import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/todos/models/todos_content_model.dart';
-import 'package:zoey/features/todos/providers/todos_content_item_proivder.dart';
+import 'package:zoey/features/content/list/list_todos/models/todos_content_model.dart';
+import 'package:zoey/features/content/list/list_todos/providers/todos_content_item_proivder.dart';
 
 class TodosContentWidget extends ConsumerWidget {
   final String todosContentId;

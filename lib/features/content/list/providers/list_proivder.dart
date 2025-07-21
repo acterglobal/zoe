@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/list/models/list_model.dart';
-import 'package:zoey/features/list/providers/lists_provider.dart';
+import 'package:zoey/features/content/list/models/list_model.dart';
+import 'package:zoey/features/content/list/providers/lists_provider.dart';
 
 final listProvider = Provider.family<ListModel?, String>((ref, String listId) {
   final listBlocks = ref.watch(listsProvider);
