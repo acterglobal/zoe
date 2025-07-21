@@ -2,72 +2,32 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/list_block/models/list_block_model.dart';
 import 'package:zoey/features/list_block/providers/list_block_list_provider.dart';
 
-final bulletsContentItemProvider = Provider.family<ListBlockModel, String>((
+final listBlockProvider = Provider.family<ListBlockModel?, String>((
   ref,
-  String id,
+  String listBlockId,
 ) {
+  final listBlocks = ref.watch(listBlockListProvider);
   try {
-    return ref
-        .watch(bulletsContentListProvider)
-        .firstWhere((element) => element.id == id);
+    return listBlocks.firstWhere((listBlock) => listBlock.id == listBlockId);
   } catch (e) {
-    // Return a default bullets content if ID not found
-    return ListBlockModel(
-      parentId: 'default',
-      id: id,
-      title: 'Content not found',
-      listItems: [
-        ListItem(title: 'The content with ID "$id" could not be found.'),
-      ],
-    );
+    // Return null if no matching list block is found
+    return null;
   }
 });
 
-// Provider to find a specific BulletItem by ID across all bullets content
-final listItemProvider = Provider.family<ListItem?, String>((
+final listBlockTitleUpdateProvider = Provider<void Function(String, String)>((
   ref,
-  String listItemId,
 ) {
-  final allBulletsContent = ref.watch(bulletsContentListProvider);
-
-  for (final content in allBulletsContent) {
-    for (final listItem in content.listItems) {
-      if (listItem.id == listItemId) {
-        return listItem;
-      }
-    }
-  }
-
-  return null; // Return null if not found
+  return (String blockId, String title) {
+    ref.read(listBlockListProvider.notifier).updateBlock(blockId, title: title);
+  };
 });
 
-// Provider to find the parent BulletsContentModel for a specific BulletItem
-final listItemParentProvider = Provider.family<ListBlockModel?, String>((
-  ref,
-  String listItemId,
-) {
-  final allBulletsContent = ref.watch(bulletsContentListProvider);
-
-  for (final content in allBulletsContent) {
-    for (final listItem in content.listItems) {
-      if (listItem.id == listItemId) {
-        return content;
-      }
-    }
-  }
-
-  return null; // Return null if not found
-});
-
-// Direct update provider - saves immediately using StateNotifier
-final bulletsContentUpdateProvider =
-    Provider<void Function(String, {String? title, List<ListItem>? listItems})>(
-      (ref) {
-        return (String contentId, {String? title, List<ListItem>? listItems}) {
-          // Update using the StateNotifier for immediate reactivity
-          ref
-              .read(bulletsContentListProvider.notifier)
-              .updateContent(contentId, title: title, listItems: listItems);
-        };
-      },
-    );
+final listBlockListUpdateProvider =
+    Provider<void Function(String, List<ListItem>)>((ref) {
+      return (String blockId, List<ListItem> listItems) {
+        ref
+            .read(listBlockListProvider.notifier)
+            .updateBlock(blockId, listItems: listItems);
+      };
+    });

@@ -128,7 +128,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     } else if (blockId.startsWith('events-')) {
       ref.read(eventsContentListProvider.notifier).removeContent(blockId);
     } else if (blockId.startsWith('bullets-')) {
-      ref.read(bulletsContentListProvider.notifier).removeContent(blockId);
+      ref.read(listBlockListProvider.notifier).removeBlock(blockId);
     }
   }
 
@@ -200,7 +200,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           title: 'List',
           listItems: [ListItem(title: '')],
         );
-        ref.read(bulletsContentListProvider.notifier).addContent(newBullets);
+        ref.read(listBlockListProvider.notifier).addBlock(newBullets);
         break;
       case ContentType.text:
         final newText = TextBlockModel(

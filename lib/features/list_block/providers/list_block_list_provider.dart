@@ -2,48 +2,44 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/list_block/data/list_block_list.dart';
 import 'package:zoey/features/list_block/models/list_block_model.dart';
 
-// StateNotifier for managing the bullets content list
-class BulletsContentListNotifier extends StateNotifier<List<ListBlockModel>> {
-  BulletsContentListNotifier() : super(bulletsContentList);
+// StateNotifier provider for the list block list
+final listBlockListProvider =
+    StateNotifierProvider<ListBlockListNotifier, List<ListBlockModel>>((ref) {
+      return ListBlockListNotifier();
+    });
 
-  // Update a specific content item
-  void updateContent(String id, {String? title, List<ListItem>? listItems}) {
-    state = state.map((content) {
-      if (content.id == id) {
-        return content.copyWith(
-          title: title ?? content.title,
-          listItems: listItems ?? content.listItems,
+// StateNotifier for managing the list block list
+class ListBlockListNotifier extends StateNotifier<List<ListBlockModel>> {
+  ListBlockListNotifier() : super(listBlockList);
+
+  // Update a specific list block item
+  void updateBlock(String id, {String? title, List<ListItem>? listItems}) {
+    state = state.map((listBlock) {
+      if (listBlock.id == id) {
+        return listBlock.copyWith(
+          title: title ?? listBlock.title,
+          listItems: listItems ?? listBlock.listItems,
         );
       }
-      return content;
+      return listBlock;
     }).toList();
 
     // Also update the original list to keep it in sync
-    final index = bulletsContentList.indexWhere((element) => element.id == id);
+    final index = listBlockList.indexWhere((element) => element.id == id);
     if (index != -1) {
-      bulletsContentList[index] = state.firstWhere(
-        (element) => element.id == id,
-      );
+      listBlockList[index] = state.firstWhere((element) => element.id == id);
     }
   }
 
-  // Add new content
-  void addContent(ListBlockModel content) {
-    state = [...state, content];
-    bulletsContentList.add(content);
+  // Add new list block
+  void addBlock(ListBlockModel listBlock) {
+    state = [...state, listBlock];
+    listBlockList.add(listBlock);
   }
 
-  // Remove content
-  void removeContent(String id) {
-    state = state.where((content) => content.id != id).toList();
-    bulletsContentList.removeWhere((element) => element.id == id);
+  // Remove list block
+  void removeBlock(String id) {
+    state = state.where((listBlock) => listBlock.id != id).toList();
+    listBlockList.removeWhere((element) => element.id == id);
   }
 }
-
-// StateNotifier provider for the bullets content list
-final bulletsContentListProvider =
-    StateNotifierProvider<BulletsContentListNotifier, List<ListBlockModel>>((
-      ref,
-    ) {
-      return BulletsContentListNotifier();
-    });

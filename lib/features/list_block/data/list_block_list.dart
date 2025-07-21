@@ -1,6 +1,6 @@
 import 'package:zoey/features/list_block/models/list_block_model.dart';
 
-final bulletsContentList = [
+final listBlockList = [
   ListBlockModel(
     parentId: 'sheet-1',
     id: 'list-block-1',

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/list_block/models/list_block_model.dart';
 import 'package:zoey/features/list_block/providers/list_block_proivder.dart';
+import 'package:zoey/features/list_block/widgets/list_item_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 class ListBlockWidget extends ConsumerWidget {
@@ -20,6 +18,9 @@ class ListBlockWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final listBlock = ref.watch(listBlockProvider(listBlockId));
+    if (listBlock == null) return const SizedBox.shrink();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -27,166 +28,110 @@ class ListBlockWidget extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Icon(
-                Icons.list,
-                size: 16,
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
-            ),
-            const SizedBox(width: 6),
+            _buildListBlockIcon(context),
             Expanded(
-              child: ZoeInlineTextEditWidget(
-                hintText: 'List title',
-                isEditing: isEditing,
-                text: ref.watch(bulletsContentItemProvider(listBlockId)).title,
-                textStyle: Theme.of(context).textTheme.bodyLarge,
-                onTextChanged: (value) => ref
-                    .read(bulletsContentUpdateProvider)
-                    .call(listBlockId, title: value),
-              ),
+              child: _buildListBlockTitle(context, ref, listBlock.title),
             ),
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
                 onTap: () {
-                  final bulletsContent = ref.read(
-                    bulletsContentItemProvider(listBlockId),
-                  );
-                  ref
-                      .read(
-                        sheetDetailProvider(bulletsContent.parentId).notifier,
-                      )
-                      .deleteBlock(listBlockId);
+                  final listBlock = ref.read(listBlockProvider(listBlockId));
+                  if (listBlock != null) {
+                    ref
+                        .read(sheetDetailProvider(listBlock.parentId).notifier)
+                        .deleteBlock(listBlockId);
+                  }
                 },
               ),
           ],
         ),
         const SizedBox(height: 6),
-        _buildBulletsList(context, ref),
-        if (isEditing)
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: GestureDetector(
-              onTap: () {
-                final currentBulletsContent = ref.read(
-                  bulletsContentItemProvider(listBlockId),
-                );
-                final updatedBullets = [
-                  ...currentBulletsContent.listItems,
-                  ListItem(title: ''),
-                ];
-                ref
-                    .read(bulletsContentUpdateProvider)
-                    .call(listBlockId, listItems: updatedBullets);
-              },
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.add,
-                    size: 16,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    'Add item',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+        _buildListBlockListItems(context, ref, listBlock.listItems),
+        if (isEditing) _buildAddListItemButton(context, ref),
       ],
     );
   }
 
-  Widget _buildBulletsList(BuildContext context, WidgetRef ref) {
-    final bulletsContent = ref.watch(bulletsContentItemProvider(listBlockId));
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: bulletsContent.listItems.length,
-      itemBuilder: (context, index) =>
-          _buildListItem(context, ref, bulletsContent, index),
+  // Builds the list block icon
+  Widget _buildListBlockIcon(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4, right: 6),
+      child: Icon(
+        Icons.list,
+        size: 16,
+        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+      ),
     );
   }
 
-  Widget _buildListItem(
+  // Builds the list block title
+  Widget _buildListBlockTitle(
     BuildContext context,
     WidgetRef ref,
-    ListBlockModel listBlock,
-    int index,
+    String title,
   ) {
-    final listItem = listBlock.listItems[index];
+    return ZoeInlineTextEditWidget(
+      hintText: 'List title',
+      isEditing: isEditing,
+      text: title,
+      textStyle: Theme.of(context).textTheme.bodyLarge,
+      onTextChanged: (value) =>
+          ref.read(listBlockTitleUpdateProvider).call(listBlockId, value),
+    );
+  }
 
+  Widget _buildListBlockListItems(
+    BuildContext context,
+    WidgetRef ref,
+    List<ListItem> listItems,
+  ) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: listItems.length,
+      itemBuilder: (context, index) => ListItemWidget(
+        listBlockId: listBlockId,
+        listItem: listItems[index],
+        isEditing: isEditing,
+      ),
+    );
+  }
+
+  // Builds the add list item button
+  Widget _buildAddListItemButton(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Icon(
-            Icons.circle,
-            size: 8,
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: 0.6),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: ZoeInlineTextEditWidget(
-              hintText: 'List item',
-              isEditing: isEditing,
-              text: listItem.title,
-              textStyle: Theme.of(context).textTheme.bodyMedium,
-              onTextChanged: (value) => ref
-                  .read(bulletsContentUpdateProvider)
-                  .call(
-                    listBlockId,
-                    listItems: [
-                      ...listBlock.listItems.map(
-                        (listItem) => listItem.id == listItem.id
-                            ? listItem.copyWith(title: value)
-                            : listItem,
-                      ),
-                    ],
-                  ),
-            ),
-          ),
-          const SizedBox(width: 6),
-          if (isEditing) ...[
-            GestureDetector(
-              onTap: () => context.push(
-                AppRoutes.listItemDetail.route.replaceAll(
-                  ':listItemId',
-                  listItem.id,
-                ),
-              ),
-              child: Icon(
-                Icons.edit,
-                size: 16,
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.4),
-              ),
+      padding: const EdgeInsets.only(top: 8),
+      child: GestureDetector(
+        onTap: () {
+          final currentListBlock = ref.read(listBlockProvider(listBlockId));
+          if (currentListBlock != null) {
+            final updatedBullets = [
+              ...currentListBlock.listItems,
+              ListItem(title: ''),
+            ];
+            ref
+                .read(listBlockListUpdateProvider)
+                .call(listBlockId, updatedBullets);
+          }
+        },
+        child: Row(
+          children: [
+            Icon(
+              Icons.add,
+              size: 16,
+              color: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(width: 6),
-            ZoeCloseButtonWidget(
-              onTap: () {
-                final updatedItems = listBlock.listItems
-                    .where((item) => item.id != listItem.id)
-                    .toList();
-                ref
-                    .read(bulletsContentUpdateProvider)
-                    .call(listBlockId, listItems: updatedItems);
-              },
+            Text(
+              'Add item',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 14,
+              ),
             ),
           ],
-        ],
+        ),
       ),
     );
   }
