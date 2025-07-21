@@ -19,15 +19,11 @@ class SheetDetailState {
   final ZoeSheetModel sheet;
   final bool isEditing;
   final bool showAddMenu;
-  final TextEditingController titleController;
-  final TextEditingController descriptionController;
 
   SheetDetailState({
     required this.sheet,
     required this.isEditing,
     required this.showAddMenu,
-    required this.titleController,
-    required this.descriptionController,
   });
 
   SheetDetailState copyWith({
@@ -41,9 +37,6 @@ class SheetDetailState {
       sheet: sheet ?? this.sheet,
       isEditing: isEditing ?? this.isEditing,
       showAddMenu: showAddMenu ?? this.showAddMenu,
-      titleController: titleController ?? this.titleController,
-      descriptionController:
-          descriptionController ?? this.descriptionController,
     );
   }
 }
@@ -84,17 +77,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
       sheet: sheet,
       isEditing: isEditing,
       showAddMenu: false,
-      titleController: TextEditingController(text: sheet.title),
-      descriptionController: TextEditingController(text: sheet.description),
     );
-  }
-
-  /// Dispose controllers when notifier is disposed
-  @override
-  void dispose() {
-    state.titleController.dispose();
-    state.descriptionController.dispose();
-    super.dispose();
   }
 
   /// Toggle edit/save mode
@@ -215,7 +198,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           parentId: state.sheet.id,
           id: formattedId,
           title: 'List',
-          bullets: [''],
+          bullets: [BulletItem(title: '')],
         );
         ref.read(bulletsContentListProvider.notifier).addContent(newBullets);
         break;
@@ -236,10 +219,10 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   /// Save the current sheet
   void _savePage() {
     final updatedSheet = state.sheet.copyWith(
-      title: state.titleController.text.trim().isEmpty
+      title: state.sheet.title.trim().isEmpty
           ? 'Untitled'
-          : state.titleController.text.trim(),
-      description: state.descriptionController.text.trim(),
+          : state.sheet.title.trim(),
+      description: state.sheet.description.trim(),
     );
 
     final sheetListNotifier = ref.read(sheetListProvider.notifier);
@@ -274,14 +257,3 @@ final isEditingProvider = Provider.family<bool, String?>((ref, sheetId) {
 final showAddMenuProvider = Provider.family<bool, String?>((ref, sheetId) {
   return ref.watch(sheetDetailProvider(sheetId)).showAddMenu;
 });
-
-final titleControllerProvider = Provider.family<TextEditingController, String?>(
-  (ref, sheetId) {
-    return ref.watch(sheetDetailProvider(sheetId)).titleController;
-  },
-);
-
-final descriptionControllerProvider =
-    Provider.family<TextEditingController, String?>((ref, sheetId) {
-      return ref.watch(sheetDetailProvider(sheetId)).descriptionController;
-    });

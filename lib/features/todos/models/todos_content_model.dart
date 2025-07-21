@@ -51,6 +51,7 @@ class TodoItem {
   final bool isCompleted;
   final DateTime? dueDate;
   final List<String> assignees;
+  final List<String> contentList;
 
   TodoItem({
     String? id,
@@ -59,6 +60,7 @@ class TodoItem {
     this.isCompleted = false,
     this.dueDate,
     this.assignees = const [],
+    this.contentList = const [],
   }) : id = id ?? const Uuid().v4();
 
   Map<String, dynamic> toJson() {
@@ -69,6 +71,7 @@ class TodoItem {
       'isCompleted': isCompleted,
       'dueDate': dueDate?.toIso8601String(),
       'assignees': assignees,
+      'contentList': contentList,
     };
   }
 
@@ -78,6 +81,7 @@ class TodoItem {
     bool? isCompleted,
     DateTime? dueDate,
     List<String>? assignees,
+    List<String>? contentList,
   }) {
     return TodoItem(
       id: id,
@@ -86,6 +90,7 @@ class TodoItem {
       isCompleted: isCompleted ?? this.isCompleted,
       dueDate: dueDate ?? this.dueDate,
       assignees: assignees ?? this.assignees,
+      contentList: contentList ?? this.contentList,
     );
   }
 }

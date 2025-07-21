@@ -50,6 +50,7 @@ class EventItem {
   final String? description;
   final DateTime? startDate;
   final DateTime? endDate;
+  final List<String> contentList;
 
   EventItem({
     String? id,
@@ -57,6 +58,7 @@ class EventItem {
     this.description,
     this.startDate,
     this.endDate,
+    this.contentList = const [],
   }) : id = id ?? const Uuid().v4();
 
   Map<String, dynamic> toJson() {
@@ -66,6 +68,7 @@ class EventItem {
       'description': description,
       'startDate': startDate?.toIso8601String(),
       'endDate': endDate?.toIso8601String(),
+      'contentList': contentList,
     };
   }
 
@@ -74,6 +77,7 @@ class EventItem {
     String? description,
     DateTime? startDate,
     DateTime? endDate,
+    List<String>? contentList,
   }) {
     return EventItem(
       id: id,
@@ -81,6 +85,7 @@ class EventItem {
       description: description ?? this.description,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
+      contentList: contentList ?? this.contentList,
     );
   }
 }

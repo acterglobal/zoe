@@ -1,9 +1,10 @@
+import 'package:uuid/uuid.dart';
 import 'package:zoey/features/sheet/models/sheet_content_model.dart';
 
 class BulletsContentModel extends SheetContentModel {
   final String parentId;
   final String title;
-  final List<String> bullets;
+  final List<BulletItem> bullets;
 
   BulletsContentModel({
     super.id,
@@ -30,7 +31,7 @@ class BulletsContentModel extends SheetContentModel {
   @override
   BulletsContentModel copyWith({
     String? title,
-    List<String>? bullets,
+    List<BulletItem>? bullets,
     DateTime? updatedAt,
   }) {
     return BulletsContentModel(
@@ -40,6 +41,42 @@ class BulletsContentModel extends SheetContentModel {
       bullets: bullets ?? this.bullets,
       createdAt: createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
+    );
+  }
+}
+
+class BulletItem {
+  final String id;
+  final String title;
+  final String? description;
+  final List<String> contentList;
+
+  BulletItem({
+    String? id,
+    required this.title,
+    this.description,
+    this.contentList = const [],
+  }) : id = id ?? const Uuid().v4();
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'contentList': contentList,
+    };
+  }
+
+  BulletItem copyWith({
+    String? title,
+    String? description,
+    List<String>? contentList,
+  }) {
+    return BulletItem(
+      id: id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      contentList: contentList ?? this.contentList,
     );
   }
 }

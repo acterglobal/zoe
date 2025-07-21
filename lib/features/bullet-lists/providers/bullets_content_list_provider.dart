@@ -8,7 +8,7 @@ class BulletsContentListNotifier
   BulletsContentListNotifier() : super(bulletsContentList);
 
   // Update a specific content item
-  void updateContent(String id, {String? title, List<String>? bullets}) {
+  void updateContent(String id, {String? title, List<BulletItem>? bullets}) {
     state = state.map((content) {
       if (content.id == id) {
         return content.copyWith(

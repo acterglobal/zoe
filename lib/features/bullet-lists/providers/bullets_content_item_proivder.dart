@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/bullet-lists/models/bullets_content_model.dart';
 import 'package:zoey/features/bullet-lists/providers/bullets_content_list_provider.dart';
@@ -15,54 +14,59 @@ final bulletsContentItemProvider = Provider.family<BulletsContentModel, String>(
         parentId: 'default',
         id: id,
         title: 'Content not found',
-        bullets: ['The content with ID "$id" could not be found.'],
+        bullets: [
+          BulletItem(title: 'The content with ID "$id" could not be found.'),
+        ],
       );
     }
   },
 );
 
-// Simple controller providers that create controllers once and keep them stable
-final bulletsContentTitleControllerProvider = Provider.family
-    .autoDispose<TextEditingController, String>((ref, String id) {
-      final content = ref.read(bulletsContentItemProvider(id));
-      final controller = TextEditingController(text: content.title);
+// Provider to find a specific BulletItem by ID across all bullets content
+final bulletItemProvider = Provider.family<BulletItem?, String>((
+  ref,
+  String bulletId,
+) {
+  final allBulletsContent = ref.watch(bulletsContentListProvider);
 
-      ref.onDispose(() {
-        controller.dispose();
-      });
+  for (final content in allBulletsContent) {
+    for (final bullet in content.bullets) {
+      if (bullet.id == bulletId) {
+        return bullet;
+      }
+    }
+  }
 
-      return controller;
-    });
+  return null; // Return null if not found
+});
 
-final bulletsContentBulletControllerProvider = Provider.family
-    .autoDispose<TextEditingController, String>((ref, String key) {
-      // key format: "contentId-bulletIndex"
-      final parts = key.split('-');
-      final contentId = parts.sublist(0, parts.length - 1).join('-');
-      final bulletIndex = int.parse(parts.last);
+// Provider to find the parent BulletsContentModel for a specific BulletItem
+final bulletItemParentProvider = Provider.family<BulletsContentModel?, String>((
+  ref,
+  String bulletId,
+) {
+  final allBulletsContent = ref.watch(bulletsContentListProvider);
 
-      final content = ref.read(bulletsContentItemProvider(contentId));
-      final bulletText = bulletIndex < content.bullets.length
-          ? content.bullets[bulletIndex]
-          : '';
-      final controller = TextEditingController(text: bulletText);
+  for (final content in allBulletsContent) {
+    for (final bullet in content.bullets) {
+      if (bullet.id == bulletId) {
+        return content;
+      }
+    }
+  }
 
-      ref.onDispose(() {
-        controller.dispose();
-      });
-
-      return controller;
-    });
+  return null; // Return null if not found
+});
 
 // Direct update provider - saves immediately using StateNotifier
 final bulletsContentUpdateProvider =
-    Provider<void Function(String, {String? title, List<String>? bullets})>((
-      ref,
-    ) {
-      return (String contentId, {String? title, List<String>? bullets}) {
-        // Update using the StateNotifier for immediate reactivity
-        ref
-            .read(bulletsContentListProvider.notifier)
-            .updateContent(contentId, title: title, bullets: bullets);
-      };
-    });
+    Provider<void Function(String, {String? title, List<BulletItem>? bullets})>(
+      (ref) {
+        return (String contentId, {String? title, List<BulletItem>? bullets}) {
+          // Update using the StateNotifier for immediate reactivity
+          ref
+              .read(bulletsContentListProvider.notifier)
+              .updateContent(contentId, title: title, bullets: bullets);
+        };
+      },
+    );

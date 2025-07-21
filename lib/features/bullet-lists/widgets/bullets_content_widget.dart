@@ -42,9 +42,9 @@ class BulletsContentWidget extends ConsumerWidget {
               child: ZoeInlineTextEditWidget(
                 hintText: 'List title',
                 isEditing: isEditing,
-                controller: ref.watch(
-                  bulletsContentTitleControllerProvider(bulletsContentId),
-                ),
+                text: ref
+                    .watch(bulletsContentItemProvider(bulletsContentId))
+                    .title,
                 textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(bulletsContentUpdateProvider)
@@ -77,7 +77,10 @@ class BulletsContentWidget extends ConsumerWidget {
                 final currentBulletsContent = ref.read(
                   bulletsContentItemProvider(bulletsContentId),
                 );
-                final updatedBullets = [...currentBulletsContent.bullets, ''];
+                final updatedBullets = [
+                  ...currentBulletsContent.bullets,
+                  BulletItem(title: ''),
+                ];
                 ref
                     .read(bulletsContentUpdateProvider)
                     .call(bulletsContentId, bullets: updatedBullets);
@@ -124,10 +127,8 @@ class BulletsContentWidget extends ConsumerWidget {
     BulletsContentModel bulletsContent,
     int index,
   ) {
-    final controllerKey = '$bulletsContentId-$index';
-    final titleController = ref.watch(
-      bulletsContentBulletControllerProvider(controllerKey),
-    );
+    final bulletItem = bulletsContent.bullets[index];
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
@@ -144,15 +145,17 @@ class BulletsContentWidget extends ConsumerWidget {
             child: ZoeInlineTextEditWidget(
               hintText: 'List item',
               isEditing: isEditing,
-              controller: titleController,
+              text: bulletItem.title,
               textStyle: Theme.of(context).textTheme.bodyMedium,
               onTextChanged: (value) => ref
                   .read(bulletsContentUpdateProvider)
                   .call(
                     bulletsContentId,
                     bullets: [
-                      ...bulletsContent.bullets.asMap().entries.map(
-                        (entry) => entry.key == index ? value : entry.value,
+                      ...bulletsContent.bullets.map(
+                        (bullet) => bullet.id == bulletItem.id
+                            ? bullet.copyWith(title: value)
+                            : bullet,
                       ),
                     ],
                   ),
@@ -164,7 +167,7 @@ class BulletsContentWidget extends ConsumerWidget {
               onTap: () => context.push(
                 AppRoutes.bulletDetail.route.replaceAll(
                   ':bulletId',
-                  bulletsContent.bullets[index],
+                  bulletItem.id,
                 ),
               ),
               child: Icon(
@@ -178,11 +181,9 @@ class BulletsContentWidget extends ConsumerWidget {
             const SizedBox(width: 6),
             ZoeCloseButtonWidget(
               onTap: () {
-                final currentBulletsContent = ref.read(
-                  bulletsContentItemProvider(bulletsContentId),
-                );
-                final updatedItems = [...currentBulletsContent.bullets];
-                updatedItems.removeAt(index);
+                final updatedItems = bulletsContent.bullets
+                    .where((bullet) => bullet.id != bulletItem.id)
+                    .toList();
                 ref
                     .read(bulletsContentUpdateProvider)
                     .call(bulletsContentId, bullets: updatedItems);
