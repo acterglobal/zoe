@@ -3,23 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullets/providers/bullet_list_providers.dart';
-import 'package:zoey/features/list_block/providers/list_block_proivder.dart';
+import 'package:zoey/features/list/providers/list_block_proivder.dart';
 import 'package:zoey/features/bullets/widgets/bullet_list_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
-class ListBlockWidget extends ConsumerWidget {
-  final String listBlockId;
+class ListWidget extends ConsumerWidget {
+  final String listId;
   final bool isEditing;
-  const ListBlockWidget({
-    super.key,
-    required this.listBlockId,
-    this.isEditing = false,
-  });
+  const ListWidget({super.key, required this.listId, this.isEditing = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final listBlock = ref.watch(listBlockProvider(listBlockId));
-    if (listBlock == null) return const SizedBox.shrink();
+    final list = ref.watch(listProvider(listId));
+    if (list == null) return const SizedBox.shrink();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,22 +25,20 @@ class ListBlockWidget extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildListBlockIcon(context),
-            Expanded(
-              child: _buildListBlockTitle(context, ref, listBlock.title),
-            ),
+            Expanded(child: _buildListBlockTitle(context, ref, list.title)),
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
                 onTap: () {
                   ref
-                      .read(sheetDetailProvider(listBlock.parentId).notifier)
-                      .deleteContent(listBlockId);
+                      .read(sheetDetailProvider(list.parentId).notifier)
+                      .deleteContent(listId);
                 },
               ),
           ],
         ),
         const SizedBox(height: 6),
-        BulletListWidget(listBlockId: listBlockId, isEditing: isEditing),
+        BulletListWidget(listId: listId, isEditing: isEditing),
         if (isEditing) _buildAddListItemButton(context, ref),
       ],
     );
@@ -74,7 +68,7 @@ class ListBlockWidget extends ConsumerWidget {
       text: title,
       textStyle: Theme.of(context).textTheme.bodyLarge,
       onTextChanged: (value) =>
-          ref.read(listBlockTitleUpdateProvider).call(listBlockId, value),
+          ref.read(listTitleUpdateProvider).call(listId, value),
     );
   }
 
@@ -84,7 +78,7 @@ class ListBlockWidget extends ConsumerWidget {
       padding: const EdgeInsets.only(top: 8),
       child: GestureDetector(
         onTap: () =>
-            ref.read(bulletListProvider.notifier).addBullet('', listBlockId),
+            ref.read(bulletListProvider.notifier).addBullet('', listId),
         child: Row(
           children: [
             Icon(

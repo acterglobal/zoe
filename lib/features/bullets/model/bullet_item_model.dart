@@ -2,13 +2,13 @@ import 'package:uuid/uuid.dart';
 
 class BulletItem {
   final String id;
-  final String blockId;
+  final String listId;
   final String title;
   final String? description;
 
   BulletItem({
     String? id,
-    required this.blockId,
+    required this.listId,
     required this.title,
     this.description,
   }) : id = id ?? const Uuid().v4();
@@ -16,7 +16,7 @@ class BulletItem {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'blockId': blockId,
+      'listId': listId,
       'title': title,
       'description': description,
     };
@@ -29,7 +29,7 @@ class BulletItem {
   }) {
     return BulletItem(
       id: id,
-      blockId: blockId,
+      listId: listId,
       title: title ?? this.title,
       description: description ?? this.description,
     );

@@ -1,10 +1,15 @@
 import 'package:zoey/features/block/model/base_content_model.dart';
 
-class ListBlockModel extends BaseContentModel {
-  ListBlockModel({
+enum ListType { bulleted, task }
+
+class ListModel extends BaseContentModel {
+  final ListType listType;
+
+  ListModel({
     super.id,
     required super.sheetId,
     required super.title,
+    required this.listType,
     super.createdAt,
     super.updatedAt,
   }) : super(type: ContentType.list);
@@ -13,8 +18,8 @@ class ListBlockModel extends BaseContentModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'parentId': parentId,
       'type': type.name,
+      'parentId': parentId,
       'title': title,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
@@ -22,15 +27,16 @@ class ListBlockModel extends BaseContentModel {
   }
 
   @override
-  ListBlockModel copyWith({
+  ListModel copyWith({
     String? title,
     List<String>? bullets,
     DateTime? updatedAt,
   }) {
-    return ListBlockModel(
+    return ListModel(
       id: id,
       sheetId: sheetId,
       title: title ?? this.title,
+      listType: listType,
       createdAt: createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
     );

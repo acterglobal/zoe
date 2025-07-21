@@ -7,11 +7,11 @@ import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 import 'package:zoey/features/text/models/text_content_model.dart';
 import 'package:zoey/features/todos/models/todos_content_model.dart';
 import 'package:zoey/features/events/models/events_model.dart';
-import 'package:zoey/features/list_block/models/list_block_model.dart';
+import 'package:zoey/features/list/models/list_block_model.dart';
 import 'package:zoey/features/text/providers/text_content_list_provider.dart';
 import 'package:zoey/features/todos/providers/todos_content_list_provider.dart';
 import 'package:zoey/features/events/providers/events_list_provider.dart';
-import 'package:zoey/features/list_block/providers/list_block_list_provider.dart';
+import 'package:zoey/features/list/providers/list_block_list_provider.dart';
 import 'package:uuid/uuid.dart';
 
 /// State class for sheet detail
@@ -128,7 +128,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     } else if (contentId.startsWith('events-')) {
       ref.read(eventsListProvider.notifier).deleteEvent(contentId);
     } else if (contentId.startsWith('list-')) {
-      ref.read(listBlockListProvider.notifier).removeBlock(contentId);
+      ref.read(listsProvider.notifier).removeBlock(contentId);
     }
   }
 
@@ -195,12 +195,13 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         ref.read(eventsListProvider.notifier).addEvent(newEvent);
         break;
       case ContentType.list:
-        final newBullets = ListBlockModel(
+        final newBullets = ListModel(
           sheetId: state.sheet.id,
           id: formattedId,
           title: 'List',
+          listType: ListType.bulleted,
         );
-        ref.read(listBlockListProvider.notifier).addBlock(newBullets);
+        ref.read(listsProvider.notifier).addList(newBullets);
         break;
       case ContentType.text:
         final newText = TextContentModel(
