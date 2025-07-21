@@ -5,7 +5,6 @@ import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/list_block/providers/bullet_item_provider.dart';
-import 'package:zoey/features/list_block/providers/bullet_list_providers.dart';
 
 class BulletItemWidget extends ConsumerWidget {
   final String bulletItemId;
@@ -20,6 +19,7 @@ class BulletItemWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bulletItem = ref.watch(bulletItemProvider(bulletItemId));
+
     if (bulletItem == null) return const SizedBox.shrink();
 
     return Padding(
@@ -88,8 +88,9 @@ class BulletItemWidget extends ConsumerWidget {
 
         // Delete list item
         ZoeCloseButtonWidget(
-          onTap: () =>
-              ref.read(bulletListProvider.notifier).deleteBullet(bulletItemId),
+          onTap: () {
+            ref.read(bulletItemDeleteProvider).call(bulletItemId);
+          },
         ),
       ],
     );

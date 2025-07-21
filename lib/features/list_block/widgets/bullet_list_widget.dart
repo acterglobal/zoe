@@ -14,16 +14,21 @@ class BulletListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bullets = ref.watch(bulletListBySectionProvider(listBlockId));
+    final bullets = ref.watch(bulletListByBlockProvider(listBlockId));
     if (bullets.isEmpty) return const SizedBox.shrink();
+
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: bullets.length,
-      itemBuilder: (context, index) => BulletItemWidget(
-        bulletItemId: bullets[index].id,
-        isEditing: isEditing,
-      ),
+      itemBuilder: (context, index) {
+        final bullet = bullets[index];
+        return BulletItemWidget(
+          key: ValueKey(bullet.id),
+          bulletItemId: bullet.id,
+          isEditing: isEditing,
+        );
+      },
     );
   }
 }

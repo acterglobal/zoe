@@ -7,7 +7,11 @@ final bulletItemProvider = Provider.family<BulletItem?, String>((
   String bulletItemId,
 ) {
   final bulletList = ref.watch(bulletListProvider);
-  return bulletList.firstWhere((bullet) => bullet.id == bulletItemId);
+  try {
+    return bulletList.firstWhere((bullet) => bullet.id == bulletItemId);
+  } catch (e) {
+    return null;
+  }
 });
 
 final bulletItemTitleUpdateProvider = Provider<void Function(String, String)>((
