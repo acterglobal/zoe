@@ -36,12 +36,9 @@ class ListBlockWidget extends ConsumerWidget {
             if (isEditing)
               ZoeDeleteButtonWidget(
                 onTap: () {
-                  final listBlock = ref.read(listBlockProvider(listBlockId));
-                  if (listBlock != null) {
-                    ref
-                        .read(sheetDetailProvider(listBlock.parentId).notifier)
-                        .deleteBlock(listBlockId);
-                  }
+                  ref
+                      .read(sheetDetailProvider(listBlock.parentId).notifier)
+                      .deleteBlock(listBlockId);
                 },
               ),
           ],
@@ -87,14 +84,14 @@ class ListBlockWidget extends ConsumerWidget {
       padding: const EdgeInsets.only(top: 8),
       child: GestureDetector(
         onTap: () {
-          final currentListBlock = ref.read(listBlockProvider(listBlockId));
-          if (currentListBlock != null) {
+          final listBlock = ref.read(listBlockProvider(listBlockId));
+          if (listBlock != null) {
             final updatedBullets = [
-              ...currentListBlock.bullets,
+              ...listBlock.bullets,
               BulletItem(title: ''),
             ];
             ref
-                .read(listBlockListUpdateProvider)
+                .read(listBlockBulletsUpdateProvider)
                 .call(listBlockId, updatedBullets);
           }
         },

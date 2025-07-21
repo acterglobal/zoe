@@ -37,7 +37,7 @@ class BulletItemWidget extends ConsumerWidget {
     );
   }
 
-  // Builds the list item icon
+  // Builds the bullet item icon
   Widget _buildBulletItemIcon(BuildContext context) {
     return Icon(
       Icons.circle,
@@ -46,7 +46,7 @@ class BulletItemWidget extends ConsumerWidget {
     );
   }
 
-  // Builds the list item title
+  // Builds the bullet item title
   Widget _buildBulletItemTitle(
     BuildContext context,
     WidgetRef ref,
@@ -61,6 +61,7 @@ class BulletItemWidget extends ConsumerWidget {
     );
   }
 
+  // Builds the bullet item actions
   Widget _buildBulletItemActions(BuildContext context, WidgetRef ref) {
     return Row(
       children: [

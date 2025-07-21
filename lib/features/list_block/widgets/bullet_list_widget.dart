@@ -15,7 +15,7 @@ class BulletListWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bullets = ref.watch(bulletListProvider(listBlockId));
-    if (bullets.isEmpty) return const SizedBox.shrink();
+    if (bullets == null || bullets.isEmpty) return const SizedBox.shrink();
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
