@@ -7,5 +7,12 @@ final bulletItemProvider = Provider.family<BulletItem?, String>((
   String bulletItemId,
 ) {
   final bulletList = ref.watch(bulletListProvider(bulletItemId));
-  return bulletList?.firstWhere((bullet) => bullet.id == bulletItemId);
+  if (bulletList == null) return null;
+
+  try {
+    return bulletList.firstWhere((bullet) => bullet.id == bulletItemId);
+  } catch (e) {
+    // Return null if no matching bullet item is found
+    return null;
+  }
 });

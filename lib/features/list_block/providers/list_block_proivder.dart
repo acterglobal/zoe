@@ -7,7 +7,12 @@ final listBlockProvider = Provider.family<ListBlockModel?, String>((
   String listBlockId,
 ) {
   final listBlocks = ref.watch(listBlockListProvider);
-  return listBlocks.firstWhere((listBlock) => listBlock.id == listBlockId);
+  try {
+    return listBlocks.firstWhere((listBlock) => listBlock.id == listBlockId);
+  } catch (e) {
+    // Return null if no matching list block is found
+    return null;
+  }
 });
 
 final listBlockTitleUpdateProvider = Provider<void Function(String, String)>((

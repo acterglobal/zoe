@@ -7,7 +7,12 @@ final bulletListProvider = Provider.family<List<BulletItem>?, String>((
   String listBlockId,
 ) {
   final listBlocks = ref.watch(listBlockListProvider);
-  return listBlocks
-      .firstWhere((listBlock) => listBlock.id == listBlockId)
-      .bullets;
+  try {
+    return listBlocks
+        .firstWhere((listBlock) => listBlock.id == listBlockId)
+        .bullets;
+  } catch (e) {
+    // Return null if no matching list block is found
+    return null;
+  }
 });
