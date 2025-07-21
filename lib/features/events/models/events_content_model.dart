@@ -1,10 +1,10 @@
-import 'package:zoey/features/block/model/block_model.dart';
+import 'package:zoey/features/block/model/base_content_model.dart';
 
-class EventBlockModel extends BlockModel {
+class EventModel extends BaseContentModel {
   final DateTime startDate;
   final DateTime endDate;
 
-  EventBlockModel({
+  EventModel({
     super.id,
     required super.sheetId,
     required super.title,
@@ -15,7 +15,7 @@ class EventBlockModel extends BlockModel {
     super.htmlDescription,
     super.createdAt,
     super.updatedAt,
-  }) : super(type: BlockType.event);
+  }) : super(type: ContentType.event);
 
   @override
   Map<String, dynamic> toJson() {
@@ -33,13 +33,13 @@ class EventBlockModel extends BlockModel {
   }
 
   @override
-  EventBlockModel copyWith({
+  EventModel copyWith({
     String? title,
     DateTime? startDate,
     DateTime? endDate,
     DateTime? updatedAt,
   }) {
-    return EventBlockModel(
+    return EventModel(
       id: id,
       sheetId: sheetId,
       title: title ?? this.title,

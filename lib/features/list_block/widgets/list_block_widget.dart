@@ -38,7 +38,7 @@ class ListBlockWidget extends ConsumerWidget {
                 onTap: () {
                   ref
                       .read(sheetDetailProvider(listBlock.parentId).notifier)
-                      .deleteBlock(listBlockId);
+                      .deleteContent(listBlockId);
                 },
               ),
           ],

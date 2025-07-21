@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/events/data/events_content_list.dart';
 import 'package:zoey/features/events/models/events_content_model.dart';
 
-class EventsBlockListNotifier extends StateNotifier<List<EventBlockModel>> {
+class EventsBlockListNotifier extends StateNotifier<List<EventModel>> {
   EventsBlockListNotifier() : super(eventsBlockList);
 
   // Update a specific content item
@@ -32,7 +32,7 @@ class EventsBlockListNotifier extends StateNotifier<List<EventBlockModel>> {
   }
 
   // Add new content
-  void addEventBlock(EventBlockModel content) {
+  void addEventBlock(EventModel content) {
     state = [...state, content];
     eventsBlockList.add(content);
   }

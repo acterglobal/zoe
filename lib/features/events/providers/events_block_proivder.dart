@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/events/models/events_content_model.dart';
 import 'package:zoey/features/events/providers/events_block_list_provider.dart';
 
-final eventsBlockItemProvider = Provider.family<EventBlockModel, String>((
+final eventsBlockItemProvider = Provider.family<EventModel, String>((
   ref,
   String id,
 ) {
@@ -12,7 +12,7 @@ final eventsBlockItemProvider = Provider.family<EventBlockModel, String>((
         .firstWhere((element) => element.id == id);
   } catch (e) {
     // Return a default events content if ID not found
-    return EventBlockModel(
+    return EventModel(
       sheetId: 'default',
       parentId: 'default',
       id: id,

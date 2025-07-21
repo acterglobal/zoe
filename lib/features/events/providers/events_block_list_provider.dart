@@ -4,6 +4,6 @@ import 'package:zoey/features/events/providers/notifier/event_list_notifiers.dar
 
 // StateNotifier provider for the events content list
 final eventsBlockListProvider =
-    StateNotifierProvider<EventsBlockListNotifier, List<EventBlockModel>>(
+    StateNotifierProvider<EventsBlockListNotifier, List<EventModel>>(
       (ref) => EventsBlockListNotifier(),
     );

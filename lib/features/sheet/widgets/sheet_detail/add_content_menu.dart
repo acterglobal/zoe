@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/block/model/block_model.dart';
+import 'package:zoey/features/block/model/base_content_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// Add content menu widget
@@ -28,7 +28,7 @@ class AddContentMenu extends ConsumerWidget {
             description: 'Start writing with plain text',
             onTap: () => ref
                 .read(sheetDetailProvider(sheetId).notifier)
-                .addContent(BlockType.text),
+                .addContent(ContentType.text),
           ),
           _buildAddContentOption(
             context,
@@ -38,7 +38,7 @@ class AddContentMenu extends ConsumerWidget {
             description: 'Track tasks with checkboxes',
             onTap: () => ref
                 .read(sheetDetailProvider(sheetId).notifier)
-                .addContent(BlockType.todo),
+                .addContent(ContentType.todo),
           ),
           _buildAddContentOption(
             context,
@@ -48,7 +48,7 @@ class AddContentMenu extends ConsumerWidget {
             description: 'Schedule and track events',
             onTap: () => ref
                 .read(sheetDetailProvider(sheetId).notifier)
-                .addContent(BlockType.event),
+                .addContent(ContentType.event),
           ),
           _buildAddContentOption(
             context,
@@ -58,7 +58,7 @@ class AddContentMenu extends ConsumerWidget {
             description: 'Create a simple bulleted list',
             onTap: () => ref
                 .read(sheetDetailProvider(sheetId).notifier)
-                .addContent(BlockType.list),
+                .addContent(ContentType.list),
             isLast: true,
           ),
         ],

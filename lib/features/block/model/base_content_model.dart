@@ -1,10 +1,10 @@
 import 'package:uuid/uuid.dart';
 
-enum BlockType { todo, event, list, text }
+enum ContentType { todo, event, list, text }
 
-abstract class BlockModel {
+abstract class BaseContentModel {
   final String id;
-  final BlockType type;
+  final ContentType type;
   final String sheetId;
   final String title;
   final String? parentId;
@@ -14,7 +14,7 @@ abstract class BlockModel {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  BlockModel({
+  BaseContentModel({
     String? id,
     required this.type,
     required this.sheetId,
@@ -30,5 +30,5 @@ abstract class BlockModel {
        updatedAt = updatedAt ?? DateTime.now();
 
   Map<String, dynamic> toJson();
-  BlockModel copyWith({DateTime? updatedAt});
+  BaseContentModel copyWith({DateTime? updatedAt});
 }

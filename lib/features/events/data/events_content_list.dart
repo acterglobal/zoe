@@ -1,7 +1,7 @@
 import 'package:zoey/features/events/models/events_content_model.dart';
 
 final eventsBlockList = [
-  EventBlockModel(
+  EventModel(
     sheetId: 'sheet-1',
     id: 'events-block-1',
     title: 'Learning Schedule',
@@ -10,7 +10,7 @@ final eventsBlockList = [
     startDate: DateTime.now(),
     endDate: DateTime.now().add(const Duration(minutes: 30)),
   ),
-  EventBlockModel(
+  EventModel(
     sheetId: 'sheet-1',
     id: 'events-block-2',
     title: 'Meeting Schedule',
@@ -19,7 +19,7 @@ final eventsBlockList = [
     startDate: DateTime.now(),
     endDate: DateTime.now().add(const Duration(minutes: 30)),
   ),
-  EventBlockModel(
+  EventModel(
     sheetId: 'sheet-1',
     id: 'events-block-3',
     title: 'Practice Session',

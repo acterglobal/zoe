@@ -59,7 +59,7 @@ class EventBlockWidget extends ConsumerWidget {
   Widget _buildEventTitle(
     BuildContext context,
     WidgetRef ref,
-    EventBlockModel event,
+    EventModel event,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: 'Event name',
@@ -74,7 +74,7 @@ class EventBlockWidget extends ConsumerWidget {
   Widget _buildEventDescription(
     BuildContext context,
     WidgetRef ref,
-    EventBlockModel event,
+    EventModel event,
   ) {
     return Text(
       event.plainTextDescription ?? '',
@@ -87,7 +87,7 @@ class EventBlockWidget extends ConsumerWidget {
   Widget _buildEventActions(
     BuildContext context,
     WidgetRef ref,
-    EventBlockModel event,
+    EventModel event,
   ) {
     return Row(
       children: [

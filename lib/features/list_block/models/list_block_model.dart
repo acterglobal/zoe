@@ -1,13 +1,13 @@
-import 'package:zoey/features/block/model/block_model.dart';
+import 'package:zoey/features/block/model/base_content_model.dart';
 
-class ListBlockModel extends BlockModel {
+class ListBlockModel extends BaseContentModel {
   ListBlockModel({
     super.id,
     required super.sheetId,
     required super.title,
     super.createdAt,
     super.updatedAt,
-  }) : super(type: BlockType.list);
+  }) : super(type: ContentType.list);
 
   @override
   Map<String, dynamic> toJson() {

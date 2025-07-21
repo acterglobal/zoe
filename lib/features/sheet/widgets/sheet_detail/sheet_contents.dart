@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/events/widgets/event_block_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/text_block/widgets/text_block_widget.dart';
+import 'package:zoey/features/text/widgets/text_content_widget.dart';
 import 'package:zoey/features/todos/widgets/todos_content_widget.dart';
 import 'package:zoey/features/list_block/widgets/list_block_widget.dart';
 
@@ -72,7 +72,7 @@ class SheetContents extends ConsumerWidget {
   Widget _buildContentWidget(String blockId, bool isEditing) {
     // Determine content type from ID prefix
     if (blockId.startsWith('text-')) {
-      return TextBlockWidget(textBlockId: blockId, isEditing: isEditing);
+      return TextContentWidget(textContentId: blockId, isEditing: isEditing);
     } else if (blockId.startsWith('todos-')) {
       return TodosContentWidget(todosContentId: blockId, isEditing: isEditing);
     } else if (blockId.startsWith('events-')) {

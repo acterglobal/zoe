@@ -3,24 +3,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/text_block/providers/text_block_proivder.dart';
+import 'package:zoey/features/text/providers/text_content_proivder.dart';
 
-class TextBlockWidget extends ConsumerWidget {
-  final String textBlockId;
+class TextContentWidget extends ConsumerWidget {
+  final String textContentId;
   final bool isEditing;
-  const TextBlockWidget({
+  const TextContentWidget({
     super.key,
-    required this.textBlockId,
+    required this.textContentId,
     this.isEditing = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    /// Watch the text block provider
-    final textBlock = ref.watch(textBlockProvider(textBlockId));
-    if (textBlock == null) return const SizedBox.shrink();
+    /// Watch the text content provider
+    final textContent = ref.watch(textContentProvider(textContentId));
+    if (textContent == null) return const SizedBox.shrink();
 
-    /// Builds the text block widget
+    /// Builds the text content widget
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -28,32 +28,32 @@ class TextBlockWidget extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildTextBlockIcon(context),
+            _buildTextContentIcon(context),
             Expanded(
-              child: _buildTextBlockTitle(context, ref, textBlock.title),
+              child: _buildTextContentTitle(context, ref, textContent.title),
             ),
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
                 onTap: () => ref
-                    .read(sheetDetailProvider(textBlock.parentId).notifier)
-                    .deleteBlock(textBlockId),
+                    .read(sheetDetailProvider(textContent.parentId).notifier)
+                    .deleteContent(textContentId),
               ),
           ],
         ),
         const SizedBox(height: 6),
-        _buildTextBlockDescription(
+        _buildTextContentDescription(
           context,
           ref,
-          textBlock.plainTextDescription,
-          textBlock.htmlDescription,
+          textContent.plainTextDescription,
+          textContent.htmlDescription,
         ),
       ],
     );
   }
 
-  /// Builds the text block icon
-  Widget _buildTextBlockIcon(BuildContext context) {
+  /// Builds the text content icon
+  Widget _buildTextContentIcon(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 4, right: 6),
       child: Icon(
@@ -64,24 +64,24 @@ class TextBlockWidget extends ConsumerWidget {
     );
   }
 
-  /// Builds the text block title
-  Widget _buildTextBlockTitle(
+  /// Builds the text content title
+  Widget _buildTextContentTitle(
     BuildContext context,
     WidgetRef ref,
     String title,
   ) {
     return ZoeInlineTextEditWidget(
-      hintText: 'Text block title',
+      hintText: 'Text content title',
       isEditing: isEditing,
       text: title,
       textStyle: Theme.of(context).textTheme.bodyLarge,
       onTextChanged: (value) =>
-          ref.read(textBlockTitleUpdateProvider).call(textBlockId, value),
+          ref.read(textContentTitleUpdateProvider).call(textContentId, value),
     );
   }
 
-  /// Builds the text block description
-  Widget _buildTextBlockDescription(
+  /// Builds the text content description
+  Widget _buildTextContentDescription(
     BuildContext context,
     WidgetRef ref,
     String plainTextDescription,
@@ -93,8 +93,8 @@ class TextBlockWidget extends ConsumerWidget {
       text: plainTextDescription,
       textStyle: Theme.of(context).textTheme.bodyMedium,
       onTextChanged: (value) => ref
-          .read(textBlockDescriptionUpdateProvider)
-          .call(textBlockId, value, htmlDescription),
+          .read(textContentDescriptionUpdateProvider)
+          .call(textContentId, value, htmlDescription),
     );
   }
 }

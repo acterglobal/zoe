@@ -1,13 +1,13 @@
-import 'package:zoey/features/block/model/block_model.dart';
+import 'package:zoey/features/block/model/base_content_model.dart';
 
-class TextBlockModel extends BlockModel {
+class TextContentModel extends BaseContentModel {
   @override
   String get plainTextDescription => super.plainTextDescription!;
 
   @override
   String get htmlDescription => super.htmlDescription!;
 
-  TextBlockModel({
+  TextContentModel({
     super.id,
     required super.sheetId,
     required super.title,
@@ -17,7 +17,7 @@ class TextBlockModel extends BlockModel {
     super.createdAt,
     super.updatedAt,
   }) : super(
-         type: BlockType.text,
+         type: ContentType.text,
          plainTextDescription: plainTextDescription,
          htmlDescription: htmlDescription,
        );
@@ -36,13 +36,13 @@ class TextBlockModel extends BlockModel {
   }
 
   @override
-  TextBlockModel copyWith({
+  TextContentModel copyWith({
     String? title,
     String? plainTextDescription,
     String? htmlDescription,
     DateTime? updatedAt,
   }) {
-    return TextBlockModel(
+    return TextContentModel(
       id: id,
       sheetId: sheetId,
       title: title ?? this.title,
