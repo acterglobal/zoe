@@ -4,22 +4,22 @@ import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/list_block/providers/list_item_provider.dart';
+import 'package:zoey/features/list_block/providers/bullet_item_provider.dart';
 
-class ListItemWidget extends ConsumerWidget {
-  final String listItemId;
+class BulletItemWidget extends ConsumerWidget {
+  final String bulletItemId;
   final bool isEditing;
 
-  const ListItemWidget({
+  const BulletItemWidget({
     super.key,
-    required this.listItemId,
+    required this.bulletItemId,
     this.isEditing = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final listItem = ref.watch(listItemProvider(listItemId));
-    if (listItem == null) return const SizedBox.shrink();
+    final bulletItem = ref.watch(bulletItemProvider(bulletItemId));
+    if (bulletItem == null) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -27,7 +27,7 @@ class ListItemWidget extends ConsumerWidget {
         children: [
           _buildListItemIcon(context),
           const SizedBox(width: 10),
-          Expanded(child: _buildListItemTitle(context, ref, listItem.title)),
+          Expanded(child: _buildListItemTitle(context, ref, bulletItem.title)),
           const SizedBox(width: 6),
           if (isEditing) _buildListItemActions(context, ref),
         ],
@@ -51,7 +51,7 @@ class ListItemWidget extends ConsumerWidget {
     String title,
   ) {
     return ZoeInlineTextEditWidget(
-      hintText: 'List item',
+      hintText: 'Bullet item',
       isEditing: isEditing,
       text: title,
       textStyle: Theme.of(context).textTheme.bodyMedium,
@@ -66,8 +66,8 @@ class ListItemWidget extends ConsumerWidget {
         GestureDetector(
           onTap: () => context.push(
             AppRoutes.listItemDetail.route.replaceAll(
-              ':listItemId',
-              listItemId,
+              ':bulletItemId',
+              bulletItemId,
             ),
           ),
           child: Icon(
