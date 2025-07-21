@@ -67,12 +67,6 @@ class _QuillToolbarState extends State<QuillToolbar> {
           child: Row(
             children: [
               ..._buildTextFormattingButtons(),
-              Container(
-                height: 24,
-                width: 1,
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
-              ),
               ..._buildBlockFormattingButtons(),
             ],
           ),
@@ -117,19 +111,6 @@ class _QuillToolbarState extends State<QuillToolbar> {
   /// Build block formatting buttons (lists, quotes, code blocks)
   List<Widget> _buildBlockFormattingButtons() {
     return [
-      buildToolbarButton(
-        context: context,
-        icon: Icons.format_list_bulleted,
-        isActive: isAttributeActive(widget.controller, Attribute.ul),
-        onPressed: () => toggleAttribute(widget.controller, Attribute.ul, onButtonPressed: widget.onButtonPressed),
-      ),
-      const SizedBox(width: 8),
-      buildToolbarButton(
-        context: context,
-        icon: Icons.format_list_numbered,
-        isActive: isAttributeActive(widget.controller, Attribute.ol),
-        onPressed: () => toggleAttribute(widget.controller, Attribute.ol, onButtonPressed: widget.onButtonPressed),
-      ), 
       const SizedBox(width: 8),
       buildToolbarButton(
         context: context,
