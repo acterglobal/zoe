@@ -38,6 +38,9 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final isEditing = ref.watch(isEditingProvider(widget.sheetId));
+
     return Scaffold(
       appBar: SheetDetailAppBar(sheetId: widget.sheetId),
       body: Column(
@@ -46,17 +49,18 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
             child: Stack(
               children: [
                 _buildBody(context, ref),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: ViewQuillEditorToolbarWidget(
-                    controller: _activeController,
-                    focusNode: _activeFocusNode,
-                    isToolbarVisible: _isToolbarVisible,
-                    onReturnFocusToEditor: _returnFocusToEditor,
+                if (isEditing)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: keyboardHeight,
+                    child: ViewQuillEditorToolbarWidget(
+                      controller: _activeController,
+                      focusNode: _activeFocusNode,
+                      isToolbarVisible: _isToolbarVisible,
+                      onReturnFocusToEditor: _returnFocusToEditor,
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -67,6 +71,8 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
 
   /// Builds the main body
   Widget _buildBody(BuildContext context, WidgetRef ref) {
+    final isEditing = ref.watch(isEditingProvider(widget.sheetId));
+    
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -76,7 +82,8 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
           const SizedBox(height: 16),
           SheetContents(sheetId: widget.sheetId),
           _buildAddContentArea(context, ref),
-          const SizedBox(height: 80), // Extra padding for toolbar
+          // Add padding only when editing to make space for toolbar
+          if (isEditing) const SizedBox(height: 80),
         ],
       ),
     );
@@ -129,11 +136,9 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
           onTextChanged: (value) => ref
               .read(sheetDetailProvider(widget.sheetId).notifier)
               .updateDescription(value),
-          onHtmlChanged: (plainText, richText) {
-            ref
-                .read(sheetDetailProvider(widget.sheetId).notifier)
-                .updateDescription(plainText, richText: richText);
-          },
+          onHtmlChanged: (plainText, richText) => ref
+              .read(sheetDetailProvider(widget.sheetId).notifier)
+              .updateDescription(plainText, richText: richText),
           onFocusChanged: _handleEditorFocusChanged,
         ),
       ],

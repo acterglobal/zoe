@@ -106,7 +106,6 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   void updateDescription(String plainText, {String? richText}) {
     state = state.copyWith(
       sheet: state.sheet.copyWith(
-        description: plainText,
         descriptionHtml: richText ?? plainText,
       ),
     );

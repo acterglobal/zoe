@@ -51,21 +51,25 @@ class _ZoeHtmlTextEditWidgetState extends State<ZoeHtmlTextEditWidget> {
   @override
   void didUpdateWidget(ZoeHtmlTextEditWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
+
     // Update read-only state if editing mode changed
     if (oldWidget.isEditing != widget.isEditing && _isInitialized) {
       _editorManager.setReadOnly(!widget.isEditing);
     }
-    
+
     // Only update if the source content actually changes (not editor content)
-    final sourceContentChanged = _lastInitialContent != widget.initialContent ||
-                                _lastInitialRichContent != widget.initialRichContent;
-    
+    final sourceContentChanged =
+        _lastInitialContent != widget.initialContent ||
+        _lastInitialRichContent != widget.initialRichContent;
+
     if (sourceContentChanged && _isInitialized) {
       _lastInitialContent = widget.initialContent;
       _lastInitialRichContent = widget.initialRichContent;
       // Update content without reinitializing to preserve focus
-      _editorManager.updateContent(widget.initialContent, widget.initialRichContent);
+      _editorManager.updateContent(
+        widget.initialContent,
+        widget.initialRichContent,
+      );
     } else if (sourceContentChanged) {
       _lastInitialContent = widget.initialContent;
       _lastInitialRichContent = widget.initialRichContent;
@@ -85,7 +89,7 @@ class _ZoeHtmlTextEditWidgetState extends State<ZoeHtmlTextEditWidget> {
     if (_isInitialized) {
       _editorManager.dispose();
     }
-    
+
     _editorManager = QuillEditorManager(
       initialContent: widget.initialContent,
       initialRichContent: widget.initialRichContent,
@@ -95,7 +99,7 @@ class _ZoeHtmlTextEditWidgetState extends State<ZoeHtmlTextEditWidget> {
     );
 
     await _editorManager.initialize();
-    
+
     if (mounted) {
       setState(() {
         _isInitialized = true;
@@ -137,35 +141,33 @@ class _ZoeHtmlTextEditWidgetState extends State<ZoeHtmlTextEditWidget> {
 
   /// Build the view widget
   Widget _buildViewWidget() {
-    final hasRichContent = widget.initialRichContent != null && 
-                          widget.initialRichContent!.isNotEmpty;
-    final hasPlainContent = widget.initialContent != null && 
-                           widget.initialContent!.isNotEmpty;
+    final hasRichContent =
+        widget.initialRichContent != null &&
+        widget.initialRichContent!.isNotEmpty;
+    final hasPlainContent =
+        widget.initialContent != null && widget.initialContent!.isNotEmpty;
 
     if (hasRichContent) {
       // Create a disabled focus node for view mode
       final disabledFocusNode = FocusNode();
       disabledFocusNode.canRequestFocus = false;
-      
+
       return QuillEditor(
         controller: _editorManager.controller!,
         scrollController: _editorManager.scrollController!,
         focusNode: disabledFocusNode,
-        config: _editorStyles.getViewConfig(
-          padding: widget.padding,
-        ),
+        config: _editorStyles.getViewConfig(padding: widget.padding),
       );
     } else if (hasPlainContent) {
       return Padding(
         padding: widget.padding ?? EdgeInsets.zero,
         child: Text(
           widget.initialContent!,
-          style: widget.textStyle ?? 
-                 _editorStyles.getDefaultTextStyle(context),
+          style: widget.textStyle ?? _editorStyles.getDefaultTextStyle(context),
         ),
       );
     } else {
       return const SizedBox.shrink();
     }
   }
-} 
+}

@@ -26,6 +26,10 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
               : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           onPressed: () {
+            // Close keyboard when switching to view mode
+            if (isEditing) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            }
             ref.read(sheetDetailProvider(sheetId).notifier).toggleEditSave();
           },
         ),

@@ -31,31 +31,22 @@ class _ViewQuillEditorToolbarWidgetState extends State<ViewQuillEditorToolbarWid
   Widget _buildBottomToolbar(BuildContext context) {
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final isDesktopPlatform = isDesktop(context);
-    
-    if (isDesktopPlatform) {
-      // Desktop: Show toolbar at bottom when text block is focused
-      final shouldShow = widget.isToolbarVisible && 
-                        widget.controller != null && 
-                        widget.focusNode != null;
-      return _buildAnimatedToolbar(
-        shouldShow, 
-        200, 
-        controller: widget.controller, 
+    final shouldShow = widget.isToolbarVisible && 
+                      widget.controller != null && 
+                      (isDesktopPlatform ? widget.focusNode != null : true);
+
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: isDesktopPlatform ? 0 : keyboardHeight,
+      child: _buildAnimatedToolbar(
+        shouldShow,
+        isDesktopPlatform ? 200 : 250,
+        controller: widget.controller,
         focusNode: widget.focusNode,
-      ); // Consistent animation for desktop
-    } else {
-      // Mobile: Show toolbar above keyboard when keyboard is visible and text block is focused
-      final shouldShow = keyboardHeight > 0 && 
-                        widget.isToolbarVisible && 
-                        widget.controller != null;
-      return _buildAnimatedToolbar(
-        shouldShow, 
-        250, 
-        controller: widget.controller, 
-        focusNode: widget.focusNode,
-        curve: Curves.easeOut,
-      ); // Consistent animation for mobile
-    }
+        curve: isDesktopPlatform ? Curves.easeInOut : Curves.easeOut,
+      ),
+    );
   }
 
   /// Build animated toolbar container
@@ -66,20 +57,24 @@ class _ViewQuillEditorToolbarWidgetState extends State<ViewQuillEditorToolbarWid
     QuillController? controller, 
     FocusNode? focusNode,
   }) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: duration),
-      curve: curve ?? Curves.easeInOut,
-      height: shouldShow ? 60 : 0,
-      child: AnimatedOpacity(
+    return Material(
+      elevation: shouldShow ? 4 : 0,
+      color: Theme.of(context).colorScheme.surface,
+      child: AnimatedContainer(
         duration: Duration(milliseconds: duration),
-        opacity: shouldShow ? 1.0 : 0.0,
-        child: shouldShow && controller != null && focusNode != null
-            ? QuillToolbar(
-                controller: controller,
-                focusNode: focusNode,
-                onButtonPressed: widget.onReturnFocusToEditor,
-              )
-            : const SizedBox.shrink(),
+        curve: curve ?? Curves.easeInOut,
+        height: shouldShow ? 60 : 0,
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: duration),
+          opacity: shouldShow ? 1.0 : 0.0,
+          child: shouldShow && controller != null && focusNode != null
+              ? QuillToolbar(
+                  controller: controller,
+                  focusNode: focusNode,
+                  onButtonPressed: widget.onReturnFocusToEditor,
+                )
+              : const SizedBox.shrink(),
+        ),
       ),
     );
   }
