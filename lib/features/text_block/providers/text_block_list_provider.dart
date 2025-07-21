@@ -13,12 +13,19 @@ class TextBlockListNotifier extends StateNotifier<List<TextBlockModel>> {
   TextBlockListNotifier() : super(textBlockList);
 
   // Update a specific text block item
-  void updateBlock(String textBlockId, {String? title, String? description}) {
+  void updateBlock(
+    String textBlockId, {
+    String? title,
+    String? plainTextDescription,
+    String? htmlDescription,
+  }) {
     state = state.map((textBlock) {
       if (textBlock.id == textBlockId) {
         return textBlock.copyWith(
           title: title ?? textBlock.title,
-          description: description ?? textBlock.description,
+          plainTextDescription:
+              plainTextDescription ?? textBlock.plainTextDescription,
+          htmlDescription: htmlDescription ?? textBlock.htmlDescription,
         );
       }
       return textBlock;

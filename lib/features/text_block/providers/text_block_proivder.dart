@@ -24,10 +24,18 @@ final textBlockTitleUpdateProvider = Provider<void Function(String, String)>((
 });
 
 final textBlockDescriptionUpdateProvider =
-    Provider<void Function(String, String)>((ref) {
-      return (String blockId, String description) {
+    Provider<void Function(String, String, String)>((ref) {
+      return (
+        String blockId,
+        String plainTextDescription,
+        String htmlDescription,
+      ) {
         ref
             .read(textBlockListProvider.notifier)
-            .updateBlock(blockId, description: description);
+            .updateBlock(
+              blockId,
+              plainTextDescription: plainTextDescription,
+              htmlDescription: htmlDescription,
+            );
       };
     });

@@ -42,7 +42,12 @@ class TextBlockWidget extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 6),
-        _buildTextBlockDescription(context, ref, textBlock.description),
+        _buildTextBlockDescription(
+          context,
+          ref,
+          textBlock.plainTextDescription,
+          textBlock.htmlDescription,
+        ),
       ],
     );
   }
@@ -79,15 +84,17 @@ class TextBlockWidget extends ConsumerWidget {
   Widget _buildTextBlockDescription(
     BuildContext context,
     WidgetRef ref,
-    String description,
+    String plainTextDescription,
+    String htmlDescription,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: 'Type something...',
       isEditing: isEditing,
-      text: description,
+      text: plainTextDescription,
       textStyle: Theme.of(context).textTheme.bodyMedium,
-      onTextChanged: (value) =>
-          ref.read(textBlockDescriptionUpdateProvider).call(textBlockId, value),
+      onTextChanged: (value) => ref
+          .read(textBlockDescriptionUpdateProvider)
+          .call(textBlockId, value, htmlDescription),
     );
   }
 }

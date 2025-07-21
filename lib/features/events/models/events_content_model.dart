@@ -1,19 +1,17 @@
 import 'package:uuid/uuid.dart';
-import 'package:zoey/features/sheet/models/sheet_content_model.dart';
+import 'package:zoey/features/block/model/block_model.dart';
 
-class EventsContentModel extends SheetContentModel {
-  final String parentId;
-  final String title;
+class EventsContentModel extends BlockModel {
   final List<EventItem> events;
 
   EventsContentModel({
     super.id,
-    required this.parentId,
-    required this.title,
+    required super.parentId,
+    required super.title,
     required this.events,
     super.createdAt,
     super.updatedAt,
-  }) : super(type: ContentType.event);
+  }) : super(type: BlockType.event);
 
   @override
   Map<String, dynamic> toJson() {

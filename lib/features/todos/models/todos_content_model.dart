@@ -1,19 +1,17 @@
 import 'package:uuid/uuid.dart';
-import 'package:zoey/features/sheet/models/sheet_content_model.dart';
+import 'package:zoey/features/block/model/block_model.dart';
 
-class TodosContentModel extends SheetContentModel {
-  final String parentId;
-  final String title;
+class TodosContentModel extends BlockModel {
   final List<TodoItem> items;
 
   TodosContentModel({
     super.id,
-    required this.parentId,
-    required this.title,
+    required super.parentId,
+    required super.title,
     required this.items,
     super.createdAt,
     super.updatedAt,
-  }) : super(type: ContentType.todo);
+  }) : super(type: BlockType.todo);
 
   @override
   Map<String, dynamic> toJson() {

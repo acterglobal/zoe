@@ -1,18 +1,26 @@
-import 'package:zoey/features/sheet/models/sheet_content_model.dart';
+import 'package:zoey/features/block/model/block_model.dart';
 
-class TextBlockModel extends SheetContentModel {
-  final String parentId;
-  final String title;
-  final String description;
+class TextBlockModel extends BlockModel {
+  @override
+  String get plainTextDescription => super.plainTextDescription!;
+
+  @override
+  String get htmlDescription => super.htmlDescription!;
 
   TextBlockModel({
     super.id,
-    required this.parentId,
-    required this.title,
-    required this.description,
+    required super.parentId,
+    required super.title,
+    required String plainTextDescription,
+    required String htmlDescription,
+    super.emoji,
     super.createdAt,
     super.updatedAt,
-  }) : super(type: ContentType.text);
+  }) : super(
+         type: BlockType.text,
+         plainTextDescription: plainTextDescription,
+         htmlDescription: htmlDescription,
+       );
 
   @override
   Map<String, dynamic> toJson() {
@@ -20,7 +28,8 @@ class TextBlockModel extends SheetContentModel {
       'id': id,
       'type': type.name,
       'title': title,
-      'description': description,
+      'plainTextDescription': plainTextDescription,
+      'htmlDescription': htmlDescription,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
@@ -29,14 +38,16 @@ class TextBlockModel extends SheetContentModel {
   @override
   TextBlockModel copyWith({
     String? title,
-    String? description,
+    String? plainTextDescription,
+    String? htmlDescription,
     DateTime? updatedAt,
   }) {
     return TextBlockModel(
       id: id,
       parentId: parentId,
       title: title ?? this.title,
-      description: description ?? this.description,
+      plainTextDescription: plainTextDescription ?? this.plainTextDescription,
+      htmlDescription: htmlDescription ?? this.htmlDescription,
       createdAt: createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
     );

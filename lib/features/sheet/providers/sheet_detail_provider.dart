@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/models/sheet_content_model.dart';
+import 'package:zoey/features/block/model/block_model.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
@@ -143,7 +143,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   }
 
   /// Add content by type
-  void addContent(ContentType type) {
+  void addContent(BlockType type) {
     final contentId = _createContent(type);
     final updatedSheet = state.sheet.copyWith();
     updatedSheet.addContentId(contentId);
@@ -151,22 +151,22 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   }
 
   /// Create content and return its ID
-  String _createContent(ContentType type) {
+  String _createContent(BlockType type) {
     final contentId = const Uuid().v4();
 
     // Use correct prefixes that match the content detection logic
     String prefix;
     switch (type) {
-      case ContentType.todo:
+      case BlockType.todo:
         prefix = 'todos';
         break;
-      case ContentType.event:
+      case BlockType.event:
         prefix = 'events';
         break;
-      case ContentType.bullet:
+      case BlockType.list:
         prefix = 'list';
         break;
-      case ContentType.text:
+      case BlockType.text:
         prefix = 'text';
         break;
     }
@@ -175,7 +175,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
 
     // Create actual content using StateNotifier providers
     switch (type) {
-      case ContentType.todo:
+      case BlockType.todo:
         final newTodo = TodosContentModel(
           parentId: state.sheet.id,
           id: formattedId,
@@ -184,7 +184,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         );
         ref.read(todosContentListProvider.notifier).addContent(newTodo);
         break;
-      case ContentType.event:
+      case BlockType.event:
         final newEvent = EventsContentModel(
           parentId: state.sheet.id,
           id: formattedId,
@@ -193,7 +193,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         );
         ref.read(eventsContentListProvider.notifier).addContent(newEvent);
         break;
-      case ContentType.bullet:
+      case BlockType.list:
         final newBullets = ListBlockModel(
           parentId: state.sheet.id,
           id: formattedId,
@@ -201,12 +201,13 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         );
         ref.read(listBlockListProvider.notifier).addBlock(newBullets);
         break;
-      case ContentType.text:
+      case BlockType.text:
         final newText = TextBlockModel(
           parentId: state.sheet.id,
           id: formattedId,
           title: 'Text Block',
-          description: '',
+          plainTextDescription: '',
+          htmlDescription: '',
         );
         ref.read(textBlockListProvider.notifier).addBlock(newText);
         break;
