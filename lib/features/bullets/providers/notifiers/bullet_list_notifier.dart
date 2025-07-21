@@ -21,8 +21,8 @@ class BulletListNotifier extends StateNotifier<List<BulletItem>> {
   }
 
   // Add a bullet item
-  String addBullet(String title, String sectionId) {
-    final newBullet = BulletItem(title: title, sectionBlockId: sectionId);
+  String addBullet(String title, String blockId) {
+    final newBullet = BulletItem(title: title, blockId: blockId);
     state = [...state, newBullet];
     return newBullet.id;
   }
