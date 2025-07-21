@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/list/data/list_blocks.dart';
-import 'package:zoey/features/list/models/list_block_model.dart';
+import 'package:zoey/features/list/data/list.dart';
+import 'package:zoey/features/list/models/list_model.dart';
 
 // StateNotifier provider for the list block list
 final listsProvider = StateNotifierProvider<ListNotifier, List<ListModel>>(

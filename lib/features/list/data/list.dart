@@ -1,4 +1,4 @@
-import 'package:zoey/features/list/models/list_block_model.dart';
+import 'package:zoey/features/list/models/list_model.dart';
 
 final lists = [
   ListModel(

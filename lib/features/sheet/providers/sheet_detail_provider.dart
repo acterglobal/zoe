@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/block/model/base_content_model.dart';
+import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 import 'package:zoey/features/text/models/text_content_model.dart';
 import 'package:zoey/features/todos/models/todos_content_model.dart';
 import 'package:zoey/features/events/models/events_model.dart';
-import 'package:zoey/features/list/models/list_block_model.dart';
 import 'package:zoey/features/text/providers/text_content_list_provider.dart';
 import 'package:zoey/features/todos/providers/todos_content_list_provider.dart';
 import 'package:zoey/features/events/providers/events_list_provider.dart';
-import 'package:zoey/features/list/providers/list_block_list_provider.dart';
+import 'package:zoey/features/list/providers/lists_provider.dart';
 import 'package:uuid/uuid.dart';
 
 /// State class for sheet detail
