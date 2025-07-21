@@ -6,10 +6,11 @@ class EventBlockModel extends BlockModel {
 
   EventBlockModel({
     super.id,
-    required super.parentId,
+    required super.sheetId,
     required super.title,
     required this.startDate,
     required this.endDate,
+    super.parentId,
     super.createdAt,
     super.updatedAt,
   }) : super(type: BlockType.event);
@@ -36,7 +37,7 @@ class EventBlockModel extends BlockModel {
   }) {
     return EventBlockModel(
       id: id,
-      parentId: parentId,
+      sheetId: sheetId,
       title: title ?? this.title,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,

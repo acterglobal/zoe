@@ -2,7 +2,7 @@ import 'package:zoey/features/text_block/models/text_block_model.dart';
 
 final textBlockList = [
   TextBlockModel(
-    parentId: 'sheet-1',
+    sheetId: 'sheet-1',
     id: 'text-block-1',
     title: 'Welcome to Zoey!',
     plainTextDescription:
@@ -11,7 +11,7 @@ final textBlockList = [
         '<p>Zoey is your personal workspace for organizing thoughts, tasks, and ideas. This guide will help you understand all the features and get the most out of your experience.</p>',
   ),
   TextBlockModel(
-    parentId: 'sheet-1',
+    sheetId: 'sheet-1',
     id: 'text-block-2',
     title: 'How to Use Text Blocks',
     plainTextDescription:

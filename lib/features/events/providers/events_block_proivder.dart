@@ -13,6 +13,7 @@ final eventsBlockItemProvider = Provider.family<EventBlockModel, String>((
   } catch (e) {
     // Return a default events content if ID not found
     return EventBlockModel(
+      sheetId: 'default',
       parentId: 'default',
       id: id,
       title: 'Content not found',

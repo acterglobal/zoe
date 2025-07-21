@@ -177,7 +177,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     switch (type) {
       case BlockType.todo:
         final newTodo = TodosContentModel(
-          parentId: state.sheet.id,
+          sheetId: state.sheet.id,
           id: formattedId,
           title: 'To-do',
           items: [TodoItem(title: '')],
@@ -186,7 +186,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         break;
       case BlockType.event:
         final newEvent = EventBlockModel(
-          parentId: state.sheet.id,
+          sheetId: state.sheet.id,
           id: formattedId,
           title: 'Events',
           startDate: DateTime.now(),
@@ -196,7 +196,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         break;
       case BlockType.list:
         final newBullets = ListBlockModel(
-          parentId: state.sheet.id,
+          sheetId: state.sheet.id,
           id: formattedId,
           title: 'List',
         );
@@ -204,7 +204,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         break;
       case BlockType.text:
         final newText = TextBlockModel(
-          parentId: state.sheet.id,
+          sheetId: state.sheet.id,
           id: formattedId,
           title: 'Text Block',
           plainTextDescription: '',

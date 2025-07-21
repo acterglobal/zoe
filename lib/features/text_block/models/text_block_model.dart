@@ -9,7 +9,7 @@ class TextBlockModel extends BlockModel {
 
   TextBlockModel({
     super.id,
-    required super.parentId,
+    required super.sheetId,
     required super.title,
     required String plainTextDescription,
     required String htmlDescription,
@@ -44,7 +44,7 @@ class TextBlockModel extends BlockModel {
   }) {
     return TextBlockModel(
       id: id,
-      parentId: parentId,
+      sheetId: sheetId,
       title: title ?? this.title,
       plainTextDescription: plainTextDescription ?? this.plainTextDescription,
       htmlDescription: htmlDescription ?? this.htmlDescription,
