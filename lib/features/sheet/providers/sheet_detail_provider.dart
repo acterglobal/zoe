@@ -4,14 +4,14 @@ import 'package:zoey/features/sheet/models/sheet_content_model.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
-import 'package:zoey/features/text/models/text_block_model.dart';
+import 'package:zoey/features/text_block/models/text_block_model.dart';
 import 'package:zoey/features/todos/models/todos_content_model.dart';
 import 'package:zoey/features/events/models/events_content_model.dart';
-import 'package:zoey/features/bullet-lists/models/bullets_content_model.dart';
-import 'package:zoey/features/text/providers/text_block_list_provider.dart';
+import 'package:zoey/features/list_block/models/list_block_model.dart';
+import 'package:zoey/features/text_block/providers/text_block_list_provider.dart';
 import 'package:zoey/features/todos/providers/todos_content_list_provider.dart';
 import 'package:zoey/features/events/providers/events_content_list_provider.dart';
-import 'package:zoey/features/bullet-lists/providers/bullets_content_list_provider.dart';
+import 'package:zoey/features/list_block/providers/list_block_list_provider.dart';
 import 'package:uuid/uuid.dart';
 
 /// State class for sheet detail
@@ -194,11 +194,11 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         ref.read(eventsContentListProvider.notifier).addContent(newEvent);
         break;
       case ContentType.bullet:
-        final newBullets = BulletsContentModel(
+        final newBullets = ListBlockModel(
           parentId: state.sheet.id,
           id: formattedId,
           title: 'List',
-          bullets: [BulletItem(title: '')],
+          listItems: [ListItem(title: '')],
         );
         ref.read(bulletsContentListProvider.notifier).addContent(newBullets);
         break;

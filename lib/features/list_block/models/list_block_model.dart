@@ -1,16 +1,16 @@
 import 'package:uuid/uuid.dart';
 import 'package:zoey/features/sheet/models/sheet_content_model.dart';
 
-class BulletsContentModel extends SheetContentModel {
+class ListBlockModel extends SheetContentModel {
   final String parentId;
   final String title;
-  final List<BulletItem> bullets;
+  final List<ListItem> listItems;
 
-  BulletsContentModel({
+  ListBlockModel({
     super.id,
     required this.parentId,
     required this.title,
-    required this.bullets,
+    required this.listItems,
     super.createdAt,
     super.updatedAt,
   }) : super(type: ContentType.bullet);
@@ -22,36 +22,36 @@ class BulletsContentModel extends SheetContentModel {
       'parentId': parentId,
       'type': type.name,
       'title': title,
-      'bullets': bullets,
+      'listItems': listItems,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
   }
 
   @override
-  BulletsContentModel copyWith({
+  ListBlockModel copyWith({
     String? title,
-    List<BulletItem>? bullets,
+    List<ListItem>? listItems,
     DateTime? updatedAt,
   }) {
-    return BulletsContentModel(
+    return ListBlockModel(
       id: id,
       parentId: parentId,
       title: title ?? this.title,
-      bullets: bullets ?? this.bullets,
+      listItems: listItems ?? this.listItems,
       createdAt: createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
     );
   }
 }
 
-class BulletItem {
+class ListItem {
   final String id;
   final String title;
   final String? description;
   final List<String> contentList;
 
-  BulletItem({
+  ListItem({
     String? id,
     required this.title,
     this.description,
@@ -67,12 +67,12 @@ class BulletItem {
     };
   }
 
-  BulletItem copyWith({
+  ListItem copyWith({
     String? title,
     String? description,
     List<String>? contentList,
   }) {
-    return BulletItem(
+    return ListItem(
       id: id,
       title: title ?? this.title,
       description: description ?? this.description,

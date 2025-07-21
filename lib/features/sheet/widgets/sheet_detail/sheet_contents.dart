@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/text/widgets/text_content_widget.dart';
+import 'package:zoey/features/text_block/widgets/text_block_widget.dart';
 import 'package:zoey/features/todos/widgets/todos_content_widget.dart';
 import 'package:zoey/features/events/widgets/events_content_widget.dart';
-import 'package:zoey/features/bullet-lists/widgets/bullets_content_widget.dart';
+import 'package:zoey/features/list_block/widgets/list_block_widget.dart';
 
 /// Contents widget for sheet detail screen
 class SheetContents extends ConsumerWidget {
@@ -80,11 +80,8 @@ class SheetContents extends ConsumerWidget {
         eventsContentId: blockId,
         isEditing: isEditing,
       );
-    } else if (blockId.startsWith('bullets-')) {
-      return BulletsContentWidget(
-        bulletsContentId: blockId,
-        isEditing: isEditing,
-      );
+    } else if (blockId.startsWith('list-')) {
+      return ListBlockWidget(listBlockId: blockId, isEditing: isEditing);
     } else {
       // Fallback for unknown content types
       return Container(

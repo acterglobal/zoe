@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/text/providers/text_block_proivder.dart';
+import 'package:zoey/features/text_block/providers/text_block_proivder.dart';
 
 class TextBlockWidget extends ConsumerWidget {
   final String textBlockId;

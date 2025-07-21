@@ -7,10 +7,10 @@ final gettingStartedSheet = ZoeSheetModel(
   emoji: '🚀',
   contentList: [
     'text-block-1',
-    'bullets-content-1',
+    'list-block-1',
     'todos-content-1',
     'text-block-2',
     'events-content-1',
-    'bullets-content-2',
+    'list-block-2',
   ],
 );

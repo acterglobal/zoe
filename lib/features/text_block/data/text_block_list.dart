@@ -1,4 +1,4 @@
-import 'package:zoey/features/text/models/text_block_model.dart';
+import 'package:zoey/features/text_block/models/text_block_model.dart';
 
 final textBlockList = [
   TextBlockModel(

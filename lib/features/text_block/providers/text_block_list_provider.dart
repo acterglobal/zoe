@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/text/data/text_block_list.dart';
-import 'package:zoey/features/text/models/text_block_model.dart';
+import 'package:zoey/features/text_block/data/text_block_list.dart';
+import 'package:zoey/features/text_block/models/text_block_model.dart';
 
 // StateNotifier provider for the text block list
 final textBlockListProvider =

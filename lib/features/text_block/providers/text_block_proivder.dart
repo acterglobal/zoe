@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/text/models/text_block_model.dart';
-import 'package:zoey/features/text/providers/text_block_list_provider.dart';
+import 'package:zoey/features/text_block/models/text_block_model.dart';
+import 'package:zoey/features/text_block/providers/text_block_list_provider.dart';
 
 final textBlockProvider = Provider.family<TextBlockModel?, String>((
   ref,

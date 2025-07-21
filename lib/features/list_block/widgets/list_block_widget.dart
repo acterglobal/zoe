@@ -5,16 +5,16 @@ import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/bullet-lists/models/bullets_content_model.dart';
-import 'package:zoey/features/bullet-lists/providers/bullets_content_item_proivder.dart';
+import 'package:zoey/features/list_block/models/list_block_model.dart';
+import 'package:zoey/features/list_block/providers/list_block_proivder.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
-class BulletsContentWidget extends ConsumerWidget {
-  final String bulletsContentId;
+class ListBlockWidget extends ConsumerWidget {
+  final String listBlockId;
   final bool isEditing;
-  const BulletsContentWidget({
+  const ListBlockWidget({
     super.key,
-    required this.bulletsContentId,
+    required this.listBlockId,
     this.isEditing = false,
   });
 
@@ -42,13 +42,11 @@ class BulletsContentWidget extends ConsumerWidget {
               child: ZoeInlineTextEditWidget(
                 hintText: 'List title',
                 isEditing: isEditing,
-                text: ref
-                    .watch(bulletsContentItemProvider(bulletsContentId))
-                    .title,
+                text: ref.watch(bulletsContentItemProvider(listBlockId)).title,
                 textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(bulletsContentUpdateProvider)
-                    .call(bulletsContentId, title: value),
+                    .call(listBlockId, title: value),
               ),
             ),
             const SizedBox(width: 6),
@@ -56,13 +54,13 @@ class BulletsContentWidget extends ConsumerWidget {
               ZoeDeleteButtonWidget(
                 onTap: () {
                   final bulletsContent = ref.read(
-                    bulletsContentItemProvider(bulletsContentId),
+                    bulletsContentItemProvider(listBlockId),
                   );
                   ref
                       .read(
                         sheetDetailProvider(bulletsContent.parentId).notifier,
                       )
-                      .deleteBlock(bulletsContentId);
+                      .deleteBlock(listBlockId);
                 },
               ),
           ],
@@ -75,15 +73,15 @@ class BulletsContentWidget extends ConsumerWidget {
             child: GestureDetector(
               onTap: () {
                 final currentBulletsContent = ref.read(
-                  bulletsContentItemProvider(bulletsContentId),
+                  bulletsContentItemProvider(listBlockId),
                 );
                 final updatedBullets = [
-                  ...currentBulletsContent.bullets,
-                  BulletItem(title: ''),
+                  ...currentBulletsContent.listItems,
+                  ListItem(title: ''),
                 ];
                 ref
                     .read(bulletsContentUpdateProvider)
-                    .call(bulletsContentId, bullets: updatedBullets);
+                    .call(listBlockId, listItems: updatedBullets);
               },
               child: Row(
                 children: [
@@ -109,25 +107,23 @@ class BulletsContentWidget extends ConsumerWidget {
   }
 
   Widget _buildBulletsList(BuildContext context, WidgetRef ref) {
-    final bulletsContent = ref.watch(
-      bulletsContentItemProvider(bulletsContentId),
-    );
+    final bulletsContent = ref.watch(bulletsContentItemProvider(listBlockId));
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: bulletsContent.bullets.length,
+      itemCount: bulletsContent.listItems.length,
       itemBuilder: (context, index) =>
-          _buildBulletItem(context, ref, bulletsContent, index),
+          _buildListItem(context, ref, bulletsContent, index),
     );
   }
 
-  Widget _buildBulletItem(
+  Widget _buildListItem(
     BuildContext context,
     WidgetRef ref,
-    BulletsContentModel bulletsContent,
+    ListBlockModel listBlock,
     int index,
   ) {
-    final bulletItem = bulletsContent.bullets[index];
+    final listItem = listBlock.listItems[index];
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -145,17 +141,17 @@ class BulletsContentWidget extends ConsumerWidget {
             child: ZoeInlineTextEditWidget(
               hintText: 'List item',
               isEditing: isEditing,
-              text: bulletItem.title,
+              text: listItem.title,
               textStyle: Theme.of(context).textTheme.bodyMedium,
               onTextChanged: (value) => ref
                   .read(bulletsContentUpdateProvider)
                   .call(
-                    bulletsContentId,
-                    bullets: [
-                      ...bulletsContent.bullets.map(
-                        (bullet) => bullet.id == bulletItem.id
-                            ? bullet.copyWith(title: value)
-                            : bullet,
+                    listBlockId,
+                    listItems: [
+                      ...listBlock.listItems.map(
+                        (listItem) => listItem.id == listItem.id
+                            ? listItem.copyWith(title: value)
+                            : listItem,
                       ),
                     ],
                   ),
@@ -165,9 +161,9 @@ class BulletsContentWidget extends ConsumerWidget {
           if (isEditing) ...[
             GestureDetector(
               onTap: () => context.push(
-                AppRoutes.bulletDetail.route.replaceAll(
-                  ':bulletId',
-                  bulletItem.id,
+                AppRoutes.listBlockDetail.route.replaceAll(
+                  ':listBlockId',
+                  listItem.id,
                 ),
               ),
               child: Icon(
@@ -181,12 +177,12 @@ class BulletsContentWidget extends ConsumerWidget {
             const SizedBox(width: 6),
             ZoeCloseButtonWidget(
               onTap: () {
-                final updatedItems = bulletsContent.bullets
-                    .where((bullet) => bullet.id != bulletItem.id)
+                final updatedItems = listBlock.listItems
+                    .where((item) => item.id != listItem.id)
                     .toList();
                 ref
                     .read(bulletsContentUpdateProvider)
-                    .call(bulletsContentId, bullets: updatedItems);
+                    .call(listBlockId, listItems: updatedItems);
               },
             ),
           ],
