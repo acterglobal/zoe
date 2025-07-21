@@ -25,18 +25,20 @@ class BulletItemWidget extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          _buildListItemIcon(context),
+          _buildBulletItemIcon(context),
           const SizedBox(width: 10),
-          Expanded(child: _buildListItemTitle(context, ref, bulletItem.title)),
+          Expanded(
+            child: _buildBulletItemTitle(context, ref, bulletItem.title),
+          ),
           const SizedBox(width: 6),
-          if (isEditing) _buildListItemActions(context, ref),
+          if (isEditing) _buildBulletItemActions(context, ref),
         ],
       ),
     );
   }
 
   // Builds the list item icon
-  Widget _buildListItemIcon(BuildContext context) {
+  Widget _buildBulletItemIcon(BuildContext context) {
     return Icon(
       Icons.circle,
       size: 8,
@@ -45,7 +47,7 @@ class BulletItemWidget extends ConsumerWidget {
   }
 
   // Builds the list item title
-  Widget _buildListItemTitle(
+  Widget _buildBulletItemTitle(
     BuildContext context,
     WidgetRef ref,
     String title,
@@ -59,7 +61,7 @@ class BulletItemWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildListItemActions(BuildContext context, WidgetRef ref) {
+  Widget _buildBulletItemActions(BuildContext context, WidgetRef ref) {
     return Row(
       children: [
         // Edit list item
