@@ -42,7 +42,7 @@ final eventsBlockUpdateProvider =
         // Update using the StateNotifier for immediate reactivity
         ref
             .read(eventsBlockListProvider.notifier)
-            .updateContent(
+            .updateEventBlock(
               contentId,
               title: title,
               startDate: startDate,
@@ -50,3 +50,9 @@ final eventsBlockUpdateProvider =
             );
       };
     });
+
+final deleteEventBlockProvider = Provider<void Function(String)>((ref) {
+  return (String eventId) {
+    ref.read(eventsBlockListProvider.notifier).deleteEventBlock(eventId);
+  };
+});

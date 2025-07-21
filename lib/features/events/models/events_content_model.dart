@@ -11,6 +11,8 @@ class EventBlockModel extends BlockModel {
     required this.startDate,
     required this.endDate,
     super.parentId,
+    super.plainTextDescription,
+    super.htmlDescription,
     super.createdAt,
     super.updatedAt,
   }) : super(type: BlockType.event);
@@ -23,6 +25,8 @@ class EventBlockModel extends BlockModel {
       'title': title,
       'startDate': startDate.toIso8601String(),
       'endDate': endDate.toIso8601String(),
+      'plainTextDescription': plainTextDescription,
+      'htmlDescription': htmlDescription,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };

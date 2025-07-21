@@ -126,7 +126,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     } else if (blockId.startsWith('todos-')) {
       ref.read(todosContentListProvider.notifier).removeContent(blockId);
     } else if (blockId.startsWith('events-')) {
-      ref.read(eventsBlockListProvider.notifier).removeContent(blockId);
+      ref.read(eventsBlockListProvider.notifier).deleteEventBlock(blockId);
     } else if (blockId.startsWith('list-')) {
       ref.read(listBlockListProvider.notifier).removeBlock(blockId);
     }
@@ -192,7 +192,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           startDate: DateTime.now(),
           endDate: DateTime.now().add(const Duration(hours: 1)),
         );
-        ref.read(eventsBlockListProvider.notifier).addContent(newEvent);
+        ref.read(eventsBlockListProvider.notifier).addEventBlock(newEvent);
         break;
       case BlockType.list:
         final newBullets = ListBlockModel(

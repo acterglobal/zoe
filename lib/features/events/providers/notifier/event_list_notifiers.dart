@@ -7,7 +7,7 @@ class EventsBlockListNotifier extends StateNotifier<List<EventBlockModel>> {
   EventsBlockListNotifier() : super(eventsBlockList);
 
   // Update a specific content item
-  void updateContent(
+  void updateEventBlock(
     String id, {
     String? title,
     DateTime? startDate,
@@ -32,13 +32,13 @@ class EventsBlockListNotifier extends StateNotifier<List<EventBlockModel>> {
   }
 
   // Add new content
-  void addContent(EventBlockModel content) {
+  void addEventBlock(EventBlockModel content) {
     state = [...state, content];
     eventsBlockList.add(content);
   }
 
   // Remove content
-  void removeContent(String id) {
+  void deleteEventBlock(String id) {
     state = state.where((content) => content.id != id).toList();
     eventsBlockList.removeWhere((element) => element.id == id);
   }
