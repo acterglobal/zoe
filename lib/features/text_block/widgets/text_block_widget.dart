@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/text/providers/text_block_proivder.dart';
+import 'package:zoey/features/text_block/providers/text_block_proivder.dart';
 
 class TextBlockWidget extends ConsumerWidget {
   final String textBlockId;
@@ -42,7 +42,12 @@ class TextBlockWidget extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 6),
-        _buildTextBlockDescription(context, ref, textBlock.description),
+        _buildTextBlockDescription(
+          context,
+          ref,
+          textBlock.plainTextDescription,
+          textBlock.htmlDescription,
+        ),
       ],
     );
   }
@@ -79,15 +84,17 @@ class TextBlockWidget extends ConsumerWidget {
   Widget _buildTextBlockDescription(
     BuildContext context,
     WidgetRef ref,
-    String description,
+    String plainTextDescription,
+    String htmlDescription,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: 'Type something...',
       isEditing: isEditing,
-      text: description,
+      text: plainTextDescription,
       textStyle: Theme.of(context).textTheme.bodyMedium,
-      onTextChanged: (value) =>
-          ref.read(textBlockDescriptionUpdateProvider).call(textBlockId, value),
+      onTextChanged: (value) => ref
+          .read(textBlockDescriptionUpdateProvider)
+          .call(textBlockId, value, htmlDescription),
     );
   }
 }
