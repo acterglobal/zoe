@@ -76,10 +76,7 @@ class SheetContents extends ConsumerWidget {
     } else if (blockId.startsWith('todos-')) {
       return TodosContentWidget(todosContentId: blockId, isEditing: isEditing);
     } else if (blockId.startsWith('events-')) {
-      return EventsContentWidget(
-        eventsContentId: blockId,
-        isEditing: isEditing,
-      );
+      return EventsBlockWidget(eventsBlockId: blockId, isEditing: isEditing);
     } else if (blockId.startsWith('list-')) {
       return ListBlockWidget(listBlockId: blockId, isEditing: isEditing);
     } else {

@@ -10,7 +10,7 @@ import 'package:zoey/features/events/models/events_content_model.dart';
 import 'package:zoey/features/list_block/models/list_block_model.dart';
 import 'package:zoey/features/text_block/providers/text_block_list_provider.dart';
 import 'package:zoey/features/todos/providers/todos_content_list_provider.dart';
-import 'package:zoey/features/events/providers/events_content_list_provider.dart';
+import 'package:zoey/features/events/providers/events_block_list_provider.dart';
 import 'package:zoey/features/list_block/providers/list_block_list_provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -126,7 +126,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     } else if (blockId.startsWith('todos-')) {
       ref.read(todosContentListProvider.notifier).removeContent(blockId);
     } else if (blockId.startsWith('events-')) {
-      ref.read(eventsContentListProvider.notifier).removeContent(blockId);
+      ref.read(eventsBlockListProvider.notifier).removeContent(blockId);
     } else if (blockId.startsWith('list-')) {
       ref.read(listBlockListProvider.notifier).removeBlock(blockId);
     }
@@ -185,13 +185,14 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         ref.read(todosContentListProvider.notifier).addContent(newTodo);
         break;
       case BlockType.event:
-        final newEvent = EventsContentModel(
+        final newEvent = EventBlockModel(
           parentId: state.sheet.id,
           id: formattedId,
           title: 'Events',
-          events: [EventItem(title: '')],
+          startDate: DateTime.now(),
+          endDate: DateTime.now().add(const Duration(hours: 1)),
         );
-        ref.read(eventsContentListProvider.notifier).addContent(newEvent);
+        ref.read(eventsBlockListProvider.notifier).addContent(newEvent);
         break;
       case BlockType.list:
         final newBullets = ListBlockModel(
