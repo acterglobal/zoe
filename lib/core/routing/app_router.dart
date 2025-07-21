@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/screens/page_not_found_screen.dart';
-import 'package:zoey/features/list_block/screens/list_item_detail_screen.dart';
+import 'package:zoey/features/bullets/screens/list_item_detail_screen.dart';
 import 'package:zoey/features/events/screens/event_detail_screen.dart';
 import 'package:zoey/features/home/screens/home_screen.dart';
 import 'package:zoey/features/settings/screens/settings_screen.dart';
@@ -63,11 +63,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       GoRoute(
-        path: AppRoutes.listItemDetail.route,
-        name: AppRoutes.listItemDetail.name,
+        path: AppRoutes.bulletItemDetail.route,
+        name: AppRoutes.bulletItemDetail.name,
         builder: (context, state) {
-          final listItemId = state.pathParameters['listItemId'];
-          return ListItemDetailScreen(listItemId: listItemId);
+          final bulletItemId = state.pathParameters['bulletItemId'];
+          return BulletItemDetailScreen(bulletItemId: bulletItemId);
         },
       ),
       // Settings route

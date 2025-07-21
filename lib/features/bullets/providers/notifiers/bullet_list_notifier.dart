@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/list_block/data/bullets.dart';
-import 'package:zoey/features/list_block/models/bullet_item_model.dart';
+import 'package:zoey/features/bullets/data/bullets.dart';
+import 'package:zoey/features/bullets/model/bullet_item_model.dart';
 
 class BulletListNotifier extends StateNotifier<List<BulletItem>> {
   BulletListNotifier() : super(bulletList);

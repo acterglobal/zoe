@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/list_block/models/bullet_item_model.dart';
-import 'package:zoey/features/list_block/providers/notifiers/bullet_list_notifier.dart';
+import 'package:zoey/features/bullets/model/bullet_item_model.dart';
+import 'package:zoey/features/bullets/providers/notifiers/bullet_list_notifier.dart';
 
 final bulletListProvider =
     StateNotifierProvider<BulletListNotifier, List<BulletItem>>((ref) {
