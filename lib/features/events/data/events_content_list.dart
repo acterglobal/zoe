@@ -1,48 +1,31 @@
 import 'package:zoey/features/events/models/events_content_model.dart';
 
-final eventsContentList = [
-  EventsContentModel(
-    parentId: 'sheet-1',
-    id: 'events-content-1',
+final eventsBlockList = [
+  EventBlockModel(
+    sheetId: 'sheet-1',
+    id: 'events-block-1',
     title: 'Learning Schedule',
-    events: [
-      EventItem(
-        title: 'Explore Getting Started Guide',
-        description: 'Read through this guide and try the features',
-        startDate: DateTime.now(),
-        endDate: DateTime.now().add(const Duration(minutes: 30)),
-      ),
-      EventItem(
-        title: 'Practice Session',
-        description: 'Create your first custom sheet and add content',
-        startDate: DateTime.now().add(const Duration(hours: 1)),
-        endDate: DateTime.now().add(const Duration(hours: 2)),
-      ),
-      EventItem(
-        title: 'Team Review Meeting',
-        description: 'Review progress and discuss next steps',
-        startDate: DateTime.now().add(const Duration(days: 1, hours: 10)),
-        endDate: DateTime.now().add(const Duration(days: 1, hours: 11)),
-      ),
-    ],
+    plainTextDescription: 'Learn about the latest trends in the industry',
+    htmlDescription: '<p>Learn about the latest trends in the industry</p>',
+    startDate: DateTime.now(),
+    endDate: DateTime.now().add(const Duration(minutes: 30)),
   ),
-  EventsContentModel(
-    parentId: 'sheet-1',
-    id: 'events-content-2',
+  EventBlockModel(
+    sheetId: 'sheet-1',
+    id: 'events-block-2',
     title: 'Meeting Schedule',
-    events: [
-      EventItem(
-        title: 'Daily Standup',
-        description: 'Review progress and discuss next steps',
-        startDate: DateTime.now().add(const Duration(days: 1, hours: 10)),
-        endDate: DateTime.now().add(const Duration(days: 1, hours: 11)),
-      ),
-      EventItem(
-        title: 'Team Review Meeting',
-        description: 'Review progress and discuss next steps',
-        startDate: DateTime.now().add(const Duration(days: 1, hours: 10)),
-        endDate: DateTime.now().add(const Duration(days: 1, hours: 11)),
-      ),
-    ],
+    plainTextDescription: 'Learn about the latest trends in the industry',
+    htmlDescription: '<p>Learn about the latest trends in the industry</p>',
+    startDate: DateTime.now(),
+    endDate: DateTime.now().add(const Duration(minutes: 30)),
+  ),
+  EventBlockModel(
+    sheetId: 'sheet-1',
+    id: 'events-block-3',
+    title: 'Practice Session',
+    plainTextDescription: 'Learn about the latest trends in the industry',
+    htmlDescription: '<p>Learn about the latest trends in the industry</p>',
+    startDate: DateTime.now().add(const Duration(hours: 1)),
+    endDate: DateTime.now().add(const Duration(hours: 2)),
   ),
 ];

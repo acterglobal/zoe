@@ -3,7 +3,7 @@ import 'package:zoey/features/block/model/block_model.dart';
 class ListBlockModel extends BlockModel {
   ListBlockModel({
     super.id,
-    required super.parentId,
+    required super.sheetId,
     required super.title,
     super.createdAt,
     super.updatedAt,
@@ -29,7 +29,7 @@ class ListBlockModel extends BlockModel {
   }) {
     return ListBlockModel(
       id: id,
-      parentId: parentId,
+      sheetId: sheetId,
       title: title ?? this.title,
       createdAt: createdAt,
       updatedAt: updatedAt ?? DateTime.now(),

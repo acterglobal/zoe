@@ -2,7 +2,7 @@ import 'package:zoey/features/todos/models/todos_content_model.dart';
 
 final todosContentList = [
   TodosContentModel(
-    parentId: 'sheet-1',
+    sheetId: 'sheet-1',
     id: 'todos-content-1',
     title: 'Quick Start Checklist',
     items: [
@@ -44,7 +44,7 @@ final todosContentList = [
     ],
   ),
   TodosContentModel(
-    parentId: 'sheet-1',
+    sheetId: 'sheet-1',
     id: 'todos-content-2',
     title: 'Productivity Workspace',
     items: [

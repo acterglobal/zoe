@@ -6,7 +6,7 @@ class TodosContentModel extends BlockModel {
 
   TodosContentModel({
     super.id,
-    required super.parentId,
+    required super.sheetId,
     required super.title,
     required this.items,
     super.createdAt,
@@ -33,7 +33,7 @@ class TodosContentModel extends BlockModel {
   }) {
     return TodosContentModel(
       id: id,
-      parentId: parentId,
+      sheetId: sheetId,
       title: title ?? this.title,
       items: items ?? this.items,
       createdAt: createdAt,

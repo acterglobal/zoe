@@ -8,9 +8,11 @@ final gettingStartedSheet = ZoeSheetModel(
   contentList: [
     'text-block-1',
     'list-block-1',
+    'events-block-1',
     'todos-content-1',
     'text-block-2',
-    'events-content-1',
+    'events-block-2',
     'list-block-2',
+    'events-block-3',
   ],
 );

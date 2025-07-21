@@ -5,8 +5,9 @@ enum BlockType { todo, event, list, text }
 abstract class BlockModel {
   final String id;
   final BlockType type;
-  final String parentId;
+  final String sheetId;
   final String title;
+  final String? parentId;
   final String? emoji;
   final String? plainTextDescription;
   final String? htmlDescription;
@@ -16,8 +17,9 @@ abstract class BlockModel {
   BlockModel({
     String? id,
     required this.type,
-    required this.parentId,
+    required this.sheetId,
     required this.title,
+    this.parentId,
     this.emoji,
     this.plainTextDescription,
     this.htmlDescription,
