@@ -1,36 +1,82 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/add_content_menu.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_detail_app_bar.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_contents.dart';
+import 'package:zoey/features/sheet/widgets/quill_toolbar/view_quill_editor_toolbar_widget.dart';
 
-class SheetDetailScreen extends ConsumerWidget {
+class SheetDetailScreen extends ConsumerStatefulWidget {
   final String? sheetId;
 
   const SheetDetailScreen({super.key, this.sheetId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SheetDetailScreen> createState() => _SheetDetailScreenState();
+}
+
+class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
+  QuillController? _activeController;
+  FocusNode? _activeFocusNode;
+  bool _isToolbarVisible = false;
+
+  void _handleEditorFocusChanged(QuillController? controller, FocusNode? focusNode) {
+    setState(() {
+      _activeController = controller;
+      _activeFocusNode = focusNode;
+      _isToolbarVisible = focusNode?.hasFocus ?? false;
+    });
+  }
+
+  void _returnFocusToEditor() {
+    if (_activeFocusNode != null) {
+      _activeFocusNode!.requestFocus();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SheetDetailAppBar(sheetId: sheetId),
-      body: _buildBody(context, ref),
+      appBar: SheetDetailAppBar(sheetId: widget.sheetId),
+      body: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                _buildBody(context, ref),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: ViewQuillEditorToolbarWidget(
+                    controller: _activeController,
+                    focusNode: _activeFocusNode,
+                    isToolbarVisible: _isToolbarVisible,
+                    onReturnFocusToEditor: _returnFocusToEditor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   /// Builds the main body
   Widget _buildBody(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(context, ref),
           const SizedBox(height: 16),
-          SheetContents(sheetId: sheetId),
+          SheetContents(sheetId: widget.sheetId),
           _buildAddContentArea(context, ref),
-          const SizedBox(height: 200),
+          const SizedBox(height: 80), // Extra padding for toolbar
         ],
       ),
     );
@@ -46,11 +92,11 @@ class SheetDetailScreen extends ConsumerWidget {
           children: [
             GestureDetector(
               onTap: () =>
-                  ref.read(sheetDetailProvider(sheetId).notifier).updateEmoji(),
+                  ref.read(sheetDetailProvider(widget.sheetId).notifier).updateEmoji(),
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(
-                  ref.watch(sheetProvider(sheetId)).emoji ?? '📄',
+                  ref.watch(sheetProvider(widget.sheetId)).emoji ?? '📄',
                   style: const TextStyle(fontSize: 32),
                 ),
               ),
@@ -59,8 +105,8 @@ class SheetDetailScreen extends ConsumerWidget {
             Expanded(
               child: ZoeInlineTextEditWidget(
                 hintText: 'Title',
-                isEditing: ref.watch(isEditingProvider(sheetId)),
-                text: ref.watch(sheetProvider(sheetId)).title,
+                isEditing: ref.watch(isEditingProvider(widget.sheetId)),
+                text: ref.watch(sheetProvider(widget.sheetId)).title,
                 textStyle: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
@@ -68,7 +114,7 @@ class SheetDetailScreen extends ConsumerWidget {
                   height: 1.2,
                 ),
                 onTextChanged: (value) => ref
-                    .read(sheetDetailProvider(sheetId).notifier)
+                    .read(sheetDetailProvider(widget.sheetId).notifier)
                     .updateTitle(value),
               ),
             ),
@@ -77,12 +123,18 @@ class SheetDetailScreen extends ConsumerWidget {
         const SizedBox(height: 16),
         ZoeInlineTextEditWidget(
           hintText: 'Add a description',
-          isEditing: ref.watch(isEditingProvider(sheetId)),
-          text: ref.watch(sheetProvider(sheetId)).description,
+          isEditing: ref.watch(isEditingProvider(widget.sheetId)),
+          text: ref.watch(sheetProvider(widget.sheetId)).descriptionHtml,
           textStyle: Theme.of(context).textTheme.bodyLarge,
           onTextChanged: (value) => ref
-              .read(sheetDetailProvider(sheetId).notifier)
+              .read(sheetDetailProvider(widget.sheetId).notifier)
               .updateDescription(value),
+          onHtmlChanged: (plainText, richText) {
+            ref
+                .read(sheetDetailProvider(widget.sheetId).notifier)
+                .updateDescription(plainText, richText: richText);
+          },
+          onFocusChanged: _handleEditorFocusChanged,
         ),
       ],
     );
@@ -90,15 +142,15 @@ class SheetDetailScreen extends ConsumerWidget {
 
   /// Builds the add content area
   Widget _buildAddContentArea(BuildContext context, WidgetRef ref) {
-    final showAddMenu = ref.watch(sheetDetailProvider(sheetId)).showAddMenu;
-    final isEditing = ref.watch(isEditingProvider(sheetId));
+    final showAddMenu = ref.watch(sheetDetailProvider(widget.sheetId)).showAddMenu;
+    final isEditing = ref.watch(isEditingProvider(widget.sheetId));
     return isEditing
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
                 onTap: () => ref
-                    .read(sheetDetailProvider(sheetId).notifier)
+                    .read(sheetDetailProvider(widget.sheetId).notifier)
                     .toggleAddMenu(),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
@@ -123,7 +175,7 @@ class SheetDetailScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-              if (showAddMenu) AddContentMenu(sheetId: sheetId),
+              if (showAddMenu) AddContentMenu(sheetId: widget.sheetId),
             ],
           )
         : const SizedBox.shrink();

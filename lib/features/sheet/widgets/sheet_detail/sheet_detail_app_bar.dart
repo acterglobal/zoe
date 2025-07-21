@@ -25,8 +25,9 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
               ? Theme.of(context).colorScheme.primary
               : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          onPressed: () =>
-              ref.read(sheetDetailProvider(sheetId).notifier).toggleEditSave(),
+          onPressed: () {
+            ref.read(sheetDetailProvider(sheetId).notifier).toggleEditSave();
+          },
         ),
         _buildMoreMenu(context, ref),
       ],

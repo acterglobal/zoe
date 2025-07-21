@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_html_text_edit_widget.dart';
 
 class ZoeInlineTextEditWidget extends StatefulWidget {
   final String? text;
   final String? hintText;
   final Function(String) onTextChanged;
+  final Function(String plainText, String richText)? onHtmlChanged;
+  final Function(QuillController? controller, FocusNode? focusNode)? onFocusChanged;
   final bool isEditing;
   final TextStyle? textStyle;
 
@@ -12,13 +16,14 @@ class ZoeInlineTextEditWidget extends StatefulWidget {
     this.text,
     this.hintText,
     required this.onTextChanged,
+    this.onHtmlChanged,
+    this.onFocusChanged,
     this.isEditing = false,
     this.textStyle,
   });
 
   @override
-  State<ZoeInlineTextEditWidget> createState() =>
-      _ZoeInlineTextEditWidgetState();
+  State<ZoeInlineTextEditWidget> createState() => _ZoeInlineTextEditWidgetState();
 }
 
 class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
@@ -38,7 +43,7 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.isEditing
+    return widget.isEditing && widget.onHtmlChanged == null
         ? TextField(
             controller: controller,
             style: widget.textStyle,
@@ -50,7 +55,17 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
             maxLines: null,
             onChanged: widget.onTextChanged,
           )
-        : SelectableText(
+        : widget.onHtmlChanged != null ? ZoeHtmlTextEditWidget(
+            initialContent: controller.text,
+            initialRichContent: widget.text,
+            isEditing: widget.isEditing,
+            placeholder: widget.hintText,
+            textStyle: widget.textStyle,
+            onContentChanged: (plainText, richTextJson) {
+              widget.onHtmlChanged!(plainText, richTextJson);
+            },
+            onFocusChanged: widget.onFocusChanged,
+          ) : SelectableText(
             controller.text.isEmpty ? (widget.hintText ?? '') : controller.text,
             style: controller.text.isEmpty && widget.hintText != null
                 ? widget.textStyle?.copyWith(color: Theme.of(context).hintColor)

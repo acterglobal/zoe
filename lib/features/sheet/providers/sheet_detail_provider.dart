@@ -103,8 +103,13 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   }
 
   /// Update sheet description
-  void updateDescription(String value) {
-    state = state.copyWith(sheet: state.sheet.copyWith(description: value));
+  void updateDescription(String plainText, {String? richText}) {
+    state = state.copyWith(
+      sheet: state.sheet.copyWith(
+        description: plainText,
+        descriptionHtml: richText ?? plainText,
+      ),
+    );
   }
 
   /// Reorder content

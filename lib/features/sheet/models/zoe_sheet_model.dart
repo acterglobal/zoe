@@ -4,6 +4,7 @@ class ZoeSheetModel {
   final String id;
   final String title;
   final String description;
+  final String? descriptionHtml;
   final List<String> contentList;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -14,6 +15,7 @@ class ZoeSheetModel {
     String? id,
     required this.title,
     this.description = '',
+    this.descriptionHtml,
     List<String>? contentList,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -29,6 +31,7 @@ class ZoeSheetModel {
       'id': id,
       'title': title,
       'description': description,
+      'descriptionHtml': descriptionHtml,
       'contentList': contentList, // Changed to store IDs directly
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
@@ -42,6 +45,7 @@ class ZoeSheetModel {
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String? ?? '',
+      descriptionHtml: json['descriptionHtml'] as String?,
       contentList:
           (json['contentList']
                   as List<dynamic>?) // Changed to handle List<String>
@@ -58,6 +62,7 @@ class ZoeSheetModel {
   ZoeSheetModel copyWith({
     String? title,
     String? description,
+    String? descriptionHtml,
     List<String>? contentList, // Changed to List<String>
     DateTime? updatedAt,
     String? emoji,
@@ -67,6 +72,7 @@ class ZoeSheetModel {
       id: id,
       title: title ?? this.title,
       description: description ?? this.description,
+      descriptionHtml: descriptionHtml ?? this.descriptionHtml,
       contentList: contentList ?? this.contentList, // Changed to contentList
       createdAt: createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
