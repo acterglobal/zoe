@@ -1,22 +1,19 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/events/models/events_content_model.dart';
-import 'package:zoey/features/events/providers/events_block_list_provider.dart';
+import 'package:zoey/features/events/models/events_model.dart';
+import 'package:zoey/features/events/providers/events_list_provider.dart';
 
-final eventsBlockItemProvider = Provider.family<EventModel, String>((
-  ref,
-  String id,
-) {
+final eventsProvider = Provider.family<EventModel, String>((ref, String id) {
   try {
     return ref
-        .watch(eventsBlockListProvider)
+        .watch(eventsListProvider)
         .firstWhere((element) => element.id == id);
   } catch (e) {
-    // Return a default events content if ID not found
+    // Return a default event if ID not found
     return EventModel(
       sheetId: 'default',
       parentId: 'default',
       id: id,
-      title: 'Content not found',
+      title: 'Event not found',
       startDate: DateTime.now(),
       endDate: DateTime.now().add(const Duration(hours: 1)),
     );
@@ -24,7 +21,7 @@ final eventsBlockItemProvider = Provider.family<EventModel, String>((
 });
 
 // Direct update provider - saves immediately using StateNotifier
-final eventsBlockUpdateProvider =
+final eventsUpdateProvider =
     Provider<
       void Function(
         String, {
@@ -34,16 +31,16 @@ final eventsBlockUpdateProvider =
       })
     >((ref) {
       return (
-        String contentId, {
+        String eventId, {
         String? title,
         DateTime? startDate,
         DateTime? endDate,
       }) {
         // Update using the StateNotifier for immediate reactivity
         ref
-            .read(eventsBlockListProvider.notifier)
-            .updateEventBlock(
-              contentId,
+            .read(eventsListProvider.notifier)
+            .updateEvent(
+              eventId,
               title: title,
               startDate: startDate,
               endDate: endDate,
@@ -51,8 +48,8 @@ final eventsBlockUpdateProvider =
       };
     });
 
-final deleteEventBlockProvider = Provider<void Function(String)>((ref) {
+final deleteEventProvider = Provider<void Function(String)>((ref) {
   return (String eventId) {
-    ref.read(eventsBlockListProvider.notifier).deleteEventBlock(eventId);
+    ref.read(eventsListProvider.notifier).deleteEvent(eventId);
   };
 });

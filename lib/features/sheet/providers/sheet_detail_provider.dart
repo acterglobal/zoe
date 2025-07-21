@@ -6,11 +6,11 @@ import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 import 'package:zoey/features/text/models/text_content_model.dart';
 import 'package:zoey/features/todos/models/todos_content_model.dart';
-import 'package:zoey/features/events/models/events_content_model.dart';
+import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/list_block/models/list_block_model.dart';
 import 'package:zoey/features/text/providers/text_content_list_provider.dart';
 import 'package:zoey/features/todos/providers/todos_content_list_provider.dart';
-import 'package:zoey/features/events/providers/events_block_list_provider.dart';
+import 'package:zoey/features/events/providers/events_list_provider.dart';
 import 'package:zoey/features/list_block/providers/list_block_list_provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -126,7 +126,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     } else if (contentId.startsWith('todos-')) {
       ref.read(todosContentListProvider.notifier).removeContent(contentId);
     } else if (contentId.startsWith('events-')) {
-      ref.read(eventsBlockListProvider.notifier).deleteEventBlock(contentId);
+      ref.read(eventsListProvider.notifier).deleteEvent(contentId);
     } else if (contentId.startsWith('list-')) {
       ref.read(listBlockListProvider.notifier).removeBlock(contentId);
     }
@@ -192,7 +192,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           startDate: DateTime.now(),
           endDate: DateTime.now().add(const Duration(hours: 1)),
         );
-        ref.read(eventsBlockListProvider.notifier).addEventBlock(newEvent);
+        ref.read(eventsListProvider.notifier).addEvent(newEvent);
         break;
       case ContentType.list:
         final newBullets = ListBlockModel(

@@ -4,21 +4,21 @@ import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/events/models/events_content_model.dart';
-import 'package:zoey/features/events/providers/events_block_proivder.dart';
+import 'package:zoey/features/events/models/events_model.dart';
+import 'package:zoey/features/events/providers/events_proivder.dart';
 
-class EventBlockWidget extends ConsumerWidget {
-  final String eventsBlockId;
+class EventWidget extends ConsumerWidget {
+  final String eventsId;
   final bool isEditing;
-  const EventBlockWidget({
+  const EventWidget({
     super.key,
-    required this.eventsBlockId,
+    required this.eventsId,
     this.isEditing = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final event = ref.watch(eventsBlockItemProvider(eventsBlockId));
+    final event = ref.watch(eventsProvider(eventsId));
     return Padding(
       padding: const EdgeInsets.only(bottom: 8, top: 8, left: 8),
       child: Row(
@@ -67,7 +67,7 @@ class EventBlockWidget extends ConsumerWidget {
       text: event.title,
       textStyle: Theme.of(context).textTheme.bodyMedium,
       onTextChanged: (value) =>
-          ref.read(eventsBlockUpdateProvider).call(event.id, title: value),
+          ref.read(eventsUpdateProvider).call(event.id, title: value),
     );
   }
 
@@ -106,7 +106,7 @@ class EventBlockWidget extends ConsumerWidget {
         const SizedBox(width: 6),
         ZoeCloseButtonWidget(
           onTap: () => ref
-              .read(eventsBlockUpdateProvider)
+              .read(eventsUpdateProvider)
               .call(event.id, startDate: null, endDate: null),
         ),
       ],

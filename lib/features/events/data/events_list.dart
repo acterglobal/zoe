@@ -1,9 +1,9 @@
-import 'package:zoey/features/events/models/events_content_model.dart';
+import 'package:zoey/features/events/models/events_model.dart';
 
-final eventsBlockList = [
+final eventsList = [
   EventModel(
     sheetId: 'sheet-1',
-    id: 'events-block-1',
+    id: 'events-1',
     title: 'Learning Schedule',
     plainTextDescription: 'Learn about the latest trends in the industry',
     htmlDescription: '<p>Learn about the latest trends in the industry</p>',
@@ -12,7 +12,7 @@ final eventsBlockList = [
   ),
   EventModel(
     sheetId: 'sheet-1',
-    id: 'events-block-2',
+    id: 'events-2',
     title: 'Meeting Schedule',
     plainTextDescription: 'Learn about the latest trends in the industry',
     htmlDescription: '<p>Learn about the latest trends in the industry</p>',
@@ -21,7 +21,7 @@ final eventsBlockList = [
   ),
   EventModel(
     sheetId: 'sheet-1',
-    id: 'events-block-3',
+    id: 'events-3',
     title: 'Practice Session',
     plainTextDescription: 'Learn about the latest trends in the industry',
     htmlDescription: '<p>Learn about the latest trends in the industry</p>',

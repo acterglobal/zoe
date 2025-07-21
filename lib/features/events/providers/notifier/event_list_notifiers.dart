@@ -1,45 +1,44 @@
-// StateNotifier for managing the events content list
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/events/data/events_content_list.dart';
-import 'package:zoey/features/events/models/events_content_model.dart';
+import 'package:zoey/features/events/data/events_list.dart';
+import 'package:zoey/features/events/models/events_model.dart';
 
-class EventsBlockListNotifier extends StateNotifier<List<EventModel>> {
-  EventsBlockListNotifier() : super(eventsBlockList);
+class EventsListNotifier extends StateNotifier<List<EventModel>> {
+  EventsListNotifier() : super(eventsList);
 
-  // Update a specific content item
-  void updateEventBlock(
+  // Update a specific event item
+  void updateEvent(
     String id, {
     String? title,
     DateTime? startDate,
     DateTime? endDate,
   }) {
-    state = state.map((content) {
-      if (content.id == id) {
-        return content.copyWith(
-          title: title ?? content.title,
-          startDate: startDate ?? content.startDate,
-          endDate: endDate ?? content.endDate,
+    state = state.map((event) {
+      if (event.id == id) {
+        return event.copyWith(
+          title: title ?? event.title,
+          startDate: startDate ?? event.startDate,
+          endDate: endDate ?? event.endDate,
         );
       }
-      return content;
+      return event;
     }).toList();
 
     // Also update the original list to keep it in sync
-    final index = eventsBlockList.indexWhere((element) => element.id == id);
+    final index = eventsList.indexWhere((element) => element.id == id);
     if (index != -1) {
-      eventsBlockList[index] = state.firstWhere((element) => element.id == id);
+      eventsList[index] = state.firstWhere((element) => element.id == id);
     }
   }
 
-  // Add new content
-  void addEventBlock(EventModel content) {
-    state = [...state, content];
-    eventsBlockList.add(content);
+  // Add new event
+  void addEvent(EventModel event) {
+    state = [...state, event];
+    eventsList.add(event);
   }
 
-  // Remove content
-  void deleteEventBlock(String id) {
-    state = state.where((content) => content.id != id).toList();
-    eventsBlockList.removeWhere((element) => element.id == id);
+  // Remove event
+  void deleteEvent(String id) {
+    state = state.where((event) => event.id != id).toList();
+    eventsList.removeWhere((element) => element.id == id);
   }
 }
