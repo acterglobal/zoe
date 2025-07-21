@@ -1,4 +1,4 @@
-import 'package:zoey/features/block/model/base_content_model.dart';
+import 'package:zoey/features/sheet/models/base_content_model.dart';
 
 class EventModel extends BaseContentModel {
   final DateTime startDate;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/block/model/base_content_model.dart';
+import 'package:zoey/features/sheet/models/base_content_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// Add content menu widget
