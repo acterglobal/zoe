@@ -24,3 +24,40 @@ final bulletItemProvider = Provider.family<BulletItem?, String>((
   // Return null if no matching bullet item is found in any list block
   return null;
 });
+
+final updateBulletItemProvider = Provider<void Function(String, String)>((ref) {
+  return (String bulletItemId, String title) {
+    final listBlocks = ref.read(listBlockListProvider);
+    final listBlock = listBlocks.firstWhere(
+      (listBlock) =>
+          listBlock.bullets.any((bullet) => bullet.id == bulletItemId),
+    );
+    ref
+        .read(listBlockListProvider.notifier)
+        .updateBlock(
+          listBlock.id,
+          bullets: listBlock.bullets.map((bullet) {
+            if (bullet.id == bulletItemId) return bullet.copyWith(title: title);
+            return bullet;
+          }).toList(),
+        );
+  };
+});
+
+final deleteBulletItemProvider = Provider<void Function(String)>((ref) {
+  return (String bulletItemId) {
+    final listBlocks = ref.read(listBlockListProvider);
+    for (final listBlock in listBlocks) {
+      final bulletIndex = listBlock.bullets.indexWhere(
+        (bullet) => bullet.id == bulletItemId,
+      );
+      if (bulletIndex != -1) {
+        final updatedBullets = [...listBlock.bullets];
+        updatedBullets.removeAt(bulletIndex);
+        ref
+            .read(listBlockListProvider.notifier)
+            .updateBlock(listBlock.id, bullets: updatedBullets);
+      }
+    }
+  };
+});

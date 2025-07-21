@@ -57,7 +57,9 @@ class BulletItemWidget extends ConsumerWidget {
       isEditing: isEditing,
       text: title,
       textStyle: Theme.of(context).textTheme.bodyMedium,
-      onTextChanged: (value) {},
+      onTextChanged: (value) {
+        ref.read(updateBulletItemProvider).call(bulletItemId, value);
+      },
     );
   }
 
@@ -84,7 +86,9 @@ class BulletItemWidget extends ConsumerWidget {
         const SizedBox(width: 6),
 
         // Delete list item
-        ZoeCloseButtonWidget(onTap: () {}),
+        ZoeCloseButtonWidget(
+          onTap: () => ref.read(deleteBulletItemProvider).call(bulletItemId),
+        ),
       ],
     );
   }
