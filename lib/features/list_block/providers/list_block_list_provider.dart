@@ -27,7 +27,14 @@ class ListBlockListNotifier extends StateNotifier<List<ListBlockModel>> {
     // Also update the original list to keep it in sync
     final index = listBlockList.indexWhere((element) => element.id == id);
     if (index != -1) {
-      listBlockList[index] = state.firstWhere((element) => element.id == id);
+      try {
+        listBlockList[index] = state.firstWhere((element) => element.id == id);
+      } catch (e) {
+        // Handle case where element might not be found
+        print(
+          'Warning: Could not find list block with id $id to update in original list',
+        );
+      }
     }
   }
 

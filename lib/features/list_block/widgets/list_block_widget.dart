@@ -4,6 +4,7 @@ import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/list_block/models/list_block_model.dart';
 import 'package:zoey/features/list_block/providers/list_block_proivder.dart';
+import 'package:zoey/features/list_block/providers/list_item_list_providers.dart';
 import 'package:zoey/features/list_block/widgets/list_item_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
@@ -47,7 +48,7 @@ class ListBlockWidget extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 6),
-        _buildListBlockListItems(context, ref, listBlock.listItems),
+        _buildListBlockItemList(context, ref),
         if (isEditing) _buildAddListItemButton(context, ref),
       ],
     );
@@ -81,20 +82,15 @@ class ListBlockWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildListBlockListItems(
-    BuildContext context,
-    WidgetRef ref,
-    List<ListItem> listItems,
-  ) {
+  Widget _buildListBlockItemList(BuildContext context, WidgetRef ref) {
+    final listItems = ref.watch(listItemListProvider(listBlockId));
+    if (listItems.isEmpty) return const SizedBox.shrink();
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: listItems.length,
-      itemBuilder: (context, index) => ListItemWidget(
-        listBlockId: listBlockId,
-        listItem: listItems[index],
-        isEditing: isEditing,
-      ),
+      itemBuilder: (context, index) =>
+          ListItemWidget(listItemId: listItems[index].id, isEditing: isEditing),
     );
   }
 

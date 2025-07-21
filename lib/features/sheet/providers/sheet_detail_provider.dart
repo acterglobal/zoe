@@ -127,7 +127,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
       ref.read(todosContentListProvider.notifier).removeContent(blockId);
     } else if (blockId.startsWith('events-')) {
       ref.read(eventsContentListProvider.notifier).removeContent(blockId);
-    } else if (blockId.startsWith('bullets-')) {
+    } else if (blockId.startsWith('list-')) {
       ref.read(listBlockListProvider.notifier).removeBlock(blockId);
     }
   }
@@ -164,7 +164,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         prefix = 'events';
         break;
       case ContentType.bullet:
-        prefix = 'bullets';
+        prefix = 'list';
         break;
       case ContentType.text:
         prefix = 'text';
