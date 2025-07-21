@@ -24,10 +24,10 @@ final listBlockTitleUpdateProvider = Provider<void Function(String, String)>((
 });
 
 final listBlockListUpdateProvider =
-    Provider<void Function(String, List<ListItem>)>((ref) {
-      return (String blockId, List<ListItem> listItems) {
+    Provider<void Function(String, List<BulletItem>)>((ref) {
+      return (String blockId, List<BulletItem> bullets) {
         ref
             .read(listBlockListProvider.notifier)
-            .updateBlock(blockId, listItems: listItems);
+            .updateBlock(blockId, bullets: bullets);
       };
     });

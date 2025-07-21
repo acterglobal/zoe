@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/list_block/models/list_block_model.dart';
 import 'package:zoey/features/list_block/providers/list_block_list_provider.dart';
 
-final listItemListProvider = Provider.family<List<ListItem>, String>((
+final listItemListProvider = Provider.family<List<BulletItem>, String>((
   ref,
   String listBlockId,
 ) {
@@ -11,7 +11,7 @@ final listItemListProvider = Provider.family<List<ListItem>, String>((
   try {
     return listBlocks
         .firstWhere((listBlock) => listBlock.id == listBlockId)
-        .listItems;
+        .bullets;
   } catch (e) {
     return [];
   }

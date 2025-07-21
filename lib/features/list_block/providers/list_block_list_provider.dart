@@ -13,12 +13,12 @@ class ListBlockListNotifier extends StateNotifier<List<ListBlockModel>> {
   ListBlockListNotifier() : super(listBlockList);
 
   // Update a specific list block item
-  void updateBlock(String id, {String? title, List<ListItem>? listItems}) {
+  void updateBlock(String id, {String? title, List<BulletItem>? bullets}) {
     state = state.map((listBlock) {
       if (listBlock.id == id) {
         return listBlock.copyWith(
           title: title ?? listBlock.title,
-          listItems: listItems ?? listBlock.listItems,
+          bullets: bullets ?? listBlock.bullets,
         );
       }
       return listBlock;

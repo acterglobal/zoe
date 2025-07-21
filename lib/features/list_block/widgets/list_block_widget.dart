@@ -103,8 +103,8 @@ class ListBlockWidget extends ConsumerWidget {
           final currentListBlock = ref.read(listBlockProvider(listBlockId));
           if (currentListBlock != null) {
             final updatedBullets = [
-              ...currentListBlock.listItems,
-              ListItem(title: ''),
+              ...currentListBlock.bullets,
+              BulletItem(title: ''),
             ];
             ref
                 .read(listBlockListUpdateProvider)
