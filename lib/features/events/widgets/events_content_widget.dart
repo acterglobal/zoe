@@ -58,7 +58,7 @@ class EventsContentWidget extends ConsumerWidget {
                       .read(
                         sheetDetailProvider(eventsContent.parentId).notifier,
                       )
-                      .deleteContent(eventsContentId);
+                      .deleteBlock(eventsContentId);
                 },
               ),
           ],

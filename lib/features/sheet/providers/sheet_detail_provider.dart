@@ -4,11 +4,11 @@ import 'package:zoey/features/sheet/models/sheet_content_model.dart';
 import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
-import 'package:zoey/features/text/models/text_content_model.dart';
+import 'package:zoey/features/text/models/text_block_model.dart';
 import 'package:zoey/features/todos/models/todos_content_model.dart';
 import 'package:zoey/features/events/models/events_content_model.dart';
 import 'package:zoey/features/bullet-lists/models/bullets_content_model.dart';
-import 'package:zoey/features/text/providers/text_content_list_provider.dart';
+import 'package:zoey/features/text/providers/text_block_list_provider.dart';
 import 'package:zoey/features/todos/providers/todos_content_list_provider.dart';
 import 'package:zoey/features/events/providers/events_content_list_provider.dart';
 import 'package:zoey/features/bullet-lists/providers/bullets_content_list_provider.dart';
@@ -115,20 +115,20 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   }
 
   /// Delete content by ID
-  void deleteContent(String contentId) {
+  void deleteBlock(String blockId) {
     final updatedSheet = state.sheet.copyWith();
-    updatedSheet.removeContentId(contentId);
+    updatedSheet.removeContentId(blockId);
     state = state.copyWith(sheet: updatedSheet);
 
     // Also remove from the appropriate content list provider
-    if (contentId.startsWith('text-')) {
-      ref.read(textContentListProvider.notifier).removeContent(contentId);
-    } else if (contentId.startsWith('todos-')) {
-      ref.read(todosContentListProvider.notifier).removeContent(contentId);
-    } else if (contentId.startsWith('events-')) {
-      ref.read(eventsContentListProvider.notifier).removeContent(contentId);
-    } else if (contentId.startsWith('bullets-')) {
-      ref.read(bulletsContentListProvider.notifier).removeContent(contentId);
+    if (blockId.startsWith('text-')) {
+      ref.read(textBlockListProvider.notifier).removeBlock(blockId);
+    } else if (blockId.startsWith('todos-')) {
+      ref.read(todosContentListProvider.notifier).removeContent(blockId);
+    } else if (blockId.startsWith('events-')) {
+      ref.read(eventsContentListProvider.notifier).removeContent(blockId);
+    } else if (blockId.startsWith('bullets-')) {
+      ref.read(bulletsContentListProvider.notifier).removeContent(blockId);
     }
   }
 
@@ -203,13 +203,13 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         ref.read(bulletsContentListProvider.notifier).addContent(newBullets);
         break;
       case ContentType.text:
-        final newText = TextContentModel(
+        final newText = TextBlockModel(
           parentId: state.sheet.id,
           id: formattedId,
           title: 'Text Block',
-          data: '',
+          description: '',
         );
-        ref.read(textContentListProvider.notifier).addContent(newText);
+        ref.read(textBlockListProvider.notifier).addBlock(newText);
         break;
     }
 

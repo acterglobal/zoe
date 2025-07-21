@@ -1,15 +1,15 @@
 import 'package:zoey/features/sheet/models/sheet_content_model.dart';
 
-class TextContentModel extends SheetContentModel {
+class TextBlockModel extends SheetContentModel {
   final String parentId;
   final String title;
-  final String data;
+  final String description;
 
-  TextContentModel({
+  TextBlockModel({
     super.id,
     required this.parentId,
     required this.title,
-    required this.data,
+    required this.description,
     super.createdAt,
     super.updatedAt,
   }) : super(type: ContentType.text);
@@ -20,23 +20,23 @@ class TextContentModel extends SheetContentModel {
       'id': id,
       'type': type.name,
       'title': title,
-      'data': data,
+      'description': description,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
   }
 
   @override
-  TextContentModel copyWith({
+  TextBlockModel copyWith({
     String? title,
-    String? data,
+    String? description,
     DateTime? updatedAt,
   }) {
-    return TextContentModel(
+    return TextBlockModel(
       id: id,
       parentId: parentId,
       title: title ?? this.title,
-      data: data ?? this.data,
+      description: description ?? this.description,
       createdAt: createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
     );

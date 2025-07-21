@@ -59,7 +59,7 @@ class TodosContentWidget extends ConsumerWidget {
                   );
                   ref
                       .read(sheetDetailProvider(todosContent.parentId).notifier)
-                      .deleteContent(todosContentId);
+                      .deleteBlock(todosContentId);
                 },
               ),
           ],
