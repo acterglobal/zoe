@@ -9,8 +9,8 @@ class ListItemDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: const Text('List Block Detail')),
-      body: const Center(child: Text('List Block ID not provided')),
+      appBar: AppBar(title: const Text('List Item Detail')),
+      body: const Center(child: Text('List Item ID not provided')),
     );
   }
 }
