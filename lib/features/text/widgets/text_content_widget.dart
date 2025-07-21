@@ -3,19 +3,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/text/providers/text_content_item_proivder.dart';
+import 'package:zoey/features/text/providers/text_block_proivder.dart';
 
-class TextContentWidget extends ConsumerWidget {
-  final String textContentId;
+class TextBlockWidget extends ConsumerWidget {
+  final String textBlockId;
   final bool isEditing;
-  const TextContentWidget({
+  const TextBlockWidget({
     super.key,
-    required this.textContentId,
+    required this.textBlockId,
     this.isEditing = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    /// Watch the text block provider
+    final textBlock = ref.watch(textBlockProvider(textBlockId));
+    if (textBlock == null) return const SizedBox.shrink();
+
+    /// Builds the text block widget
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -23,53 +28,66 @@ class TextContentWidget extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Icon(
-                Icons.text_fields,
-                size: 16,
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
-            ),
-            const SizedBox(width: 6),
+            _buildTextBlockIcon(context),
             Expanded(
-              child: ZoeInlineTextEditWidget(
-                hintText: 'Text content title',
-                isEditing: isEditing,
-                text: ref.watch(textContentItemProvider(textContentId)).title,
-                textStyle: Theme.of(context).textTheme.bodyLarge,
-                onTextChanged: (value) => ref
-                    .read(textContentUpdateProvider)
-                    .call(textContentId, 'title', value),
-              ),
+              child: _buildTextBlockTitle(context, ref, textBlock.title),
             ),
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
-                onTap: () {
-                  final textContent = ref.read(
-                    textContentItemProvider(textContentId),
-                  );
-                  ref
-                      .read(sheetDetailProvider(textContent.parentId).notifier)
-                      .deleteContent(textContentId);
-                },
+                onTap: () => ref
+                    .read(sheetDetailProvider(textBlock.parentId).notifier)
+                    .deleteBlock(textBlockId),
               ),
           ],
         ),
         const SizedBox(height: 6),
-        ZoeInlineTextEditWidget(
-          hintText: 'Type something...',
-          isEditing: isEditing,
-          text: ref.watch(textContentItemProvider(textContentId)).data,
-          textStyle: Theme.of(context).textTheme.bodyMedium,
-          onTextChanged: (value) => ref
-              .read(textContentUpdateProvider)
-              .call(textContentId, 'data', value),
-        ),
+        _buildTextBlockDescription(context, ref, textBlock.description),
       ],
+    );
+  }
+
+  /// Builds the text block icon
+  Widget _buildTextBlockIcon(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4, right: 6),
+      child: Icon(
+        Icons.text_fields,
+        size: 16,
+        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+      ),
+    );
+  }
+
+  /// Builds the text block title
+  Widget _buildTextBlockTitle(
+    BuildContext context,
+    WidgetRef ref,
+    String title,
+  ) {
+    return ZoeInlineTextEditWidget(
+      hintText: 'Text block title',
+      isEditing: isEditing,
+      text: title,
+      textStyle: Theme.of(context).textTheme.bodyLarge,
+      onTextChanged: (value) =>
+          ref.read(textBlockTitleUpdateProvider).call(textBlockId, value),
+    );
+  }
+
+  /// Builds the text block description
+  Widget _buildTextBlockDescription(
+    BuildContext context,
+    WidgetRef ref,
+    String description,
+  ) {
+    return ZoeInlineTextEditWidget(
+      hintText: 'Type something...',
+      isEditing: isEditing,
+      text: description,
+      textStyle: Theme.of(context).textTheme.bodyMedium,
+      onTextChanged: (value) =>
+          ref.read(textBlockDescriptionUpdateProvider).call(textBlockId, value),
     );
   }
 }

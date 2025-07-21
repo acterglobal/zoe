@@ -6,10 +6,10 @@ final gettingStartedSheet = ZoeSheetModel(
   description: 'Learn how to use Zoey effectively',
   emoji: '🚀',
   contentList: [
-    'text-content-1',
+    'text-block-1',
     'bullets-content-1',
     'todos-content-1',
-    'text-content-2',
+    'text-block-2',
     'events-content-1',
     'bullets-content-2',
   ],

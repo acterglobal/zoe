@@ -69,23 +69,20 @@ class SheetContents extends ConsumerWidget {
     );
   }
 
-  Widget _buildContentWidget(String contentId, bool isEditing) {
+  Widget _buildContentWidget(String blockId, bool isEditing) {
     // Determine content type from ID prefix
-    if (contentId.startsWith('text-')) {
-      return TextContentWidget(textContentId: contentId, isEditing: isEditing);
-    } else if (contentId.startsWith('todos-')) {
-      return TodosContentWidget(
-        todosContentId: contentId,
-        isEditing: isEditing,
-      );
-    } else if (contentId.startsWith('events-')) {
+    if (blockId.startsWith('text-')) {
+      return TextBlockWidget(textBlockId: blockId, isEditing: isEditing);
+    } else if (blockId.startsWith('todos-')) {
+      return TodosContentWidget(todosContentId: blockId, isEditing: isEditing);
+    } else if (blockId.startsWith('events-')) {
       return EventsContentWidget(
-        eventsContentId: contentId,
+        eventsContentId: blockId,
         isEditing: isEditing,
       );
-    } else if (contentId.startsWith('bullets-')) {
+    } else if (blockId.startsWith('bullets-')) {
       return BulletsContentWidget(
-        bulletsContentId: contentId,
+        bulletsContentId: blockId,
         isEditing: isEditing,
       );
     } else {
@@ -96,7 +93,7 @@ class SheetContents extends ConsumerWidget {
           border: Border.all(color: Colors.red),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Text('Unknown content type: $contentId'),
+        child: Text('Unknown content type: $blockId'),
       );
     }
   }

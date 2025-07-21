@@ -62,7 +62,7 @@ class BulletsContentWidget extends ConsumerWidget {
                       .read(
                         sheetDetailProvider(bulletsContent.parentId).notifier,
                       )
-                      .deleteContent(bulletsContentId);
+                      .deleteBlock(bulletsContentId);
                 },
               ),
           ],
