@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/text/data/text_block_list.dart';
-import 'package:zoey/features/text/models/text_block_model.dart';
+import 'package:zoey/features/text_block/data/text_block_list.dart';
+import 'package:zoey/features/text_block/models/text_block_model.dart';
 
 // StateNotifier provider for the text block list
 final textBlockListProvider =
@@ -13,12 +13,19 @@ class TextBlockListNotifier extends StateNotifier<List<TextBlockModel>> {
   TextBlockListNotifier() : super(textBlockList);
 
   // Update a specific text block item
-  void updateBlock(String textBlockId, {String? title, String? description}) {
+  void updateBlock(
+    String textBlockId, {
+    String? title,
+    String? plainTextDescription,
+    String? htmlDescription,
+  }) {
     state = state.map((textBlock) {
       if (textBlock.id == textBlockId) {
         return textBlock.copyWith(
           title: title ?? textBlock.title,
-          description: description ?? textBlock.description,
+          plainTextDescription:
+              plainTextDescription ?? textBlock.plainTextDescription,
+          htmlDescription: htmlDescription ?? textBlock.htmlDescription,
         );
       }
       return textBlock;

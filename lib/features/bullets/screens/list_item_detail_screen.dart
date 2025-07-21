@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BulletDetailScreen extends ConsumerWidget {
-  final String? bulletId;
+class BulletItemDetailScreen extends ConsumerWidget {
+  final String? bulletItemId;
 
-  const BulletDetailScreen({super.key, this.bulletId});
+  const BulletItemDetailScreen({super.key, this.bulletItemId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(title: const Text('Bullet Item Detail')),
-      body: const Center(child: Text('Bullet ID not provided')),
+      body: const Center(child: Text('Bullet Item ID not provided')),
     );
   }
 }

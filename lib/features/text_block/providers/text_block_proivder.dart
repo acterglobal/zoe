@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/text/models/text_block_model.dart';
-import 'package:zoey/features/text/providers/text_block_list_provider.dart';
+import 'package:zoey/features/text_block/models/text_block_model.dart';
+import 'package:zoey/features/text_block/providers/text_block_list_provider.dart';
 
 final textBlockProvider = Provider.family<TextBlockModel?, String>((
   ref,
@@ -24,10 +24,18 @@ final textBlockTitleUpdateProvider = Provider<void Function(String, String)>((
 });
 
 final textBlockDescriptionUpdateProvider =
-    Provider<void Function(String, String)>((ref) {
-      return (String blockId, String description) {
+    Provider<void Function(String, String, String)>((ref) {
+      return (
+        String blockId,
+        String plainTextDescription,
+        String htmlDescription,
+      ) {
         ref
             .read(textBlockListProvider.notifier)
-            .updateBlock(blockId, description: description);
+            .updateBlock(
+              blockId,
+              plainTextDescription: plainTextDescription,
+              htmlDescription: htmlDescription,
+            );
       };
     });
