@@ -42,9 +42,9 @@ class BulletsContentWidget extends ConsumerWidget {
               child: ZoeInlineTextEditWidget(
                 hintText: 'List title',
                 isEditing: isEditing,
-                controller: ref.watch(
-                  bulletsContentTitleControllerProvider(bulletsContentId),
-                ),
+                text: ref
+                    .watch(bulletsContentItemProvider(bulletsContentId))
+                    .title,
                 textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(bulletsContentUpdateProvider)
@@ -128,9 +128,7 @@ class BulletsContentWidget extends ConsumerWidget {
     int index,
   ) {
     final bulletItem = bulletsContent.bullets[index];
-    final titleController = ref.watch(
-      bulletsContentBulletControllerProvider(bulletItem.id),
-    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
@@ -147,7 +145,7 @@ class BulletsContentWidget extends ConsumerWidget {
             child: ZoeInlineTextEditWidget(
               hintText: 'List item',
               isEditing: isEditing,
-              controller: titleController,
+              text: bulletItem.title,
               textStyle: Theme.of(context).textTheme.bodyMedium,
               onTextChanged: (value) => ref
                   .read(bulletsContentUpdateProvider)

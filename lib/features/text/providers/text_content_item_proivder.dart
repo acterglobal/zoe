@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/text/models/text_content_model.dart';
 import 'package:zoey/features/text/providers/text_content_list_provider.dart';
@@ -21,31 +20,6 @@ final textContentItemProvider = Provider.family<TextContentModel, String>((
     );
   }
 });
-
-// Simple controller providers that create controllers once and keep them stable
-final textContentTitleControllerProvider = Provider.family
-    .autoDispose<TextEditingController, String>((ref, String id) {
-      final content = ref.read(textContentItemProvider(id));
-      final controller = TextEditingController(text: content.title);
-
-      ref.onDispose(() {
-        controller.dispose();
-      });
-
-      return controller;
-    });
-
-final textContentDataControllerProvider = Provider.family
-    .autoDispose<TextEditingController, String>((ref, String id) {
-      final content = ref.read(textContentItemProvider(id));
-      final controller = TextEditingController(text: content.data);
-
-      ref.onDispose(() {
-        controller.dispose();
-      });
-
-      return controller;
-    });
 
 // Direct update provider - saves immediately using StateNotifier
 final textContentUpdateProvider =

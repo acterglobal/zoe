@@ -43,9 +43,7 @@ class TodosContentWidget extends ConsumerWidget {
               child: ZoeInlineTextEditWidget(
                 hintText: 'Todo list title',
                 isEditing: isEditing,
-                controller: ref.watch(
-                  todosContentTitleControllerProvider(todosContentId),
-                ),
+                text: ref.watch(todosContentItemProvider(todosContentId)).title,
                 textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(todosContentUpdateProvider)
@@ -124,10 +122,6 @@ class TodosContentWidget extends ConsumerWidget {
     TodosContentModel todosContent,
     int index,
   ) {
-    final titleControllerKey = '$todosContentId-$index';
-    final titleController = ref.watch(
-      todosContentItemTitleControllerProvider(titleControllerKey),
-    );
     return Row(
       children: [
         Checkbox(
@@ -157,7 +151,7 @@ class TodosContentWidget extends ConsumerWidget {
           child: ZoeInlineTextEditWidget(
             hintText: 'Todo item',
             isEditing: isEditing,
-            controller: titleController,
+            text: todosContent.items[index].title,
             textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
               decoration: todosContent.items[index].isCompleted
                   ? TextDecoration.lineThrough

@@ -38,9 +38,9 @@ class EventsContentWidget extends ConsumerWidget {
               child: ZoeInlineTextEditWidget(
                 hintText: 'Event list title',
                 isEditing: isEditing,
-                controller: ref.watch(
-                  eventsContentTitleControllerProvider(eventsContentId),
-                ),
+                text: ref
+                    .watch(eventsContentItemProvider(eventsContentId))
+                    .title,
                 textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(eventsContentUpdateProvider)
@@ -121,10 +121,6 @@ class EventsContentWidget extends ConsumerWidget {
     EventsContentModel eventsContent,
     int index,
   ) {
-    final titleControllerKey = '$eventsContentId-$index';
-    final titleController = ref.watch(
-      eventsContentItemTitleControllerProvider(titleControllerKey),
-    );
     return Padding(
       padding: const EdgeInsets.only(bottom: 8, top: 8, left: 8),
       child: Row(
@@ -151,7 +147,7 @@ class EventsContentWidget extends ConsumerWidget {
                       child: ZoeInlineTextEditWidget(
                         hintText: 'Event name',
                         isEditing: isEditing,
-                        controller: titleController,
+                        text: eventsContent.events[index].title,
                         textStyle: Theme.of(context).textTheme.bodyMedium,
                         onTextChanged: (value) => ref
                             .read(eventsContentUpdateProvider)

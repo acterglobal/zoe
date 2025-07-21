@@ -38,9 +38,7 @@ class TextContentWidget extends ConsumerWidget {
               child: ZoeInlineTextEditWidget(
                 hintText: 'Text content title',
                 isEditing: isEditing,
-                controller: ref.watch(
-                  textContentTitleControllerProvider(textContentId),
-                ),
+                text: ref.watch(textContentItemProvider(textContentId)).title,
                 textStyle: Theme.of(context).textTheme.bodyLarge,
                 onTextChanged: (value) => ref
                     .read(textContentUpdateProvider)
@@ -65,9 +63,7 @@ class TextContentWidget extends ConsumerWidget {
         ZoeInlineTextEditWidget(
           hintText: 'Type something...',
           isEditing: isEditing,
-          controller: ref.watch(
-            textContentDataControllerProvider(textContentId),
-          ),
+          text: ref.watch(textContentItemProvider(textContentId)).data,
           textStyle: Theme.of(context).textTheme.bodyMedium,
           onTextChanged: (value) => ref
               .read(textContentUpdateProvider)

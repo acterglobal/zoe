@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/bullet-lists/models/bullets_content_model.dart';
 import 'package:zoey/features/bullet-lists/providers/bullets_content_list_provider.dart';
@@ -22,45 +21,6 @@ final bulletsContentItemProvider = Provider.family<BulletsContentModel, String>(
     }
   },
 );
-
-// Simple controller providers that create controllers once and keep them stable
-final bulletsContentTitleControllerProvider = Provider.family
-    .autoDispose<TextEditingController, String>((ref, String id) {
-      final content = ref.read(bulletsContentItemProvider(id));
-      final controller = TextEditingController(text: content.title);
-
-      ref.onDispose(() {
-        controller.dispose();
-      });
-
-      return controller;
-    });
-
-final bulletsContentBulletControllerProvider = Provider.family
-    .autoDispose<TextEditingController, String>((ref, String bulletId) {
-      // Find the bullet item by ID across all content
-      final allBulletsContent = ref.read(bulletsContentListProvider);
-
-      BulletItem? bulletItem;
-      for (final content in allBulletsContent) {
-        for (final bullet in content.bullets) {
-          if (bullet.id == bulletId) {
-            bulletItem = bullet;
-            break;
-          }
-        }
-        if (bulletItem != null) break;
-      }
-
-      final bulletText = bulletItem?.title ?? '';
-      final controller = TextEditingController(text: bulletText);
-
-      ref.onDispose(() {
-        controller.dispose();
-      });
-
-      return controller;
-    });
 
 // Provider to find a specific BulletItem by ID across all bullets content
 final bulletItemProvider = Provider.family<BulletItem?, String>((
