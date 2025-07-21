@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/features/list_block/models/list_block_model.dart';
+import 'package:zoey/features/list_block/providers/bullet_list_providers.dart';
 import 'package:zoey/features/list_block/providers/list_block_proivder.dart';
 import 'package:zoey/features/list_block/widgets/bullet_list_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
@@ -83,18 +83,8 @@ class ListBlockWidget extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: GestureDetector(
-        onTap: () {
-          final listBlock = ref.read(listBlockProvider(listBlockId));
-          if (listBlock != null) {
-            final updatedBullets = [
-              ...listBlock.bullets,
-              BulletItem(title: ''),
-            ];
-            ref
-                .read(listBlockBulletsUpdateProvider)
-                .call(listBlockId, updatedBullets);
-          }
-        },
+        onTap: () =>
+            ref.read(bulletListProvider.notifier).addBullet('', listBlockId),
         child: Row(
           children: [
             Icon(

@@ -24,8 +24,8 @@ final listBlockTitleUpdateProvider = Provider<void Function(String, String)>((
 });
 
 final listBlockBulletsUpdateProvider =
-    Provider<void Function(String, List<BulletItem>)>((ref) {
-      return (String blockId, List<BulletItem> bullets) {
+    Provider<void Function(String, List<String>)>((ref) {
+      return (String blockId, List<String> bullets) {
         ref
             .read(listBlockListProvider.notifier)
             .updateBlock(blockId, bullets: bullets);
