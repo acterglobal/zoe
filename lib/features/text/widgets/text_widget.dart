@@ -41,7 +41,7 @@ class TextWidget extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildTextContentIcon(context, ref, textContent.emoji),
+            _buildTextContentEmoji(context, ref, textContent.emoji),
             Expanded(
               child: _buildTextContentTitle(
                 context,
@@ -72,30 +72,19 @@ class TextWidget extends ConsumerWidget {
   }
 
   /// Builds the text content icon
-  Widget _buildTextContentIcon(
+  Widget _buildTextContentEmoji(
     BuildContext context,
     WidgetRef ref,
     String? emoji,
   ) {
-    if (emoji != null) {
-      return EmojiWidget(
-        emoji: emoji,
-        onTap: (currentEmoji) => ref
-            .read(textListProvider.notifier)
-            .updateTextEmoji(
-              textContentId,
-              CommonUtils.getNextEmoji(currentEmoji),
-            ),
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 4, right: 6),
-      child: Icon(
-        Icons.text_fields,
-        size: 16,
-        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-      ),
+    return EmojiWidget(
+      emoji: emoji ?? '𝑻',
+      onTap: (currentEmoji) => ref
+          .read(textListProvider.notifier)
+          .updateTextEmoji(
+            textContentId,
+            CommonUtils.getNextEmoji(currentEmoji),
+          ),
     );
   }
 

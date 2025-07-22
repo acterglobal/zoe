@@ -21,9 +21,12 @@ class EventWidget extends ConsumerWidget {
     final event = ref.watch(eventProvider(eventsId));
     if (event == null) return const SizedBox.shrink();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: _buildEventContent(context, ref, event, isEditing),
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: _buildEventContent(context, ref, event, isEditing),
+      ),
     );
   }
 

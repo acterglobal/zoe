@@ -43,13 +43,7 @@ class ListWidget extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildListBlockIcon(
-              context,
-              ref,
-              listId,
-              list.listType,
-              list.emoji,
-            ),
+            _buildListEmoji(context, ref, listId, list.listType, list.emoji),
             Expanded(
               child: _buildListBlockTitle(context, ref, list.title, isEditing),
             ),
@@ -70,30 +64,18 @@ class ListWidget extends ConsumerWidget {
   }
 
   // Builds the list block icon
-  Widget _buildListBlockIcon(
+  Widget _buildListEmoji(
     BuildContext context,
     WidgetRef ref,
     String listId,
     ListType listType,
     String? emoji,
   ) {
-    if (emoji != null) {
-      return EmojiWidget(
-        emoji: emoji,
-        onTap: (currentEmoji) => ref
-            .read(listsrovider.notifier)
-            .updateListEmoji(listId, CommonUtils.getNextEmoji(currentEmoji)),
-      );
-    }
-    return Padding(
-      padding: const EdgeInsets.only(top: 4, right: 6),
-      child: Icon(
-        listType == ListType.bulleted
-            ? Icons.format_list_bulleted
-            : Icons.checklist,
-        size: 16,
-        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-      ),
+    return EmojiWidget(
+      emoji: emoji ?? '🔸',
+      onTap: (currentEmoji) => ref
+          .read(listsrovider.notifier)
+          .updateListEmoji(listId, CommonUtils.getNextEmoji(currentEmoji)),
     );
   }
 
