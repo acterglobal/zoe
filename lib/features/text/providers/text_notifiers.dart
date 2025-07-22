@@ -37,4 +37,11 @@ class TextNotifier extends StateNotifier<List<TextModel>> {
         if (text.id == textId) text.copyWith(emoji: emoji) else text,
     ];
   }
+
+  void updateTextOrderIndex(String textId, int orderIndex) {
+    state = [
+      for (final text in state)
+        if (text.id == textId) text.copyWith(orderIndex: orderIndex) else text,
+    ];
+  }
 }

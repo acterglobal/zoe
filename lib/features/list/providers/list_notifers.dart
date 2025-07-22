@@ -44,4 +44,11 @@ class ListNotifier extends StateNotifier<List<ListModel>> {
         if (list.id == listId) list.copyWith(listType: listType) else list,
     ];
   }
+
+  void updateListOrderIndex(String listId, int orderIndex) {
+    state = [
+      for (final list in state)
+        if (list.id == listId) list.copyWith(orderIndex: orderIndex) else list,
+    ];
+  }
 }

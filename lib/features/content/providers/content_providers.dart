@@ -5,15 +5,26 @@ import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/list/providers/list_providers.dart';
 
 // Computed provider that combines data from individual module providers
-// Sorted by creation time to maintain insertion order
+// Sorted by orderIndex within each parent, then by createdAt as fallback
 final contentListProvider = Provider<List<ContentModel>>((ref) {
   final texts = ref.watch(textListProvider);
   final events = ref.watch(eventListProvider);
   final lists = ref.watch(listsrovider);
 
   final allContent = [...texts, ...events, ...lists];
-  // Sort by createdAt to maintain insertion order
-  allContent.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+  // Sort by parentId first, then by orderIndex within parent, then by createdAt as fallback
+  allContent.sort((a, b) {
+    // First sort by parent
+    final parentCompare = a.parentId.compareTo(b.parentId);
+    if (parentCompare != 0) return parentCompare;
+
+    // Within same parent, sort by orderIndex
+    final orderCompare = a.orderIndex.compareTo(b.orderIndex);
+    if (orderCompare != 0) return orderCompare;
+
+    // If same orderIndex, sort by creation time as fallback
+    return a.createdAt.compareTo(b.createdAt);
+  });
   return allContent;
 });
 
