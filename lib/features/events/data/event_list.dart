@@ -6,7 +6,6 @@ final eventList = [
     parentId: 'sheet-1',
     id: 'events-1',
     title: 'Complete Zoey Onboarding',
-    emoji: '🎯',
     orderIndex: 6,
     description: (
       plainText:
@@ -22,7 +21,6 @@ final eventList = [
     parentId: 'sheet-1',
     id: 'events-2',
     title: 'Create Your First Custom Sheet',
-    emoji: '🏗️',
     orderIndex: 10,
     description: (
       plainText:
@@ -38,7 +36,6 @@ final eventList = [
     parentId: 'sheet-1',
     id: 'events-3',
     title: 'Weekly Zoey Review & Planning',
-    emoji: '📅',
     orderIndex: 11,
     description: (
       plainText:
@@ -54,7 +51,6 @@ final eventList = [
     parentId: 'sheet-1',
     id: 'events-4',
     title: 'Explore Advanced Features',
-    emoji: '💡',
     orderIndex: 12,
     description: (
       plainText:

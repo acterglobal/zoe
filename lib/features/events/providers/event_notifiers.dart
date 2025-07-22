@@ -31,13 +31,6 @@ class EventNotifier extends StateNotifier<List<EventModel>> {
     ];
   }
 
-  void updateEventEmoji(String eventId, String emoji) {
-    state = [
-      for (final event in state)
-        if (event.id == eventId) event.copyWith(emoji: emoji) else event,
-    ];
-  }
-
   void updateEventStartDate(String eventId, DateTime startDate) {
     state = [
       for (final event in state)
