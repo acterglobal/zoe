@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
+import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 
 class TextWidget extends ConsumerWidget {
@@ -19,6 +20,18 @@ class TextWidget extends ConsumerWidget {
     if (textContent == null) return const SizedBox.shrink();
 
     /// Builds the text content widget
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: _buildTextContent(context, ref, textContent, isEditing),
+    );
+  }
+
+  Widget _buildTextContent(
+    BuildContext context,
+    WidgetRef ref,
+    TextModel textContent,
+    bool isEditing,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
