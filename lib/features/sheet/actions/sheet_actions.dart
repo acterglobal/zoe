@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_actions_provider.dart';
 
 /// Shows a dialog to delete or discard a sheet
@@ -17,7 +17,7 @@ void showDeleteSheetDialog(
 void duplicateSheet(
   BuildContext context,
   WidgetRef ref, {
-  required ZoeSheetModel currentSheet,
+  required SheetModel currentSheet,
 }) {
   final sheetActions = ref.read(sheetActionsNotifierProvider);
   sheetActions.duplicateSheet(context: context, currentSheet: currentSheet);
