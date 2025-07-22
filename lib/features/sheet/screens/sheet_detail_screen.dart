@@ -39,6 +39,8 @@ class SheetDetailScreen extends ConsumerWidget {
   /// Builds the header
   Widget _buildHeader(BuildContext context, WidgetRef ref) {
     final sheet = ref.watch(sheetProvider(sheetId));
+    if (sheet == null) return const SizedBox.shrink();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -80,7 +82,7 @@ class SheetDetailScreen extends ConsumerWidget {
         ZoeInlineTextEditWidget(
           hintText: 'Add a description',
           isEditing: ref.watch(toogleContentEditProvider),
-          text: ref.watch(sheetProvider(sheetId)).description,
+          text: sheet.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
           onTextChanged: (value) => ref
               .read(sheetListProvider.notifier)

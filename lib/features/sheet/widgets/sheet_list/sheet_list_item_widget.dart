@@ -11,6 +11,8 @@ class SheetListItemWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sheet = ref.watch(sheetProvider(sheetId));
+    if (sheet == null) return const SizedBox.shrink();
+
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(

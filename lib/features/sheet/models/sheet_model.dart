@@ -15,7 +15,6 @@ class SheetModel {
     this.coverImage,
     required this.title,
     this.description = '',
-    List<String>? contentList,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : id = id ?? const Uuid().v4(),

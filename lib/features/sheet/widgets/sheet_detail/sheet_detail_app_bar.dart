@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_primary_button.dart';
+import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
+import 'package:zoey/features/sheet/providers/sheet_provider.dart';
 
 /// App bar widget for sheet detail screen
 class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
-  final String? sheetId;
+  final String sheetId;
 
   const SheetDetailAppBar({super.key, required this.sheetId});
 
@@ -40,18 +43,13 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
       ),
       onSelected: (value) {
         switch (value) {
-          case 'Duplicate':
-            break;
           case 'Delete':
+            ref.read(deleteSheetProvider).call(sheetId);
+            context.pushReplacement(AppRoutes.home.route);
             break;
         }
       },
       itemBuilder: (context) => [
-        _buildMenuItem(
-          Icons.copy_rounded,
-          'Duplicate',
-          Theme.of(context).colorScheme.onSurface,
-        ),
         _buildMenuItem(
           Icons.delete_rounded,
           'Delete',
