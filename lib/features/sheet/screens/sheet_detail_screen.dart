@@ -6,7 +6,7 @@ import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/sheet/actions/delete_sheet.dart';
-import 'package:zoey/features/sheet/actions/sheet_updates.dart';
+import 'package:zoey/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
