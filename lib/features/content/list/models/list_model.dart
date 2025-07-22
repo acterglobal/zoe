@@ -1,4 +1,4 @@
-import 'package:zoey/features/sheet/models/base_content_model.dart';
+import 'package:zoey/features/content/base_content_model.dart';
 
 enum ListType { bulleted, task }
 

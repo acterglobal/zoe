@@ -1,6 +1,6 @@
 import 'package:uuid/uuid.dart';
 
-class ZoeSheetModel {
+class SheetModel {
   final String id;
   final String title;
   final String description;
@@ -10,7 +10,7 @@ class ZoeSheetModel {
   final String? emoji;
   final String? coverImage;
 
-  ZoeSheetModel({
+  SheetModel({
     String? id,
     required this.title,
     this.description = '',
@@ -37,8 +37,8 @@ class ZoeSheetModel {
     };
   }
 
-  factory ZoeSheetModel.fromJson(Map<String, dynamic> json) {
-    return ZoeSheetModel(
+  factory SheetModel.fromJson(Map<String, dynamic> json) {
+    return SheetModel(
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String? ?? '',
@@ -55,7 +55,7 @@ class ZoeSheetModel {
     );
   }
 
-  ZoeSheetModel copyWith({
+  SheetModel copyWith({
     String? title,
     String? description,
     List<String>? contentList, // Changed to List<String>
@@ -63,7 +63,7 @@ class ZoeSheetModel {
     String? emoji,
     String? coverImage,
   }) {
-    return ZoeSheetModel(
+    return SheetModel(
       id: id,
       title: title ?? this.title,
       description: description ?? this.description,

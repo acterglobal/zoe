@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/models/base_content_model.dart';
+import 'package:zoey/features/content/base_content_model.dart';
 import 'package:zoey/features/content/list/models/list_model.dart';
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 import 'package:zoey/features/content/text/models/text_content_model.dart';
@@ -15,7 +15,7 @@ import 'package:uuid/uuid.dart';
 
 /// State class for sheet detail
 class SheetDetailState {
-  final ZoeSheetModel sheet;
+  final SheetModel sheet;
   final bool isEditing;
   final bool showAddMenu;
 
@@ -26,7 +26,7 @@ class SheetDetailState {
   });
 
   SheetDetailState copyWith({
-    ZoeSheetModel? sheet,
+    SheetModel? sheet,
     bool? isEditing,
     bool? showAddMenu,
     TextEditingController? titleController,
@@ -50,11 +50,11 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
 
   /// Create initial state based on sheetId
   static SheetDetailState _createInitialState(Ref ref, String? sheetId) {
-    ZoeSheetModel sheet;
+    SheetModel sheet;
     bool isEditing;
 
     if (sheetId == null || sheetId == 'new') {
-      sheet = ZoeSheetModel(title: 'Untitled', description: '', emoji: '📄');
+      sheet = SheetModel(title: 'Untitled', description: '', emoji: '📄');
       isEditing = true;
     } else {
       final sheetListNotifier = ref.read(sheetListProvider.notifier);
@@ -64,7 +64,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         sheet = existingSheet;
         isEditing = false;
       } else {
-        sheet = ZoeSheetModel(
+        sheet = SheetModel(
           title: 'Sheet Not Found',
           description: 'The requested sheet could not be found.',
         );
@@ -156,8 +156,8 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     // Use correct prefixes that match the content detection logic
     String prefix;
     switch (type) {
-      case ContentType.todo:
-        prefix = 'todos';
+      case ContentType.text:
+        prefix = 'text';
         break;
       case ContentType.event:
         prefix = 'events';
@@ -165,23 +165,21 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
       case ContentType.list:
         prefix = 'list';
         break;
-      case ContentType.text:
-        prefix = 'text';
-        break;
     }
 
     final formattedId = '$prefix-$contentId';
 
     // Create actual content using StateNotifier providers
     switch (type) {
-      case ContentType.todo:
-        final newTodo = ListModel(
+      case ContentType.text:
+        final newText = TextContentModel(
           sheetId: state.sheet.id,
           id: formattedId,
-          title: 'List',
-          listType: ListType.task,
+          title: 'Text Block',
+          plainTextDescription: '',
+          htmlDescription: '',
         );
-        ref.read(listsProvider.notifier).addList(newTodo);
+        ref.read(textContentListProvider.notifier).addTextContent(newText);
         break;
       case ContentType.event:
         final newEvent = EventModel(
@@ -201,16 +199,6 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           listType: ListType.bulleted,
         );
         ref.read(listsProvider.notifier).addList(newBullets);
-        break;
-      case ContentType.text:
-        final newText = TextContentModel(
-          sheetId: state.sheet.id,
-          id: formattedId,
-          title: 'Text Block',
-          plainTextDescription: '',
-          htmlDescription: '',
-        );
-        ref.read(textContentListProvider.notifier).addTextContent(newText);
         break;
     }
 
@@ -247,7 +235,7 @@ final sheetDetailProvider =
     >((ref, sheetId) => SheetDetailNotifier(ref: ref, sheetId: sheetId));
 
 /// Convenience providers for specific parts of the state
-final sheetProvider = Provider.family<ZoeSheetModel, String?>((ref, sheetId) {
+final sheetProvider = Provider.family<SheetModel, String?>((ref, sheetId) {
   return ref.watch(sheetDetailProvider(sheetId)).sheet;
 });
 

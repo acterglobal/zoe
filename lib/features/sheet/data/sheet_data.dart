@@ -1,6 +1,6 @@
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 
-final gettingStartedSheet = ZoeSheetModel(
+final gettingStartedSheet = SheetModel(
   id: 'sheet-1',
   title: 'Getting Started Guide',
   description: 'Learn how to use Zoey effectively',

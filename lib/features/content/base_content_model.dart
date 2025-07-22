@@ -1,6 +1,6 @@
 import 'package:uuid/uuid.dart';
 
-enum ContentType { todo, event, list, text }
+enum ContentType { text, event, list }
 
 abstract class BaseContentModel {
   final String id;

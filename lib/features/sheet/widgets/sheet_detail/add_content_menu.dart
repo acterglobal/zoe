@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/models/base_content_model.dart';
+import 'package:zoey/features/content/base_content_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// Add content menu widget
@@ -38,7 +38,7 @@ class AddContentMenu extends ConsumerWidget {
             description: 'Track tasks with checkboxes',
             onTap: () => ref
                 .read(sheetDetailProvider(sheetId).notifier)
-                .addContent(ContentType.todo),
+                .addContent(ContentType.list),
           ),
           _buildAddContentOption(
             context,
