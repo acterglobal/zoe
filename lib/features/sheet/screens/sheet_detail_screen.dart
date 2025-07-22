@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoey/features/content/models/base_content_model.dart';
+import 'package:zoey/features/content/widgets/add_content_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/content/widgets/add_content_menu.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_detail_app_bar.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_contents.dart';
 
@@ -29,7 +30,22 @@ class SheetDetailScreen extends ConsumerWidget {
           _buildHeader(context, ref),
           const SizedBox(height: 16),
           SheetContents(sheetId: sheetId),
-          _buildAddContentArea(context, ref),
+          AddContentWidget(
+            isEditing: ref.watch(isEditingProvider(sheetId)),
+            onTapText: () => ref
+                .read(sheetDetailProvider(sheetId).notifier)
+                .addContent(ContentType.text),
+
+            onTapEvent: () => ref
+                .read(sheetDetailProvider(sheetId).notifier)
+                .addContent(ContentType.event),
+            onTapBulletedList: () => ref
+                .read(sheetDetailProvider(sheetId).notifier)
+                .addContent(ContentType.list),
+            onTapToDoList: () => ref
+                .read(sheetDetailProvider(sheetId).notifier)
+                .addContent(ContentType.list),
+          ),
           const SizedBox(height: 200),
         ],
       ),
@@ -86,46 +102,5 @@ class SheetDetailScreen extends ConsumerWidget {
         ),
       ],
     );
-  }
-
-  /// Builds the add content area
-  Widget _buildAddContentArea(BuildContext context, WidgetRef ref) {
-    final showAddMenu = ref.watch(sheetDetailProvider(sheetId)).showAddMenu;
-    final isEditing = ref.watch(isEditingProvider(sheetId));
-    return isEditing
-        ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () => ref
-                    .read(sheetDetailProvider(sheetId).notifier)
-                    .toggleAddMenu(),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 4,
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        showAddMenu ? Icons.close : Icons.add,
-                        size: 20,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        showAddMenu ? 'Cancel' : 'Add content',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              if (showAddMenu) AddContentMenu(sheetId: sheetId),
-            ],
-          )
-        : const SizedBox.shrink();
   }
 }
