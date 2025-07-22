@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullets/providers/bullet_list_providers.dart';
+import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/task/providers/task_list_providers.dart';
 import 'package:zoey/features/task/widgets/task_list_widget.dart';
 import 'package:zoey/features/list/models/list_model.dart';
@@ -11,11 +12,13 @@ import 'package:zoey/features/bullets/widgets/bullet_list_widget.dart';
 
 class ListWidget extends ConsumerWidget {
   final String listId;
-  final bool isEditing;
-  const ListWidget({super.key, required this.listId, this.isEditing = false});
+  const ListWidget({super.key, required this.listId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    /// Watch the content edit mode provider
+    final isEditing = ref.watch(toogleContentEditProvider);
+
     final list = ref.watch(listProvider(listId));
     if (list == null) return const SizedBox.shrink();
 
@@ -27,7 +30,9 @@ class ListWidget extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildListBlockIcon(context, list.listType),
-            Expanded(child: _buildListBlockTitle(context, ref, list.title)),
+            Expanded(
+              child: _buildListBlockTitle(context, ref, list.title, isEditing),
+            ),
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
@@ -63,6 +68,7 @@ class ListWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     String title,
+    bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: 'List title',

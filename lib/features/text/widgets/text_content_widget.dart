@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 import 'package:zoey/features/text/providers/text_content_proivder.dart';
 
 class TextContentWidget extends ConsumerWidget {
   final String textContentId;
-  final bool isEditing;
-  const TextContentWidget({
-    super.key,
-    required this.textContentId,
-    this.isEditing = false,
-  });
+  const TextContentWidget({super.key, required this.textContentId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    /// Watch the content edit mode provider
+    final isEditing = ref.watch(toogleContentEditProvider);
+
     /// Watch the text content provider
     final textContent = ref.watch(textContentProvider(textContentId));
     if (textContent == null) return const SizedBox.shrink();
@@ -30,7 +29,12 @@ class TextContentWidget extends ConsumerWidget {
           children: [
             _buildTextContentIcon(context),
             Expanded(
-              child: _buildTextContentTitle(context, ref, textContent.title),
+              child: _buildTextContentTitle(
+                context,
+                ref,
+                textContent.title,
+                isEditing,
+              ),
             ),
             const SizedBox(width: 6),
             if (isEditing)
@@ -47,6 +51,7 @@ class TextContentWidget extends ConsumerWidget {
           ref,
           textContent.plainTextDescription,
           textContent.htmlDescription,
+          isEditing,
         ),
       ],
     );
@@ -69,6 +74,7 @@ class TextContentWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     String title,
+    bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: 'Text content title',
@@ -86,6 +92,7 @@ class TextContentWidget extends ConsumerWidget {
     WidgetRef ref,
     String plainTextDescription,
     String htmlDescription,
+    bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: 'Type something...',

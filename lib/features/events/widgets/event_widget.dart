@@ -4,20 +4,19 @@ import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
+import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 
 class EventWidget extends ConsumerWidget {
   final String eventsId;
-  final bool isEditing;
-  const EventWidget({
-    super.key,
-    required this.eventsId,
-    this.isEditing = false,
-  });
+  const EventWidget({super.key, required this.eventsId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    /// Watch the content edit mode provider
+    final isEditing = ref.watch(toogleContentEditProvider);
+
     final event = ref.watch(eventsProvider(eventsId));
     return Padding(
       padding: const EdgeInsets.only(bottom: 8, top: 8, left: 8),
@@ -31,7 +30,9 @@ class EventWidget extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(child: _buildEventTitle(context, ref, event)),
+                    Expanded(
+                      child: _buildEventTitle(context, ref, event, isEditing),
+                    ),
                     const SizedBox(width: 6),
                     if (isEditing) _buildEventActions(context, ref, event),
                   ],
@@ -60,6 +61,7 @@ class EventWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     EventModel event,
+    bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: 'Event name',
