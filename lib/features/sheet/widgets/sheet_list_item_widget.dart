@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/sheet/providers/sheet_provider.dart';
+import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 
 class SheetListItemWidget extends ConsumerWidget {
   final String sheetId;
@@ -10,9 +10,8 @@ class SheetListItemWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sheet = ref.watch(sheetProvider(sheetId));
+    final sheet = ref.watch(sheetListProvider.notifier).getSheetById(sheetId);
     if (sheet == null) return const SizedBox.shrink();
-
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(

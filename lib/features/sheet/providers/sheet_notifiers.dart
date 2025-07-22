@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/data/sheet_data.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 
-class SheetListNotifier extends StateNotifier<List<SheetModel>> {
-  SheetListNotifier() : super(sheetLists);
+class SheetNotifier extends StateNotifier<List<SheetModel>> {
+  SheetNotifier() : super(sheetList);
 
   void addSheet(SheetModel sheet) {
     state = [...state, sheet];
@@ -18,7 +18,7 @@ class SheetListNotifier extends StateNotifier<List<SheetModel>> {
   }
 
   SheetModel? getSheetById(String sheetId) {
-    return state.firstWhere((s) => s.id == sheetId);
+    return state.where((s) => s.id == sheetId).firstOrNull;
   }
 
   void updateSheetTitle(String sheetId, String title) {

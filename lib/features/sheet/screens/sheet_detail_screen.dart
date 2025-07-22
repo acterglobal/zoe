@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/utils/common_utils.dart';
+import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
-import 'package:zoey/features/sheet/providers/sheet_list_providers.dart';
-import 'package:zoey/features/sheet/providers/sheet_provider.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_detail_app_bar.dart';
+import 'package:zoey/features/sheet/actions/delete_sheet.dart';
+import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
   final String sheetId;
@@ -16,8 +17,18 @@ class SheetDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: SheetDetailAppBar(sheetId: sheetId),
+      appBar: AppBar(
+        actions: [EditViewToggleButton(), _buildDeleteButton(context, ref)],
+      ),
       body: _buildBody(context, ref),
+    );
+  }
+
+  Widget _buildDeleteButton(BuildContext context, WidgetRef ref) {
+    return ZoeDeleteButtonWidget(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      size: 24,
+      onTap: () => showDeleteSheetConfirmation(context, ref, sheetId),
     );
   }
 
@@ -28,7 +39,7 @@ class SheetDetailScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(context, ref),
+          _buildSheetHeader(context, ref),
           const SizedBox(height: 16),
           ContentWidget(parentId: sheetId, sheetId: sheetId),
         ],
@@ -37,8 +48,8 @@ class SheetDetailScreen extends ConsumerWidget {
   }
 
   /// Builds the header
-  Widget _buildHeader(BuildContext context, WidgetRef ref) {
-    final sheet = ref.watch(sheetProvider(sheetId));
+  Widget _buildSheetHeader(BuildContext context, WidgetRef ref) {
+    final sheet = ref.watch(sheetListProvider.notifier).getSheetById(sheetId);
     if (sheet == null) return const SizedBox.shrink();
 
     return Column(
@@ -63,7 +74,7 @@ class SheetDetailScreen extends ConsumerWidget {
             Expanded(
               child: ZoeInlineTextEditWidget(
                 hintText: 'Title',
-                isEditing: ref.watch(toogleContentEditProvider),
+                isEditing: ref.watch(isEditValueProvider),
                 text: sheet.title,
                 textStyle: TextStyle(
                   fontSize: 36,
@@ -81,7 +92,7 @@ class SheetDetailScreen extends ConsumerWidget {
         const SizedBox(height: 16),
         ZoeInlineTextEditWidget(
           hintText: 'Add a description',
-          isEditing: ref.watch(toogleContentEditProvider),
+          isEditing: ref.watch(isEditValueProvider),
           text: sheet.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
           onTextChanged: (value) => ref

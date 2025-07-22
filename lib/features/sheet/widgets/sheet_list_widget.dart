@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/providers/sheet_list_providers.dart';
-import 'package:zoey/features/sheet/widgets/sheet_list/sheet_list_item_widget.dart';
+import 'package:zoey/features/sheet/providers/sheet_providers.dart';
+import 'package:zoey/features/sheet/widgets/sheet_list_item_widget.dart';
 
 class SheetListWidget extends ConsumerWidget {
   final bool shrinkWrap;
@@ -9,13 +9,13 @@ class SheetListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sheets = ref.watch(sheetListProvider);
+    final sheetList = ref.watch(sheetListProvider);
     return ListView.builder(
       shrinkWrap: shrinkWrap,
-      itemCount: sheets.length,
+      itemCount: sheetList.length,
       physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
       itemBuilder: (context, index) {
-        final sheet = sheets[index];
+        final sheet = sheetList[index];
         return SheetListItemWidget(sheetId: sheet.id);
       },
     );

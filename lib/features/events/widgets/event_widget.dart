@@ -15,7 +15,7 @@ class EventWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// Watch the content edit mode provider
-    final isEditing = ref.watch(toogleContentEditProvider);
+    final isEditing = ref.watch(isEditValueProvider);
 
     final event = ref.watch(eventsProvider(eventsId));
     if (event == null) return const SizedBox.shrink();

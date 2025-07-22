@@ -13,7 +13,7 @@ class TextContentWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// Watch the content edit mode provider
-    final isEditing = ref.watch(toogleContentEditProvider);
+    final isEditing = ref.watch(isEditValueProvider);
 
     /// Watch the text content provider
     final textContent = ref.watch(textContentProvider(textContentId));
