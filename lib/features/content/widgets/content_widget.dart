@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/content/models/base_content_model.dart';
+import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/content/providers/content_list_providers.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/utils/content_utils.dart';

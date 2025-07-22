@@ -1,4 +1,4 @@
-import 'package:zoey/common/utils/common_utils.dart';
+import 'package:uuid/uuid.dart';
 
 enum ContentType { text, event, list }
 
@@ -25,7 +25,7 @@ abstract class ContentModel {
     this.htmlDescription,
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) : id = id ?? CommonUtils.generateRandomId(),
+  }) : id = id ?? const Uuid().v4(),
        createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now();
 

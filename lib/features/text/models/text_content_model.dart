@@ -1,4 +1,4 @@
-import 'package:zoey/features/content/models/base_content_model.dart';
+import 'package:zoey/features/content/models/content_model.dart';
 
 class TextModel extends ContentModel {
   @override
