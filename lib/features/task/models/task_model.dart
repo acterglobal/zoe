@@ -3,6 +3,7 @@ import 'package:zoey/features/sheet/models/sheet_model.dart';
 
 class TaskModel {
   final String id;
+  final String sheetId;
   final String listId;
   final String title;
   final Description? description;
@@ -12,6 +13,7 @@ class TaskModel {
 
   TaskModel({
     String? id,
+    required this.sheetId,
     required this.listId,
     required this.title,
     this.description,
@@ -35,6 +37,7 @@ class TaskModel {
 
   TaskModel copyWith({
     String? id,
+    String? sheetId,
     String? listId,
     String? title,
     Description? description,
@@ -44,6 +47,7 @@ class TaskModel {
   }) {
     return TaskModel(
       id: id ?? this.id,
+      sheetId: sheetId ?? this.sheetId,
       listId: listId ?? this.listId,
       title: title ?? this.title,
       description: description ?? this.description,

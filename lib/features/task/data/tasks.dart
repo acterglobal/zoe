@@ -3,6 +3,7 @@ import 'package:zoey/features/task/models/task_model.dart';
 final tasks = [
   TaskModel(
     id: 'task-1',
+    sheetId: 'sheet-1',
     listId: 'list-tasks-1',
     title: 'Read through this Getting Started Guide',
     orderIndex: 1,
@@ -17,6 +18,7 @@ final tasks = [
   ),
   TaskModel(
     id: 'task-2',
+    sheetId: 'sheet-1',
     listId: 'list-tasks-1',
     title: 'Try editing some text in this guide',
     orderIndex: 2,
@@ -31,6 +33,7 @@ final tasks = [
   ),
   TaskModel(
     id: 'task-3',
+    sheetId: 'sheet-1',
     listId: 'list-tasks-1',
     title: 'Mark a task as complete (like this one!)',
     orderIndex: 3,
@@ -45,6 +48,7 @@ final tasks = [
   ),
   TaskModel(
     id: 'task-4',
+    sheetId: 'sheet-1',
     listId: 'list-tasks-1',
     title: 'Explore the home dashboard',
     orderIndex: 4,
@@ -59,6 +63,7 @@ final tasks = [
   ),
   TaskModel(
     id: 'task-5',
+    sheetId: 'sheet-1',
     listId: 'list-tasks-1',
     title: 'Create your first custom sheet',
     orderIndex: 5,
@@ -73,6 +78,7 @@ final tasks = [
   ),
   TaskModel(
     id: 'task-6',
+    sheetId: 'sheet-1',
     listId: 'list-tasks-1',
     title: 'Add content blocks to your new sheet',
     orderIndex: 6,
@@ -87,6 +93,7 @@ final tasks = [
   ),
   TaskModel(
     id: 'task-7',
+    sheetId: 'sheet-1',
     listId: 'list-tasks-1',
     title: 'Customize your sheet with icons and descriptions',
     orderIndex: 7,
@@ -101,6 +108,7 @@ final tasks = [
   ),
   TaskModel(
     id: 'task-8',
+    sheetId: 'sheet-1',
     listId: 'list-tasks-1',
     title: 'Explore the settings and preferences',
     orderIndex: 8,
@@ -115,6 +123,7 @@ final tasks = [
   ),
   TaskModel(
     id: 'task-9',
+    sheetId: 'sheet-1',
     listId: 'list-tasks-1',
     title: 'Plan your next steps with Zoey',
     orderIndex: 9,

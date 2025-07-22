@@ -58,7 +58,8 @@ class ListWidget extends ConsumerWidget {
         list.listType == ListType.bulleted
             ? BulletListWidget(listId: listId, isEditing: isEditing)
             : TaskListWidget(listId: listId, isEditing: isEditing),
-        if (isEditing) _buildAddListItemButton(context, ref, list.listType),
+        if (isEditing)
+          _buildAddListItemButton(context, ref, list.listType, list.sheetId),
       ],
     );
   }
@@ -101,13 +102,14 @@ class ListWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     ListType listType,
+    String sheetId,
   ) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 24),
       child: GestureDetector(
         onTap: () => listType == ListType.bulleted
             ? ref.read(bulletListProvider.notifier).addBullet('', listId)
-            : ref.read(taskListProvider.notifier).addTask('', listId),
+            : ref.read(taskListProvider.notifier).addTask('', listId, sheetId),
         child: Row(
           children: [
             Icon(
