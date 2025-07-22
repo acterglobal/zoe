@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 import 'package:zoey/common/screens/page_not_found_screen.dart';
 import 'package:zoey/features/bullets/screens/list_item_detail_screen.dart';
 import 'package:zoey/features/events/screens/event_detail_screen.dart';
@@ -39,7 +40,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.sheet.route,
         name: AppRoutes.sheet.name,
         builder: (context, state) {
-          final sheetId = state.pathParameters['sheetId'];
+          final sheetId = state.pathParameters['sheetId'] ?? Uuid().v4();
           return SheetDetailScreen(sheetId: sheetId);
         },
       ),

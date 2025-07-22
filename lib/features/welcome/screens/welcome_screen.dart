@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/app_icon_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_primary_button.dart';
-import 'package:zoey/features/sheet/providers/sheet_actions_provider.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/welcome/data/feature_data.dart';
 import 'package:zoey/features/welcome/widgets/feature_item.dart';
@@ -92,8 +91,6 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
       child: ZoePrimaryButton(
         text: 'Get Started',
         onPressed: () {
-          final sheetActions = ref.read(sheetActionsNotifierProvider);
-          sheetActions.initializeWithSampleData();
           context.go(AppRoutes.home.route);
         },
       ),

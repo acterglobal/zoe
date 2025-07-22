@@ -7,9 +7,9 @@ final contentNotifierProvider =
       return ContentNotifier();
     });
 
-final contentBySheetIdProvider =
-    Provider.family<List<BaseContentModel>, String>((ref, sheetId) {
+final contentByParentIdProvider =
+    Provider.family<List<BaseContentModel>, String>((ref, parentId) {
       return ref.watch(contentNotifierProvider).where((content) {
-        return content.sheetId == sheetId;
+        return content.parentId == parentId;
       }).toList();
     });

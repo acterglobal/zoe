@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 import 'package:zoey/common/widgets/app_icon_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
+import 'package:zoey/features/sheet/providers/sheet_list_providers.dart';
 import 'package:zoey/features/sheet/widgets/sheet_list/sheet_list_widget.dart';
-import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -19,7 +21,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       appBar: _buildHomeAppBar(context),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => createNewSheet(context, ref),
+        onPressed: () => ref
+            .read(sheetListProvider.notifier)
+            .addSheet(
+              SheetModel(
+                id: Uuid().v4(),
+                title: 'New Sheet',
+                description: 'New Sheet Description',
+                emoji: '📄',
+              ),
+            ),
         child: const Icon(Icons.add_rounded),
       ),
       body: SafeArea(

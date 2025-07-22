@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
-import 'package:zoey/features/sheet/actions/sheet_actions.dart';
-import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 /// App bar widget for sheet detail screen
 class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
@@ -41,13 +39,10 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
         color: Theme.of(context).colorScheme.onSurface,
       ),
       onSelected: (value) {
-        final currentSheet = ref.watch(sheetProvider(sheetId));
         switch (value) {
           case 'Duplicate':
-            duplicateSheet(context, ref, currentSheet: currentSheet);
             break;
           case 'Delete':
-            showDeleteSheetDialog(context, ref, sheetId: sheetId);
             break;
         }
       },

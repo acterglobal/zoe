@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/features/content/models/base_content_model.dart';
-import 'package:zoey/features/content/widgets/add_content_widget.dart';
+import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
-import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
+import 'package:zoey/features/sheet/providers/sheet_list_providers.dart';
+import 'package:zoey/features/sheet/providers/sheet_provider.dart';
+import 'package:zoey/features/sheet/utils/sheet_utils.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_detail_app_bar.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
-  final String? sheetId;
+  final String sheetId;
 
-  const SheetDetailScreen({super.key, this.sheetId});
+  const SheetDetailScreen({super.key, required this.sheetId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,24 +30,7 @@ class SheetDetailScreen extends ConsumerWidget {
         children: [
           _buildHeader(context, ref),
           const SizedBox(height: 16),
-          ContentWidget(sheetId: sheetId ?? ''),
-          AddContentWidget(
-            isEditing: ref.watch(isEditingProvider(sheetId)),
-            onTapText: () => ref
-                .read(sheetDetailProvider(sheetId).notifier)
-                .addContent(ContentType.text),
-
-            onTapEvent: () => ref
-                .read(sheetDetailProvider(sheetId).notifier)
-                .addContent(ContentType.event),
-            onTapBulletedList: () => ref
-                .read(sheetDetailProvider(sheetId).notifier)
-                .addContent(ContentType.list),
-            onTapToDoList: () => ref
-                .read(sheetDetailProvider(sheetId).notifier)
-                .addContent(ContentType.list),
-          ),
-          const SizedBox(height: 200),
+          ContentWidget(parentId: sheetId, sheetId: sheetId),
         ],
       ),
     );
@@ -54,6 +38,7 @@ class SheetDetailScreen extends ConsumerWidget {
 
   /// Builds the header
   Widget _buildHeader(BuildContext context, WidgetRef ref) {
+    final sheet = ref.watch(sheetProvider(sheetId));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -61,12 +46,13 @@ class SheetDetailScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
-              onTap: () =>
-                  ref.read(sheetDetailProvider(sheetId).notifier).updateEmoji(),
+              onTap: () => ref
+                  .read(sheetListProvider.notifier)
+                  .updateSheetEmoji(sheetId, getNextEmoji(sheet.emoji ?? '📄')),
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(
-                  ref.watch(sheetProvider(sheetId)).emoji ?? '📄',
+                  sheet.emoji ?? '📄',
                   style: const TextStyle(fontSize: 32),
                 ),
               ),
@@ -75,8 +61,8 @@ class SheetDetailScreen extends ConsumerWidget {
             Expanded(
               child: ZoeInlineTextEditWidget(
                 hintText: 'Title',
-                isEditing: ref.watch(isEditingProvider(sheetId)),
-                text: ref.watch(sheetProvider(sheetId)).title,
+                isEditing: ref.watch(toogleContentEditProvider),
+                text: sheet.title,
                 textStyle: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
@@ -84,8 +70,8 @@ class SheetDetailScreen extends ConsumerWidget {
                   height: 1.2,
                 ),
                 onTextChanged: (value) => ref
-                    .read(sheetDetailProvider(sheetId).notifier)
-                    .updateTitle(value),
+                    .read(sheetListProvider.notifier)
+                    .updateSheetTitle(sheetId, value),
               ),
             ),
           ],
@@ -93,12 +79,12 @@ class SheetDetailScreen extends ConsumerWidget {
         const SizedBox(height: 16),
         ZoeInlineTextEditWidget(
           hintText: 'Add a description',
-          isEditing: ref.watch(isEditingProvider(sheetId)),
+          isEditing: ref.watch(toogleContentEditProvider),
           text: ref.watch(sheetProvider(sheetId)).description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
           onTextChanged: (value) => ref
-              .read(sheetDetailProvider(sheetId).notifier)
-              .updateDescription(value),
+              .read(sheetListProvider.notifier)
+              .updateSheetDescription(sheetId, value),
         ),
       ],
     );
