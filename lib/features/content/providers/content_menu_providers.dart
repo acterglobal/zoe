@@ -1,3 +1,3 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final contentMenuProvider = StateProvider<bool>((ref) => false);
+final toogleContentMenuProvider = StateProvider<bool>((ref) => false);
