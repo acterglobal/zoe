@@ -132,7 +132,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
         ZoeInlineTextEditWidget(
           hintText: 'Add a description',
           isEditing: ref.watch(isEditingProvider(widget.sheetId)),
-          text: ref.watch(sheetProvider(widget.sheetId)).descriptionHtml,
+          text: ref.watch(sheetProvider(widget.sheetId)).description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
           onTextChanged: (value) => ref
               .read(sheetDetailProvider(widget.sheetId).notifier)

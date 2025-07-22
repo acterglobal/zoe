@@ -6,7 +6,6 @@ class SheetModel {
   final String? coverImage;
   final String title;
   final String description;
-  final String? descriptionHtml;
   final List<String> contentList;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -17,7 +16,6 @@ class SheetModel {
     this.coverImage,
     required this.title,
     this.description = '',
-    this.descriptionHtml,
     List<String>? contentList,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -33,7 +31,6 @@ class SheetModel {
       'coverImage': coverImage,
       'title': title,
       'description': description,
-      'descriptionHtml': descriptionHtml,
       'contentList': contentList, // Changed to store IDs directly
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
@@ -47,7 +44,6 @@ class SheetModel {
       coverImage: json['coverImage'] as String?,
       title: json['title'] as String,
       description: json['description'] as String? ?? '',
-      descriptionHtml: json['descriptionHtml'] as String?,
       contentList:
           (json['contentList']
                   as List<dynamic>?) // Changed to handle List<String>
@@ -64,7 +60,6 @@ class SheetModel {
     String? coverImage,
     String? title,
     String? description,
-    String? descriptionHtml,
     List<String>? contentList,
     DateTime? updatedAt,
   }) {
@@ -74,7 +69,6 @@ class SheetModel {
       coverImage: coverImage ?? this.coverImage,
       title: title ?? this.title,
       description: description ?? this.description,
-      descriptionHtml: descriptionHtml ?? this.descriptionHtml,
       contentList: contentList ?? this.contentList, // Changed to contentList
       createdAt: createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
