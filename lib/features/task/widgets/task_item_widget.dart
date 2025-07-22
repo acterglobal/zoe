@@ -25,7 +25,7 @@ class TaskItemWidget extends ConsumerWidget {
     if (taskItem == null) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.only(left: 24),
+      padding: const EdgeInsets.only(left: 14),
       child: _buildTaskItemContent(context, ref, taskItem, isEditing),
     );
   }
