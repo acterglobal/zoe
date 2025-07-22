@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/features/content/providers/content_list_providers.dart';
+import 'package:zoey/features/content/providers/content_providers.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/text/providers/text_content_proivder.dart';
 
@@ -40,8 +40,8 @@ class TextContentWidget extends ConsumerWidget {
             if (isEditing)
               ZoeDeleteButtonWidget(
                 onTap: () => ref
-                    .read(contentNotifierProvider.notifier)
-                    .removeContent(textContentId),
+                    .read(contentListProvider.notifier)
+                    .deleteContent(textContentId),
               ),
           ],
         ),

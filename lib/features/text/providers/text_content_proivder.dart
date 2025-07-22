@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/content/providers/content_list_providers.dart';
+import 'package:zoey/features/content/providers/content_providers.dart';
 import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_content_list_provider.dart';
 
@@ -22,7 +22,7 @@ final textContentTitleUpdateProvider = Provider<void Function(String, String)>((
 ) {
   return (String textContentId, String title) {
     ref
-        .read(contentNotifierProvider.notifier)
+        .read(contentListProvider.notifier)
         .updateContentTitle(textContentId, title);
   };
 });
@@ -34,8 +34,9 @@ final textContentDescriptionUpdateProvider =
         String plainTextDescription,
         String htmlDescription,
       ) {
-        ref
-            .read(contentNotifierProvider.notifier)
-            .updateContentDescription(textContentId, plainTextDescription);
+        ref.read(contentListProvider.notifier).updateContentDescription(
+          textContentId,
+          (plainText: plainTextDescription, htmlText: htmlDescription),
+        );
       };
     });

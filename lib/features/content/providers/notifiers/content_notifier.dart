@@ -1,127 +1,48 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/content/data/content_list.dart';
 import 'package:zoey/features/content/models/content_model.dart';
-import 'package:zoey/features/text/models/text_model.dart';
-import 'package:zoey/features/events/models/events_model.dart';
-import 'package:zoey/features/list/models/list_model.dart';
+import 'package:zoey/features/text/data/text_list.dart';
+import 'package:zoey/features/events/data/event_list.dart';
+import 'package:zoey/features/list/data/lists.dart';
 
 class ContentNotifier extends StateNotifier<List<ContentModel>> {
-  ContentNotifier() : super(List.from(contentList));
+  ContentNotifier() : super([]) {
+    _loadAllContent();
+  }
 
-  // Generic update method
-  void updateContent<T extends ContentModel>(
-    String contentId,
-    T Function(T current) updateFunction,
-  ) {
+  void _loadAllContent() {
+    final allContent = <ContentModel>[...textList, ...eventList, ...lists];
+    state = allContent;
+  }
+
+  List<ContentModel> getContentByParentId(String parentId) {
+    return state.where((content) => content.parentId == parentId).toList();
+  }
+
+  void addContent(ContentModel content) {
+    state = [...state, content];
+  }
+
+  void updateContent(ContentModel updatedContent) {
     state = state.map((content) {
-      if (content.id == contentId && content is T) {
-        final updated = updateFunction(content);
-        // Update the original content list to keep it in sync
-        _updateContentList(contentId, updated);
-        return updated;
-      }
-      return content;
+      return content.id == updatedContent.id ? updatedContent : content;
     }).toList();
   }
 
-  // Generic add method
-  void addContent<T extends ContentModel>(T content) {
-    state = [...state, content];
-    contentList.add(content);
+  void deleteContent(String contentId) {
+    state = state.where((c) => c.id != contentId).toList();
   }
 
-  // Generic remove method
-  void removeContent(String contentId) {
-    state = state.where((content) => content.id != contentId).toList();
-    contentList.removeWhere((element) => element.id == contentId);
-  }
+  void reorderContent(int oldIndex, int newIndex, String parentId) {
+    final contentForParent = getContentByParentId(parentId);
+    final otherContent = state.where((c) => c.parentId != parentId).toList();
 
-  // Generic get methods
-  List<T> getContentsByType<T extends ContentModel>() {
-    return state.whereType<T>().toList();
-  }
-
-  List<ContentModel> getContentsByContentType(ContentType type) {
-    return state.where((content) => content.type == type).toList();
-  }
-
-  T? getContentById<T extends ContentModel>(String contentId) {
-    try {
-      return state.firstWhere((content) => content.id == contentId) as T;
-    } catch (e) {
-      return null;
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
     }
-  }
 
-  // Filter methods
-  List<ContentModel> getContentsBySheetId(String sheetId) {
-    return state.where((content) => content.sheetId == sheetId).toList();
-  }
+    final item = contentForParent.removeAt(oldIndex);
+    contentForParent.insert(newIndex, item);
 
-  List<T> getContentsBySheetIdAndType<T extends ContentModel>(String sheetId) {
-    return state
-        .where((content) => content.sheetId == sheetId)
-        .whereType<T>()
-        .toList();
-  }
-
-  // Bulk operations
-  void addMultipleContent(List<ContentModel> contents) {
-    state = [...state, ...contents];
-    contentList.addAll(contents);
-  }
-
-  void removeMultipleContent(List<String> contentIds) {
-    state = state.where((content) => !contentIds.contains(content.id)).toList();
-    contentList.removeWhere((element) => contentIds.contains(element.id));
-  }
-
-  void replaceAllContent(List<ContentModel> newContent) {
-    state = List.from(newContent);
-    contentList.clear();
-    contentList.addAll(newContent);
-  }
-
-  // Helper method to update the original content list
-  void _updateContentList(String contentId, ContentModel updatedContent) {
-    final index = contentList.indexWhere((element) => element.id == contentId);
-    if (index != -1) {
-      contentList[index] = updatedContent;
-    }
-  }
-
-  // Convenience methods for common update patterns
-  void updateContentTitle(String contentId, String newTitle) {
-    final content = state.firstWhere((c) => c.id == contentId);
-
-    if (content is TextModel) {
-      updateContent<TextModel>(
-        contentId,
-        (c) => c.copyWith(title: newTitle, updatedAt: DateTime.now()),
-      );
-    } else if (content is EventModel) {
-      updateContent<EventModel>(
-        contentId,
-        (c) => c.copyWith(title: newTitle, updatedAt: DateTime.now()),
-      );
-    } else if (content is ListModel) {
-      updateContent<ListModel>(
-        contentId,
-        (c) => c.copyWith(title: newTitle, updatedAt: DateTime.now()),
-      );
-    }
-  }
-
-  void updateContentDescription(String contentId, String newDescription) {
-    final content = state.firstWhere((c) => c.id == contentId);
-    if (content is TextModel) {
-      updateContent<TextModel>(
-        contentId,
-        (c) => c.copyWith(
-          description: (plainText: newDescription, htmlText: null),
-          updatedAt: DateTime.now(),
-        ),
-      );
-    }
+    state = [...otherContent, ...contentForParent];
   }
 }

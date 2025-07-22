@@ -30,36 +30,6 @@ class SheetNotifier extends StateNotifier<List<SheetModel>> {
     ];
   }
 
-  void updateSheetPlainText(String sheetId, String plainText) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(
-            description: (
-              plainText: plainText,
-              htmlText: sheet.description?.htmlText,
-            ),
-          )
-        else
-          sheet,
-    ];
-  }
-
-  void updateSheetHtmlText(String sheetId, String htmlText) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(
-            description: (
-              plainText: sheet.description?.plainText,
-              htmlText: htmlText,
-            ),
-          )
-        else
-          sheet,
-    ];
-  }
-
   void updateSheetEmoji(String sheetId, String emoji) {
     state = [
       for (final sheet in state)
