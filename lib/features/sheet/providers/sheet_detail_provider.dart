@@ -6,10 +6,9 @@ import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 import 'package:zoey/features/content/text/models/text_content_model.dart';
-import 'package:zoey/features/content/list/list_todos/models/todos_content_model.dart';
 import 'package:zoey/features/content/events/models/events_model.dart';
 import 'package:zoey/features/content/text/providers/text_content_list_provider.dart';
-import 'package:zoey/features/content/list/list_todos/providers/todos_content_list_provider.dart';
+import 'package:zoey/features/content/list/list_todos/providers/task_list_providers.dart';
 import 'package:zoey/features/content/events/providers/events_list_provider.dart';
 import 'package:zoey/features/content/list/providers/lists_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -124,7 +123,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     if (contentId.startsWith('text-')) {
       ref.read(textContentListProvider.notifier).removeTextContent(contentId);
     } else if (contentId.startsWith('todos-')) {
-      ref.read(todosContentListProvider.notifier).removeContent(contentId);
+      ref.read(taskListProvider.notifier).deleteTask(contentId);
     } else if (contentId.startsWith('events-')) {
       ref.read(eventsListProvider.notifier).deleteEvent(contentId);
     } else if (contentId.startsWith('list-')) {
@@ -176,13 +175,13 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
     // Create actual content using StateNotifier providers
     switch (type) {
       case ContentType.todo:
-        final newTodo = TodosContentModel(
+        final newTodo = ListModel(
           sheetId: state.sheet.id,
           id: formattedId,
-          title: 'To-do',
-          items: [TodoItem(title: '')],
+          title: 'List',
+          listType: ListType.task,
         );
-        ref.read(todosContentListProvider.notifier).addContent(newTodo);
+        ref.read(listsProvider.notifier).addList(newTodo);
         break;
       case ContentType.event:
         final newEvent = EventModel(

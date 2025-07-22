@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/list/list_bullets/providers/bullet_list_providers.dart';
+import 'package:zoey/features/content/list/list_todos/providers/task_list_providers.dart';
+import 'package:zoey/features/content/list/list_todos/widgets/task_list_widget.dart';
+import 'package:zoey/features/content/list/models/list_model.dart';
 import 'package:zoey/features/content/list/providers/list_proivder.dart';
 import 'package:zoey/features/content/list/list_bullets/widgets/bullet_list_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
@@ -38,8 +41,10 @@ class ListWidget extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 6),
-        BulletListWidget(listId: listId, isEditing: isEditing),
-        if (isEditing) _buildAddListItemButton(context, ref),
+        list.listType == ListType.bulleted
+            ? BulletListWidget(listId: listId, isEditing: isEditing)
+            : TaskListWidget(listId: listId, isEditing: isEditing),
+        if (isEditing) _buildAddListItemButton(context, ref, list.listType),
       ],
     );
   }
@@ -73,12 +78,17 @@ class ListWidget extends ConsumerWidget {
   }
 
   // Builds the add list item button
-  Widget _buildAddListItemButton(BuildContext context, WidgetRef ref) {
+  Widget _buildAddListItemButton(
+    BuildContext context,
+    WidgetRef ref,
+    ListType listType,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: GestureDetector(
-        onTap: () =>
-            ref.read(bulletListProvider.notifier).addBullet('', listId),
+        onTap: () => listType == ListType.bulleted
+            ? ref.read(bulletListProvider.notifier).addBullet('', listId)
+            : ref.read(taskListProvider.notifier).addTask('', listId),
         child: Row(
           children: [
             Icon(
