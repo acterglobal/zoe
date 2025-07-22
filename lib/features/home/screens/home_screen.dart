@@ -27,7 +27,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               SheetModel(
                 id: Uuid().v4(),
                 title: 'New Sheet',
-                description: 'New Sheet Description',
+                description: (
+                  plainText: 'New Sheet Description',
+                  htmlText: null,
+                ),
                 emoji: '📄',
               ),
             ),

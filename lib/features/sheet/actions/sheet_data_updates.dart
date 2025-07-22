@@ -9,9 +9,10 @@ void updateSheetTitle(WidgetRef ref, String sheetId, String title) {
 
 /// Updates the description of the sheet
 void updateSheetDescription(WidgetRef ref, String sheetId, String description) {
-  ref
-      .read(sheetListProvider.notifier)
-      .updateSheetDescription(sheetId, description);
+  ref.read(sheetListProvider.notifier).updateSheetDescription(sheetId, (
+    plainText: description,
+    htmlText: null,
+  ));
 }
 
 /// Updates the emoji of the sheet
