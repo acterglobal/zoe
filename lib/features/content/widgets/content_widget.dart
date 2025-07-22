@@ -7,7 +7,7 @@ import 'package:zoey/features/content/utils/content_utils.dart';
 import 'package:zoey/features/content/widgets/add_content_widget.dart';
 import 'package:zoey/features/events/widgets/event_widget.dart';
 import 'package:zoey/features/list/widgets/list_widget.dart';
-import 'package:zoey/features/text/widgets/text_content_widget.dart';
+import 'package:zoey/features/text/widgets/text_widget.dart';
 
 class ContentWidget extends ConsumerWidget {
   final String parentId;
