@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_providers.dart';
 import 'package:zoey/features/sheet/providers/sheet_provider.dart';
-import 'package:zoey/features/sheet/utils/sheet_utils.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_detail_app_bar.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
@@ -50,13 +50,13 @@ class SheetDetailScreen extends ConsumerWidget {
             GestureDetector(
               onTap: () => ref
                   .read(sheetListProvider.notifier)
-                  .updateSheetEmoji(sheetId, getNextEmoji(sheet.emoji ?? '📄')),
+                  .updateSheetEmoji(
+                    sheetId,
+                    CommonUtils.getNextEmoji(sheet.emoji),
+                  ),
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: Text(
-                  sheet.emoji ?? '📄',
-                  style: const TextStyle(fontSize: 32),
-                ),
+                child: Text(sheet.emoji, style: const TextStyle(fontSize: 32)),
               ),
             ),
             const SizedBox(width: 4),

@@ -19,11 +19,13 @@ class SheetListItemWidget extends ConsumerWidget {
         onTap: () => context.push(
           AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id),
         ),
-        leading: Text(sheet.emoji ?? ''),
-        title: Text(sheet.title),
+        leading: Text(sheet.emoji, style: const TextStyle(fontSize: 32)),
+        title: Text(sheet.title, maxLines: 1, overflow: TextOverflow.ellipsis),
         subtitle: Text(
-          sheet.description,
+          sheet.description ?? '',
           style: Theme.of(context).textTheme.bodySmall,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
         trailing: const Icon(Icons.chevron_right_rounded),
       ),
