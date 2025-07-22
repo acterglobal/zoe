@@ -9,8 +9,8 @@ final bulletListProvider =
 
 final bulletListByBlockProvider = Provider.family<List<BulletItem>, String>((
   ref,
-  String blockId,
+  String listId,
 ) {
   final bulletList = ref.watch(bulletListProvider);
-  return bulletList.where((bullet) => bullet.blockId == blockId).toList();
+  return bulletList.where((bullet) => bullet.listId == listId).toList();
 });

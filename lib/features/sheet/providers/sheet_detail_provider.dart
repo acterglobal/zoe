@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/block/model/block_model.dart';
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:zoey/features/content/models/base_content_model.dart';
+import 'package:zoey/features/list/models/list_model.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
-import 'package:zoey/features/text_block/models/text_block_model.dart';
-import 'package:zoey/features/todos/models/todos_content_model.dart';
-import 'package:zoey/features/events/models/events_content_model.dart';
-import 'package:zoey/features/list_block/models/list_block_model.dart';
-import 'package:zoey/features/text_block/providers/text_block_list_provider.dart';
-import 'package:zoey/features/todos/providers/todos_content_list_provider.dart';
-import 'package:zoey/features/events/providers/events_content_list_provider.dart';
-import 'package:zoey/features/list_block/providers/list_block_list_provider.dart';
+import 'package:zoey/features/text/models/text_content_model.dart';
+import 'package:zoey/features/events/models/events_model.dart';
+import 'package:zoey/features/text/providers/text_content_list_provider.dart';
+import 'package:zoey/features/task/providers/task_list_providers.dart';
+import 'package:zoey/features/events/providers/events_list_provider.dart';
+import 'package:zoey/features/list/providers/lists_provider.dart';
 import 'package:uuid/uuid.dart';
 
 /// State class for sheet detail
 class SheetDetailState {
-  final ZoeSheetModel sheet;
+  final SheetModel sheet;
   final bool isEditing;
   final bool showAddMenu;
 
@@ -27,7 +26,7 @@ class SheetDetailState {
   });
 
   SheetDetailState copyWith({
-    ZoeSheetModel? sheet,
+    SheetModel? sheet,
     bool? isEditing,
     bool? showAddMenu,
     TextEditingController? titleController,
@@ -51,11 +50,11 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
 
   /// Create initial state based on sheetId
   static SheetDetailState _createInitialState(Ref ref, String? sheetId) {
-    ZoeSheetModel sheet;
+    SheetModel sheet;
     bool isEditing;
 
     if (sheetId == null || sheetId == 'new') {
-      sheet = ZoeSheetModel(title: 'Untitled', description: '', emoji: '📄');
+      sheet = SheetModel(title: 'Untitled', description: '', emoji: '📄');
       isEditing = true;
     } else {
       final sheetListNotifier = ref.read(sheetListProvider.notifier);
@@ -65,7 +64,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
         sheet = existingSheet;
         isEditing = false;
       } else {
-        sheet = ZoeSheetModel(
+        sheet = SheetModel(
           title: 'Sheet Not Found',
           description: 'The requested sheet could not be found.',
         );
@@ -119,20 +118,20 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   }
 
   /// Delete content by ID
-  void deleteBlock(String blockId) {
+  void deleteContent(String contentId) {
     final updatedSheet = state.sheet.copyWith();
-    updatedSheet.removeContentId(blockId);
+    updatedSheet.removeContentId(contentId);
     state = state.copyWith(sheet: updatedSheet);
 
     // Also remove from the appropriate content list provider
-    if (blockId.startsWith('text-')) {
-      ref.read(textBlockListProvider.notifier).removeBlock(blockId);
-    } else if (blockId.startsWith('todos-')) {
-      ref.read(todosContentListProvider.notifier).removeContent(blockId);
-    } else if (blockId.startsWith('events-')) {
-      ref.read(eventsContentListProvider.notifier).removeContent(blockId);
-    } else if (blockId.startsWith('list-')) {
-      ref.read(listBlockListProvider.notifier).removeBlock(blockId);
+    if (contentId.startsWith('text-')) {
+      ref.read(textContentListProvider.notifier).removeTextContent(contentId);
+    } else if (contentId.startsWith('todos-')) {
+      ref.read(taskListProvider.notifier).deleteTask(contentId);
+    } else if (contentId.startsWith('events-')) {
+      ref.read(eventsListProvider.notifier).deleteEvent(contentId);
+    } else if (contentId.startsWith('list-')) {
+      ref.read(listsProvider.notifier).removeBlock(contentId);
     }
   }
 
@@ -147,7 +146,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   }
 
   /// Add content by type
-  void addContent(BlockType type) {
+  void addContent(ContentType type) {
     final contentId = _createContent(type);
     final updatedSheet = state.sheet.copyWith();
     updatedSheet.addContentId(contentId);
@@ -155,23 +154,20 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
   }
 
   /// Create content and return its ID
-  String _createContent(BlockType type) {
+  String _createContent(ContentType type) {
     final contentId = const Uuid().v4();
 
     // Use correct prefixes that match the content detection logic
     String prefix;
     switch (type) {
-      case BlockType.todo:
-        prefix = 'todos';
+      case ContentType.text:
+        prefix = 'text';
         break;
-      case BlockType.event:
+      case ContentType.event:
         prefix = 'events';
         break;
-      case BlockType.list:
+      case ContentType.list:
         prefix = 'list';
-        break;
-      case BlockType.text:
-        prefix = 'text';
         break;
     }
 
@@ -179,41 +175,34 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
 
     // Create actual content using StateNotifier providers
     switch (type) {
-      case BlockType.todo:
-        final newTodo = TodosContentModel(
-          parentId: state.sheet.id,
-          id: formattedId,
-          title: 'To-do',
-          items: [TodoItem(title: '')],
-        );
-        ref.read(todosContentListProvider.notifier).addContent(newTodo);
-        break;
-      case BlockType.event:
-        final newEvent = EventsContentModel(
-          parentId: state.sheet.id,
-          id: formattedId,
-          title: 'Events',
-          events: [EventItem(title: '')],
-        );
-        ref.read(eventsContentListProvider.notifier).addContent(newEvent);
-        break;
-      case BlockType.list:
-        final newBullets = ListBlockModel(
-          parentId: state.sheet.id,
-          id: formattedId,
-          title: 'List',
-        );
-        ref.read(listBlockListProvider.notifier).addBlock(newBullets);
-        break;
-      case BlockType.text:
-        final newText = TextBlockModel(
-          parentId: state.sheet.id,
+      case ContentType.text:
+        final newText = TextContentModel(
+          sheetId: state.sheet.id,
           id: formattedId,
           title: 'Text Block',
           plainTextDescription: '',
           htmlDescription: '',
         );
-        ref.read(textBlockListProvider.notifier).addBlock(newText);
+        ref.read(textContentListProvider.notifier).addTextContent(newText);
+        break;
+      case ContentType.event:
+        final newEvent = EventModel(
+          sheetId: state.sheet.id,
+          id: formattedId,
+          title: 'Events',
+          startDate: DateTime.now(),
+          endDate: DateTime.now().add(const Duration(hours: 1)),
+        );
+        ref.read(eventsListProvider.notifier).addEvent(newEvent);
+        break;
+      case ContentType.list:
+        final newBullets = ListModel(
+          sheetId: state.sheet.id,
+          id: formattedId,
+          title: 'List',
+          listType: ListType.bulleted,
+        );
+        ref.read(listsProvider.notifier).addList(newBullets);
         break;
     }
 
@@ -250,7 +239,7 @@ final sheetDetailProvider =
     >((ref, sheetId) => SheetDetailNotifier(ref: ref, sheetId: sheetId));
 
 /// Convenience providers for specific parts of the state
-final sheetProvider = Provider.family<ZoeSheetModel, String?>((ref, sheetId) {
+final sheetProvider = Provider.family<SheetModel, String?>((ref, sheetId) {
   return ref.watch(sheetDetailProvider(sheetId)).sheet;
 });
 

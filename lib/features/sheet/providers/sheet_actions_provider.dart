@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 
 /// Actions provider for sheet operations
@@ -60,9 +60,9 @@ class SheetActionsNotifier extends StateNotifier<void> {
   /// Duplicate a sheet
   void duplicateSheet({
     required BuildContext context,
-    required ZoeSheetModel currentSheet,
+    required SheetModel currentSheet,
   }) {
-    final duplicatedSheet = ZoeSheetModel(
+    final duplicatedSheet = SheetModel(
       title: '${currentSheet.title} (Copy)',
       description: currentSheet.description,
       emoji: currentSheet.emoji,
@@ -84,7 +84,7 @@ class SheetActionsNotifier extends StateNotifier<void> {
     String? description,
     String? emoji,
   }) {
-    final newSheet = ZoeSheetModel(
+    final newSheet = SheetModel(
       title: title ?? 'Untitled',
       description: description ?? '',
       emoji: emoji ?? '📄',
@@ -98,7 +98,7 @@ class SheetActionsNotifier extends StateNotifier<void> {
   }
 
   /// Save a sheet (used by sheet detail provider)
-  void saveSheet({required ZoeSheetModel sheet, required String? sheetId}) {
+  void saveSheet({required SheetModel sheet, required String? sheetId}) {
     final sheetListNotifier = ref.read(sheetListProvider.notifier);
 
     if (sheetId != null && sheetId != 'new') {
@@ -109,7 +109,7 @@ class SheetActionsNotifier extends StateNotifier<void> {
   }
 
   /// Get a sheet by ID
-  ZoeSheetModel? getSheetById(String sheetId) {
+  SheetModel? getSheetById(String sheetId) {
     final sheetListNotifier = ref.read(sheetListProvider.notifier);
     return sheetListNotifier.getSheetById(sheetId);
   }

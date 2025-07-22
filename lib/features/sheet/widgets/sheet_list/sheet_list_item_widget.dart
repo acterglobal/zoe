@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 
 class SheetListItemWidget extends StatelessWidget {
-  final ZoeSheetModel sheet;
+  final SheetModel sheet;
   const SheetListItemWidget({super.key, required this.sheet});
 
   @override

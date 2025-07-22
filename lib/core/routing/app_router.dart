@@ -7,7 +7,7 @@ import 'package:zoey/features/events/screens/event_detail_screen.dart';
 import 'package:zoey/features/home/screens/home_screen.dart';
 import 'package:zoey/features/settings/screens/settings_screen.dart';
 import 'package:zoey/features/sheet/screens/sheet_detail_screen.dart';
-import 'package:zoey/features/todos/screens/task_detail_screen.dart';
+import 'package:zoey/features/task/screens/task_detail_screen.dart';
 import 'package:zoey/features/welcome/screens/welcome_screen.dart';
 import 'app_routes.dart';
 

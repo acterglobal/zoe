@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/features/events/widgets/event_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/text_block/widgets/text_block_widget.dart';
-import 'package:zoey/features/todos/widgets/todos_content_widget.dart';
-import 'package:zoey/features/events/widgets/events_content_widget.dart';
-import 'package:zoey/features/list_block/widgets/list_block_widget.dart';
+import 'package:zoey/features/text/widgets/text_content_widget.dart';
+import 'package:zoey/features/list/widgets/list_widget.dart';
 
 /// Contents widget for sheet detail screen
 class SheetContents extends ConsumerWidget {
@@ -69,29 +68,15 @@ class SheetContents extends ConsumerWidget {
     );
   }
 
-  Widget _buildContentWidget(String blockId, bool isEditing) {
-    // Determine content type from ID prefix
-    if (blockId.startsWith('text-')) {
-      return TextBlockWidget(textBlockId: blockId, isEditing: isEditing);
-    } else if (blockId.startsWith('todos-')) {
-      return TodosContentWidget(todosContentId: blockId, isEditing: isEditing);
-    } else if (blockId.startsWith('events-')) {
-      return EventsContentWidget(
-        eventsContentId: blockId,
-        isEditing: isEditing,
-      );
-    } else if (blockId.startsWith('list-')) {
-      return ListBlockWidget(listBlockId: blockId, isEditing: isEditing);
+  Widget _buildContentWidget(String contentId, bool isEditing) {
+    if (contentId.startsWith('text-')) {
+      return TextContentWidget(textContentId: contentId, isEditing: isEditing);
+    } else if (contentId.startsWith('list-')) {
+      return ListWidget(listId: contentId, isEditing: isEditing);
+    } else if (contentId.startsWith('events-')) {
+      return EventWidget(eventsId: contentId, isEditing: isEditing);
     } else {
-      // Fallback for unknown content types
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.red),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text('Unknown content type: $blockId'),
-      );
+      return const SizedBox.shrink();
     }
   }
 }

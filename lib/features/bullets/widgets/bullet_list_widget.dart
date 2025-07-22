@@ -4,17 +4,18 @@ import 'package:zoey/features/bullets/providers/bullet_list_providers.dart';
 import 'package:zoey/features/bullets/widgets/bullet_item_widget.dart';
 
 class BulletListWidget extends ConsumerWidget {
-  final String listBlockId;
+  final String listId;
   final bool isEditing;
+
   const BulletListWidget({
     super.key,
-    required this.listBlockId,
+    required this.listId,
     this.isEditing = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bullets = ref.watch(bulletListByBlockProvider(listBlockId));
+    final bullets = ref.watch(bulletListByBlockProvider(listId));
     if (bullets.isEmpty) return const SizedBox.shrink();
 
     return ListView.builder(

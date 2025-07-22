@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/data/zoe_sheet_data.dart';
-import 'package:zoey/features/sheet/models/zoe_sheet_model.dart';
+import 'package:zoey/features/sheet/data/sheet_data.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 
-class SheetListNotifier extends StateNotifier<List<ZoeSheetModel>> {
+class SheetListNotifier extends StateNotifier<List<SheetModel>> {
   SheetListNotifier() : super([]);
 
   // Initialize with sample data
@@ -11,11 +11,11 @@ class SheetListNotifier extends StateNotifier<List<ZoeSheetModel>> {
   }
 
   // Sheet management
-  void addSheet(ZoeSheetModel sheet) {
+  void addSheet(SheetModel sheet) {
     state = [...state, sheet];
   }
 
-  void updateSheet(ZoeSheetModel updatedSheet) {
+  void updateSheet(SheetModel updatedSheet) {
     state = state.map((sheet) {
       return sheet.id == updatedSheet.id ? updatedSheet : sheet;
     }).toList();
@@ -25,7 +25,7 @@ class SheetListNotifier extends StateNotifier<List<ZoeSheetModel>> {
     state = state.where((sheet) => sheet.id != sheetId).toList();
   }
 
-  ZoeSheetModel? getSheetById(String sheetId) {
+  SheetModel? getSheetById(String sheetId) {
     try {
       return state.firstWhere((sheet) => sheet.id == sheetId);
     } catch (e) {
@@ -41,6 +41,6 @@ class SheetListNotifier extends StateNotifier<List<ZoeSheetModel>> {
 
 // Main Riverpod provider for sheet list
 final sheetListProvider =
-    StateNotifierProvider<SheetListNotifier, List<ZoeSheetModel>>((ref) {
+    StateNotifierProvider<SheetListNotifier, List<SheetModel>>((ref) {
       return SheetListNotifier();
     });
