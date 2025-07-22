@@ -6,12 +6,10 @@ class QuillEditorStyles {
   /// Get the default QuillEditor configuration for editing mode
   QuillEditorConfig getEditingConfig({
     String? hintText,
-    EdgeInsets? padding,
     bool autoFocus = false,
   }) {
     return QuillEditorConfig(
       placeholder: hintText ?? '',
-      padding: padding ?? const EdgeInsets.all(16),
       autoFocus: autoFocus,
       expands: false,
       embedBuilders: const [],
@@ -20,9 +18,8 @@ class QuillEditorStyles {
   }
 
   /// Get the default QuillEditor configuration for view mode
-  QuillEditorConfig getViewConfig({EdgeInsets? padding}) {
+  QuillEditorConfig getViewConfig() {
     return QuillEditorConfig(
-      padding: padding ?? EdgeInsets.zero,
       autoFocus: false,
       expands: false,
       embedBuilders: const [],

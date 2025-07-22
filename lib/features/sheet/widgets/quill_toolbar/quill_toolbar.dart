@@ -55,6 +55,7 @@ class _QuillToolbarState extends State<QuillToolbar> {
       child: Container(
         height: 60,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(

@@ -128,6 +128,7 @@ class _SheetDetailScreenState extends ConsumerState<SheetDetailScreen> {
           ],
         ),
         const SizedBox(height: 16),
+        // Description field with rich text editing (HTML formatting support)
         ZoeInlineTextEditWidget(
           hintText: 'Add a description',
           isEditing: ref.watch(isEditingProvider(widget.sheetId)),

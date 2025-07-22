@@ -3,13 +3,22 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zoey/features/sheet/quill_editor/quill_editor_manager.dart';
 import 'package:zoey/features/sheet/quill_editor/quill_editor_config.dart';
 
-/// A reusable rich text widget that handles both editing and view modes
+/// Rich text editor widget that handles HTML content with formatting capabilities.
+/// 
+/// **Features:**
+/// - Full QuillEditor with formatting toolbar
+/// - Supports bold, italic, lists, etc.
+/// - Outputs both plain text and rich HTML
+/// - Handles view mode for displaying formatted content
+/// 
+/// **Usage:**
+/// - Use for content that needs text formatting
+/// - Typically used by ZoeInlineTextEditWidget when onHtmlChanged is provided
 class ZoeHtmlTextEditWidget extends StatefulWidget {
   final String? initialContent;
   final String? initialRichContent;
   final bool isEditing;
   final String? hintText;
-  final EdgeInsets? padding;
   final bool autoFocus;
   final Function(String plainText, String richTextJson)? onContentChanged;
   final Function(QuillController?, FocusNode?)? onFocusChanged;
@@ -21,7 +30,6 @@ class ZoeHtmlTextEditWidget extends StatefulWidget {
     this.initialRichContent,
     required this.isEditing,
     this.hintText,
-    this.padding,
     this.autoFocus = false,
     this.onContentChanged,
     this.onFocusChanged,
@@ -83,7 +91,7 @@ class _ZoeHtmlTextEditWidgetState extends State<ZoeHtmlTextEditWidget> {
     super.dispose();
   }
 
-  /// Initialize the editor manager
+  /// Initialize the QuillEditor with proper configuration
   Future<void> _initializeEditor() async {
     // Dispose previous manager if it exists
     if (_isInitialized) {
@@ -107,7 +115,7 @@ class _ZoeHtmlTextEditWidgetState extends State<ZoeHtmlTextEditWidget> {
     }
   }
 
-  /// Handle content changes from the editor
+  /// Handle content changes from the QuillEditor
   void _handleContentChanged() {
     if (widget.onContentChanged != null && widget.isEditing) {
       widget.onContentChanged!(
@@ -124,22 +132,23 @@ class _ZoeHtmlTextEditWidgetState extends State<ZoeHtmlTextEditWidget> {
     }
 
     if (widget.isEditing) {
+      // Edit mode: Show QuillEditor with formatting capabilities
       return QuillEditor(
         focusNode: _editorManager.focusNode!,
         scrollController: _editorManager.scrollController!,
         controller: _editorManager.controller!,
         config: _editorStyles.getEditingConfig(
           hintText: widget.hintText,
-          padding: widget.padding,
           autoFocus: widget.autoFocus,
         ),
       );
     } else {
+      // View mode: Display formatted content
       return _buildViewWidget();
     }
   }
 
-  /// Build the view widget
+  /// Build the view widget for displaying formatted content
   Widget _buildViewWidget() {
     final hasRichContent =
         widget.initialRichContent != null &&
@@ -148,7 +157,7 @@ class _ZoeHtmlTextEditWidgetState extends State<ZoeHtmlTextEditWidget> {
         widget.initialContent != null && widget.initialContent!.isNotEmpty;
 
     if (hasRichContent) {
-      // Create a disabled focus node for view mode
+      // Show formatted content using QuillEditor in read-only mode
       final disabledFocusNode = FocusNode();
       disabledFocusNode.canRequestFocus = false;
 
@@ -156,17 +165,16 @@ class _ZoeHtmlTextEditWidgetState extends State<ZoeHtmlTextEditWidget> {
         controller: _editorManager.controller!,
         scrollController: _editorManager.scrollController!,
         focusNode: disabledFocusNode,
-        config: _editorStyles.getViewConfig(padding: widget.padding),
+        config: _editorStyles.getViewConfig(),
       );
     } else if (hasPlainContent) {
-      return Padding(
-        padding: widget.padding ?? EdgeInsets.zero,
-        child: Text(
+      // Show plain text when no rich content is available
+      return Text(
           widget.initialContent!,
           style: widget.textStyle ?? _editorStyles.getDefaultTextStyle(context),
-        ),
       );
     } else {
+      // Show hint text when no content
       return Text(
         widget.hintText ?? '',
         style: widget.textStyle?.copyWith(color: Theme.of(context).hintColor),

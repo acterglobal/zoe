@@ -43,33 +43,42 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.isEditing && widget.onHtmlChanged == null
-        ? TextField(
-            controller: controller,
-            style: widget.textStyle,
-            decoration: InputDecoration(
-              hintText: widget.hintText,
-              isDense: true,
-              contentPadding: EdgeInsets.zero,
-            ),
-            maxLines: null,
-            onChanged: widget.onTextChanged,
-          )
-        : widget.onHtmlChanged != null ? ZoeHtmlTextEditWidget(
-            initialContent: controller.text,
-            initialRichContent: widget.text,
-            isEditing: widget.isEditing,
-            hintText: widget.hintText,
-            textStyle: widget.textStyle,
-            onContentChanged: (plainText, richTextJson) {
-              widget.onHtmlChanged!(plainText, richTextJson);
-            },
-            onFocusChanged: widget.onFocusChanged,
-          ) : SelectableText(
-            controller.text.isEmpty ? (widget.hintText ?? '') : controller.text,
-            style: controller.text.isEmpty && widget.hintText != null
-                ? widget.textStyle?.copyWith(color: Theme.of(context).hintColor)
-                : widget.textStyle,
-          );
+    // Plain text editing mode
+    if (widget.isEditing && widget.onHtmlChanged == null) {
+      return TextField(
+        controller: controller,
+        style: widget.textStyle,
+        decoration: InputDecoration(
+          hintText: widget.hintText,
+          isDense: true,
+          contentPadding: EdgeInsets.zero,
+        ),
+        maxLines: null,
+        onChanged: widget.onTextChanged,
+      );
+    }
+    
+    // Rich text editing mode (when onHtmlChanged is provided)
+    if (widget.onHtmlChanged != null) {
+      return ZoeHtmlTextEditWidget(
+        initialContent: controller.text,
+        initialRichContent: widget.text,
+        isEditing: widget.isEditing,
+        hintText: widget.hintText,
+        textStyle: widget.textStyle,
+        onContentChanged: (plainText, richTextJson) {
+          widget.onHtmlChanged!(plainText, richTextJson);
+        },
+        onFocusChanged: widget.onFocusChanged,
+      );
+    }
+    
+    // View mode (read-only)
+    return SelectableText(
+      controller.text.isEmpty ? (widget.hintText ?? '') : controller.text,
+      style: controller.text.isEmpty && widget.hintText != null
+          ? widget.textStyle?.copyWith(color: Theme.of(context).hintColor)
+          : widget.textStyle,
+    );
   }
 }
