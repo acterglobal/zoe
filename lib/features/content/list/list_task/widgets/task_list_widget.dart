@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/content/list/list_todos/providers/task_list_providers.dart';
-import 'package:zoey/features/content/list/list_todos/widgets/task_item_widget.dart';
+import 'package:zoey/features/content/list/list_task/providers/task_list_providers.dart';
+import 'package:zoey/features/content/list/list_task/widgets/task_item_widget.dart';
 
 class TaskListWidget extends ConsumerWidget {
   final String listId;
