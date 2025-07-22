@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/bullets/providers/bullet_item_provider.dart';
+import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 
 class BulletItemWidget extends ConsumerWidget {
   final String bulletItemId;
@@ -18,7 +18,7 @@ class BulletItemWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bulletItem = ref.watch(bulletItemProvider(bulletItemId));
+    final bulletItem = ref.watch(bulletProvider(bulletItemId));
 
     if (bulletItem == null) return const SizedBox.shrink();
 
@@ -59,7 +59,9 @@ class BulletItemWidget extends ConsumerWidget {
       text: title,
       textStyle: Theme.of(context).textTheme.bodyMedium,
       onTextChanged: (value) {
-        ref.read(bulletItemTitleUpdateProvider).call(bulletItemId, value);
+        ref
+            .read(bulletListProvider.notifier)
+            .updateBulletTitle(bulletItemId, value);
       },
     );
   }
@@ -89,7 +91,7 @@ class BulletItemWidget extends ConsumerWidget {
         // Delete list item
         ZoeCloseButtonWidget(
           onTap: () {
-            ref.read(bulletItemDeleteProvider).call(bulletItemId);
+            ref.read(bulletListProvider.notifier).deleteBullet(bulletItemId);
           },
         ),
       ],
