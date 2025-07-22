@@ -16,6 +16,7 @@ class EventModel extends ContentModel {
     super.emoji,
     super.createdAt,
     super.updatedAt,
+    super.orderIndex,
 
     /// EventModel properties
     required this.startDate,
@@ -32,6 +33,7 @@ class EventModel extends ContentModel {
     String? emoji,
     DateTime? createdAt,
     DateTime? updatedAt,
+    int? orderIndex,
 
     /// EventModel properties
     DateTime? startDate,
@@ -47,6 +49,7 @@ class EventModel extends ContentModel {
       emoji: emoji ?? this.emoji,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
+      orderIndex: orderIndex ?? this.orderIndex,
 
       /// EventModel properties
       startDate: startDate ?? this.startDate,

@@ -17,6 +17,7 @@ class ListModel extends ContentModel {
     super.emoji,
     super.createdAt,
     super.updatedAt,
+    super.orderIndex,
 
     /// ListModel properties
     required this.listType,
@@ -32,6 +33,7 @@ class ListModel extends ContentModel {
     String? emoji,
     DateTime? createdAt,
     DateTime? updatedAt,
+    int? orderIndex,
 
     /// ListModel properties
     ListType? listType,
@@ -46,6 +48,7 @@ class ListModel extends ContentModel {
       emoji: emoji ?? this.emoji,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
+      orderIndex: orderIndex ?? this.orderIndex,
 
       /// ListModel properties
       listType: listType ?? this.listType,

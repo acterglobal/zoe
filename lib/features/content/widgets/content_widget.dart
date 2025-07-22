@@ -22,34 +22,54 @@ class ContentWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     /// Watch the content list provider
     final contentList = ref.watch(contentListByParentIdProvider(parentId));
+    final isEditing = ref.watch(isEditValueProvider);
 
     /// Build the content list
     return Column(
       children: [
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: contentList.length,
-          itemBuilder: (context, index) {
-            final contentId = contentList[index].id;
-            return switch (contentList[index].type) {
-              ContentType.text => TextWidget(
-                key: ValueKey('text-$contentId'),
-                textContentId: contentId,
+        // Use ReorderableListView when editing, regular ListView when not
+        isEditing
+            ? ReorderableListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: contentList.length,
+                buildDefaultDragHandles:
+                    false, // This removes the default trailing drag handles
+                onReorder: (oldIndex, newIndex) {
+                  _handleReorder(ref, contentList, oldIndex, newIndex);
+                },
+                itemBuilder: (context, index) {
+                  final content = contentList[index];
+                  final contentId = content.id;
+
+                  return _buildContentItem(
+                    context,
+                    content,
+                    contentId,
+                    isEditing,
+                    index,
+                  );
+                },
+              )
+            : ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: contentList.length,
+                itemBuilder: (context, index) {
+                  final content = contentList[index];
+                  final contentId = content.id;
+
+                  return _buildContentItem(
+                    context,
+                    content,
+                    contentId,
+                    isEditing,
+                    index,
+                  );
+                },
               ),
-              ContentType.event => EventWidget(
-                key: ValueKey('event-$contentId'),
-                eventsId: contentId,
-              ),
-              ContentType.list => ListWidget(
-                key: ValueKey('list-$contentId'),
-                listId: contentId,
-              ),
-            };
-          },
-        ),
         AddContentWidget(
-          isEditing: ref.watch(isEditValueProvider),
+          isEditing: isEditing,
           onTapText: () => addNewTextContent(ref, parentId, sheetId),
           onTapEvent: () => addNewEventContent(ref, parentId, sheetId),
           onTapBulletedList: () =>
@@ -59,5 +79,84 @@ class ContentWidget extends ConsumerWidget {
         const SizedBox(height: 200),
       ],
     );
+  }
+
+  Widget _buildContentItem(
+    BuildContext context,
+    ContentModel content,
+    String contentId,
+    bool isEditing,
+    int index,
+  ) {
+    final key = ValueKey('${content.type.name}-$contentId');
+
+    Widget contentWidget = switch (content.type) {
+      ContentType.text => TextWidget(textContentId: contentId),
+      ContentType.event => EventWidget(eventsId: contentId),
+      ContentType.list => ListWidget(listId: contentId),
+    };
+
+    // For ReorderableListView, we need to wrap with drag handle when editing
+    if (isEditing) {
+      return Container(
+        key: key,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Drag handle
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: ReorderableDragStartListener(
+                index: index,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 4,
+                  ),
+                  child: Icon(
+                    Icons.drag_indicator,
+                    size: 20,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.5),
+                  ),
+                ),
+              ),
+            ),
+            // Content
+            Expanded(child: contentWidget),
+          ],
+        ),
+      );
+    }
+
+    return Container(key: key, child: contentWidget);
+  }
+
+  void _handleReorder(
+    WidgetRef ref,
+    List<ContentModel> contentList,
+    int oldIndex,
+    int newIndex,
+  ) {
+    // Adjust newIndex for the way ReorderableListView works
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+
+    // Get the content being moved
+    final movedContent = contentList[oldIndex];
+
+    // Create a new list with reordered items
+    final reorderedList = List<ContentModel>.from(contentList);
+    reorderedList.removeAt(oldIndex);
+    reorderedList.insert(newIndex, movedContent);
+
+    // Update orderIndex for all affected items
+    for (int i = 0; i < reorderedList.length; i++) {
+      final content = reorderedList[i];
+      reorderContent(ref, content.id, i);
+    }
   }
 }

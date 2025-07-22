@@ -68,4 +68,14 @@ class EventNotifier extends StateNotifier<List<EventModel>> {
           event,
     ];
   }
+
+  void updateEventOrderIndex(String eventId, int orderIndex) {
+    state = [
+      for (final event in state)
+        if (event.id == eventId)
+          event.copyWith(orderIndex: orderIndex)
+        else
+          event,
+    ];
+  }
 }
