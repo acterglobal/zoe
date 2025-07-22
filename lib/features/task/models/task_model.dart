@@ -26,6 +26,7 @@ class TaskModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'sheetId': sheetId,
       'listId': listId,
       'title': title,
       'description': description,

@@ -93,7 +93,7 @@ void addNewBulletedListContent(WidgetRef ref, parentId, String sheetId) {
   // Add a default bullet item to the new list
   ref
       .read(bulletListProvider.notifier)
-      .addBullet('', bulletedListContentModel.id);
+      .addBullet('', bulletedListContentModel.id, sheetId);
 }
 
 void addNewTaskListContent(WidgetRef ref, parentId, String sheetId) {
