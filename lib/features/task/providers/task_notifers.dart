@@ -6,8 +6,8 @@ import 'package:zoey/features/sheet/models/sheet_model.dart';
 class TaskNotifier extends StateNotifier<List<TaskModel>> {
   TaskNotifier() : super(tasks);
 
-  void addTask(String title, String listId) {
-    final newTask = TaskModel(listId: listId, title: title);
+  void addTask(String title, String listId, String sheetId) {
+    final newTask = TaskModel(listId: listId, title: title, sheetId: sheetId);
     state = [...state, newTask];
   }
 

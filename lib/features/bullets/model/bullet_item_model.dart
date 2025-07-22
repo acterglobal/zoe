@@ -3,6 +3,7 @@ import 'package:zoey/features/sheet/models/sheet_model.dart';
 
 class BulletItem {
   final String id;
+  final String sheetId;
   final String listId;
   final String title;
   final Description? description;
@@ -10,6 +11,7 @@ class BulletItem {
 
   BulletItem({
     String? id,
+    required this.sheetId,
     required this.listId,
     required this.title,
     this.description,
@@ -20,6 +22,7 @@ class BulletItem {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'sheetId': sheetId,
       'listId': listId,
       'title': title,
       'description': description,
@@ -29,6 +32,7 @@ class BulletItem {
 
   BulletItem copyWith({
     String? id,
+    String? sheetId,
     String? listId,
     String? title,
     Description? description,
@@ -36,6 +40,7 @@ class BulletItem {
   }) {
     return BulletItem(
       id: id ?? this.id,
+      sheetId: sheetId ?? this.sheetId,
       listId: listId ?? this.listId,
       title: title ?? this.title,
       description: description ?? this.description,

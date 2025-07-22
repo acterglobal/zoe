@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:uuid/uuid.dart';
 import 'package:zoey/common/widgets/app_icon_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
+import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 import 'package:zoey/features/sheet/widgets/sheet_list_widget.dart';
@@ -21,19 +21,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       appBar: _buildHomeAppBar(context),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => ref
-            .read(sheetListProvider.notifier)
-            .addSheet(
-              SheetModel(
-                id: Uuid().v4(),
-                title: 'New Sheet',
-                description: (
-                  plainText: 'New Sheet Description',
-                  htmlText: null,
-                ),
-                emoji: '📄',
-              ),
-            ),
+        onPressed: () async {
+          final sheet = SheetModel();
+          ref.read(sheetListProvider.notifier).addSheet(sheet);
+          ref.read(isEditValueProvider.notifier).state = true;
+          context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id));
+        },
         child: const Icon(Icons.add_rounded),
       ),
       body: SafeArea(

@@ -6,8 +6,12 @@ import 'package:zoey/features/sheet/models/sheet_model.dart';
 class BulletNotifier extends StateNotifier<List<BulletItem>> {
   BulletNotifier() : super(bulletList);
 
-  void addBullet(String title, String listId) {
-    final newBullet = BulletItem(listId: listId, title: title);
+  void addBullet(String title, String listId, String sheetId) {
+    final newBullet = BulletItem(
+      listId: listId,
+      title: title,
+      sheetId: sheetId,
+    );
     state = [...state, newBullet];
   }
 

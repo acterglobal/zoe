@@ -8,6 +8,7 @@ abstract class ContentModel {
   final String id;
   final String sheetId;
   final String parentId;
+  final String? listId;
   final String title;
   final String? emoji;
   final Description? description;
@@ -21,6 +22,7 @@ abstract class ContentModel {
     required this.sheetId,
     required this.title,
     required this.parentId,
+    this.listId,
     this.emoji,
     this.description,
     DateTime? createdAt,
