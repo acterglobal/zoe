@@ -40,7 +40,7 @@ class ContentWidget extends ConsumerWidget {
           },
         ),
         AddContentWidget(
-          isEditing: ref.watch(toogleContentEditProvider),
+          isEditing: ref.watch(isEditValueProvider),
           onTapText: () => addNewTextContent(ref, parentId, sheetId),
           onTapEvent: () => addNewEventContent(ref, parentId, sheetId),
           onTapBulletedList: () =>

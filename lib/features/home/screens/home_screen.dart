@@ -5,8 +5,8 @@ import 'package:uuid/uuid.dart';
 import 'package:zoey/common/widgets/app_icon_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
-import 'package:zoey/features/sheet/providers/sheet_list_providers.dart';
-import 'package:zoey/features/sheet/widgets/sheet_list/sheet_list_widget.dart';
+import 'package:zoey/features/sheet/providers/sheet_providers.dart';
+import 'package:zoey/features/sheet/widgets/sheet_list_widget.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});

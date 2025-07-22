@@ -17,7 +17,7 @@ class ListWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// Watch the content edit mode provider
-    final isEditing = ref.watch(toogleContentEditProvider);
+    final isEditing = ref.watch(isEditValueProvider);
 
     final list = ref.watch(listProvider(listId));
     if (list == null) return const SizedBox.shrink();
