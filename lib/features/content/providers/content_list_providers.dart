@@ -6,3 +6,10 @@ final contentNotifierProvider =
     StateNotifierProvider<ContentNotifier, List<BaseContentModel>>((ref) {
       return ContentNotifier();
     });
+
+final contentBySheetIdProvider =
+    Provider.family<List<BaseContentModel>, String>((ref, sheetId) {
+      return ref.watch(contentNotifierProvider).where((content) {
+        return content.sheetId == sheetId;
+      }).toList();
+    });

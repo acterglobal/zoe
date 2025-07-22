@@ -70,11 +70,11 @@ class SheetContents extends ConsumerWidget {
 
   Widget _buildContentWidget(String contentId, bool isEditing) {
     if (contentId.startsWith('text-')) {
-      return TextContentWidget(textContentId: contentId, isEditing: isEditing);
+      return TextContentWidget(textContentId: contentId);
     } else if (contentId.startsWith('list-')) {
-      return ListWidget(listId: contentId, isEditing: isEditing);
+      return ListWidget(listId: contentId);
     } else if (contentId.startsWith('events-')) {
-      return EventWidget(eventsId: contentId, isEditing: isEditing);
+      return EventWidget(eventsId: contentId);
     } else {
       return const SizedBox.shrink();
     }

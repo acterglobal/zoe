@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_primary_button.dart';
+import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
@@ -15,7 +16,7 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditingProvider(sheetId));
+    final isEditing = ref.watch(toogleContentEditProvider);
     return AppBar(
       actions: [
         ZoePrimaryButton(
@@ -25,8 +26,8 @@ class SheetDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
               ? Theme.of(context).colorScheme.primary
               : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          onPressed: () =>
-              ref.read(sheetDetailProvider(sheetId).notifier).toggleEditSave(),
+          onPressed: () => ref.read(toogleContentEditProvider.notifier).state =
+              !ref.read(toogleContentEditProvider),
         ),
         _buildMoreMenu(context, ref),
       ],
