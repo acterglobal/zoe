@@ -9,6 +9,7 @@ class TextContentModel extends BaseContentModel {
 
   TextContentModel({
     super.id,
+    super.parentId,
     required super.sheetId,
     required super.title,
     required String plainTextDescription,
@@ -26,6 +27,7 @@ class TextContentModel extends BaseContentModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'parentId': parentId,
       'type': type.name,
       'title': title,
       'plainTextDescription': plainTextDescription,
@@ -37,13 +39,16 @@ class TextContentModel extends BaseContentModel {
 
   @override
   TextContentModel copyWith({
+    String? id,
+    String? parentId,
     String? title,
     String? plainTextDescription,
     String? htmlDescription,
     DateTime? updatedAt,
   }) {
     return TextContentModel(
-      id: id,
+      id: id ?? this.id,
+      parentId: parentId ?? this.parentId,
       sheetId: sheetId,
       title: title ?? this.title,
       plainTextDescription: plainTextDescription ?? this.plainTextDescription,
