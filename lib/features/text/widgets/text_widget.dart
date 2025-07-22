@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/utils/common_utils.dart';
+import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
@@ -39,7 +41,7 @@ class TextWidget extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildTextContentIcon(context),
+            _buildTextContentEmoji(context, ref, textContent.emoji),
             Expanded(
               child: _buildTextContentTitle(
                 context,
@@ -70,14 +72,19 @@ class TextWidget extends ConsumerWidget {
   }
 
   /// Builds the text content icon
-  Widget _buildTextContentIcon(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4, right: 6),
-      child: Icon(
-        Icons.text_fields,
-        size: 16,
-        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-      ),
+  Widget _buildTextContentEmoji(
+    BuildContext context,
+    WidgetRef ref,
+    String? emoji,
+  ) {
+    return EmojiWidget(
+      emoji: emoji ?? '𝑻',
+      onTap: (currentEmoji) => ref
+          .read(textListProvider.notifier)
+          .updateTextEmoji(
+            textContentId,
+            CommonUtils.getNextEmoji(currentEmoji),
+          ),
     );
   }
 

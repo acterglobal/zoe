@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/utils/common_utils.dart';
+import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
@@ -41,7 +43,7 @@ class ListWidget extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildListBlockIcon(context, list.listType),
+            _buildListEmoji(context, ref, listId, list.listType, list.emoji),
             Expanded(
               child: _buildListBlockTitle(context, ref, list.title, isEditing),
             ),
@@ -62,16 +64,18 @@ class ListWidget extends ConsumerWidget {
   }
 
   // Builds the list block icon
-  Widget _buildListBlockIcon(BuildContext context, ListType listType) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4, right: 6),
-      child: Icon(
-        listType == ListType.bulleted
-            ? Icons.format_list_bulleted
-            : Icons.checklist,
-        size: 16,
-        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-      ),
+  Widget _buildListEmoji(
+    BuildContext context,
+    WidgetRef ref,
+    String listId,
+    ListType listType,
+    String? emoji,
+  ) {
+    return EmojiWidget(
+      emoji: emoji ?? '🔸',
+      onTap: (currentEmoji) => ref
+          .read(listsrovider.notifier)
+          .updateListEmoji(listId, CommonUtils.getNextEmoji(currentEmoji)),
     );
   }
 

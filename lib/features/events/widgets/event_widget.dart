@@ -7,6 +7,7 @@ import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
+import 'package:zoey/features/events/widgets/event_date_widget.dart';
 
 class EventWidget extends ConsumerWidget {
   final String eventsId;
@@ -20,9 +21,12 @@ class EventWidget extends ConsumerWidget {
     final event = ref.watch(eventProvider(eventsId));
     if (event == null) return const SizedBox.shrink();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: _buildEventContent(context, ref, event, isEditing),
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: _buildEventContent(context, ref, event, isEditing),
+      ),
     );
   }
 
@@ -35,7 +39,7 @@ class EventWidget extends ConsumerWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildEventIcon(context),
+        EventDateWidget(event: event),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,17 +63,6 @@ class EventWidget extends ConsumerWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildEventIcon(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4, right: 6),
-      child: Icon(
-        Icons.event,
-        size: 24,
-        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-      ),
     );
   }
 

@@ -4,21 +4,12 @@ final sheetList = [
   SheetModel(
     id: 'sheet-1',
     title: 'Getting Started Guide',
-    emoji: '📝',
+    emoji: '🚀',
     description: (
       plainText:
-          'A comprehensive guide to help you get started with all the essential features and workflows',
-      htmlText: null,
-    ),
-  ),
-  SheetModel(
-    id: 'sheet-2',
-    title: 'Vacation Plan',
-    emoji: '📅',
-    description: (
-      plainText:
-          'Plan your perfect getaway with itineraries, bookings, and travel checklists',
-      htmlText: null,
+          'Your complete introduction to Zoey! This interactive guide walks you through all features, includes hands-on tasks to practice with, and provides tips for organizing your digital workspace effectively. Perfect for new users to get up and running quickly.',
+      htmlText:
+          '<p>Your complete introduction to <strong>Zoey</strong>! This interactive guide walks you through all features, includes hands-on tasks to practice with, and provides tips for organizing your digital workspace effectively. Perfect for new users to get up and running quickly.</p>',
     ),
   ),
 ];

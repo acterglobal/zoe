@@ -13,7 +13,6 @@ class EventModel extends ContentModel {
     required super.sheetId,
     required super.title,
     super.description,
-    super.emoji,
     super.createdAt,
     super.updatedAt,
     super.orderIndex,
@@ -21,7 +20,7 @@ class EventModel extends ContentModel {
     /// EventModel properties
     required this.startDate,
     required this.endDate,
-  }) : super(type: ContentType.event);
+  }) : super(type: ContentType.event, emoji: null);
 
   EventModel copyWith({
     /// ContentModel properties
@@ -30,7 +29,6 @@ class EventModel extends ContentModel {
     String? parentId,
     String? title,
     Description? description,
-    String? emoji,
     DateTime? createdAt,
     DateTime? updatedAt,
     int? orderIndex,
@@ -46,7 +44,6 @@ class EventModel extends ContentModel {
       parentId: parentId ?? this.parentId,
       title: title ?? this.title,
       description: description ?? this.description,
-      emoji: emoji ?? this.emoji,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
       orderIndex: orderIndex ?? this.orderIndex,

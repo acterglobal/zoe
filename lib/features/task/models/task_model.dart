@@ -8,6 +8,7 @@ class TaskModel {
   final Description? description;
   final bool isCompleted;
   final DateTime? dueDate;
+  final int orderIndex; // Order within list
 
   TaskModel({
     String? id,
@@ -16,7 +17,9 @@ class TaskModel {
     this.description,
     this.isCompleted = false,
     this.dueDate,
-  }) : id = id ?? CommonUtils.generateRandomId();
+    int? orderIndex,
+  }) : id = id ?? CommonUtils.generateRandomId(),
+       orderIndex = orderIndex ?? 0;
 
   Map<String, dynamic> toJson() {
     return {
@@ -26,6 +29,7 @@ class TaskModel {
       'description': description,
       'isCompleted': isCompleted,
       'dueDate': dueDate?.toIso8601String(),
+      'orderIndex': orderIndex,
     };
   }
 
@@ -36,6 +40,7 @@ class TaskModel {
     Description? description,
     bool? isCompleted,
     DateTime? dueDate,
+    int? orderIndex,
   }) {
     return TaskModel(
       id: id ?? this.id,
@@ -44,6 +49,7 @@ class TaskModel {
       description: description ?? this.description,
       isCompleted: isCompleted ?? this.isCompleted,
       dueDate: dueDate ?? this.dueDate,
+      orderIndex: orderIndex ?? this.orderIndex,
     );
   }
 }
