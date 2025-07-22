@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 
 /// Shows a confirmation bottom sheet for deleting a sheet
@@ -23,7 +21,7 @@ void showDeleteSheetConfirmation(
       onConfirm: () {
         ref.read(sheetListProvider.notifier).deleteSheet(sheetId);
         Navigator.of(context).pop();
-        context.pushReplacement(AppRoutes.home.route);
+        Navigator.of(context).pop();
       },
       onCancel: () => Navigator.of(context).pop(),
     ),
