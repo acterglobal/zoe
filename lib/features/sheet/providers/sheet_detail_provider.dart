@@ -8,7 +8,7 @@ import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 import 'package:zoey/features/content/text/models/text_content_model.dart';
 import 'package:zoey/features/content/events/models/events_model.dart';
 import 'package:zoey/features/content/text/providers/text_content_list_provider.dart';
-import 'package:zoey/features/content/list/list_todos/providers/task_list_providers.dart';
+import 'package:zoey/features/content/list/list_task/providers/task_list_providers.dart';
 import 'package:zoey/features/content/events/providers/events_list_provider.dart';
 import 'package:zoey/features/content/list/providers/lists_provider.dart';
 import 'package:uuid/uuid.dart';

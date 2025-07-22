@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/content/list/list_todos/data/tasks.dart';
-import 'package:zoey/features/content/list/list_todos/models/task_model.dart';
+import 'package:zoey/features/content/list/list_task/data/tasks.dart';
+import 'package:zoey/features/content/list/list_task/models/task_model.dart';
 
 class TaskListNotifier extends StateNotifier<List<TaskModel>> {
   TaskListNotifier() : super(tasks);

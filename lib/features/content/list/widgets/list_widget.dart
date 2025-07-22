@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/list/list_bullets/providers/bullet_list_providers.dart';
-import 'package:zoey/features/content/list/list_todos/providers/task_list_providers.dart';
-import 'package:zoey/features/content/list/list_todos/widgets/task_list_widget.dart';
+import 'package:zoey/features/content/list/list_task/providers/task_list_providers.dart';
+import 'package:zoey/features/content/list/list_task/widgets/task_list_widget.dart';
 import 'package:zoey/features/content/list/models/list_model.dart';
 import 'package:zoey/features/content/list/providers/list_proivder.dart';
 import 'package:zoey/features/content/list/list_bullets/widgets/bullet_list_widget.dart';
@@ -27,7 +27,7 @@ class ListWidget extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildListBlockIcon(context),
+            _buildListBlockIcon(context, list.listType),
             Expanded(child: _buildListBlockTitle(context, ref, list.title)),
             const SizedBox(width: 6),
             if (isEditing)
@@ -50,11 +50,13 @@ class ListWidget extends ConsumerWidget {
   }
 
   // Builds the list block icon
-  Widget _buildListBlockIcon(BuildContext context) {
+  Widget _buildListBlockIcon(BuildContext context, ListType listType) {
     return Padding(
       padding: const EdgeInsets.only(top: 4, right: 6),
       child: Icon(
-        Icons.list,
+        listType == ListType.bulleted
+            ? Icons.format_list_bulleted
+            : Icons.checklist,
         size: 16,
         color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
       ),

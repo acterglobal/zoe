@@ -5,8 +5,8 @@ import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
-import 'package:zoey/features/content/list/list_todos/models/task_model.dart';
-import 'package:zoey/features/content/list/list_todos/providers/task_provider.dart';
+import 'package:zoey/features/content/list/list_task/models/task_model.dart';
+import 'package:zoey/features/content/list/list_task/providers/task_provider.dart';
 
 class TaskItemWidget extends ConsumerWidget {
   final String taskItemId;

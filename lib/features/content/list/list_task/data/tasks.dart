@@ -1,4 +1,4 @@
-import 'package:zoey/features/content/list/list_todos/models/task_model.dart';
+import 'package:zoey/features/content/list/list_task/models/task_model.dart';
 
 final tasks = [
   TaskModel(
