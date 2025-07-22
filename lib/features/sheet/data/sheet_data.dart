@@ -11,14 +11,4 @@ final sheetList = [
       htmlText: null,
     ),
   ),
-  SheetModel(
-    id: 'sheet-2',
-    title: 'Vacation Plan',
-    emoji: '📅',
-    description: (
-      plainText:
-          'Plan your perfect getaway with itineraries, bookings, and travel checklists',
-      htmlText: null,
-    ),
-  ),
 ];
