@@ -33,7 +33,7 @@ class ContentWidget extends ConsumerWidget {
           itemBuilder: (context, index) {
             final contentId = contentList[index].id;
             return switch (contentList[index].type) {
-              ContentType.text => TextContentWidget(
+              ContentType.text => TextWidget(
                 key: ValueKey('text-$contentId'),
                 textContentId: contentId,
               ),
