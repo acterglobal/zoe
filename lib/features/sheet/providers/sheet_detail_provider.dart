@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/content/models/base_content_model.dart';
+import 'package:zoey/features/content/providers/content_list_providers.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_list_provider.dart';
 import 'package:zoey/features/sheet/actions/sheet_actions.dart';
 import 'package:zoey/features/text/models/text_content_model.dart';
 import 'package:zoey/features/events/models/events_model.dart';
-import 'package:zoey/features/text/providers/text_content_list_provider.dart';
-import 'package:zoey/features/task/providers/task_list_providers.dart';
-import 'package:zoey/features/events/providers/events_list_provider.dart';
-import 'package:zoey/features/list/providers/lists_provider.dart';
 import 'package:uuid/uuid.dart';
 
 /// State class for sheet detail
@@ -121,13 +118,13 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
 
     // Also remove from the appropriate content list provider
     if (contentId.startsWith('text-')) {
-      ref.read(textContentListProvider.notifier).removeTextContent(contentId);
+      ref.read(contentNotifierProvider.notifier).removeContent(contentId);
     } else if (contentId.startsWith('todos-')) {
-      ref.read(taskListProvider.notifier).deleteTask(contentId);
+      ref.read(contentNotifierProvider.notifier).removeContent(contentId);
     } else if (contentId.startsWith('events-')) {
-      ref.read(eventsListProvider.notifier).deleteEvent(contentId);
+      ref.read(contentNotifierProvider.notifier).removeContent(contentId);
     } else if (contentId.startsWith('list-')) {
-      ref.read(listsProvider.notifier).removeBlock(contentId);
+      ref.read(contentNotifierProvider.notifier).removeContent(contentId);
     }
   }
 
@@ -179,7 +176,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           plainTextDescription: '',
           htmlDescription: '',
         );
-        ref.read(textContentListProvider.notifier).addTextContent(newText);
+        ref.read(contentNotifierProvider.notifier).addContent(newText);
         break;
       case ContentType.event:
         final newEvent = EventModel(
@@ -189,7 +186,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           startDate: DateTime.now(),
           endDate: DateTime.now().add(const Duration(hours: 1)),
         );
-        ref.read(eventsListProvider.notifier).addEvent(newEvent);
+        ref.read(contentNotifierProvider.notifier).addContent(newEvent);
         break;
       case ContentType.list:
         final newBullets = ListModel(
@@ -198,7 +195,7 @@ class SheetDetailNotifier extends StateNotifier<SheetDetailState> {
           title: 'List',
           listType: ListType.bulleted,
         );
-        ref.read(listsProvider.notifier).addList(newBullets);
+        ref.read(contentNotifierProvider.notifier).addContent(newBullets);
         break;
     }
 
