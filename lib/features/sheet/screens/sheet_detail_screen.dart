@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
+import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
@@ -59,14 +60,10 @@ class SheetDetailScreen extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GestureDetector(
-              onTap: () => isEditing
-                  ? updateSheetEmoji(ref, sheetId, sheet.emoji)
-                  : null,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(sheet.emoji, style: const TextStyle(fontSize: 32)),
-              ),
+            EmojiWidget(
+              emoji: sheet.emoji,
+              size: 32,
+              onTap: (emoji) => updateSheetEmoji(ref, sheetId, emoji),
             ),
             const SizedBox(width: 4),
             Expanded(

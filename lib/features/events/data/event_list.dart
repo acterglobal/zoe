@@ -5,36 +5,64 @@ final eventList = [
     sheetId: 'sheet-1',
     parentId: 'sheet-1',
     id: 'events-1',
-    title: 'Learning Schedule',
+    title: 'Complete Zoey Onboarding',
+    emoji: '🎯',
+    orderIndex: 6,
     description: (
-      plainText: 'Learn about the latest trends in the industry',
-      htmlText: '<p>Learn about the latest trends in the industry</p>',
+      plainText:
+          'Dedicated time to work through this Getting Started Guide and familiarize yourself with all of Zoey\'s features. Take your time to explore and experiment!',
+      htmlText:
+          '<p>Dedicated time to work through this Getting Started Guide and familiarize yourself with all of Zoey\'s features. Take your time to explore and experiment!</p>',
     ),
-    startDate: DateTime.now(),
-    endDate: DateTime.now().add(const Duration(minutes: 30)),
+    startDate: DateTime.now().add(const Duration(minutes: 5)),
+    endDate: DateTime.now().add(const Duration(minutes: 45)),
   ),
   EventModel(
     sheetId: 'sheet-1',
     parentId: 'sheet-1',
     id: 'events-2',
-    title: 'Meeting Schedule',
+    title: 'Create Your First Custom Sheet',
+    emoji: '🏗️',
+    orderIndex: 10,
     description: (
-      plainText: 'Learn about the latest trends in the industry',
-      htmlText: '<p>Learn about the latest trends in the industry</p>',
+      plainText:
+          'Block time to create your first personal sheet in Zoey. Think about a current project or goal you\'re working on and set up a workspace for it.',
+      htmlText:
+          '<p>Block time to create your first personal sheet in Zoey. Think about a current project or goal you\'re working on and set up a workspace for it.</p>',
     ),
-    startDate: DateTime.now(),
-    endDate: DateTime.now().add(const Duration(minutes: 30)),
+    startDate: DateTime.now().add(const Duration(hours: 2)),
+    endDate: DateTime.now().add(const Duration(hours: 2, minutes: 30)),
   ),
   EventModel(
     sheetId: 'sheet-1',
     parentId: 'sheet-1',
     id: 'events-3',
-    title: 'Practice Session',
+    title: 'Weekly Zoey Review & Planning',
+    emoji: '📅',
+    orderIndex: 11,
     description: (
-      plainText: 'Learn about the latest trends in the industry',
-      htmlText: '<p>Learn about the latest trends in the industry</p>',
+      plainText:
+          'Schedule regular time to review your sheets, update tasks, and plan ahead. This helps you stay organized and make the most of your Zoey workspace.',
+      htmlText:
+          '<p>Schedule regular time to review your sheets, update tasks, and plan ahead. This helps you stay organized and make the most of your Zoey workspace.</p>',
     ),
-    startDate: DateTime.now().add(const Duration(hours: 1)),
-    endDate: DateTime.now().add(const Duration(hours: 2)),
+    startDate: DateTime.now().add(const Duration(days: 7)),
+    endDate: DateTime.now().add(const Duration(days: 7, minutes: 30)),
+  ),
+  EventModel(
+    sheetId: 'sheet-1',
+    parentId: 'sheet-1',
+    id: 'events-4',
+    title: 'Explore Advanced Features',
+    emoji: '💡',
+    orderIndex: 12,
+    description: (
+      plainText:
+          'Time to dive deeper into Zoey\'s capabilities. Experiment with different content arrangements, try various organization strategies, and discover what works best for you.',
+      htmlText:
+          '<p>Time to dive deeper into Zoey\'s capabilities. Experiment with different content arrangements, try various organization strategies, and discover what works best for you.</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(days: 3)),
+    endDate: DateTime.now().add(const Duration(days: 3, minutes: 45)),
   ),
 ];

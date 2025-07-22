@@ -6,23 +6,55 @@ final textList = [
     parentId: 'sheet-1',
     id: 'text-content-1',
     title: 'Welcome to Zoey!',
+    emoji: '👋',
+    orderIndex: 1,
     description: (
       plainText:
-          'Zoey is your personal workspace for organizing thoughts, tasks, and ideas. This guide will help you understand all the features and get the most out of your experience.',
+          'Welcome to Zoey - your intelligent personal workspace! Zoey helps you organize thoughts, manage tasks, plan events, and structure ideas all in one beautiful, intuitive interface.\n\nThis guide will walk you through everything you need to know to get the most out of your Zoey experience. Let\'s get started!',
       htmlText:
-          '<p>Zoey is your personal workspace for organizing thoughts, tasks, and ideas. This guide will help you understand all the features and get the most out of your experience.</p>',
+          '<p>Welcome to <strong>Zoey</strong> - your intelligent personal workspace! Zoey helps you organize thoughts, manage tasks, plan events, and structure ideas all in one beautiful, intuitive interface.</p><p>This guide will walk you through everything you need to know to get the most out of your Zoey experience. Let\'s get started!</p>',
     ),
   ),
   TextModel(
     sheetId: 'sheet-1',
     parentId: 'sheet-1',
     id: 'text-content-2',
-    title: 'How to Use Text Content',
+    title: 'Understanding Sheets',
+    emoji: '📋',
+    orderIndex: 2,
     description: (
       plainText:
-          'Text contents are the building contents of your sheets. Tap the + button to add new contents:\n\n• Text Contents: For notes, ideas, and documentation\n• Task Lists: For to-dos with descriptions and due dates\n• Event Contents: For scheduling with start and end dates\n• List Contents: For simple bullet points and collections\n\nYou can drag and drop contents to reorder them, and edit any text by tapping on it.',
+          'Sheets are your main workspaces in Zoey. Think of them as digital notebooks where you can combine different types of content:\n\n• Each sheet has a title, icon, and description\n• You can add multiple content blocks to organize information\n• Content blocks can be text, tasks, events, or lists\n• Everything is automatically saved as you work\n\nSheets appear on your home dashboard for easy access, and you can create as many as you need for different projects, goals, or topics.',
       htmlText:
-          '<p>Text contents are the building contents of your sheets. Tap the + button to add new contents:</p><ul><li>Text Contents: For notes, ideas, and documentation</li><li>Task Lists: For to-dos with descriptions and due dates</li><li>Event Contents: For scheduling with start and end dates</li><li>List Contents: For simple bullet points and collections</li></ul><p>You can drag and drop contents to reorder them, and edit any text by tapping on it.</p>',
+          '<p>Sheets are your main workspaces in Zoey. Think of them as digital notebooks where you can combine different types of content:</p><ul><li>Each sheet has a title, icon, and description</li><li>You can add multiple content blocks to organize information</li><li>Content blocks can be text, tasks, events, or lists</li><li>Everything is automatically saved as you work</li></ul><p>Sheets appear on your home dashboard for easy access, and you can create as many as you need for different projects, goals, or topics.</p>',
+    ),
+  ),
+  TextModel(
+    sheetId: 'sheet-1',
+    parentId: 'sheet-1',
+    id: 'text-content-3',
+    title: 'Content Block Types',
+    emoji: '🔧',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Zoey offers four powerful content block types to help you organize information effectively:\n\n📝 Text Blocks: Perfect for notes, ideas, documentation, and detailed explanations. Supports both plain text and rich HTML formatting.\n\n✅ Task Lists: Organize your to-dos with descriptions, due dates, and completion tracking. Great for project management and personal productivity.\n\n📅 Event Blocks: Schedule meetings, deadlines, and important dates with start and end times. Keep track of your calendar within your workspace.\n\n📋 List Blocks: Create bulleted lists, numbered lists, or simple collections. Perfect for organizing ideas, features, or any structured information.\n\nEach content type is designed to work together, so you can mix and match them within a single sheet to create the perfect workspace for your needs.',
+      htmlText:
+          '<p>Zoey offers four powerful content block types to help you organize information effectively:</p><p><strong>📝 Text Blocks:</strong> Perfect for notes, ideas, documentation, and detailed explanations. Supports both plain text and rich HTML formatting.</p><p><strong>✅ Task Lists:</strong> Organize your to-dos with descriptions, due dates, and completion tracking. Great for project management and personal productivity.</p><p><strong>📅 Event Blocks:</strong> Schedule meetings, deadlines, and important dates with start and end times. Keep track of your calendar within your workspace.</p><p><strong>📋 List Blocks:</strong> Create bulleted lists, numbered lists, or simple collections. Perfect for organizing ideas, features, or any structured information.</p><p>Each content type is designed to work together, so you can mix and match them within a single sheet to create the perfect workspace for your needs.</p>',
+    ),
+  ),
+  TextModel(
+    sheetId: 'sheet-1',
+    parentId: 'sheet-1',
+    id: 'text-content-4',
+    title: 'Tips for Success',
+    emoji: '💡',
+    orderIndex: 9,
+    description: (
+      plainText:
+          'Here are some pro tips to help you make the most of Zoey:\n\n🎯 Start Small: Begin with one sheet and gradually add content as you get comfortable with the interface.\n\n📱 Use Icons: Choose meaningful icons for your sheets - they help you quickly identify different workspaces at a glance.\n\n📝 Be Descriptive: Add detailed descriptions to tasks and content blocks. Future you will thank you for the context!\n\n🔄 Stay Organized: Use the ordering system to arrange content logically within your sheets.\n\n⚡ Quick Actions: Look for quick action buttons and shortcuts throughout the interface to speed up your workflow.\n\n🏠 Home Dashboard: Your home screen shows all your sheets - use it as your central command center.',
+      htmlText:
+          '<p>Here are some pro tips to help you make the most of Zoey:</p><p><strong>🎯 Start Small:</strong> Begin with one sheet and gradually add content as you get comfortable with the interface.</p><p><strong>📱 Use Icons:</strong> Choose meaningful icons for your sheets - they help you quickly identify different workspaces at a glance.</p><p><strong>📝 Be Descriptive:</strong> Add detailed descriptions to tasks and content blocks. Future you will thank you for the context!</p><p><strong>🔄 Stay Organized:</strong> Use the ordering system to arrange content logically within your sheets.</p><p><strong>⚡ Quick Actions:</strong> Look for quick action buttons and shortcuts throughout the interface to speed up your workflow.</p><p><strong>🏠 Home Dashboard:</strong> Your home screen shows all your sheets - use it as your central command center.</p>',
     ),
   ),
 ];
