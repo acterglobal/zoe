@@ -5,7 +5,7 @@ import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/text/models/text_content_model.dart';
 
 void addNewTextContent(WidgetRef ref, parentId, String sheetId) {
-  final textContentModel = TextContentModel(
+  final textContentModel = TextModel(
     parentId: parentId,
     sheetId: sheetId,
     title: '',

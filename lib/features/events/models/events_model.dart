@@ -1,6 +1,6 @@
 import 'package:zoey/features/content/models/base_content_model.dart';
 
-class EventModel extends BaseContentModel {
+class EventModel extends ContentModel {
   final DateTime startDate;
   final DateTime endDate;
 

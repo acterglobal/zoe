@@ -3,7 +3,7 @@ import 'package:zoey/features/content/providers/content_list_providers.dart';
 import 'package:zoey/features/text/models/text_content_model.dart';
 import 'package:zoey/features/text/providers/text_content_list_provider.dart';
 
-final textContentProvider = Provider.family<TextContentModel?, String>((
+final textContentProvider = Provider.family<TextModel?, String>((
   ref,
   String textContentId,
 ) {

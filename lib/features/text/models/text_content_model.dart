@@ -1,13 +1,13 @@
 import 'package:zoey/features/content/models/base_content_model.dart';
 
-class TextContentModel extends BaseContentModel {
+class TextModel extends ContentModel {
   @override
   String get plainTextDescription => super.plainTextDescription!;
 
   @override
   String get htmlDescription => super.htmlDescription!;
 
-  TextContentModel({
+  TextModel({
     super.id,
     required super.parentId,
     required super.sheetId,
@@ -38,7 +38,7 @@ class TextContentModel extends BaseContentModel {
   }
 
   @override
-  TextContentModel copyWith({
+  TextModel copyWith({
     String? id,
     String? parentId,
     String? sheetId,
@@ -47,7 +47,7 @@ class TextContentModel extends BaseContentModel {
     String? htmlDescription,
     DateTime? updatedAt,
   }) {
-    return TextContentModel(
+    return TextModel(
       id: id ?? this.id,
       parentId: parentId ?? this.parentId,
       sheetId: sheetId ?? this.sheetId,

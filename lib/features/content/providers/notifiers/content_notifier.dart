@@ -5,11 +5,11 @@ import 'package:zoey/features/text/models/text_content_model.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 
-class ContentNotifier extends StateNotifier<List<BaseContentModel>> {
+class ContentNotifier extends StateNotifier<List<ContentModel>> {
   ContentNotifier() : super(List.from(contentList));
 
   // Generic update method
-  void updateContent<T extends BaseContentModel>(
+  void updateContent<T extends ContentModel>(
     String contentId,
     T Function(T current) updateFunction,
   ) {
@@ -25,7 +25,7 @@ class ContentNotifier extends StateNotifier<List<BaseContentModel>> {
   }
 
   // Generic add method
-  void addContent<T extends BaseContentModel>(T content) {
+  void addContent<T extends ContentModel>(T content) {
     state = [...state, content];
     contentList.add(content);
   }
@@ -37,15 +37,15 @@ class ContentNotifier extends StateNotifier<List<BaseContentModel>> {
   }
 
   // Generic get methods
-  List<T> getContentsByType<T extends BaseContentModel>() {
+  List<T> getContentsByType<T extends ContentModel>() {
     return state.whereType<T>().toList();
   }
 
-  List<BaseContentModel> getContentsByContentType(ContentType type) {
+  List<ContentModel> getContentsByContentType(ContentType type) {
     return state.where((content) => content.type == type).toList();
   }
 
-  T? getContentById<T extends BaseContentModel>(String contentId) {
+  T? getContentById<T extends ContentModel>(String contentId) {
     try {
       return state.firstWhere((content) => content.id == contentId) as T;
     } catch (e) {
@@ -54,13 +54,11 @@ class ContentNotifier extends StateNotifier<List<BaseContentModel>> {
   }
 
   // Filter methods
-  List<BaseContentModel> getContentsBySheetId(String sheetId) {
+  List<ContentModel> getContentsBySheetId(String sheetId) {
     return state.where((content) => content.sheetId == sheetId).toList();
   }
 
-  List<T> getContentsBySheetIdAndType<T extends BaseContentModel>(
-    String sheetId,
-  ) {
+  List<T> getContentsBySheetIdAndType<T extends ContentModel>(String sheetId) {
     return state
         .where((content) => content.sheetId == sheetId)
         .whereType<T>()
@@ -68,7 +66,7 @@ class ContentNotifier extends StateNotifier<List<BaseContentModel>> {
   }
 
   // Bulk operations
-  void addMultipleContent(List<BaseContentModel> contents) {
+  void addMultipleContent(List<ContentModel> contents) {
     state = [...state, ...contents];
     contentList.addAll(contents);
   }
@@ -78,14 +76,14 @@ class ContentNotifier extends StateNotifier<List<BaseContentModel>> {
     contentList.removeWhere((element) => contentIds.contains(element.id));
   }
 
-  void replaceAllContent(List<BaseContentModel> newContent) {
+  void replaceAllContent(List<ContentModel> newContent) {
     state = List.from(newContent);
     contentList.clear();
     contentList.addAll(newContent);
   }
 
   // Helper method to update the original content list
-  void _updateContentList(String contentId, BaseContentModel updatedContent) {
+  void _updateContentList(String contentId, ContentModel updatedContent) {
     final index = contentList.indexWhere((element) => element.id == contentId);
     if (index != -1) {
       contentList[index] = updatedContent;
@@ -96,8 +94,8 @@ class ContentNotifier extends StateNotifier<List<BaseContentModel>> {
   void updateContentTitle(String contentId, String newTitle) {
     final content = state.firstWhere((c) => c.id == contentId);
 
-    if (content is TextContentModel) {
-      updateContent<TextContentModel>(
+    if (content is TextModel) {
+      updateContent<TextModel>(
         contentId,
         (c) => c.copyWith(title: newTitle, updatedAt: DateTime.now()),
       );
@@ -116,8 +114,8 @@ class ContentNotifier extends StateNotifier<List<BaseContentModel>> {
 
   void updateContentDescription(String contentId, String newDescription) {
     final content = state.firstWhere((c) => c.id == contentId);
-    if (content is TextContentModel) {
-      updateContent<TextContentModel>(
+    if (content is TextModel) {
+      updateContent<TextModel>(
         contentId,
         (c) => c.copyWith(
           plainTextDescription: newDescription,

@@ -3,7 +3,7 @@ import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/text/models/text_content_model.dart';
 
 final contentList = [
-  TextContentModel(
+  TextModel(
     sheetId: 'sheet-1',
     parentId: 'sheet-1',
     id: 'text-content-1',
@@ -13,7 +13,7 @@ final contentList = [
     htmlDescription:
         '<p>Zoey is your personal workspace for organizing thoughts, tasks, and ideas. This guide will help you understand all the features and get the most out of your experience.</p>',
   ),
-  TextContentModel(
+  TextModel(
     sheetId: 'sheet-1',
     parentId: 'sheet-1',
     id: 'text-content-2',

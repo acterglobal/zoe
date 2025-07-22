@@ -2,7 +2,7 @@ import 'package:zoey/features/content/models/base_content_model.dart';
 
 enum ListType { bulleted, task }
 
-class ListModel extends BaseContentModel {
+class ListModel extends ContentModel {
   final ListType listType;
 
   ListModel({

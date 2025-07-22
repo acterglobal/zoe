@@ -2,7 +2,7 @@ import 'package:uuid/uuid.dart';
 
 enum ContentType { text, event, list }
 
-abstract class BaseContentModel {
+abstract class ContentModel {
   final String id;
   final ContentType type;
   final String sheetId;
@@ -14,7 +14,7 @@ abstract class BaseContentModel {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  BaseContentModel({
+  ContentModel({
     String? id,
     required this.type,
     required this.sheetId,
@@ -30,5 +30,5 @@ abstract class BaseContentModel {
        updatedAt = updatedAt ?? DateTime.now();
 
   Map<String, dynamic> toJson();
-  BaseContentModel copyWith({DateTime? updatedAt});
+  ContentModel copyWith({DateTime? updatedAt});
 }
