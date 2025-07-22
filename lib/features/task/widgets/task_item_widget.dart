@@ -6,7 +6,7 @@ import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/task/models/task_model.dart';
-import 'package:zoey/features/task/providers/task_provider.dart';
+import 'package:zoey/features/task/providers/task_providers.dart';
 
 class TaskItemWidget extends ConsumerWidget {
   final String taskItemId;
@@ -20,7 +20,7 @@ class TaskItemWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final taskItem = ref.watch(taskItemProvider(taskItemId));
+    final taskItem = ref.watch(taskProvider(taskItemId));
 
     if (taskItem == null) return const SizedBox.shrink();
 
@@ -60,8 +60,8 @@ class TaskItemWidget extends ConsumerWidget {
       ),
       onChanged: (value) {
         ref
-            .read(taskItemIsCompletedUpdateProvider)
-            .call(taskItemId, value ?? false);
+            .read(taskListProvider.notifier)
+            .updateTaskCompletion(taskItemId, value ?? false);
       },
     );
   }
@@ -83,7 +83,7 @@ class TaskItemWidget extends ConsumerWidget {
             : TextDecoration.none,
       ),
       onTextChanged: (value) {
-        ref.read(taskItemTitleUpdateProvider).call(taskItemId, value);
+        ref.read(taskListProvider.notifier).updateTaskTitle(taskItemId, value);
       },
     );
   }
@@ -110,7 +110,7 @@ class TaskItemWidget extends ConsumerWidget {
         // Delete list item
         ZoeCloseButtonWidget(
           onTap: () {
-            ref.read(taskItemDeleteProvider).call(taskItemId);
+            ref.read(taskListProvider.notifier).deleteTask(taskItemId);
           },
         ),
       ],

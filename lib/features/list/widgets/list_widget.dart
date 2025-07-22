@@ -5,7 +5,7 @@ import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/list/providers/list_providers.dart';
-import 'package:zoey/features/task/providers/task_list_providers.dart';
+import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/widgets/task_list_widget.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/bullets/widgets/bullet_list_widget.dart';
