@@ -4,10 +4,10 @@ import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullets/providers/bullet_list_providers.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
+import 'package:zoey/features/list/providers/list_providers.dart';
 import 'package:zoey/features/task/providers/task_list_providers.dart';
 import 'package:zoey/features/task/widgets/task_list_widget.dart';
 import 'package:zoey/features/list/models/list_model.dart';
-import 'package:zoey/features/list/providers/list_proivder.dart';
 import 'package:zoey/features/bullets/widgets/bullet_list_widget.dart';
 
 class ListWidget extends ConsumerWidget {
@@ -19,7 +19,7 @@ class ListWidget extends ConsumerWidget {
     /// Watch the content edit mode provider
     final isEditing = ref.watch(isEditValueProvider);
 
-    final list = ref.watch(listProvider(listId));
+    final list = ref.watch(listItemProvider(listId));
     if (list == null) return const SizedBox.shrink();
 
     return Column(
@@ -36,7 +36,7 @@ class ListWidget extends ConsumerWidget {
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
-                onTap: () => ref.read(deleteListProvider).call(listId),
+                onTap: () => ref.read(listsrovider.notifier).deleteList(listId),
               ),
           ],
         ),
@@ -76,7 +76,7 @@ class ListWidget extends ConsumerWidget {
       text: title,
       textStyle: Theme.of(context).textTheme.bodyLarge,
       onTextChanged: (value) =>
-          ref.read(listTitleUpdateProvider).call(listId, value),
+          ref.read(listsrovider.notifier).updateListTitle(listId, value),
     );
   }
 

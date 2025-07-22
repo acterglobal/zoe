@@ -17,7 +17,7 @@ class EventWidget extends ConsumerWidget {
     /// Watch the content edit mode provider
     final isEditing = ref.watch(isEditValueProvider);
 
-    final event = ref.watch(eventsProvider(eventsId));
+    final event = ref.watch(eventProvider(eventsId));
     if (event == null) return const SizedBox.shrink();
 
     return Padding(
@@ -75,8 +75,9 @@ class EventWidget extends ConsumerWidget {
       isEditing: isEditing,
       text: title,
       textStyle: Theme.of(context).textTheme.bodyMedium,
-      onTextChanged: (value) =>
-          ref.read(eventContentTitleUpdateProvider).call(eventsId, value),
+      onTextChanged: (value) => ref
+          .read(eventListProvider.notifier)
+          .updateEventTitle(eventsId, value),
     );
   }
 
@@ -114,7 +115,8 @@ class EventWidget extends ConsumerWidget {
         ),
         const SizedBox(width: 6),
         ZoeCloseButtonWidget(
-          onTap: () => ref.read(deleteEventProvider).call(event.id),
+          onTap: () =>
+              ref.read(eventListProvider.notifier).deleteEvent(event.id),
         ),
       ],
     );
