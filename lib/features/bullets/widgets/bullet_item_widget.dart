@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
+import 'package:zoey/features/bullets/model/bullet_item_model.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 
 class BulletItemWidget extends ConsumerWidget {
@@ -23,18 +24,25 @@ class BulletItemWidget extends ConsumerWidget {
     if (bulletItem == null) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          _buildBulletItemIcon(context),
-          const SizedBox(width: 10),
-          Expanded(
-            child: _buildBulletItemTitle(context, ref, bulletItem.title),
-          ),
-          const SizedBox(width: 6),
-          if (isEditing) _buildBulletItemActions(context, ref),
-        ],
-      ),
+      padding: const EdgeInsets.only(bottom: 8, top: 8, left: 24),
+      child: _buildBulletItemContent(context, ref, bulletItem, isEditing),
+    );
+  }
+
+  Widget _buildBulletItemContent(
+    BuildContext context,
+    WidgetRef ref,
+    BulletItem bulletItem,
+    bool isEditing,
+  ) {
+    return Row(
+      children: [
+        _buildBulletItemIcon(context),
+        const SizedBox(width: 10),
+        Expanded(child: _buildBulletItemTitle(context, ref, bulletItem.title)),
+        const SizedBox(width: 6),
+        if (isEditing) _buildBulletItemActions(context, ref),
+      ],
     );
   }
 

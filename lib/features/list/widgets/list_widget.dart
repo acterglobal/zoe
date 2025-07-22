@@ -22,6 +22,18 @@ class ListWidget extends ConsumerWidget {
     final list = ref.watch(listItemProvider(listId));
     if (list == null) return const SizedBox.shrink();
 
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: _buildListContent(context, ref, list, isEditing),
+    );
+  }
+
+  Widget _buildListContent(
+    BuildContext context,
+    WidgetRef ref,
+    ListModel list,
+    bool isEditing,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,

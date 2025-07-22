@@ -25,23 +25,32 @@ class TaskItemWidget extends ConsumerWidget {
     if (taskItem == null) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          _buildTaskItemIcon(context, ref, taskItem),
-          const SizedBox(width: 10),
-          Expanded(
-            child: _buildTaskItemTitle(
-              context,
-              ref,
-              taskItem.title,
-              taskItem.isCompleted,
-            ),
+      padding: const EdgeInsets.only(left: 24),
+      child: _buildTaskItemContent(context, ref, taskItem, isEditing),
+    );
+  }
+
+  Widget _buildTaskItemContent(
+    BuildContext context,
+    WidgetRef ref,
+    TaskModel taskItem,
+    bool isEditing,
+  ) {
+    return Row(
+      children: [
+        _buildTaskItemIcon(context, ref, taskItem),
+        const SizedBox(width: 10),
+        Expanded(
+          child: _buildTaskItemTitle(
+            context,
+            ref,
+            taskItem.title,
+            taskItem.isCompleted,
           ),
-          const SizedBox(width: 6),
-          if (isEditing) _buildTaskItemActions(context, ref),
-        ],
-      ),
+        ),
+        const SizedBox(width: 6),
+        if (isEditing) _buildTaskItemActions(context, ref),
+      ],
     );
   }
 

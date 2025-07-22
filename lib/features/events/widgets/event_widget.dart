@@ -21,35 +21,44 @@ class EventWidget extends ConsumerWidget {
     if (event == null) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8, top: 8, left: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildEventIcon(context),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildEventTitle(
-                        context,
-                        ref,
-                        event.title,
-                        isEditing,
-                      ),
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: _buildEventContent(context, ref, event, isEditing),
+    );
+  }
+
+  Widget _buildEventContent(
+    BuildContext context,
+    WidgetRef ref,
+    EventModel event,
+    bool isEditing,
+  ) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildEventIcon(context),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildEventTitle(
+                      context,
+                      ref,
+                      event.title,
+                      isEditing,
                     ),
-                    const SizedBox(width: 6),
-                    if (isEditing) _buildEventActions(context, ref, event),
-                  ],
-                ),
-                _buildEventDescription(context, ref, event),
-              ],
-            ),
+                  ),
+                  const SizedBox(width: 6),
+                  if (isEditing) _buildEventActions(context, ref, event),
+                ],
+              ),
+              _buildEventDescription(context, ref, event),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
