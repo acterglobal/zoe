@@ -49,7 +49,8 @@ class SheetDetailScreen extends ConsumerWidget {
 
   /// Builds the header
   Widget _buildSheetHeader(BuildContext context, WidgetRef ref) {
-    final sheet = ref.watch(sheetListProvider.notifier).getSheetById(sheetId);
+    final isEditing = ref.watch(isEditValueProvider);
+    final sheet = ref.watch(sheetProvider(sheetId));
     if (sheet == null) return const SizedBox.shrink();
 
     return Column(
@@ -59,12 +60,14 @@ class SheetDetailScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
-              onTap: () => ref
-                  .read(sheetListProvider.notifier)
-                  .updateSheetEmoji(
-                    sheetId,
-                    CommonUtils.getNextEmoji(sheet.emoji),
-                  ),
+              onTap: () => isEditing
+                  ? ref
+                        .read(sheetListProvider.notifier)
+                        .updateSheetEmoji(
+                          sheetId,
+                          CommonUtils.getNextEmoji(sheet.emoji),
+                        )
+                  : null,
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(sheet.emoji, style: const TextStyle(fontSize: 32)),

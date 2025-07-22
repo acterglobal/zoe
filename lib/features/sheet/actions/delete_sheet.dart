@@ -10,7 +10,7 @@ void showDeleteSheetConfirmation(
   WidgetRef ref,
   String sheetId,
 ) {
-  final sheet = ref.read(sheetListProvider.notifier).getSheetById(sheetId);
+  final sheet = ref.read(sheetProvider(sheetId));
   if (sheet == null) return;
 
   showModalBottomSheet(

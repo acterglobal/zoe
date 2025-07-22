@@ -6,3 +6,8 @@ final sheetListProvider =
     StateNotifierProvider<SheetNotifier, List<SheetModel>>(
       (ref) => SheetNotifier(),
     );
+
+final sheetProvider = Provider.family<SheetModel?, String>((ref, sheetId) {
+  final sheetList = ref.watch(sheetListProvider);
+  return sheetList.where((s) => s.id == sheetId).firstOrNull;
+});

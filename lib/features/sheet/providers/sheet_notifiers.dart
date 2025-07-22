@@ -9,33 +9,31 @@ class SheetNotifier extends StateNotifier<List<SheetModel>> {
     state = [...state, sheet];
   }
 
-  void updateSheet(SheetModel sheet) {
-    state = state.map((s) => s.id == sheet.id ? sheet : s).toList();
-  }
-
   void deleteSheet(String sheetId) {
     state = state.where((s) => s.id != sheetId).toList();
   }
 
-  SheetModel? getSheetById(String sheetId) {
-    return state.where((s) => s.id == sheetId).firstOrNull;
-  }
-
   void updateSheetTitle(String sheetId, String title) {
-    state = state
-        .map((s) => s.id == sheetId ? s.copyWith(title: title) : s)
-        .toList();
+    state = [
+      for (final sheet in state)
+        if (sheet.id == sheetId) sheet.copyWith(title: title) else sheet,
+    ];
   }
 
   void updateSheetDescription(String sheetId, String description) {
-    state = state
-        .map((s) => s.id == sheetId ? s.copyWith(description: description) : s)
-        .toList();
+    state = [
+      for (final sheet in state)
+        if (sheet.id == sheetId)
+          sheet.copyWith(description: description)
+        else
+          sheet,
+    ];
   }
 
   void updateSheetEmoji(String sheetId, String emoji) {
-    state = state
-        .map((s) => s.id == sheetId ? s.copyWith(emoji: emoji) : s)
-        .toList();
+    state = [
+      for (final sheet in state)
+        if (sheet.id == sheetId) sheet.copyWith(emoji: emoji) else sheet,
+    ];
   }
 }

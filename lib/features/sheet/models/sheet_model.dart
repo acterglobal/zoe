@@ -13,19 +13,29 @@ class SheetModel {
     String? emoji,
     String? title,
     this.description,
+    DateTime? createdAt,
     DateTime? updatedAt,
   }) : id = id ?? CommonUtils.generateRandomId(),
        emoji = emoji ?? '📄',
        title = title ?? 'Untitled',
-       createdAt = DateTime.now(),
+       createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now();
 
-  SheetModel copyWith({String? emoji, String? title, String? description}) {
+  SheetModel copyWith({
+    String? id,
+    String? emoji,
+    String? title,
+    String? description,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
     return SheetModel(
+      id: id ?? this.id,
       emoji: emoji ?? this.emoji,
       title: title ?? this.title,
       description: description ?? this.description,
-      updatedAt: DateTime.now(),
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? DateTime.now(),
     );
   }
 }
