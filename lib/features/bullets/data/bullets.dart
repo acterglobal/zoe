@@ -40,7 +40,10 @@ final bulletList = [
     id: 'bullet-item-8',
     listId: 'list-bulleted-2',
     title: 'Add detailed descriptions to tasks for better context',
-    description: 'Descriptions help provide context and additional information',
+    description: (
+      plainText: 'Descriptions help provide context and additional information',
+      htmlText: '',
+    ),
   ),
   BulletItem(
     id: 'bullet-item-9',
