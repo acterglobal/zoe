@@ -86,7 +86,7 @@ class EventWidget extends ConsumerWidget {
     EventModel event,
   ) {
     return Text(
-      event.plainTextDescription ?? '',
+      event.description?.plainText ?? '',
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: Theme.of(context).textTheme.bodySmall,

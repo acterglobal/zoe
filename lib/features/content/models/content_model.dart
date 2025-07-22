@@ -1,16 +1,16 @@
-import 'package:uuid/uuid.dart';
+import 'package:zoey/common/utils/common_utils.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 
 enum ContentType { text, event, list }
 
 abstract class ContentModel {
-  final String id;
   final ContentType type;
+  final String id;
   final String sheetId;
+  final String parentId;
   final String title;
-  final String? parentId;
   final String? emoji;
-  final String? plainTextDescription;
-  final String? htmlDescription;
+  final Description? description;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -19,16 +19,12 @@ abstract class ContentModel {
     required this.type,
     required this.sheetId,
     required this.title,
-    this.parentId,
+    required this.parentId,
     this.emoji,
-    this.plainTextDescription,
-    this.htmlDescription,
+    this.description,
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) : id = id ?? const Uuid().v4(),
+  }) : id = id ?? CommonUtils.generateRandomId(),
        createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now();
-
-  Map<String, dynamic> toJson();
-  ContentModel copyWith({DateTime? updatedAt});
 }

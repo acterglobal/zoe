@@ -49,8 +49,8 @@ class TextContentWidget extends ConsumerWidget {
         _buildTextContentDescription(
           context,
           ref,
-          textContent.plainTextDescription,
-          textContent.htmlDescription,
+          textContent.description?.plainText ?? '',
+          textContent.description?.htmlText ?? '',
           isEditing,
         ),
       ],

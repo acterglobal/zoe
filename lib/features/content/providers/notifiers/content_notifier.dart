@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/content/data/content_list.dart';
 import 'package:zoey/features/content/models/content_model.dart';
-import 'package:zoey/features/text/models/text_content_model.dart';
+import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 
@@ -118,7 +118,7 @@ class ContentNotifier extends StateNotifier<List<ContentModel>> {
       updateContent<TextModel>(
         contentId,
         (c) => c.copyWith(
-          plainTextDescription: newDescription,
+          description: (plainText: newDescription, htmlText: null),
           updatedAt: DateTime.now(),
         ),
       );
