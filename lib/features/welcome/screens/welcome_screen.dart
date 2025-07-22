@@ -90,9 +90,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
       width: double.infinity,
       child: ZoePrimaryButton(
         text: 'Get Started',
-        onPressed: () {
-          context.go(AppRoutes.home.route);
-        },
+        onPressed: () => context.go(AppRoutes.home.route),
       ),
     );
   }

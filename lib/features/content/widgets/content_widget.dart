@@ -22,7 +22,6 @@ class ContentWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     /// Watch the content list provider
     final contentList = ref.watch(contentByParentIdProvider(parentId));
-    if (contentList.isEmpty) return const SizedBox.shrink();
 
     /// Build the content list
     return Column(
