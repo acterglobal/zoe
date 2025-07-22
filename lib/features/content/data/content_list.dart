@@ -5,6 +5,7 @@ import 'package:zoey/features/text/models/text_content_model.dart';
 final contentList = [
   TextContentModel(
     sheetId: 'sheet-1',
+    parentId: 'sheet-1',
     id: 'text-content-1',
     title: 'Welcome to Zoey!',
     plainTextDescription:
@@ -14,6 +15,7 @@ final contentList = [
   ),
   TextContentModel(
     sheetId: 'sheet-1',
+    parentId: 'sheet-1',
     id: 'text-content-2',
     title: 'How to Use Text Content',
     plainTextDescription:
@@ -23,6 +25,7 @@ final contentList = [
   ),
   EventModel(
     sheetId: 'sheet-1',
+    parentId: 'sheet-1',
     id: 'events-1',
     title: 'Learning Schedule',
     plainTextDescription: 'Learn about the latest trends in the industry',
@@ -32,6 +35,7 @@ final contentList = [
   ),
   EventModel(
     sheetId: 'sheet-1',
+    parentId: 'sheet-1',
     id: 'events-2',
     title: 'Meeting Schedule',
     plainTextDescription: 'Learn about the latest trends in the industry',
@@ -41,6 +45,7 @@ final contentList = [
   ),
   EventModel(
     sheetId: 'sheet-1',
+    parentId: 'sheet-1',
     id: 'events-3',
     title: 'Practice Session',
     plainTextDescription: 'Learn about the latest trends in the industry',
@@ -50,18 +55,21 @@ final contentList = [
   ),
   ListModel(
     sheetId: 'sheet-1',
+    parentId: 'sheet-1',
     id: 'list-bulleted-1',
     title: 'Key Features Overview',
     listType: ListType.bulleted,
   ),
   ListModel(
     sheetId: 'sheet-1',
+    parentId: 'sheet-1',
     id: 'list-tasks-1',
     title: 'Quick Start Checklist',
     listType: ListType.task,
   ),
   ListModel(
     sheetId: 'sheet-1',
+    parentId: 'sheet-1',
     id: 'list-bulleted-2',
     title: 'Pro Tips',
     listType: ListType.bulleted,

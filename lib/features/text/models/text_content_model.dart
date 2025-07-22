@@ -9,7 +9,7 @@ class TextContentModel extends BaseContentModel {
 
   TextContentModel({
     super.id,
-    super.parentId,
+    required super.parentId,
     required super.sheetId,
     required super.title,
     required String plainTextDescription,
@@ -41,6 +41,7 @@ class TextContentModel extends BaseContentModel {
   TextContentModel copyWith({
     String? id,
     String? parentId,
+    String? sheetId,
     String? title,
     String? plainTextDescription,
     String? htmlDescription,
@@ -49,7 +50,7 @@ class TextContentModel extends BaseContentModel {
     return TextContentModel(
       id: id ?? this.id,
       parentId: parentId ?? this.parentId,
-      sheetId: sheetId,
+      sheetId: sheetId ?? this.sheetId,
       title: title ?? this.title,
       plainTextDescription: plainTextDescription ?? this.plainTextDescription,
       htmlDescription: htmlDescription ?? this.htmlDescription,

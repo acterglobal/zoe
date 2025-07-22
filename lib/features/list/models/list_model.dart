@@ -8,6 +8,7 @@ class ListModel extends BaseContentModel {
   ListModel({
     super.id,
     required super.sheetId,
+    required super.parentId,
     required super.title,
     required this.listType,
     super.createdAt,
@@ -28,13 +29,17 @@ class ListModel extends BaseContentModel {
 
   @override
   ListModel copyWith({
+    String? id,
+    String? sheetId,
+    String? parentId,
     String? title,
     List<String>? bullets,
     DateTime? updatedAt,
   }) {
     return ListModel(
-      id: id,
-      sheetId: sheetId,
+      id: id ?? this.id,
+      parentId: parentId ?? this.parentId,
+      sheetId: sheetId ?? this.sheetId,
       title: title ?? this.title,
       listType: listType,
       createdAt: createdAt,
