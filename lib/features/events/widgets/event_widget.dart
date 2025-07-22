@@ -67,7 +67,7 @@ class EventWidget extends ConsumerWidget {
       text: event.title,
       textStyle: Theme.of(context).textTheme.bodyMedium,
       onTextChanged: (value) =>
-          ref.read(eventsUpdateProvider).call(event.id, title: value),
+          ref.read(eventContentTitleUpdateProvider).call(event.id, value),
     );
   }
 
@@ -105,9 +105,7 @@ class EventWidget extends ConsumerWidget {
         ),
         const SizedBox(width: 6),
         ZoeCloseButtonWidget(
-          onTap: () => ref
-              .read(eventsUpdateProvider)
-              .call(event.id, startDate: null, endDate: null),
+          onTap: () => ref.read(deleteEventProvider).call(event.id),
         ),
       ],
     );

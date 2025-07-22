@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/features/content/providers/content_list_providers.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_list_provider.dart';
 
@@ -20,36 +21,17 @@ final eventsProvider = Provider.family<EventModel, String>((ref, String id) {
   }
 });
 
-// Direct update provider - saves immediately using StateNotifier
-final eventsUpdateProvider =
-    Provider<
-      void Function(
-        String, {
-        String? title,
-        DateTime? startDate,
-        DateTime? endDate,
-      })
-    >((ref) {
-      return (
-        String eventId, {
-        String? title,
-        DateTime? startDate,
-        DateTime? endDate,
-      }) {
-        // Update using the StateNotifier for immediate reactivity
-        ref
-            .read(eventsListProvider.notifier)
-            .updateEvent(
-              eventId,
-              title: title,
-              startDate: startDate,
-              endDate: endDate,
-            );
-      };
-    });
-
+final eventContentTitleUpdateProvider = Provider<void Function(String, String)>(
+  (ref) {
+    return (String eventId, String title) {
+      ref
+          .read(contentNotifierProvider.notifier)
+          .updateContentTitle(eventId, title);
+    };
+  },
+);
 final deleteEventProvider = Provider<void Function(String)>((ref) {
   return (String eventId) {
-    ref.read(eventsListProvider.notifier).deleteEvent(eventId);
+    ref.read(contentNotifierProvider.notifier).removeContent(eventId);
   };
 });

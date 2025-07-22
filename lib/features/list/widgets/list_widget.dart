@@ -8,7 +8,6 @@ import 'package:zoey/features/task/widgets/task_list_widget.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/list/providers/list_proivder.dart';
 import 'package:zoey/features/bullets/widgets/bullet_list_widget.dart';
-import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
 
 class ListWidget extends ConsumerWidget {
   final String listId;
@@ -32,11 +31,7 @@ class ListWidget extends ConsumerWidget {
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
-                onTap: () {
-                  ref
-                      .read(sheetDetailProvider(list.parentId).notifier)
-                      .deleteContent(listId);
-                },
+                onTap: () => ref.read(deleteListProvider).call(listId),
               ),
           ],
         ),
