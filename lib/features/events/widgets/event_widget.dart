@@ -17,39 +17,48 @@ class EventWidget extends ConsumerWidget {
     /// Watch the content edit mode provider
     final isEditing = ref.watch(isEditValueProvider);
 
-    final event = ref.watch(eventsProvider(eventsId));
+    final event = ref.watch(eventProvider(eventsId));
     if (event == null) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8, top: 8, left: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildEventIcon(context),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildEventTitle(
-                        context,
-                        ref,
-                        event.title,
-                        isEditing,
-                      ),
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: _buildEventContent(context, ref, event, isEditing),
+    );
+  }
+
+  Widget _buildEventContent(
+    BuildContext context,
+    WidgetRef ref,
+    EventModel event,
+    bool isEditing,
+  ) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildEventIcon(context),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildEventTitle(
+                      context,
+                      ref,
+                      event.title,
+                      isEditing,
                     ),
-                    const SizedBox(width: 6),
-                    if (isEditing) _buildEventActions(context, ref, event),
-                  ],
-                ),
-                _buildEventDescription(context, ref, event),
-              ],
-            ),
+                  ),
+                  const SizedBox(width: 6),
+                  if (isEditing) _buildEventActions(context, ref, event),
+                ],
+              ),
+              _buildEventDescription(context, ref, event),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -75,8 +84,9 @@ class EventWidget extends ConsumerWidget {
       isEditing: isEditing,
       text: title,
       textStyle: Theme.of(context).textTheme.bodyMedium,
-      onTextChanged: (value) =>
-          ref.read(eventContentTitleUpdateProvider).call(eventsId, value),
+      onTextChanged: (value) => ref
+          .read(eventListProvider.notifier)
+          .updateEventTitle(eventsId, value),
     );
   }
 
@@ -86,7 +96,7 @@ class EventWidget extends ConsumerWidget {
     EventModel event,
   ) {
     return Text(
-      event.plainTextDescription ?? '',
+      event.description?.plainText ?? '',
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: Theme.of(context).textTheme.bodySmall,
@@ -114,7 +124,8 @@ class EventWidget extends ConsumerWidget {
         ),
         const SizedBox(width: 6),
         ZoeCloseButtonWidget(
-          onTap: () => ref.read(deleteEventProvider).call(event.id),
+          onTap: () =>
+              ref.read(eventListProvider.notifier).deleteEvent(event.id),
         ),
       ],
     );

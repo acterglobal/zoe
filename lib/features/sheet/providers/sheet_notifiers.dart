@@ -20,7 +20,7 @@ class SheetNotifier extends StateNotifier<List<SheetModel>> {
     ];
   }
 
-  void updateSheetDescription(String sheetId, String description) {
+  void updateSheetDescription(String sheetId, Description description) {
     state = [
       for (final sheet in state)
         if (sheet.id == sheetId)

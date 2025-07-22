@@ -1,52 +1,56 @@
-import 'package:zoey/features/content/models/base_content_model.dart';
+import 'package:zoey/features/content/models/content_model.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 
-class EventModel extends BaseContentModel {
+class EventModel extends ContentModel {
+  /// EventModel properties
   final DateTime startDate;
   final DateTime endDate;
 
   EventModel({
+    /// ContentModel properties
     super.id,
+    required super.parentId,
     required super.sheetId,
     required super.title,
-    required this.startDate,
-    required this.endDate,
-    super.parentId,
-    super.plainTextDescription,
-    super.htmlDescription,
+    super.description,
+    super.emoji,
     super.createdAt,
     super.updatedAt,
+
+    /// EventModel properties
+    required this.startDate,
+    required this.endDate,
   }) : super(type: ContentType.event);
 
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'type': type.name,
-      'title': title,
-      'startDate': startDate.toIso8601String(),
-      'endDate': endDate.toIso8601String(),
-      'plainTextDescription': plainTextDescription,
-      'htmlDescription': htmlDescription,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
-    };
-  }
-
-  @override
   EventModel copyWith({
+    /// ContentModel properties
+    String? id,
+    String? sheetId,
+    String? parentId,
     String? title,
+    Description? description,
+    String? emoji,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+
+    /// EventModel properties
     DateTime? startDate,
     DateTime? endDate,
-    DateTime? updatedAt,
   }) {
     return EventModel(
-      id: id,
-      sheetId: sheetId,
+      /// ContentModel properties
+      id: id ?? this.id,
+      sheetId: sheetId ?? this.sheetId,
+      parentId: parentId ?? this.parentId,
       title: title ?? this.title,
+      description: description ?? this.description,
+      emoji: emoji ?? this.emoji,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? DateTime.now(),
+
+      /// EventModel properties
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
-      createdAt: createdAt,
-      updatedAt: updatedAt ?? DateTime.now(),
     );
   }
 }

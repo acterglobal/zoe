@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/features/content/providers/content_list_providers.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
-import 'package:zoey/features/text/providers/text_content_proivder.dart';
+import 'package:zoey/features/text/models/text_model.dart';
+import 'package:zoey/features/text/providers/text_providers.dart';
 
-class TextContentWidget extends ConsumerWidget {
+class TextWidget extends ConsumerWidget {
   final String textContentId;
-  const TextContentWidget({super.key, required this.textContentId});
+  const TextWidget({super.key, required this.textContentId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,10 +16,22 @@ class TextContentWidget extends ConsumerWidget {
     final isEditing = ref.watch(isEditValueProvider);
 
     /// Watch the text content provider
-    final textContent = ref.watch(textContentProvider(textContentId));
+    final textContent = ref.watch(textProvider(textContentId));
     if (textContent == null) return const SizedBox.shrink();
 
     /// Builds the text content widget
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: _buildTextContent(context, ref, textContent, isEditing),
+    );
+  }
+
+  Widget _buildTextContent(
+    BuildContext context,
+    WidgetRef ref,
+    TextModel textContent,
+    bool isEditing,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -40,8 +52,8 @@ class TextContentWidget extends ConsumerWidget {
             if (isEditing)
               ZoeDeleteButtonWidget(
                 onTap: () => ref
-                    .read(contentNotifierProvider.notifier)
-                    .removeContent(textContentId),
+                    .read(textListProvider.notifier)
+                    .deleteText(textContentId),
               ),
           ],
         ),
@@ -49,8 +61,8 @@ class TextContentWidget extends ConsumerWidget {
         _buildTextContentDescription(
           context,
           ref,
-          textContent.plainTextDescription,
-          textContent.htmlDescription,
+          textContent.description?.plainText ?? '',
+          textContent.description?.htmlText ?? '',
           isEditing,
         ),
       ],
@@ -81,8 +93,9 @@ class TextContentWidget extends ConsumerWidget {
       isEditing: isEditing,
       text: title,
       textStyle: Theme.of(context).textTheme.bodyLarge,
-      onTextChanged: (value) =>
-          ref.read(textContentTitleUpdateProvider).call(textContentId, value),
+      onTextChanged: (value) => ref
+          .read(textListProvider.notifier)
+          .updateTextTitle(textContentId, value),
     );
   }
 
@@ -99,9 +112,11 @@ class TextContentWidget extends ConsumerWidget {
       isEditing: isEditing,
       text: plainTextDescription,
       textStyle: Theme.of(context).textTheme.bodyMedium,
-      onTextChanged: (value) => ref
-          .read(textContentDescriptionUpdateProvider)
-          .call(textContentId, value, htmlDescription),
+      onTextChanged: (value) =>
+          ref.read(textListProvider.notifier).updateTextDescription(
+            textContentId,
+            (plainText: value, htmlText: htmlDescription),
+          ),
     );
   }
 }

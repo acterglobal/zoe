@@ -1,10 +1,13 @@
 import 'package:zoey/common/utils/common_utils.dart';
 
+/// Description with both plain text and HTML support
+typedef Description = ({String? plainText, String? htmlText});
+
 class SheetModel {
   final String id;
   final String emoji;
   final String title;
-  final String? description;
+  final Description? description;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -25,7 +28,7 @@ class SheetModel {
     String? id,
     String? emoji,
     String? title,
-    String? description,
+    Description? description,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {

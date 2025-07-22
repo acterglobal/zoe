@@ -1,13 +1,13 @@
-import 'package:uuid/uuid.dart';
+import 'package:zoey/common/utils/common_utils.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 
 class TaskModel {
   final String id;
   final String listId;
   final String title;
-  final String? description;
+  final Description? description;
   final bool isCompleted;
   final DateTime? dueDate;
-  final List<String> assignees;
 
   TaskModel({
     String? id,
@@ -16,8 +16,7 @@ class TaskModel {
     this.description,
     this.isCompleted = false,
     this.dueDate,
-    this.assignees = const [],
-  }) : id = id ?? const Uuid().v4();
+  }) : id = id ?? CommonUtils.generateRandomId();
 
   Map<String, dynamic> toJson() {
     return {
@@ -27,27 +26,24 @@ class TaskModel {
       'description': description,
       'isCompleted': isCompleted,
       'dueDate': dueDate?.toIso8601String(),
-      'assignees': assignees,
     };
   }
 
   TaskModel copyWith({
+    String? id,
     String? listId,
     String? title,
-    String? description,
+    Description? description,
     bool? isCompleted,
     DateTime? dueDate,
-    List<String>? assignees,
-    List<String>? contentList,
   }) {
     return TaskModel(
-      id: id,
+      id: id ?? this.id,
       listId: listId ?? this.listId,
       title: title ?? this.title,
       description: description ?? this.description,
       isCompleted: isCompleted ?? this.isCompleted,
       dueDate: dueDate ?? this.dueDate,
-      assignees: assignees ?? this.assignees,
     );
   }
 }

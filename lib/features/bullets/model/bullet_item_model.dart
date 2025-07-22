@@ -1,17 +1,18 @@
-import 'package:uuid/uuid.dart';
+import 'package:zoey/common/utils/common_utils.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 
 class BulletItem {
   final String id;
   final String listId;
   final String title;
-  final String? description;
+  final Description? description;
 
   BulletItem({
     String? id,
     required this.listId,
     required this.title,
     this.description,
-  }) : id = id ?? const Uuid().v4();
+  }) : id = id ?? CommonUtils.generateRandomId();
 
   Map<String, dynamic> toJson() {
     return {
@@ -23,13 +24,14 @@ class BulletItem {
   }
 
   BulletItem copyWith({
+    String? id,
+    String? listId,
     String? title,
-    String? description,
-    List<String>? contentList,
+    Description? description,
   }) {
     return BulletItem(
-      id: id,
-      listId: listId,
+      id: id ?? this.id,
+      listId: listId ?? this.listId,
       title: title ?? this.title,
       description: description ?? this.description,
     );

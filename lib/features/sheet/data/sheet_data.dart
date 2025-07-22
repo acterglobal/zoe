@@ -5,14 +5,20 @@ final sheetList = [
     id: 'sheet-1',
     title: 'Getting Started Guide',
     emoji: '📝',
-    description:
-        'A comprehensive guide to help you get started with all the essential features and workflows',
+    description: (
+      plainText:
+          'A comprehensive guide to help you get started with all the essential features and workflows',
+      htmlText: null,
+    ),
   ),
   SheetModel(
     id: 'sheet-2',
     title: 'Vacation Plan',
     emoji: '📅',
-    description:
-        'Plan your perfect getaway with itineraries, bookings, and travel checklists',
+    description: (
+      plainText:
+          'Plan your perfect getaway with itineraries, bookings, and travel checklists',
+      htmlText: null,
+    ),
   ),
 ];

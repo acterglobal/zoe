@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/features/bullets/providers/bullet_list_providers.dart';
+import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
-import 'package:zoey/features/task/providers/task_list_providers.dart';
+import 'package:zoey/features/list/providers/list_providers.dart';
+import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/widgets/task_list_widget.dart';
 import 'package:zoey/features/list/models/list_model.dart';
-import 'package:zoey/features/list/providers/list_proivder.dart';
 import 'package:zoey/features/bullets/widgets/bullet_list_widget.dart';
 
 class ListWidget extends ConsumerWidget {
@@ -19,9 +19,21 @@ class ListWidget extends ConsumerWidget {
     /// Watch the content edit mode provider
     final isEditing = ref.watch(isEditValueProvider);
 
-    final list = ref.watch(listProvider(listId));
+    final list = ref.watch(listItemProvider(listId));
     if (list == null) return const SizedBox.shrink();
 
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: _buildListContent(context, ref, list, isEditing),
+    );
+  }
+
+  Widget _buildListContent(
+    BuildContext context,
+    WidgetRef ref,
+    ListModel list,
+    bool isEditing,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -36,7 +48,7 @@ class ListWidget extends ConsumerWidget {
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
-                onTap: () => ref.read(deleteListProvider).call(listId),
+                onTap: () => ref.read(listsrovider.notifier).deleteList(listId),
               ),
           ],
         ),
@@ -76,7 +88,7 @@ class ListWidget extends ConsumerWidget {
       text: title,
       textStyle: Theme.of(context).textTheme.bodyLarge,
       onTextChanged: (value) =>
-          ref.read(listTitleUpdateProvider).call(listId, value),
+          ref.read(listsrovider.notifier).updateListTitle(listId, value),
     );
   }
 
@@ -87,7 +99,7 @@ class ListWidget extends ConsumerWidget {
     ListType listType,
   ) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8, left: 24),
       child: GestureDetector(
         onTap: () => listType == ListType.bulleted
             ? ref.read(bulletListProvider.notifier).addBullet('', listId)

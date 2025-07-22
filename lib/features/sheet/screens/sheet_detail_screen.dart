@@ -89,7 +89,7 @@ class SheetDetailScreen extends ConsumerWidget {
         ZoeInlineTextEditWidget(
           hintText: 'Add a description',
           isEditing: isEditing,
-          text: sheet.description,
+          text: sheet.description?.plainText,
           textStyle: Theme.of(context).textTheme.bodyLarge,
           onTextChanged: (value) => updateSheetDescription(ref, sheetId, value),
         ),
