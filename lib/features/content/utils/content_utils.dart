@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/list/providers/list_providers.dart';
+import 'package:zoey/features/bullets/providers/bullet_providers.dart';
+import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/text/models/text_model.dart';
@@ -36,6 +38,11 @@ void addNewBulletedListContent(WidgetRef ref, parentId, String sheetId) {
     listType: ListType.bulleted,
   );
   ref.read(listsrovider.notifier).addList(bulletedListContentModel);
+
+  // Add a default bullet item to the new list
+  ref
+      .read(bulletListProvider.notifier)
+      .addBullet('', bulletedListContentModel.id);
 }
 
 void addNewTaskListContent(WidgetRef ref, parentId, String sheetId) {
@@ -46,4 +53,7 @@ void addNewTaskListContent(WidgetRef ref, parentId, String sheetId) {
     listType: ListType.task,
   );
   ref.read(listsrovider.notifier).addList(toDoListContentModel);
+
+  // Add a default task item to the new list
+  ref.read(taskListProvider.notifier).addTask('', toDoListContentModel.id);
 }
