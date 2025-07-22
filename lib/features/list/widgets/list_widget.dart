@@ -99,7 +99,7 @@ class ListWidget extends ConsumerWidget {
     ListType listType,
   ) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8, left: 24),
       child: GestureDetector(
         onTap: () => listType == ListType.bulleted
             ? ref.read(bulletListProvider.notifier).addBullet('', listId)
