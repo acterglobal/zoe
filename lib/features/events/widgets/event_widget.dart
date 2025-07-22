@@ -18,6 +18,8 @@ class EventWidget extends ConsumerWidget {
     final isEditing = ref.watch(toogleContentEditProvider);
 
     final event = ref.watch(eventsProvider(eventsId));
+    if (event == null) return const SizedBox.shrink();
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 8, top: 8, left: 8),
       child: Row(
@@ -31,7 +33,12 @@ class EventWidget extends ConsumerWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: _buildEventTitle(context, ref, event, isEditing),
+                      child: _buildEventTitle(
+                        context,
+                        ref,
+                        event.title,
+                        isEditing,
+                      ),
                     ),
                     const SizedBox(width: 6),
                     if (isEditing) _buildEventActions(context, ref, event),
@@ -60,16 +67,16 @@ class EventWidget extends ConsumerWidget {
   Widget _buildEventTitle(
     BuildContext context,
     WidgetRef ref,
-    EventModel event,
+    String title,
     bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: 'Event name',
       isEditing: isEditing,
-      text: event.title,
+      text: title,
       textStyle: Theme.of(context).textTheme.bodyMedium,
       onTextChanged: (value) =>
-          ref.read(eventContentTitleUpdateProvider).call(event.id, value),
+          ref.read(eventContentTitleUpdateProvider).call(eventsId, value),
     );
   }
 
