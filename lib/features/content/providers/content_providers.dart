@@ -14,3 +14,11 @@ final contentListByParentIdProvider =
         return content.parentId == parentId;
       }).toList();
     });
+
+final contentProvider = Provider.family<ContentModel?, String>((
+  ref,
+  contentId,
+) {
+  final contentList = ref.watch(contentListProvider);
+  return contentList.firstWhere((content) => content.id == contentId);
+});
