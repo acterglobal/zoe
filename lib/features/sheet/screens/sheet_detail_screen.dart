@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_detail_provider.dart';
-import 'package:zoey/features/sheet/widgets/sheet_detail/add_content_menu.dart';
+import 'package:zoey/features/content/widgets/add_content_menu.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_detail_app_bar.dart';
 import 'package:zoey/features/sheet/widgets/sheet_detail/sheet_contents.dart';
 
