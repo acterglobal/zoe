@@ -51,7 +51,7 @@ final lists = [
     sheetId: 'sheet-1',
     parentId: 'sheet-1',
     id: 'list-text-1',
-    title: 'Text Content',
+    title: 'Writing & Documentation Guide',
     emoji: '📝',
     listType: ContentType.text,
     orderIndex: 9,
