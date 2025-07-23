@@ -1,14 +1,13 @@
 import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 
-enum ContentType { text, event, list }
+enum ContentType { text, event, list, task, bullet }
 
 abstract class ContentModel {
   final ContentType type;
   final String id;
   final String sheetId;
   final String parentId;
-  final String? listId;
   final String title;
   final String? emoji;
   final Description? description;
@@ -17,12 +16,11 @@ abstract class ContentModel {
   final int orderIndex; // Order within parent
 
   ContentModel({
-    String? id,
     required this.type,
+    String? id,
     required this.sheetId,
-    required this.title,
     required this.parentId,
-    this.listId,
+    required this.title,
     this.emoji,
     this.description,
     DateTime? createdAt,

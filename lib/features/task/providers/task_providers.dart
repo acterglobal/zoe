@@ -12,10 +12,10 @@ final taskProvider = Provider.family<TaskModel?, String>((ref, taskId) {
 });
 
 // Additional provider for filtering tasks by list (needed by widgets)
-final taskByListProvider = Provider.family<List<TaskModel>, String>((
+final taskByParentProvider = Provider.family<List<TaskModel>, String>((
   ref,
-  listId,
+  parentId,
 ) {
   final taskList = ref.watch(taskListProvider);
-  return taskList.where((t) => t.listId == listId).toList();
+  return taskList.where((t) => t.parentId == parentId).toList();
 });

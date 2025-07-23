@@ -4,18 +4,18 @@ import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/widgets/task_item_widget.dart';
 
 class TaskListWidget extends ConsumerWidget {
-  final String listId;
+  final String parentId;
   final bool isEditing;
 
   const TaskListWidget({
     super.key,
-    required this.listId,
+    required this.parentId,
     this.isEditing = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tasks = ref.watch(taskByListProvider(listId));
+    final tasks = ref.watch(taskByParentProvider(parentId));
     if (tasks.isEmpty) return const SizedBox.shrink();
 
     return ListView.builder(
@@ -24,9 +24,9 @@ class TaskListWidget extends ConsumerWidget {
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
-        return TaskItemWidget(
+        return TaskWidget(
           key: ValueKey(task.id),
-          taskItemId: task.id,
+          taskId: task.id,
           isEditing: isEditing,
         );
       },

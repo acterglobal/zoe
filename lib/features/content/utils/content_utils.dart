@@ -50,6 +50,16 @@ void reorderContent(WidgetRef ref, String contentId, int newOrderIndex) {
           .read(listsrovider.notifier)
           .updateListOrderIndex(contentId, newOrderIndex);
       break;
+    case ContentType.task:
+      ref
+          .read(taskListProvider.notifier)
+          .updateTaskOrderIndex(contentId, newOrderIndex);
+      break;
+    case ContentType.bullet:
+      ref
+          .read(bulletListProvider.notifier)
+          .updateBulletOrderIndex(contentId, newOrderIndex);
+      break;
   }
 }
 
@@ -85,7 +95,7 @@ void addNewBulletedListContent(WidgetRef ref, parentId, String sheetId) {
     parentId: parentId,
     sheetId: sheetId,
     title: '',
-    listType: ListType.bulleted,
+    listType: ContentType.bullet,
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(bulletedListContentModel);
@@ -102,7 +112,7 @@ void addNewTaskListContent(WidgetRef ref, parentId, String sheetId) {
     parentId: parentId,
     sheetId: sheetId,
     title: '',
-    listType: ListType.task,
+    listType: ContentType.task,
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(toDoListContentModel);

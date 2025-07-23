@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/bullets/model/bullet_item_model.dart';
+import 'package:zoey/features/bullets/model/bullet_model.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 
 class BulletItemWidget extends ConsumerWidget {
@@ -32,7 +32,7 @@ class BulletItemWidget extends ConsumerWidget {
   Widget _buildBulletItemContent(
     BuildContext context,
     WidgetRef ref,
-    BulletItem bulletItem,
+    BulletModel bulletItem,
     bool isEditing,
   ) {
     return Row(
