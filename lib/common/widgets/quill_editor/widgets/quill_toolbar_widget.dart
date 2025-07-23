@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:zoey/common/actions/quill_actions.dart';
-import 'package:zoey/common/widgets/quill_toolbar_button.dart';
+import 'package:zoey/common/widgets/quill_editor/widgets/quill_toolbar_button.dart';
+import '../actions/quill_actions.dart';
 
 /// Keyboard-aware toolbar that appears above the keyboard
 class QuillToolbar extends StatefulWidget {
@@ -67,7 +67,9 @@ class _QuillToolbarState extends State<QuillToolbar> {
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+              color: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.2),
             ),
           ),
         ),
@@ -91,28 +93,44 @@ class _QuillToolbarState extends State<QuillToolbar> {
         context: context,
         icon: Icons.format_bold,
         isActive: isAttributeActive(widget.controller, Attribute.bold),
-        onPressed: () => toggleAttribute(widget.controller, Attribute.bold, onButtonPressed: widget.onButtonPressed),
+        onPressed: () => toggleAttribute(
+          widget.controller,
+          Attribute.bold,
+          onButtonPressed: widget.onButtonPressed,
+        ),
       ),
       const SizedBox(width: 8),
       buildToolbarButton(
         context: context,
         icon: Icons.format_italic,
         isActive: isAttributeActive(widget.controller, Attribute.italic),
-        onPressed: () => toggleAttribute(widget.controller, Attribute.italic, onButtonPressed: widget.onButtonPressed),
+        onPressed: () => toggleAttribute(
+          widget.controller,
+          Attribute.italic,
+          onButtonPressed: widget.onButtonPressed,
+        ),
       ),
       const SizedBox(width: 8),
       buildToolbarButton(
         context: context,
         icon: Icons.format_underline,
         isActive: isAttributeActive(widget.controller, Attribute.underline),
-        onPressed: () => toggleAttribute(widget.controller, Attribute.underline, onButtonPressed: widget.onButtonPressed),
+        onPressed: () => toggleAttribute(
+          widget.controller,
+          Attribute.underline,
+          onButtonPressed: widget.onButtonPressed,
+        ),
       ),
       const SizedBox(width: 8),
       buildToolbarButton(
         context: context,
         icon: Icons.format_strikethrough,
         isActive: isAttributeActive(widget.controller, Attribute.strikeThrough),
-        onPressed: () => toggleAttribute(widget.controller, Attribute.strikeThrough, onButtonPressed: widget.onButtonPressed),
+        onPressed: () => toggleAttribute(
+          widget.controller,
+          Attribute.strikeThrough,
+          onButtonPressed: widget.onButtonPressed,
+        ),
       ),
     ];
   }
@@ -125,14 +143,22 @@ class _QuillToolbarState extends State<QuillToolbar> {
         context: context,
         icon: Icons.format_quote,
         isActive: isAttributeActive(widget.controller, Attribute.blockQuote),
-        onPressed: () => toggleAttribute(widget.controller, Attribute.blockQuote, onButtonPressed: widget.onButtonPressed),
+        onPressed: () => toggleAttribute(
+          widget.controller,
+          Attribute.blockQuote,
+          onButtonPressed: widget.onButtonPressed,
+        ),
       ),
       const SizedBox(width: 8),
       buildToolbarButton(
         context: context,
         icon: Icons.code,
         isActive: isAttributeActive(widget.controller, Attribute.codeBlock),
-        onPressed: () => toggleAttribute(widget.controller, Attribute.codeBlock, onButtonPressed: widget.onButtonPressed),
+        onPressed: () => toggleAttribute(
+          widget.controller,
+          Attribute.codeBlock,
+          onButtonPressed: widget.onButtonPressed,
+        ),
       ),
     ];
   }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/providers/quill_toolbar_providers.dart';
+import 'package:zoey/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_html_editor_text_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/common/widgets/view_quill_editor_toolbar_widget.dart';
+import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_toolbar_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/sheet/actions/delete_sheet.dart';
@@ -38,7 +38,7 @@ class SheetDetailScreen extends ConsumerWidget {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    child: ViewQuillEditorToolbarWidget(
+                    child: QuillEditorToolbarWidget(
                       controller: toolbarState.activeController,
                       focusNode: toolbarState.activeFocusNode,
                       isToolbarVisible: toolbarState.isToolbarVisible,
@@ -124,7 +124,10 @@ class SheetDetailScreen extends ConsumerWidget {
           initialRichContent: sheet.description?.htmlText,
           textStyle: Theme.of(context).textTheme.bodyLarge,
           onContentChanged: (plainText, htmlText) => Future.microtask(
-            () => updateSheetDescription(ref, sheetId, htmlText),
+            () => updateSheetDescription(ref, sheetId, (
+              plainText: plainText,
+              htmlText: htmlText,
+            )),
           ),
         ),
       ],

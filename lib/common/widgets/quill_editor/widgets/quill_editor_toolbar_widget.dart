@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zoey/common/utils/common_utils.dart';
-import 'package:zoey/common/widgets/quill_toolbar_widget.dart';
+import 'package:zoey/common/widgets/quill_editor/widgets/quill_toolbar_widget.dart';
 
-class ViewQuillEditorToolbarWidget extends StatefulWidget {
+class QuillEditorToolbarWidget extends StatefulWidget {
   final QuillController? controller;
   final FocusNode? focusNode;
   final bool isToolbarVisible;
   final VoidCallback? onReturnFocusToEditor;
 
-  const ViewQuillEditorToolbarWidget({
+  const QuillEditorToolbarWidget({
     super.key,
     this.controller,
     this.focusNode,
@@ -18,10 +18,11 @@ class ViewQuillEditorToolbarWidget extends StatefulWidget {
   });
 
   @override
-  State<ViewQuillEditorToolbarWidget> createState() => _ViewQuillEditorToolbarWidgetState();
+  State<QuillEditorToolbarWidget> createState() =>
+      _QuillEditorToolbarWidgetState();
 }
 
-class _ViewQuillEditorToolbarWidgetState extends State<ViewQuillEditorToolbarWidget> {
+class _QuillEditorToolbarWidgetState extends State<QuillEditorToolbarWidget> {
   @override
   Widget build(BuildContext context) {
     return _buildBottomToolbar(context);
@@ -30,9 +31,10 @@ class _ViewQuillEditorToolbarWidgetState extends State<ViewQuillEditorToolbarWid
   /// Build the bottom toolbar that appears when text blocks are focused
   Widget _buildBottomToolbar(BuildContext context) {
     final isDesktopPlatform = CommonUtils.isDesktop(context);
-    final shouldShow = widget.isToolbarVisible && 
-                      widget.controller != null && 
-                      (isDesktopPlatform ? widget.focusNode != null : true);
+    final shouldShow =
+        widget.isToolbarVisible &&
+        widget.controller != null &&
+        (isDesktopPlatform ? widget.focusNode != null : true);
 
     return _buildAnimatedToolbar(
       shouldShow,
@@ -45,10 +47,10 @@ class _ViewQuillEditorToolbarWidgetState extends State<ViewQuillEditorToolbarWid
 
   /// Build animated toolbar container
   Widget _buildAnimatedToolbar(
-    bool shouldShow, 
+    bool shouldShow,
     int duration, {
-    Curve? curve, 
-    QuillController? controller, 
+    Curve? curve,
+    QuillController? controller,
     FocusNode? focusNode,
   }) {
     return Material(

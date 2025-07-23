@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/quill_delta.dart';
 import 'dart:convert';
-import 'package:zoey/core/config/quill_editor_config.dart';
+import 'package:zoey/common/widgets/quill_editor/config/quill_editor_config.dart';
 
 /// Manages QuillController lifecycle and configuration for rich text editing
 class QuillEditorManager {
@@ -27,11 +27,11 @@ class QuillEditorManager {
     VoidCallback? onContentChanged,
     Function(QuillController?, FocusNode?)? onFocusChanged,
     bool readOnly = false,
-  })  : _initialContent = initialContent,
-        _initialRichContent = initialRichContent,
-        _onContentChanged = onContentChanged,
-        _onFocusChanged = onFocusChanged,
-        _isReadOnly = readOnly {
+  }) : _initialContent = initialContent,
+       _initialRichContent = initialRichContent,
+       _onContentChanged = onContentChanged,
+       _onFocusChanged = onFocusChanged,
+       _isReadOnly = readOnly {
     _editorStyles = QuillEditorStyles();
   }
 
@@ -44,7 +44,8 @@ class QuillEditorManager {
         config: _editorStyles.getControllerConfig(),
       );
       _focusNode = FocusNode();
-      _focusNode!.canRequestFocus = !_isReadOnly; // Set focus based on read-only state
+      _focusNode!.canRequestFocus =
+          !_isReadOnly; // Set focus based on read-only state
       _scrollController = ScrollController();
 
       _setupListeners();
@@ -54,7 +55,8 @@ class QuillEditorManager {
       // Fallback initialization if the basic config fails
       _controller = QuillController.basic();
       _focusNode = FocusNode();
-      _focusNode!.canRequestFocus = !_isReadOnly; // Set focus based on read-only state
+      _focusNode!.canRequestFocus =
+          !_isReadOnly; // Set focus based on read-only state
       _scrollController = ScrollController();
 
       _setupListeners();
@@ -141,7 +143,7 @@ class QuillEditorManager {
       }
 
       // Restore cursor position if it's still valid
-      if (currentSelection.isValid && 
+      if (currentSelection.isValid &&
           currentSelection.end <= _controller!.document.length) {
         _controller!.updateSelection(currentSelection, ChangeSource.local);
       }
@@ -206,4 +208,4 @@ class QuillEditorManager {
     _focusNode?.dispose();
     _scrollController?.dispose();
   }
-} 
+}

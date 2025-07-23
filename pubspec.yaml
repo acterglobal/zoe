@@ -69,6 +69,7 @@ dependencies:
   flutter_quill_extensions: ^11.0.0
   flutter_quill_delta_from_html: ^1.5.2
 
+# Added cause; without this, it gives a 'Terminating app due to uncaught exception 'NSInvalidArgumentException'' error on macOS.
 dependency_overrides:
   flutter_quill:
     git:

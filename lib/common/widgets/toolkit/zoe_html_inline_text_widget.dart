@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/core/config/quill_editor_manager.dart';
-import 'package:zoey/core/config/quill_editor_config.dart';
-import 'package:zoey/common/providers/quill_toolbar_providers.dart';
+import 'package:zoey/common/widgets/quill_editor/config/quill_editor_manager.dart';
+import 'package:zoey/common/widgets/quill_editor/config/quill_editor_config.dart';
+import 'package:zoey/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
 import 'package:flutter_quill_delta_from_html/flutter_quill_delta_from_html.dart';
 import 'dart:convert';
 
@@ -14,7 +14,8 @@ class ZoeHtmlTextEditWidget extends ConsumerStatefulWidget {
   final String? hintText;
   final bool autoFocus;
   final Function(String plainText, String richTextJson)? onContentChanged;
-  final Function(QuillController?, FocusNode?)? onFocusChanged; // Keep for backward compatibility
+  final Function(QuillController?, FocusNode?)?
+  onFocusChanged; // Keep for backward compatibility
   final TextStyle? textStyle;
 
   const ZoeHtmlTextEditWidget({
@@ -30,7 +31,8 @@ class ZoeHtmlTextEditWidget extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ZoeHtmlTextEditWidget> createState() => _ZoeHtmlTextEditWidgetState();
+  ConsumerState<ZoeHtmlTextEditWidget> createState() =>
+      _ZoeHtmlTextEditWidgetState();
 }
 
 class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
@@ -66,15 +68,14 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     if (sourceContentChanged && _isInitialized) {
       _lastInitialContent = widget.initialContent;
       _lastInitialRichContent = widget.initialRichContent;
-      
+
       // Convert HTML to Quill Delta if needed for content update
-      String? processedRichContent = _convertHtmlToQuillDelta(widget.initialRichContent);
-      
-      // Update content without reinitializing to preserve focus
-      _editorManager.updateContent(
-        widget.initialContent,
-        processedRichContent,
+      String? processedRichContent = _convertHtmlToQuillDelta(
+        widget.initialRichContent,
       );
+
+      // Update content without reinitializing to preserve focus
+      _editorManager.updateContent(widget.initialContent, processedRichContent);
     } else if (sourceContentChanged) {
       _lastInitialContent = widget.initialContent;
       _lastInitialRichContent = widget.initialRichContent;
@@ -96,7 +97,9 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     }
 
     // Convert HTML to Quill Delta if needed
-    String? processedRichContent = _convertHtmlToQuillDelta(widget.initialRichContent);
+    String? processedRichContent = _convertHtmlToQuillDelta(
+      widget.initialRichContent,
+    );
 
     _editorManager = QuillEditorManager(
       initialContent: widget.initialContent,
@@ -117,12 +120,16 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
 
   /// Check if content is HTML (contains HTML tags) rather than Quill Delta JSON
   bool _isHtmlContent(String content) {
-    return content.contains('<') && content.contains('>') && !content.startsWith('[');
+    return content.contains('<') &&
+        content.contains('>') &&
+        !content.startsWith('[');
   }
 
   /// Convert HTML content to Quill Delta JSON, with fallback handling
   String? _convertHtmlToQuillDelta(String? htmlContent) {
-    if (htmlContent == null || htmlContent.isEmpty || !_isHtmlContent(htmlContent)) {
+    if (htmlContent == null ||
+        htmlContent.isEmpty ||
+        !_isHtmlContent(htmlContent)) {
       return htmlContent; // Return as-is if not HTML
     }
 
@@ -156,10 +163,9 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     Future.microtask(() {
       if (mounted) {
         if (focusNode?.hasFocus == true) {
-          ref.read(quillToolbarProvider.notifier).updateActiveEditor(
-            controller: controller,
-            focusNode: focusNode,
-          );
+          ref
+              .read(quillToolbarProvider.notifier)
+              .updateActiveEditor(controller: controller, focusNode: focusNode);
         } else {
           ref.read(quillToolbarProvider.notifier).clearActiveEditor();
         }
@@ -217,8 +223,8 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     } else if (hasPlainContent) {
       // Show plain text when no rich content is available
       return Text(
-          widget.initialContent!,
-          style: widget.textStyle ?? _editorStyles.getDefaultTextStyle(context),
+        widget.initialContent!,
+        style: widget.textStyle ?? _editorStyles.getDefaultTextStyle(context),
       );
     } else {
       // Show hint text when no content
