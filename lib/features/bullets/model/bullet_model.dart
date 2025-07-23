@@ -12,7 +12,7 @@ class BulletModel extends ContentModel {
     super.createdAt,
     super.updatedAt,
     super.orderIndex,
-  }) : super(type: ContentType.task, emoji: null);
+  }) : super(type: ContentType.bullet, emoji: null);
 
   BulletModel copyWith({
     /// ContentModel properties

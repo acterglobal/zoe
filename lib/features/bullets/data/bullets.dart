@@ -214,4 +214,58 @@ final bulletList = [
           '<p>Adjust themes and preferences to make Zoey feel like your own personal workspace</p>',
     ),
   ),
+
+  // Direct sheet-level bullets (parentId: 'sheet-1')
+  BulletModel(
+    id: 'bullet-direct-1',
+    sheetId: 'sheet-1',
+    parentId: 'sheet-1',
+    title: 'Cross-platform compatibility across all devices',
+    orderIndex: 13,
+    description: (
+      plainText:
+          'Zoey works seamlessly on mobile, tablet, and desktop, ensuring your content is always accessible wherever you are',
+      htmlText:
+          '<p>Zoey works seamlessly on mobile, tablet, and desktop, ensuring your content is always accessible wherever you are</p>',
+    ),
+  ),
+  BulletModel(
+    id: 'bullet-direct-2',
+    sheetId: 'sheet-1',
+    parentId: 'sheet-1',
+    title: 'Offline-first architecture for reliable access',
+    orderIndex: 14,
+    description: (
+      plainText:
+          'Work without internet connection and sync automatically when you\'re back online. Your productivity never stops.',
+      htmlText:
+          '<p>Work without internet connection and sync automatically when you\'re back online. Your productivity never stops.</p>',
+    ),
+  ),
+  BulletModel(
+    id: 'bullet-direct-3',
+    sheetId: 'sheet-1',
+    parentId: 'sheet-1',
+    title: 'Privacy-focused design with local data storage',
+    orderIndex: 15,
+    description: (
+      plainText:
+          'Your data stays on your device by default. You control what gets shared and what stays private.',
+      htmlText:
+          '<p>Your data stays on your device by default. You control what gets shared and what stays private.</p>',
+    ),
+  ),
+  BulletModel(
+    id: 'bullet-direct-4',
+    sheetId: 'sheet-1',
+    parentId: 'sheet-1',
+    title: 'Smart content suggestions and auto-completion',
+    orderIndex: 16,
+    description: (
+      plainText:
+          'Zoey learns from your patterns and suggests relevant content, helping you work faster and more efficiently',
+      htmlText:
+          '<p>Zoey learns from your patterns and suggests relevant content, helping you work faster and more efficiently</p>',
+    ),
+  ),
 ];
