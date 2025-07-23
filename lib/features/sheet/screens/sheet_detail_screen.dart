@@ -120,7 +120,7 @@ class SheetDetailScreen extends ConsumerWidget {
           hintText: 'Add a description',
           isEditing: isEditing,
           isHtml: true,
-          text: sheet.description?.plainText,
+          text: sheet.description?.htmlText,
           textStyle: Theme.of(context).textTheme.bodyLarge,
           onTextChanged: (value) => Future.microtask(
             () => updateSheetDescription(ref, sheetId, value),

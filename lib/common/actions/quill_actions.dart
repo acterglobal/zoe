@@ -15,11 +15,6 @@ bool isAttributeActive(QuillController controller, Attribute attribute) {
     // Get current selection attributes
     final attrs = controller.getSelectionStyle().attributes;
 
-    // Special handling for list attributes
-    if (attribute.key == Attribute.list.key) {
-      return isListAttributeActive(attribute, attrs);
-    }
-
     // For other attributes, check if the key exists
     return attrs.containsKey(attribute.key);
   } catch (e) {
@@ -39,15 +34,6 @@ bool isBlockAttributeActive(QuillController controller, Attribute attribute) {
   return false;
 }
 
-/// Check if a list attribute is active with specific value
-bool isListAttributeActive(Attribute attribute, Map<String, Attribute> attrs) {
-  final listAttr = attrs[Attribute.list.key];
-  if (listAttr != null) {
-    return listAttr.value == attribute.value;
-  }
-  return false;
-}
-
 /// Toggle an attribute on/off
 void toggleAttribute(QuillController controller, Attribute attribute, {VoidCallback? onButtonPressed}) {
   final selection = controller.selection;
@@ -60,11 +46,7 @@ void toggleAttribute(QuillController controller, Attribute attribute, {VoidCallb
     // Check current state and toggle accordingly
     final wasActive = isAttributeActive(controller, attribute);
 
-    if (attribute.key == Attribute.list.key) {
-      toggleListAttribute(controller, attribute, wasActive);
-    } else {
-      toggleStandardAttribute(controller, attribute, wasActive);
-    }
+    toggleStandardAttribute(controller, attribute, wasActive);
   }
 
   // Return focus to editor after button interaction
@@ -82,23 +64,6 @@ void handleInvalidSelection(QuillController controller, Attribute attribute) {
       TextSelection.collapsed(offset: endPosition),
       ChangeSource.local,
     );
-    controller.formatSelection(attribute);
-  }
-}
-
-/// Toggle list attributes with special handling
-void toggleListAttribute(QuillController controller, Attribute attribute, bool wasActive) {
-  final currentStyle = controller.getSelectionStyle();
-  final currentListAttr = currentStyle.attributes[Attribute.list.key];
-
-  if (wasActive) {
-    // Remove the same list type
-    controller.formatSelection(Attribute.clone(attribute, null));
-  } else {
-    // Remove current list if different, then apply new one
-    if (currentListAttr != null) {
-      controller.formatSelection(Attribute.clone(Attribute.list, null));
-    }
     controller.formatSelection(attribute);
   }
 }
