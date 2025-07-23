@@ -11,3 +11,11 @@ final eventProvider = Provider.family<EventModel?, String>((ref, eventId) {
   final eventList = ref.watch(eventListProvider);
   return eventList.where((e) => e.id == eventId).firstOrNull;
 });
+
+final eventByParentProvider = Provider.family<List<EventModel>, String>((
+  ref,
+  parentId,
+) {
+  final eventList = ref.watch(eventListProvider);
+  return eventList.where((e) => e.parentId == parentId).toList();
+});

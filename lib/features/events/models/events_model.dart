@@ -20,7 +20,7 @@ class EventModel extends ContentModel {
     /// EventModel properties
     required this.startDate,
     required this.endDate,
-  }) : super(type: ContentType.event, emoji: null);
+  }) : super(type: ContentType.event, emoji: '📅');
 
   EventModel copyWith({
     /// ContentModel properties
