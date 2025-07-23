@@ -6,36 +6,19 @@ import 'package:zoey/features/sheet/models/sheet_model.dart';
 class TaskNotifier extends StateNotifier<List<TaskModel>> {
   TaskNotifier() : super(tasks);
 
-  void addTask(String title, String listId, String sheetId) {
-    final newTask = TaskModel(listId: listId, title: title, sheetId: sheetId);
+  void addTask(String title, String parentId, String sheetId) {
+    final newTask = TaskModel(
+      parentId: parentId,
+      title: title,
+      sheetId: sheetId,
+      dueDate: DateTime.now(),
+      isCompleted: false,
+    );
     state = [...state, newTask];
   }
 
   void deleteTask(String taskId) {
     state = state.where((t) => t.id != taskId).toList();
-  }
-
-  void updateTask(
-    String taskId, {
-    String? title,
-    Description? description,
-    bool? isCompleted,
-    DateTime? dueDate,
-    String? listId,
-  }) {
-    state = [
-      for (final task in state)
-        if (task.id == taskId)
-          task.copyWith(
-            title: title,
-            description: description,
-            isCompleted: isCompleted,
-            dueDate: dueDate,
-            listId: listId,
-          )
-        else
-          task,
-    ];
   }
 
   void toggleTaskCompletion(String taskId) {
@@ -79,6 +62,13 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
     state = [
       for (final task in state)
         if (task.id == taskId) task.copyWith(dueDate: dueDate) else task,
+    ];
+  }
+
+  void updateTaskOrderIndex(String taskId, int orderIndex) {
+    state = [
+      for (final task in state)
+        if (task.id == taskId) task.copyWith(orderIndex: orderIndex) else task,
     ];
   }
 }

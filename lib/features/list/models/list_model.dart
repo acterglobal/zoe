@@ -1,15 +1,11 @@
 import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 
-enum ListType { bulleted, task }
-
 class ListModel extends ContentModel {
-  /// ListModel properties
-  final ListType listType;
-
   ListModel({
     /// ContentModel properties
     super.id,
+    required super.type,
     required super.parentId,
     required super.sheetId,
     required super.title,
@@ -18,14 +14,12 @@ class ListModel extends ContentModel {
     super.createdAt,
     super.updatedAt,
     super.orderIndex,
-
-    /// ListModel properties
-    required this.listType,
-  }) : super(type: ContentType.list);
+  });
 
   ListModel copyWith({
     /// ContentModel properties
     String? id,
+    ContentType? type,
     String? sheetId,
     String? parentId,
     String? title,
@@ -34,13 +28,11 @@ class ListModel extends ContentModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? orderIndex,
-
-    /// ListModel properties
-    ListType? listType,
   }) {
     return ListModel(
       /// ContentModel properties
       id: id ?? this.id,
+      type: type ?? this.type,
       sheetId: sheetId ?? this.sheetId,
       parentId: parentId ?? this.parentId,
       title: title ?? this.title,
@@ -49,9 +41,6 @@ class ListModel extends ContentModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
       orderIndex: orderIndex ?? this.orderIndex,
-
-      /// ListModel properties
-      listType: listType ?? this.listType,
     );
   }
 }

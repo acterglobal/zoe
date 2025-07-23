@@ -8,44 +8,40 @@ import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 
-class TaskItemWidget extends ConsumerWidget {
-  final String taskItemId;
+class TaskWidget extends ConsumerWidget {
+  final String taskId;
   final bool isEditing;
 
-  const TaskItemWidget({
-    super.key,
-    required this.taskItemId,
-    this.isEditing = false,
-  });
+  const TaskWidget({super.key, required this.taskId, this.isEditing = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final taskItem = ref.watch(taskProvider(taskItemId));
+    final task = ref.watch(taskProvider(taskId));
 
-    if (taskItem == null) return const SizedBox.shrink();
+    if (task == null) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.only(left: 14),
-      child: _buildTaskItemContent(context, ref, taskItem, isEditing),
+      child: _buildTaskItemContent(context, ref, task, isEditing),
     );
   }
 
   Widget _buildTaskItemContent(
     BuildContext context,
     WidgetRef ref,
-    TaskModel taskItem,
+    TaskModel task,
     bool isEditing,
   ) {
     return Row(
       children: [
-        _buildTaskItemIcon(context, ref, taskItem),
+        _buildTaskItemIcon(context, ref, task),
         const SizedBox(width: 10),
         Expanded(
           child: _buildTaskItemTitle(
             context,
             ref,
-            taskItem.title,
-            taskItem.isCompleted,
+            task.title,
+            task.isCompleted,
           ),
         ),
         const SizedBox(width: 6),
@@ -70,7 +66,7 @@ class TaskItemWidget extends ConsumerWidget {
       onChanged: (value) {
         ref
             .read(taskListProvider.notifier)
-            .updateTaskCompletion(taskItemId, value ?? false);
+            .updateTaskCompletion(taskId, value ?? false);
       },
     );
   }
@@ -92,7 +88,7 @@ class TaskItemWidget extends ConsumerWidget {
             : TextDecoration.none,
       ),
       onTextChanged: (value) {
-        ref.read(taskListProvider.notifier).updateTaskTitle(taskItemId, value);
+        ref.read(taskListProvider.notifier).updateTaskTitle(taskId, value);
       },
     );
   }
@@ -104,7 +100,7 @@ class TaskItemWidget extends ConsumerWidget {
         // Edit list item
         GestureDetector(
           onTap: () => context.push(
-            AppRoutes.taskDetail.route.replaceAll(':taskItemId', taskItemId),
+            AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
           ),
           child: Icon(
             Icons.edit,
@@ -119,7 +115,7 @@ class TaskItemWidget extends ConsumerWidget {
         // Delete list item
         ZoeCloseButtonWidget(
           onTap: () {
-            ref.read(taskListProvider.notifier).deleteTask(taskItemId);
+            ref.read(taskListProvider.notifier).deleteTask(taskId);
           },
         ),
       ],

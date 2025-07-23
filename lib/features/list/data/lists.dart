@@ -1,3 +1,4 @@
+import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 
 final lists = [
@@ -7,7 +8,7 @@ final lists = [
     id: 'list-bulleted-1',
     title: 'Key Features at a Glance',
     emoji: '✨',
-    listType: ListType.bulleted,
+    type: ContentType.bullet,
     orderIndex: 4,
   ),
   ListModel(
@@ -16,7 +17,7 @@ final lists = [
     id: 'list-tasks-1',
     title: 'Your Onboarding Checklist',
     emoji: '🚀',
-    listType: ListType.task,
+    type: ContentType.task,
     orderIndex: 5,
   ),
   ListModel(
@@ -25,7 +26,7 @@ final lists = [
     id: 'list-bulleted-2',
     title: 'Best Practices & Pro Tips',
     emoji: '🎯',
-    listType: ListType.bulleted,
+    type: ContentType.bullet,
     orderIndex: 7,
   ),
   ListModel(
@@ -34,7 +35,7 @@ final lists = [
     id: 'list-bulleted-3',
     title: 'What You Can Do Next',
     emoji: '🔗',
-    listType: ListType.bulleted,
+    type: ContentType.bullet,
     orderIndex: 8,
   ),
 ];
