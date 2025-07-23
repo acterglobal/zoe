@@ -36,7 +36,7 @@ class ContentMenuOptions extends StatelessWidget {
           _buildAddContentOption(
             context,
             icon: Icons.event_outlined,
-            title: 'Event',
+            title: 'Event List',
             description: 'Schedule and track events',
             onTap: onTapEvent,
           ),
