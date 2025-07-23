@@ -19,7 +19,10 @@ class EventListWidget extends ConsumerWidget {
       itemCount: events.length,
       itemBuilder: (context, index) {
         final event = events[index];
-        return EventWidget(key: ValueKey(event.id), eventsId: event.id);
+        return Padding(
+          padding: const EdgeInsets.only(left: 24),
+          child: EventWidget(key: ValueKey(event.id), eventsId: event.id),
+        );
       },
     );
   }

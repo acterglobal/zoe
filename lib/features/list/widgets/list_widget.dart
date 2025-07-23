@@ -15,7 +15,9 @@ import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/widgets/task_list_widget.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/bullets/widgets/bullet_list_widget.dart';
-import 'package:zoey/features/text/widgets/text_widget.dart';
+import 'package:zoey/features/text/models/text_model.dart';
+import 'package:zoey/features/text/providers/text_providers.dart';
+import 'package:zoey/features/text/widgets/text_list_widget.dart';
 
 class ListWidget extends ConsumerWidget {
   final String listId;
@@ -106,7 +108,7 @@ class ListWidget extends ConsumerWidget {
     return switch (list.listType) {
       ContentType.bullet => BulletListWidget(parentId: listId),
       ContentType.task => TaskListWidget(parentId: listId),
-      ContentType.text => TextWidget(textContentId: listId),
+      ContentType.text => TextListWidget(parentId: listId),
       ContentType.event => EventListWidget(parentId: listId),
       _ => const SizedBox.shrink(),
     };
@@ -143,6 +145,19 @@ class ListWidget extends ConsumerWidget {
                       orderIndex: 0,
                       startDate: DateTime.now(),
                       endDate: DateTime.now(),
+                    ),
+                  );
+              break;
+            case ContentType.text:
+              ref
+                  .read(textListProvider.notifier)
+                  .addText(
+                    TextModel(
+                      sheetId: sheetId,
+                      parentId: listId,
+                      title: '',
+                      orderIndex: 0,
+                      description: (plainText: '', htmlText: ''),
                     ),
                   );
               break;

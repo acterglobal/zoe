@@ -10,3 +10,11 @@ final textProvider = Provider.family<TextModel?, String>((ref, textId) {
   final textList = ref.watch(textListProvider);
   return textList.where((t) => t.id == textId).firstOrNull;
 });
+
+final textByParentProvider = Provider.family<List<TextModel>, String>((
+  ref,
+  parentId,
+) {
+  final textList = ref.watch(textListProvider);
+  return textList.where((t) => t.parentId == parentId).toList();
+});
