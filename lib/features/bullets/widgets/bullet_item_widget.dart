@@ -25,7 +25,10 @@ class BulletItemWidget extends ConsumerWidget {
 
     if (bulletItem == null) return const SizedBox.shrink();
 
-    return _buildBulletItemContent(context, ref, bulletItem, isEditing);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2, top: 2, left: 12),
+      child: _buildBulletItemContent(context, ref, bulletItem, isEditing),
+    );
   }
 
   Widget _buildBulletItemContent(
