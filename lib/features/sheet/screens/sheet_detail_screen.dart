@@ -4,6 +4,7 @@ import 'package:zoey/common/providers/quill_toolbar_providers.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_html_editor_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/common/widgets/view_quill_editor_toolbar_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
@@ -116,14 +117,14 @@ class SheetDetailScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        ZoeInlineTextEditWidget(
+        ZoeHtmlTextEditWidget(
           hintText: 'Add a description',
           isEditing: isEditing,
-          isHtml: true,
-          text: sheet.description?.htmlText,
+          initialContent: sheet.description?.plainText,
+          initialRichContent: sheet.description?.htmlText,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          onTextChanged: (value) => Future.microtask(
-            () => updateSheetDescription(ref, sheetId, value),
+          onContentChanged: (plainText, htmlText) => Future.microtask(
+            () => updateSheetDescription(ref, sheetId, htmlText),
           ),
         ),
       ],

@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_html_editor_text_widget.dart';
 
 class ZoeInlineTextEditWidget extends StatefulWidget {
   final String? text;
   final String? hintText;
   final Function(String) onTextChanged;
   final bool isEditing;
-  final bool isHtml;
   final TextStyle? textStyle;
-  final Function(QuillController?, FocusNode?)? onFocusChanged;
 
   const ZoeInlineTextEditWidget({
     super.key,
@@ -17,9 +13,7 @@ class ZoeInlineTextEditWidget extends StatefulWidget {
     this.hintText,
     required this.onTextChanged,
     this.isEditing = false,
-    this.isHtml = false,
     this.textStyle,
-    this.onFocusChanged,
   });
 
   @override
@@ -45,7 +39,7 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
   @override
   Widget build(BuildContext context) {
     // Plain text editing mode
-    if (widget.isEditing && !widget.isHtml) {
+    if (widget.isEditing) {
       return TextField(
         controller: controller,
         style: widget.textStyle,
@@ -56,21 +50,6 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
         ),
         maxLines: null,
         onChanged: widget.onTextChanged,
-      );
-    }
-
-    // Rich text editing mode (when onHtmlChanged is provided)
-    if (widget.isHtml) {
-      return ZoeHtmlTextEditWidget(
-        initialContent: controller.text,
-        initialRichContent: widget.text,
-        isEditing: widget.isEditing,
-        hintText: widget.hintText,
-        textStyle: widget.textStyle,
-        onContentChanged: (plainText, richTextJson) {
-          widget.onTextChanged(richTextJson);
-        },
-        onFocusChanged: widget.onFocusChanged,
       );
     }
 
