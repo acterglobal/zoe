@@ -8,7 +8,6 @@ class ListModel extends ContentModel {
   ListModel({
     /// ContentModel properties
     super.id,
-    required super.type,
     required super.parentId,
     required super.sheetId,
     required super.title,
@@ -20,7 +19,7 @@ class ListModel extends ContentModel {
 
     /// ListModel specific properties
     required this.listType,
-  });
+  }) : super(type: ContentType.list);
 
   ListModel copyWith({
     /// ContentModel properties
@@ -41,7 +40,6 @@ class ListModel extends ContentModel {
     return ListModel(
       /// ContentModel properties
       id: id ?? this.id,
-      type: type ?? this.type,
       sheetId: sheetId ?? this.sheetId,
       parentId: parentId ?? this.parentId,
       title: title ?? this.title,

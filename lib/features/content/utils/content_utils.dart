@@ -95,7 +95,6 @@ void addNewBulletedListContent(WidgetRef ref, parentId, String sheetId) {
     parentId: parentId,
     sheetId: sheetId,
     title: '',
-    type: ContentType.list,
     listType: ContentType.bullet,
     orderIndex: orderIndex,
   );
@@ -113,7 +112,6 @@ void addNewTaskListContent(WidgetRef ref, parentId, String sheetId) {
     parentId: parentId,
     sheetId: sheetId,
     title: '',
-    type: ContentType.list,
     listType: ContentType.task,
     orderIndex: orderIndex,
   );
