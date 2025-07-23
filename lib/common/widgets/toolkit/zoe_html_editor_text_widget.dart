@@ -68,19 +68,7 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
       _lastInitialRichContent = widget.initialRichContent;
       
       // Convert HTML to Quill Delta if needed for content update
-      String? processedRichContent = widget.initialRichContent;
-      
-      if (widget.initialRichContent != null && 
-          widget.initialRichContent!.isNotEmpty &&
-          _isHtmlContent(widget.initialRichContent!)) {
-        try {
-          final delta = HtmlToDelta().convert(widget.initialRichContent!);
-          processedRichContent = jsonEncode(delta.toJson());
-        } catch (e) {
-          processedRichContent = null;
-          debugPrint('HTML to Delta conversion failed: $e');
-        }
-      }
+      String? processedRichContent = _convertHtmlToQuillDelta(widget.initialRichContent);
       
       // Update content without reinitializing to preserve focus
       _editorManager.updateContent(
@@ -108,21 +96,7 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     }
 
     // Convert HTML to Quill Delta if needed
-    String? processedRichContent = widget.initialRichContent;
-    
-    if (widget.initialRichContent != null && 
-        widget.initialRichContent!.isNotEmpty &&
-        _isHtmlContent(widget.initialRichContent!)) {
-      try {
-        // Convert HTML to Quill Delta JSON
-        final delta = HtmlToDelta().convert(widget.initialRichContent!);
-        processedRichContent = jsonEncode(delta.toJson());
-      } catch (e) {
-        // If conversion fails, use plain text as fallback
-        processedRichContent = null;
-        debugPrint('HTML to Delta conversion failed: $e');
-      }
-    }
+    String? processedRichContent = _convertHtmlToQuillDelta(widget.initialRichContent);
 
     _editorManager = QuillEditorManager(
       initialContent: widget.initialContent,
@@ -144,6 +118,21 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
   /// Check if content is HTML (contains HTML tags) rather than Quill Delta JSON
   bool _isHtmlContent(String content) {
     return content.contains('<') && content.contains('>') && !content.startsWith('[');
+  }
+
+  /// Convert HTML content to Quill Delta JSON, with fallback handling
+  String? _convertHtmlToQuillDelta(String? htmlContent) {
+    if (htmlContent == null || htmlContent.isEmpty || !_isHtmlContent(htmlContent)) {
+      return htmlContent; // Return as-is if not HTML
+    }
+
+    try {
+      final delta = HtmlToDelta().convert(htmlContent);
+      return jsonEncode(delta.toJson());
+    } catch (e) {
+      debugPrint('HTML to Delta conversion failed: $e');
+      return null; // Return null to fall back to plain text
+    }
   }
 
   /// Handle content changes from the QuillEditor
