@@ -6,6 +6,7 @@ import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/bullets/model/bullet_model.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
+import 'package:zoey/features/content/providers/content_menu_providers.dart';
 
 class BulletItemWidget extends ConsumerWidget {
   final String bulletItemId;
@@ -19,14 +20,12 @@ class BulletItemWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isEditing = ref.watch(isEditValueProvider);
     final bulletItem = ref.watch(bulletProvider(bulletItemId));
 
     if (bulletItem == null) return const SizedBox.shrink();
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8, top: 8, left: 24),
-      child: _buildBulletItemContent(context, ref, bulletItem, isEditing),
-    );
+    return _buildBulletItemContent(context, ref, bulletItem, isEditing);
   }
 
   Widget _buildBulletItemContent(
