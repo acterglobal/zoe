@@ -47,13 +47,4 @@ final lists = [
     listType: ContentType.event,
     orderIndex: 8,
   ),
-  ListModel(
-    sheetId: 'sheet-1',
-    parentId: 'sheet-1',
-    id: 'list-text-1',
-    title: 'Writing & Documentation Guide',
-    emoji: '📝',
-    listType: ContentType.text,
-    orderIndex: 9,
-  ),
 ];

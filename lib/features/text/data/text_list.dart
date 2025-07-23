@@ -57,32 +57,4 @@ final textList = [
           '<p>Here are some pro tips to help you make the most of Zoey:</p><p><strong>🎯 Start Small:</strong> Begin with one sheet and gradually add content as you get comfortable with the interface.</p><p><strong>📱 Use Icons:</strong> Choose meaningful icons for your sheets - they help you quickly identify different workspaces at a glance.</p><p><strong>📝 Be Descriptive:</strong> Add detailed descriptions to tasks and content blocks. Future you will thank you for the context!</p><p><strong>🔄 Stay Organized:</strong> Use the ordering system to arrange content logically within your sheets.</p><p><strong>⚡ Quick Actions:</strong> Look for quick action buttons and shortcuts throughout the interface to speed up your workflow.</p><p><strong>🏠 Home Dashboard:</strong> Your home screen shows all your sheets - use it as your central command center.</p>',
     ),
   ),
-  TextModel(
-    sheetId: 'sheet-1',
-    parentId: 'list-text-1',
-    id: 'text-content-5',
-    title: 'Getting Started with Text Blocks',
-    orderIndex: 1,
-    description: (
-      plainText:
-          'Text blocks are perfect for capturing detailed information, notes, and documentation. You can use them to write long-form content, explain complex concepts, or keep important reference materials. They support both plain text and rich HTML formatting for maximum flexibility.',
-      htmlText:
-          '<p><strong>Text blocks</strong> are perfect for capturing detailed information, notes, and documentation. You can use them to:</p><ul><li>Write long-form content</li><li>Explain complex concepts</li><li>Keep important reference materials</li></ul><p>They support both plain text and rich HTML formatting for maximum flexibility.</p>',
-    ),
-    emoji: '🚀',
-  ),
-  TextModel(
-    sheetId: 'sheet-1',
-    parentId: 'list-text-1',
-    id: 'text-content-6',
-    title: 'Best Practices for Text Organization',
-    emoji: '💡',
-    orderIndex: 2,
-    description: (
-      plainText:
-          'When organizing text content, consider using clear headings, breaking up long paragraphs, and adding relevant emojis to make your content more scannable. Group related information together and use consistent formatting throughout your sheets for a professional appearance.',
-      htmlText:
-          '<p>When organizing text content, consider:</p><ul><li><strong>Clear headings</strong> - Make content easy to scan</li><li><strong>Breaking up paragraphs</strong> - Improve readability</li><li><strong>Relevant emojis</strong> - Add visual interest</li><li><strong>Consistent formatting</strong> - Maintain professionalism</li></ul><p>Group related information together for better organization.</p>',
-    ),
-  ),
 ];
