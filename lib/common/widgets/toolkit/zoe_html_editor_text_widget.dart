@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/core/config/quill_editor_manager.dart';
 import 'package:zoey/core/config/quill_editor_config.dart';
 import 'package:zoey/common/providers/quill_toolbar_providers.dart';
+import 'package:flutter_quill_delta_from_html/flutter_quill_delta_from_html.dart';
+import 'dart:convert';
 
 class ZoeHtmlTextEditWidget extends ConsumerStatefulWidget {
   final String? initialContent;
@@ -64,10 +66,26 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     if (sourceContentChanged && _isInitialized) {
       _lastInitialContent = widget.initialContent;
       _lastInitialRichContent = widget.initialRichContent;
+      
+      // Convert HTML to Quill Delta if needed for content update
+      String? processedRichContent = widget.initialRichContent;
+      
+      if (widget.initialRichContent != null && 
+          widget.initialRichContent!.isNotEmpty &&
+          _isHtmlContent(widget.initialRichContent!)) {
+        try {
+          final delta = HtmlToDelta().convert(widget.initialRichContent!);
+          processedRichContent = jsonEncode(delta.toJson());
+        } catch (e) {
+          processedRichContent = null;
+          debugPrint('HTML to Delta conversion failed: $e');
+        }
+      }
+      
       // Update content without reinitializing to preserve focus
       _editorManager.updateContent(
         widget.initialContent,
-        widget.initialRichContent,
+        processedRichContent,
       );
     } else if (sourceContentChanged) {
       _lastInitialContent = widget.initialContent;
@@ -89,9 +107,26 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
       _editorManager.dispose();
     }
 
+    // Convert HTML to Quill Delta if needed
+    String? processedRichContent = widget.initialRichContent;
+    
+    if (widget.initialRichContent != null && 
+        widget.initialRichContent!.isNotEmpty &&
+        _isHtmlContent(widget.initialRichContent!)) {
+      try {
+        // Convert HTML to Quill Delta JSON
+        final delta = HtmlToDelta().convert(widget.initialRichContent!);
+        processedRichContent = jsonEncode(delta.toJson());
+      } catch (e) {
+        // If conversion fails, use plain text as fallback
+        processedRichContent = null;
+        debugPrint('HTML to Delta conversion failed: $e');
+      }
+    }
+
     _editorManager = QuillEditorManager(
       initialContent: widget.initialContent,
-      initialRichContent: widget.initialRichContent,
+      initialRichContent: processedRichContent,
       onContentChanged: _handleContentChanged,
       onFocusChanged: _handleFocusChanged,
       readOnly: !widget.isEditing,
@@ -106,13 +141,23 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     }
   }
 
+  /// Check if content is HTML (contains HTML tags) rather than Quill Delta JSON
+  bool _isHtmlContent(String content) {
+    return content.contains('<') && content.contains('>') && !content.startsWith('[');
+  }
+
   /// Handle content changes from the QuillEditor
   void _handleContentChanged() {
     if (widget.onContentChanged != null && widget.isEditing) {
-      widget.onContentChanged!(
-        _editorManager.plainText,
-        _editorManager.richTextJson,
-      );
+      // Delay the provider update to avoid modifying state during widget lifecycle
+      Future.microtask(() {
+        if (mounted && widget.onContentChanged != null) {
+          widget.onContentChanged!(
+            _editorManager.plainText,
+            _editorManager.richTextJson,
+          );
+        }
+      });
     }
   }
 

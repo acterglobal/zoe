@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_html_editor_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/text/models/text_model.dart';
@@ -114,15 +115,16 @@ class TextWidget extends ConsumerWidget {
     String htmlDescription,
     bool isEditing,
   ) {
-    return ZoeInlineTextEditWidget(
+    return ZoeHtmlTextEditWidget(
       hintText: 'Type something...',
       isEditing: isEditing,
-      text: plainTextDescription,
+      initialContent: plainTextDescription,
+      initialRichContent: htmlDescription,
       textStyle: Theme.of(context).textTheme.bodyMedium,
-      onTextChanged: (value) =>
+      onContentChanged: (plainText, richTextJson) =>
           ref.read(textListProvider.notifier).updateTextDescription(
             textContentId,
-            (plainText: value, htmlText: htmlDescription),
+            (plainText: plainText, htmlText: richTextJson),
           ),
     );
   }
