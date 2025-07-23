@@ -42,7 +42,7 @@ class ListNotifier extends StateNotifier<List<ListModel>> {
   void updateListType(String listId, ContentType contentType) {
     state = [
       for (final list in state)
-        if (list.id == listId) list.copyWith(type: contentType) else list,
+        if (list.id == listId) list.copyWith(listType: contentType) else list,
     ];
   }
 

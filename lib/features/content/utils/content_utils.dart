@@ -95,7 +95,8 @@ void addNewBulletedListContent(WidgetRef ref, parentId, String sheetId) {
     parentId: parentId,
     sheetId: sheetId,
     title: '',
-    type: ContentType.bullet,
+    type: ContentType.list,
+    listType: ContentType.bullet,
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(bulletedListContentModel);
@@ -112,7 +113,8 @@ void addNewTaskListContent(WidgetRef ref, parentId, String sheetId) {
     parentId: parentId,
     sheetId: sheetId,
     title: '',
-    type: ContentType.task,
+    type: ContentType.list,
+    listType: ContentType.task,
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(toDoListContentModel);

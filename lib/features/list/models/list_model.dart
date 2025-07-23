@@ -2,6 +2,9 @@ import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 
 class ListModel extends ContentModel {
+  /// ListModel properties
+  final ContentType listType;
+
   ListModel({
     /// ContentModel properties
     super.id,
@@ -14,6 +17,9 @@ class ListModel extends ContentModel {
     super.createdAt,
     super.updatedAt,
     super.orderIndex,
+
+    /// ListModel specific properties
+    required this.listType,
   });
 
   ListModel copyWith({
@@ -28,6 +34,9 @@ class ListModel extends ContentModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? orderIndex,
+
+    /// ListModel specific properties
+    ContentType? listType,
   }) {
     return ListModel(
       /// ContentModel properties
@@ -41,6 +50,9 @@ class ListModel extends ContentModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
       orderIndex: orderIndex ?? this.orderIndex,
+
+      /// ListModel specific properties
+      listType: listType ?? this.listType,
     );
   }
 }

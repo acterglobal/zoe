@@ -8,7 +8,8 @@ final lists = [
     id: 'list-bulleted-1',
     title: 'Key Features at a Glance',
     emoji: '✨',
-    type: ContentType.bullet,
+    type: ContentType.list,
+    listType: ContentType.bullet,
     orderIndex: 4,
   ),
   ListModel(
@@ -17,7 +18,8 @@ final lists = [
     id: 'list-tasks-1',
     title: 'Your Onboarding Checklist',
     emoji: '🚀',
-    type: ContentType.task,
+    type: ContentType.list,
+    listType: ContentType.task,
     orderIndex: 5,
   ),
   ListModel(
@@ -26,7 +28,8 @@ final lists = [
     id: 'list-bulleted-2',
     title: 'Best Practices & Pro Tips',
     emoji: '🎯',
-    type: ContentType.bullet,
+    type: ContentType.list,
+    listType: ContentType.bullet,
     orderIndex: 7,
   ),
   ListModel(
@@ -35,7 +38,8 @@ final lists = [
     id: 'list-bulleted-3',
     title: 'What You Can Do Next',
     emoji: '🔗',
-    type: ContentType.bullet,
+    type: ContentType.list,
+    listType: ContentType.bullet,
     orderIndex: 8,
   ),
 ];

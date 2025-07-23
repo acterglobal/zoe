@@ -44,7 +44,7 @@ class ListWidget extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildListEmoji(context, ref, listId, list.type, list.emoji),
+            _buildListEmoji(context, ref, listId, list.listType, list.emoji),
             Expanded(
               child: _buildListTitle(context, ref, list.title, isEditing),
             ),
@@ -58,7 +58,7 @@ class ListWidget extends ConsumerWidget {
         const SizedBox(height: 6),
         _buildListTypeContent(context, ref, list),
         if (isEditing)
-          _buildAddListItemButton(context, ref, list.type, list.sheetId),
+          _buildAddListItemButton(context, ref, list.listType, list.sheetId),
       ],
     );
   }
@@ -101,7 +101,7 @@ class ListWidget extends ConsumerWidget {
     WidgetRef ref,
     ListModel list,
   ) {
-    return switch (list.type) {
+    return switch (list.listType) {
       ContentType.bullet => BulletListWidget(parentId: listId),
       ContentType.task => TaskListWidget(parentId: listId),
       ContentType.text => TextWidget(textContentId: listId),
