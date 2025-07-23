@@ -7,13 +7,17 @@ import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
-import 'package:zoey/features/events/widgets/event_widget.dart';
+import 'package:zoey/features/events/models/events_model.dart';
+import 'package:zoey/features/events/providers/events_proivder.dart';
+import 'package:zoey/features/events/widgets/event_list_widget.dart';
 import 'package:zoey/features/list/providers/list_providers.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/widgets/task_list_widget.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/bullets/widgets/bullet_list_widget.dart';
-import 'package:zoey/features/text/widgets/text_widget.dart';
+import 'package:zoey/features/text/models/text_model.dart';
+import 'package:zoey/features/text/providers/text_providers.dart';
+import 'package:zoey/features/text/widgets/text_list_widget.dart';
 
 class ListWidget extends ConsumerWidget {
   final String listId;
@@ -104,8 +108,8 @@ class ListWidget extends ConsumerWidget {
     return switch (list.listType) {
       ContentType.bullet => BulletListWidget(parentId: listId),
       ContentType.task => TaskListWidget(parentId: listId),
-      ContentType.text => TextWidget(textContentId: listId),
-      ContentType.event => EventWidget(eventsId: listId),
+      ContentType.text => TextListWidget(parentId: listId),
+      ContentType.event => EventListWidget(parentId: listId),
       _ => const SizedBox.shrink(),
     };
   }
@@ -120,11 +124,47 @@ class ListWidget extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 24),
       child: GestureDetector(
-        onTap: () => contentType == ContentType.bullet
-            ? ref
+        onTap: () {
+          switch (contentType) {
+            case ContentType.bullet:
+              ref
                   .read(bulletListProvider.notifier)
-                  .addBullet('', listId, sheetId)
-            : ref.read(taskListProvider.notifier).addTask('', listId, sheetId),
+                  .addBullet('', listId, sheetId);
+              break;
+            case ContentType.task:
+              ref.read(taskListProvider.notifier).addTask('', listId, sheetId);
+              break;
+            case ContentType.event:
+              ref
+                  .read(eventListProvider.notifier)
+                  .addEvent(
+                    EventModel(
+                      sheetId: sheetId,
+                      parentId: listId,
+                      title: '',
+                      orderIndex: 0,
+                      startDate: DateTime.now(),
+                      endDate: DateTime.now(),
+                    ),
+                  );
+              break;
+            case ContentType.text:
+              ref
+                  .read(textListProvider.notifier)
+                  .addText(
+                    TextModel(
+                      sheetId: sheetId,
+                      parentId: listId,
+                      title: '',
+                      orderIndex: 0,
+                      description: (plainText: '', htmlText: ''),
+                    ),
+                  );
+              break;
+            default:
+              break;
+          }
+        },
         child: Row(
           children: [
             Icon(

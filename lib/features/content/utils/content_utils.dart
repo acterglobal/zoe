@@ -89,6 +89,33 @@ void addNewEventContent(WidgetRef ref, parentId, String sheetId) {
   ref.read(eventListProvider.notifier).addEvent(eventContentModel);
 }
 
+void addNewEventListContent(WidgetRef ref, parentId, String sheetId) {
+  final orderIndex = _getNextOrderIndex(ref, parentId);
+  final eventListContentModel = ListModel(
+    parentId: parentId,
+    sheetId: sheetId,
+    title: '',
+    listType: ContentType.event,
+    orderIndex: orderIndex,
+  );
+  ref.read(listsrovider.notifier).addList(eventListContentModel);
+
+  // Add a default event item to the new list
+  ref
+      .read(eventListProvider.notifier)
+      .addEvent(
+        EventModel(
+          parentId: eventListContentModel.id,
+          sheetId: sheetId,
+          title: '',
+          description: (plainText: '', htmlText: ''),
+          startDate: DateTime.now(),
+          endDate: DateTime.now(),
+          orderIndex: 0,
+        ),
+      );
+}
+
 void addNewBulletedListContent(WidgetRef ref, parentId, String sheetId) {
   final orderIndex = _getNextOrderIndex(ref, parentId);
   final bulletedListContentModel = ListModel(

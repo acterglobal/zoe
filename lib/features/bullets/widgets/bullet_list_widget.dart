@@ -24,10 +24,13 @@ class BulletListWidget extends ConsumerWidget {
       itemCount: bullets.length,
       itemBuilder: (context, index) {
         final bullet = bullets[index];
-        return BulletItemWidget(
-          key: ValueKey(bullet.id),
-          bulletItemId: bullet.id,
-          isEditing: isEditing,
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 4, top: 4, left: 12),
+          child: BulletItemWidget(
+            key: ValueKey(bullet.id),
+            bulletItemId: bullet.id,
+            isEditing: isEditing,
+          ),
         );
       },
     );

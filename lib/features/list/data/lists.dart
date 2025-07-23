@@ -38,4 +38,13 @@ final lists = [
     listType: ContentType.bullet,
     orderIndex: 8,
   ),
+  ListModel(
+    sheetId: 'sheet-1',
+    parentId: 'sheet-1',
+    id: 'list-events-1',
+    title: 'Upcoming Events',
+    emoji: '📅',
+    listType: ContentType.event,
+    orderIndex: 8,
+  ),
 ];

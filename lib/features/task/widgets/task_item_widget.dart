@@ -5,6 +5,7 @@ import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
+import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 
@@ -16,14 +17,12 @@ class TaskWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isEditing = ref.watch(isEditValueProvider);
     final task = ref.watch(taskProvider(taskId));
 
     if (task == null) return const SizedBox.shrink();
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 14),
-      child: _buildTaskItemContent(context, ref, task, isEditing),
-    );
+    return _buildTaskItemContent(context, ref, task, isEditing);
   }
 
   Widget _buildTaskItemContent(

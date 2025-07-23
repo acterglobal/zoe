@@ -24,10 +24,13 @@ class TaskListWidget extends ConsumerWidget {
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
-        return TaskWidget(
-          key: ValueKey(task.id),
-          taskId: task.id,
-          isEditing: isEditing,
+        return Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: TaskWidget(
+            key: ValueKey(task.id),
+            taskId: task.id,
+            isEditing: isEditing,
+          ),
         );
       },
     );
