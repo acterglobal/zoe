@@ -52,7 +52,7 @@ dependencies:
   icons_plus: ^5.0.0
   
   # Utils
-  intl: ^0.19.0
+  intl: ^0.20.2
   uuid: ^4.4.0
   
   # Settings and sharing
@@ -60,6 +60,19 @@ dependencies:
   share_plus: ^7.2.2
   package_info_plus: ^8.3.0
   shared_preferences: ^2.2.2
+
+  # Quill editor
+  flutter_quill:
+    git:
+      url: https://github.com/theniceboy/flutter-quill
+      ref: 5ff5967
+  flutter_quill_extensions: ^11.0.0
+
+dependency_overrides:
+  flutter_quill:
+    git:
+      url: https://github.com/theniceboy/flutter-quill
+      ref: 5ff5967
 
 dev_dependencies:
   flutter_test:

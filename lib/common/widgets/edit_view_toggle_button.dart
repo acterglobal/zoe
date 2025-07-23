@@ -16,9 +16,15 @@ class EditViewToggleButton extends ConsumerWidget {
           ? Theme.of(context).colorScheme.primary
           : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      onPressed: () => ref.read(isEditValueProvider.notifier).state = !ref.read(
-        isEditValueProvider,
-      ),
+      onPressed: () {
+        // Close keyboard when switching to view mode
+        if (isEditing) {
+           FocusManager.instance.primaryFocus?.unfocus();
+        }
+        ref.read(isEditValueProvider.notifier).state = !ref.read(
+          isEditValueProvider,
+        );
+      },
     );
   }
 }
