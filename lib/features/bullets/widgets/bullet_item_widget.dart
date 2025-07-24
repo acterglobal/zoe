@@ -76,6 +76,9 @@ class BulletItemWidget extends ConsumerWidget {
             .read(bulletListProvider.notifier)
             .updateBulletTitle(bulletId, value);
       },
+      onTapText: () => context.push(
+        AppRoutes.bulletDetail.route.replaceAll(':bulletId', bulletId),
+      ),
     );
   }
 

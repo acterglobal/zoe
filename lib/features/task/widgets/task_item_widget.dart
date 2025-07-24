@@ -90,6 +90,9 @@ class TaskWidget extends ConsumerWidget {
       onTextChanged: (value) {
         ref.read(taskListProvider.notifier).updateTaskTitle(taskId, value);
       },
+      onTapText: () => context.push(
+        AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
+      ),
     );
   }
 
