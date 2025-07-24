@@ -6,6 +6,7 @@ import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class TaskDetailScreen extends ConsumerWidget {
   final String taskId;
@@ -15,7 +16,7 @@ class TaskDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final task = ref.watch(taskProvider(taskId));
-    if (task == null) return const Center(child: Text('Task not found'));
+    if (task == null) return Center(child: Text(L10n.of(context).taskNotFound));
     return Scaffold(
       appBar: AppBar(
         actions: [EditViewToggleButton(), const SizedBox(width: 12)],
@@ -51,7 +52,7 @@ class TaskDetailScreen extends ConsumerWidget {
           children: [
             Expanded(
               child: ZoeInlineTextEditWidget(
-                hintText: 'Title',
+                hintText: L10n.of(context).title,
                 isEditing: isEditing,
                 text: task.title,
                 textStyle: TextStyle(
@@ -69,7 +70,7 @@ class TaskDetailScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         ZoeInlineTextEditWidget(
-          hintText: 'Add a description',
+          hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
           text: task.description?.plainText,
           textStyle: Theme.of(context).textTheme.bodyLarge,

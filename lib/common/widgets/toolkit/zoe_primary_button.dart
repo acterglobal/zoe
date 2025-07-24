@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class ZoePrimaryButton extends StatelessWidget {
   final String? text;
@@ -29,7 +30,7 @@ class ZoePrimaryButton extends StatelessWidget {
         children: [
           if (icon != null) ...[Icon(icon, size: 16), const SizedBox(width: 8)],
           Text(
-            text ?? 'Primary Button',
+            text ?? L10n.of(context).primaryButton,
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: Colors.white),

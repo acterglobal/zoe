@@ -8,6 +8,7 @@ import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class TaskWidget extends ConsumerWidget {
   final String taskId;
@@ -79,7 +80,7 @@ class TaskWidget extends ConsumerWidget {
     bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
-      hintText: 'Bullet item',
+      hintText: L10n.of(context).taskItem,
       text: title,
       isEditing: isEditing,
       textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
