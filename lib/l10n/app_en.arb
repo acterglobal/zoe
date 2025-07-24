@@ -112,5 +112,7 @@
     "edit": "Edit",
     "@edit": {},
     "primaryButton": "Primary Button",
-    "@primaryButton": {}
+    "@primaryButton": {},
+    "chooseLanguage": "Choose Language",
+    "@chooseLanguage": {}
 }   

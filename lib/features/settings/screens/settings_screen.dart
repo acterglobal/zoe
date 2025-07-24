@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/providers/package_info_provider.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
+import 'package:zoey/features/settings/actions/change_language.dart';
 import 'package:zoey/features/settings/actions/change_theme.dart';
+import 'package:zoey/features/settings/models/language_model.dart';
+import 'package:zoey/features/settings/providers/local_provider.dart';
 import 'package:zoey/features/settings/providers/theme_provider.dart';
 import 'package:zoey/features/settings/widgets/setting_card_widget.dart';
 import 'package:zoey/features/settings/widgets/setting_item_widget.dart';
@@ -66,15 +69,18 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   Widget _buildLanguageSection(BuildContext context, WidgetRef ref) {
+    final currentLocale = ref.watch(localeProvider);
+    final currentLanguage = LanguageModel.fromCode(currentLocale);
+    
     return SettingCardWidget(
       title: L10n.of(context).language,
       children: [
         SettingItemWidget(
           title: L10n.of(context).language,
-          subtitle: 'English',
+          subtitle: currentLanguage.languageName,
           icon: Icons.language_rounded,
           iconColor: AppColors.successColor,
-          onTap: () {},
+          onTap: () => showLanguageDialog(context, ref),
         ),
       ],
     );
