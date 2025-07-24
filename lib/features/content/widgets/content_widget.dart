@@ -97,7 +97,7 @@ class ContentWidget extends ConsumerWidget {
       ContentType.event => EventWidget(eventsId: contentId),
       ContentType.list => ListWidget(listId: contentId),
       ContentType.task => TaskWidget(taskId: contentId),
-      ContentType.bullet => BulletItemWidget(bulletItemId: contentId),
+      ContentType.bullet => BulletItemWidget(bulletId: contentId),
     };
 
     // For ReorderableListView, we need to wrap with drag handle when editing
