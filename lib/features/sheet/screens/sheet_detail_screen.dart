@@ -9,6 +9,7 @@ import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/sheet/actions/delete_sheet.dart';
 import 'package:zoey/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
   final String sheetId;
@@ -68,7 +69,7 @@ class SheetDetailScreen extends ConsumerWidget {
             const SizedBox(width: 4),
             Expanded(
               child: ZoeInlineTextEditWidget(
-                hintText: 'Title',
+                hintText: L10n.of(context).title,
                 isEditing: isEditing,
                 text: sheet.title,
                 textStyle: TextStyle(
@@ -84,7 +85,7 @@ class SheetDetailScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         ZoeInlineTextEditWidget(
-          hintText: 'Add a description',
+          hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
           text: sheet.description?.plainText,
           textStyle: Theme.of(context).textTheme.bodyLarge,

@@ -6,6 +6,7 @@ import 'package:zoey/features/bullets/model/bullet_model.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class BulletDetailScreen extends ConsumerWidget {
   final String bulletId;
@@ -15,7 +16,7 @@ class BulletDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bullet = ref.watch(bulletProvider(bulletId));
-    if (bullet == null) return const Center(child: Text('Bullet not found'));
+    if (bullet == null) return Center(child: Text(L10n.of(context).bulletNotFound));
     return Scaffold(
       appBar: AppBar(
         actions: [EditViewToggleButton(), const SizedBox(width: 12)],
@@ -55,7 +56,7 @@ class BulletDetailScreen extends ConsumerWidget {
           children: [
             Expanded(
               child: ZoeInlineTextEditWidget(
-                hintText: 'Title',
+                hintText: L10n.of(context).title,
                 isEditing: isEditing,
                 text: bullet.title,
                 textStyle: TextStyle(
@@ -73,7 +74,7 @@ class BulletDetailScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         ZoeInlineTextEditWidget(
-          hintText: 'Add a description',
+          hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
           text: bullet.description?.plainText,
           textStyle: Theme.of(context).textTheme.bodyLarge,

@@ -6,6 +6,7 @@ import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class EventDetailScreen extends ConsumerWidget {
   final String eventId;
@@ -15,7 +16,7 @@ class EventDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final event = ref.watch(eventProvider(eventId));
-    if (event == null) return const Center(child: Text('Event not found'));
+    if (event == null) return Center(child: Text(L10n.of(context).eventNotFound));
     return Scaffold(
       appBar: AppBar(
         actions: [EditViewToggleButton(), const SizedBox(width: 12)],
@@ -55,7 +56,7 @@ class EventDetailScreen extends ConsumerWidget {
           children: [
             Expanded(
               child: ZoeInlineTextEditWidget(
-                hintText: 'Title',
+                hintText: L10n.of(context).title,
                 isEditing: isEditing,
                 text: event.title,
                 textStyle: TextStyle(
@@ -73,7 +74,7 @@ class EventDetailScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         ZoeInlineTextEditWidget(
-          hintText: 'Add a description',
+          hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
           text: event.description?.plainText,
           textStyle: Theme.of(context).textTheme.bodyLarge,
