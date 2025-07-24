@@ -116,10 +116,10 @@ class TextWidget extends ConsumerWidget {
       initialContent: plainTextDescription,
       initialRichContent: htmlDescription,
       textStyle: Theme.of(context).textTheme.bodyMedium,
-      editorId: 'text-content-$textContentId', // Add unique editor ID
+      editorId: 'text-content-$textId', // Add unique editor ID
       onContentChanged: (plainText, richTextJson) =>
           ref.read(textListProvider.notifier).updateTextDescription(
-            textContentId,
+            textId,
             (plainText: plainText, htmlText: richTextJson),
           ),
     );
