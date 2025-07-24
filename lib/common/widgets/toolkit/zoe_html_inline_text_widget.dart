@@ -160,20 +160,20 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
 
   /// Handle focus changes - automatically manages toolbar state
   void _handleFocusChanged(QuillController? controller, FocusNode? focusNode) {
-    // Update global toolbar state
-    Future.microtask(() {
-      if (mounted) {
-        if (focusNode?.hasFocus == true) {
+    if (!mounted) return;
+
+    // Only update toolbar state when focus is gained
+    if (focusNode?.hasFocus == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && focusNode?.hasFocus == true) {
           ref
               .read(quillToolbarProvider.notifier)
               .updateActiveEditor(controller: controller, focusNode: focusNode);
-        } else {
-          ref.read(quillToolbarProvider.notifier).clearActiveEditor();
         }
-      }
-    });
+      });
+    }
 
-    // Still call the original callback for backward compatibility
+    // Call the original callback for backward compatibility
     if (widget.onFocusChanged != null) {
       widget.onFocusChanged!(controller, focusNode);
     }
@@ -187,14 +187,26 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
 
     if (widget.isEditing) {
       // Edit mode: Show QuillEditor with formatting capabilities
-      return QuillEditor(
-        focusNode: _editorManager.focusNode!,
-        scrollController: _editorManager.scrollController!,
-        controller: _editorManager.controller!,
-        config: _editorStyles.getEditingConfig(
-          hintText: widget.hintText,
-          autoFocus: widget.autoFocus,
-          context: context,
+      return Focus(
+        onFocusChange: (hasFocus) {
+          // Only clear active editor after a short delay and if we still don't have focus
+          if (!hasFocus) {
+            Future.delayed(const Duration(milliseconds: 100), () {
+              if (mounted && !_editorManager.focusNode!.hasFocus) {
+                ref.read(quillToolbarProvider.notifier).clearActiveEditor();
+              }
+            });
+          }
+        },
+        child: QuillEditor(
+          focusNode: _editorManager.focusNode!,
+          scrollController: _editorManager.scrollController!,
+          controller: _editorManager.controller!,
+          config: _editorStyles.getEditingConfig(
+            hintText: widget.hintText,
+            autoFocus: widget.autoFocus,
+            context: context,
+          ),
         ),
       );
     } else {
