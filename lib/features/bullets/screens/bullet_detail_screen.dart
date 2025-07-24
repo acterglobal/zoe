@@ -64,7 +64,9 @@ class BulletDetailScreen extends ConsumerWidget {
                   color: Theme.of(context).colorScheme.onSurface,
                   height: 1.2,
                 ),
-                onTextChanged: (value) {},
+                onTextChanged: (value) => ref
+                    .read(bulletListProvider.notifier)
+                    .updateBulletTitle(bulletId, value),
               ),
             ),
           ],
@@ -75,7 +77,11 @@ class BulletDetailScreen extends ConsumerWidget {
           isEditing: isEditing,
           text: bullet.description?.plainText,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          onTextChanged: (value) {},
+          onTextChanged: (value) =>
+              ref.read(bulletListProvider.notifier).updateBulletDescription(
+                bulletId,
+                (plainText: value, htmlText: null),
+              ),
         ),
       ],
     );

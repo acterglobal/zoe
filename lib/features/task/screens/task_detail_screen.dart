@@ -60,7 +60,9 @@ class TaskDetailScreen extends ConsumerWidget {
                   color: Theme.of(context).colorScheme.onSurface,
                   height: 1.2,
                 ),
-                onTextChanged: (value) {},
+                onTextChanged: (value) => ref
+                    .read(taskListProvider.notifier)
+                    .updateTaskTitle(taskId, value),
               ),
             ),
           ],
@@ -71,7 +73,11 @@ class TaskDetailScreen extends ConsumerWidget {
           isEditing: isEditing,
           text: task.description?.plainText,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          onTextChanged: (value) {},
+          onTextChanged: (value) =>
+              ref.read(taskListProvider.notifier).updateTaskDescription(
+                taskId,
+                (plainText: value, htmlText: null),
+              ),
         ),
       ],
     );

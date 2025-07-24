@@ -64,7 +64,9 @@ class EventDetailScreen extends ConsumerWidget {
                   color: Theme.of(context).colorScheme.onSurface,
                   height: 1.2,
                 ),
-                onTextChanged: (value) {},
+                onTextChanged: (value) => ref
+                    .read(eventListProvider.notifier)
+                    .updateEventTitle(eventId, value),
               ),
             ),
           ],
@@ -75,7 +77,11 @@ class EventDetailScreen extends ConsumerWidget {
           isEditing: isEditing,
           text: event.description?.plainText,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          onTextChanged: (value) {},
+          onTextChanged: (value) =>
+              ref.read(eventListProvider.notifier).updateEventDescription(
+                eventId,
+                (plainText: value, htmlText: null),
+              ),
         ),
       ],
     );

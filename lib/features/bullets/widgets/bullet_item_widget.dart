@@ -10,13 +10,8 @@ import 'package:zoey/features/content/providers/content_menu_providers.dart';
 
 class BulletItemWidget extends ConsumerWidget {
   final String bulletId;
-  final bool isEditing;
 
-  const BulletItemWidget({
-    super.key,
-    required this.bulletId,
-    this.isEditing = false,
-  });
+  const BulletItemWidget({super.key, required this.bulletId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,7 +36,14 @@ class BulletItemWidget extends ConsumerWidget {
       children: [
         _buildBulletItemIcon(context),
         const SizedBox(width: 10),
-        Expanded(child: _buildBulletItemTitle(context, ref, bulletItem.title)),
+        Expanded(
+          child: _buildBulletItemTitle(
+            context,
+            ref,
+            bulletItem.title,
+            isEditing,
+          ),
+        ),
         const SizedBox(width: 6),
         if (isEditing) _buildBulletItemActions(context, ref),
       ],
@@ -62,6 +64,7 @@ class BulletItemWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     String title,
+    bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: 'Bullet item',
@@ -73,6 +76,9 @@ class BulletItemWidget extends ConsumerWidget {
             .read(bulletListProvider.notifier)
             .updateBulletTitle(bulletId, value);
       },
+      onTapText: () => context.push(
+        AppRoutes.bulletDetail.route.replaceAll(':bulletId', bulletId),
+      ),
     );
   }
 
