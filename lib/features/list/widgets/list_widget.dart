@@ -5,12 +5,19 @@ import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
+import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
+import 'package:zoey/features/events/models/events_model.dart';
+import 'package:zoey/features/events/providers/events_proivder.dart';
+import 'package:zoey/features/events/widgets/event_list_widget.dart';
 import 'package:zoey/features/list/providers/list_providers.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/widgets/task_list_widget.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/bullets/widgets/bullet_list_widget.dart';
+import 'package:zoey/features/text/models/text_model.dart';
+import 'package:zoey/features/text/providers/text_providers.dart';
+import 'package:zoey/features/text/widgets/text_list_widget.dart';
 
 class ListWidget extends ConsumerWidget {
   final String listId;
@@ -18,15 +25,12 @@ class ListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    /// Watch the content edit mode provider
-    final isEditing = ref.watch(isEditValueProvider);
-
     final list = ref.watch(listItemProvider(listId));
     if (list == null) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: _buildListContent(context, ref, list, isEditing),
+      child: _buildListContent(context, ref, list),
     );
   }
 
@@ -34,8 +38,9 @@ class ListWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     ListModel list,
-    bool isEditing,
   ) {
+    /// Watch the content edit mode provider
+    final isEditing = ref.watch(isEditValueProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -45,7 +50,7 @@ class ListWidget extends ConsumerWidget {
           children: [
             _buildListEmoji(context, ref, listId, list.listType, list.emoji),
             Expanded(
-              child: _buildListBlockTitle(context, ref, list.title, isEditing),
+              child: _buildListTitle(context, ref, list.title, isEditing),
             ),
             const SizedBox(width: 6),
             if (isEditing)
@@ -55,9 +60,7 @@ class ListWidget extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 6),
-        list.listType == ListType.bulleted
-            ? BulletListWidget(listId: listId, isEditing: isEditing)
-            : TaskListWidget(listId: listId, isEditing: isEditing),
+        _buildListTypeContent(context, ref, list),
         if (isEditing)
           _buildAddListItemButton(context, ref, list.listType, list.sheetId),
       ],
@@ -69,7 +72,7 @@ class ListWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     String listId,
-    ListType listType,
+    ContentType contentType,
     String? emoji,
   ) {
     return EmojiWidget(
@@ -80,8 +83,8 @@ class ListWidget extends ConsumerWidget {
     );
   }
 
-  // Builds the list block title
-  Widget _buildListBlockTitle(
+  // Builds the list title
+  Widget _buildListTitle(
     BuildContext context,
     WidgetRef ref,
     String title,
@@ -97,21 +100,71 @@ class ListWidget extends ConsumerWidget {
     );
   }
 
+  Widget _buildListTypeContent(
+    BuildContext context,
+    WidgetRef ref,
+    ListModel list,
+  ) {
+    return switch (list.listType) {
+      ContentType.bullet => BulletListWidget(parentId: listId),
+      ContentType.task => TaskListWidget(parentId: listId),
+      ContentType.text => TextListWidget(parentId: listId),
+      ContentType.event => EventListWidget(parentId: listId),
+      _ => const SizedBox.shrink(),
+    };
+  }
+
   // Builds the add list item button
   Widget _buildAddListItemButton(
     BuildContext context,
     WidgetRef ref,
-    ListType listType,
+    ContentType contentType,
     String sheetId,
   ) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 24),
       child: GestureDetector(
-        onTap: () => listType == ListType.bulleted
-            ? ref
+        onTap: () {
+          switch (contentType) {
+            case ContentType.bullet:
+              ref
                   .read(bulletListProvider.notifier)
-                  .addBullet('', listId, sheetId)
-            : ref.read(taskListProvider.notifier).addTask('', listId, sheetId),
+                  .addBullet('', listId, sheetId);
+              break;
+            case ContentType.task:
+              ref.read(taskListProvider.notifier).addTask('', listId, sheetId);
+              break;
+            case ContentType.event:
+              ref
+                  .read(eventListProvider.notifier)
+                  .addEvent(
+                    EventModel(
+                      sheetId: sheetId,
+                      parentId: listId,
+                      title: '',
+                      orderIndex: 0,
+                      startDate: DateTime.now(),
+                      endDate: DateTime.now(),
+                    ),
+                  );
+              break;
+            case ContentType.text:
+              ref
+                  .read(textListProvider.notifier)
+                  .addText(
+                    TextModel(
+                      sheetId: sheetId,
+                      parentId: listId,
+                      title: '',
+                      orderIndex: 0,
+                      description: (plainText: '', htmlText: ''),
+                    ),
+                  );
+              break;
+            default:
+              break;
+          }
+        },
         child: Row(
           children: [
             Icon(

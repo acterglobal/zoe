@@ -50,6 +50,16 @@ void reorderContent(WidgetRef ref, String contentId, int newOrderIndex) {
           .read(listsrovider.notifier)
           .updateListOrderIndex(contentId, newOrderIndex);
       break;
+    case ContentType.task:
+      ref
+          .read(taskListProvider.notifier)
+          .updateTaskOrderIndex(contentId, newOrderIndex);
+      break;
+    case ContentType.bullet:
+      ref
+          .read(bulletListProvider.notifier)
+          .updateBulletOrderIndex(contentId, newOrderIndex);
+      break;
   }
 }
 
@@ -79,13 +89,40 @@ void addNewEventContent(WidgetRef ref, parentId, String sheetId) {
   ref.read(eventListProvider.notifier).addEvent(eventContentModel);
 }
 
+void addNewEventListContent(WidgetRef ref, parentId, String sheetId) {
+  final orderIndex = _getNextOrderIndex(ref, parentId);
+  final eventListContentModel = ListModel(
+    parentId: parentId,
+    sheetId: sheetId,
+    title: '',
+    listType: ContentType.event,
+    orderIndex: orderIndex,
+  );
+  ref.read(listsrovider.notifier).addList(eventListContentModel);
+
+  // Add a default event item to the new list
+  ref
+      .read(eventListProvider.notifier)
+      .addEvent(
+        EventModel(
+          parentId: eventListContentModel.id,
+          sheetId: sheetId,
+          title: '',
+          description: (plainText: '', htmlText: ''),
+          startDate: DateTime.now(),
+          endDate: DateTime.now(),
+          orderIndex: 0,
+        ),
+      );
+}
+
 void addNewBulletedListContent(WidgetRef ref, parentId, String sheetId) {
   final orderIndex = _getNextOrderIndex(ref, parentId);
   final bulletedListContentModel = ListModel(
     parentId: parentId,
     sheetId: sheetId,
     title: '',
-    listType: ListType.bulleted,
+    listType: ContentType.bullet,
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(bulletedListContentModel);
@@ -102,7 +139,7 @@ void addNewTaskListContent(WidgetRef ref, parentId, String sheetId) {
     parentId: parentId,
     sheetId: sheetId,
     title: '',
-    listType: ListType.task,
+    listType: ContentType.task,
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(toDoListContentModel);

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/list/data/lists.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
@@ -38,10 +39,10 @@ class ListNotifier extends StateNotifier<List<ListModel>> {
     ];
   }
 
-  void updateListType(String listId, ListType listType) {
+  void updateListType(String listId, ContentType contentType) {
     state = [
       for (final list in state)
-        if (list.id == listId) list.copyWith(listType: listType) else list,
+        if (list.id == listId) list.copyWith(listType: contentType) else list,
     ];
   }
 

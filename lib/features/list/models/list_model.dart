@@ -1,11 +1,9 @@
 import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 
-enum ListType { bulleted, task }
-
 class ListModel extends ContentModel {
   /// ListModel properties
-  final ListType listType;
+  final ContentType listType;
 
   ListModel({
     /// ContentModel properties
@@ -19,13 +17,14 @@ class ListModel extends ContentModel {
     super.updatedAt,
     super.orderIndex,
 
-    /// ListModel properties
+    /// ListModel specific properties
     required this.listType,
   }) : super(type: ContentType.list);
 
   ListModel copyWith({
     /// ContentModel properties
     String? id,
+    ContentType? type,
     String? sheetId,
     String? parentId,
     String? title,
@@ -35,8 +34,8 @@ class ListModel extends ContentModel {
     DateTime? updatedAt,
     int? orderIndex,
 
-    /// ListModel properties
-    ListType? listType,
+    /// ListModel specific properties
+    ContentType? listType,
   }) {
     return ListModel(
       /// ContentModel properties
@@ -50,7 +49,7 @@ class ListModel extends ContentModel {
       updatedAt: updatedAt ?? DateTime.now(),
       orderIndex: orderIndex ?? this.orderIndex,
 
-      /// ListModel properties
+      /// ListModel specific properties
       listType: listType ?? this.listType,
     );
   }

@@ -4,7 +4,7 @@ enum AppRoutes {
   sheet('/sheet/:sheetId'),
   taskDetail('/task/:taskId'),
   eventDetail('/event/:eventId'),
-  bulletItemDetail('/bullet-item/:bulletItemId'),
+  bulletDetail('/bullet/:bulletId'),
   settings('/settings');
 
   final String route;

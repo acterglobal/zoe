@@ -4,7 +4,7 @@ final tasks = [
   TaskModel(
     id: 'task-1',
     sheetId: 'sheet-1',
-    listId: 'list-tasks-1',
+    parentId: 'list-tasks-1',
     title: 'Read through this Getting Started Guide',
     orderIndex: 1,
     description: (
@@ -19,7 +19,7 @@ final tasks = [
   TaskModel(
     id: 'task-2',
     sheetId: 'sheet-1',
-    listId: 'list-tasks-1',
+    parentId: 'list-tasks-1',
     title: 'Try editing some text in this guide',
     orderIndex: 2,
     description: (
@@ -34,7 +34,7 @@ final tasks = [
   TaskModel(
     id: 'task-3',
     sheetId: 'sheet-1',
-    listId: 'list-tasks-1',
+    parentId: 'list-tasks-1',
     title: 'Mark a task as complete (like this one!)',
     orderIndex: 3,
     description: (
@@ -49,7 +49,7 @@ final tasks = [
   TaskModel(
     id: 'task-4',
     sheetId: 'sheet-1',
-    listId: 'list-tasks-1',
+    parentId: 'list-tasks-1',
     title: 'Explore the home dashboard',
     orderIndex: 4,
     description: (
@@ -64,7 +64,7 @@ final tasks = [
   TaskModel(
     id: 'task-5',
     sheetId: 'sheet-1',
-    listId: 'list-tasks-1',
+    parentId: 'list-tasks-1',
     title: 'Create your first custom sheet',
     orderIndex: 5,
     description: (
@@ -79,7 +79,7 @@ final tasks = [
   TaskModel(
     id: 'task-6',
     sheetId: 'sheet-1',
-    listId: 'list-tasks-1',
+    parentId: 'list-tasks-1',
     title: 'Add content blocks to your new sheet',
     orderIndex: 6,
     description: (
@@ -94,7 +94,7 @@ final tasks = [
   TaskModel(
     id: 'task-7',
     sheetId: 'sheet-1',
-    listId: 'list-tasks-1',
+    parentId: 'list-tasks-1',
     title: 'Customize your sheet with icons and descriptions',
     orderIndex: 7,
     description: (
@@ -109,7 +109,7 @@ final tasks = [
   TaskModel(
     id: 'task-8',
     sheetId: 'sheet-1',
-    listId: 'list-tasks-1',
+    parentId: 'list-tasks-1',
     title: 'Explore the settings and preferences',
     orderIndex: 8,
     description: (
@@ -124,7 +124,7 @@ final tasks = [
   TaskModel(
     id: 'task-9',
     sheetId: 'sheet-1',
-    listId: 'list-tasks-1',
+    parentId: 'list-tasks-1',
     title: 'Plan your next steps with Zoey',
     orderIndex: 9,
     description: (

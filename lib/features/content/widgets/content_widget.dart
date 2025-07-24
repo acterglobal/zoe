@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/features/bullets/widgets/bullet_item_widget.dart';
 import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/content/providers/content_providers.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
@@ -7,6 +8,7 @@ import 'package:zoey/features/content/utils/content_utils.dart';
 import 'package:zoey/features/content/widgets/add_content_widget.dart';
 import 'package:zoey/features/events/widgets/event_widget.dart';
 import 'package:zoey/features/list/widgets/list_widget.dart';
+import 'package:zoey/features/task/widgets/task_item_widget.dart';
 import 'package:zoey/features/text/widgets/text_widget.dart';
 
 class ContentWidget extends ConsumerWidget {
@@ -71,7 +73,7 @@ class ContentWidget extends ConsumerWidget {
         AddContentWidget(
           isEditing: isEditing,
           onTapText: () => addNewTextContent(ref, parentId, sheetId),
-          onTapEvent: () => addNewEventContent(ref, parentId, sheetId),
+          onTapEvent: () => addNewEventListContent(ref, parentId, sheetId),
           onTapBulletedList: () =>
               addNewBulletedListContent(ref, parentId, sheetId),
           onTapToDoList: () => addNewTaskListContent(ref, parentId, sheetId),
@@ -91,9 +93,11 @@ class ContentWidget extends ConsumerWidget {
     final key = ValueKey('${content.type.name}-$contentId');
 
     Widget contentWidget = switch (content.type) {
-      ContentType.text => TextWidget(textContentId: contentId),
+      ContentType.text => TextWidget(textId: contentId),
       ContentType.event => EventWidget(eventsId: contentId),
       ContentType.list => ListWidget(listId: contentId),
+      ContentType.task => TaskWidget(taskId: contentId),
+      ContentType.bullet => BulletItemWidget(bulletId: contentId),
     };
 
     // For ReorderableListView, we need to wrap with drag handle when editing

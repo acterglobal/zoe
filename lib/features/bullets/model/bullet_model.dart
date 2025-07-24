@@ -1,12 +1,8 @@
 import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 
-class TaskModel extends ContentModel {
-  /// TaskModel properties
-  final DateTime dueDate;
-  final bool isCompleted;
-
-  TaskModel({
+class BulletModel extends ContentModel {
+  BulletModel({
     /// ContentModel properties
     super.id,
     required super.parentId,
@@ -16,13 +12,9 @@ class TaskModel extends ContentModel {
     super.createdAt,
     super.updatedAt,
     super.orderIndex,
+  }) : super(type: ContentType.bullet, emoji: null);
 
-    /// TaskModel properties
-    required this.dueDate,
-    required this.isCompleted,
-  }) : super(type: ContentType.task, emoji: null);
-
-  TaskModel copyWith({
+  BulletModel copyWith({
     /// ContentModel properties
     String? id,
     String? sheetId,
@@ -32,12 +24,8 @@ class TaskModel extends ContentModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? orderIndex,
-
-    /// EventModel properties
-    DateTime? dueDate,
-    bool? isCompleted,
   }) {
-    return TaskModel(
+    return BulletModel(
       /// ContentModel properties
       id: id ?? this.id,
       sheetId: sheetId ?? this.sheetId,
@@ -47,10 +35,6 @@ class TaskModel extends ContentModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
       orderIndex: orderIndex ?? this.orderIndex,
-
-      /// EventModel properties
-      dueDate: dueDate ?? this.dueDate,
-      isCompleted: isCompleted ?? this.isCompleted,
     );
   }
 }

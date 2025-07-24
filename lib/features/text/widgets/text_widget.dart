@@ -10,8 +10,8 @@ import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 
 class TextWidget extends ConsumerWidget {
-  final String textContentId;
-  const TextWidget({super.key, required this.textContentId});
+  final String textId;
+  const TextWidget({super.key, required this.textId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,7 +19,7 @@ class TextWidget extends ConsumerWidget {
     final isEditing = ref.watch(isEditValueProvider);
 
     /// Watch the text content provider
-    final textContent = ref.watch(textProvider(textContentId));
+    final textContent = ref.watch(textProvider(textId));
     if (textContent == null) return const SizedBox.shrink();
 
     /// Builds the text content widget
@@ -54,9 +54,8 @@ class TextWidget extends ConsumerWidget {
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
-                onTap: () => ref
-                    .read(textListProvider.notifier)
-                    .deleteText(textContentId),
+                onTap: () =>
+                    ref.read(textListProvider.notifier).deleteText(textId),
               ),
           ],
         ),
@@ -82,10 +81,7 @@ class TextWidget extends ConsumerWidget {
       emoji: emoji ?? '𝑻',
       onTap: (currentEmoji) => ref
           .read(textListProvider.notifier)
-          .updateTextEmoji(
-            textContentId,
-            CommonUtils.getNextEmoji(currentEmoji),
-          ),
+          .updateTextEmoji(textId, CommonUtils.getNextEmoji(currentEmoji)),
     );
   }
 
@@ -101,9 +97,8 @@ class TextWidget extends ConsumerWidget {
       isEditing: isEditing,
       text: title,
       textStyle: Theme.of(context).textTheme.bodyLarge,
-      onTextChanged: (value) => ref
-          .read(textListProvider.notifier)
-          .updateTextTitle(textContentId, value),
+      onTextChanged: (value) =>
+          ref.read(textListProvider.notifier).updateTextTitle(textId, value),
     );
   }
 
