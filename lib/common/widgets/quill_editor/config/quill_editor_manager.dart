@@ -3,6 +3,7 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/quill_delta.dart';
 import 'dart:convert';
 import 'package:zoey/common/widgets/quill_editor/config/quill_editor_config.dart';
+import '../actions/quill_actions.dart' as quill_actions;
 
 /// Manages QuillController lifecycle and configuration for rich text editing
 class QuillEditorManager {
@@ -68,7 +69,7 @@ class QuillEditorManager {
   /// Setup listeners for controller and focus changes
   void _setupListeners() {
     _controller?.addListener(_onControllerChange);
-    _focusNode?.addListener(_onFocusChange);
+    quill_actions.addFocusListener(_focusNode, _onFocusChange);
   }
 
   /// Load initial document content with error handling
@@ -105,7 +106,8 @@ class QuillEditorManager {
   void _onFocusChange() {
     if (_isDisposed) return;
 
-    final isFocused = _focusNode?.hasFocus ?? false;
+    // Use the centralized focus state getter
+    final isFocused = quill_actions.getFocusState(_focusNode);
 
     if (isFocused) {
       // Immediately show toolbar when focused
@@ -113,8 +115,11 @@ class QuillEditorManager {
     } else {
       // Delay hiding toolbar to allow for toolbar button clicks
       Future.delayed(const Duration(milliseconds: 300), () {
-        if (!_isDisposed && !(_focusNode?.hasFocus ?? false)) {
-          _onFocusChanged?.call(null, null);
+        if (!_isDisposed) {
+          final stillHasFocus = quill_actions.getFocusState(_focusNode);
+          if (!stillHasFocus) {
+            _onFocusChanged?.call(null, null);
+          }
         }
       });
     }
@@ -191,7 +196,7 @@ class QuillEditorManager {
 
   /// Request focus on the editor
   void requestFocus() {
-    _focusNode?.requestFocus();
+    quill_actions.requestFocus(_focusNode);
   }
 
   /// Clear focus from the editor
@@ -202,8 +207,15 @@ class QuillEditorManager {
   /// Dispose all resources
   void dispose() {
     _isDisposed = true;
+    
+    // First, notify that focus is cleared to prevent toolbar from using disposed nodes
+    _onFocusChanged?.call(null, null);
+    
+    // Remove listeners before disposing
     _controller?.removeListener(_onControllerChange);
-    _focusNode?.removeListener(_onFocusChange);
+    quill_actions.removeFocusListener(_focusNode, _onFocusChange);
+    
+    // Dispose resources
     _controller?.dispose();
     _focusNode?.dispose();
     _scrollController?.dispose();

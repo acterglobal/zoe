@@ -1,6 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
+/// Check if a FocusNode is valid and not disposed
+bool isFocusNodeValid(FocusNode? focusNode) {
+  if (focusNode == null) return false;
+  
+  try {
+    // Access a property to check if the FocusNode is disposed
+    focusNode.hasFocus;
+    return true;
+  } catch (e) {
+    // FocusNode has been disposed
+    return false;
+  }
+}
+
+/// Get the focus state of a FocusNode safely
+bool getFocusState(FocusNode? focusNode) {
+  if (!isFocusNodeValid(focusNode)) return false;
+  
+  try {
+    return focusNode!.hasFocus;
+  } catch (e) {
+    return false;
+  }
+}
+
+/// Add a listener to a FocusNode with proper error handling
+void addFocusListener(FocusNode? focusNode, VoidCallback listener) {
+  if (!isFocusNodeValid(focusNode)) return;
+  
+  try {
+    focusNode!.addListener(listener);
+  } catch (e) {
+    debugPrint('Failed to add listener to FocusNode: $e');
+  }
+}
+
+/// Remove a listener from a FocusNode with proper error handling
+void removeFocusListener(FocusNode? focusNode, VoidCallback listener) {
+  if (!isFocusNodeValid(focusNode)) return;
+  
+  try {
+    focusNode!.removeListener(listener);
+  } catch (e) {
+    debugPrint('Failed to remove listener from FocusNode: $e');
+  }
+}
+
+/// Request focus on a FocusNode with proper error handling
+bool requestFocus(FocusNode? focusNode) {
+  if (!isFocusNodeValid(focusNode)) return false;
+  
+  try {
+    focusNode!.requestFocus();
+    return true;
+  } catch (e) {
+    debugPrint('Failed to request focus on FocusNode: $e');
+    return false;
+  }
+}
+
 /// Check if a specific attribute is currently active
 bool isAttributeActive(QuillController controller, Attribute attribute) {
   try {

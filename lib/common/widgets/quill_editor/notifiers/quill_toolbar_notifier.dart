@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
+import '../actions/quill_actions.dart';
 
 /// Represents the state of the Quill toolbar, including which editor is active
 /// and whether the toolbar should be visible
@@ -38,13 +39,17 @@ class QuillToolbarNotifier extends StateNotifier<QuillToolbarState> {
     // Cancel any pending focus timer
     _focusTimer?.cancel();
 
+    // Validate FocusNode and get focus state using centralized functions
+    final isValidFocusNode = isFocusNodeValid(focusNode);
+    final isFocused = getFocusState(focusNode);
+
     // If this is a different editor than the last active one, update immediately
     if (_lastActiveEditorId != editorId) {
       _lastActiveEditorId = editorId;
       state = (
-        activeController: controller,
-        activeFocusNode: focusNode,
-        isToolbarVisible: focusNode?.hasFocus ?? false,
+        activeController: isValidFocusNode ? controller : null,
+        activeFocusNode: isValidFocusNode ? focusNode : null,
+        isToolbarVisible: isFocused,
         activeEditorId: editorId,
       );
       return;
@@ -52,9 +57,9 @@ class QuillToolbarNotifier extends StateNotifier<QuillToolbarState> {
 
     // For the same editor, use the focus state to determine visibility
     state = (
-      activeController: controller,
-      activeFocusNode: focusNode,
-      isToolbarVisible: focusNode?.hasFocus ?? false,
+      activeController: isValidFocusNode ? controller : null,
+      activeFocusNode: isValidFocusNode ? focusNode : null,
+      isToolbarVisible: isFocused,
       activeEditorId: editorId,
     );
   }
@@ -80,8 +85,16 @@ class QuillToolbarNotifier extends StateNotifier<QuillToolbarState> {
 
   /// Request focus back to the active editor
   void returnFocusToEditor() {
-    if (state.activeFocusNode != null) {
-      state.activeFocusNode!.requestFocus();
+    final success = requestFocus(state.activeFocusNode);
+    
+    // If focus request failed, clear the state
+    if (!success && state.activeFocusNode != null) {
+      state = (
+        activeController: null,
+        activeFocusNode: null,
+        isToolbarVisible: false,
+        activeEditorId: null,
+      );
     }
   }
 
