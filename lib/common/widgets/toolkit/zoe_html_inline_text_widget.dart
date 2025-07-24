@@ -14,9 +14,9 @@ class ZoeHtmlTextEditWidget extends ConsumerStatefulWidget {
   final String? hintText;
   final bool autoFocus;
   final Function(String plainText, String richTextJson)? onContentChanged;
-  final Function(QuillController?, FocusNode?)?
-  onFocusChanged; // Keep for backward compatibility
+  final Function(QuillController?, FocusNode?)? onFocusChanged;
   final TextStyle? textStyle;
+  final String? editorId; // Add editorId parameter
 
   const ZoeHtmlTextEditWidget({
     super.key,
@@ -28,6 +28,7 @@ class ZoeHtmlTextEditWidget extends ConsumerStatefulWidget {
     this.onContentChanged,
     this.onFocusChanged,
     this.textStyle,
+    this.editorId, // Add to constructor
   });
 
   @override
@@ -41,10 +42,12 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
   bool _isInitialized = false;
   String? _lastInitialContent;
   String? _lastInitialRichContent;
+  late final String _uniqueEditorId;
 
   @override
   void initState() {
     super.initState();
+    _uniqueEditorId = widget.editorId ?? UniqueKey().toString();
     _editorStyles = QuillEditorStyles(widgetTextStyle: widget.textStyle);
     _lastInitialContent = widget.initialContent;
     _lastInitialRichContent = widget.initialRichContent;
@@ -164,11 +167,13 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     Future.microtask(() {
       if (mounted) {
         if (focusNode?.hasFocus == true) {
-          ref
-              .read(quillToolbarProvider.notifier)
-              .updateActiveEditor(controller: controller, focusNode: focusNode);
+          ref.read(quillToolbarProvider.notifier).updateActiveEditor(
+            editorId: _uniqueEditorId,
+            controller: controller,
+            focusNode: focusNode,
+          );
         } else {
-          ref.read(quillToolbarProvider.notifier).clearActiveEditor();
+          ref.read(quillToolbarProvider.notifier).clearActiveEditor(_uniqueEditorId);
         }
       }
     });
