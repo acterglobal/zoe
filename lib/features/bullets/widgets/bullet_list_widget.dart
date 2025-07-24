@@ -5,13 +5,8 @@ import 'package:zoey/features/bullets/widgets/bullet_item_widget.dart';
 
 class BulletListWidget extends ConsumerWidget {
   final String parentId;
-  final bool isEditing;
 
-  const BulletListWidget({
-    super.key,
-    required this.parentId,
-    this.isEditing = false,
-  });
+  const BulletListWidget({super.key, required this.parentId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,7 +24,6 @@ class BulletListWidget extends ConsumerWidget {
           child: BulletItemWidget(
             key: ValueKey(bullet.id),
             bulletId: bullet.id,
-            isEditing: isEditing,
           ),
         );
       },
