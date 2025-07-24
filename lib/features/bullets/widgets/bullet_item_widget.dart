@@ -9,19 +9,19 @@ import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 
 class BulletItemWidget extends ConsumerWidget {
-  final String bulletItemId;
+  final String bulletId;
   final bool isEditing;
 
   const BulletItemWidget({
     super.key,
-    required this.bulletItemId,
+    required this.bulletId,
     this.isEditing = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider);
-    final bulletItem = ref.watch(bulletProvider(bulletItemId));
+    final bulletItem = ref.watch(bulletProvider(bulletId));
 
     if (bulletItem == null) return const SizedBox.shrink();
 
@@ -71,7 +71,7 @@ class BulletItemWidget extends ConsumerWidget {
       onTextChanged: (value) {
         ref
             .read(bulletListProvider.notifier)
-            .updateBulletTitle(bulletItemId, value);
+            .updateBulletTitle(bulletId, value);
       },
     );
   }
@@ -83,10 +83,7 @@ class BulletItemWidget extends ConsumerWidget {
         // Edit list item
         GestureDetector(
           onTap: () => context.push(
-            AppRoutes.bulletItemDetail.route.replaceAll(
-              ':bulletItemId',
-              bulletItemId,
-            ),
+            AppRoutes.bulletDetail.route.replaceAll(':bulletId', bulletId),
           ),
           child: Icon(
             Icons.edit,
@@ -101,7 +98,7 @@ class BulletItemWidget extends ConsumerWidget {
         // Delete list item
         ZoeCloseButtonWidget(
           onTap: () {
-            ref.read(bulletListProvider.notifier).deleteBullet(bulletItemId);
+            ref.read(bulletListProvider.notifier).deleteBullet(bulletId);
           },
         ),
       ],

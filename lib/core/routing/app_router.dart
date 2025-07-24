@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zoey/common/screens/page_not_found_screen.dart';
-import 'package:zoey/features/bullets/screens/list_item_detail_screen.dart';
+import 'package:zoey/features/bullets/screens/bullet_detail_screen.dart';
 import 'package:zoey/features/events/screens/event_detail_screen.dart';
 import 'package:zoey/features/home/screens/home_screen.dart';
 import 'package:zoey/features/settings/screens/settings_screen.dart';
@@ -49,7 +49,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.taskDetail.route,
         name: AppRoutes.taskDetail.name,
         builder: (context, state) {
-          final taskId = state.pathParameters['taskId'];
+          final taskId = state.pathParameters['taskId'] ?? Uuid().v4();
           return TaskDetailScreen(taskId: taskId);
         },
       ),
@@ -58,17 +58,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.eventDetail.route,
         name: AppRoutes.eventDetail.name,
         builder: (context, state) {
-          final eventId = state.pathParameters['eventId'];
+          final eventId = state.pathParameters['eventId'] ?? Uuid().v4();
           return EventDetailScreen(eventId: eventId);
         },
       ),
 
       GoRoute(
-        path: AppRoutes.bulletItemDetail.route,
-        name: AppRoutes.bulletItemDetail.name,
+        path: AppRoutes.bulletDetail.route,
+        name: AppRoutes.bulletDetail.name,
         builder: (context, state) {
-          final bulletItemId = state.pathParameters['bulletItemId'];
-          return BulletItemDetailScreen(bulletItemId: bulletItemId);
+          final bulletId = state.pathParameters['bulletId'] ?? Uuid().v4();
+          return BulletDetailScreen(bulletId: bulletId);
         },
       ),
       // Settings route

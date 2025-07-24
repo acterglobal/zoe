@@ -28,7 +28,7 @@ class BulletListWidget extends ConsumerWidget {
           padding: const EdgeInsets.only(bottom: 4, top: 4, left: 12),
           child: BulletItemWidget(
             key: ValueKey(bullet.id),
-            bulletItemId: bullet.id,
+            bulletId: bullet.id,
             isEditing: isEditing,
           ),
         );
