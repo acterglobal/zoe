@@ -3,27 +3,32 @@ import 'package:flutter_quill/flutter_quill.dart';
 
 /// Centralized configuration for QuillEditor styling and behavior
 class QuillEditorStyles {
+  final TextStyle? widgetTextStyle;
+
+  const QuillEditorStyles({this.widgetTextStyle});
+
   /// Get the default QuillEditor configuration for editing mode
   QuillEditorConfig getEditingConfig({
     String? hintText,
     bool autoFocus = false,
+    required BuildContext context,
   }) {
     return QuillEditorConfig(
       placeholder: hintText ?? '',
       autoFocus: autoFocus,
       expands: false,
       embedBuilders: const [],
-      customStyles: _getDefaultStyles(),
+      customStyles: _getDefaultStyles(context),
     );
   }
 
   /// Get the default QuillEditor configuration for view mode
-  QuillEditorConfig getViewConfig() {
+  QuillEditorConfig getViewConfig({required BuildContext context}) {
     return QuillEditorConfig(
       autoFocus: false,
       expands: false,
       embedBuilders: const [],
-      customStyles: _getDefaultStyles(),
+      customStyles: _getDefaultStyles(context),
     );
   }
 
@@ -35,13 +40,32 @@ class QuillEditorStyles {
   }
 
   /// Get default styles for code blocks and other elements
-  DefaultStyles _getDefaultStyles() {
+  DefaultStyles _getDefaultStyles(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    final themeBasedStyle = widgetTextStyle?.copyWith(
+      color: colorScheme.onSurface.withValues(alpha: 0.87),
+      fontSize: widgetTextStyle?.fontSize ?? textTheme.bodyMedium?.fontSize ?? 14,
+    ) ?? TextStyle(
+      fontSize: textTheme.bodyMedium?.fontSize ?? 14, 
+      height: 1.5,
+      color: colorScheme.onSurface.withValues(alpha: 0.87),
+    );
+
     return DefaultStyles(
+      paragraph: DefaultTextBlockStyle(
+        themeBasedStyle,
+        const HorizontalSpacing(0, 0),
+        const VerticalSpacing(0, 0),
+        VerticalSpacing.zero,
+        null,
+      ),
       code: DefaultTextBlockStyle(
         TextStyle(
-          color: Colors.white.withValues(alpha: 0.5),
+          color: colorScheme.onSurface.withValues(alpha: 0.6),
           fontFamily: 'Courier New',
-          fontSize: 14,
+          fontSize: widgetTextStyle?.fontSize ?? textTheme.bodySmall?.fontSize ?? 12,
         ),
         const HorizontalSpacing(0, 0),
         const VerticalSpacing(6, 0),
@@ -49,7 +73,10 @@ class QuillEditorStyles {
         BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.grey.shade700, width: 1),
+          border: Border.all(
+            color: colorScheme.outline.withValues(alpha: 0.5), 
+            width: 1
+          ),
         ),
       ),
     );
@@ -57,19 +84,20 @@ class QuillEditorStyles {
 
   /// Get default text style for plain text display
   TextStyle getDefaultTextStyle(BuildContext context) {
-    return TextStyle(
-      fontSize: 16,
-      color: Theme.of(context).colorScheme.onSurface,
-      height: 1.6,
-    );
-  }
 
-  /// Get description text style
-  TextStyle getDescriptionTextStyle(BuildContext context) {
-    return TextStyle(
-      fontSize: 16,
-      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-      height: 1.5,
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    final defaultStyle = TextStyle(
+      fontSize: textTheme.bodyMedium?.fontSize ?? 14,
+      color: colorScheme.onSurface.withValues(alpha: 0.87),
+      height: textTheme.bodyMedium?.height ?? 1.6,
     );
+    
+    return widgetTextStyle?.copyWith(
+      color: colorScheme.onSurface.withValues(alpha: 0.87),
+      fontSize: widgetTextStyle?.fontSize ?? textTheme.bodyMedium?.fontSize ?? 14,
+      height: widgetTextStyle?.height ?? textTheme.bodyMedium?.height ?? 1.6,
+    ) ?? defaultStyle;
   }
 }

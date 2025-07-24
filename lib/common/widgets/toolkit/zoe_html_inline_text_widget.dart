@@ -45,7 +45,7 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
   @override
   void initState() {
     super.initState();
-    _editorStyles = QuillEditorStyles();
+    _editorStyles = QuillEditorStyles(widgetTextStyle: widget.textStyle);
     _lastInitialContent = widget.initialContent;
     _lastInitialRichContent = widget.initialRichContent;
     _initializeEditor();
@@ -76,7 +76,8 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
 
       // Update content without reinitializing to preserve focus
       _editorManager.updateContent(widget.initialContent, processedRichContent);
-    } else if (sourceContentChanged) {
+    } else if (sourceContentChanged ||
+        oldWidget.textStyle != widget.textStyle) {
       _lastInitialContent = widget.initialContent;
       _lastInitialRichContent = widget.initialRichContent;
       _initializeEditor();
@@ -193,6 +194,7 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
         config: _editorStyles.getEditingConfig(
           hintText: widget.hintText,
           autoFocus: widget.autoFocus,
+          context: context,
         ),
       );
     } else {
@@ -218,19 +220,21 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
         controller: _editorManager.controller!,
         scrollController: _editorManager.scrollController!,
         focusNode: disabledFocusNode,
-        config: _editorStyles.getViewConfig(),
+        config: _editorStyles.getViewConfig(context: context),
       );
     } else if (hasPlainContent) {
       // Show plain text when no rich content is available
       return Text(
         widget.initialContent!,
-        style: widget.textStyle ?? _editorStyles.getDefaultTextStyle(context),
+        style: _editorStyles.getDefaultTextStyle(context),
       );
     } else {
       // Show hint text when no content
       return Text(
         widget.hintText ?? '',
-        style: widget.textStyle?.copyWith(color: Theme.of(context).hintColor),
+        style: _editorStyles
+            .getDefaultTextStyle(context)
+            .copyWith(color: Theme.of(context).hintColor),
       );
     }
   }
