@@ -3,18 +3,17 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zoey/common/widgets/quill_editor/widgets/quill_toolbar_button.dart';
 import '../actions/quill_actions.dart';
 
-/// Keyboard-aware toolbar that appears above the keyboard
 class QuillToolbar extends StatefulWidget {
+  final QuillController controller;
+  final FocusNode focusNode;
+  final VoidCallback? onButtonPressed;
+
   const QuillToolbar({
     super.key,
     required this.controller,
     required this.focusNode,
     this.onButtonPressed,
   });
-
-  final QuillController controller;
-  final FocusNode focusNode;
-  final VoidCallback? onButtonPressed;
 
   @override
   State<QuillToolbar> createState() => _QuillToolbarState();
@@ -24,35 +23,34 @@ class _QuillToolbarState extends State<QuillToolbar> {
   @override
   void initState() {
     super.initState();
-    _setupListeners();
+    _addListeners();
   }
 
-  /// Setup listeners for focus and controller changes
-  void _setupListeners() {
-    widget.focusNode.addListener(_onFocusChange);
-    widget.controller.addListener(_onControllerChange);
+  void _addListeners() {
+    widget.focusNode.addListener(_scheduleRebuild);
+    widget.controller.addListener(_scheduleRebuild);
   }
 
-  /// Handle focus changes
-  void _onFocusChange() {
-    if (mounted) {
-      Future.microtask(() {
-        if (mounted) {
-          setState(() {});
-        }
-      });
+  @override
+  void didUpdateWidget(QuillToolbar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_scheduleRebuild);
+      widget.controller.addListener(_scheduleRebuild);
+    }
+
+    if (oldWidget.focusNode != widget.focusNode) {
+      oldWidget.focusNode.removeListener(_scheduleRebuild);
+      widget.focusNode.addListener(_scheduleRebuild);
     }
   }
 
-  /// Handle controller changes (selection, content, etc.)
-  void _onControllerChange() {
-    if (mounted) {
-      Future.microtask(() {
-        if (mounted) {
-          setState(() {});
-        }
-      });
-    }
+  void _scheduleRebuild() {
+    if (!mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() {});
+    });
   }
 
   @override
@@ -67,9 +65,7 @@ class _QuillToolbarState extends State<QuillToolbar> {
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: Theme.of(
-                context,
-              ).colorScheme.outline.withValues(alpha: 0.2),
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
             ),
           ),
         ),
@@ -77,8 +73,8 @@ class _QuillToolbarState extends State<QuillToolbar> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              ..._buildTextFormattingButtons(),
-              ..._buildBlockFormattingButtons(),
+              ..._buildTextStyleButtons(),
+              ..._buildBlockStyleButtons(),
             ],
           ),
         ),
@@ -86,87 +82,46 @@ class _QuillToolbarState extends State<QuillToolbar> {
     );
   }
 
-  /// Build text formatting buttons (bold, italic, underline, strikethrough)
-  List<Widget> _buildTextFormattingButtons() {
+  List<Widget> _buildTextStyleButtons() {
     return [
-      buildToolbarButton(
-        context: context,
-        icon: Icons.format_bold,
-        isActive: isAttributeActive(widget.controller, Attribute.bold),
-        onPressed: () => toggleAttribute(
-          widget.controller,
-          Attribute.bold,
-          onButtonPressed: widget.onButtonPressed,
-        ),
-      ),
-      const SizedBox(width: 8),
-      buildToolbarButton(
-        context: context,
-        icon: Icons.format_italic,
-        isActive: isAttributeActive(widget.controller, Attribute.italic),
-        onPressed: () => toggleAttribute(
-          widget.controller,
-          Attribute.italic,
-          onButtonPressed: widget.onButtonPressed,
-        ),
-      ),
-      const SizedBox(width: 8),
-      buildToolbarButton(
-        context: context,
-        icon: Icons.format_underline,
-        isActive: isAttributeActive(widget.controller, Attribute.underline),
-        onPressed: () => toggleAttribute(
-          widget.controller,
-          Attribute.underline,
-          onButtonPressed: widget.onButtonPressed,
-        ),
-      ),
-      const SizedBox(width: 8),
-      buildToolbarButton(
-        context: context,
-        icon: Icons.format_strikethrough,
-        isActive: isAttributeActive(widget.controller, Attribute.strikeThrough),
-        onPressed: () => toggleAttribute(
-          widget.controller,
-          Attribute.strikeThrough,
-          onButtonPressed: widget.onButtonPressed,
-        ),
-      ),
+      _buildFormatButton(Icons.format_bold, Attribute.bold),
+      _spacer(),
+      _buildFormatButton(Icons.format_italic, Attribute.italic),
+      _spacer(),
+      _buildFormatButton(Icons.format_underline, Attribute.underline),
+      _spacer(),
+      _buildFormatButton(Icons.format_strikethrough, Attribute.strikeThrough),
     ];
   }
 
-  /// Build block formatting buttons (lists, quotes, code blocks)
-  List<Widget> _buildBlockFormattingButtons() {
+  List<Widget> _buildBlockStyleButtons() {
     return [
-      const SizedBox(width: 8),
-      buildToolbarButton(
-        context: context,
-        icon: Icons.format_quote,
-        isActive: isAttributeActive(widget.controller, Attribute.blockQuote),
-        onPressed: () => toggleAttribute(
-          widget.controller,
-          Attribute.blockQuote,
-          onButtonPressed: widget.onButtonPressed,
-        ),
-      ),
-      const SizedBox(width: 8),
-      buildToolbarButton(
-        context: context,
-        icon: Icons.code,
-        isActive: isAttributeActive(widget.controller, Attribute.codeBlock),
-        onPressed: () => toggleAttribute(
-          widget.controller,
-          Attribute.codeBlock,
-          onButtonPressed: widget.onButtonPressed,
-        ),
-      ),
+      _spacer(),
+      _buildFormatButton(Icons.format_quote, Attribute.blockQuote),
+      _spacer(),
+      _buildFormatButton(Icons.code, Attribute.codeBlock),
     ];
   }
+
+  Widget _buildFormatButton(IconData icon, Attribute attribute) {
+    return buildToolbarButton(
+      context: context,
+      icon: icon,
+      isActive: isAttributeActive(widget.controller, attribute),
+      onPressed: () => toggleAttribute(
+        widget.controller,
+        attribute,
+        onButtonPressed: widget.onButtonPressed,
+      ),
+    );
+  }
+
+  Widget _spacer() => const SizedBox(width: 8);
 
   @override
   void dispose() {
-    widget.focusNode.removeListener(_onFocusChange);
-    widget.controller.removeListener(_onControllerChange);
+    widget.focusNode.removeListener(_scheduleRebuild);
+    widget.controller.removeListener(_scheduleRebuild);
     super.dispose();
   }
 }
