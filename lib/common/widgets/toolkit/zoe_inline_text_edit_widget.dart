@@ -4,6 +4,7 @@ class ZoeInlineTextEditWidget extends StatefulWidget {
   final String? text;
   final String? hintText;
   final Function(String) onTextChanged;
+  final VoidCallback? onTapText;
   final bool isEditing;
   final TextStyle? textStyle;
 
@@ -12,6 +13,7 @@ class ZoeInlineTextEditWidget extends StatefulWidget {
     this.text,
     this.hintText,
     required this.onTextChanged,
+    this.onTapText,
     this.isEditing = false,
     this.textStyle,
   });
@@ -55,6 +57,7 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
             style: controller.text.isEmpty && widget.hintText != null
                 ? widget.textStyle?.copyWith(color: Theme.of(context).hintColor)
                 : widget.textStyle,
+            onTap: widget.onTapText,
           );
   }
 }

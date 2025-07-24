@@ -11,9 +11,8 @@ import 'package:zoey/features/task/providers/task_providers.dart';
 
 class TaskWidget extends ConsumerWidget {
   final String taskId;
-  final bool isEditing;
 
-  const TaskWidget({super.key, required this.taskId, this.isEditing = false});
+  const TaskWidget({super.key, required this.taskId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,6 +40,7 @@ class TaskWidget extends ConsumerWidget {
             ref,
             task.title,
             task.isCompleted,
+            isEditing,
           ),
         ),
         const SizedBox(width: 6),
@@ -76,11 +76,12 @@ class TaskWidget extends ConsumerWidget {
     WidgetRef ref,
     String title,
     bool isCompleted,
+    bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: 'Bullet item',
-      isEditing: isEditing,
       text: title,
+      isEditing: isEditing,
       textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
         decoration: isCompleted
             ? TextDecoration.lineThrough
@@ -89,6 +90,9 @@ class TaskWidget extends ConsumerWidget {
       onTextChanged: (value) {
         ref.read(taskListProvider.notifier).updateTaskTitle(taskId, value);
       },
+      onTapText: () => context.push(
+        AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
+      ),
     );
   }
 
