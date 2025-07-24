@@ -123,6 +123,7 @@ class SheetDetailScreen extends ConsumerWidget {
           initialContent: sheet.description?.plainText,
           initialRichContent: sheet.description?.htmlText,
           textStyle: Theme.of(context).textTheme.bodyLarge,
+          editorId: 'sheet-description-$sheetId', // Add unique editor ID
           onContentChanged: (plainText, htmlText) => Future.microtask(
             () => updateSheetDescription(ref, sheetId, (
               plainText: plainText,
