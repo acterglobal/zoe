@@ -91,6 +91,7 @@ class TaskWidget extends ConsumerWidget {
       onTextChanged: (value) {
         ref.read(taskListProvider.notifier).updateTaskTitle(taskId, value);
       },
+      onTextEmpty: () => ref.read(taskListProvider.notifier).deleteTask(taskId),
       onTapText: () => context.push(
         AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
       ),
