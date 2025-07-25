@@ -50,51 +50,14 @@ class _AnimatedBackgroundWidgetState extends State<AnimatedBackgroundWidget>
     return Stack(
       children: [
         // Modern gradient background
-        _buildModernGradientBackground(),
+        // _buildModernGradientBackground(),
         // Conceptual elements layer
         _buildConceptualElementsLayer(),
         // Glassmorphism overlay
-        _buildGlassmorphismOverlay(),
+        // _buildGlassmorphismOverlay(),
         // Child content
         widget.child,
       ],
-    );
-  }
-
-  Widget _buildModernGradientBackground() {
-    return AnimatedBuilder(
-      animation: _primaryController,
-      builder: (context, child) {
-        final isDark = Theme.of(context).brightness == Brightness.dark;
-
-        return Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: isDark
-                  ? [
-                      const Color(0xFF0A0A0F),
-                      const Color(0xFF1A1A2E),
-                      const Color(0xFF16213E),
-                      const Color(0xFF0F172A),
-                    ]
-                  : [
-                      const Color(0xFFF8FAFC),
-                      const Color(0xFFF1F5F9),
-                      const Color(0xFFE2E8F0),
-                      const Color(0xFFF8FAFC),
-                    ],
-              stops: [
-                0.0,
-                0.3 + math.sin(_primaryController.value * 2 * math.pi) * 0.1,
-                0.7 + math.cos(_primaryController.value * 2 * math.pi) * 0.1,
-                1.0,
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -111,29 +74,6 @@ class _AnimatedBackgroundWidgetState extends State<AnimatedBackgroundWidget>
           size: Size.infinite,
         );
       },
-    );
-  }
-
-  Widget _buildGlassmorphismOverlay() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: Theme.of(context).brightness == Brightness.dark
-              ? [
-                  Colors.transparent,
-                  Colors.black.withValues(alpha: 0.1),
-                  Colors.transparent,
-                ]
-              : [
-                  Colors.transparent,
-                  Colors.white.withValues(alpha: 0.3),
-                  Colors.transparent,
-                ],
-          stops: const [0.0, 0.5, 1.0],
-        ),
-      ),
     );
   }
 }
