@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
@@ -59,7 +60,7 @@ class EventWidget extends ConsumerWidget {
                   if (isEditing) _buildEventActions(context, ref, event),
                 ],
               ),
-              _buildEventDescription(context, ref, event),
+              _buildEventDates(context, ref, event),
             ],
           ),
         ),
@@ -87,14 +88,16 @@ class EventWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildEventDescription(
+  Widget _buildEventDates(
     BuildContext context,
     WidgetRef ref,
     EventModel event,
   ) {
+    final startDateText = DateTimeUtils.formatDateTime(event.startDate);
+    final endDateText = DateTimeUtils.formatDateTime(event.endDate);
     return Text(
-      event.description?.plainText ?? '',
-      maxLines: 1,
+      '$startDateText - $endDateText',
+      maxLines: 2,
       overflow: TextOverflow.ellipsis,
       style: Theme.of(context).textTheme.bodySmall,
     );

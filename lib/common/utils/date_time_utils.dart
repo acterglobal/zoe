@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 class DateTimeUtils {
   static const String dateFormat = 'd MMM yyyy';
   static const String timeFormat = 'hh:mm a';
-  static const String dateTimeFormat = 'd MMM yyyy HH:mm';
+  static const String dateTimeFormat = 'd MMM yyyy hh:mm a';
 
   static String formatDate(DateTime date) {
     return DateFormat(dateFormat).format(date);
