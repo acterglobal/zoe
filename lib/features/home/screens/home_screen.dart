@@ -25,7 +25,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         onPressed: () async {
           final sheet = SheetModel();
           ref.read(sheetListProvider.notifier).addSheet(sheet);
-          ref.read(isEditValueProvider.notifier).state = true;
+          ref.read(isEditValueProvider(sheet.id).notifier).state = true;
           context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id));
         },
         child: const Icon(Icons.add_rounded),

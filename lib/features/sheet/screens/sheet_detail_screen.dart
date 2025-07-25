@@ -20,7 +20,10 @@ class SheetDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        actions: [EditViewToggleButton(), _buildDeleteButton(context, ref)],
+        actions: [
+          EditViewToggleButton(parentId: sheetId),
+          _buildDeleteButton(context, ref),
+        ],
       ),
       body: _buildBody(context, ref),
     );
@@ -51,7 +54,7 @@ class SheetDetailScreen extends ConsumerWidget {
 
   /// Builds the header
   Widget _buildSheetHeader(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider);
+    final isEditing = ref.watch(isEditValueProvider(sheetId));
     final sheet = ref.watch(sheetProvider(sheetId));
     if (sheet == null) return const SizedBox.shrink();
 
@@ -62,6 +65,7 @@ class SheetDetailScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             EmojiWidget(
+              isEditing: isEditing,
               emoji: sheet.emoji,
               size: 32,
               onTap: (emoji) => updateSheetEmoji(ref, sheetId, emoji),

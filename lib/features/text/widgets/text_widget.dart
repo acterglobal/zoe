@@ -4,20 +4,18 @@ import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class TextWidget extends ConsumerWidget {
   final String textId;
-  const TextWidget({super.key, required this.textId});
+  final bool isEditing;
+
+  const TextWidget({super.key, required this.textId, required this.isEditing});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    /// Watch the content edit mode provider
-    final isEditing = ref.watch(isEditValueProvider);
-
     /// Watch the text content provider
     final textContent = ref.watch(textProvider(textId));
     if (textContent == null) return const SizedBox.shrink();
@@ -25,7 +23,7 @@ class TextWidget extends ConsumerWidget {
     /// Builds the text content widget
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: _buildTextContent(context, ref, textContent, isEditing),
+      child: _buildTextContent(context, ref, textContent),
     );
   }
 
@@ -33,7 +31,6 @@ class TextWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     TextModel textContent,
-    bool isEditing,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,12 +41,7 @@ class TextWidget extends ConsumerWidget {
           children: [
             _buildTextContentEmoji(context, ref, textContent.emoji),
             Expanded(
-              child: _buildTextContentTitle(
-                context,
-                ref,
-                textContent.title,
-                isEditing,
-              ),
+              child: _buildTextContentTitle(context, ref, textContent.title),
             ),
             const SizedBox(width: 6),
             if (isEditing)
@@ -65,7 +57,6 @@ class TextWidget extends ConsumerWidget {
           ref,
           textContent.description?.plainText ?? '',
           textContent.description?.htmlText ?? '',
-          isEditing,
         ),
       ],
     );
@@ -78,6 +69,7 @@ class TextWidget extends ConsumerWidget {
     String? emoji,
   ) {
     return EmojiWidget(
+      isEditing: isEditing,
       emoji: emoji ?? '𝑻',
       onTap: (currentEmoji) => ref
           .read(textListProvider.notifier)
@@ -90,7 +82,6 @@ class TextWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     String title,
-    bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).textContentTitle,
@@ -108,7 +99,6 @@ class TextWidget extends ConsumerWidget {
     WidgetRef ref,
     String plainTextDescription,
     String htmlDescription,
-    bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).typeSomething,

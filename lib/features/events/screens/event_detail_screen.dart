@@ -19,7 +19,10 @@ class EventDetailScreen extends ConsumerWidget {
     if (event == null) return Center(child: Text(L10n.of(context).eventNotFound));
     return Scaffold(
       appBar: AppBar(
-        actions: [EditViewToggleButton(), const SizedBox(width: 12)],
+        actions: [
+          EditViewToggleButton(parentId: eventId),
+          const SizedBox(width: 12),
+        ],
       ),
       body: _buildBody(context, ref, event),
     );
@@ -46,7 +49,7 @@ class EventDetailScreen extends ConsumerWidget {
     WidgetRef ref,
     EventModel event,
   ) {
-    final isEditing = ref.watch(isEditValueProvider);
+    final isEditing = ref.watch(isEditValueProvider(eventId));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -19,7 +19,10 @@ class BulletDetailScreen extends ConsumerWidget {
     if (bullet == null) return Center(child: Text(L10n.of(context).bulletNotFound));
     return Scaffold(
       appBar: AppBar(
-        actions: [EditViewToggleButton(), const SizedBox(width: 12)],
+        actions: [
+          EditViewToggleButton(parentId: bulletId),
+          const SizedBox(width: 12),
+        ],
       ),
       body: _buildBody(context, ref, bullet),
     );
@@ -46,7 +49,7 @@ class BulletDetailScreen extends ConsumerWidget {
     WidgetRef ref,
     BulletModel bullet,
   ) {
-    final isEditing = ref.watch(isEditValueProvider);
+    final isEditing = ref.watch(isEditValueProvider(bulletId));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

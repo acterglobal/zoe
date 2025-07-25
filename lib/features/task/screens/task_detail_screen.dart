@@ -19,7 +19,10 @@ class TaskDetailScreen extends ConsumerWidget {
     if (task == null) return Center(child: Text(L10n.of(context).taskNotFound));
     return Scaffold(
       appBar: AppBar(
-        actions: [EditViewToggleButton(), const SizedBox(width: 12)],
+        actions: [
+          EditViewToggleButton(parentId: taskId),
+          const SizedBox(width: 12),
+        ],
       ),
       body: _buildBody(context, ref, task),
     );
@@ -42,7 +45,7 @@ class TaskDetailScreen extends ConsumerWidget {
 
   /// Builds the header
   Widget _buildTaskHeader(BuildContext context, WidgetRef ref, TaskModel task) {
-    final isEditing = ref.watch(isEditValueProvider);
+    final isEditing = ref.watch(isEditValueProvider(taskId));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -5,11 +5,12 @@ import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class EditViewToggleButton extends ConsumerWidget {
-  const EditViewToggleButton({super.key});
+  final String parentId;
+  const EditViewToggleButton({super.key, required this.parentId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider);
+    final isEditing = ref.watch(isEditValueProvider(parentId));
     return ZoePrimaryButton(
       text: isEditing ? L10n.of(context).save : L10n.of(context).edit,
       icon: isEditing ? Icons.save_rounded : Icons.edit_rounded,
@@ -17,9 +18,8 @@ class EditViewToggleButton extends ConsumerWidget {
           ? Theme.of(context).colorScheme.primary
           : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      onPressed: () => ref.read(isEditValueProvider.notifier).state = !ref.read(
-        isEditValueProvider,
-      ),
+      onPressed: () => ref.read(isEditValueProvider(parentId).notifier).state =
+          !ref.read(isEditValueProvider(parentId)),
     );
   }
 }

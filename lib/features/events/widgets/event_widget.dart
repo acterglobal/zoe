@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/events/widgets/event_date_widget.dart';
@@ -12,13 +11,16 @@ import 'package:zoey/l10n/generated/l10n.dart';
 
 class EventWidget extends ConsumerWidget {
   final String eventsId;
-  const EventWidget({super.key, required this.eventsId});
+  final bool isEditing;
+
+  const EventWidget({
+    super.key,
+    required this.eventsId,
+    required this.isEditing,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    /// Watch the content edit mode provider
-    final isEditing = ref.watch(isEditValueProvider);
-
     final event = ref.watch(eventProvider(eventsId));
     if (event == null) return const SizedBox.shrink();
 
