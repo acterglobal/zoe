@@ -5,7 +5,8 @@ enum AppRoutes {
   taskDetail('/task/:taskId'),
   eventDetail('/event/:eventId'),
   bulletDetail('/bullet/:bulletId'),
-  settings('/settings');
+  settings('/settings'),
+  languageSelection('/language-selection');
 
   final String route;
   const AppRoutes(this.route);

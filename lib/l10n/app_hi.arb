@@ -114,5 +114,7 @@
     "primaryButton": "प्राथमिक बटन",
     "@primaryButton": {},
     "chooseLanguage": "भाषा चुनें",
-    "@chooseLanguage": {}
+    "@chooseLanguage": {},
+    "selectLanguage": "भाषा चुनें",
+    "@selectLanguage": {}
 }
