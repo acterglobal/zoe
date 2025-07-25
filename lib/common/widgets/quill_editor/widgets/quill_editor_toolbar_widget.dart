@@ -23,18 +23,17 @@ class QuillEditorToolbarWidget extends StatelessWidget {
     final duration = isDesktopPlatform ? 200 : 250;
     final curve = isDesktopPlatform ? Curves.easeInOut : Curves.easeOut;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        boxShadow: isToolbarVisible ? [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ] : null,
-      ),
-      child: AnimatedContainer(
+    return AnimatedContainer(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          boxShadow: isToolbarVisible ? [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ] : null,
+        ),
         duration: Duration(milliseconds: duration),
         curve: curve,
         height: isToolbarVisible ? 60 : 0,
@@ -47,7 +46,6 @@ class QuillEditorToolbarWidget extends StatelessWidget {
             onButtonPressed: onReturnFocusToEditor,
           ),
         ),
-      ),
     );
   }
 }
