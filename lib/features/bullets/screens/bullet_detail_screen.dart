@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
+
+import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullets/model/bullet_model.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
@@ -16,7 +19,8 @@ class BulletDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bullet = ref.watch(bulletProvider(bulletId));
-    if (bullet == null) return Center(child: Text(L10n.of(context).bulletNotFound));
+    if (bullet == null)
+      return Center(child: Text(L10n.of(context).bulletNotFound));
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -24,7 +28,18 @@ class BulletDetailScreen extends ConsumerWidget {
           const SizedBox(width: 12),
         ],
       ),
-      body: _buildBody(context, ref, bullet),
+      body: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                _buildBody(context, ref, bullet),
+                buildQuillEditorPositionedToolbar(context, ref),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -76,16 +91,17 @@ class BulletDetailScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        ZoeInlineTextEditWidget(
+        ZoeHtmlTextEditWidget(
           hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
-          text: bullet.description?.plainText,
+          description: bullet.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          onTextChanged: (value) =>
-              ref.read(bulletListProvider.notifier).updateBulletDescription(
-                bulletId,
-                (plainText: value, htmlText: null),
-              ),
+          editorId: 'bullet-description-$bulletId', // Add unique editor ID
+          onContentChanged: (description) => Future.microtask(
+            () => ref
+                .read(bulletListProvider.notifier)
+                .updateBulletDescription(bulletId, description),
+          ),
         ),
       ],
     );

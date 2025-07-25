@@ -65,6 +65,21 @@ dependencies:
   package_info_plus: ^8.3.0
   shared_preferences: ^2.2.2
 
+  # Quill editor
+  flutter_quill:
+    git:
+      url: https://github.com/theniceboy/flutter-quill
+      ref: 5ff5967
+  flutter_quill_extensions: ^11.0.0
+  flutter_quill_delta_from_html: ^1.5.2
+
+# Added cause; without this, it gives a 'Terminating app due to uncaught exception 'NSInvalidArgumentException'' error on macOS.
+dependency_overrides:
+  flutter_quill:
+    git:
+      url: https://github.com/theniceboy/flutter-quill
+      ref: 5ff5967
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

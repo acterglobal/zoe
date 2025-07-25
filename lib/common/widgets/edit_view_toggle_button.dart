@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/widgets/quill_editor/actions/quill_actions.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
@@ -20,6 +21,11 @@ class EditViewToggleButton extends ConsumerWidget {
       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       onPressed: () => ref.read(isEditValueProvider(parentId).notifier).state =
           !ref.read(isEditValueProvider(parentId)),
+      onPressed: () {
+        // Close keyboard and clear quill toolbar state
+        clearActiveEditorState(ref);
+        ref.read(isEditValueProvider.notifier).state = !isEditing;
+      },
     );
   }
 }

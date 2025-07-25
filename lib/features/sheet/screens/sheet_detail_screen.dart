@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/sheet/actions/delete_sheet.dart';
@@ -25,7 +28,18 @@ class SheetDetailScreen extends ConsumerWidget {
           _buildDeleteButton(context, ref),
         ],
       ),
-      body: _buildBody(context, ref),
+      body: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                _buildBody(context, ref),
+                buildQuillEditorPositionedToolbar(context, ref),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -82,18 +96,23 @@ class SheetDetailScreen extends ConsumerWidget {
                   color: Theme.of(context).colorScheme.onSurface,
                   height: 1.2,
                 ),
-                onTextChanged: (value) => updateSheetTitle(ref, sheetId, value),
+                onTextChanged: (value) => Future.microtask(
+                  () => updateSheetTitle(ref, sheetId, value),
+                ),
               ),
             ),
           ],
         ),
         const SizedBox(height: 16),
-        ZoeInlineTextEditWidget(
+        ZoeHtmlTextEditWidget(
           hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
-          text: sheet.description?.plainText,
+          description: sheet.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          onTextChanged: (value) => updateSheetDescription(ref, sheetId, value),
+          editorId: 'sheet-description-$sheetId', // Add unique editor ID
+          onContentChanged: (description) => Future.microtask(
+            () => updateSheetDescription(ref, sheetId, description),
+          ),
         ),
       ],
     );

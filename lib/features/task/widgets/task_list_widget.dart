@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/widgets/task_item_widget.dart';
 
@@ -30,6 +32,14 @@ class TaskListWidget extends ConsumerWidget {
             key: ValueKey(task.id),
             taskId: task.id,
             isEditing: isEditing,
+          ),
+        return GestureDetector(
+          onTap: () => context.push(
+            AppRoutes.taskDetail.route.replaceAll(':taskId', task.id),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16, bottom: 8),
+            child: TaskWidget(key: ValueKey(task.id), taskId: task.id),
           ),
         );
       },

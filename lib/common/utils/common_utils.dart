@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class CommonUtils {
@@ -9,4 +10,13 @@ class CommonUtils {
     final nextIndex = (currentIndex + 1) % emojis.length;
     return emojis[nextIndex];
   }
+
+  static const List<TargetPlatform> desktopPlatforms = [
+    TargetPlatform.macOS,
+    TargetPlatform.linux,
+    TargetPlatform.windows,
+  ];
+
+  static bool isDesktop(BuildContext context) =>
+      desktopPlatforms.contains(Theme.of(context).platform);
 }
