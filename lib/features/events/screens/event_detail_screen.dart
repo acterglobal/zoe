@@ -6,6 +6,7 @@ import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
+import 'package:zoey/features/events/widgets/event_details_additional_fields.dart';
 
 class EventDetailScreen extends ConsumerWidget {
   final String eventId;
@@ -83,6 +84,8 @@ class EventDetailScreen extends ConsumerWidget {
                 (plainText: value, htmlText: null),
               ),
         ),
+        const SizedBox(height: 16),
+        EventDetailsAdditionalFields(event: event, isEditing: isEditing),
       ],
     );
   }
