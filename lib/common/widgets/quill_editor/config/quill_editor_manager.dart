@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/quill_delta.dart';
 import 'dart:convert';
-import 'package:zoey/common/widgets/quill_editor/config/quill_editor_config.dart';
 
+/// Represents the current state of the QuillEditor manager
+enum QuillEditorState {
+  creating,
+  initialized,
+  updating,
+  readOnly,
+  disposed,
+}
+
+/// QuillEditor manager that handles configuration, styling, and lifecycle
 class QuillEditorManager {
   late QuillController _controller;
   late FocusNode _focusNode;
   late ScrollController _scrollController;
-  bool _isInitialized = false;
-  bool _isDisposed = false;
-  bool _isUpdatingContent = false;
-  bool _isReadOnly = false;
-  late final QuillEditorStyles _editorStyles;
+  QuillEditorState _state = QuillEditorState.creating;
+  final TextStyle? _widgetTextStyle;
 
   // Callbacks
   final VoidCallback? _onContentChanged;
@@ -26,33 +32,35 @@ class QuillEditorManager {
     VoidCallback? onContentChanged,
     Function(QuillController?, FocusNode?)? onFocusChanged,
     bool readOnly = false,
+    TextStyle? textStyle,
   }) : _initialContent = initialContent,
        _initialRichContent = initialRichContent,
        _onContentChanged = onContentChanged,
        _onFocusChanged = onFocusChanged,
-       _isReadOnly = readOnly {
-    _editorStyles = QuillEditorStyles();
+       _widgetTextStyle = textStyle {
+    _state = readOnly ? QuillEditorState.readOnly : QuillEditorState.creating;
   }
 
   /// Initialize the QuillController with proper configuration
   Future<void> initialize() async {
-    if (_isDisposed) return;
+    if (_state == QuillEditorState.disposed) return;
 
     try {
       _controller = QuillController.basic(
-        config: _editorStyles.getControllerConfig(),
+        config: QuillControllerConfig(
+          clipboardConfig: QuillClipboardConfig(enableExternalRichPaste: true),
+        ),
       );
     } catch (e) {
       // Fallback initialization if the basic config fails
       _controller = QuillController.basic();
     }
     _focusNode = FocusNode();
-    _focusNode.canRequestFocus =
-        !_isReadOnly; // Set focus based on read-only state
+    _focusNode.canRequestFocus = _state != QuillEditorState.readOnly;
     _scrollController = ScrollController();
     _setupListeners();
     await _loadInitialDocument();
-    _isInitialized = true;
+    _state = QuillEditorState.initialized;
   }
 
   /// Setup listeners for controller and focus changes
@@ -82,14 +90,18 @@ class QuillEditorManager {
 
   /// Handle controller changes (selection, content, etc.)
   void _onControllerChange() {
-    if (_isDisposed || _isUpdatingContent || _isReadOnly) return;
+    if (_state == QuillEditorState.disposed || 
+        _state == QuillEditorState.updating || 
+        _state == QuillEditorState.readOnly) {
+          return;
+        }
 
     _onContentChanged?.call();
   }
 
   /// Handle focus changes with delay mechanism
   void _onFocusChange() {
-    if (_isDisposed) return;
+    if (_state == QuillEditorState.disposed) return;
 
     // Use the centralized focus state getter
     final isFocused = _focusNode.hasFocus;
@@ -100,7 +112,7 @@ class QuillEditorManager {
     } else {
       // Delay hiding toolbar to allow for toolbar button clicks
       Future.delayed(const Duration(milliseconds: 300), () {
-        if (!_isDisposed) {
+        if (_state != QuillEditorState.disposed) {
           final stillHasFocus = _focusNode.hasFocus;
           if (stillHasFocus == false) {
             _onFocusChanged?.call(null, null);
@@ -112,9 +124,9 @@ class QuillEditorManager {
 
   /// Update content programmatically without triggering change events
   void updateContent(String? content, String? richContent) {
-    if (_isDisposed) return;
+    if (_state == QuillEditorState.disposed) return;
 
-    _isUpdatingContent = true;
+    _state = QuillEditorState.updating;
 
     try {
       // Preserve cursor position
@@ -140,13 +152,13 @@ class QuillEditorManager {
     } catch (e) {
       _controller.document = Document()..insert(0, content ?? '');
     } finally {
-      _isUpdatingContent = false;
+      _state = QuillEditorState.initialized;
     }
   }
 
   /// Update read-only state
   void setReadOnly(bool readOnly) {
-    _isReadOnly = readOnly;
+    _state = readOnly ? QuillEditorState.readOnly : QuillEditorState.initialized;
     _focusNode.canRequestFocus = !readOnly;
   }
 
@@ -172,11 +184,79 @@ class QuillEditorManager {
   ScrollController get scrollController => _scrollController;
 
   /// Check if the manager is initialized
-  bool get isInitialized => _isInitialized;
+  bool get isInitialized => _state == QuillEditorState.initialized;
+
+  /// Get default styles for code blocks and other elements
+  DefaultStyles getDefaultStyles(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    final themeBasedStyle =
+        _widgetTextStyle?.copyWith(
+          color: colorScheme.onSurface.withValues(alpha: 0.87),
+          fontSize:
+              _widgetTextStyle.fontSize ?? textTheme.bodyMedium?.fontSize ?? 14,
+        ) ??
+        TextStyle(
+          fontSize: textTheme.bodyMedium?.fontSize ?? 14,
+          height: 1.5,
+          color: colorScheme.onSurface.withValues(alpha: 0.87),
+        );
+
+    return DefaultStyles(
+      paragraph: DefaultTextBlockStyle(
+        themeBasedStyle,
+        const HorizontalSpacing(0, 0),
+        const VerticalSpacing(0, 0),
+        VerticalSpacing.zero,
+        null,
+      ),
+      code: DefaultTextBlockStyle(
+        TextStyle(
+          color: colorScheme.onSurface.withValues(alpha: 0.6),
+          fontFamily: 'Courier New',
+          fontSize:
+              _widgetTextStyle?.fontSize ?? textTheme.bodySmall?.fontSize ?? 12,
+        ),
+        const HorizontalSpacing(0, 0),
+        const VerticalSpacing(6, 0),
+        VerticalSpacing.zero,
+        BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: colorScheme.outline.withValues(alpha: 0.5),
+            width: 1,
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Get default text style for plain text display
+  TextStyle getDefaultTextStyle(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    final defaultStyle = TextStyle(
+      fontSize: textTheme.bodyMedium?.fontSize ?? 14,
+      color: colorScheme.onSurface.withValues(alpha: 0.87),
+      height: textTheme.bodyMedium?.height ?? 1.6,
+    );
+
+    return _widgetTextStyle?.copyWith(
+          color: colorScheme.onSurface.withValues(alpha: 0.87),
+          fontSize:
+              _widgetTextStyle.fontSize ?? textTheme.bodyMedium?.fontSize ?? 14,
+          height:
+              _widgetTextStyle.height ?? textTheme.bodyMedium?.height ?? 1.6,
+        ) ??
+        defaultStyle;
+  }
 
   /// Dispose all resources
   void dispose() {
-    _isDisposed = true;
+    _state = QuillEditorState.disposed;
 
     // First, notify that focus is cleared to prevent toolbar from using disposed nodes
     _onFocusChanged?.call(null, null);

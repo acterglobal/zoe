@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/quill_editor/config/quill_editor_manager.dart';
-import 'package:zoey/common/widgets/quill_editor/config/quill_editor_config.dart';
 import 'package:zoey/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
 import 'package:flutter_quill_delta_from_html/flutter_quill_delta_from_html.dart';
 import 'dart:convert';
@@ -38,7 +37,6 @@ class ZoeHtmlTextEditWidget extends ConsumerStatefulWidget {
 
 class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
   late QuillEditorManager _editorManager;
-  late QuillEditorStyles _editorStyles;
   bool _isInitialized = false;
   Description? _lastInitialDescription;
   late final String _uniqueEditorId;
@@ -47,7 +45,6 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
   void initState() {
     super.initState();
     _uniqueEditorId = widget.editorId ?? UniqueKey().toString();
-    _editorStyles = QuillEditorStyles(widgetTextStyle: widget.textStyle);
     _lastInitialDescription = widget.description;
     _initializeEditor();
   }
@@ -106,6 +103,7 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
       onContentChanged: _handleContentChanged,
       onFocusChanged: _handleFocusChanged,
       readOnly: !widget.isEditing,
+      textStyle: widget.textStyle,
     );
 
     await _editorManager.initialize();
@@ -196,7 +194,7 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
           autoFocus: widget.autoFocus,
           expands: false,
           embedBuilders: const [],
-          customStyles: _editorStyles.getDefaultStyles(context),
+          customStyles: _editorManager.getDefaultStyles(context),
         ),
       );
     } else {
@@ -226,20 +224,20 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
           autoFocus: false,
           expands: false,
           embedBuilders: const [],
-          customStyles: _editorStyles.getDefaultStyles(context),
+          customStyles: _editorManager.getDefaultStyles(context),
         ),
       );
     } else if (hasPlainContent) {
       // Show plain text when no rich content is available
       return Text(
         widget.description?.plainText ?? '',
-        style: _editorStyles.getDefaultTextStyle(context),
+        style: _editorManager.getDefaultTextStyle(context),
       );
     } else {
       // Show hint text when no content
       return Text(
         widget.hintText ?? '',
-        style: _editorStyles
+        style: _editorManager
             .getDefaultTextStyle(context)
             .copyWith(color: Theme.of(context).hintColor),
       );
