@@ -179,12 +179,8 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_isInitialized || !_editorManager.isInitialized) {
-      return const Center(child: CircularProgressIndicator());
-    }
 
     if (widget.isEditing) {
-      // Edit mode: Show QuillEditor with formatting capabilities
       return QuillEditor(
         focusNode: _editorManager.focusNode,
         scrollController: _editorManager.scrollController,
@@ -198,7 +194,6 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
         ),
       );
     } else {
-      // View mode: Display formatted content
       return _buildViewWidget();
     }
   }

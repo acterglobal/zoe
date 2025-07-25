@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:zoey/common/widgets/quill_editor/widgets/quill_toolbar_button.dart';
 import '../actions/quill_actions.dart';
 
 class QuillToolbar extends StatefulWidget {
@@ -20,7 +19,6 @@ class QuillToolbar extends StatefulWidget {
 }
 
 class _QuillToolbarState extends State<QuillToolbar> {
-  
   @override
   void initState() {
     super.initState();
@@ -57,59 +55,80 @@ class _QuillToolbarState extends State<QuillToolbar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 60,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
-            ),
-          ),
-          color: Theme.of(context).colorScheme.surface,
-        ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              ..._buildTextStyleButtons(),
-              ..._buildBlockStyleButtons(),
-            ],
+      height: 60,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
           ),
         ),
+        color: Theme.of(context).colorScheme.surface,
+      ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [..._buildTextStyleButtons(), ..._buildBlockStyleButtons()],
+        ),
+      ),
     );
   }
 
   List<Widget> _buildTextStyleButtons() {
     return [
-      _buildFormatButton(Icons.format_bold, Attribute.bold),
+      _buildToolbarButton(Icons.format_bold, Attribute.bold),
       _spacer(),
-      _buildFormatButton(Icons.format_italic, Attribute.italic),
+      _buildToolbarButton(Icons.format_italic, Attribute.italic),
       _spacer(),
-      _buildFormatButton(Icons.format_underline, Attribute.underline),
+      _buildToolbarButton(Icons.format_underline, Attribute.underline),
       _spacer(),
-      _buildFormatButton(Icons.format_strikethrough, Attribute.strikeThrough),
+      _buildToolbarButton(Icons.format_strikethrough, Attribute.strikeThrough),
     ];
   }
 
   List<Widget> _buildBlockStyleButtons() {
     return [
       _spacer(),
-      _buildFormatButton(Icons.format_quote, Attribute.blockQuote),
+      _buildToolbarButton(Icons.format_quote, Attribute.blockQuote),
       _spacer(),
-      _buildFormatButton(Icons.code, Attribute.codeBlock),
+      _buildToolbarButton(Icons.code, Attribute.codeBlock),
     ];
   }
 
-  Widget _buildFormatButton(IconData icon, Attribute attribute) {
-    return quillToolbarButton(
-      context: context,
-      icon: icon,
-      isActive: isAttributeActive(widget.controller, attribute),
-      onPressed: () => toggleAttribute(
+  Widget _buildToolbarButton(IconData icon, Attribute attribute) {
+    final theme = Theme.of(context);
+    final borderRadius = BorderRadius.circular(8);
+    final isActive = isAttributeActive(widget.controller, attribute);
+    return InkWell(
+      borderRadius: borderRadius,
+      onTap: () => toggleAttribute(
         widget.controller,
         attribute,
         onButtonPressed: widget.onButtonPressed,
+      ),
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: isActive
+              ? theme.colorScheme.primary.withValues(alpha: 0.1)
+              : theme.colorScheme.surface,
+          borderRadius: borderRadius,
+          border: Border.all(
+            color: isActive
+                ? theme.colorScheme.primary
+                : theme.colorScheme.outline.withValues(alpha: 0.2),
+            width: 1,
+          ),
+        ),
+        child: Icon(
+          icon,
+          size: 18,
+          color: isActive
+              ? theme.colorScheme.primary
+              : theme.colorScheme.onSurface.withValues(alpha: 0.6),
+        ),
       ),
     );
   }
