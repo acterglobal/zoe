@@ -9,8 +9,10 @@ class AppColors {
   static const Color errorColor = Color(0xFFEF4444);
 
   // Light Theme Colors
-  static const Color lightBackground = Color(0xFFF8F9FE);
-  static const Color lightSurface = Colors.white;
+  static const Color lightBackground = Color(
+    0xFFFFFDF7,
+  ); // Warm paper-like white
+  static const Color lightSurface = Color(0xFFFFFDF7); // Warm paper-like white
   static const Color lightOnSurface = Colors.black;
 
   // Dark Theme Colors

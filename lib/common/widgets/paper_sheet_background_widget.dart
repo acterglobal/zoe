@@ -51,7 +51,7 @@ class PaperSheetBackgroundWidget extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        // Use consistent background colors with the app theme
+        // Use warm paper-like gradient for realistic appearance
         gradient: isDark
             ? LinearGradient(
                 begin: Alignment.topLeft,
@@ -67,9 +67,9 @@ class PaperSheetBackgroundWidget extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  colorScheme.surface,
-                  colorScheme.surface.withValues(alpha: 0.98),
-                  colorScheme.surface,
+                  const Color(0xFFFFFDF7), // Warm paper white
+                  const Color(0xFFFFFBF0), // Slightly warmer center
+                  const Color(0xFFFFFDF7), // Warm paper white
                 ],
                 stops: const [0.0, 0.5, 1.0],
               ),

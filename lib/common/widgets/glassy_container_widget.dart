@@ -42,9 +42,15 @@ class GlassyContainer extends StatelessWidget {
             colorScheme.surface.withValues(alpha: surfaceOpacity * 0.5),
           ]
         : [
-            Colors.white.withValues(alpha: surfaceOpacity + 0.1),
-            Colors.white.withValues(alpha: surfaceOpacity - 0.1),
-            Colors.white.withValues(alpha: surfaceOpacity - 0.2),
+            const Color(
+              0xFFFFFDF7,
+            ).withValues(alpha: surfaceOpacity + 0.1), // Warm paper white
+            const Color(
+              0xFFFFFBF0,
+            ).withValues(alpha: surfaceOpacity - 0.1), // Slightly warmer center
+            const Color(
+              0xFFFFFDF7,
+            ).withValues(alpha: surfaceOpacity - 0.2), // Warm paper white
           ];
 
     return Container(
@@ -62,7 +68,9 @@ class GlassyContainer extends StatelessWidget {
           border: Border.all(
             color: isDark
                 ? Colors.white.withValues(alpha: borderOpacity)
-                : Colors.white.withValues(alpha: borderOpacity + 0.7),
+                : const Color(
+                    0xFFFFFDF7,
+                  ).withValues(alpha: borderOpacity + 0.7), // Warm paper white
             width: 1.5,
           ),
           boxShadow: [

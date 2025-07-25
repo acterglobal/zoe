@@ -54,15 +54,44 @@ class _AnimatedBackgroundWidgetState extends State<AnimatedBackgroundWidget>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Modern gradient background
-        // _buildModernGradientBackground(),
+        // Warm paper-like background
+        _buildWarmPaperBackground(context),
         // Conceptual elements layer
         _buildConceptualElementsLayer(),
-        // Glassmorphism overlay
-        // _buildGlassmorphismOverlay(),
         // Child content
         widget.child,
       ],
+    );
+  }
+
+  Widget _buildWarmPaperBackground(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      decoration: BoxDecoration(
+        // Use the same warm paper colors as NotebookPaperBackgroundWidget
+        gradient: isDark
+            ? LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Theme.of(context).colorScheme.surface,
+                  Theme.of(context).colorScheme.surface.withValues(alpha: 0.95),
+                  Theme.of(context).colorScheme.surface,
+                ],
+                stops: const [0.0, 0.5, 1.0],
+              )
+            : const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFFFFFDF7), // Warm paper white
+                  Color(0xFFFFFBF0), // Slightly warmer center
+                  Color(0xFFFFFDF7), // Warm paper white
+                ],
+                stops: [0.0, 0.5, 1.0],
+              ),
+      ),
     );
   }
 
