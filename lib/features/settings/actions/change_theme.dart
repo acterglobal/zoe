@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/settings/models/theme.dart';
 import 'package:zoey/features/settings/providers/theme_provider.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 void showThemeDialog(BuildContext context, WidgetRef ref) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Choose Theme'),
+      title: Text(L10n.of(context).chooseTheme),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: AppThemeMode.values.map((theme) {
           return RadioListTile<AppThemeMode>(
             title: Text(
-              theme.title,
+              theme.getTitle(context),
               style: Theme.of(context).textTheme.titleMedium,
             ),
             subtitle: Text(
-              theme.description,
+              theme.getDescription(context),
               style: Theme.of(context).textTheme.bodySmall,
             ),
             value: theme,

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
+
+import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
+import 'package:zoey/features/task/widgets/task_details_additional_fields.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class TaskDetailScreen extends ConsumerWidget {
   final String taskId;
@@ -15,23 +20,47 @@ class TaskDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final task = ref.watch(taskProvider(taskId));
-    if (task == null) return const Center(child: Text('Task not found'));
+    if (task == null) return Center(child: Text(L10n.of(context).taskNotFound));
+    final isEditing = ref.watch(isEditValueProvider(taskId));
     return Scaffold(
       appBar: AppBar(
-        actions: [EditViewToggleButton(), const SizedBox(width: 12)],
+        actions: [
+          EditViewToggleButton(parentId: taskId),
+          const SizedBox(width: 12),
+        ],
       ),
-      body: _buildBody(context, ref, task),
+      body: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                _buildBody(context, ref, task, isEditing),
+                buildQuillEditorPositionedToolbar(
+                  context,
+                  ref,
+                  isEditing: isEditing,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   /// Builds the main body
-  Widget _buildBody(BuildContext context, WidgetRef ref, TaskModel task) {
+  Widget _buildBody(
+    BuildContext context,
+    WidgetRef ref,
+    TaskModel task,
+    bool isEditing,
+  ) {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildTaskHeader(context, ref, task),
+          _buildTaskHeader(context, ref, task, isEditing),
           const SizedBox(height: 16),
           ContentWidget(parentId: taskId, sheetId: task.sheetId),
         ],
@@ -40,9 +69,12 @@ class TaskDetailScreen extends ConsumerWidget {
   }
 
   /// Builds the header
-  Widget _buildTaskHeader(BuildContext context, WidgetRef ref, TaskModel task) {
-    final isEditing = ref.watch(isEditValueProvider);
-
+  Widget _buildTaskHeader(
+    BuildContext context,
+    WidgetRef ref,
+    TaskModel task,
+    bool isEditing,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -51,7 +83,7 @@ class TaskDetailScreen extends ConsumerWidget {
           children: [
             Expanded(
               child: ZoeInlineTextEditWidget(
-                hintText: 'Title',
+                hintText: L10n.of(context).title,
                 isEditing: isEditing,
                 text: task.title,
                 textStyle: TextStyle(
@@ -68,17 +100,20 @@ class TaskDetailScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        ZoeInlineTextEditWidget(
-          hintText: 'Add a description',
+        ZoeHtmlTextEditWidget(
+          hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
-          text: task.description?.plainText,
+          description: task.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          onTextChanged: (value) =>
-              ref.read(taskListProvider.notifier).updateTaskDescription(
-                taskId,
-                (plainText: value, htmlText: null),
-              ),
+          editorId: 'task-description-$taskId', // Add unique editor ID
+          onContentChanged: (description) => Future.microtask(
+            () => ref
+                .read(taskListProvider.notifier)
+                .updateTaskDescription(taskId, description),
+          ),
         ),
+        const SizedBox(height: 16),
+        TaskDetailsAdditionalFields(task: task, isEditing: isEditing),
       ],
     );
   }

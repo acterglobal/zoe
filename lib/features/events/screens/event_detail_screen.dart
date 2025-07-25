@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
+
+import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
+import 'package:zoey/features/events/widgets/event_details_additional_fields.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class EventDetailScreen extends ConsumerWidget {
   final String eventId;
@@ -15,23 +20,49 @@ class EventDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final event = ref.watch(eventProvider(eventId));
-    if (event == null) return const Center(child: Text('Event not found'));
+    if (event == null) {
+      return Center(child: Text(L10n.of(context).eventNotFound));
+    }
+    final isEditing = ref.watch(isEditValueProvider(eventId));
     return Scaffold(
       appBar: AppBar(
-        actions: [EditViewToggleButton(), const SizedBox(width: 12)],
+        actions: [
+          EditViewToggleButton(parentId: eventId),
+          const SizedBox(width: 12),
+        ],
       ),
-      body: _buildBody(context, ref, event),
+      body: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                _buildBody(context, ref, event, isEditing),
+                buildQuillEditorPositionedToolbar(
+                  context,
+                  ref,
+                  isEditing: isEditing,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   /// Builds the main body
-  Widget _buildBody(BuildContext context, WidgetRef ref, EventModel event) {
+  Widget _buildBody(
+    BuildContext context,
+    WidgetRef ref,
+    EventModel event,
+    bool isEditing,
+  ) {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildEventHeader(context, ref, event),
+          _buildEventHeader(context, ref, event, isEditing),
           const SizedBox(height: 16),
           ContentWidget(parentId: eventId, sheetId: event.sheetId),
         ],
@@ -44,9 +75,8 @@ class EventDetailScreen extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     EventModel event,
+    bool isEditing,
   ) {
-    final isEditing = ref.watch(isEditValueProvider);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -55,7 +85,7 @@ class EventDetailScreen extends ConsumerWidget {
           children: [
             Expanded(
               child: ZoeInlineTextEditWidget(
-                hintText: 'Title',
+                hintText: L10n.of(context).title,
                 isEditing: isEditing,
                 text: event.title,
                 textStyle: TextStyle(
@@ -72,17 +102,20 @@ class EventDetailScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        ZoeInlineTextEditWidget(
-          hintText: 'Add a description',
+        ZoeHtmlTextEditWidget(
+          hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
-          text: event.description?.plainText,
+          description: event.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          onTextChanged: (value) =>
-              ref.read(eventListProvider.notifier).updateEventDescription(
-                eventId,
-                (plainText: value, htmlText: null),
-              ),
+          editorId: 'event-description-$eventId', // Add unique editor ID
+          onContentChanged: (description) => Future.microtask(
+            () => ref
+                .read(eventListProvider.notifier)
+                .updateEventDescription(eventId, description),
+          ),
         ),
+        const SizedBox(height: 16),
+        EventDetailsAdditionalFields(event: event, isEditing: isEditing),
       ],
     );
   }

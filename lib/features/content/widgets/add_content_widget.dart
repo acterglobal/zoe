@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_menu_options.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class AddContentWidget extends ConsumerWidget {
   final bool isEditing;
@@ -72,7 +73,7 @@ class AddContentWidget extends ConsumerWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              isShowMenu ? 'Cancel' : 'Add content',
+              isShowMenu ? L10n.of(context).cancel : L10n.of(context).addContent,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
               ),

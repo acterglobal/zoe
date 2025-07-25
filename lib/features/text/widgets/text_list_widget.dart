@@ -5,8 +5,13 @@ import 'package:zoey/features/text/widgets/text_widget.dart';
 
 class TextListWidget extends ConsumerWidget {
   final String parentId;
+  final bool isEditing;
 
-  const TextListWidget({super.key, required this.parentId});
+  const TextListWidget({
+    super.key,
+    required this.parentId,
+    required this.isEditing,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,7 +27,11 @@ class TextListWidget extends ConsumerWidget {
         final text = texts[index];
         return Padding(
           padding: const EdgeInsets.only(left: 24),
-          child: TextWidget(key: ValueKey(text.id), textId: text.id),
+          child: TextWidget(
+            key: ValueKey(text.id),
+            textId: text.id,
+            isEditing: isEditing,
+          ),
         );
       },
     );
