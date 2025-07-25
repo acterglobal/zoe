@@ -4,6 +4,7 @@ class ZoeInlineTextEditWidget extends StatefulWidget {
   final String? text;
   final String? hintText;
   final Function(String) onTextChanged;
+  final VoidCallback? onBackspaceEmptyText;
   final VoidCallback? onTapText;
   final bool isEditing;
   final TextStyle? textStyle;
@@ -13,6 +14,7 @@ class ZoeInlineTextEditWidget extends StatefulWidget {
     this.text,
     this.hintText,
     required this.onTextChanged,
+    this.onBackspaceEmptyText,
     this.onTapText,
     this.isEditing = false,
     this.textStyle,
@@ -50,7 +52,10 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
               contentPadding: EdgeInsets.zero,
             ),
             maxLines: null,
-            onChanged: widget.onTextChanged,
+            onChanged: (value) {
+              widget.onTextChanged(value);
+              if (value.isEmpty) widget.onBackspaceEmptyText?.call();
+            },
           )
         : SelectableText(
             controller.text.isEmpty ? (widget.hintText ?? '') : controller.text,
