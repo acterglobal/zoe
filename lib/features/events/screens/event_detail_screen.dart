@@ -20,19 +20,28 @@ class EventDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final event = ref.watch(eventProvider(eventId));
-    if (event == null)
+    if (event == null) {
       return Center(child: Text(L10n.of(context).eventNotFound));
+    }
+    final isEditing = ref.watch(isEditValueProvider(eventId));
     return Scaffold(
       appBar: AppBar(
-        actions: [EditViewToggleButton(), const SizedBox(width: 12)],
+        actions: [
+          EditViewToggleButton(parentId: eventId),
+          const SizedBox(width: 12),
+        ],
       ),
       body: Column(
         children: [
           Expanded(
             child: Stack(
               children: [
-                _buildBody(context, ref, event),
-                buildQuillEditorPositionedToolbar(context, ref),
+                _buildBody(context, ref, event, isEditing),
+                buildQuillEditorPositionedToolbar(
+                  context,
+                  ref,
+                  isEditing: isEditing,
+                ),
               ],
             ),
           ),
@@ -42,13 +51,18 @@ class EventDetailScreen extends ConsumerWidget {
   }
 
   /// Builds the main body
-  Widget _buildBody(BuildContext context, WidgetRef ref, EventModel event) {
+  Widget _buildBody(
+    BuildContext context,
+    WidgetRef ref,
+    EventModel event,
+    bool isEditing,
+  ) {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildEventHeader(context, ref, event),
+          _buildEventHeader(context, ref, event, isEditing),
           const SizedBox(height: 16),
           ContentWidget(parentId: eventId, sheetId: event.sheetId),
         ],
@@ -61,9 +75,8 @@ class EventDetailScreen extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     EventModel event,
+    bool isEditing,
   ) {
-    final isEditing = ref.watch(isEditValueProvider);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

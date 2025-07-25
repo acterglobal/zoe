@@ -5,8 +5,13 @@ import 'package:zoey/features/events/widgets/event_widget.dart';
 
 class EventListWidget extends ConsumerWidget {
   final String parentId;
+  final bool isEditing;
 
-  const EventListWidget({super.key, required this.parentId});
+  const EventListWidget({
+    super.key,
+    required this.parentId,
+    required this.isEditing,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +26,11 @@ class EventListWidget extends ConsumerWidget {
         final event = events[index];
         return Padding(
           padding: const EdgeInsets.only(left: 24),
-          child: EventWidget(key: ValueKey(event.id), eventsId: event.id),
+          child: EventWidget(
+            key: ValueKey(event.id),
+            eventsId: event.id,
+            isEditing: isEditing,
+          ),
         );
       },
     );

@@ -6,11 +6,12 @@ import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class EditViewToggleButton extends ConsumerWidget {
-  const EditViewToggleButton({super.key});
+  final String parentId;
+  const EditViewToggleButton({super.key, required this.parentId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider);
+    final isEditing = ref.watch(isEditValueProvider(parentId));
     return ZoePrimaryButton(
       text: isEditing ? L10n.of(context).save : L10n.of(context).edit,
       icon: isEditing ? Icons.save_rounded : Icons.edit_rounded,
@@ -21,7 +22,7 @@ class EditViewToggleButton extends ConsumerWidget {
       onPressed: () {
         // Close keyboard and clear quill toolbar state
         clearActiveEditorState(ref);
-        ref.read(isEditValueProvider.notifier).state = !isEditing;
+        ref.read(isEditValueProvider(parentId).notifier).state = !isEditing;
       },
     );
   }

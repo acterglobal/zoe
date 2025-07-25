@@ -7,7 +7,13 @@ import 'package:zoey/features/task/widgets/task_item_widget.dart';
 
 class TaskListWidget extends ConsumerWidget {
   final String parentId;
-  const TaskListWidget({super.key, required this.parentId});
+  final bool isEditing;
+
+  const TaskListWidget({
+    super.key,
+    required this.parentId,
+    required this.isEditing,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +32,11 @@ class TaskListWidget extends ConsumerWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.only(left: 16, bottom: 8),
-            child: TaskWidget(key: ValueKey(task.id), taskId: task.id),
+            child: TaskWidget(
+              key: ValueKey(task.id),
+              taskId: task.id,
+              isEditing: isEditing,
+            ),
           ),
         );
       },

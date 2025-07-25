@@ -18,20 +18,29 @@ class BulletDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isEditing = ref.watch(isEditValueProvider(bulletId));
     final bullet = ref.watch(bulletProvider(bulletId));
-    if (bullet == null)
+    if (bullet == null) {
       return Center(child: Text(L10n.of(context).bulletNotFound));
+    }
     return Scaffold(
       appBar: AppBar(
-        actions: [EditViewToggleButton(), const SizedBox(width: 12)],
+        actions: [
+          EditViewToggleButton(parentId: bulletId),
+          const SizedBox(width: 12),
+        ],
       ),
       body: Column(
         children: [
           Expanded(
             child: Stack(
               children: [
-                _buildBody(context, ref, bullet),
-                buildQuillEditorPositionedToolbar(context, ref),
+                _buildBody(context, ref, bullet, isEditing),
+                buildQuillEditorPositionedToolbar(
+                  context,
+                  ref,
+                  isEditing: isEditing,
+                ),
               ],
             ),
           ),
@@ -41,13 +50,18 @@ class BulletDetailScreen extends ConsumerWidget {
   }
 
   /// Builds the main body
-  Widget _buildBody(BuildContext context, WidgetRef ref, BulletModel bullet) {
+  Widget _buildBody(
+    BuildContext context,
+    WidgetRef ref,
+    BulletModel bullet,
+    bool isEditing,
+  ) {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildBulletHeader(context, ref, bullet),
+          _buildBulletHeader(context, ref, bullet, isEditing),
           const SizedBox(height: 16),
           ContentWidget(parentId: bulletId, sheetId: bullet.sheetId),
         ],
@@ -60,9 +74,8 @@ class BulletDetailScreen extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     BulletModel bullet,
+    bool isEditing,
   ) {
-    final isEditing = ref.watch(isEditValueProvider);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
