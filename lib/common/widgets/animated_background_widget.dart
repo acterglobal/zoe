@@ -96,6 +96,7 @@ class ConceptualElementsPainter extends CustomPainter {
     _drawFloatingEvents(canvas, size);
     _drawFloatingTasks(canvas, size);
     _drawFloatingMessagingApps(canvas, size);
+    _drawFloatingNotes(canvas, size);
   }
 
   void _drawFloatingPaperSheets(Canvas canvas, Size size) {
@@ -112,22 +113,24 @@ class ConceptualElementsPainter extends CustomPainter {
           ? Colors.white.withValues(alpha: 0.15)
           : colorScheme.primary.withValues(alpha: 0.2);
 
-    // Draw multiple floating paper sheets - repositioned to avoid overlaps
+    // Draw multiple floating paper sheets - balanced distribution including center
     final sheetPositions = [
-      (0.08, 0.15, 0.8), // x, y, rotation multiplier - top left
+      (0.08, 0.15, 0.8), // top left
       (0.85, 0.12, 1.2), // top right
-      (0.92, 0.55, 0.6), // middle right
-      (0.12, 0.75, 1.0), // bottom left
+      (0.15, 0.55, 1.1), // middle left
+      (0.85, 0.65, 0.7), // middle right
+      (0.45, 0.35, 1.3), // center
+      (0.25, 0.85, 1.0), // bottom left
     ];
 
     for (int i = 0; i < sheetPositions.length; i++) {
       final pos = sheetPositions[i];
       final x =
           pos.$1 * size.width +
-          math.sin(animation.value * 2 * math.pi + i * 0.5) * 15;
+          math.sin(animation.value * 2 * math.pi + i * 0.5) * 8;
       final y =
           pos.$2 * size.height +
-          math.cos(animation.value * 1.5 * math.pi + i * 0.3) * 12;
+          math.cos(animation.value * 1.5 * math.pi + i * 0.3) * 6;
       final rotation = math.sin(animation.value * pos.$3 * math.pi) * 0.1;
 
       canvas.save();
@@ -173,17 +176,22 @@ class ConceptualElementsPainter extends CustomPainter {
       ..strokeWidth = 1.5
       ..color = Colors.orange.withValues(alpha: 0.3);
 
-    // Draw floating calendar/event elements - repositioned
-    final eventPositions = [(0.25, 0.45), (0.78, 0.78)];
+    // Draw floating calendar/event elements - balanced with center coverage
+    final eventPositions = [
+      (0.25, 0.25), // top left area
+      (0.75, 0.45), // middle right
+      (0.55, 0.65), // center-bottom
+      (0.15, 0.75), // bottom left
+    ];
 
     for (int i = 0; i < eventPositions.length; i++) {
       final pos = eventPositions[i];
       final x =
           pos.$1 * size.width +
-          math.cos(animation.value * 2 * math.pi + i) * 18;
+          math.cos(animation.value * 2 * math.pi + i) * 10;
       final y =
           pos.$2 * size.height +
-          math.sin(animation.value * 1.8 * math.pi + i) * 15;
+          math.sin(animation.value * 1.8 * math.pi + i) * 8;
 
       canvas.save();
       canvas.translate(x, y);
@@ -226,16 +234,22 @@ class ConceptualElementsPainter extends CustomPainter {
   }
 
   void _drawFloatingTasks(Canvas canvas, Size size) {
-    final taskPositions = [(0.65, 0.25), (0.15, 0.52), (0.75, 0.88)];
+    final taskPositions = [
+      (0.65, 0.15), // top right area
+      (0.05, 0.45), // middle left edge
+      (0.35, 0.55), // center-left
+      (0.65, 0.85), // bottom right
+      (0.85, 0.25), // top right edge
+    ];
 
     for (int i = 0; i < taskPositions.length; i++) {
       final pos = taskPositions[i];
       final x =
           pos.$1 * size.width +
-          math.sin(animation.value * 2.5 * math.pi + i * 0.7) * 12;
+          math.sin(animation.value * 2.5 * math.pi + i * 0.7) * 8;
       final y =
           pos.$2 * size.height +
-          math.cos(animation.value * 2 * math.pi + i * 0.5) * 10;
+          math.cos(animation.value * 2 * math.pi + i * 0.5) * 6;
 
       canvas.save();
       canvas.translate(x, y);
@@ -302,21 +316,22 @@ class ConceptualElementsPainter extends CustomPainter {
   }
 
   void _drawFloatingMessagingApps(Canvas canvas, Size size) {
-    // Draw floating messaging app chat bubbles and bot connections - better positioned
+    // Draw floating messaging app chat bubbles - center-focused distribution
     final messagingPositions = [
-      (0.05, 0.35, 'whatsapp'), // left side, middle
-      (0.88, 0.35, 'signal'), // right side, middle
-      (0.45, 0.92, 'messages'), // bottom center
+      (0.35, 0.25, 'whatsapp'), // top center-left
+      (0.65, 0.35, 'signal'), // center-right
+      (0.25, 0.65, 'messages'), // bottom left
+      (0.75, 0.75, 'whatsapp'), // bottom right
     ];
 
     for (int i = 0; i < messagingPositions.length; i++) {
       final pos = messagingPositions[i];
       final x =
           pos.$1 * size.width +
-          math.sin(animation.value * 1.8 * math.pi + i * 0.6) * 18;
+          math.sin(animation.value * 1.8 * math.pi + i * 0.6) * 10;
       final y =
           pos.$2 * size.height +
-          math.cos(animation.value * 2.2 * math.pi + i * 0.4) * 15;
+          math.cos(animation.value * 2.2 * math.pi + i * 0.4) * 8;
       final appType = pos.$3;
 
       canvas.save();
@@ -423,6 +438,67 @@ class ConceptualElementsPainter extends CustomPainter {
         Offset(12 + connectionOffset, -15),
         connectionPaint,
       );
+
+      canvas.restore();
+    }
+  }
+
+  void _drawFloatingNotes(Canvas canvas, Size size) {
+    // Draw small floating note elements - filling center gaps
+    final notePositions = [
+      (0.55, 0.25), // top center
+      (0.25, 0.45), // middle left
+      (0.75, 0.55), // middle right
+    ];
+
+    for (int i = 0; i < notePositions.length; i++) {
+      final pos = notePositions[i];
+      final x =
+          pos.$1 * size.width +
+          math.sin(animation.value * 3 * math.pi + i * 0.8) * 5;
+      final y =
+          pos.$2 * size.height +
+          math.cos(animation.value * 2.5 * math.pi + i * 0.6) * 4;
+
+      canvas.save();
+      canvas.translate(x, y);
+
+      // Rotate slightly for natural look
+      canvas.rotate(math.sin(animation.value * 2 * math.pi + i) * 0.2);
+
+      // Draw small note
+      final notePaint = Paint()
+        ..style = PaintingStyle.fill
+        ..color = isDark
+            ? Colors.white.withValues(alpha: 0.06)
+            : colorScheme.primary.withValues(alpha: 0.08);
+
+      final noteStroke = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 0.8
+        ..color = isDark
+            ? Colors.white.withValues(alpha: 0.12)
+            : colorScheme.primary.withValues(alpha: 0.15);
+
+      final noteRect = RRect.fromRectAndRadius(
+        const Rect.fromLTWH(-12, -8, 24, 16),
+        const Radius.circular(2),
+      );
+
+      canvas.drawRRect(noteRect, notePaint);
+      canvas.drawRRect(noteRect, noteStroke);
+
+      // Draw small lines on note
+      final linePaint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 0.6
+        ..color = isDark
+            ? Colors.white.withValues(alpha: 0.08)
+            : colorScheme.onSurface.withValues(alpha: 0.1);
+
+      canvas.drawLine(const Offset(-8, -3), const Offset(8, -3), linePaint);
+      canvas.drawLine(const Offset(-8, 0), const Offset(6, 0), linePaint);
+      canvas.drawLine(const Offset(-8, 3), const Offset(4, 3), linePaint);
 
       canvas.restore();
     }
