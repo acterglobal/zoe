@@ -10,7 +10,7 @@ Widget buildQuillEditorPositionedToolbar(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider);
 
      // Only show toolbar when editing is active
-    if (!isEditing) {
+    if (!isEditing && toolbarState.activeController == null && toolbarState.activeFocusNode == null) {
       return const SizedBox.shrink();
     }
 
@@ -21,10 +21,6 @@ Widget buildQuillEditorPositionedToolbar(BuildContext context, WidgetRef ref) {
       child: Builder(
         // use builder for local context that extracts nullable values to local variable
         builder: (context) {
-          if (toolbarState.activeController == null || toolbarState.activeFocusNode == null) {
-            return const SizedBox.shrink();
-          }
-          
           return QuillEditorToolbarWidget(
             controller: toolbarState.activeController!,
             focusNode: toolbarState.activeFocusNode!,
