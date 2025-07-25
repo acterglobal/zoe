@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:zoey/common/widgets/glassy_container_widget.dart';
+import 'package:zoey/common/widgets/styled_icon_container_widget.dart';
+import 'package:zoey/common/utils/feature_colors_utils.dart';
 
 class FeatureItem extends StatelessWidget {
   final String title;
@@ -15,39 +18,49 @@ class FeatureItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(20),
-        leading: _buildIconContainer(context, colorScheme),
-        title: Text(title, style: theme.textTheme.titleMedium),
-        subtitle: Text(description, style: theme.textTheme.titleSmall),
+    // Get feature colors for the shadow effect and icon
+    final featureColors = FeatureColorsUtils.getFeatureColors(title, context);
+
+    return GlassyContainer(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(24),
+      shadowColor: featureColors['primary'],
+      child: Row(
+        children: [
+          StyledIconContainer(
+            icon: icon,
+            primaryColor: featureColors['primary'],
+            secondaryColor: featureColors['secondary'],
+          ),
+          const SizedBox(width: 20),
+          Expanded(child: _buildContentSection(context, theme)),
+        ],
       ),
     );
   }
 
-  Widget _buildIconContainer(BuildContext context, ColorScheme colorScheme) {
-    return Container(
-      width: 56,
-      height: 56,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            colorScheme.primary.withValues(alpha: 0.07),
-            colorScheme.primary.withValues(alpha: 0.02),
-          ],
+  Widget _buildContentSection(BuildContext context, ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.5,
+          ),
         ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: colorScheme.primary.withValues(alpha: 0.2),
-          width: 1,
+        const SizedBox(height: 6),
+        Text(
+          description,
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: theme.textTheme.bodyLarge?.color?.withValues(alpha: 0.75),
+            height: 1.4,
+            letterSpacing: 0.1,
+          ),
         ),
-      ),
-      child: Icon(icon, color: colorScheme.primary, size: 28),
+      ],
     );
   }
 }

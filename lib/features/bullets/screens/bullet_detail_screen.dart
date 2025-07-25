@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
+import 'package:zoey/common/widgets/paper_sheet_background_widget.dart';
 
 import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -23,28 +24,31 @@ class BulletDetailScreen extends ConsumerWidget {
     if (bullet == null) {
       return Center(child: Text(L10n.of(context).bulletNotFound));
     }
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          EditViewToggleButton(parentId: bulletId),
-          const SizedBox(width: 12),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                _buildBody(context, ref, bullet, isEditing),
-                buildQuillEditorPositionedToolbar(
-                  context,
-                  ref,
-                  isEditing: isEditing,
-                ),
-              ],
+    return NotebookPaperBackgroundWidget(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          actions: [
+            EditViewToggleButton(parentId: bulletId),
+            const SizedBox(width: 12),
+          ],
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  _buildBody(context, ref, bullet, isEditing),
+                  buildQuillEditorPositionedToolbar(
+                    context,
+                    ref,
+                    isEditing: isEditing,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

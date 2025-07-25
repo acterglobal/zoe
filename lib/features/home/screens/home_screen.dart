@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/widgets/app_icon_widget.dart';
+import 'package:zoey/common/widgets/animated_background_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
+import 'package:zoey/core/constants/app_constants.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
@@ -20,41 +23,71 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildHomeAppBar(context),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final sheet = SheetModel();
-          ref.read(sheetListProvider.notifier).addSheet(sheet);
-          ref.read(isEditValueProvider(sheet.id).notifier).state = true;
-          context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id));
-        },
-        child: const Icon(Icons.add_rounded),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: _buildHomeBodyUI(context, ref),
+      floatingActionButton: _buildFloatingActionButton(context),
+      body: AnimatedBackgroundWidget(
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Center(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: Column(
+                  children: [
+                    _buildCustomAppBar(context),
+                    const SizedBox(height: 24),
+                    _buildHomeBodyUI(context, ref),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  AppBar _buildHomeAppBar(BuildContext context) {
-    return AppBar(
-      centerTitle: false,
-      title: Row(
-        children: [
-          const AppIconWidget(size: 32),
-          const SizedBox(width: 8),
-          Text(L10n.of(context).zoeyApp, style: Theme.of(context).textTheme.titleLarge),
-        ],
-      ),
+  Widget _buildCustomAppBar(BuildContext context) {
+    return ZoeAppBar(
+      title: AppConstants.appName,
+      showBackButton: false,
       actions: [
-        IconButton(
-          onPressed: () => context.push(AppRoutes.settings.route),
-          icon: const Icon(Icons.settings_rounded),
+        const SizedBox(width: 16),
+        GestureDetector(
+          onTap: () => context.push(AppRoutes.settings.route),
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white.withValues(alpha: 0.1)
+                  : Colors.black.withValues(alpha: 0.08),
+              border: Border.all(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white.withValues(alpha: 0.2)
+                    : Colors.black.withValues(alpha: 0.15),
+                width: 0.5,
+              ),
+            ),
+            child: Icon(
+              Icons.settings_rounded,
+              color: Theme.of(context).colorScheme.onSurface,
+              size: 20,
+            ),
+          ),
         ),
       ],
+    );
+  }
+
+  Widget _buildFloatingActionButton(BuildContext context) {
+    return ZoeFloatingActionButton(
+      icon: Icons.add_rounded,
+      onPressed: () async {
+        final sheet = SheetModel();
+        ref.read(sheetListProvider.notifier).addSheet(sheet);
+        ref.read(isEditValueProvider(sheet.id).notifier).state = true;
+        context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id));
+      },
     );
   }
 
@@ -62,10 +95,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(L10n.of(context).sheets, style: Theme.of(context).textTheme.titleLarge),
-        const SizedBox(height: 16),
-        SheetListWidget(shrinkWrap: true),
-        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.only(left: 8, bottom: 20),
+          child: Text(
+            L10n.of(context).sheets,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.5,
+            ),
+          ),
+        ),
+        const SheetListWidget(shrinkWrap: true),
+        const SizedBox(height: 100), // Space for FAB
       ],
     );
   }

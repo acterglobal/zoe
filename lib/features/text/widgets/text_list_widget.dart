@@ -20,6 +20,7 @@ class TextListWidget extends ConsumerWidget {
 
     return ListView.builder(
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: texts.length,
       itemBuilder: (context, index) {
