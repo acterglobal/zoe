@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/animated_background_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
+import 'package:zoey/core/constants/app_constants.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
@@ -46,7 +48,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildCustomAppBar(BuildContext context) {
     return ZoeAppBar(
-      title: L10n.of(context).zoeyApp,
+      title: AppConstants.appName,
       showBackButton: false,
       actions: [
         const SizedBox(width: 16),
@@ -78,36 +80,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildFloatingActionButton(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
-          ],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: FloatingActionButton(
-        onPressed: () async {
-          final sheet = SheetModel();
-          ref.read(sheetListProvider.notifier).addSheet(sheet);
-          ref.read(isEditValueProvider(sheet.id).notifier).state = true;
-          context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id));
-        },
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: const Icon(Icons.add_rounded, color: Colors.white, size: 28),
-      ),
+    return ZoeFloatingActionButton(
+      icon: Icons.add_rounded,
+      onPressed: () async {
+        final sheet = SheetModel();
+        ref.read(sheetListProvider.notifier).addSheet(sheet);
+        ref.read(isEditValueProvider(sheet.id).notifier).state = true;
+        context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id));
+      },
     );
   }
 

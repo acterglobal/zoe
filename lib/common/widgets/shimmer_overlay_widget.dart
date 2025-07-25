@@ -65,22 +65,24 @@ class _ShimmerOverlayState extends State<ShimmerOverlay>
       children: [
         widget.child,
         Positioned.fill(
-          child: ClipRRect(
-            borderRadius: widget.borderRadius ?? BorderRadius.zero,
-            child: AnimatedBuilder(
-              animation: _shimmerAnimation,
-              builder: (context, child) {
-                return Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment(-1.0 + _shimmerAnimation.value, -1.0),
-                      end: Alignment(1.0 + _shimmerAnimation.value, 1.0),
-                      colors: widget.shimmerColors ?? defaultShimmerColors,
-                      stops: widget.shimmerStops ?? defaultShimmerStops,
+          child: IgnorePointer(
+            child: ClipRRect(
+              borderRadius: widget.borderRadius ?? BorderRadius.zero,
+              child: AnimatedBuilder(
+                animation: _shimmerAnimation,
+                builder: (context, child) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment(-1.0 + _shimmerAnimation.value, -1.0),
+                        end: Alignment(1.0 + _shimmerAnimation.value, 1.0),
+                        colors: widget.shimmerColors ?? defaultShimmerColors,
+                        stops: widget.shimmerStops ?? defaultShimmerStops,
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ),
