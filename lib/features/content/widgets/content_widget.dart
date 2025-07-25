@@ -55,6 +55,7 @@ class ContentWidget extends ConsumerWidget {
               )
             : ListView.builder(
                 shrinkWrap: true,
+                padding: EdgeInsets.zero,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: contentList.length,
                 itemBuilder: (context, index) {

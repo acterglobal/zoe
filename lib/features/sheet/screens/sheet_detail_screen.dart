@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
+import 'package:zoey/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
@@ -17,11 +18,19 @@ class SheetDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [EditViewToggleButton(), _buildDeleteButton(context, ref)],
+    return NotebookPaperBackgroundWidget(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          surfaceTintColor: Colors.transparent,
+          actions: [EditViewToggleButton(), _buildDeleteButton(context, ref)],
+        ),
+        body: _buildBody(context, ref),
       ),
-      body: _buildBody(context, ref),
     );
   }
 
@@ -36,7 +45,7 @@ class SheetDetailScreen extends ConsumerWidget {
   /// Builds the main body
   Widget _buildBody(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 70),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

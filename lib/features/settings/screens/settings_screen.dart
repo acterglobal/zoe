@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/providers/package_info_provider.dart';
+import 'package:zoey/common/widgets/animated_background_widget.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/settings/actions/change_theme.dart';
 import 'package:zoey/features/settings/providers/theme_provider.dart';
@@ -12,14 +13,17 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Settings'), centerTitle: false),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Container(
-            constraints: BoxConstraints(maxWidth: 600),
-            child: _buildSettingsBodyUI(context, ref),
+    return AnimatedBackgroundWidget(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(title: Text('Settings'), centerTitle: false),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: Container(
+              constraints: BoxConstraints(maxWidth: 600),
+              child: _buildSettingsBodyUI(context, ref),
+            ),
           ),
         ),
       ),

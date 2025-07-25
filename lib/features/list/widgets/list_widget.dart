@@ -94,7 +94,9 @@ class ListWidget extends ConsumerWidget {
       hintText: 'List title',
       isEditing: isEditing,
       text: title,
-      textStyle: Theme.of(context).textTheme.bodyLarge,
+      textStyle: Theme.of(
+        context,
+      ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
       onTextChanged: (value) =>
           ref.read(listsrovider.notifier).updateListTitle(listId, value),
     );

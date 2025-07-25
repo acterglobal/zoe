@@ -95,7 +95,9 @@ class TextWidget extends ConsumerWidget {
       hintText: 'Text content title',
       isEditing: isEditing,
       text: title,
-      textStyle: Theme.of(context).textTheme.bodyLarge,
+      textStyle: Theme.of(
+        context,
+      ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
       onTextChanged: (value) =>
           ref.read(textListProvider.notifier).updateTextTitle(textId, value),
     );

@@ -15,6 +15,7 @@ class BulletListWidget extends ConsumerWidget {
 
     return ListView.builder(
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: bullets.length,
       itemBuilder: (context, index) {
