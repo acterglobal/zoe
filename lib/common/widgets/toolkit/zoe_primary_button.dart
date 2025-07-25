@@ -64,28 +64,23 @@ class ZoePrimaryButton extends StatelessWidget {
           width: 1.5,
         ),
         boxShadow: [
-          // Primary colored shadow
-          BoxShadow(
-            color: effectivePrimaryColor.withValues(alpha: 0.4),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-            spreadRadius: 0,
-          ),
-          // Depth shadow
+          // Subtle elevation shadow
           BoxShadow(
             color: isDark
-                ? Colors.black.withValues(alpha: 0.6)
-                : Colors.black.withValues(alpha: 0.15),
-            blurRadius: 25,
-            offset: const Offset(0, 12),
-            spreadRadius: 2,
+                ? Colors.black.withValues(alpha: 0.3)
+                : Colors.black.withValues(alpha: 0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+            spreadRadius: 0,
           ),
-          // Glow effect
+          // Very subtle depth
           BoxShadow(
-            color: effectivePrimaryColor.withValues(alpha: 0.2),
-            blurRadius: 35,
-            offset: const Offset(0, 0),
-            spreadRadius: 5,
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.2)
+                : Colors.black.withValues(alpha: 0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+            spreadRadius: 0,
           ),
         ],
       ),

@@ -21,11 +21,11 @@ class GlassyContainer extends StatelessWidget {
     this.margin,
     this.borderRadius,
     this.shadowColor,
-    this.shadowOpacity = 0.1,
-    this.blurRadius = 20,
-    this.shadowOffset = const Offset(0, 8),
-    this.borderOpacity = 0.1,
-    this.surfaceOpacity = 0.8,
+    this.shadowOpacity = 0.05, // Reduced for subtlety
+    this.blurRadius = 12, // Reduced for cleaner look
+    this.shadowOffset = const Offset(0, 4), // Reduced offset
+    this.borderOpacity = 0.15, // Slightly increased for definition
+    this.surfaceOpacity = 0.85, // Slightly increased for better visibility
     this.customGradientColors,
   });
 
@@ -70,18 +70,22 @@ class GlassyContainer extends StatelessWidget {
             width: 1.5,
           ),
           boxShadow: [
+            // Subtle inner glow effect for glassmorphism
             BoxShadow(
-              color: (shadowColor ?? colorScheme.primary).withValues(
-                alpha: shadowOpacity + 0.05,
-              ),
-              blurRadius: blurRadius,
-              offset: shadowOffset,
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.03)
+                  : Colors.black.withValues(alpha: 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
               spreadRadius: 0,
             ),
+            // Very subtle depth shadow
             BoxShadow(
-              color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
-              blurRadius: blurRadius * 2,
-              offset: Offset(shadowOffset.dx, shadowOffset.dy * 2),
+              color: isDark
+                  ? Colors.black.withValues(alpha: 0.2)
+                  : Colors.black.withValues(alpha: 0.03),
+              blurRadius: 16,
+              offset: const Offset(0, 4),
               spreadRadius: 0,
             ),
           ],
