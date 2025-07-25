@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
@@ -63,8 +65,7 @@ class TextWidget extends ConsumerWidget {
         _buildTextContentDescription(
           context,
           ref,
-          textContent.description?.plainText ?? '',
-          textContent.description?.htmlText ?? '',
+          textContent.description,
           isEditing,
         ),
       ],
@@ -106,20 +107,17 @@ class TextWidget extends ConsumerWidget {
   Widget _buildTextContentDescription(
     BuildContext context,
     WidgetRef ref,
-    String plainTextDescription,
-    String htmlDescription,
+    Description? description,
     bool isEditing,
   ) {
-    return ZoeInlineTextEditWidget(
+    return ZoeHtmlTextEditWidget(
       hintText: L10n.of(context).typeSomething,
       isEditing: isEditing,
-      text: plainTextDescription,
+      description: description,
       textStyle: Theme.of(context).textTheme.bodyMedium,
-      onTextChanged: (value) =>
-          ref.read(textListProvider.notifier).updateTextDescription(textId, (
-            plainText: value,
-            htmlText: htmlDescription,
-          )),
+      editorId: 'text-content-$textId', // Add unique editor ID
+      onContentChanged: (description) =>
+          ref.read(textListProvider.notifier).updateTextDescription(textId, description),
     );
   }
 }
