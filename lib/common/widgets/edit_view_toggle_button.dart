@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class EditViewToggleButton extends ConsumerWidget {
   const EditViewToggleButton({super.key});
@@ -10,7 +11,7 @@ class EditViewToggleButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider);
     return ZoePrimaryButton(
-      text: isEditing ? 'Save' : 'Edit',
+      text: isEditing ? L10n.of(context).save : L10n.of(context).edit,
       icon: isEditing ? Icons.save_rounded : Icons.edit_rounded,
       backgroundColor: isEditing
           ? Theme.of(context).colorScheme.primary

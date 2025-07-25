@@ -9,6 +9,7 @@ import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/events/widgets/event_date_widget.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class EventWidget extends ConsumerWidget {
   final String eventsId;
@@ -80,7 +81,7 @@ class EventWidget extends ConsumerWidget {
     bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
-      hintText: 'Event name',
+      hintText: L10n.of(context).eventName,
       isEditing: isEditing,
       text: title,
       textStyle: Theme.of(context).textTheme.bodyMedium,

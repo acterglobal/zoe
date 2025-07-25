@@ -18,6 +18,7 @@ import 'package:zoey/features/bullets/widgets/bullet_list_widget.dart';
 import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 import 'package:zoey/features/text/widgets/text_list_widget.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class ListWidget extends ConsumerWidget {
   final String listId;
@@ -91,7 +92,7 @@ class ListWidget extends ConsumerWidget {
     bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
-      hintText: 'List title',
+      hintText: L10n.of(context).listTitle,
       isEditing: isEditing,
       text: title,
       textStyle: Theme.of(context).textTheme.bodyLarge,

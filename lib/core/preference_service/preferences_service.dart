@@ -14,6 +14,11 @@ class PreferencesService {
     _prefs ??= await SharedPreferences.getInstance();
   }
 
+  // Get SharedPreferences instance
+  static Future<SharedPreferences> getSharedPreferences() async {
+    return await SharedPreferences.getInstance();
+  }
+
   // Theme Mode
   Future<AppThemeMode> getThemeMode() async {
     await init();
@@ -32,4 +37,8 @@ class PreferencesService {
         ) ??
         false;
   }
+}
+
+Future<SharedPreferences> sharedPrefs() async {
+  return await PreferencesService.getSharedPreferences();
 }

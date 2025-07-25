@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 /// Shows a confirmation bottom sheet for deleting a sheet
 void showDeleteSheetConfirmation(
@@ -100,7 +101,7 @@ class _DeleteSheetBottomSheet extends StatelessWidget {
 
               // Title with better typography
               Text(
-                'Delete Sheet?',
+                L10n.of(context).deleteSheet,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.onSurface,
@@ -168,7 +169,7 @@ class _DeleteSheetBottomSheet extends StatelessWidget {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            'Sheet',
+                            L10n.of(context).sheet,
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
                                   color: Theme.of(
@@ -211,7 +212,7 @@ class _DeleteSheetBottomSheet extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'This action cannot be undone. All content in this sheet will be permanently deleted.',
+                        L10n.of(context).thisActionCannotBeUndone,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           height: 1.4,
@@ -247,7 +248,7 @@ class _DeleteSheetBottomSheet extends StatelessWidget {
                           const Icon(Icons.delete_outline_rounded, size: 20),
                           const SizedBox(width: 8),
                           Text(
-                            'Delete Sheet',
+                            L10n.of(context).deleteSheetButton,
                             style: Theme.of(context).textTheme.titleSmall
                                 ?.copyWith(
                                   color: Colors.white,
@@ -276,7 +277,7 @@ class _DeleteSheetBottomSheet extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        'Cancel',
+                        L10n.of(context).cancel,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).colorScheme.onSurface,
