@@ -3,7 +3,7 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/quill_editor/widgets/quill_toolbar_widget.dart';
 
-class QuillEditorToolbarWidget extends StatefulWidget {
+class QuillEditorToolbarWidget extends StatelessWidget {
   final QuillController? controller;
   final FocusNode? focusNode;
   final bool isToolbarVisible;
@@ -18,12 +18,6 @@ class QuillEditorToolbarWidget extends StatefulWidget {
   });
 
   @override
-  State<QuillEditorToolbarWidget> createState() =>
-      _QuillEditorToolbarWidgetState();
-}
-
-class _QuillEditorToolbarWidgetState extends State<QuillEditorToolbarWidget> {
-  @override
   Widget build(BuildContext context) {
     return _buildBottomToolbar(context);
   }
@@ -32,16 +26,17 @@ class _QuillEditorToolbarWidgetState extends State<QuillEditorToolbarWidget> {
   Widget _buildBottomToolbar(BuildContext context) {
     final isDesktopPlatform = CommonUtils.isDesktop(context);
     final shouldShow =
-        widget.isToolbarVisible &&
-        widget.controller != null &&
-        widget.focusNode != null && 
-        (isDesktopPlatform ? widget.focusNode != null : true);
+        isToolbarVisible &&
+        controller != null &&
+        focusNode != null && 
+        (isDesktopPlatform ? focusNode != null : true);
 
     return _buildAnimatedToolbar(
+      context: context,
       shouldShow,
       isDesktopPlatform ? 200 : 250,
-      controller: widget.controller,
-      focusNode: widget.focusNode,
+      controller: controller,
+      focusNode: focusNode,
       curve: isDesktopPlatform ? Curves.easeInOut : Curves.easeOut,
     );
   }
@@ -53,6 +48,7 @@ class _QuillEditorToolbarWidgetState extends State<QuillEditorToolbarWidget> {
     Curve? curve,
     QuillController? controller,
     FocusNode? focusNode,
+    required BuildContext context,
   }) {
     return Material(
       elevation: shouldShow ? 4 : 0,
@@ -70,7 +66,7 @@ class _QuillEditorToolbarWidgetState extends State<QuillEditorToolbarWidget> {
               ? QuillToolbar(
                   controller: controller,
                   focusNode: focusNode,
-                  onButtonPressed: widget.onReturnFocusToEditor,
+                  onButtonPressed: onReturnFocusToEditor,
                 )
               : const SizedBox.shrink(),
         ),
