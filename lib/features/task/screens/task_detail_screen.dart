@@ -6,6 +6,7 @@ import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
+import 'package:zoey/features/task/widgets/task_details_additional_fields.dart';
 
 class TaskDetailScreen extends ConsumerWidget {
   final String taskId;
@@ -79,6 +80,8 @@ class TaskDetailScreen extends ConsumerWidget {
                 (plainText: value, htmlText: null),
               ),
         ),
+        const SizedBox(height: 16),
+        TaskDetailsAdditionalFields(task: task, isEditing: isEditing),
       ],
     );
   }

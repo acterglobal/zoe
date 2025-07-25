@@ -11,7 +11,7 @@ class DetailsAdditionalField extends StatelessWidget {
     super.key,
     required this.icon,
     required this.title,
-    required this.isEditing,
+    this.isEditing = false,
     this.onChildTap,
     required this.child,
   });
