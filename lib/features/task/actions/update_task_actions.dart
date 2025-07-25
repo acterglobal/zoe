@@ -19,14 +19,3 @@ Future<void> updateTaskDueDate(
   // Update the task due date
   ref.read(taskListProvider.notifier).updateTaskDueDate(task.id, selectedDate);
 }
-
-Future<void> updateTaskCompletion(
-  BuildContext context,
-  WidgetRef ref,
-  TaskModel task,
-) async {
-  // Update the task completion
-  ref
-      .read(taskListProvider.notifier)
-      .updateTaskCompletion(task.id, !task.isCompleted);
-}

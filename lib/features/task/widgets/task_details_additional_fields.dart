@@ -4,6 +4,7 @@ import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/common/widgets/details_additional_field.dart';
 import 'package:zoey/features/task/actions/update_task_actions.dart';
 import 'package:zoey/features/task/models/task_model.dart';
+import 'package:zoey/features/task/widgets/task_checkbox_widget.dart';
 
 class TaskDetailsAdditionalFields extends ConsumerWidget {
   final TaskModel task;
@@ -39,11 +40,7 @@ class TaskDetailsAdditionalFields extends ConsumerWidget {
           child: SizedBox(
             width: 20,
             height: 20,
-            child: Checkbox(
-              value: task.isCompleted,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              onChanged: (value) => updateTaskCompletion(context, ref, task),
-            ),
+            child: TaskCheckboxWidget(task: task),
           ),
         ),
       ],

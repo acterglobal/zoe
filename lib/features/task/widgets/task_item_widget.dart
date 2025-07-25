@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
+import 'package:zoey/features/task/widgets/task_checkbox_widget.dart';
 
 class TaskWidget extends ConsumerWidget {
   final String taskId;
@@ -32,7 +32,7 @@ class TaskWidget extends ConsumerWidget {
   ) {
     return Row(
       children: [
-        _buildTaskItemIcon(context, ref, task),
+        TaskCheckboxWidget(task: task),
         const SizedBox(width: 10),
         Expanded(
           child: _buildTaskItemTitle(
@@ -46,27 +46,6 @@ class TaskWidget extends ConsumerWidget {
         const SizedBox(width: 6),
         if (isEditing) _buildTaskItemActions(context, ref),
       ],
-    );
-  }
-
-  // Builds the task item icon
-  Widget _buildTaskItemIcon(
-    BuildContext context,
-    WidgetRef ref,
-    TaskModel taskItem,
-  ) {
-    return Checkbox(
-      value: taskItem.isCompleted,
-      activeColor: AppColors.successColor,
-      checkColor: Colors.white,
-      side: BorderSide(
-        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
-      ),
-      onChanged: (value) {
-        ref
-            .read(taskListProvider.notifier)
-            .updateTaskCompletion(taskId, value ?? false);
-      },
     );
   }
 
