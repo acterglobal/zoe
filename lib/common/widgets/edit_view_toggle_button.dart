@@ -21,15 +21,15 @@ class EditViewToggleButton extends ConsumerWidget {
       onPressed: () {
         // Close keyboard and clear quill toolbar when switching to view mode
         if (isEditing) {
-           FocusManager.instance.primaryFocus?.unfocus();
+          FocusManager.instance.primaryFocus?.unfocus();
 
-           // Clear any active quill toolbar state
-           final toolbarState = ref.read(quillToolbarProvider);
-           if (toolbarState.activeEditorId != null) {
-             ref.read(quillToolbarProvider.notifier).clearActiveEditor(
-               toolbarState.activeEditorId!,
-             );
-           }
+          // Clear any active quill toolbar state
+          final toolbarState = ref.read(quillToolbarProvider);
+          if (toolbarState.activeEditorId != null) {
+            ref
+                .read(quillToolbarProvider.notifier)
+                .clearActiveEditor(toolbarState.activeEditorId!);
+          }
         }
         ref.read(isEditValueProvider.notifier).state = !ref.read(
           isEditValueProvider,
