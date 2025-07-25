@@ -61,10 +61,14 @@ void toggleAttribute(
   if (!selection.isValid || docLength == 0) {
     handleInvalidSelection(controller, attribute);
   } else {
-    // Check current state and toggle accordingly
+    // Check current state and apply attribute accordingly
     final wasActive = isAttributeActive(controller, attribute);
 
-    toggleStandardAttribute(controller, attribute, wasActive);
+    if (wasActive) {
+      controller.formatSelection(Attribute.clone(attribute, null));
+    } else {
+      controller.formatSelection(attribute);
+    }
   }
 
   // Return focus to editor after button interaction
@@ -82,21 +86,6 @@ void handleInvalidSelection(QuillController controller, Attribute attribute) {
       TextSelection.collapsed(offset: endPosition),
       ChangeSource.local,
     );
-    controller.formatSelection(attribute);
-  }
-}
-
-/// Toggle standard attributes
-void toggleStandardAttribute(
-  QuillController controller,
-  Attribute attribute,
-  bool wasActive,
-) {
-  if (wasActive) {
-    // Remove attribute
-    controller.formatSelection(Attribute.clone(attribute, null));
-  } else {
-    // Apply attribute
     controller.formatSelection(attribute);
   }
 }
