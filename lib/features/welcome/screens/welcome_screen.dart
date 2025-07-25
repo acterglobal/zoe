@@ -6,6 +6,7 @@ import 'package:zoey/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/welcome/data/feature_data.dart';
 import 'package:zoey/features/welcome/widgets/feature_item.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class WelcomeScreen extends ConsumerStatefulWidget {
   const WelcomeScreen({super.key});
@@ -72,14 +73,14 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
 
   Widget _buildAppTitle() {
     return Text(
-      'Welcome to Zoe',
+      L10n.of(context).welcomeToZoey,
       style: Theme.of(context).textTheme.headlineLarge,
     );
   }
 
   Widget _buildAppDescription() {
     return Text(
-      'Your personal workspace for organizing thoughts, tasks, and ideas with beautiful simplicity.',
+      L10n.of(context).yourPersonalWorkspace,
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.titleMedium,
     );
@@ -89,7 +90,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
     return SizedBox(
       width: double.infinity,
       child: ZoePrimaryButton(
-        text: 'Get Started',
+        text: L10n.of(context).getStarted,
         onPressed: () => context.go(AppRoutes.home.route),
       ),
     );

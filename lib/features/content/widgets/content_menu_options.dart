@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class ContentMenuOptions extends StatelessWidget {
   final VoidCallback onTapText;
@@ -28,30 +29,30 @@ class ContentMenuOptions extends StatelessWidget {
           _buildAddContentOption(
             context,
             icon: Icons.text_fields,
-            title: 'Text',
-            description: 'Start writing with plain text',
+            title: L10n.of(context).text,
+            description: L10n.of(context).startWritingWithPlainText,
             onTap: onTapText,
           ),
 
           _buildAddContentOption(
             context,
             icon: Icons.event_outlined,
-            title: 'Event List',
-            description: 'Schedule and track events',
+            title: L10n.of(context).eventList,
+            description: L10n.of(context).scheduleAndTrackEvents,
             onTap: onTapEvent,
           ),
           _buildAddContentOption(
             context,
             icon: Icons.list,
-            title: 'Bulleted list',
-            description: 'Create a simple bulleted list',
+            title: L10n.of(context).bulletedList,
+            description: L10n.of(context).createASimpleBulletedList,
             onTap: onTapBulletedList,
           ),
           _buildAddContentOption(
             context,
             icon: Icons.check_box_outlined,
-            title: 'To-do list',
-            description: 'Track tasks with checkboxes',
+            title: L10n.of(context).toDoList,
+            description: L10n.of(context).trackTasksWithCheckboxes,
             onTap: onTapToDoList,
           ),
         ],

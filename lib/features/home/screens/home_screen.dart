@@ -7,6 +7,7 @@ import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 import 'package:zoey/features/sheet/widgets/sheet_list_widget.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -45,7 +46,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: [
           const AppIconWidget(size: 32),
           const SizedBox(width: 8),
-          Text('Zoey', style: Theme.of(context).textTheme.titleLarge),
+          Text(L10n.of(context).zoeyApp, style: Theme.of(context).textTheme.titleLarge),
         ],
       ),
       actions: [
@@ -61,7 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Sheets', style: Theme.of(context).textTheme.titleLarge),
+        Text(L10n.of(context).sheets, style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 16),
         SheetListWidget(shrinkWrap: true),
         const SizedBox(height: 16),

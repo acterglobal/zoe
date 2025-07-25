@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/providers/package_info_provider.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
+import 'package:zoey/features/settings/actions/change_language.dart';
 import 'package:zoey/features/settings/actions/change_theme.dart';
+import 'package:zoey/features/settings/models/language_model.dart';
+import 'package:zoey/features/settings/providers/local_provider.dart';
 import 'package:zoey/features/settings/providers/theme_provider.dart';
 import 'package:zoey/features/settings/widgets/setting_card_widget.dart';
 import 'package:zoey/features/settings/widgets/setting_item_widget.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -13,7 +17,7 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: Text('Settings'), centerTitle: false),
+      appBar: AppBar(title: Text(L10n.of(context).settings), centerTitle: false),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Center(
@@ -51,11 +55,11 @@ class SettingsScreen extends ConsumerWidget {
 
   Widget _buildAppearanceSection(BuildContext context, WidgetRef ref) {
     return SettingCardWidget(
-      title: 'Appearance',
+      title: L10n.of(context).appearance,
       children: [
         SettingItemWidget(
-          title: 'Theme',
-          subtitle: ref.watch(themeProvider).title,
+          title: L10n.of(context).theme,
+          subtitle: ref.watch(themeProvider).getTitle(context),
           icon: Icons.palette_outlined,
           iconColor: AppColors.primaryColor,
           onTap: () => showThemeDialog(context, ref),
@@ -65,15 +69,18 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   Widget _buildLanguageSection(BuildContext context, WidgetRef ref) {
+    final currentLocale = ref.watch(localeProvider);
+    final currentLanguage = LanguageModel.fromCode(currentLocale);
+    
     return SettingCardWidget(
-      title: 'Language',
+      title: L10n.of(context).language,
       children: [
         SettingItemWidget(
-          title: 'Language',
-          subtitle: 'English',
+          title: L10n.of(context).language,
+          subtitle: currentLanguage.languageName,
           icon: Icons.language_rounded,
           iconColor: AppColors.successColor,
-          onTap: () {},
+          onTap: () => showLanguageDialog(context, ref),
         ),
       ],
     );
@@ -81,27 +88,27 @@ class SettingsScreen extends ConsumerWidget {
 
   Widget _buildAppSection(BuildContext context, WidgetRef ref) {
     return SettingCardWidget(
-      title: 'App',
+      title: L10n.of(context).app,
       children: [
         SettingItemWidget(
-          title: 'Share App',
-          subtitle: 'Tell your friends about Zoe',
+          title: L10n.of(context).shareApp,
+          subtitle: L10n.of(context).tellYourFriendsAboutZoey,
           icon: Icons.share_rounded,
           iconColor: AppColors.primaryColor,
           onTap: () {},
         ),
         const Divider(),
         SettingItemWidget(
-          title: 'Rate App',
-          subtitle: 'Rate us on the App Store',
+          title: L10n.of(context).rateApp,
+          subtitle: L10n.of(context).rateUsOnTheAppStore,
           icon: Icons.star_rounded,
           iconColor: AppColors.warningColor,
           onTap: () {},
         ),
         const Divider(),
         SettingItemWidget(
-          title: 'Contact Us',
-          subtitle: 'Get help or send feedback',
+          title: L10n.of(context).contactUs,
+          subtitle: L10n.of(context).getHelpOrSendFeedback,
           icon: Icons.mail_outline_rounded,
           iconColor: AppColors.errorColor,
           onTap: () {},
@@ -112,10 +119,10 @@ class SettingsScreen extends ConsumerWidget {
 
   Widget _buildAboutSection(BuildContext context, WidgetRef ref) {
     return SettingCardWidget(
-      title: 'About',
+      title: L10n.of(context).about,
       children: [
         SettingItemWidget(
-          title: 'App Name',
+          title: L10n.of(context).appName,
           subtitle: ref.watch(appNameProvider),
           icon: Icons.apps_rounded,
           iconColor: AppColors.secondaryColor,
@@ -123,7 +130,7 @@ class SettingsScreen extends ConsumerWidget {
         ),
         const Divider(),
         SettingItemWidget(
-          title: 'Version',
+          title: L10n.of(context).version,
           subtitle: ref.watch(appVersionProvider),
           icon: Icons.info_outline_rounded,
           iconColor: AppColors.primaryColor,
@@ -131,7 +138,7 @@ class SettingsScreen extends ConsumerWidget {
         ),
         const Divider(),
         SettingItemWidget(
-          title: 'Build Number',
+          title: L10n.of(context).buildNumber,
           subtitle: ref.watch(buildNumberProvider),
           icon: Icons.build_rounded,
           iconColor: AppColors.warningColor,

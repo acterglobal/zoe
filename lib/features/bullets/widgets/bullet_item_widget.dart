@@ -7,6 +7,7 @@ import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/bullets/model/bullet_model.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class BulletItemWidget extends ConsumerWidget {
   final String bulletId;
@@ -67,7 +68,7 @@ class BulletItemWidget extends ConsumerWidget {
     bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
-      hintText: 'Bullet item',
+      hintText: L10n.of(context).bulletItem,
       isEditing: isEditing,
       text: title,
       textStyle: Theme.of(context).textTheme.bodyMedium,

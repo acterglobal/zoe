@@ -51,6 +51,10 @@ dependencies:
   # Icons
   icons_plus: ^5.0.0
   
+  # Localizations
+  flutter_localizations:
+    sdk: flutter
+  
   # Utils
   intl: ^0.20.2
   uuid: ^4.4.0
@@ -94,6 +98,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

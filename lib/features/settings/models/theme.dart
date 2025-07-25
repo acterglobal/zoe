@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 enum AppThemeMode {
-  light('Light', 'Always use light theme'),
-  dark('Dark', 'Always use dark theme'),
-  system('System', 'Follow system theme setting');
+  light,
+  dark,
+  system;
 
-  const AppThemeMode(this.title, this.description);
+  String getTitle(BuildContext context) {
+    switch (this) {
+      case AppThemeMode.light:
+        return L10n.of(context).light;
+      case AppThemeMode.dark:
+        return L10n.of(context).dark;
+      case AppThemeMode.system:
+        return L10n.of(context).system;
+    }
+  }
 
-  final String title;
-  final String description;
+  String getDescription(BuildContext context) {
+    switch (this) {
+      case AppThemeMode.light:
+        return L10n.of(context).alwaysUseLightTheme;
+      case AppThemeMode.dark:
+        return L10n.of(context).alwaysUseDarkTheme;
+      case AppThemeMode.system:
+        return L10n.of(context).followSystemThemeSetting;
+    }
+  }
 
   ThemeMode get themeMode {
     switch (this) {

@@ -8,6 +8,7 @@ import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class TextWidget extends ConsumerWidget {
   final String textId;
@@ -93,7 +94,7 @@ class TextWidget extends ConsumerWidget {
     bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
-      hintText: 'Text content title',
+      hintText: L10n.of(context).textContentTitle,
       isEditing: isEditing,
       text: title,
       textStyle: Theme.of(context).textTheme.bodyLarge,
@@ -111,7 +112,7 @@ class TextWidget extends ConsumerWidget {
     bool isEditing,
   ) {
     return ZoeHtmlTextEditWidget(
-      hintText: 'Type something...',
+      hintText: L10n.of(context).typeSomething,
       isEditing: isEditing,
       initialContent: plainTextDescription,
       initialRichContent: htmlDescription,
