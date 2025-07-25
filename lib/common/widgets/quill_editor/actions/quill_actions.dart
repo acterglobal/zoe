@@ -8,11 +8,7 @@ void clearActiveEditorState(WidgetRef ref) {
   FocusManager.instance.primaryFocus?.unfocus();
 
   final toolbarState = ref.read(quillToolbarProvider);
-  if (toolbarState.activeEditorId != null) {
-    ref
-        .read(quillToolbarProvider.notifier)
-        .clearActiveEditorState(toolbarState.activeEditorId!);
-  }
+  ref.read(quillToolbarProvider.notifier).clearActiveEditorState(toolbarState.activeEditorId ?? '');
 }
 
 /// Check if a specific attribute is currently active
