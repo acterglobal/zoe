@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Zoey needs access to your photo library to allow you to add images to your notes, tasks, and other content.</string>
 </dict>
 </plist>
