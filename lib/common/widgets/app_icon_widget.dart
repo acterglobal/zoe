@@ -15,9 +15,9 @@ class AppIconWidget extends StatelessWidget {
       borderRadius: borderRadius,
       shimmerColors: [
         Colors.transparent,
-        Colors.white.withValues(alpha: 0.15),
-        Colors.white.withValues(alpha: 0.35),
-        Colors.white.withValues(alpha: 0.15),
+        Colors.white.withValues(alpha: 0.08),
+        Colors.white.withValues(alpha: 0.2),
+        Colors.white.withValues(alpha: 0.08),
         Colors.transparent,
       ],
       duration: const Duration(seconds: 2),
