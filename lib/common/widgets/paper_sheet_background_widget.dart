@@ -140,9 +140,7 @@ class PaperTexturePainter extends CustomPainter {
     final linePaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.8
-      ..color = isDark
-          ? Colors.blue.withValues(alpha: _applyOpacity(0.3))
-          : const Color(0xFFD6E7F0).withValues(alpha: _applyOpacity(0.9));
+      ..color = AppColors.primaryColor.withValues(alpha: _applyOpacity(0.15));
 
     // Draw horizontal ruled lines like notebook paper
     const lineSpacing = 32.0; // Space between lines

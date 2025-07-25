@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:zoey/common/utils/common_utils.dart';
 
 /// Description with both plain text and HTML support
@@ -8,6 +9,7 @@ class SheetModel {
   final String emoji;
   final String title;
   final Description? description;
+  final Color? color;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -16,6 +18,7 @@ class SheetModel {
     String? emoji,
     String? title,
     this.description,
+    this.color,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : id = id ?? CommonUtils.generateRandomId(),
@@ -29,6 +32,7 @@ class SheetModel {
     String? emoji,
     String? title,
     Description? description,
+    Color? color,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -37,6 +41,7 @@ class SheetModel {
       emoji: emoji ?? this.emoji,
       title: title ?? this.title,
       description: description ?? this.description,
+      color: color ?? this.color,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
     );

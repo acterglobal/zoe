@@ -25,7 +25,7 @@ class SheetListItemWidget extends ConsumerWidget {
         padding: const EdgeInsets.all(20),
         child: Row(
           children: [
-            _buildEmojiContainer(sheet.emoji, theme),
+            _buildEmojiContainer(sheet.emoji, sheet.color, theme),
             const SizedBox(width: 16),
             Expanded(child: _buildContentSection(sheet, theme)),
             const SizedBox(width: 12),
@@ -40,14 +40,13 @@ class SheetListItemWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildEmojiContainer(String emoji, ThemeData theme) {
+  Widget _buildEmojiContainer(String emoji, Color? color, ThemeData theme) {
     return StyledContentContainer(
       size: 56,
-      primaryColor: theme.colorScheme.primary,
-      secondaryColor: theme.colorScheme.secondary,
+      primaryColor: color ?? theme.colorScheme.primary,
       backgroundOpacity: 0.1,
-      borderOpacity: 0.15,
-      shadowOpacity: 0.12,
+      borderOpacity: 0.10,
+      shadowOpacity: 0.06,
       child: Text(emoji, style: const TextStyle(fontSize: 24)),
     );
   }
