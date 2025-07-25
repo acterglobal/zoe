@@ -48,7 +48,7 @@ class QuillEditorManager {
     try {
       _controller = QuillController.basic(
         config: QuillControllerConfig(
-          clipboardConfig: QuillClipboardConfig(enableExternalRichPaste: true),
+          clipboardConfig: QuillClipboardConfig(enableExternalRichPaste: false),
         ),
       );
     } catch (e) {
