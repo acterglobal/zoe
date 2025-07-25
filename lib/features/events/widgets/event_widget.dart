@@ -22,11 +22,16 @@ class EventWidget extends ConsumerWidget {
     final event = ref.watch(eventProvider(eventsId));
     if (event == null) return const SizedBox.shrink();
 
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: _buildEventContent(context, ref, event, isEditing),
+    return GestureDetector(
+      onTap: () => context.push(
+        AppRoutes.eventDetail.route.replaceAll(':eventId', eventsId),
+      ),
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: _buildEventContent(context, ref, event, isEditing),
+        ),
       ),
     );
   }
@@ -82,9 +87,6 @@ class EventWidget extends ConsumerWidget {
       onTextChanged: (value) => ref
           .read(eventListProvider.notifier)
           .updateEventTitle(eventsId, value),
-      onTapText: () => context.push(
-        AppRoutes.eventDetail.route.replaceAll(':eventId', eventsId),
-      ),
     );
   }
 
