@@ -26,20 +26,17 @@ class TaskListWidget extends ConsumerWidget {
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
-        return Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: TaskWidget(
-            key: ValueKey(task.id),
-            taskId: task.id,
-            isEditing: isEditing,
-          ),
         return GestureDetector(
           onTap: () => context.push(
             AppRoutes.taskDetail.route.replaceAll(':taskId', task.id),
           ),
           child: Padding(
             padding: const EdgeInsets.only(left: 16, bottom: 8),
-            child: TaskWidget(key: ValueKey(task.id), taskId: task.id),
+            child: TaskWidget(
+              key: ValueKey(task.id),
+              taskId: task.id,
+              isEditing: isEditing,
+            ),
           ),
         );
       },

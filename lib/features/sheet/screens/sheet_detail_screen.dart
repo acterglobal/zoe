@@ -21,6 +21,7 @@ class SheetDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isEditing = ref.watch(isEditValueProvider(sheetId));
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -33,8 +34,12 @@ class SheetDetailScreen extends ConsumerWidget {
           Expanded(
             child: Stack(
               children: [
-                _buildBody(context, ref),
-                buildQuillEditorPositionedToolbar(context, ref),
+                _buildBody(context, ref, isEditing),
+                buildQuillEditorPositionedToolbar(
+                  context,
+                  ref,
+                  isEditing: isEditing,
+                ),
               ],
             ),
           ),
@@ -52,13 +57,13 @@ class SheetDetailScreen extends ConsumerWidget {
   }
 
   /// Builds the main body
-  Widget _buildBody(BuildContext context, WidgetRef ref) {
+  Widget _buildBody(BuildContext context, WidgetRef ref, bool isEditing) {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSheetHeader(context, ref),
+          _buildSheetHeader(context, ref, isEditing),
           const SizedBox(height: 16),
           ContentWidget(parentId: sheetId, sheetId: sheetId),
         ],
@@ -67,8 +72,11 @@ class SheetDetailScreen extends ConsumerWidget {
   }
 
   /// Builds the header
-  Widget _buildSheetHeader(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider(sheetId));
+  Widget _buildSheetHeader(
+    BuildContext context,
+    WidgetRef ref,
+    bool isEditing,
+  ) {
     final sheet = ref.watch(sheetProvider(sheetId));
     if (sheet == null) return const SizedBox.shrink();
 

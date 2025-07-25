@@ -5,7 +5,6 @@ import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
@@ -113,8 +112,9 @@ class TextWidget extends ConsumerWidget {
       description: description,
       textStyle: Theme.of(context).textTheme.bodyMedium,
       editorId: 'text-content-$textId', // Add unique editor ID
-      onContentChanged: (description) =>
-          ref.read(textListProvider.notifier).updateTextDescription(textId, description),
+      onContentChanged: (description) => ref
+          .read(textListProvider.notifier)
+          .updateTextDescription(textId, description),
     );
   }
 }
