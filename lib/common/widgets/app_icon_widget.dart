@@ -3,7 +3,7 @@ import 'package:zoey/common/widgets/shimmer_overlay_widget.dart';
 
 class AppIconWidget extends StatelessWidget {
   final double size;
-  const AppIconWidget({super.key, this.size = 80});
+  const AppIconWidget({super.key, this.size = 100});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class AppIconWidget extends StatelessWidget {
         ),
         child: Icon(
           Icons.auto_stories_rounded,
-          size: size * 0.5,
+          size: size * 0.6,
           color: Colors.white,
         ),
       ),
