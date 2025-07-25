@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'package:zoey/common/widgets/animated_background_widget.dart';
 
 class PaperSheetBackgroundWidget extends StatelessWidget {
   final Widget child;
@@ -7,6 +8,7 @@ class PaperSheetBackgroundWidget extends StatelessWidget {
   final bool showMargin;
   final Color? paperColor;
   final double opacity;
+  final double backgroundOpacity;
 
   const PaperSheetBackgroundWidget({
     super.key,
@@ -15,12 +17,15 @@ class PaperSheetBackgroundWidget extends StatelessWidget {
     this.showMargin = true,
     this.paperColor,
     this.opacity = 1.0,
+    this.backgroundOpacity = 1.0,
   });
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        // Animated background layer (consistent with other screens)
+        _buildAnimatedBackground(context),
         // Paper background
         _buildPaperBackground(context),
         // Paper texture overlay
@@ -31,20 +36,30 @@ class PaperSheetBackgroundWidget extends StatelessWidget {
     );
   }
 
+  Widget _buildAnimatedBackground(BuildContext context) {
+    return Positioned.fill(
+      child: AnimatedBackgroundWidget(
+        backgroundOpacity: backgroundOpacity,
+        child: const SizedBox.expand(),
+      ),
+    );
+  }
+
   Widget _buildPaperBackground(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
       decoration: BoxDecoration(
-        // Enhanced gradient for more realistic paper look
+        // Use consistent background colors with the app theme
         gradient: isDark
             ? LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  const Color(0xFF323232), // Lighter for better contrast
-                  const Color(0xFF2D2D2D), // Slightly lighter
-                  const Color(0xFF323232), // Lighter for better contrast
+                  colorScheme.surface,
+                  colorScheme.surface.withValues(alpha: 0.95),
+                  colorScheme.surface,
                 ],
                 stops: const [0.0, 0.5, 1.0],
               )
@@ -52,9 +67,9 @@ class PaperSheetBackgroundWidget extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  const Color(0xFFFFFDF7),
-                  const Color(0xFFFFFBF0),
-                  const Color(0xFFFFFDF7),
+                  colorScheme.surface,
+                  colorScheme.surface.withValues(alpha: 0.98),
+                  colorScheme.surface,
                 ],
                 stops: const [0.0, 0.5, 1.0],
               ),
@@ -82,20 +97,15 @@ class PaperSheetBackgroundWidget extends StatelessWidget {
   }
 
   Widget _buildPaperTextureOverlay(BuildContext context) {
-    return Container(
-      color: Theme.of(context).brightness == Brightness.dark
-          ? Colors.black38
-          : Colors.white38,
-      child: CustomPaint(
-        painter: PaperTexturePainter(
-          colorScheme: Theme.of(context).colorScheme,
-          isDark: Theme.of(context).brightness == Brightness.dark,
-          showRuledLines: showRuledLines,
-          showMargin: showMargin,
-          opacity: opacity,
-        ),
-        size: Size.infinite,
+    return CustomPaint(
+      painter: PaperTexturePainter(
+        colorScheme: Theme.of(context).colorScheme,
+        isDark: Theme.of(context).brightness == Brightness.dark,
+        showRuledLines: showRuledLines,
+        showMargin: showMargin,
+        opacity: opacity,
       ),
+      size: Size.infinite,
     );
   }
 }
@@ -136,15 +146,18 @@ class PaperTexturePainter extends CustomPainter {
     }
   }
 
+  /// Helper method to apply opacity to alpha values
+  double _applyOpacity(double baseAlpha) {
+    return (baseAlpha * opacity).clamp(0.0, 1.0);
+  }
+
   void _drawRuledLines(Canvas canvas, Size size) {
     final linePaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.8
       ..color = isDark
-          ? Colors.blue.withValues(
-              alpha: 0.3 * opacity,
-            ) // Increased from 0.15 to 0.3
-          : const Color(0xFFD6E7F0).withValues(alpha: 0.9 * opacity);
+          ? Colors.blue.withValues(alpha: _applyOpacity(0.3))
+          : const Color(0xFFD6E7F0).withValues(alpha: _applyOpacity(0.9));
 
     // Draw horizontal ruled lines like notebook paper
     const lineSpacing = 32.0; // Space between lines
@@ -164,8 +177,8 @@ class PaperTexturePainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5
       ..color = isDark
-          ? Colors.red.withValues(alpha: 0.3 * opacity)
-          : const Color(0xFFE91E63).withValues(alpha: 0.4 * opacity);
+          ? Colors.red.withValues(alpha: _applyOpacity(0.3))
+          : const Color(0xFFE91E63).withValues(alpha: _applyOpacity(0.4));
 
     // Draw left margin line like notebook paper
     const marginX = 80.0;
@@ -180,10 +193,8 @@ class PaperTexturePainter extends CustomPainter {
     final grainPaint = Paint()
       ..style = PaintingStyle.fill
       ..color = isDark
-          ? Colors.white.withValues(
-              alpha: 0.12 * opacity,
-            ) // Increased from 0.04 to 0.12
-          : Colors.black.withValues(alpha: 0.06 * opacity);
+          ? Colors.white.withValues(alpha: _applyOpacity(0.12))
+          : Colors.black.withValues(alpha: _applyOpacity(0.06));
 
     final random = math.Random(42); // Fixed seed for consistent pattern
 
@@ -201,10 +212,8 @@ class PaperTexturePainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.5
       ..color = isDark
-          ? Colors.white.withValues(
-              alpha: 0.08 * opacity,
-            ) // Increased from 0.03 to 0.08
-          : Colors.black.withValues(alpha: 0.04 * opacity);
+          ? Colors.white.withValues(alpha: _applyOpacity(0.08))
+          : Colors.black.withValues(alpha: _applyOpacity(0.04));
 
     for (int i = 0; i < (size.width * size.height / 8000).round(); i++) {
       final startX = random.nextDouble() * size.width;
@@ -220,15 +229,15 @@ class PaperTexturePainter extends CustomPainter {
     final holePaint = Paint()
       ..style = PaintingStyle.fill
       ..color = isDark
-          ? Colors.black.withValues(alpha: 0.4 * opacity)
-          : Colors.black.withValues(alpha: 0.15 * opacity);
+          ? Colors.black.withValues(alpha: _applyOpacity(0.4))
+          : Colors.black.withValues(alpha: _applyOpacity(0.15));
 
     final holeStrokePaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.5
       ..color = isDark
-          ? Colors.black.withValues(alpha: 0.6 * opacity)
-          : Colors.black.withValues(alpha: 0.25 * opacity);
+          ? Colors.black.withValues(alpha: _applyOpacity(0.6))
+          : Colors.black.withValues(alpha: _applyOpacity(0.25));
 
     // Draw 3-hole punch pattern
     const holeRadius = 4.0;
@@ -252,10 +261,8 @@ class PaperTexturePainter extends CustomPainter {
           ? 1.0
           : 0.8 // Thicker lines in dark mode
       ..color = isDark
-          ? Colors.white.withValues(
-              alpha: 0.15 * opacity,
-            ) // Increased from 0.04 to 0.15
-          : Colors.black.withValues(alpha: 0.06 * opacity);
+          ? Colors.white.withValues(alpha: _applyOpacity(0.15))
+          : Colors.black.withValues(alpha: _applyOpacity(0.06));
 
     final creaseShadowPaint = Paint()
       ..style = PaintingStyle.stroke
@@ -263,10 +270,8 @@ class PaperTexturePainter extends CustomPainter {
           ? 1.5
           : 1.2 // Thicker shadows in dark mode
       ..color = isDark
-          ? Colors.black.withValues(
-              alpha: 0.25 * opacity,
-            ) // Increased from 0.08 to 0.25
-          : Colors.black.withValues(alpha: 0.03 * opacity);
+          ? Colors.black.withValues(alpha: _applyOpacity(0.25))
+          : Colors.black.withValues(alpha: _applyOpacity(0.03));
 
     // Draw diagonal creases - like paper that's been folded
     _drawDiagonalCrease(
@@ -431,7 +436,7 @@ class PaperTexturePainter extends CustomPainter {
     final highlightPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.3
-      ..color = Colors.white.withValues(alpha: 0.08 * opacity);
+      ..color = Colors.white.withValues(alpha: _applyOpacity(0.08));
 
     final random = math.Random(456); // Different seed for highlights
 
@@ -452,7 +457,7 @@ class PaperTexturePainter extends CustomPainter {
     // Add some paper texture spots for more visibility
     final spotPaint = Paint()
       ..style = PaintingStyle.fill
-      ..color = Colors.white.withValues(alpha: 0.06 * opacity);
+      ..color = Colors.white.withValues(alpha: _applyOpacity(0.06));
 
     for (int i = 0; i < 15; i++) {
       final x = random.nextDouble() * size.width;
@@ -470,10 +475,8 @@ class PaperTexturePainter extends CustomPainter {
           ? 0.5
           : 0.3 // Thicker wear marks in dark mode
       ..color = isDark
-          ? Colors.white.withValues(
-              alpha: 0.12 * opacity,
-            ) // Increased from 0.06 to 0.12
-          : Colors.black.withValues(alpha: 0.08 * opacity);
+          ? Colors.white.withValues(alpha: _applyOpacity(0.12))
+          : Colors.black.withValues(alpha: _applyOpacity(0.08));
 
     final random = math.Random(123); // Fixed seed for consistent wear pattern
 
@@ -512,6 +515,7 @@ class NotebookPaperBackgroundWidget extends PaperSheetBackgroundWidget {
     super.key,
     required super.child,
     super.opacity = 1.0,
+    super.backgroundOpacity = 0.3, // Subtle background by default for notebook
   }) : super(showRuledLines: true, showMargin: false);
 }
 
@@ -520,6 +524,7 @@ class BlankPaperBackgroundWidget extends PaperSheetBackgroundWidget {
     super.key,
     required super.child,
     super.opacity = 1.0,
+    super.backgroundOpacity = 0.2, // Very subtle background for blank paper
   }) : super(showRuledLines: false, showMargin: false);
 }
 
@@ -535,20 +540,20 @@ class GridPaperBackgroundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Stack(
       children: [
         // Paper background
         Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? const Color(0xFF1A1A1A).withValues(alpha: opacity)
-                : const Color(0xFFFFFFF8).withValues(alpha: opacity),
+            color: colorScheme.surface.withValues(alpha: opacity),
           ),
         ),
         // Grid overlay
         CustomPaint(
           painter: GridPaperPainter(
-            colorScheme: Theme.of(context).colorScheme,
+            colorScheme: colorScheme,
             isDark: Theme.of(context).brightness == Brightness.dark,
             opacity: opacity,
           ),

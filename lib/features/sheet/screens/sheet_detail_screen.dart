@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
+import 'package:zoey/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
@@ -22,28 +23,31 @@ class SheetDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider(sheetId));
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          EditViewToggleButton(parentId: sheetId),
-          _buildDeleteButton(context, ref),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                _buildBody(context, ref, isEditing),
-                buildQuillEditorPositionedToolbar(
-                  context,
-                  ref,
-                  isEditing: isEditing,
-                ),
-              ],
+    return NotebookPaperBackgroundWidget(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          actions: [
+            EditViewToggleButton(parentId: sheetId),
+            _buildDeleteButton(context, ref),
+          ],
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  _buildBody(context, ref, isEditing),
+                  buildQuillEditorPositionedToolbar(
+                    context,
+                    ref,
+                    isEditing: isEditing,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
