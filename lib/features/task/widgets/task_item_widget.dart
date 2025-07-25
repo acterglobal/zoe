@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
@@ -35,12 +36,19 @@ class TaskWidget extends ConsumerWidget {
         TaskCheckboxWidget(task: task),
         const SizedBox(width: 10),
         Expanded(
-          child: _buildTaskItemTitle(
-            context,
-            ref,
-            task.title,
-            task.isCompleted,
-            isEditing,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildTaskItemTitle(
+                context,
+                ref,
+                task.title,
+                task.isCompleted,
+                isEditing,
+              ),
+              const SizedBox(height: 4),
+              _buildTaskItemDueDate(context, ref, task.dueDate),
+            ],
           ),
         ),
         const SizedBox(width: 6),
@@ -72,6 +80,19 @@ class TaskWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
       ),
+    );
+  }
+
+  Widget _buildTaskItemDueDate(
+    BuildContext context,
+    WidgetRef ref,
+    DateTime? dueDate,
+  ) {
+    if (dueDate == null) return const SizedBox.shrink();
+
+    return Text(
+      'Due: ${DateTimeUtils.formatDate(dueDate)}',
+      style: Theme.of(context).textTheme.bodySmall,
     );
   }
 
