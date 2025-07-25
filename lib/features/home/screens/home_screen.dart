@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/animated_background_widget.dart';
-import 'package:zoey/common/widgets/app_icon_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
