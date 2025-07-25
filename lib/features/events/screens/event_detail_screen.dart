@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
+
+import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
@@ -17,12 +20,24 @@ class EventDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final event = ref.watch(eventProvider(eventId));
-    if (event == null) return Center(child: Text(L10n.of(context).eventNotFound));
+    if (event == null)
+      return Center(child: Text(L10n.of(context).eventNotFound));
     return Scaffold(
       appBar: AppBar(
         actions: [EditViewToggleButton(), const SizedBox(width: 12)],
       ),
-      body: _buildBody(context, ref, event),
+      body: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                _buildBody(context, ref, event),
+                buildQuillEditorPositionedToolbar(context, ref),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -74,16 +89,17 @@ class EventDetailScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        ZoeInlineTextEditWidget(
+        ZoeHtmlTextEditWidget(
           hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
-          text: event.description?.plainText,
+          description: event.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          onTextChanged: (value) =>
-              ref.read(eventListProvider.notifier).updateEventDescription(
-                eventId,
-                (plainText: value, htmlText: null),
-              ),
+          editorId: 'event-description-$eventId', // Add unique editor ID
+          onContentChanged: (description) => Future.microtask(
+            () => ref
+                .read(eventListProvider.notifier)
+                .updateEventDescription(eventId, description),
+          ),
         ),
         const SizedBox(height: 16),
         EventDetailsAdditionalFields(event: event, isEditing: isEditing),

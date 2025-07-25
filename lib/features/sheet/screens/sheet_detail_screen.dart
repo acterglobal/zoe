@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
+
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_toolbar_widget.dart';
+import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/sheet/actions/delete_sheet.dart';
@@ -21,9 +21,6 @@ class SheetDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider);
-    final toolbarState = ref.watch(quillToolbarProvider);
-
     return Scaffold(
       appBar: AppBar(
         actions: [EditViewToggleButton(), _buildDeleteButton(context, ref)],
@@ -34,34 +31,7 @@ class SheetDetailScreen extends ConsumerWidget {
             child: Stack(
               children: [
                 _buildBody(context, ref),
-                if (isEditing)
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: Builder(
-                      // use builder for local context that extracts nullable values to local variable
-                      builder: (context) {
-                        final controller = toolbarState.activeController;
-                        final focusNode = toolbarState.activeFocusNode;
-                        
-                        if (controller == null || focusNode == null) {
-                          return const SizedBox.shrink();
-                        }
-                        
-                        return QuillEditorToolbarWidget(
-                          controller: controller,
-                          focusNode: focusNode,
-                          isToolbarVisible: toolbarState.isToolbarVisible,
-                          onReturnFocusToEditor: () {
-                            ref
-                                .read(quillToolbarProvider.notifier)
-                                .returnFocusToEditor();
-                          },
-                        );
-                      },
-                    ),
-                  ),
+                buildQuillEditorPositionedToolbar(context, ref),
               ],
             ),
           ),
