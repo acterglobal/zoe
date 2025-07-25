@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:zoey/common/widgets/animated_background_widget.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 
 class PaperSheetBackgroundWidget extends StatelessWidget {
   final Widget child;
@@ -47,32 +48,16 @@ class PaperSheetBackgroundWidget extends StatelessWidget {
 
   Widget _buildPaperBackground(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
       decoration: BoxDecoration(
-        // Use warm paper-like gradient for realistic appearance
-        gradient: isDark
-            ? LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  colorScheme.surface,
-                  colorScheme.surface.withValues(alpha: 0.95),
-                  colorScheme.surface,
-                ],
-                stops: const [0.0, 0.5, 1.0],
-              )
-            : LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  const Color(0xFFFFFDF7), // Warm paper white
-                  const Color(0xFFFFFBF0), // Slightly warmer center
-                  const Color(0xFFFFFDF7), // Warm paper white
-                ],
-                stops: const [0.0, 0.5, 1.0],
-              ),
+        // Use centralized warm paper gradient
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: AppColors.getWarmPaperGradient(context),
+          stops: const [0.0, 0.5, 1.0],
+        ),
         // Enhanced shadow for more depth
         boxShadow: [
           BoxShadow(

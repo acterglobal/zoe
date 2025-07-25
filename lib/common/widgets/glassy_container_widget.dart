@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 
 class GlassyContainer extends StatelessWidget {
   final Widget child;
@@ -42,15 +43,9 @@ class GlassyContainer extends StatelessWidget {
             colorScheme.surface.withValues(alpha: surfaceOpacity * 0.5),
           ]
         : [
-            const Color(
-              0xFFFFFDF7,
-            ).withValues(alpha: surfaceOpacity + 0.1), // Warm paper white
-            const Color(
-              0xFFFFFBF0,
-            ).withValues(alpha: surfaceOpacity - 0.1), // Slightly warmer center
-            const Color(
-              0xFFFFFDF7,
-            ).withValues(alpha: surfaceOpacity - 0.2), // Warm paper white
+            AppColors.getWarmSurfaceWithAlpha(context, surfaceOpacity + 0.1),
+            AppColors.getWarmSurfaceWithAlpha(context, surfaceOpacity - 0.1),
+            AppColors.getWarmSurfaceWithAlpha(context, surfaceOpacity - 0.2),
           ];
 
     return Container(
@@ -68,9 +63,10 @@ class GlassyContainer extends StatelessWidget {
           border: Border.all(
             color: isDark
                 ? Colors.white.withValues(alpha: borderOpacity)
-                : const Color(
-                    0xFFFFFDF7,
-                  ).withValues(alpha: borderOpacity + 0.7), // Warm paper white
+                : AppColors.getWarmSurfaceWithAlpha(
+                    context,
+                    borderOpacity + 0.7,
+                  ),
             width: 1.5,
           ),
           boxShadow: [
@@ -83,9 +79,7 @@ class GlassyContainer extends StatelessWidget {
               spreadRadius: 0,
             ),
             BoxShadow(
-              color: isDark
-                  ? Colors.black.withValues(alpha: 0.3)
-                  : Colors.black.withValues(alpha: 0.08),
+              color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
               blurRadius: blurRadius * 2,
               offset: Offset(shadowOffset.dx, shadowOffset.dy * 2),
               spreadRadius: 0,

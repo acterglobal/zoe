@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'package:zoey/core/theme/colors/app_colors.dart';
 
 class AnimatedBackgroundWidget extends StatefulWidget {
   final Widget child;
@@ -65,32 +66,14 @@ class _AnimatedBackgroundWidgetState extends State<AnimatedBackgroundWidget>
   }
 
   Widget _buildWarmPaperBackground(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Container(
       decoration: BoxDecoration(
-        // Use the same warm paper colors as NotebookPaperBackgroundWidget
-        gradient: isDark
-            ? LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Theme.of(context).colorScheme.surface,
-                  Theme.of(context).colorScheme.surface.withValues(alpha: 0.95),
-                  Theme.of(context).colorScheme.surface,
-                ],
-                stops: const [0.0, 0.5, 1.0],
-              )
-            : const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFFFFFDF7), // Warm paper white
-                  Color(0xFFFFFBF0), // Slightly warmer center
-                  Color(0xFFFFFDF7), // Warm paper white
-                ],
-                stops: [0.0, 0.5, 1.0],
-              ),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: AppColors.getWarmPaperGradient(context),
+          stops: const [0.0, 0.5, 1.0],
+        ),
       ),
     );
   }
