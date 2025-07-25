@@ -46,8 +46,8 @@ class SheetListItemWidget extends ConsumerWidget {
       primaryColor: theme.colorScheme.primary,
       secondaryColor: theme.colorScheme.secondary,
       backgroundOpacity: 0.1,
-      borderOpacity: 0.15,
-      shadowOpacity: 0.12,
+      borderOpacity: 0.10,
+      shadowOpacity: 0.06,
       child: Text(emoji, style: const TextStyle(fontSize: 24)),
     );
   }
