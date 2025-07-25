@@ -39,14 +39,26 @@ class SheetDetailScreen extends ConsumerWidget {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    child: QuillEditorToolbarWidget(
-                      controller: toolbarState.activeController,
-                      focusNode: toolbarState.activeFocusNode,
-                      isToolbarVisible: toolbarState.isToolbarVisible,
-                      onReturnFocusToEditor: () {
-                        ref
-                            .read(quillToolbarProvider.notifier)
-                            .returnFocusToEditor();
+                    child: Builder(
+                      // use builder for local context that extracts nullable values to local variable
+                      builder: (context) {
+                        final controller = toolbarState.activeController;
+                        final focusNode = toolbarState.activeFocusNode;
+                        
+                        if (controller == null || focusNode == null) {
+                          return const SizedBox.shrink();
+                        }
+                        
+                        return QuillEditorToolbarWidget(
+                          controller: controller,
+                          focusNode: focusNode,
+                          isToolbarVisible: toolbarState.isToolbarVisible,
+                          onReturnFocusToEditor: () {
+                            ref
+                                .read(quillToolbarProvider.notifier)
+                                .returnFocusToEditor();
+                          },
+                        );
                       },
                     ),
                   ),
