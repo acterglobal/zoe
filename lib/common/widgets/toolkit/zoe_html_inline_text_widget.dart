@@ -191,10 +191,12 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
         focusNode: _editorManager.focusNode,
         scrollController: _editorManager.scrollController,
         controller: _editorManager.controller,
-        config: _editorStyles.getEditingConfig(
-          hintText: widget.hintText,
+        config: QuillEditorConfig(
+          placeholder: widget.hintText ?? '',
           autoFocus: widget.autoFocus,
-          context: context,
+          expands: false,
+          embedBuilders: const [],
+          customStyles: _editorStyles.getDefaultStyles(context),
         ),
       );
     } else {
@@ -220,7 +222,12 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
         controller: _editorManager.controller,
         scrollController: _editorManager.scrollController,
         focusNode: disabledFocusNode,
-        config: _editorStyles.getViewConfig(context: context),
+        config: QuillEditorConfig(
+          autoFocus: false,
+          expands: false,
+          embedBuilders: const [],
+          customStyles: _editorStyles.getDefaultStyles(context),
+        ),
       );
     } else if (hasPlainContent) {
       // Show plain text when no rich content is available

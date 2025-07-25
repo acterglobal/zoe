@@ -7,31 +7,6 @@ class QuillEditorStyles {
 
   const QuillEditorStyles({this.widgetTextStyle});
 
-  /// Get the default QuillEditor configuration for editing mode
-  QuillEditorConfig getEditingConfig({
-    String? hintText,
-    bool autoFocus = false,
-    required BuildContext context,
-  }) {
-    return QuillEditorConfig(
-      placeholder: hintText ?? '',
-      autoFocus: autoFocus,
-      expands: false,
-      embedBuilders: const [],
-      customStyles: _getDefaultStyles(context),
-    );
-  }
-
-  /// Get the default QuillEditor configuration for view mode
-  QuillEditorConfig getViewConfig({required BuildContext context}) {
-    return QuillEditorConfig(
-      autoFocus: false,
-      expands: false,
-      embedBuilders: const [],
-      customStyles: _getDefaultStyles(context),
-    );
-  }
-
   /// Get the default QuillController configuration
   QuillControllerConfig getControllerConfig() {
     return QuillControllerConfig(
@@ -40,7 +15,7 @@ class QuillEditorStyles {
   }
 
   /// Get default styles for code blocks and other elements
-  DefaultStyles _getDefaultStyles(BuildContext context) {
+  DefaultStyles getDefaultStyles(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
