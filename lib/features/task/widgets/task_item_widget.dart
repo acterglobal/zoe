@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
+import 'package:zoey/features/task/widgets/task_checkbox_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class TaskWidget extends ConsumerWidget {
@@ -33,41 +34,27 @@ class TaskWidget extends ConsumerWidget {
   ) {
     return Row(
       children: [
-        _buildTaskItemIcon(context, ref, task),
+        TaskCheckboxWidget(task: task),
         const SizedBox(width: 10),
         Expanded(
-          child: _buildTaskItemTitle(
-            context,
-            ref,
-            task.title,
-            task.isCompleted,
-            isEditing,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildTaskItemTitle(
+                context,
+                ref,
+                task.title,
+                task.isCompleted,
+                isEditing,
+              ),
+              const SizedBox(height: 4),
+              _buildTaskItemDueDate(context, ref, task.dueDate),
+            ],
           ),
         ),
         const SizedBox(width: 6),
         if (isEditing) _buildTaskItemActions(context, ref),
       ],
-    );
-  }
-
-  // Builds the task item icon
-  Widget _buildTaskItemIcon(
-    BuildContext context,
-    WidgetRef ref,
-    TaskModel taskItem,
-  ) {
-    return Checkbox(
-      value: taskItem.isCompleted,
-      activeColor: AppColors.successColor,
-      checkColor: Colors.white,
-      side: BorderSide(
-        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
-      ),
-      onChanged: (value) {
-        ref
-            .read(taskListProvider.notifier)
-            .updateTaskCompletion(taskId, value ?? false);
-      },
     );
   }
 
@@ -94,6 +81,19 @@ class TaskWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
       ),
+    );
+  }
+
+  Widget _buildTaskItemDueDate(
+    BuildContext context,
+    WidgetRef ref,
+    DateTime? dueDate,
+  ) {
+    if (dueDate == null) return const SizedBox.shrink();
+
+    return Text(
+      'Due: ${DateTimeUtils.formatDate(dueDate)}',
+      style: Theme.of(context).textTheme.bodySmall,
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
@@ -22,11 +23,16 @@ class EventWidget extends ConsumerWidget {
     final event = ref.watch(eventProvider(eventsId));
     if (event == null) return const SizedBox.shrink();
 
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: _buildEventContent(context, ref, event, isEditing),
+    return GestureDetector(
+      onTap: () => context.push(
+        AppRoutes.eventDetail.route.replaceAll(':eventId', eventsId),
+      ),
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: _buildEventContent(context, ref, event, isEditing),
+        ),
       ),
     );
   }
@@ -41,6 +47,7 @@ class EventWidget extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         EventDateWidget(event: event),
+        const SizedBox(width: 8),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +66,7 @@ class EventWidget extends ConsumerWidget {
                   if (isEditing) _buildEventActions(context, ref, event),
                 ],
               ),
-              _buildEventDescription(context, ref, event),
+              _buildEventDates(context, ref, event),
             ],
           ),
         ),
@@ -81,20 +88,19 @@ class EventWidget extends ConsumerWidget {
       onTextChanged: (value) => ref
           .read(eventListProvider.notifier)
           .updateEventTitle(eventsId, value),
-      onTapText: () => context.push(
-        AppRoutes.eventDetail.route.replaceAll(':eventId', eventsId),
-      ),
     );
   }
 
-  Widget _buildEventDescription(
+  Widget _buildEventDates(
     BuildContext context,
     WidgetRef ref,
     EventModel event,
   ) {
+    final startDateText = DateTimeUtils.formatDateTime(event.startDate);
+    final endDateText = DateTimeUtils.formatDateTime(event.endDate);
     return Text(
-      event.description?.plainText ?? '',
-      maxLines: 1,
+      '$startDateText - $endDateText',
+      maxLines: 2,
       overflow: TextOverflow.ellipsis,
       style: Theme.of(context).textTheme.bodySmall,
     );

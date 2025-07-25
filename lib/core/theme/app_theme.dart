@@ -3,6 +3,7 @@ import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/core/theme/colors/colors_cheme.dart';
 import 'package:zoey/core/theme/components/app_bar_theme_data.dart';
 import 'package:zoey/core/theme/components/button_theme_data.dart';
+import 'package:zoey/core/theme/components/date_picker_theme_data.dart';
 import 'package:zoey/core/theme/components/floating_action_button_theme_data.dart';
 import 'package:zoey/core/theme/components/input_decoration.dart';
 import 'package:zoey/core/theme/components/text_theme_data.dart';
@@ -25,6 +26,8 @@ class AppTheme {
       elevatedButtonTheme: elevatedButtonTheme(lightColorScheme),
       textButtonTheme: textButtonTheme(lightColorScheme),
       textTheme: textTheme(lightColorScheme),
+      datePickerTheme: datePickerTheme(lightColorScheme),
+      timePickerTheme: timePickerTheme(lightColorScheme),
     );
   }
 
@@ -45,6 +48,8 @@ class AppTheme {
       elevatedButtonTheme: elevatedButtonTheme(darkColorScheme),
       textButtonTheme: textButtonTheme(darkColorScheme),
       textTheme: textTheme(darkColorScheme),
+      datePickerTheme: datePickerTheme(darkColorScheme),
+      timePickerTheme: timePickerTheme(darkColorScheme),
     );
   }
 }
