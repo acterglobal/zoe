@@ -25,7 +25,7 @@ class ZoeFloatingActionButton extends StatelessWidget {
     this.borderRadius,
     this.shimmerDuration = const Duration(seconds: 3),
     this.showShimmer = true,
-    this.showHighlight = true,
+    this.showHighlight = false,
     this.iconSize = 32,
   }) : assert(
          child != null || icon != null,
