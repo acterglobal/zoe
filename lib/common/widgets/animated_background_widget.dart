@@ -103,15 +103,15 @@ class ConceptualElementsPainter extends CustomPainter {
     final paint = Paint()
       ..style = PaintingStyle.fill
       ..color = isDark
-          ? Colors.white.withValues(alpha: 0.08)
-          : colorScheme.primary.withValues(alpha: 0.12);
+          ? Colors.white.withValues(alpha: 0.03)
+          : colorScheme.primary.withValues(alpha: 0.04);
 
     final strokePaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0
       ..color = isDark
-          ? Colors.white.withValues(alpha: 0.15)
-          : colorScheme.primary.withValues(alpha: 0.2);
+          ? Colors.white.withValues(alpha: 0.06)
+          : colorScheme.primary.withValues(alpha: 0.08);
 
     // Draw multiple floating paper sheets - balanced distribution including center
     final sheetPositions = [
@@ -150,8 +150,8 @@ class ConceptualElementsPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 0.8
         ..color = isDark
-            ? Colors.white.withValues(alpha: 0.1)
-            : colorScheme.onSurface.withValues(alpha: 0.15);
+            ? Colors.white.withValues(alpha: 0.04)
+            : colorScheme.onSurface.withValues(alpha: 0.06);
 
       for (int j = 0; j < 4; j++) {
         final lineY = -20 + (j * 10);
@@ -169,12 +169,12 @@ class ConceptualElementsPainter extends CustomPainter {
   void _drawFloatingEvents(Canvas canvas, Size size) {
     final paint = Paint()
       ..style = PaintingStyle.fill
-      ..color = Colors.orange.withValues(alpha: 0.15);
+      ..color = Colors.orange.withValues(alpha: 0.05);
 
     final strokePaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5
-      ..color = Colors.orange.withValues(alpha: 0.3);
+      ..color = Colors.orange.withValues(alpha: 0.1);
 
     // Draw floating calendar/event elements - balanced with center coverage
     final eventPositions = [
@@ -208,14 +208,14 @@ class ConceptualElementsPainter extends CustomPainter {
       final headerRect = const Rect.fromLTWH(-20, -15, 40, 8);
       canvas.drawRect(
         headerRect,
-        Paint()..color = Colors.orange.withValues(alpha: 0.25),
+        Paint()..color = Colors.orange.withValues(alpha: 0.08),
       );
 
       // Draw calendar grid
       final gridPaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 0.5
-        ..color = Colors.orange.withValues(alpha: 0.2);
+        ..color = Colors.orange.withValues(alpha: 0.06);
 
       // Vertical lines
       for (int j = 1; j < 7; j++) {
@@ -262,7 +262,7 @@ class ConceptualElementsPainter extends CustomPainter {
 
       final taskPaint = Paint()
         ..style = PaintingStyle.fill
-        ..color = Colors.green.withValues(alpha: 0.12);
+        ..color = Colors.green.withValues(alpha: 0.04);
 
       canvas.drawRRect(taskRect, taskPaint);
 
@@ -271,7 +271,7 @@ class ConceptualElementsPainter extends CustomPainter {
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1.0
-          ..color = Colors.green.withValues(alpha: 0.25),
+          ..color = Colors.green.withValues(alpha: 0.08),
       );
 
       // Draw checkbox
@@ -285,7 +285,7 @@ class ConceptualElementsPainter extends CustomPainter {
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1.0
-          ..color = Colors.green.withValues(alpha: 0.4),
+          ..color = Colors.green.withValues(alpha: 0.12),
       );
 
       // Draw checkmark (animated)
@@ -293,7 +293,7 @@ class ConceptualElementsPainter extends CustomPainter {
         final checkPaint = Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1.5
-          ..color = Colors.green.withValues(alpha: 0.6);
+          ..color = Colors.green.withValues(alpha: 0.15);
 
         final checkPath = Path();
         checkPath.moveTo(-23, -2);
@@ -306,7 +306,7 @@ class ConceptualElementsPainter extends CustomPainter {
       final textPaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.0
-        ..color = Colors.green.withValues(alpha: 0.2);
+        ..color = Colors.green.withValues(alpha: 0.06);
 
       canvas.drawLine(const Offset(-10, -2), const Offset(25, -2), textPaint);
       canvas.drawLine(const Offset(-10, 2), const Offset(15, 2), textPaint);
@@ -356,12 +356,12 @@ class ConceptualElementsPainter extends CustomPainter {
       // Draw chat bubble
       final bubblePaint = Paint()
         ..style = PaintingStyle.fill
-        ..color = appColor.withValues(alpha: 0.15);
+        ..color = appColor.withValues(alpha: 0.05);
 
       final strokePaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.5
-        ..color = appColor.withValues(alpha: 0.3);
+        ..color = appColor.withValues(alpha: 0.1);
 
       // Main chat bubble
       final bubblePath = Path();
@@ -385,7 +385,7 @@ class ConceptualElementsPainter extends CustomPainter {
       final messagePaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.0
-        ..color = appColor.withValues(alpha: 0.25);
+        ..color = appColor.withValues(alpha: 0.08);
 
       canvas.drawLine(
         const Offset(-18, -5),
@@ -398,7 +398,7 @@ class ConceptualElementsPainter extends CustomPainter {
       // Draw Zoe bot indicator (small circle with "Z")
       final botIndicatorPaint = Paint()
         ..style = PaintingStyle.fill
-        ..color = colorScheme.secondary.withValues(alpha: 0.2);
+        ..color = colorScheme.secondary.withValues(alpha: 0.06);
 
       canvas.drawCircle(const Offset(20, -18), 8, botIndicatorPaint);
 
@@ -408,7 +408,7 @@ class ConceptualElementsPainter extends CustomPainter {
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1.0
-          ..color = colorScheme.secondary.withValues(alpha: 0.4),
+          ..color = colorScheme.secondary.withValues(alpha: 0.12),
       );
 
       // Draw "Z" for Zoe bot
@@ -416,7 +416,7 @@ class ConceptualElementsPainter extends CustomPainter {
         text: TextSpan(
           text: 'Z',
           style: TextStyle(
-            color: colorScheme.secondary.withValues(alpha: 0.6),
+            color: colorScheme.secondary.withValues(alpha: 0.15),
             fontSize: 10,
             fontWeight: FontWeight.bold,
           ),
@@ -430,7 +430,7 @@ class ConceptualElementsPainter extends CustomPainter {
       final connectionPaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.0
-        ..color = colorScheme.secondary.withValues(alpha: 0.2);
+        ..color = colorScheme.secondary.withValues(alpha: 0.06);
 
       final connectionOffset = math.sin(animation.value * 4 * math.pi + i) * 2;
       canvas.drawLine(
@@ -470,15 +470,15 @@ class ConceptualElementsPainter extends CustomPainter {
       final notePaint = Paint()
         ..style = PaintingStyle.fill
         ..color = isDark
-            ? Colors.white.withValues(alpha: 0.06)
-            : colorScheme.primary.withValues(alpha: 0.08);
+            ? Colors.white.withValues(alpha: 0.02)
+            : colorScheme.primary.withValues(alpha: 0.03);
 
       final noteStroke = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 0.8
         ..color = isDark
-            ? Colors.white.withValues(alpha: 0.12)
-            : colorScheme.primary.withValues(alpha: 0.15);
+            ? Colors.white.withValues(alpha: 0.04)
+            : colorScheme.primary.withValues(alpha: 0.05);
 
       final noteRect = RRect.fromRectAndRadius(
         const Rect.fromLTWH(-12, -8, 24, 16),
@@ -493,8 +493,8 @@ class ConceptualElementsPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 0.6
         ..color = isDark
-            ? Colors.white.withValues(alpha: 0.08)
-            : colorScheme.onSurface.withValues(alpha: 0.1);
+            ? Colors.white.withValues(alpha: 0.03)
+            : colorScheme.onSurface.withValues(alpha: 0.04);
 
       canvas.drawLine(const Offset(-8, -3), const Offset(8, -3), linePaint);
       canvas.drawLine(const Offset(-8, 0), const Offset(6, 0), linePaint);
