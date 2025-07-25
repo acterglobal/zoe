@@ -2,23 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
-import '../actions/quill_actions.dart';
 
-/// Represents the state of the Quill toolbar, including which editor is active
-/// and whether the toolbar should be visible
 typedef QuillToolbarState = ({
-  QuillController? activeController,  // The currently active editor's controller
-  FocusNode? activeFocusNode,        // The currently active editor's focus node
-  bool isToolbarVisible,             // Whether the toolbar should be shown
-  String? activeEditorId,            // Unique ID of the active editor
+  QuillController? activeController,  
+  FocusNode? activeFocusNode,        
+  bool isToolbarVisible,             
+  String? activeEditorId,           
 });
 
-/// Manages the global state of the Quill toolbar across multiple editor instances.
-/// This notifier ensures that:
-/// 1. Only one editor's toolbar is visible at a time
-/// 2. Toolbar visibility transitions smoothly between editors
-/// 3. Focus changes are properly debounced to prevent flickering
-/// 4. Editor state is properly cleaned up when focus is lost
 class QuillToolbarNotifier extends StateNotifier<QuillToolbarState> {
   Timer? _focusTimer;
   String? _lastActiveEditorId;
@@ -39,9 +30,9 @@ class QuillToolbarNotifier extends StateNotifier<QuillToolbarState> {
     // Cancel any pending focus timer
     _focusTimer?.cancel();
 
-    // Validate FocusNode and get focus state using centralized functions
-    final isValidFocusNode = isFocusNodeValid(focusNode);
-    final isFocused = getFocusState(focusNode);
+    // Check if focus node is valid and focused
+    final isValidFocusNode = focusNode != null;
+    final isFocused = focusNode?.hasFocus == true;
 
     // If this is a different editor than the last active one, update immediately
     if (_lastActiveEditorId != editorId) {
@@ -64,8 +55,7 @@ class QuillToolbarNotifier extends StateNotifier<QuillToolbarState> {
     );
   }
 
-  /// Clear the active editor (when losing focus)  
-  void clearActiveEditor(String editorId) {
+  void clearActiveEditorState(String editorId) {
     // Only clear if this is the currently active editor
     if (state.activeEditorId == editorId) {
       _focusTimer?.cancel();
@@ -83,12 +73,11 @@ class QuillToolbarNotifier extends StateNotifier<QuillToolbarState> {
     }
   }
 
-  /// Request focus back to the active editor
+
   void returnFocusToEditor() {
-    final success = requestFocus(state.activeFocusNode);
-    
-    // If focus request failed, clear the state
-    if (!success && state.activeFocusNode != null) {
+    state.activeFocusNode?.requestFocus();
+    // clear the state if the focus node is not available
+    if (state.activeFocusNode == null) {
       state = (
         activeController: null,
         activeFocusNode: null,

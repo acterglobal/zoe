@@ -7,21 +7,21 @@ import 'package:zoey/common/widgets/quill_editor/providers/quill_toolbar_provide
 import 'package:flutter_quill_delta_from_html/flutter_quill_delta_from_html.dart';
 import 'dart:convert';
 
+import 'package:zoey/features/sheet/models/sheet_model.dart';
+
 class ZoeHtmlTextEditWidget extends ConsumerStatefulWidget {
-  final String? initialContent;
-  final String? initialRichContent;
+  final Description? description;
   final bool isEditing;
   final String? hintText;
   final bool autoFocus;
-  final Function(String plainText, String richTextJson)? onContentChanged;
+  final Function(Description)? onContentChanged;
   final Function(QuillController?, FocusNode?)? onFocusChanged;
   final TextStyle? textStyle;
   final String? editorId; // Add editorId parameter
 
   const ZoeHtmlTextEditWidget({
     super.key,
-    this.initialContent,
-    this.initialRichContent,
+    this.description,
     required this.isEditing,
     this.hintText,
     this.autoFocus = false,
@@ -40,8 +40,7 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
   late QuillEditorManager _editorManager;
   late QuillEditorStyles _editorStyles;
   bool _isInitialized = false;
-  String? _lastInitialContent;
-  String? _lastInitialRichContent;
+  Description? _lastInitialDescription;
   late final String _uniqueEditorId;
 
   @override
@@ -49,8 +48,7 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     super.initState();
     _uniqueEditorId = widget.editorId ?? UniqueKey().toString();
     _editorStyles = QuillEditorStyles(widgetTextStyle: widget.textStyle);
-    _lastInitialContent = widget.initialContent;
-    _lastInitialRichContent = widget.initialRichContent;
+    _lastInitialDescription = widget.description;
     _initializeEditor();
   }
 
@@ -65,24 +63,21 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
 
     // Only update if the source content actually changes (not editor content)
     final sourceContentChanged =
-        _lastInitialContent != widget.initialContent ||
-        _lastInitialRichContent != widget.initialRichContent;
+        _lastInitialDescription != widget.description;
 
     if (sourceContentChanged && _isInitialized) {
-      _lastInitialContent = widget.initialContent;
-      _lastInitialRichContent = widget.initialRichContent;
+      _lastInitialDescription = widget.description;
 
       // Convert HTML to Quill Delta if needed for content update
       String? processedRichContent = _convertHtmlToQuillDelta(
-        widget.initialRichContent,
+        widget.description?.htmlText,
       );
 
       // Update content without reinitializing to preserve focus
-      _editorManager.updateContent(widget.initialContent, processedRichContent);
+      _editorManager.updateContent(widget.description?.plainText, processedRichContent);
     } else if (sourceContentChanged ||
         oldWidget.textStyle != widget.textStyle) {
-      _lastInitialContent = widget.initialContent;
-      _lastInitialRichContent = widget.initialRichContent;
+      _lastInitialDescription = widget.description;  
       _initializeEditor();
     }
   }
@@ -102,11 +97,11 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
 
     // Convert HTML to Quill Delta if needed
     String? processedRichContent = _convertHtmlToQuillDelta(
-      widget.initialRichContent,
+      widget.description?.htmlText,
     );
 
     _editorManager = QuillEditorManager(
-      initialContent: widget.initialContent,
+      initialContent: widget.description?.plainText,
       initialRichContent: processedRichContent,
       onContentChanged: _handleContentChanged,
       onFocusChanged: _handleFocusChanged,
@@ -151,13 +146,13 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     if (widget.onContentChanged != null && widget.isEditing) {
       // Delay the provider update to avoid modifying state during widget lifecycle
       Future.microtask(() {
-        if (mounted && widget.onContentChanged != null) {
-          widget.onContentChanged!(
-            _editorManager.plainText,
-            _editorManager.richTextJson,
-          );
-        }
-      });
+        if (mounted) {
+          widget.onContentChanged?.call((
+              plainText: _editorManager.plainText,
+              htmlText: _editorManager.richTextJson,
+            ));
+          }
+        });
     }
   }
 
@@ -173,7 +168,7 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
             focusNode: focusNode,
           );
         } else {
-          ref.read(quillToolbarProvider.notifier).clearActiveEditor(_uniqueEditorId);
+          ref.read(quillToolbarProvider.notifier).clearActiveEditorState(_uniqueEditorId);
         }
       }
     });
@@ -193,9 +188,9 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     if (widget.isEditing) {
       // Edit mode: Show QuillEditor with formatting capabilities
       return QuillEditor(
-        focusNode: _editorManager.focusNode!,
-        scrollController: _editorManager.scrollController!,
-        controller: _editorManager.controller!,
+        focusNode: _editorManager.focusNode,
+        scrollController: _editorManager.scrollController,
+        controller: _editorManager.controller,
         config: _editorStyles.getEditingConfig(
           hintText: widget.hintText,
           autoFocus: widget.autoFocus,
@@ -211,10 +206,10 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
   /// Build the view widget for displaying formatted content
   Widget _buildViewWidget() {
     final hasRichContent =
-        widget.initialRichContent != null &&
-        widget.initialRichContent!.isNotEmpty;
+        widget.description?.htmlText != null &&
+        widget.description?.htmlText?.isNotEmpty == true;
     final hasPlainContent =
-        widget.initialContent != null && widget.initialContent!.isNotEmpty;
+        widget.description?.plainText != null && widget.description?.plainText?.isNotEmpty == true;
 
     if (hasRichContent) {
       // Show formatted content using QuillEditor in read-only mode
@@ -222,15 +217,15 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
       disabledFocusNode.canRequestFocus = false;
 
       return QuillEditor(
-        controller: _editorManager.controller!,
-        scrollController: _editorManager.scrollController!,
+        controller: _editorManager.controller,
+        scrollController: _editorManager.scrollController,
         focusNode: disabledFocusNode,
         config: _editorStyles.getViewConfig(context: context),
       );
     } else if (hasPlainContent) {
       // Show plain text when no rich content is available
       return Text(
-        widget.initialContent!,
+        widget.description?.plainText ?? '',
         style: _editorStyles.getDefaultTextStyle(context),
       );
     } else {

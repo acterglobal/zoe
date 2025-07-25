@@ -20,6 +20,7 @@ class QuillToolbar extends StatefulWidget {
 }
 
 class _QuillToolbarState extends State<QuillToolbar> {
+  
   @override
   void initState() {
     super.initState();
@@ -27,7 +28,7 @@ class _QuillToolbarState extends State<QuillToolbar> {
   }
 
   void _addListeners() {
-    addFocusListener(widget.focusNode, _scheduleRebuild);
+    widget.focusNode.addListener(_scheduleRebuild);
     widget.controller.addListener(_scheduleRebuild);
   }
 
@@ -41,8 +42,8 @@ class _QuillToolbarState extends State<QuillToolbar> {
     }
 
     if (oldWidget.focusNode != widget.focusNode) {
-      removeFocusListener(oldWidget.focusNode, _scheduleRebuild);
-      addFocusListener(widget.focusNode, _scheduleRebuild);
+      oldWidget.focusNode.removeListener(_scheduleRebuild);
+      widget.focusNode.addListener(_scheduleRebuild);
     }
   }
 
@@ -55,10 +56,7 @@ class _QuillToolbarState extends State<QuillToolbar> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Theme.of(context).colorScheme.surface,
-      elevation: 4,
-      child: Container(
+    return Container(
         height: 60,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         alignment: Alignment.center,
@@ -68,6 +66,7 @@ class _QuillToolbarState extends State<QuillToolbar> {
               color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
             ),
           ),
+          color: Theme.of(context).colorScheme.surface,
         ),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -78,7 +77,6 @@ class _QuillToolbarState extends State<QuillToolbar> {
             ],
           ),
         ),
-      ),
     );
   }
 
@@ -104,7 +102,7 @@ class _QuillToolbarState extends State<QuillToolbar> {
   }
 
   Widget _buildFormatButton(IconData icon, Attribute attribute) {
-    return buildToolbarButton(
+    return quillToolbarButton(
       context: context,
       icon: icon,
       isActive: isAttributeActive(widget.controller, attribute),
@@ -120,7 +118,7 @@ class _QuillToolbarState extends State<QuillToolbar> {
 
   @override
   void dispose() {
-    removeFocusListener(widget.focusNode, _scheduleRebuild);
+    widget.focusNode.removeListener(_scheduleRebuild);
     widget.controller.removeListener(_scheduleRebuild);
     super.dispose();
   }

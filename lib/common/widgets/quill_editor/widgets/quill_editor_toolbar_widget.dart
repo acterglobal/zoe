@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/quill_editor/widgets/quill_toolbar_widget.dart';
-import '../actions/quill_actions.dart';
 
 class QuillEditorToolbarWidget extends StatefulWidget {
   final QuillController? controller;
@@ -35,7 +34,7 @@ class _QuillEditorToolbarWidgetState extends State<QuillEditorToolbarWidget> {
     final shouldShow =
         widget.isToolbarVisible &&
         widget.controller != null &&
-        isFocusNodeValid(widget.focusNode) &&
+        widget.focusNode != null && 
         (isDesktopPlatform ? widget.focusNode != null : true);
 
     return _buildAnimatedToolbar(
@@ -67,10 +66,10 @@ class _QuillEditorToolbarWidgetState extends State<QuillEditorToolbarWidget> {
           opacity: shouldShow ? 1.0 : 0.0,
           child: shouldShow && 
                  controller != null && 
-                 isFocusNodeValid(focusNode)
+                  focusNode != null
               ? QuillToolbar(
                   controller: controller,
-                  focusNode: focusNode!,
+                  focusNode: focusNode,
                   onButtonPressed: widget.onReturnFocusToEditor,
                 )
               : const SizedBox.shrink(),

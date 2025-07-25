@@ -6,6 +6,7 @@ import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
+import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
@@ -64,8 +65,7 @@ class TextWidget extends ConsumerWidget {
         _buildTextContentDescription(
           context,
           ref,
-          textContent.description?.plainText ?? '',
-          textContent.description?.htmlText ?? '',
+          textContent.description,
           isEditing,
         ),
       ],
@@ -107,22 +107,17 @@ class TextWidget extends ConsumerWidget {
   Widget _buildTextContentDescription(
     BuildContext context,
     WidgetRef ref,
-    String plainTextDescription,
-    String htmlDescription,
+    Description? description,
     bool isEditing,
   ) {
     return ZoeHtmlTextEditWidget(
       hintText: L10n.of(context).typeSomething,
       isEditing: isEditing,
-      initialContent: plainTextDescription,
-      initialRichContent: htmlDescription,
+      description: description,
       textStyle: Theme.of(context).textTheme.bodyMedium,
       editorId: 'text-content-$textId', // Add unique editor ID
-      onContentChanged: (plainText, richTextJson) =>
-          ref.read(textListProvider.notifier).updateTextDescription(textId, (
-            plainText: plainText,
-            htmlText: richTextJson,
-          )),
+      onContentChanged: (description) =>
+          ref.read(textListProvider.notifier).updateTextDescription(textId, description),
     );
   }
 }

@@ -1,63 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
 
-/// Check if a FocusNode is valid and not disposed
-bool isFocusNodeValid(FocusNode? focusNode) {
-  if (focusNode == null) return false;
-  
-  try {
-    // Access a property to check if the FocusNode is disposed
-    focusNode.hasFocus;
-    return true;
-  } catch (e) {
-    // FocusNode has been disposed
-    return false;
-  }
-}
+/// Clear any active quill toolbar state
+void clearActiveEditorState(WidgetRef ref) {
+  FocusManager.instance.primaryFocus?.unfocus();
 
-/// Get the focus state of a FocusNode safely
-bool getFocusState(FocusNode? focusNode) {
-  if (!isFocusNodeValid(focusNode)) return false;
-  
-  try {
-    return focusNode!.hasFocus;
-  } catch (e) {
-    return false;
-  }
-}
-
-/// Add a listener to a FocusNode with proper error handling
-void addFocusListener(FocusNode? focusNode, VoidCallback listener) {
-  if (!isFocusNodeValid(focusNode)) return;
-  
-  try {
-    focusNode!.addListener(listener);
-  } catch (e) {
-    debugPrint('Failed to add listener to FocusNode: $e');
-  }
-}
-
-/// Remove a listener from a FocusNode with proper error handling
-void removeFocusListener(FocusNode? focusNode, VoidCallback listener) {
-  if (!isFocusNodeValid(focusNode)) return;
-  
-  try {
-    focusNode!.removeListener(listener);
-  } catch (e) {
-    debugPrint('Failed to remove listener from FocusNode: $e');
-  }
-}
-
-/// Request focus on a FocusNode with proper error handling
-bool requestFocus(FocusNode? focusNode) {
-  if (!isFocusNodeValid(focusNode)) return false;
-  
-  try {
-    focusNode!.requestFocus();
-    return true;
-  } catch (e) {
-    debugPrint('Failed to request focus on FocusNode: $e');
-    return false;
+  final toolbarState = ref.read(quillToolbarProvider);
+  if (toolbarState.activeEditorId != null) {
+    ref
+        .read(quillToolbarProvider.notifier)
+        .clearActiveEditorState(toolbarState.activeEditorId!);
   }
 }
 
@@ -95,7 +49,11 @@ bool isBlockAttributeActive(QuillController controller, Attribute attribute) {
 }
 
 /// Toggle an attribute on/off
-void toggleAttribute(QuillController controller, Attribute attribute, {VoidCallback? onButtonPressed}) {
+void toggleAttribute(
+  QuillController controller,
+  Attribute attribute, {
+  VoidCallback? onButtonPressed,
+}) {
   final selection = controller.selection;
   final docLength = controller.document.length;
 
@@ -129,7 +87,11 @@ void handleInvalidSelection(QuillController controller, Attribute attribute) {
 }
 
 /// Toggle standard attributes
-void toggleStandardAttribute(QuillController controller, Attribute attribute, bool wasActive) {
+void toggleStandardAttribute(
+  QuillController controller,
+  Attribute attribute,
+  bool wasActive,
+) {
   if (wasActive) {
     // Remove attribute
     controller.formatSelection(Attribute.clone(attribute, null));
@@ -137,4 +99,4 @@ void toggleStandardAttribute(QuillController controller, Attribute attribute, bo
     // Apply attribute
     controller.formatSelection(attribute);
   }
-} 
+}

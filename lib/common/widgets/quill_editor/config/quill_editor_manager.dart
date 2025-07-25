@@ -3,13 +3,12 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/quill_delta.dart';
 import 'dart:convert';
 import 'package:zoey/common/widgets/quill_editor/config/quill_editor_config.dart';
-import '../actions/quill_actions.dart' as quill_actions;
 
 /// Manages QuillController lifecycle and configuration for rich text editing
 class QuillEditorManager {
-  QuillController? _controller;
-  FocusNode? _focusNode;
-  ScrollController? _scrollController;
+  late QuillController _controller;
+  late FocusNode _focusNode;
+  late ScrollController _scrollController;
   bool _isInitialized = false;
   bool _isDisposed = false;
   bool _isUpdatingContent = false;
@@ -21,6 +20,7 @@ class QuillEditorManager {
   final Function(QuillController?, FocusNode?)? _onFocusChanged;
   final String? _initialContent;
   final String? _initialRichContent;
+  
 
   QuillEditorManager({
     String? initialContent,
@@ -45,7 +45,7 @@ class QuillEditorManager {
         config: _editorStyles.getControllerConfig(),
       );
       _focusNode = FocusNode();
-      _focusNode!.canRequestFocus =
+      _focusNode.canRequestFocus =
           !_isReadOnly; // Set focus based on read-only state
       _scrollController = ScrollController();
 
@@ -56,7 +56,7 @@ class QuillEditorManager {
       // Fallback initialization if the basic config fails
       _controller = QuillController.basic();
       _focusNode = FocusNode();
-      _focusNode!.canRequestFocus =
+      _focusNode.canRequestFocus =
           !_isReadOnly; // Set focus based on read-only state
       _scrollController = ScrollController();
 
@@ -68,30 +68,26 @@ class QuillEditorManager {
 
   /// Setup listeners for controller and focus changes
   void _setupListeners() {
-    _controller?.addListener(_onControllerChange);
-    quill_actions.addFocusListener(_focusNode, _onFocusChange);
+    _controller.addListener(_onControllerChange);
+    _focusNode.addListener(_onFocusChange);
   }
 
   /// Load initial document content with error handling
   Future<void> _loadInitialDocument() async {
     try {
-      if (_controller != null) {
         if (_initialRichContent != null && _initialRichContent.isNotEmpty) {
           // Load rich text content with formatting
           final deltaJson = jsonDecode(_initialRichContent);
           final delta = Delta.fromJson(deltaJson);
-          _controller!.document = Document.fromDelta(delta);
+          _controller.document = Document.fromDelta(delta);
         } else if (_initialContent != null && _initialContent.isNotEmpty) {
           // Load plain text content
-          _controller!.document = Document()..insert(0, _initialContent);
+          _controller.document = Document()..insert(0, _initialContent);
         } else {
-          _controller!.document = Document()..insert(0, '');
+          _controller.document = Document()..insert(0, '');
         }
-      }
     } catch (e) {
-      if (_controller != null) {
-        _controller!.document = Document()..insert(0, _initialContent ?? '');
-      }
+      _controller.document = Document()..insert(0, _initialContent ?? '');
     }
   }
 
@@ -107,17 +103,17 @@ class QuillEditorManager {
     if (_isDisposed) return;
 
     // Use the centralized focus state getter
-    final isFocused = quill_actions.getFocusState(_focusNode);
+    final isFocused = _focusNode.hasFocus;
 
-    if (isFocused) {
+    if (isFocused == true) {
       // Immediately show toolbar when focused
       _onFocusChanged?.call(_controller, _focusNode);
     } else {
       // Delay hiding toolbar to allow for toolbar button clicks
       Future.delayed(const Duration(milliseconds: 300), () {
         if (!_isDisposed) {
-          final stillHasFocus = quill_actions.getFocusState(_focusNode);
-          if (!stillHasFocus) {
+          final stillHasFocus = _focusNode.hasFocus;
+          if (stillHasFocus == false) {
             _onFocusChanged?.call(null, null);
           }
         }
@@ -127,35 +123,33 @@ class QuillEditorManager {
 
   /// Update content programmatically without triggering change events
   void updateContent(String? content, String? richContent) {
-    if (_isDisposed || _controller == null) return;
+    if (_isDisposed) return;
 
     _isUpdatingContent = true;
 
     try {
       // Preserve cursor position
-      final currentSelection = _controller!.selection;
+      final currentSelection = _controller.selection;
 
       if (richContent != null && richContent.isNotEmpty) {
         // Load rich text content with formatting
         final deltaJson = jsonDecode(richContent);
         final delta = Delta.fromJson(deltaJson);
-        _controller!.document = Document.fromDelta(delta);
+        _controller.document = Document.fromDelta(delta);
       } else if (content != null && content.isNotEmpty) {
         // Load plain text content
-        _controller!.document = Document()..insert(0, content);
+        _controller.document = Document()..insert(0, content);
       } else {
-        _controller!.document = Document()..insert(0, '');
+        _controller.document = Document()..insert(0, '');
       }
 
       // Restore cursor position if it's still valid
       if (currentSelection.isValid &&
-          currentSelection.end <= _controller!.document.length) {
-        _controller!.updateSelection(currentSelection, ChangeSource.local);
+          currentSelection.end <= _controller.document.length) {
+        _controller.updateSelection(currentSelection, ChangeSource.local);
       }
     } catch (e) {
-      if (_controller != null) {
-        _controller!.document = Document()..insert(0, content ?? '');
-      }
+      _controller.document = Document()..insert(0, content ?? '');
     } finally {
       _isUpdatingContent = false;
     }
@@ -164,45 +158,32 @@ class QuillEditorManager {
   /// Update read-only state
   void setReadOnly(bool readOnly) {
     _isReadOnly = readOnly;
-    if (_focusNode != null) {
-      _focusNode!.canRequestFocus = !readOnly;
-    }
+    _focusNode.canRequestFocus = !readOnly;
   }
 
   /// Get current plain text content
-  String get plainText => _controller?.document.toPlainText() ?? '';
+  String get plainText => _controller.document.toPlainText();
 
   /// Get current rich text content as JSON string
   String get richTextJson {
-    if (_controller == null) return '';
     try {
-      return jsonEncode(_controller!.document.toDelta().toJson());
+      return jsonEncode(_controller.document.toDelta().toJson());
     } catch (e) {
       return '';
     }
   }
 
   /// Get the QuillController
-  QuillController? get controller => _controller;
+  QuillController get controller => _controller;
 
   /// Get the FocusNode
-  FocusNode? get focusNode => _focusNode;
+  FocusNode get focusNode => _focusNode;
 
   /// Get the ScrollController
-  ScrollController? get scrollController => _scrollController;
+  ScrollController get scrollController => _scrollController;
 
   /// Check if the manager is initialized
   bool get isInitialized => _isInitialized;
-
-  /// Request focus on the editor
-  void requestFocus() {
-    quill_actions.requestFocus(_focusNode);
-  }
-
-  /// Clear focus from the editor
-  void clearFocus() {
-    _focusNode?.unfocus();
-  }
 
   /// Dispose all resources
   void dispose() {
@@ -212,12 +193,12 @@ class QuillEditorManager {
     _onFocusChanged?.call(null, null);
     
     // Remove listeners before disposing
-    _controller?.removeListener(_onControllerChange);
-    quill_actions.removeFocusListener(_focusNode, _onFocusChange);
+    _controller.removeListener(_onControllerChange);
+    _focusNode.removeListener(_onFocusChange);
     
     // Dispose resources
-    _controller?.dispose();
-    _focusNode?.dispose();
-    _scrollController?.dispose();
+    _controller.dispose();
+    _focusNode.dispose();
+    _scrollController.dispose();
   }
 }

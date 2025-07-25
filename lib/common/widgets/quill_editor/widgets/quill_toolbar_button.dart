@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Build a custom toolbar button with consistent styling
-Widget buildToolbarButton({
+Widget quillToolbarButton({
   required BuildContext context,
   required IconData icon,
   required bool isActive,
@@ -10,7 +9,10 @@ Widget buildToolbarButton({
   final theme = Theme.of(context);
   final borderRadius = BorderRadius.circular(8);
   
-  return Container(
+  return InkWell(
+    borderRadius: borderRadius,
+    onTap: onPressed,
+    child: Container(
     width: 40,
     height: 40,
     decoration: BoxDecoration(
@@ -25,13 +27,7 @@ Widget buildToolbarButton({
         width: 1,
       ),
     ),
-    child: Material(
-      color: Colors.transparent,
-      borderRadius: borderRadius,
-      child: InkWell(
-        borderRadius: borderRadius,
-        onTap: onPressed,
-        child: Icon(
+    child: Icon(
           icon,
           size: 18,
           color: isActive 
@@ -39,6 +35,5 @@ Widget buildToolbarButton({
               : theme.colorScheme.onSurface.withValues(alpha: 0.6),
         ),
       ),
-    ),
   );
 }

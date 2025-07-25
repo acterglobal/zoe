@@ -121,15 +121,11 @@ class SheetDetailScreen extends ConsumerWidget {
         ZoeHtmlTextEditWidget(
           hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
-          initialContent: sheet.description?.plainText,
-          initialRichContent: sheet.description?.htmlText,
+          description: sheet.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
           editorId: 'sheet-description-$sheetId', // Add unique editor ID
-          onContentChanged: (plainText, htmlText) => Future.microtask(
-            () => updateSheetDescription(ref, sheetId, (
-              plainText: plainText,
-              htmlText: htmlText,
-            )),
+          onContentChanged: (description) => Future.microtask(
+            () => updateSheetDescription(ref, sheetId, description),
           ),
         ),
       ],
