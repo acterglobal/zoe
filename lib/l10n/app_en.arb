@@ -116,5 +116,17 @@
     "chooseLanguage": "Choose Language",
     "@chooseLanguage": {},
     "selectLanguage": "Select Language",
-    "@selectLanguage": {}
+    "@selectLanguage": {},
+    "insertLink": "Insert Link",
+    "@insertLink": {},
+    "insertLinkIn": "Insert Link in",
+    "@insertLinkIn": {},
+    "pleaseEnterAValidURL": "Please enter a valid URL",
+    "@pleaseEnterAValidURL": {},
+    "urlCannotBeEmpty": "URL cannot be empty",
+    "@urlCannotBeEmpty": {},
+    "urlCannotContainSpaces": "URL cannot contain spaces",
+    "@urlCannotContainSpaces": {},
+    "pleaseEnterAValidDomainName": "Please enter a valid domain name",
+    "@pleaseEnterAValidDomainName": {}
 }   

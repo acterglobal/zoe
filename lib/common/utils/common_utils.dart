@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class CommonUtils {
   static String generateRandomId() => const Uuid().v4();
@@ -32,5 +33,50 @@ class CommonUtils {
     } catch (e) {
       return false;
     }
+  }
+
+  static bool isValidUrl(String url) {
+    if (url.isEmpty) return false;
+
+    // Add protocol if missing
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://$url';
+    }
+
+    final urlRegex = RegExp(
+      r'((([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})|' // domain
+      r'localhost|' // localhost
+      r'(\d{1,3}\.){3}\d{1,3})' // OR ip (v4)
+      r'(:\d+)?' // optional port
+      r'(\/[^\s]*)?$', // optional path
+      caseSensitive: false,
+    );
+
+    if (urlRegex.hasMatch(url)) {
+      try {
+        final uri = Uri.parse(url);
+        return uri.hasScheme && uri.hasAuthority;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    return false;
+  }
+
+  /// get specific error message for url validation
+  static String getUrlErrorMessage(BuildContext context, String url) {
+    if (url.isEmpty) {
+      return L10n.of(context).urlCannotBeEmpty;
+    }
+    if (url.contains(' ')) {
+      return L10n.of(context).urlCannotContainSpaces;
+    }
+
+    if (!isValidUrl(url)) {
+      return L10n.of(context).pleaseEnterAValidURL;
+    }
+
+    return L10n.of(context).pleaseEnterAValidURL;
   }
 }

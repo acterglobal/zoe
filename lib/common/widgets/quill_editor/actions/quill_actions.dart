@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
+import 'package:zoey/common/widgets/add_link_bottom_sheet_widget.dart';
 
 /// Clear any active quill toolbar state
 void clearActiveEditorState(WidgetRef ref) {
   FocusManager.instance.primaryFocus?.unfocus();
 
   final toolbarState = ref.read(quillToolbarProvider);
-  ref.read(quillToolbarProvider.notifier).clearActiveEditorState(toolbarState.activeEditorId ?? '');
+  ref
+      .read(quillToolbarProvider.notifier)
+      .clearActiveEditorState(toolbarState.activeEditorId ?? '');
 }
 
 /// Check if a specific attribute is currently active
@@ -84,4 +87,63 @@ void handleInvalidSelection(QuillController controller, Attribute attribute) {
     );
     controller.formatSelection(attribute);
   }
+}
+
+Future<void> handleLinkAttribute(
+  QuillController controller,
+  BuildContext context, {
+  VoidCallback? onButtonPressed,
+}) async {
+  final selection = controller.selection;
+  final docLength = controller.document.length;
+
+  // Handle invalid selection
+  if (!selection.isValid || docLength == 0) {
+    handleInvalidSelection(controller, Attribute.link);
+    onButtonPressed?.call();
+    return;
+  }
+
+  // Check if link is already active
+  final isLinkActive = isAttributeActive(controller, Attribute.link);
+
+  if (isLinkActive) {
+    // Remove link if already active
+    controller.formatSelection(Attribute.clone(Attribute.link, null));
+      } else {
+      // Get selected text for the bottom sheet
+      final selectedText = _getSelectedText(controller);
+      final isSelectedTextEmpty = selectedText?.isEmpty ?? true;
+      final url = await showLinkBottomSheet(context, selectedText: isSelectedTextEmpty ? null : selectedText);
+      if (url != null && url.isNotEmpty) {
+        // Apply link attribute with URL
+        final linkAttribute = LinkAttribute(url);
+        controller.formatSelection(linkAttribute);
+      }
+    }
+
+  onButtonPressed?.call();
+}
+
+/// Get the currently selected text from the Quill controller
+String? _getSelectedText(QuillController controller) {
+  final selection = controller.selection;
+  if (!selection.isValid || selection.baseOffset == selection.extentOffset) {
+    return null;
+  }
+  
+  try {
+    final start = selection.baseOffset;
+    final end = selection.extentOffset;
+    final document = controller.document;
+    
+    if (start >= 0 && end >= 0 && start < document.length && end <= document.length) {
+      final plainText = document.getPlainText(0, document.length);
+      return plainText.substring(start, end);
+    }
+  } catch (e) {
+    // Return null if there's any error extracting text
+  }
+  
+  return null;
 }

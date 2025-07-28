@@ -116,5 +116,17 @@
     "chooseLanguage": "ભાષા પસંદ કરો",
     "@chooseLanguage": {},
     "selectLanguage": "ભાષા પસંદ કરો",
-    "@selectLanguage": {}
+    "@selectLanguage": {},
+    "insertLink": "લિંક ઉમેરો",
+    "@insertLink": {},
+    "insertLinkIn": "લિંક ઉમેરો માટે",
+    "@insertLinkIn": {},
+    "pleaseEnterAValidURL": "કૃપા કરીને એક સાચું લિંક દાખલ કરો",
+    "@pleaseEnterAValidURL": {},
+    "urlCannotBeEmpty": "લિંક ખાલી નહીં હોઈ શકે",
+    "@urlCannotBeEmpty": {},
+    "urlCannotContainSpaces": "લિંકમાં જગ્યાનો નહીં હોઈ શકે",
+    "@urlCannotContainSpaces": {},
+    "pleaseEnterAValidDomainName": "કૃપા કરીને એક સાચું ડોમેન નામ દાખલ કરો",
+    "@pleaseEnterAValidDomainName": {}
 } 
