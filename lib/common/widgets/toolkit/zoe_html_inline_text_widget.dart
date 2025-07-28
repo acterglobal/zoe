@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/quill_editor/config/quill_editor_manager.dart';
 import 'package:zoey/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
 import 'package:flutter_quill_delta_from_html/flutter_quill_delta_from_html.dart';
@@ -59,8 +60,7 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     }
 
     // Only update if the source content actually changes (not editor content)
-    final sourceContentChanged =
-        _lastInitialDescription != widget.description;
+    final sourceContentChanged = _lastInitialDescription != widget.description;
 
     if (sourceContentChanged && _isInitialized) {
       _lastInitialDescription = widget.description;
@@ -71,10 +71,13 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
       );
 
       // Update content without reinitializing to preserve focus
-      _editorManager.updateContent(widget.description?.plainText, processedRichContent);
+      _editorManager.updateContent(
+        widget.description?.plainText,
+        processedRichContent,
+      );
     } else if (sourceContentChanged ||
         oldWidget.textStyle != widget.textStyle) {
-      _lastInitialDescription = widget.description;  
+      _lastInitialDescription = widget.description;
       _initializeEditor();
     }
   }
@@ -146,11 +149,11 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
       Future.microtask(() {
         if (mounted) {
           widget.onContentChanged?.call((
-              plainText: _editorManager.plainText,
-              htmlText: _editorManager.richTextJson,
-            ));
-          }
-        });
+            plainText: _editorManager.plainText,
+            htmlText: _editorManager.richTextJson,
+          ));
+        }
+      });
     }
   }
 
@@ -160,13 +163,17 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     Future.microtask(() {
       if (mounted) {
         if (focusNode?.hasFocus == true) {
-          ref.read(quillToolbarProvider.notifier).updateActiveEditor(
-            editorId: _uniqueEditorId,
-            controller: controller,
-            focusNode: focusNode,
-          );
+          ref
+              .read(quillToolbarProvider.notifier)
+              .updateActiveEditor(
+                editorId: _uniqueEditorId,
+                controller: controller,
+                focusNode: focusNode,
+              );
         } else {
-          ref.read(quillToolbarProvider.notifier).clearActiveEditorState(_uniqueEditorId);
+          ref
+              .read(quillToolbarProvider.notifier)
+              .clearActiveEditorState(_uniqueEditorId);
         }
       }
     });
@@ -179,7 +186,6 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     if (widget.isEditing) {
       return QuillEditor(
         focusNode: _editorManager.focusNode,
@@ -191,6 +197,9 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
           expands: false,
           embedBuilders: const [],
           customStyles: _editorManager.getDefaultStyles(context),
+          onLaunchUrl: (url) async {
+            await CommonUtils.openUrl(url, context);
+          },
         ),
       );
     } else {
@@ -204,7 +213,8 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
         widget.description?.htmlText != null &&
         widget.description?.htmlText?.isNotEmpty == true;
     final hasPlainContent =
-        widget.description?.plainText != null && widget.description?.plainText?.isNotEmpty == true;
+        widget.description?.plainText != null &&
+        widget.description?.plainText?.isNotEmpty == true;
 
     if (hasRichContent) {
       // Show formatted content using QuillEditor in read-only mode
@@ -220,6 +230,9 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
           expands: false,
           embedBuilders: const [],
           customStyles: _editorManager.getDefaultStyles(context),
+          onLaunchUrl: (url) async {
+            await CommonUtils.openUrl(url, context);
+          },
         ),
       );
     } else if (hasPlainContent) {
