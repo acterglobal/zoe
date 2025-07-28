@@ -110,17 +110,20 @@ Future<void> handleLinkAttribute(
   if (isLinkActive) {
     // Remove link if already active
     controller.formatSelection(Attribute.clone(Attribute.link, null));
-      } else {
-      // Get selected text for the bottom sheet
-      final selectedText = _getSelectedText(controller);
-      final isSelectedTextEmpty = selectedText?.isEmpty ?? true;
-      final url = await showLinkBottomSheet(context, selectedText: isSelectedTextEmpty ? null : selectedText);
-      if (url != null && url.isNotEmpty) {
-        // Apply link attribute with URL
-        final linkAttribute = LinkAttribute(url);
-        controller.formatSelection(linkAttribute);
-      }
+  } else {
+    // Get selected text for the bottom sheet
+    final selectedText = _getSelectedText(controller);
+    final isSelectedTextEmpty = selectedText?.isEmpty ?? true;
+    final url = await showAddLinkBottomSheet(
+      context,
+      selectedText: isSelectedTextEmpty ? null : selectedText,
+    );
+    if (url != null && url.isNotEmpty) {
+      // Apply link attribute with URL
+      final linkAttribute = LinkAttribute(url);
+      controller.formatSelection(linkAttribute);
     }
+  }
 
   onButtonPressed?.call();
 }
@@ -131,19 +134,22 @@ String? _getSelectedText(QuillController controller) {
   if (!selection.isValid || selection.baseOffset == selection.extentOffset) {
     return null;
   }
-  
+
   try {
     final start = selection.baseOffset;
     final end = selection.extentOffset;
     final document = controller.document;
-    
-    if (start >= 0 && end >= 0 && start < document.length && end <= document.length) {
+
+    if (start >= 0 &&
+        end >= 0 &&
+        start < document.length &&
+        end <= document.length) {
       final plainText = document.getPlainText(0, document.length);
       return plainText.substring(start, end);
     }
   } catch (e) {
     // Return null if there's any error extracting text
   }
-  
+
   return null;
 }

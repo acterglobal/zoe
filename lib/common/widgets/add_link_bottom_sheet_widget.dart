@@ -7,7 +7,10 @@ import 'package:zoey/common/widgets/toolkit/zoe_icon_container_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 /// Shows a bottom sheet for inserting a link
-Future<String?> showLinkBottomSheet(BuildContext context, {String? selectedText}) async {
+Future<String?> showAddLinkBottomSheet(
+  BuildContext context, {
+  String? selectedText,
+}) async {
   return showModalBottomSheet<String>(
     context: context,
     isScrollControlled: true,
@@ -18,20 +21,21 @@ Future<String?> showLinkBottomSheet(BuildContext context, {String? selectedText}
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
-    builder: (context) => AddLinkBottomSheetContent(selectedText: selectedText),
+    builder: (context) => AddLinkBottomSheetWidget(selectedText: selectedText),
   );
 }
 
-class AddLinkBottomSheetContent extends StatefulWidget {
+class AddLinkBottomSheetWidget extends StatefulWidget {
   final String? selectedText;
-  
-  const AddLinkBottomSheetContent({super.key, this.selectedText});
+
+  const AddLinkBottomSheetWidget({super.key, this.selectedText});
 
   @override
-  State<AddLinkBottomSheetContent> createState() => _AddLinkBottomSheetContentState();
+  State<AddLinkBottomSheetWidget> createState() =>
+      _AddLinkBottomSheetWidgetState();
 }
 
-class _AddLinkBottomSheetContentState extends State<AddLinkBottomSheetContent> {
+class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
   final TextEditingController _urlController = TextEditingController();
   String? _errorText;
 
@@ -49,36 +53,31 @@ class _AddLinkBottomSheetContentState extends State<AddLinkBottomSheetContent> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(
-          left: 16.0,
-          right: 16.0,
-          top: 16.0,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: ZoeIconContainer(
-                icon: Icons.link_outlined,
-                size: 72,
-              ),
-            ),
-            const SizedBox(height: 24),
-            buildInsertLinkText(),
-            const SizedBox(height: 16),
-            AnimatedTextField(
-              controller: _urlController,
-              errorText: _errorText,
-              onErrorChanged: (error) => setState(() => _errorText = error),
-              onSubmitted: _validateAndSubmit,
-            ),
-            const SizedBox(height: 24),
-            buildActionButtons(),
-            const SizedBox(height: 16),
-          ],
-        ),
+      padding: EdgeInsets.only(
+        left: 16.0,
+        right: 16.0,
+        top: 16.0,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(child: ZoeIconContainer(icon: Icons.link_outlined, size: 72)),
+          const SizedBox(height: 24),
+          buildInsertLinkText(),
+          const SizedBox(height: 16),
+          AnimatedTextField(
+            controller: _urlController,
+            errorText: _errorText,
+            onErrorChanged: (error) => setState(() => _errorText = error),
+            onSubmitted: _validateAndSubmit,
+          ),
+          const SizedBox(height: 24),
+          buildActionButtons(),
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 
@@ -92,11 +91,13 @@ class _AddLinkBottomSheetContentState extends State<AddLinkBottomSheetContent> {
           ),
         ),
         Text(
-         "'${widget.selectedText}'",
+          "'${widget.selectedText}'",
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.4),
           ),
         ),
       ],
