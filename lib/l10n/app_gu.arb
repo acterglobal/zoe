@@ -114,5 +114,7 @@
     "primaryButton": "પ્રાથમિક બટન",
     "@primaryButton": {},
     "chooseLanguage": "ભાષા પસંદ કરો",
-    "@chooseLanguage": {}
+    "@chooseLanguage": {},
+    "selectLanguage": "ભાષા પસંદ કરો",
+    "@selectLanguage": {}
 } 

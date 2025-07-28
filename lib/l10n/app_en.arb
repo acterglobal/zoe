@@ -114,5 +114,7 @@
     "primaryButton": "Primary Button",
     "@primaryButton": {},
     "chooseLanguage": "Choose Language",
-    "@chooseLanguage": {}
+    "@chooseLanguage": {},
+    "selectLanguage": "Select Language",
+    "@selectLanguage": {}
 }   

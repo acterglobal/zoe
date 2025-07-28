@@ -7,6 +7,7 @@ import 'package:zoey/features/bullets/screens/bullet_detail_screen.dart';
 import 'package:zoey/features/events/screens/event_detail_screen.dart';
 import 'package:zoey/features/home/screens/home_screen.dart';
 import 'package:zoey/features/settings/screens/settings_screen.dart';
+import 'package:zoey/features/settings/screens/language_selection_screen.dart';
 import 'package:zoey/features/sheet/screens/sheet_detail_screen.dart';
 import 'package:zoey/features/task/screens/task_detail_screen.dart';
 import 'package:zoey/features/welcome/screens/welcome_screen.dart';
@@ -76,6 +77,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.settings.route,
         name: AppRoutes.settings.name,
         builder: (context, state) => const SettingsScreen(),
+      ),
+      // Language selection route
+      GoRoute(
+        path: AppRoutes.settingLanguage.route,
+        name: AppRoutes.settingLanguage.name,
+        builder: (context, state) => const LanguageSelectionScreen(),
       ),
     ],
     errorBuilder: (context, state) => const PageNotFoundScreen(),

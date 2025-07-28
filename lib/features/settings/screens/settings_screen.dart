@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoey/common/providers/package_info_provider.dart';
+import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/common/widgets/animated_background_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoey/features/settings/actions/change_language.dart';
 import 'package:zoey/features/settings/actions/change_theme.dart';
 import 'package:zoey/features/settings/models/language_model.dart';
 import 'package:zoey/features/settings/providers/local_provider.dart';
@@ -91,7 +92,7 @@ class SettingsScreen extends ConsumerWidget {
           subtitle: currentLanguage.languageName,
           icon: Icons.language_rounded,
           iconColor: const Color(0xFF10B981), // Emerald
-          onTap: () => showLanguageDialog(context, ref),
+          onTap: () => context.push(AppRoutes.settingLanguage.route),
         ),
       ],
     );
