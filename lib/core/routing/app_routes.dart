@@ -6,7 +6,7 @@ enum AppRoutes {
   eventDetail('/event/:eventId'),
   bulletDetail('/bullet/:bulletId'),
   settings('/settings'),
-  languageSelection('/language-selection');
+  settingLanguage('/settings/language');
 
   final String route;
   const AppRoutes(this.route);

@@ -81,7 +81,7 @@ class SettingsScreen extends ConsumerWidget {
           subtitle: currentLanguage.languageName,
           icon: Icons.language_rounded,
           iconColor: AppColors.successColor,
-          onTap: () => context.push(AppRoutes.languageSelection.route),
+          onTap: () => context.push(AppRoutes.settingLanguage.route),
         ),
       ],
     );

@@ -80,8 +80,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       // Language selection route
       GoRoute(
-        path: AppRoutes.languageSelection.route,
-        name: AppRoutes.languageSelection.name,
+        path: AppRoutes.settingLanguage.route,
+        name: AppRoutes.settingLanguage.name,
         builder: (context, state) => const LanguageSelectionScreen(),
       ),
     ],
