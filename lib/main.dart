@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zoey/core/constants/app_constants.dart';
 import 'package:zoey/core/preference_service/preferences_service.dart';
 import 'package:zoey/features/settings/providers/local_provider.dart';
@@ -34,7 +35,10 @@ class MyApp extends ConsumerWidget {
       themeMode: theme.themeMode,
       routerConfig: router,
       locale: Locale(language),
-      localizationsDelegates: L10n.localizationsDelegates,
+      localizationsDelegates: [
+        ...L10n.localizationsDelegates,
+        FlutterQuillLocalizations.delegate,
+      ],
       supportedLocales: L10n.supportedLocales,
     );
   }
