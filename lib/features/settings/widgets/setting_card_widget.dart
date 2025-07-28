@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoey/common/widgets/glassy_container_widget.dart';
 
 class SettingCardWidget extends StatelessWidget {
   final String title;
@@ -15,25 +16,17 @@ class SettingCardWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(title, style: Theme.of(context).textTheme.titleSmall),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(
-                  alpha: Theme.of(context).brightness == Brightness.dark
-                      ? 0.3
-                      : 0.05,
-                ),
-                blurRadius: 10,
-                offset: const Offset(0, 2),
-              ),
-            ],
+          padding: const EdgeInsets.only(left: 8, bottom: 12),
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.5,
+            ),
           ),
+        ),
+        GlassyContainer(
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: Column(children: children),
         ),
       ],

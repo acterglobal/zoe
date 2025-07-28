@@ -14,6 +14,7 @@ import 'package:zoey/features/text/widgets/text_widget.dart';
 class ContentWidget extends ConsumerWidget {
   final String parentId;
   final String sheetId;
+
   const ContentWidget({
     super.key,
     required this.parentId,
@@ -24,7 +25,7 @@ class ContentWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     /// Watch the content list provider
     final contentList = ref.watch(contentListByParentIdProvider(parentId));
-    final isEditing = ref.watch(isEditValueProvider);
+    final isEditing = ref.watch(isEditValueProvider(parentId));
 
     /// Build the content list
     return Column(
@@ -55,6 +56,7 @@ class ContentWidget extends ConsumerWidget {
               )
             : ListView.builder(
                 shrinkWrap: true,
+                padding: EdgeInsets.zero,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: contentList.length,
                 itemBuilder: (context, index) {
@@ -93,11 +95,26 @@ class ContentWidget extends ConsumerWidget {
     final key = ValueKey('${content.type.name}-$contentId');
 
     Widget contentWidget = switch (content.type) {
-      ContentType.text => TextWidget(textId: contentId),
-      ContentType.event => EventWidget(eventsId: contentId),
-      ContentType.list => ListWidget(listId: contentId),
-      ContentType.task => TaskWidget(taskId: contentId),
-      ContentType.bullet => BulletItemWidget(bulletId: contentId),
+      ContentType.text => TextWidget(
+        textId: contentId,
+        isEditing: isEditing,
+      ),
+      ContentType.event => EventWidget(
+        eventsId: contentId,
+        isEditing: isEditing,
+      ),
+      ContentType.list => ListWidget(
+        listId: contentId,
+        isEditing: isEditing,
+      ),
+      ContentType.task => TaskWidget(
+        taskId: contentId,
+        isEditing: isEditing,
+      ),
+      ContentType.bullet => BulletItemWidget(
+        bulletId: contentId,
+        isEditing: isEditing,
+      ),
     };
 
     // For ReorderableListView, we need to wrap with drag handle when editing

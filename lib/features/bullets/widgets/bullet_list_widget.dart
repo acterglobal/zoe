@@ -5,8 +5,13 @@ import 'package:zoey/features/bullets/widgets/bullet_item_widget.dart';
 
 class BulletListWidget extends ConsumerWidget {
   final String parentId;
+  final bool isEditing;
 
-  const BulletListWidget({super.key, required this.parentId});
+  const BulletListWidget({
+    super.key,
+    required this.parentId,
+    required this.isEditing,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,6 +20,7 @@ class BulletListWidget extends ConsumerWidget {
 
     return ListView.builder(
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: bullets.length,
       itemBuilder: (context, index) {
@@ -24,6 +30,7 @@ class BulletListWidget extends ConsumerWidget {
           child: BulletItemWidget(
             key: ValueKey(bullet.id),
             bulletId: bullet.id,
+            isEditing: isEditing,
           ),
         );
       },

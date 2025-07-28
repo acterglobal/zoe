@@ -5,7 +5,6 @@ import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/widgets/task_checkbox_widget.dart';
@@ -13,14 +12,13 @@ import 'package:zoey/l10n/generated/l10n.dart';
 
 class TaskWidget extends ConsumerWidget {
   final String taskId;
+  final bool isEditing;
 
-  const TaskWidget({super.key, required this.taskId});
+  const TaskWidget({super.key, required this.taskId, required this.isEditing});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider);
     final task = ref.watch(taskProvider(taskId));
-
     if (task == null) return const SizedBox.shrink();
 
     return _buildTaskItemContent(context, ref, task, isEditing);
