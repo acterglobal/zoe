@@ -8,9 +8,9 @@ import 'package:zoey/l10n/generated/l10n.dart';
 
 /// Shows a bottom sheet for inserting a link
 Future<String?> showAddLinkBottomSheet(
-  BuildContext context, {
-  String? selectedText,
-}) async {
+  BuildContext context,
+  String selectedText,
+) async {
   return showModalBottomSheet<String>(
     context: context,
     isScrollControlled: true,
@@ -26,9 +26,9 @@ Future<String?> showAddLinkBottomSheet(
 }
 
 class AddLinkBottomSheetWidget extends StatefulWidget {
-  final String? selectedText;
+  final String selectedText;
 
-  const AddLinkBottomSheetWidget({super.key, this.selectedText});
+  const AddLinkBottomSheetWidget({super.key, required this.selectedText});
 
   @override
   State<AddLinkBottomSheetWidget> createState() =>

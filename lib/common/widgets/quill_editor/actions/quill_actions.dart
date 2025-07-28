@@ -113,10 +113,12 @@ Future<void> handleLinkAttribute(
   } else {
     // Get selected text for the bottom sheet
     final selectedText = _getSelectedText(controller);
-    final isSelectedTextEmpty = selectedText?.isEmpty ?? true;
+    if (selectedText.isEmpty) {
+      return;
+    }
     final url = await showAddLinkBottomSheet(
       context,
-      selectedText: isSelectedTextEmpty ? null : selectedText,
+      selectedText: selectedText,
     );
     if (url != null && url.isNotEmpty) {
       // Apply link attribute with URL
@@ -129,27 +131,23 @@ Future<void> handleLinkAttribute(
 }
 
 /// Get the currently selected text from the Quill controller
-String? _getSelectedText(QuillController controller) {
+String _getSelectedText(QuillController controller) {
   final selection = controller.selection;
   if (!selection.isValid || selection.baseOffset == selection.extentOffset) {
-    return null;
+    return "";
   }
 
-  try {
-    final start = selection.baseOffset;
-    final end = selection.extentOffset;
-    final document = controller.document;
+  final start = selection.baseOffset;
+  final end = selection.extentOffset;
+  final document = controller.document;
 
-    if (start >= 0 &&
-        end >= 0 &&
-        start < document.length &&
-        end <= document.length) {
-      final plainText = document.getPlainText(0, document.length);
-      return plainText.substring(start, end);
-    }
-  } catch (e) {
-    // Return null if there's any error extracting text
+  if (start >= 0 &&
+      end >= 0 &&
+      start < document.length &&
+      end <= document.length) {
+    final plainText = document.getPlainText(0, document.length);
+    return plainText.substring(start, end);
   }
 
-  return null;
+  return "";
 }
