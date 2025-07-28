@@ -21,12 +21,14 @@ class BulletItemWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bulletItem = ref.watch(bulletProvider(bulletId));
+    final focusedBulletId = ref.watch(bulletFocusProvider);
+    final shouldFocus = focusedBulletId == bulletId;
 
     if (bulletItem == null) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 2, top: 2, left: 12),
-      child: _buildBulletItemContent(context, ref, bulletItem, isEditing),
+      child: _buildBulletItemContent(context, ref, bulletItem, shouldFocus),
     );
   }
 
@@ -34,19 +36,14 @@ class BulletItemWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     BulletModel bulletItem,
-    bool isEditing,
+    bool autoFocus,
   ) {
     return Row(
       children: [
         _buildBulletItemIcon(context),
         const SizedBox(width: 10),
         Expanded(
-          child: _buildBulletItemTitle(
-            context,
-            ref,
-            bulletItem.title,
-            isEditing,
-          ),
+          child: _buildBulletItemTitle(context, ref, bulletItem, autoFocus),
         ),
         const SizedBox(width: 6),
         if (isEditing) _buildBulletItemActions(context, ref),
@@ -67,18 +64,28 @@ class BulletItemWidget extends ConsumerWidget {
   Widget _buildBulletItemTitle(
     BuildContext context,
     WidgetRef ref,
-    String title,
-    bool isEditing,
+    BulletModel bulletItem,
+    bool autoFocus,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).bulletItem,
       isEditing: isEditing,
-      text: title,
+      text: bulletItem.title,
       textStyle: Theme.of(context).textTheme.bodyMedium,
+      autoFocus: autoFocus,
       onTextChanged: (value) {
         ref
             .read(bulletListProvider.notifier)
             .updateBulletTitle(bulletId, value);
+      },
+      onEnterPressed: () {
+        ref
+            .read(bulletListProvider.notifier)
+            .addBullet(
+              parentId: bulletItem.parentId,
+              sheetId: bulletItem.sheetId,
+              orderIndex: bulletItem.orderIndex + 1,
+            );
       },
       onBackspaceEmptyText: () =>
           ref.read(bulletListProvider.notifier).deleteBullet(bulletId),
