@@ -118,7 +118,7 @@ Future<void> handleLinkAttribute(
     }
     final url = await showAddLinkBottomSheet(
       context,
-      selectedText: selectedText,
+      selectedText,
     );
     if (url != null && url.isNotEmpty) {
       // Apply link attribute with URL
