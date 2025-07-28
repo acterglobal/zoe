@@ -21,7 +21,6 @@ class CommonUtils {
   static bool isDesktop(BuildContext context) =>
       desktopPlatforms.contains(Theme.of(context).platform);
 
-  /// Launch URL - simplified without redundant error handling
   static Future<bool> openUrl(
     String url,
     BuildContext context, {
