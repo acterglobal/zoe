@@ -5,13 +5,6 @@ import 'package:url_launcher/url_launcher.dart';
 class CommonUtils {
   static String generateRandomId() => const Uuid().v4();
 
-  static String getNextEmoji(String currentEmoji) {
-    const emojis = ['📝', '📅', '📌', '🎯', '🔍', '📋', '📂', '📅'];
-    final currentIndex = emojis.indexOf(currentEmoji);
-    final nextIndex = (currentIndex + 1) % emojis.length;
-    return emojis[nextIndex];
-  }
-
   static const List<TargetPlatform> desktopPlatforms = [
     TargetPlatform.macOS,
     TargetPlatform.linux,
