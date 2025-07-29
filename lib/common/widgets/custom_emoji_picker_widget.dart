@@ -17,16 +17,16 @@ class CustomEmojiPickerWidget extends ConsumerStatefulWidget {
 
 class _CustomEmojiPickerWidgetState
     extends ConsumerState<CustomEmojiPickerWidget> {
-  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   EmojiSearchState searchState = const EmojiSearchState();
 
   @override
   void dispose() {
-    _searchController.dispose();
+    searchController.dispose();
     super.dispose();
   }
 
-  Future<void> _performEmojiSearch(String query) async {
+  Future<void> searchEmoji(String query) async {
     if (query.isEmpty) {
       setState(() {
         searchState = const EmojiSearchState();
@@ -72,8 +72,8 @@ class _CustomEmojiPickerWidgetState
           _buildEmojiPickerHeader(context),
           const Divider(height: 1),
           ZoeSearchBarWidget(
-            controller: _searchController,
-            onChanged: _performEmojiSearch,
+            controller: searchController,
+            onChanged: searchEmoji,
             hintText: L10n.of(context).searchEmojis,
           ),
           Expanded(child: _buildContent(context)),
@@ -93,7 +93,7 @@ class _CustomEmojiPickerWidgetState
 
     final config = EmojiPickerConfigBuilder.buildConfig(
       context,
-      _searchController,
+      searchController,
       widget.onEmojiSelected,
     );
 
@@ -102,7 +102,7 @@ class _CustomEmojiPickerWidgetState
         widget.onEmojiSelected(emoji.emoji);
         Navigator.pop(context);
       },
-      textEditingController: _searchController,
+      textEditingController: searchController,
       config: config,
     );
   }
