@@ -116,5 +116,9 @@
     "chooseLanguage": "Choose Language",
     "@chooseLanguage": {},
     "selectLanguage": "Select Language",
-    "@selectLanguage": {}
+    "@selectLanguage": {},
+    "chooseEmoji": "Choose Emoji",
+    "@chooseEmoji": {},
+    "searchEmojis": "Search emojis...",
+    "@searchEmojis": {}
 }   

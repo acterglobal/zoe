@@ -116,5 +116,9 @@
     "chooseLanguage": "भाषा चुनें",
     "@chooseLanguage": {},
     "selectLanguage": "भाषा चुनें",
-    "@selectLanguage": {}
+    "@selectLanguage": {},
+    "chooseEmoji": "एमोजी चुनें",
+    "@chooseEmoji": {},
+    "searchEmojis": "एमोजी खोजें...",
+    "@searchEmojis": {}
 }

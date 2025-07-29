@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 
@@ -22,5 +21,5 @@ void updateSheetDescription(WidgetRef ref, String sheetId, Description descripti
 void updateSheetEmoji(WidgetRef ref, String sheetId, String emoji) {
   ref
       .read(sheetListProvider.notifier)
-      .updateSheetEmoji(sheetId, CommonUtils.getNextEmoji(emoji));
-}
+      .updateSheetEmoji(sheetId, emoji);
+} 
