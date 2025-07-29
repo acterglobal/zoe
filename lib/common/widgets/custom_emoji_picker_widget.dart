@@ -1,5 +1,4 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:emoji_picker_flutter/src/emoji_picker_internal_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/emoji_picker/emoji_picker_config.dart';
@@ -19,17 +18,8 @@ class CustomEmojiPickerWidget extends ConsumerStatefulWidget {
 
 class _CustomEmojiPickerWidgetState
     extends ConsumerState<CustomEmojiPickerWidget> {
-  late TextEditingController _searchController;
-  final EmojiPickerUtils _emojiUtils = EmojiPickerUtils();
-  List<CategoryEmoji> _allEmojiCategories = [];
-  EmojiSearchState _searchState = const EmojiSearchState();
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController = TextEditingController();
-    _loadEmojiData();
-  }
+  final TextEditingController _searchController = TextEditingController();
+  EmojiSearchState searchState = const EmojiSearchState();
 
   @override
   void dispose() {
@@ -37,43 +27,32 @@ class _CustomEmojiPickerWidgetState
     super.dispose();
   }
 
-  Future<void> _loadEmojiData() async {
-    try {
-      final emojiPickerInternalUtils = EmojiPickerInternalUtils();
-      final filteredCategories = await emojiPickerInternalUtils
-          .filterUnsupported(defaultEmojiSet);
-
-      setState(() {
-        _allEmojiCategories = filteredCategories;
-      });
-    } catch (e) {
-      debugPrint('Error loading emoji data: $e');
-    }
-  }
-
   Future<void> _performEmojiSearch(String query) async {
     if (query.isEmpty) {
       setState(() {
-        _searchState = const EmojiSearchState();
+        searchState = const EmojiSearchState();
       });
       return;
     }
 
     setState(() {
-      _searchState = _searchState.copyWith(isSearching: true, query: query);
+      searchState = searchState.copyWith(isSearching: true, query: query);
     });
 
     try {
-      final results = await _emojiUtils.searchEmoji(query, _allEmojiCategories);
+      final results = await EmojiPickerUtils().searchEmoji(
+        query,
+        defaultEmojiSet,
+      );
       setState(() {
-        _searchState = _searchState.copyWith(
+        searchState = searchState.copyWith(
           searchResults: results,
           isSearching: false,
         );
       });
     } catch (e) {
       setState(() {
-        _searchState = _searchState.copyWith(
+        searchState = searchState.copyWith(
           searchResults: [],
           isSearching: false,
         );
@@ -93,34 +72,26 @@ class _CustomEmojiPickerWidgetState
         children: [
           _buildEmojiPickerHeader(context),
           const Divider(height: 1),
-          _buildSearchBar(),
+          ZoeSearchBarWidget(
+            controller: _searchController,
+            onChanged: _performEmojiSearch,
+            hintText: L10n.of(context).searchEmojis,
+          ),
           Expanded(child: _buildContent(context)),
         ],
       ),
     );
   }
 
-  Widget _buildSearchBar() {
-    return ZoeSearchBarWidget(
-      controller: _searchController,
-      onChanged: _performEmojiSearch,
-      hintText: L10n.of(context).searchEmojis,
-    );
-  }
-
   Widget _buildContent(BuildContext context) {
-    if (_searchState.query.isNotEmpty) {
+    if (searchState.query.isNotEmpty) {
       return _buildSearchResultsWidget(
         context,
-        _searchState,
+        searchState,
         widget.onEmojiSelected,
       );
     }
 
-    return _buildEmojiPicker(context);
-  }
-
-  Widget _buildEmojiPicker(BuildContext context) {
     final config = EmojiPickerConfigBuilder.buildConfig(
       context,
       _searchController,
