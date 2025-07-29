@@ -120,5 +120,7 @@
     "chooseEmoji": "Choose Emoji",
     "@chooseEmoji": {},
     "searchEmojis": "Search emojis...",
-    "@searchEmojis": {}
+    "@searchEmojis": {},
+    "noEmojisFound": "No emojis found",
+    "@noEmojisFound": {}
 }   

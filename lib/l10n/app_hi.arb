@@ -117,8 +117,10 @@
     "@chooseLanguage": {},
     "selectLanguage": "भाषा चुनें",
     "@selectLanguage": {},
-    "chooseEmoji": "एमोजी चुनें",
+    "chooseEmoji": "इमोजी चुनें",
     "@chooseEmoji": {},
-    "searchEmojis": "एमोजी खोजें...",
-    "@searchEmojis": {}
+    "searchEmojis": "इमोजी खोजें...",
+    "@searchEmojis": {},
+    "noEmojisFound": "इमोजी नहीं मिला",
+    "@noEmojisFound": {}
 }
