@@ -158,13 +158,13 @@ class _CustomEmojiPickerWidgetState
     }
 
     if (searchState.searchResults.isEmpty) {
-      return _buildEmptySearchState(context);
+      return _buildEmptySearchWidget(context);
     }
 
-    return _buildSearchResultsGrid(context, searchState, onEmojiSelected);
+    return _buildSearchResultsGridView(context, searchState, onEmojiSelected);
   }
 
-  Widget _buildEmptySearchState(BuildContext context) {
+  Widget _buildEmptySearchWidget(BuildContext context) {
     return Center(
       child: Text(
         L10n.of(context).noEmojisFound,
@@ -176,7 +176,7 @@ class _CustomEmojiPickerWidgetState
     );
   }
 
-  Widget _buildSearchResultsGrid(
+  Widget _buildSearchResultsGridView(
     BuildContext context,
     EmojiSearchState searchState,
     Function(String emoji) onEmojiSelected,
