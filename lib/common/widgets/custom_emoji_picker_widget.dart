@@ -5,7 +5,6 @@ import 'package:zoey/common/widgets/emoji_picker/emoji_picker_config.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
-// Main emoji picker widget
 class CustomEmojiPickerWidget extends ConsumerStatefulWidget {
   final Function(String emoji) onEmojiSelected;
 
@@ -108,7 +107,6 @@ class _CustomEmojiPickerWidgetState
     );
   }
 
-  // Emoji picker header widget
   Widget _buildEmojiPickerHeader(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -129,7 +127,6 @@ class _CustomEmojiPickerWidgetState
     );
   }
 
-  // Close button widget
   Widget _buildCloseButton(BuildContext context) {
     final iconColor = Theme.of(context).colorScheme.onSurface;
     return GestureDetector(
@@ -151,7 +148,6 @@ class _CustomEmojiPickerWidgetState
     );
   }
 
-  // Search results widget
   Widget _buildSearchResultsWidget(
     BuildContext context,
     EmojiSearchState searchState,
@@ -201,7 +197,6 @@ class _CustomEmojiPickerWidgetState
     );
   }
 
-  // Individual emoji item widget
   Widget _buildEmojiItem(
     BuildContext context,
     Emoji emoji,
@@ -220,7 +215,6 @@ class _CustomEmojiPickerWidgetState
   }
 }
 
-// Utility function to show emoji picker
 void showCustomEmojiPicker(
   BuildContext context,
   WidgetRef ref, {
