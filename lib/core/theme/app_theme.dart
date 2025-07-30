@@ -25,6 +25,7 @@ class AppTheme {
       inputDecorationTheme: inputDecorationTheme(lightColorScheme),
       elevatedButtonTheme: elevatedButtonTheme(lightColorScheme),
       textButtonTheme: textButtonTheme(lightColorScheme),
+      outlinedButtonTheme: outlinedButtonTheme(lightColorScheme),
       textTheme: textTheme(lightColorScheme),
       datePickerTheme: datePickerTheme(lightColorScheme),
       timePickerTheme: timePickerTheme(lightColorScheme),
