@@ -88,25 +88,43 @@ class _QuillToolbarState extends State<QuillToolbar> {
   }
 
   List<Widget> _buildBlockStyleButtons() {
-    return [
+    final widgets = [
       _spacer(),
       _buildToolbarButton(Icons.format_quote, Attribute.blockQuote),
       _spacer(),
       _buildToolbarButton(Icons.code, Attribute.codeBlock),
     ];
+
+    // Only show link button if text is selected
+    if (_hasTextSelected()) {
+      widgets.addAll([
+        _spacer(),
+        _buildToolbarButton(Icons.insert_link, Attribute.link),
+      ]);
+    }
+
+    return widgets;
   }
 
-  Widget _buildToolbarButton(IconData icon, Attribute attribute) {
+  Widget _buildToolbarButton(
+    IconData icon,
+    Attribute attribute) {
     final theme = Theme.of(context);
     final borderRadius = BorderRadius.circular(8);
     final isActive = isAttributeActive(widget.controller, attribute);
     return InkWell(
       borderRadius: borderRadius,
-      onTap: () => toggleAttribute(
-        widget.controller,
-        attribute,
-        onButtonPressed: widget.onButtonPressed,
-      ),
+      onTap: () => attribute == Attribute.link
+          ? handleLinkAttribute(
+              widget.controller,
+              context,
+              onButtonPressed: widget.onButtonPressed,
+            )
+          : toggleAttribute(
+              widget.controller,
+              attribute,
+              onButtonPressed: widget.onButtonPressed,
+            ),
       child: Container(
         width: 40,
         height: 40,
@@ -134,6 +152,14 @@ class _QuillToolbarState extends State<QuillToolbar> {
   }
 
   Widget _spacer() => const SizedBox(width: 8);
+
+  bool _hasTextSelected() {
+    final selection = widget.controller.selection;
+    return selection.isValid && 
+           selection.baseOffset != selection.extentOffset &&
+           selection.baseOffset >= 0 && 
+           selection.extentOffset >= 0;
+  }
 
   @override
   void dispose() {

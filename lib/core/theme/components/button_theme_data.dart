@@ -20,3 +20,16 @@ TextButtonThemeData textButtonTheme(ColorScheme colorScheme) =>
         foregroundColor: colorScheme.onSurface.withValues(alpha: 0.6),
       ),
     );
+
+OutlinedButtonThemeData outlinedButtonTheme(ColorScheme colorScheme) =>
+    OutlinedButtonThemeData(
+      style: TextButton.styleFrom(
+        elevation: 0,
+        padding: const EdgeInsets.all(20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        side: BorderSide(
+          color: colorScheme.primary.withValues(alpha: 0.3),
+          width: 1,
+        ),
+      ),
+    );
