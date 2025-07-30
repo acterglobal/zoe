@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/animated_textfield_widget.dart';
+import 'package:zoey/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_secondary_button.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_icon_container_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 /// Shows a bottom sheet for inserting a link
@@ -39,13 +39,13 @@ class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
   final TextEditingController _urlController = TextEditingController();
   String? _errorText;
 
-  void _validateAndSubmit() {
+  void _validateUrl() {
     final url = _urlController.text.trim();
     if (CommonUtils.isValidUrl(url)) {
       Navigator.of(context).pop(url);
     } else {
       setState(() {
-        _errorText = CommonUtils.getUrlErrorMessage(context, url);
+        _errorText = _getUrlErrorMessage(context, url);
       });
     }
   }
@@ -63,7 +63,7 @@ class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(child: ZoeIconContainer(icon: Icons.link_outlined, size: 72)),
+          Center(child: StyledIconContainer(icon: Icons.link_outlined, size: 72,borderRadius: BorderRadius.circular(36),)),
           const SizedBox(height: 24),
           buildInsertLinkText(),
           const SizedBox(height: 16),
@@ -71,7 +71,7 @@ class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
             controller: _urlController,
             errorText: _errorText,
             onErrorChanged: (error) => setState(() => _errorText = error),
-            onSubmitted: _validateAndSubmit,
+            onSubmitted: _validateUrl,
           ),
           const SizedBox(height: 24),
           buildActionButtons(),
@@ -111,7 +111,7 @@ class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
         SizedBox(
           width: double.infinity,
           child: ZoePrimaryButton(
-            onPressed: _validateAndSubmit,
+            onPressed: _validateUrl,
             text: L10n.of(context).insertLink,
             showShimmer: false,
             icon: Icons.link_outlined,
@@ -128,6 +128,22 @@ class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
         ),
       ],
     );
+  }
+
+/// get specific error message for url validation
+  static String _getUrlErrorMessage(BuildContext context, String url) {
+    if (url.isEmpty) {
+      return L10n.of(context).urlCannotBeEmpty;
+    }
+    if (url.contains(' ')) {
+      return L10n.of(context).urlCannotContainSpaces;
+    }
+
+    if (!CommonUtils.isValidUrl(url)) {
+      return L10n.of(context).pleaseEnterAValidURL;
+    }
+
+    return L10n.of(context).pleaseEnterAValidURL;
   }
 
   @override

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
 
 class CommonUtils {
   static String generateRandomId() => const Uuid().v4();
@@ -62,21 +61,5 @@ class CommonUtils {
     }
 
     return false;
-  }
-
-  /// get specific error message for url validation
-  static String getUrlErrorMessage(BuildContext context, String url) {
-    if (url.isEmpty) {
-      return L10n.of(context).urlCannotBeEmpty;
-    }
-    if (url.contains(' ')) {
-      return L10n.of(context).urlCannotContainSpaces;
-    }
-
-    if (!isValidUrl(url)) {
-      return L10n.of(context).pleaseEnterAValidURL;
-    }
-
-    return L10n.of(context).pleaseEnterAValidURL;
   }
 }
