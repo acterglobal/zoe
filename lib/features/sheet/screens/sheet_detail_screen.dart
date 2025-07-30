@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:zoey/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/paper_sheet_background_widget.dart';
@@ -94,7 +95,15 @@ class SheetDetailScreen extends ConsumerWidget {
               isEditing: isEditing,
               emoji: sheet.emoji,
               size: 32,
-              onTap: (emoji) => updateSheetEmoji(ref, sheetId, emoji),
+              onTap: (emoji) {
+                showCustomEmojiPicker(
+                  context,
+                  ref,
+                  onEmojiSelected: (emoji) {
+                    updateSheetEmoji(ref, sheetId, emoji);
+                  },
+                );
+              },
             ),
             const SizedBox(width: 4),
             Expanded(

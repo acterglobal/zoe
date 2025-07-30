@@ -128,5 +128,11 @@
     "urlCannotContainSpaces": "લિંકમાં જગ્યાનો નહીં હોઈ શકે",
     "@urlCannotContainSpaces": {},
     "pleaseEnterAValidDomainName": "કૃપા કરીને એક સાચું ડોમેન નામ દાખલ કરો",
-    "@pleaseEnterAValidDomainName": {}
-} 
+    "@pleaseEnterAValidDomainName": {},
+    "chooseEmoji": "ઇમોજી પસંદ કરો",
+    "@chooseEmoji": {},
+    "searchEmojis": "ઇમોજી શોધો...",
+    "@searchEmojis": {},
+    "noEmojisFound": "ઇમોજી મળ્યું નથી",
+    "@noEmojisFound": {}
+}

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
@@ -18,6 +17,8 @@ import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 import 'package:zoey/features/text/widgets/text_list_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
+
+import '../../../common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 
 class ListWidget extends ConsumerWidget {
   final String listId;
@@ -69,9 +70,13 @@ class ListWidget extends ConsumerWidget {
     return EmojiWidget(
       isEditing: isEditing,
       emoji: list.emoji ?? '🔸',
-      onTap: (currentEmoji) => ref
-          .read(listsrovider.notifier)
-          .updateListEmoji(listId, CommonUtils.getNextEmoji(currentEmoji)),
+      onTap: (currentEmoji) => showCustomEmojiPicker(
+        context,
+        ref,
+        onEmojiSelected: (emoji) {
+          ref.read(listsrovider.notifier).updateListEmoji(listId, emoji);
+        },
+      ),
     );
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/utils/common_utils.dart';
+import 'package:zoey/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -75,9 +75,13 @@ class TextWidget extends ConsumerWidget {
     return EmojiWidget(
       isEditing: isEditing,
       emoji: emoji ?? '𝑻',
-      onTap: (currentEmoji) => ref
-          .read(textListProvider.notifier)
-          .updateTextEmoji(textId, CommonUtils.getNextEmoji(currentEmoji)),
+      onTap: (currentEmoji) => showCustomEmojiPicker(
+        context,
+        ref,
+        onEmojiSelected: (emoji) {
+          ref.read(textListProvider.notifier).updateTextEmoji(textId, emoji);
+        },
+      ),
     );
   }
 

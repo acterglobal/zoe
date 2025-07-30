@@ -128,5 +128,11 @@
     "urlCannotContainSpaces": "URL cannot contain spaces",
     "@urlCannotContainSpaces": {},
     "pleaseEnterAValidDomainName": "Please enter a valid domain name",
-    "@pleaseEnterAValidDomainName": {}
-}   
+    "@pleaseEnterAValidDomainName": {},
+    "chooseEmoji": "Choose Emoji",
+    "@chooseEmoji": {},
+    "searchEmojis": "Search emojis...",
+    "@searchEmojis": {},
+    "noEmojisFound": "No emojis found",
+    "@noEmojisFound": {}
+}
