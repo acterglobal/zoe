@@ -24,9 +24,4 @@ class EmojiSearchNotifier extends StateNotifier<EmojiSearchState> {
       state = state.copyWith(searchResults: []);
     }
   }
-
-  /// Clear search state
-  void clearSearch() {
-    state = const EmojiSearchState();
-  }
 }
