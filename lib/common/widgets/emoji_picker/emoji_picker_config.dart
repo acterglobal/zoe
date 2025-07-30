@@ -5,23 +5,19 @@ import 'package:flutter/material.dart';
 /// Emoji search state management
 class EmojiSearchState {
   final List<Emoji> searchResults;
-  final bool isSearching;
   final String query;
 
   const EmojiSearchState({
     this.searchResults = const [],
-    this.isSearching = false,
     this.query = '',
   });
 
   EmojiSearchState copyWith({
     List<Emoji>? searchResults,
-    bool? isSearching,
     String? query,
   }) {
     return EmojiSearchState(
       searchResults: searchResults ?? this.searchResults,
-      isSearching: isSearching ?? this.isSearching,
       query: query ?? this.query,
     );
   }

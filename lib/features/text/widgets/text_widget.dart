@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/widgets/custom_emoji_picker_widget.dart';
+import 'package:zoey/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';

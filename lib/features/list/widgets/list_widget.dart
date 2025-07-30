@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
@@ -18,6 +17,8 @@ import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 import 'package:zoey/features/text/widgets/text_list_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
+
+import '../../../common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 
 class ListWidget extends ConsumerWidget {
   final String listId;
@@ -78,7 +79,7 @@ class ListWidget extends ConsumerWidget {
       ),
     );
   }
-  
+
   // Builds the list title
   Widget _buildListTitle(BuildContext context, WidgetRef ref, String title) {
     return ZoeInlineTextEditWidget(

@@ -2,6 +2,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/emoji_picker/emoji_picker_config.dart';
+import 'package:zoey/common/widgets/emoji_picker/providers/emoji_search_provider.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
@@ -18,7 +19,6 @@ class CustomEmojiPickerWidget extends ConsumerStatefulWidget {
 class _CustomEmojiPickerWidgetState
     extends ConsumerState<CustomEmojiPickerWidget> {
   final TextEditingController searchController = TextEditingController();
-  EmojiSearchState searchState = const EmojiSearchState();
 
   @override
   void dispose() {
@@ -27,36 +27,7 @@ class _CustomEmojiPickerWidgetState
   }
 
   Future<void> searchEmoji(String query) async {
-    if (query.isEmpty) {
-      setState(() {
-        searchState = const EmojiSearchState();
-      });
-      return;
-    }
-
-    setState(() {
-      searchState = searchState.copyWith(isSearching: true, query: query);
-    });
-
-    try {
-      final results = await EmojiPickerUtils().searchEmoji(
-        query,
-        defaultEmojiSet,
-      );
-      setState(() {
-        searchState = searchState.copyWith(
-          searchResults: results,
-          isSearching: false,
-        );
-      });
-    } catch (e) {
-      setState(() {
-        searchState = searchState.copyWith(
-          searchResults: [],
-          isSearching: false,
-        );
-      });
-    }
+    await ref.read(emojiSearchProvider.notifier).searchEmoji(query);
   }
 
   @override
@@ -83,6 +54,8 @@ class _CustomEmojiPickerWidgetState
   }
 
   Widget _buildContent(BuildContext context) {
+    final searchState = ref.watch(emojiSearchProvider);
+    
     if (searchState.query.isNotEmpty) {
       return _buildSearchResultsWidget(
         context,
@@ -153,9 +126,6 @@ class _CustomEmojiPickerWidgetState
     EmojiSearchState searchState,
     Function(String emoji) onEmojiSelected,
   ) {
-    if (searchState.isSearching) {
-      return const Center(child: CircularProgressIndicator());
-    }
 
     if (searchState.searchResults.isEmpty) {
       return _buildEmptySearchWidget(context);
