@@ -34,14 +34,13 @@ class ZoeInlineTextEditWidget extends StatefulWidget {
 class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
   late TextEditingController controller;
   late FocusNode textFieldFocusNode;
-  late FocusNode keyboardFocusNode;
 
   @override
   void initState() {
     super.initState();
     controller = TextEditingController(text: widget.text);
     textFieldFocusNode = FocusNode();
-    keyboardFocusNode = FocusNode();
+
     // Request focus on initial build if autoFocus is true
     if (widget.autoFocus && widget.isEditing) {
       textFieldFocusNode.requestFocus();
@@ -61,7 +60,6 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
   void dispose() {
     controller.dispose();
     textFieldFocusNode.dispose();
-    keyboardFocusNode.dispose();
     super.dispose();
   }
 
