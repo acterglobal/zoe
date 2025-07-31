@@ -3,7 +3,7 @@ import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_notifers.dart';
 
 final taskListProvider = StateNotifierProvider<TaskNotifier, List<TaskModel>>(
-  (ref) => TaskNotifier(),
+  (ref) => TaskNotifier(ref),
 );
 
 final taskProvider = Provider.family<TaskModel?, String>((ref, taskId) {
@@ -17,5 +17,10 @@ final taskByParentProvider = Provider.family<List<TaskModel>, String>((
   parentId,
 ) {
   final taskList = ref.watch(taskListProvider);
-  return taskList.where((t) => t.parentId == parentId).toList();
+  final filteredTasks = taskList.where((t) => t.parentId == parentId).toList();
+  filteredTasks.sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+  return filteredTasks;
 });
+
+// Focus management for newly added tasks
+final taskFocusProvider = StateProvider<String?>((ref) => null);

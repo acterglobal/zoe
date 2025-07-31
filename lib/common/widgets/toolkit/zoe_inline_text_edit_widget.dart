@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class ZoeInlineTextEditWidget extends StatefulWidget {
   final String? text;
@@ -62,34 +61,32 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
   void dispose() {
     controller.dispose();
     textFieldFocusNode.dispose();
+    keyboardFocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return widget.isEditing
-        ? KeyboardListener(
-            focusNode: keyboardFocusNode,
-            onKeyEvent: (KeyEvent event) {
-              if (isBackspacePressed(event) && controller.text.isEmpty) {
-                widget.onBackspaceEmptyText?.call();
+        ? TextField(
+            focusNode: textFieldFocusNode,
+            controller: controller,
+            style: widget.textStyle,
+            autofocus: widget.autoFocus,
+            decoration: InputDecoration(
+              hintText: widget.hintText,
+              isDense: true,
+              contentPadding: EdgeInsets.zero,
+            ),
+            textInputAction: widget.textInputAction,
+            maxLines: null,
+            onChanged: (value) {
+              widget.onTextChanged(value);
+              if (value.isEmpty && widget.onBackspaceEmptyText != null) {
+                widget.onBackspaceEmptyText!();
               }
             },
-            child: TextField(
-              focusNode: textFieldFocusNode,
-              controller: controller,
-              style: widget.textStyle,
-              autofocus: widget.autoFocus,
-              decoration: InputDecoration(
-                hintText: widget.hintText,
-                isDense: true,
-                contentPadding: EdgeInsets.zero,
-              ),
-              textInputAction: widget.textInputAction,
-              maxLines: null,
-              onChanged: widget.onTextChanged,
-              onSubmitted: (value) => widget.onEnterPressed?.call(),
-            ),
+            onSubmitted: (value) => widget.onEnterPressed?.call(),
           )
         : SelectableText(
             controller.text.isEmpty ? (widget.hintText ?? '') : controller.text,
@@ -98,11 +95,5 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
                 : widget.textStyle,
             onTap: widget.onTapText,
           );
-  }
-
-  bool isBackspacePressed(KeyEvent event) {
-    return event is KeyDownEvent &&
-        (event.logicalKey == LogicalKeyboardKey.backspace ||
-            event.physicalKey == PhysicalKeyboardKey.backspace);
   }
 }

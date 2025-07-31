@@ -133,7 +133,9 @@ class ListWidget extends ConsumerWidget {
                   .addBullet(parentId: listId, sheetId: sheetId);
               break;
             case ContentType.task:
-              ref.read(taskListProvider.notifier).addTask('', listId, sheetId);
+              ref
+                  .read(taskListProvider.notifier)
+                  .addTask(parentId: listId, sheetId: sheetId);
               break;
             case ContentType.event:
               ref

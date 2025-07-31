@@ -19,16 +19,18 @@ class TaskWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final task = ref.watch(taskProvider(taskId));
+    final focusedTaskId = ref.watch(taskFocusProvider);
+    final shouldFocus = focusedTaskId == taskId;
     if (task == null) return const SizedBox.shrink();
 
-    return _buildTaskItemContent(context, ref, task, isEditing);
+    return _buildTaskItemContent(context, ref, task, shouldFocus);
   }
 
   Widget _buildTaskItemContent(
     BuildContext context,
     WidgetRef ref,
     TaskModel task,
-    bool isEditing,
+    bool shouldFocus,
   ) {
     return Row(
       children: [
@@ -38,13 +40,7 @@ class TaskWidget extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildTaskItemTitle(
-                context,
-                ref,
-                task.title,
-                task.isCompleted,
-                isEditing,
-              ),
+              _buildTaskItemTitle(context, ref, task, shouldFocus),
               const SizedBox(height: 4),
               _buildTaskItemDueDate(context, ref, task.dueDate),
             ],
@@ -60,22 +56,30 @@ class TaskWidget extends ConsumerWidget {
   Widget _buildTaskItemTitle(
     BuildContext context,
     WidgetRef ref,
-    String title,
-    bool isCompleted,
-    bool isEditing,
+    TaskModel task,
+    bool shouldFocus,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).taskItem,
-      text: title,
+      text: task.title,
       isEditing: isEditing,
+      autoFocus: shouldFocus,
+      textInputAction: TextInputAction.next,
       textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-        decoration: isCompleted
+        decoration: task.isCompleted
             ? TextDecoration.lineThrough
             : TextDecoration.none,
       ),
       onTextChanged: (value) {
         ref.read(taskListProvider.notifier).updateTaskTitle(taskId, value);
       },
+      onEnterPressed: () => ref
+          .read(taskListProvider.notifier)
+          .addTask(
+            parentId: task.parentId,
+            sheetId: task.sheetId,
+            orderIndex: task.orderIndex + 1,
+          ),
       onBackspaceEmptyText: () =>
           ref.read(taskListProvider.notifier).deleteTask(taskId),
       onTapText: () => context.push(
