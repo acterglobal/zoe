@@ -72,6 +72,7 @@ class BulletItemWidget extends ConsumerWidget {
       isEditing: isEditing,
       text: bulletItem.title,
       textStyle: Theme.of(context).textTheme.bodyMedium,
+      textInputAction: TextInputAction.next,
       autoFocus: autoFocus,
       onTextChanged: (value) {
         ref
