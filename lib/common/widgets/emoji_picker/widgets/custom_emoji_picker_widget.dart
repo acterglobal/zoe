@@ -55,7 +55,7 @@ class _CustomEmojiPickerWidgetState
 
   Widget _buildContent(BuildContext context) {
     final searchState = ref.watch(emojiSearchProvider);
-    
+
     if (searchState.query.isNotEmpty) {
       return _buildSearchResultsWidget(
         context,
@@ -126,7 +126,6 @@ class _CustomEmojiPickerWidgetState
     EmojiSearchState searchState,
     Function(String emoji) onEmojiSelected,
   ) {
-
     if (searchState.searchResults.isEmpty) {
       return _buildEmptySearchWidget(context);
     }
@@ -201,5 +200,8 @@ void showCustomEmojiPicker(
       ),
       child: CustomEmojiPickerWidget(onEmojiSelected: onEmojiSelected),
     ),
-  );
+  ).whenComplete(() {
+    // Reset emoji search when bottom sheet is dismissed
+    ref.read(emojiSearchProvider.notifier).resetEmojiSearch();
+  });
 }
