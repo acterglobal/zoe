@@ -22,19 +22,23 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  
+  @override
+  void initState() {
+    super.initState();
+    _setLoginUser();
+  }
+
+  Future<void> _setLoginUser() async {
+    final isUserLoggedIn = await ref.read(isUserLoggedInProvider.future);
+    if (!isUserLoggedIn) {
+      final prefsService = PreferencesService();
+      await prefsService.setLoginUserId('user_1');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Use the provider to check login status and set user if needed
-    ref.listen<AsyncValue<bool>>(isUserLoggedInProvider, (previous, next) {
-      next.whenData((isLoggedIn) async {
-        if (!isLoggedIn) {
-          final prefsService = PreferencesService();
-          await prefsService.setLoginUserId('user_1');
-        }
-      });
-    });
-
     return Scaffold(
       floatingActionButton: _buildFloatingActionButton(context),
       body: AnimatedBackgroundWidget(
