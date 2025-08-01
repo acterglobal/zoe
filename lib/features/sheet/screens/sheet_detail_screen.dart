@@ -125,8 +125,10 @@ class SheetDetailScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        _buildUsersCountWidget(context, usersInSheet),
-        const SizedBox(height: 16),
+        if (usersInSheet.isNotEmpty) ...[
+          _buildUsersCountWidget(context, usersInSheet),
+          const SizedBox(height: 8),
+        ],
         ZoeHtmlTextEditWidget(
           hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
@@ -146,7 +148,7 @@ class SheetDetailScreen extends ConsumerWidget {
     BuildContext context,
     List<String> usersInSheet,
   ) {
-    if (usersInSheet.isEmpty) return const SizedBox.shrink();
+
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
 
