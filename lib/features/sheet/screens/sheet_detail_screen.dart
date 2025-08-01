@@ -126,7 +126,7 @@ class SheetDetailScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         if (usersInSheet.isNotEmpty) ...[
-          _buildUsersCountWidget(context, usersInSheet),
+          _buildUsersCountWidget(context, usersInSheet, ref),
           const SizedBox(height: 8),
         ],
         ZoeHtmlTextEditWidget(
@@ -147,10 +147,12 @@ class SheetDetailScreen extends ConsumerWidget {
   Widget _buildUsersCountWidget(
     BuildContext context,
     List<String> usersInSheet,
+    WidgetRef ref,
   ) {
 
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
+    final userCount = usersInSheet.length;
 
     return GestureDetector(
       onTap: () {
@@ -158,7 +160,7 @@ class SheetDetailScreen extends ConsumerWidget {
           context: context,
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
-          builder: (context) => UserListWidget(sheetId: sheetId),
+          builder: (context) => UserListWidget(userIdList: listOfUsersBySheetIdProvider(sheetId)),
         );
       },
       child: Container(
@@ -181,7 +183,7 @@ class SheetDetailScreen extends ConsumerWidget {
             ),
             const SizedBox(width: 6),
             Text(
-              '${usersInSheet.length} ${usersInSheet.length == 1 ? l10n.user : l10n.users}',
+              '$userCount ${userCount == 1 ? l10n.user : l10n.users}',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w500,
