@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 import 'package:zoey/features/users/widgets/user_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class UserListWidget extends ConsumerWidget {
-  final String sheetId;
+  final ProviderBase<List<String>> userIdList;
 
-  const UserListWidget({super.key, required this.sheetId});
+  const UserListWidget({super.key, required this.userIdList});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final users = ref.watch(listOfUsersBySheetIdProvider(sheetId));
-    if (users.isEmpty) return const SizedBox.shrink();
     final theme = Theme.of(context);
-
+    final userIds = ref.watch(userIdList);
+   
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
@@ -47,12 +45,12 @@ class UserListWidget extends ConsumerWidget {
             shrinkWrap: true,
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: users.length,
+            itemCount: userIds.length,
             itemBuilder: (context, index) {
-              final user = users[index];
+              final userId = userIds[index];
               return Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: UserWidget(key: ValueKey(user), userId: user),
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
+                child: UserWidget(key: ValueKey(userId), userId: userId),
               );
             },
           ),

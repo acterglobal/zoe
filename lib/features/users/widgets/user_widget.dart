@@ -12,7 +12,7 @@ class UserWidget extends ConsumerWidget {
     if (user == null) return const SizedBox.shrink();
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 6),
       margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -21,19 +21,7 @@ class UserWidget extends ConsumerWidget {
           width: 1,
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(user.name),
-          IconButton(
-            padding: EdgeInsets.zero,
-            onPressed: () {
-              ref.read(userListProvider.notifier).deleteUser(userId);
-            },
-            icon: Icon(Icons.delete_outline_outlined, size: 16, color: theme.colorScheme.error),
-          ),
-        ],
-      ), 
+      child: Text(user.name, style: theme.textTheme.bodyMedium),
     );
   }
 }
