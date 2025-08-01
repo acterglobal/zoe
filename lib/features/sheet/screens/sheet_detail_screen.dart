@@ -84,7 +84,7 @@ class SheetDetailScreen extends ConsumerWidget {
   ) {
     final sheet = ref.watch(sheetProvider(sheetId));
     if (sheet == null) return const SizedBox.shrink();
-
+    final usersInSheet = ref.watch(listOfUsersBySheetIdProvider(sheetId));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -125,6 +125,8 @@ class SheetDetailScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
+        _buildUsersCountWidget(context, usersInSheet),
+        const SizedBox(height: 16),
         ZoeHtmlTextEditWidget(
           hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
@@ -136,6 +138,44 @@ class SheetDetailScreen extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+
+  /// users count widget
+  Widget _buildUsersCountWidget(
+    BuildContext context,
+    List<String> usersInSheet,
+  ) {
+    if (usersInSheet.isEmpty) return const SizedBox.shrink();
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: theme.colorScheme.primary.withValues(alpha: 0.1),
+        border: Border.all(
+          color: theme.colorScheme.primary.withValues(alpha: 0.2),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.people_rounded,
+            size: 16,
+            color: theme.colorScheme.primary,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            '${usersInSheet.length} ${usersInSheet.length == 1 ? 'user' : 'users'}',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.primary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
