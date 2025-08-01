@@ -7,7 +7,7 @@ import 'package:zoey/features/sheet/models/sheet_model.dart';
 class TaskNotifier extends StateNotifier<List<TaskModel>> {
   TaskNotifier() : super(tasks);
 
-  void addTask(String title, String parentId, String sheetId, {List<String>? assignedUsers}) async {
+  void addTask(String title, String parentId, String sheetId) async {
     final createdBy = await PreferencesService().getLoginUserId();
     final newTask = TaskModel(
       parentId: parentId,
@@ -16,7 +16,7 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
       dueDate: DateTime.now(),
       isCompleted: false,
       createdBy: createdBy,
-      assignedUsers: assignedUsers ?? [],
+      assignedUsers: [],
     );
     state = [...state, newTask];
   }
