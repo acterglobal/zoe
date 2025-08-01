@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/features/users/providers/user_providers.dart';
 import 'package:zoey/features/users/widgets/user_widget.dart';
 
 class UserListWidget extends ConsumerWidget {
-  final String sheetId;
   const UserListWidget({
     super.key,
-    required this.sheetId,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final users = [];
+    final users = ref.watch(userListProvider);
     if (users.isEmpty) return const SizedBox.shrink();
 
     return ListView.builder(
