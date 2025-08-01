@@ -15,6 +15,7 @@ final bulletList = [
       htmlText:
           '<p>Each sheet can be customized with meaningful icons and descriptions to help you organize different aspects of your life</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-2',
@@ -28,6 +29,7 @@ final bulletList = [
       htmlText:
           '<p>Mix and match different content types within a single sheet to create the perfect workspace for your needs</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-3',
@@ -41,6 +43,7 @@ final bulletList = [
       htmlText:
           '<p>No need to switch modes or open separate editors - just tap and start typing</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-4',
@@ -54,6 +57,7 @@ final bulletList = [
       htmlText:
           '<p>Everything is saved automatically as you work, so you can focus on your content without worrying about losing progress</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-5',
@@ -67,6 +71,7 @@ final bulletList = [
       htmlText:
           '<p>Your central command center where you can quickly navigate between different workspaces</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-6',
@@ -80,6 +85,7 @@ final bulletList = [
       htmlText:
           '<p>Easily reorganize your content by dragging items to their new positions</p>',
     ),
+    createdBy: '',
   ),
 
   // Best Practices & Pro Tips
@@ -95,6 +101,7 @@ final bulletList = [
       htmlText:
           '<p>Clear titles and descriptions help you find information quickly and provide context for future reference</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-8',
@@ -108,6 +115,7 @@ final bulletList = [
       htmlText:
           '<p>Due dates help you prioritize and maintain momentum on your goals</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-9',
@@ -121,6 +129,7 @@ final bulletList = [
       htmlText:
           '<p>Schedule focused work sessions, meetings, and deadlines to better manage your time</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-10',
@@ -134,6 +143,7 @@ final bulletList = [
       htmlText:
           '<p>Icons serve as visual cues that make navigation faster and more intuitive</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-11',
@@ -147,6 +157,7 @@ final bulletList = [
       htmlText:
           '<p>Periodic maintenance ensures your workspace continues to serve your evolving needs</p>',
     ),
+    createdBy: '',
   ),
 
   // What You Can Do Next
@@ -162,6 +173,7 @@ final bulletList = [
       htmlText:
           '<p>Start with something you\'re working on to see how Zoey can help organize your thoughts and tasks</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-13',
@@ -175,6 +187,7 @@ final bulletList = [
       htmlText:
           '<p>Use tasks and events to plan your week and track your progress</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-14',
@@ -188,6 +201,7 @@ final bulletList = [
       htmlText:
           '<p>Use text blocks and lists to capture and organize information you reference frequently</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-15',
@@ -201,6 +215,7 @@ final bulletList = [
       htmlText:
           '<p>Find the arrangement that works best for your thinking and working style</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-item-16',
@@ -214,6 +229,7 @@ final bulletList = [
       htmlText:
           '<p>Adjust themes and preferences to make Zoey feel like your own personal workspace</p>',
     ),
+    createdBy: '',
   ),
 
   // Community Organization (sheet-2) bullets
@@ -230,6 +246,7 @@ final bulletList = [
       htmlText:
           '<p>Soccer, baseball, basketball teams - coordinate snacks, equipment, carpools, and game schedules with ease</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-community-groups-2',
@@ -243,6 +260,7 @@ final bulletList = [
       htmlText:
           '<p>PTA organizations, classroom parents, field trip volunteers - manage fundraisers, events, and communications</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-community-groups-3',
@@ -256,6 +274,7 @@ final bulletList = [
       htmlText:
           '<p>Block parties, community gardens, safety watch groups - organize events and maintain resident communications</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-community-groups-4',
@@ -269,6 +288,7 @@ final bulletList = [
       htmlText:
           '<p>Charity groups, service clubs, religious committees - coordinate service projects, fundraising, and meetings</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-community-groups-5',
@@ -282,6 +302,7 @@ final bulletList = [
       htmlText:
           '<p>Book clubs, gardening clubs, photography groups - plan meetups, share resources, and organize group activities</p>',
     ),
+    createdBy: '',
   ),
 
   // Parent Contact Information
@@ -297,6 +318,7 @@ final bulletList = [
       htmlText:
           '<p>Main organizer for team events, snack coordination, and parent communications</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-community-contacts-2',
@@ -310,6 +332,7 @@ final bulletList = [
       htmlText:
           '<p>Practice schedules, game strategies, player development questions</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-community-contacts-3',
@@ -322,6 +345,7 @@ final bulletList = [
       htmlText:
           '<p>Team equipment, uniform orders, field setup coordination</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-community-contacts-4',
@@ -335,6 +359,7 @@ final bulletList = [
       htmlText:
           '<p>School office for emergencies, facility issues, or urgent communications</p>',
     ),
+    createdBy: '',
   ),
 
   // Inclusive Communication (sheet-3) bullets
@@ -351,6 +376,7 @@ final bulletList = [
       htmlText:
           '<p>Busy professionals miss 47+ messages during meetings, then feel lost and don\'t know how to catch up or contribute</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-inclusive-excluded-2',
@@ -364,6 +390,7 @@ final bulletList = [
       htmlText:
           '<p>Nurses, security guards, and other shift workers sleep when the group is most active, missing key decisions</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-inclusive-excluded-3',
@@ -377,6 +404,7 @@ final bulletList = [
       htmlText:
           '<p>Recent movers or new members don\'t know how things usually work, when to speak up, or how to contribute effectively</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-inclusive-excluded-4',
@@ -390,6 +418,7 @@ final bulletList = [
       htmlText:
           '<p>People who intentionally limit phone usage check messages only 1-2 times daily, missing time-sensitive information</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-inclusive-excluded-5',
@@ -403,6 +432,7 @@ final bulletList = [
       htmlText:
           '<p>Quieter community members have valuable contributions but feel overwhelmed by fast-moving group conversations</p>',
     ),
+    createdBy: '',
   ),
 
   // Real Success Stories
@@ -418,6 +448,7 @@ final bulletList = [
       htmlText:
           '<p>Maria works 12-hour hospital shifts but gets daily summaries, can react with 👋 to volunteer when available, never feels left out</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-inclusive-success-2',
@@ -431,6 +462,7 @@ final bulletList = [
       htmlText:
           '<p>David only has his daughter every other weekend but stays involved through clear task lists and flexible timing</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-inclusive-success-3',
@@ -444,6 +476,7 @@ final bulletList = [
       htmlText:
           '<p>Jennifer moved in last month but immediately understood how to help with community event through clear context and simple participation</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-inclusive-success-4',
@@ -457,6 +490,7 @@ final bulletList = [
       htmlText:
           '<p>Alex travels for work but receives timezone-friendly summaries and can contribute when back in town</p>',
     ),
+    createdBy: '',
   ),
 
   // Benefits of Inclusive Communication
@@ -472,6 +506,7 @@ final bulletList = [
       htmlText:
           '<p>When people feel informed and know how to contribute, more hands are available for community tasks</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-inclusive-benefits-2',
@@ -485,6 +520,7 @@ final bulletList = [
       htmlText:
           '<p>Inclusive systems prevent burnout by distributing responsibilities across more community members</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-inclusive-benefits-3',
@@ -498,6 +534,7 @@ final bulletList = [
       htmlText:
           '<p>When everyone feels valued and included, the community becomes more cohesive and supportive</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-inclusive-benefits-4',
@@ -511,6 +548,7 @@ final bulletList = [
       htmlText:
           '<p>Inclusive planning leads to better-attended, more successful events with broader community support</p>',
     ),
+    createdBy: '',
   ),
 
   // Information Management (sheet-4) bullets
@@ -527,6 +565,7 @@ final bulletList = [
       htmlText:
           '<p>All time-based information in one accessible place - no more "what time was that again?" questions</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-info-categories-2',
@@ -540,6 +579,7 @@ final bulletList = [
       htmlText:
           '<p>Centralized directory of all important phone numbers and contact details, always current and accessible</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-info-categories-3',
@@ -553,6 +593,7 @@ final bulletList = [
       htmlText:
           '<p>Important guidelines, team rules, and procedures that don\'t change often but need to be easily referenced</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-info-categories-4',
@@ -566,6 +607,7 @@ final bulletList = [
       htmlText:
           '<p>Detailed lists of required equipment, uniform specifications, and what parents need to provide</p>',
     ),
+    createdBy: '',
   ),
 
   // Team Roster & Jersey Numbers
@@ -581,6 +623,7 @@ final bulletList = [
       htmlText:
           '<p>Starting midfielder, excellent ball control and passing skills</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-info-roster-2',
@@ -593,6 +636,7 @@ final bulletList = [
       htmlText:
           '<p>Forward position, team\'s leading scorer and good teammate</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-info-roster-3',
@@ -606,6 +650,7 @@ final bulletList = [
       htmlText:
           '<p>Defender, strong tackler and great at organizing the back line</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-info-roster-4',
@@ -619,6 +664,7 @@ final bulletList = [
       htmlText:
           '<p>Goalkeeper, quick reflexes and excellent communication with defense</p>',
     ),
+    createdBy: '',
   ),
 
   // Contact Directory
@@ -634,6 +680,7 @@ final bulletList = [
       htmlText:
           '<p>Head coach for practice questions, game strategy, and player development discussions</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-info-contacts-2',
@@ -647,6 +694,7 @@ final bulletList = [
       htmlText:
           '<p>Main point of contact for team organization, parent communications, and event coordination</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-info-contacts-3',
@@ -660,6 +708,7 @@ final bulletList = [
       htmlText:
           '<p>School main office for facility issues, emergency contacts, and administrative questions</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-info-contacts-4',
@@ -673,6 +722,7 @@ final bulletList = [
       htmlText:
           '<p>For reporting field conditions, requesting maintenance, or checking field availability</p>',
     ),
+    createdBy: '',
   ),
 
   // Group Visibility (sheet-5) bullets
@@ -689,6 +739,7 @@ final bulletList = [
       htmlText:
           '<p>Real-time tracking means every volunteer commitment is visible and nothing falls through the cracks</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-visibility-benefits-2',
@@ -702,6 +753,7 @@ final bulletList = [
       htmlText:
           '<p>Everyone sees the same information at the same time - no confusion about who\'s doing what</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-visibility-benefits-3',
@@ -715,6 +767,7 @@ final bulletList = [
       htmlText:
           '<p>Smart coordination prevents people from bringing the same items or signing up for the same tasks</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-visibility-benefits-4',
@@ -728,6 +781,7 @@ final bulletList = [
       htmlText:
           '<p>Quick status updates instead of digging through hundreds of chat messages to understand what\'s happening</p>',
     ),
+    createdBy: '',
   ),
 
   // Success Metrics
@@ -743,6 +797,7 @@ final bulletList = [
       htmlText:
           '<p>Clear visibility and easy participation lead to much higher follow-through on commitments</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-visibility-metrics-2',
@@ -756,6 +811,7 @@ final bulletList = [
       htmlText:
           '<p>Information is always visible and current, eliminating most coordination confusion</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-visibility-metrics-3',
@@ -769,6 +825,7 @@ final bulletList = [
       htmlText:
           '<p>When people can see clear ways to help and track their contributions, more families get involved</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-visibility-metrics-4',
@@ -782,6 +839,7 @@ final bulletList = [
       htmlText:
           '<p>Shared visibility means organizers don\'t have to track everything in their heads or answer the same questions repeatedly</p>',
     ),
+    createdBy: '',
   ),
 
   // Stress-Free Organizing (sheet-6) bullets
@@ -798,6 +856,7 @@ final bulletList = [
       htmlText:
           '<p>When organizing responsibilities keep you up at night, the mental load has become unsustainable</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-stress-warnings-2',
@@ -811,6 +870,7 @@ final bulletList = [
       htmlText:
           '<p>Anxiety about missing important information or forgetting commitments creates unhealthy phone habits</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-stress-warnings-3',
@@ -824,6 +884,7 @@ final bulletList = [
       htmlText:
           '<p>When loved ones comment on your stress levels, it\'s time to find better systems to support you</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-stress-warnings-4',
@@ -837,6 +898,7 @@ final bulletList = [
       htmlText:
           '<p>Scraps of paper, phone notes, random reminders indicate you need a centralized system</p>',
     ),
+    createdBy: '',
   ),
 
   // Organizer Testimonials
@@ -853,6 +915,7 @@ final bulletList = [
       htmlText:
           '<p>Sarah, Soccer Team Manager: "Now I just add it to Zoey and know it\'ll get handled. Game changer for my mental health!"</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-stress-testimonials-2',
@@ -866,6 +929,7 @@ final bulletList = [
       htmlText:
           '<p>Mike, PTA Fundraising Chair: "I\'m not constantly checking my phone or making notes on random pieces of paper anymore."</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-stress-testimonials-3',
@@ -879,6 +943,7 @@ final bulletList = [
       htmlText:
           '<p>Jennifer, Volunteer Coordinator: "The system holds all the details so my brain doesn\'t have to. Such relief!"</p>',
     ),
+    createdBy: '',
   ),
 
   // Peace of Mind Features
@@ -894,6 +959,7 @@ final bulletList = [
       htmlText:
           '<p>Set it once and never worry again - the system remembers so you don\'t have to carry it mentally</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-stress-features-2',
@@ -907,6 +973,7 @@ final bulletList = [
       htmlText:
           '<p>People mark things complete with emoji - no more chasing updates or wondering about status</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-stress-features-3',
@@ -920,6 +987,7 @@ final bulletList = [
       htmlText:
           '<p>Everyone sees the same information, eliminating anxiety about whether important details were communicated</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-stress-features-4',
@@ -933,6 +1001,7 @@ final bulletList = [
       htmlText:
           '<p>Important information lives in organized, accessible places instead of your memory</p>',
     ),
+    createdBy: '',
   ),
 
   // Easy Handoffs (sheet-7) bullets
@@ -949,6 +1018,7 @@ final bulletList = [
       htmlText:
           '<p>When family crises hit, you need someone else to step in immediately with full context about your organizing responsibilities</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-handoff-scenarios-2',
@@ -962,6 +1032,7 @@ final bulletList = [
       htmlText:
           '<p>Unexpected work obligations conflict with community events you\'re organizing - handoff needs to be quick and complete</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-handoff-scenarios-3',
@@ -975,6 +1046,7 @@ final bulletList = [
       htmlText:
           '<p>Important family events you can\'t miss sometimes conflict with community responsibilities you\'ve committed to</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-handoff-scenarios-4',
@@ -988,6 +1060,7 @@ final bulletList = [
       htmlText:
           '<p>When you realize you\'ve committed to two things at once, you need to hand off one responsibility gracefully</p>',
     ),
+    createdBy: '',
   ),
 
   // Emergency Success Stories
@@ -1003,6 +1076,7 @@ final bulletList = [
       htmlText:
           '<p>Rebecca needed to focus on husband\'s recovery - three parents stepped up immediately because they could see exactly what needed doing</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-handoff-success-2',
@@ -1016,6 +1090,7 @@ final bulletList = [
       htmlText:
           '<p>Maria\'s boss sent her to Chicago the week of end-of-season party - another mom took over and pulled off amazing event</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-handoff-success-3',
@@ -1029,6 +1104,7 @@ final bulletList = [
       htmlText:
           '<p>Jennifer had to care for grandmother in emergency - neighbor took coordination role and ran perfect bake sale without missing anything</p>',
     ),
+    createdBy: '',
   ),
 
   // Handoff Process Steps
@@ -1044,6 +1120,7 @@ final bulletList = [
       htmlText:
           '<p>Crisis hits - work emergency, family illness, or scheduling conflicts that require your immediate attention</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-handoff-process-2',
@@ -1057,6 +1134,7 @@ final bulletList = [
       htmlText:
           '<p>Tap "Make [Parent] Organizer" in Zoey app - takes 30 seconds to transfer full responsibility</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-handoff-process-3',
@@ -1070,6 +1148,7 @@ final bulletList = [
       htmlText:
           '<p>They immediately see all sign-ups, contacts, timeline, and can interact with existing tasks right away</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-handoff-process-4',
@@ -1083,6 +1162,7 @@ final bulletList = [
       htmlText:
           '<p>WhatsApp chat receives notification about new organizer - everyone knows who\'s in charge now</p>',
     ),
+    createdBy: '',
   ),
 
   // Group Trip Planning (sheet-8) bullets
@@ -1099,6 +1179,7 @@ final bulletList = [
       htmlText:
           '<p>Spring timing perfect for cherry blossom season, incredible cuisine, and rich cultural experiences in Tokyo and Kyoto</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-trip-destinations-2',
@@ -1112,6 +1193,7 @@ final bulletList = [
       htmlText:
           '<p>Great for adventure seekers with beautiful beaches, canopy tours, and incredible biodiversity to explore</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-trip-destinations-3',
@@ -1125,6 +1207,7 @@ final bulletList = [
       htmlText:
           '<p>Perfect for nature lovers wanting dramatic scenery, geothermal experiences, and potential aurora viewing</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-trip-destinations-4',
@@ -1138,6 +1221,7 @@ final bulletList = [
       htmlText:
           '<p>Budget-friendly European option with charming cities, excellent wine, and beautiful coastal areas</p>',
     ),
+    createdBy: '',
   ),
 
   // Trip Expenses Tracker
@@ -1153,6 +1237,7 @@ final bulletList = [
       htmlText:
           '<p>Group flights to Tokyo booked through Delta, includes all 6 travelers with coordinated departure times</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-trip-expenses-2',
@@ -1166,6 +1251,7 @@ final bulletList = [
       htmlText:
           '<p>Shibuya district hotel with 3 rooms, walking distance to major attractions and transportation</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-trip-expenses-3',
@@ -1179,6 +1265,7 @@ final bulletList = [
       htmlText:
           '<p>Welcome dinner at traditional Japanese restaurant, included drinks and appetizers for the group</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-trip-expenses-4',
@@ -1192,6 +1279,7 @@ final bulletList = [
       htmlText:
           '<p>7-day rail passes for group, covers Tokyo-Kyoto travel and local transportation throughout trip</p>',
     ),
+    createdBy: '',
   ),
 
   // Group Travel Success Stories
@@ -1207,6 +1295,7 @@ final bulletList = [
       htmlText:
           '<p>Everyone contributed ideas, costs were crystal clear throughout planning, and they focused on fun instead of logistics stress</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-trip-success-2',
@@ -1220,6 +1309,7 @@ final bulletList = [
       htmlText:
           '<p>Zoey kept everyone informed about plans and expenses, accommodating different tech comfort levels from grandparents to teens</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-trip-success-3',
@@ -1233,6 +1323,7 @@ final bulletList = [
       htmlText:
           '<p>Team members pitched in ideas and stayed under budget while creating an amazing team building experience</p>',
     ),
+    createdBy: '',
   ),
   BulletModel(
     id: 'bullet-trip-success-4',
@@ -1246,5 +1337,6 @@ final bulletList = [
       htmlText:
           '<p>Hotel blocks, meal coordination, and transportation all handled smoothly using collaborative planning approach</p>',
     ),
+    createdBy: '',
   ),
 ];
