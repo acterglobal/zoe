@@ -22,6 +22,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  
   @override
   void initState() {
     super.initState();
@@ -29,7 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Future<void> _setLoginUser() async {
-    final isUserLoggedIn = await ref.watch(isUserLoggedInProvider.future);
+    final isUserLoggedIn = await ref.read(isUserLoggedInProvider.future);
     if (!isUserLoggedIn) {
       final prefsService = PreferencesService();
       await prefsService.setLoginUserId('user_1');

@@ -134,5 +134,11 @@
     "searchEmojis": "इमोजी खोजें...",
     "@searchEmojis": {},
     "noEmojisFound": "इमोजी नहीं मिला",
-    "@noEmojisFound": {}
+    "@noEmojisFound": {},
+    "usersInSheet": "इस शीट के सदस्य",
+    "@usersInSheet": {},
+    "user": "सदस्य",
+    "@user": {},
+    "users": "सदस्यों",
+    "@users": {}
 }

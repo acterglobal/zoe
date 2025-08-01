@@ -1,33 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/users/providers/user_providers.dart';
 import 'package:zoey/features/users/widgets/user_widget.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class UserListWidget extends ConsumerWidget {
-  const UserListWidget({
-    super.key,
-  });
+  final ProviderBase<List<String>> userIdList;
+
+  const UserListWidget({super.key, required this.userIdList});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final users = ref.watch(userListProvider);
-    if (users.isEmpty) return const SizedBox.shrink();
-
-    return ListView.builder(
-      shrinkWrap: true,
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: users.length,
-      itemBuilder: (context, index) {
-        final user = users[index];
-        return Padding(
-          padding: const EdgeInsets.only(left: 24),
-          child: UserWidget(
-            key: ValueKey(user.id),
-            userId: user.id,
+    final theme = Theme.of(context);
+    final userIds = ref.watch(userIdList);
+   
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.people_rounded,
+                  color: theme.colorScheme.primary,
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  L10n.of(context).usersInSheet,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+              ],
+            ),
           ),
-        );
-      },
+          ListView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: userIds.length,
+            itemBuilder: (context, index) {
+              final userId = userIds[index];
+              return Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
+                child: UserWidget(key: ValueKey(userId), userId: userId),
+              );
+            },
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 }

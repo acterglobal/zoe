@@ -134,5 +134,11 @@
     "searchEmojis": "Search emojis...",
     "@searchEmojis": {},
     "noEmojisFound": "No emojis found",
-    "@noEmojisFound": {}
+    "@noEmojisFound": {},
+    "usersInSheet": "Members of this sheet",
+    "@usersInSheet": {},
+    "user": "User",
+    "@user": {},
+    "users": "Users",
+    "@users": {}
 }

@@ -13,7 +13,8 @@ final sheetList = [
       htmlText:
           '<p>Your complete introduction to <strong>Zoey</strong>! This interactive guide walks you through all features, includes hands-on tasks to practice with, and provides tips for organizing your digital workspace effectively. Perfect for new users to get up and running quickly.</p>',
     ),
-    createdBy: '',
+    createdBy: 'user_1',
+    users: ['user_1', 'user_2', 'user_3'],
   ),
   SheetModel(
     id: 'sheet-2',
@@ -26,7 +27,8 @@ final sheetList = [
       htmlText:
           '<p>Perfect for sports teams, school parent groups, and community volunteers. Learn how to coordinate snacks, manage carpools, organize events, and keep everyone informed without the chaos of endless group chat scrolling.</p>',
     ),
-    createdBy: '',
+    createdBy: 'user_1',
+    users: [],
   ),
   SheetModel(
     id: 'sheet-3',
@@ -39,7 +41,8 @@ final sheetList = [
       htmlText:
           '<p>Ensure everyone feels included and stays informed. Discover strategies for accommodating busy parents, new members, and people with different communication styles so nobody gets left behind.</p>',
     ),
-    createdBy: '',
+    createdBy: 'user_3',
+    users: ['user_4', 'user_5', 'user_6'],
   ),
   SheetModel(
     id: 'sheet-4',
@@ -52,7 +55,8 @@ final sheetList = [
       htmlText:
           '<p>Stop losing important details in chat scroll. Learn how to create organized, searchable lists for schedules, contacts, rules, and resources that everyone can find and contribute to easily.</p>',
     ),
-    createdBy: '',
+    createdBy: 'user_4',
+    users: ['user_4', 'user_5', 'user_6'],
   ),
   SheetModel(
     id: 'sheet-5',
@@ -65,7 +69,8 @@ final sheetList = [
       htmlText:
           '<p>Keep everyone in the loop with real-time coordination. See who\'s doing what, track sign-ups instantly, and ensure nothing falls through the cracks with crystal clear communication.</p>',
     ),
-    createdBy: '',
+    createdBy: 'user_5',
+    users: ['user_4', 'user_5', 'user_6'],
   ),
   SheetModel(
     id: 'sheet-6',
@@ -78,7 +83,8 @@ final sheetList = [
       htmlText:
           '<p>Reduce the mental load and sleep peacefully knowing nothing will be forgotten. Learn how to set up automatic reminders, delegate tasks effectively, and organize without carrying everything in your head.</p>',
     ),
-    createdBy: '',
+    createdBy: 'user_6',
+    users: ['user_7', 'user_8'],
   ),
   SheetModel(
     id: 'sheet-7',
@@ -91,7 +97,8 @@ final sheetList = [
       htmlText:
           '<p>Life happens - emergencies, work trips, family obligations. Learn how to seamlessly pass organizing responsibilities to other parents with full context so events run smoothly even when you can\'t be there.</p>',
     ),
-    createdBy: '',
+    createdBy: 'user_7',
+    users: ['user_9'],
   ),
   SheetModel(
     id: 'sheet-8',
@@ -104,6 +111,7 @@ final sheetList = [
       htmlText:
           '<p>Plan amazing group adventures from brainstorming destinations to tracking expenses. Learn how to coordinate with friends, family, or colleagues to create unforgettable trips without the usual planning stress.</p>',
     ),
-    createdBy: '',
+    createdBy: 'user_8',
+    users: ['user_9', 'user_10'],
   ),
 ];

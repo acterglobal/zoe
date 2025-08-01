@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:zoey/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
@@ -14,6 +13,7 @@ import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/sheet/actions/delete_sheet.dart';
 import 'package:zoey/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
+import 'package:zoey/features/users/widgets/user_list_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
@@ -84,7 +84,7 @@ class SheetDetailScreen extends ConsumerWidget {
   ) {
     final sheet = ref.watch(sheetProvider(sheetId));
     if (sheet == null) return const SizedBox.shrink();
-
+    final usersInSheet = ref.watch(listOfUsersBySheetIdProvider(sheetId));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -125,6 +125,10 @@ class SheetDetailScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
+        if (usersInSheet.isNotEmpty) ...[
+          _buildUsersCountWidget(context, usersInSheet, ref),
+          const SizedBox(height: 8),
+        ],
         ZoeHtmlTextEditWidget(
           hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
@@ -136,6 +140,64 @@ class SheetDetailScreen extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+
+  /// users count widget
+  Widget _buildUsersCountWidget(
+    BuildContext context,
+    List<String> usersInSheet,
+    WidgetRef ref,
+  ) {
+
+    final theme = Theme.of(context);
+    final l10n = L10n.of(context);
+    final userCount = usersInSheet.length;
+
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) => UserListWidget(userIdList: listOfUsersBySheetIdProvider(sheetId)),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+          border: Border.all(
+            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.people_rounded,
+              size: 16,
+              color: theme.colorScheme.primary,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              '$userCount ${userCount == 1 ? l10n.user : l10n.users}',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 12,
+              color: theme.colorScheme.primary,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -11,3 +11,8 @@ final sheetProvider = Provider.family<SheetModel?, String>((ref, sheetId) {
   final sheetList = ref.watch(sheetListProvider);
   return sheetList.where((s) => s.id == sheetId).firstOrNull;
 });
+
+final listOfUsersBySheetIdProvider = Provider.family<List<String>, String>((ref, sheetId) {
+  final sheetList = ref.watch(sheetListProvider);
+  return sheetList.where((s) => s.id == sheetId).firstOrNull?.users ?? [];
+});
