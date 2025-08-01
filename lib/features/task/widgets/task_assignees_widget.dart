@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/widgets/task_assignee_avatar_widget.dart';
-import 'package:zoey/features/task/widgets/task_assignee_list_widget.dart';  
+import 'package:zoey/features/task/widgets/task_assignee_list_widget.dart';
 import 'package:zoey/features/users/providers/user_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
@@ -131,7 +131,9 @@ class TaskAssigneesWidget extends ConsumerWidget {
           if (isEditing) ...[
             const SizedBox(width: 8),
             GestureDetector(
-              onTap: () => _removeAssignee(ref, userId),
+              onTap: () => ref
+                  .read(taskListProvider.notifier)
+                  .removeAssignee(ref, task, userId),
               child: Icon(
                 Icons.close_rounded,
                 size: 16,
@@ -142,14 +144,5 @@ class TaskAssigneesWidget extends ConsumerWidget {
         ],
       ),
     );
-  }
-
-  void _removeAssignee(WidgetRef ref, String userId) {
-    final updatedAssignees = List<String>.from(task.assignedUsers)
-      ..remove(userId);
-
-    ref
-        .read(taskListProvider.notifier)
-        .updateTaskAssignees(task.id, updatedAssignees);
   }
 }

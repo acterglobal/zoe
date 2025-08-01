@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/core/preference_service/preferences_service.dart';
 import 'package:zoey/features/task/data/tasks.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
+import 'package:zoey/features/task/providers/task_providers.dart';
 
 class TaskNotifier extends StateNotifier<List<TaskModel>> {
   TaskNotifier() : super(tasks);
@@ -79,7 +81,34 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
   void updateTaskAssignees(String taskId, List<String> assignedUsers) {
     state = [
       for (final task in state)
-        if (task.id == taskId) task.copyWith(assignedUsers: assignedUsers) else task,
+        if (task.id == taskId)
+          task.copyWith(assignedUsers: assignedUsers)
+        else
+          task,
     ];
+  }
+
+  void addAssignee(
+    BuildContext context,
+    WidgetRef ref,
+    TaskModel task,
+    String userId,
+  ) {
+    final updatedAssignees = List<String>.from(task.assignedUsers)..add(userId);
+
+    ref
+        .read(taskListProvider.notifier)
+        .updateTaskAssignees(task.id, updatedAssignees);
+
+    Navigator.of(context).pop();
+  }
+
+  void removeAssignee(WidgetRef ref, TaskModel task, String userId) {
+    final updatedAssignees = List<String>.from(task.assignedUsers)
+      ..remove(userId);
+
+    ref
+        .read(taskListProvider.notifier)
+        .updateTaskAssignees(task.id, updatedAssignees);
   }
 }

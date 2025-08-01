@@ -9,12 +9,16 @@ class TaskAssigneeItemWidget extends ConsumerWidget {
   final UserModel user;
   final TaskModel task;
 
-  const TaskAssigneeItemWidget({super.key, required this.user, required this.task});
+  const TaskAssigneeItemWidget({
+    super.key,
+    required this.user,
+    required this.task,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       child: ListTile(
@@ -30,18 +34,10 @@ class TaskAssigneeItemWidget extends ConsumerWidget {
           color: theme.colorScheme.primary,
           size: 16,
         ),
-        onTap: () => _addAssignee(context, ref, user.id),
+        onTap: () => ref
+            .read(taskListProvider.notifier)
+            .addAssignee(context, ref, task, user.id),
       ),
     );
-  }
-
-  void _addAssignee(BuildContext context, WidgetRef ref, String userId) {
-    final updatedAssignees = List<String>.from(task.assignedUsers)..add(userId);
-
-    ref
-        .read(taskListProvider.notifier)
-        .updateTaskAssignees(task.id, updatedAssignees);
-
-    Navigator.of(context).pop();
   }
 }
