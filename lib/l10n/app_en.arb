@@ -140,5 +140,15 @@
     "user": "User",
     "@user": {},
     "users": "Users",
-    "@users": {}
+    "@users": {},
+    "assignees": "Assignees",
+    "@assignees": {},
+    "noAssigneesYet": "No assignees yet",
+    "@noAssigneesYet": {},  
+    "addAssignee": "Add Assignee",
+    "@addAssignee": {},
+    "available": "Available",
+    "@available": {},
+    "allUsersAreAlreadyAssignedToThisTask": "All users are already assigned to this task",
+    "@allUsersAreAlreadyAssignedToThisTask": {}
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/core/preference_service/preferences_service.dart';
 import 'package:zoey/features/task/data/tasks.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
@@ -6,13 +7,16 @@ import 'package:zoey/features/sheet/models/sheet_model.dart';
 class TaskNotifier extends StateNotifier<List<TaskModel>> {
   TaskNotifier() : super(tasks);
 
-  void addTask(String title, String parentId, String sheetId) {
+  void addTask(String title, String parentId, String sheetId, {List<String>? assignedUsers}) async {
+    final createdBy = await PreferencesService().getLoginUserId();
     final newTask = TaskModel(
       parentId: parentId,
       title: title,
       sheetId: sheetId,
       dueDate: DateTime.now(),
       isCompleted: false,
+      createdBy: createdBy,
+      assignedUsers: assignedUsers ?? [],
     );
     state = [...state, newTask];
   }
@@ -69,6 +73,13 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
     state = [
       for (final task in state)
         if (task.id == taskId) task.copyWith(orderIndex: orderIndex) else task,
+    ];
+  }
+
+  void updateTaskAssignees(String taskId, List<String> assignedUsers) {
+    state = [
+      for (final task in state)
+        if (task.id == taskId) task.copyWith(assignedUsers: assignedUsers) else task,
     ];
   }
 }
