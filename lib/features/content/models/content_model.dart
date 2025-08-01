@@ -14,6 +14,7 @@ abstract class ContentModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final int orderIndex; // Order within parent
+  final String createdBy;
 
   ContentModel({
     required this.type,
@@ -26,8 +27,10 @@ abstract class ContentModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? orderIndex,
+    String? createdBy,
   }) : id = id ?? CommonUtils.generateRandomId(),
        createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now(),
-       orderIndex = orderIndex ?? 0;
+       orderIndex = orderIndex ?? 0,
+       createdBy = createdBy ?? CommonUtils.generateRandomId();
 }

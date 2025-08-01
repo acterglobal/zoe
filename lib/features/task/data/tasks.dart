@@ -136,6 +136,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: '',
   ),
 
   // Community Organization (sheet-2) tasks
@@ -153,6 +154,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-community-snacks-2',
@@ -168,6 +170,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-community-snacks-3',
@@ -183,6 +186,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-community-snacks-4',
@@ -198,6 +202,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: '',
   ),
 
   TaskModel(
@@ -214,6 +219,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-community-equipment-2',
@@ -229,6 +235,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-community-equipment-3',
@@ -244,6 +251,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: '',
   ),
 
   // Inclusive Communication (sheet-3) tasks
@@ -261,6 +269,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-inclusive-2',
@@ -276,6 +285,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-inclusive-3',
@@ -291,6 +301,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-inclusive-4',
@@ -306,6 +317,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: '',
   ),
 
   // Information Management (sheet-4) tasks
@@ -323,6 +335,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-info-2',
@@ -337,7 +350,8 @@ final tasks = [
           '<p>Gather all parent contact info, coach numbers, and emergency contacts in one searchable directory.</p>',
     ),
     isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 2)),
+    dueDate: DateTime.now().add(const Duration(days: 2)), 
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-info-3',
@@ -353,6 +367,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-info-4',
@@ -367,7 +382,8 @@ final tasks = [
           '<p>Document what to bring to games, uniform requirements, and important team rules for easy reference.</p>',
     ),
     isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 3)),
+    dueDate: DateTime.now().add(const Duration(days: 3)), 
+    createdBy: '',
   ),
 
   // Group Visibility (sheet-5) tasks
@@ -385,6 +401,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 5)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-visibility-potluck-2',
@@ -399,7 +416,8 @@ final tasks = [
           '<p>Salads, vegetable dishes, bread, or other sides that complement the main dishes.</p>',
     ),
     isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 5)),
+    dueDate: DateTime.now().add(const Duration(days: 5)), 
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-visibility-potluck-3',
@@ -430,6 +448,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 5)),
+    createdBy: '',
   ),
 
   TaskModel(
@@ -446,6 +465,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-visibility-party-2',
@@ -460,7 +480,8 @@ final tasks = [
           '<p>Portable speaker with upbeat, family-friendly music playlist for background ambiance.</p>',
     ),
     isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 3)),
+    dueDate: DateTime.now().add(const Duration(days: 3)), 
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-visibility-party-3',
@@ -476,6 +497,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: '',
   ),
 
   // Stress-Free Organizing (sheet-6) tasks
@@ -493,6 +515,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-stress-2',
@@ -508,6 +531,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-stress-3',
@@ -523,6 +547,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-stress-4',
@@ -538,6 +563,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: '',
   ),
 
   // Easy Handoffs (sheet-7) tasks
@@ -555,6 +581,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-handoff-2',
@@ -570,6 +597,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-handoff-3',
@@ -585,6 +613,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-handoff-4',
@@ -600,6 +629,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: '',
   ),
 
   // Group Trip Planning (sheet-8) tasks
@@ -617,6 +647,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 14)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-trip-2',
@@ -632,6 +663,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 10)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-trip-3',
@@ -647,6 +679,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 7)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-trip-4',
@@ -662,6 +695,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 5)),
+    createdBy: '',
   ),
   TaskModel(
     id: 'task-trip-5',
@@ -677,5 +711,6 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 21)),
+    createdBy: '',
   ),
 ];

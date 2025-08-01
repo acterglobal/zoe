@@ -16,6 +16,7 @@ class TaskModel extends ContentModel {
     super.createdAt,
     super.updatedAt,
     super.orderIndex,
+    super.createdBy,
 
     /// TaskModel properties
     required this.dueDate,
@@ -32,6 +33,7 @@ class TaskModel extends ContentModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? orderIndex,
+    String? createdBy,
 
     /// EventModel properties
     DateTime? dueDate,
@@ -47,6 +49,7 @@ class TaskModel extends ContentModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
       orderIndex: orderIndex ?? this.orderIndex,
+      createdBy: createdBy ?? this.createdBy,
 
       /// EventModel properties
       dueDate: dueDate ?? this.dueDate,
