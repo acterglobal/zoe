@@ -37,6 +37,26 @@ class PreferencesService {
         ) ??
         false;
   }
+
+  // Login User
+  Future<String?> getLoginUserId() async {
+    await init();
+    return _prefs?.getString(PreferenceConstants.keyLoginUserId);
+  }
+
+  Future<bool> setLoginUserId(String userId) async {
+    await init();
+    return await _prefs?.setString(
+          PreferenceConstants.keyLoginUserId,
+          userId,
+        ) ??
+        false;
+  }
+
+  Future<bool> clearLoginUserId() async {
+    await init();
+    return await _prefs?.remove(PreferenceConstants.keyLoginUserId) ?? false;
+  }
 }
 
 Future<SharedPreferences> sharedPrefs() async {

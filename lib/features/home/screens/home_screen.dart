@@ -5,11 +5,13 @@ import 'package:zoey/common/widgets/animated_background_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoey/core/constants/app_constants.dart';
+import 'package:zoey/core/preference_service/preferences_service.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 import 'package:zoey/features/sheet/widgets/sheet_list_widget.dart';
+import 'package:zoey/features/users/providers/user_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -20,6 +22,20 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _setLoginUser();
+  }
+
+  Future<void> _setLoginUser() async {
+    final isUserLoggedIn = await ref.watch(isUserLoggedInProvider.future);
+    if (!isUserLoggedIn) {
+      final prefsService = PreferencesService();
+      await prefsService.setLoginUserId('user_1');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
