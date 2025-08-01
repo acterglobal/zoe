@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 import 'package:zoey/features/users/widgets/user_widget.dart';
 
 class UserListWidget extends ConsumerWidget {
@@ -11,7 +12,7 @@ class UserListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final users = [];
+    final users = ref.watch(listOfUsersBySheetIdProvider(sheetId));
     if (users.isEmpty) return const SizedBox.shrink();
 
     return ListView.builder(
@@ -22,10 +23,10 @@ class UserListWidget extends ConsumerWidget {
       itemBuilder: (context, index) {
         final user = users[index];
         return Padding(
-          padding: const EdgeInsets.only(left: 24),
+          padding: const EdgeInsets.only(left: 20, right: 20),
           child: UserWidget(
-            key: ValueKey(user.id),
-            userId: user.id,
+            key: ValueKey(user),
+            userId: user,
           ),
         );
       },

@@ -134,5 +134,7 @@
     "searchEmojis": "ઇમોજી શોધો...",
     "@searchEmojis": {},
     "noEmojisFound": "ઇમોજી મળ્યું નથી",
-    "@noEmojisFound": {}
+    "@noEmojisFound": {},
+    "usersInSheet": "આ શીટના સભ્યો",
+    "@usersInSheet": {}
 }

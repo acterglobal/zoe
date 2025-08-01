@@ -14,6 +14,7 @@ import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/sheet/actions/delete_sheet.dart';
 import 'package:zoey/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
+import 'package:zoey/features/users/widgets/user_list_bottom_sheet.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
@@ -148,33 +149,49 @@ class SheetDetailScreen extends ConsumerWidget {
   ) {
     if (usersInSheet.isEmpty) return const SizedBox.shrink();
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: theme.colorScheme.primary.withValues(alpha: 0.1),
-        border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.2),
-          width: 1,
+    
+    return GestureDetector(
+      onTap: () {
+        showUserListBottomSheet(
+          context,
+          sheetId,
+          L10n.of(context).usersInSheet,
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+          border: Border.all(
+            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+            width: 1,
+          ),
         ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.people_rounded,
-            size: 16,
-            color: theme.colorScheme.primary,
-          ),
-          const SizedBox(width: 6),
-          Text(
-            '${usersInSheet.length} ${usersInSheet.length == 1 ? 'user' : 'users'}',
-            style: theme.textTheme.bodySmall?.copyWith(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.people_rounded,
+              size: 16,
               color: theme.colorScheme.primary,
-              fontWeight: FontWeight.w500,
             ),
-          ),
-        ],
+            const SizedBox(width: 6),
+            Text(
+              '${usersInSheet.length} ${usersInSheet.length == 1 ? 'user' : 'users'}',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 12,
+              color: theme.colorScheme.primary,
+            ),
+          ],
+        ),
       ),
     );
   }
