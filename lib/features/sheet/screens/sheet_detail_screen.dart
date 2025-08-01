@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:zoey/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
@@ -14,7 +13,7 @@ import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/sheet/actions/delete_sheet.dart';
 import 'package:zoey/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
-import 'package:zoey/features/users/widgets/user_list_bottom_sheet.dart';
+import 'package:zoey/features/users/widgets/user_list_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class SheetDetailScreen extends ConsumerWidget {
@@ -149,13 +148,15 @@ class SheetDetailScreen extends ConsumerWidget {
   ) {
     if (usersInSheet.isEmpty) return const SizedBox.shrink();
     final theme = Theme.of(context);
-    
+    final l10n = L10n.of(context);
+
     return GestureDetector(
       onTap: () {
-        showUserListBottomSheet(
-          context,
-          sheetId,
-          L10n.of(context).usersInSheet,
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) => UserListWidget(sheetId: sheetId),
         );
       },
       child: Container(
@@ -178,7 +179,7 @@ class SheetDetailScreen extends ConsumerWidget {
             ),
             const SizedBox(width: 6),
             Text(
-              '${usersInSheet.length} ${usersInSheet.length == 1 ? 'user' : 'users'}',
+              '${usersInSheet.length} ${usersInSheet.length == 1 ? l10n.user : l10n.users}',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w500,

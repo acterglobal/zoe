@@ -136,5 +136,9 @@
     "noEmojisFound": "No emojis found",
     "@noEmojisFound": {},
     "usersInSheet": "Members of this sheet",
-    "@usersInSheet": {}
+    "@usersInSheet": {},
+    "user": "User",
+    "@user": {},
+    "users": "Users",
+    "@users": {}
 }

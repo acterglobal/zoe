@@ -104,7 +104,7 @@ final sheetList = [
     id: 'sheet-8',
     title: 'Group Trip Planning',
     emoji: '✈️',
-    color: const Color.fromARGB(255, 96, 116, 67), // Lime
+    color: const Color(0xFF84CC16), // Lime
     description: (
       plainText:
           'Plan amazing group adventures from brainstorming destinations to tracking expenses. Learn how to coordinate with friends, family, or colleagues to create unforgettable trips without the usual planning stress.',

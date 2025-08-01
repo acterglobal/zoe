@@ -136,5 +136,9 @@
     "noEmojisFound": "ઇમોજી મળ્યું નથી",
     "@noEmojisFound": {},
     "usersInSheet": "આ શીટના સભ્યો",
-    "@usersInSheet": {}
+    "@usersInSheet": {},
+    "user": "સભ્ય",
+    "@user": {},
+    "users": "સભ્યો",
+    "@users": {}
 }
