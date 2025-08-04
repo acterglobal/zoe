@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/utils/date_time_utils.dart';
+import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
+import 'package:zoey/features/events/utils/event_utils.dart';
 import 'package:zoey/features/events/widgets/event_date_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class EventWidget extends ConsumerWidget {
   final String eventsId;
   final bool isEditing;
+  final EdgeInsetsGeometry? margin;
 
   const EventWidget({
     super.key,
     required this.eventsId,
     required this.isEditing,
+    this.margin,
   });
 
   @override
@@ -30,7 +33,8 @@ class EventWidget extends ConsumerWidget {
         AppRoutes.eventDetail.route.replaceAll(':eventId', eventsId),
       ),
       child: Card(
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+        margin:
+            margin ?? const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: _buildEventContent(context, ref, event, isEditing),
@@ -98,13 +102,12 @@ class EventWidget extends ConsumerWidget {
     WidgetRef ref,
     EventModel event,
   ) {
-    final startDateText = DateTimeUtils.formatDateTime(event.startDate);
-    final endDateText = DateTimeUtils.formatDateTime(event.endDate);
     return Text(
-      '$startDateText - $endDateText',
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-      style: Theme.of(context).textTheme.bodySmall,
+      EventUtils.formatEventDateAndTime(context, event),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+        color: CommonUtils.getColorByDateDifference(event.startDate),
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 

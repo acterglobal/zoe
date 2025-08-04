@@ -16,3 +16,11 @@ final getUserByIdProvider = Provider.family<UserModel?, String>((ref, userId) {
   final userList = ref.watch(userListProvider);
   return userList.where((u) => u.id == userId).firstOrNull;
 });
+
+final currentUserProvider = FutureProvider<UserModel?>((ref) async {
+  final userId = await PreferencesService().getLoginUserId();
+  if (userId == null || userId.isEmpty) return null;
+
+  final userList = ref.watch(userListProvider);
+  return userList.where((u) => u.id == userId).firstOrNull;
+});

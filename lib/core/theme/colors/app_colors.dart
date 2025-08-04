@@ -37,6 +37,10 @@ class AppColors {
     0xFF2D2D30,
   ); // Card backgrounds
 
+  // Task Due Date Colors - bright colors for better visibility
+  static const Color brightOrangeColor = Color(0xFFEA5A00);
+  static const Color brightMagentaColor = Color(0xFFD946EF);
+
   /// Get modern surface colors for both light and dark modes
   static Color getModernSurface(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
