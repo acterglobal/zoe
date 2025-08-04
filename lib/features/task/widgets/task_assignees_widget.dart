@@ -51,6 +51,16 @@ class TaskAssigneesWidget extends ConsumerWidget {
         if (isEditing)
           IconButton(
             onPressed: () {
+              if (availableUsers.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      L10n.of(context).allUsersAreAlreadyAssignedToThisTask,
+                    ),
+                  ),
+                );
+                return;
+              }
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
@@ -163,10 +173,7 @@ class TaskAssigneesWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildAssigneeAvatar(
-    BuildContext context,
-    UserModel user,
-  ) {
+  Widget _buildAssigneeAvatar(BuildContext context, UserModel user) {
     final theme = Theme.of(context);
     return Container(
       width: 24,

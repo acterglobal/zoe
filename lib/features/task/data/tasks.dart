@@ -134,6 +134,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_9',
     assignedUsers: ['user_1'],
   ),
   TaskModel(
@@ -517,7 +518,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)), 
-    createdBy: '',
+    createdBy: 'user_9',
     assignedUsers: ['user_1','user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
   ),
   TaskModel(
