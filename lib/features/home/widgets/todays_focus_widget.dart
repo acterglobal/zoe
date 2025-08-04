@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
@@ -11,15 +13,16 @@ class TodaysFocusWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Watch providers and handle loading states
     final allEvents = ref.watch(eventListProvider);
     final allTasks = ref.watch(taskListProvider);
 
-    // Get today's items
-    final todayEvents = _getTodayEvents(allEvents);
-    final upcomingTasks = _getUpcomingTasks(allTasks);
+    // Get filtered items with improved logic
+    final relevantEvents = _getRelevantEvents(allEvents);
+    final priorityTasks = _getPriorityTasks(allTasks);
 
     // If no items for today, don't show the widget
-    if (todayEvents.isEmpty && upcomingTasks.isEmpty) {
+    if (relevantEvents.isEmpty && priorityTasks.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -29,7 +32,7 @@ class TodaysFocusWidget extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionHeader(context),
-          _buildFocusItems(context, todayEvents, upcomingTasks),
+          _buildFocusItems(context, relevantEvents, priorityTasks),
         ],
       ),
     );
@@ -50,20 +53,20 @@ class TodaysFocusWidget extends ConsumerWidget {
 
   Widget _buildFocusItems(
     BuildContext context,
-    List<EventModel> todayEvents,
-    List<TaskModel> upcomingTasks,
+    List<EventModel> relevantEvents,
+    List<TaskModel> priorityTasks,
   ) {
     return Column(
       children: [
         // Events section
-        if (todayEvents.isNotEmpty) ...[
-          _buildEventSection(context, todayEvents),
+        if (relevantEvents.isNotEmpty) ...[
+          _buildEventSection(context, relevantEvents),
           const SizedBox(height: 16),
         ],
 
         // Tasks section
-        if (upcomingTasks.isNotEmpty) ...[
-          _buildTaskSection(context, upcomingTasks),
+        if (priorityTasks.isNotEmpty) ...[
+          _buildTaskSection(context, priorityTasks),
         ],
       ],
     );
@@ -228,44 +231,51 @@ class TodaysFocusWidget extends ConsumerWidget {
   Widget _buildCompactEventItem(BuildContext context, EventModel event) {
     final theme = Theme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: theme.colorScheme.surface.withValues(alpha: 0.8),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  event.title,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.onSurface,
+    return GestureDetector(
+      onTap: () {
+        context.push(
+          AppRoutes.eventDetail.route.replaceAll(':eventId', event.id),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: theme.colorScheme.surface.withValues(alpha: 0.8),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    event.title,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  _formatEventDetails(event),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.secondaryColor,
-                    fontWeight: FontWeight.w500,
+                  const SizedBox(height: 2),
+                  Text(
+                    _formatEventDetails(event),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: AppColors.secondaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
-            size: 12,
-          ),
-        ],
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
+              size: 12,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -273,80 +283,144 @@ class TodaysFocusWidget extends ConsumerWidget {
   Widget _buildCompactTaskItem(BuildContext context, TaskModel task) {
     final theme = Theme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: theme.colorScheme.surface.withValues(alpha: 0.8),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            task.isCompleted
-                ? Icons.check_circle
-                : Icons.radio_button_unchecked,
-            color: task.isCompleted
-                ? AppColors.successColor
-                : theme.colorScheme.onSurface.withValues(alpha: 0.4),
-            size: 18,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              task.title,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onSurface,
-                decoration: task.isCompleted
-                    ? TextDecoration.lineThrough
-                    : null,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+    return GestureDetector(
+      onTap: () {
+        context.push(AppRoutes.taskDetail.route.replaceAll(':taskId', task.id));
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: theme.colorScheme.surface.withValues(alpha: 0.8),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              task.isCompleted
+                  ? Icons.check_circle
+                  : Icons.radio_button_unchecked,
+              color: task.isCompleted
+                  ? AppColors.successColor
+                  : theme.colorScheme.onSurface.withValues(alpha: 0.4),
+              size: 18,
             ),
-          ),
-          Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
-            size: 12,
-          ),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    task.title,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.onSurface,
+                      decoration: task.isCompleted
+                          ? TextDecoration.lineThrough
+                          : null,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (!task.isCompleted) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      _formatTaskDueDate(task),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: _getTaskDueDateColor(task),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
+              size: 12,
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  List<EventModel> _getTodayEvents(List<EventModel> allEvents) {
+  /// Get relevant events for today's focus - improved filtering
+  List<EventModel> _getRelevantEvents(List<EventModel> allEvents) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final tomorrow = today.add(const Duration(days: 1));
     final nextWeek = today.add(const Duration(days: 7));
 
-    return allEvents.where((event) {
+    // Filter events for the next week and sort by date
+    final relevantEvents = allEvents.where((event) {
       final eventDate = DateTime(
         event.startDate.year,
         event.startDate.month,
         event.startDate.day,
       );
 
-      // Show events for today, tomorrow, and this week
-      return eventDate.isAtSameMomentAs(today) ||
-          eventDate.isAtSameMomentAs(tomorrow) ||
-          (eventDate.isAfter(today) && eventDate.isBefore(nextWeek));
+      // Show events from today to next week
+      return !eventDate.isBefore(today) && eventDate.isBefore(nextWeek);
     }).toList();
+
+    // Sort by start date (earliest first)
+    relevantEvents.sort((a, b) => a.startDate.compareTo(b.startDate));
+
+    // Return up to 3 events to avoid overcrowding
+    return relevantEvents.take(3).toList();
   }
 
-  List<TaskModel> _getUpcomingTasks(List<TaskModel> allTasks) {
-    // Get incomplete tasks and recently completed ones
-    return allTasks
-        .where((task) => !task.isCompleted || _isRecentlyCompleted(task))
-        .take(3)
+  /// Get priority tasks with better filtering and sorting
+  List<TaskModel> _getPriorityTasks(List<TaskModel> allTasks) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    // Separate incomplete and recently completed tasks
+    final incompleteTasks = allTasks
+        .where((task) => !task.isCompleted)
         .toList();
+    final recentlyCompleted = allTasks
+        .where((task) => task.isCompleted && _isRecentlyCompleted(task, today))
+        .toList();
+
+    // Sort incomplete tasks by priority (due date)
+    incompleteTasks.sort((a, b) {
+      final aDueDate = DateTime(a.dueDate.year, a.dueDate.month, a.dueDate.day);
+      final bDueDate = DateTime(b.dueDate.year, b.dueDate.month, b.dueDate.day);
+
+      // Overdue tasks first, then today's tasks, then upcoming
+      final aIsOverdue = aDueDate.isBefore(today);
+      final bIsOverdue = bDueDate.isBefore(today);
+      final aIsToday = aDueDate.isAtSameMomentAs(today);
+      final bIsToday = bDueDate.isAtSameMomentAs(today);
+
+      if (aIsOverdue && !bIsOverdue) return -1;
+      if (!aIsOverdue && bIsOverdue) return 1;
+      if (aIsToday && !bIsToday) return -1;
+      if (!aIsToday && bIsToday) return 1;
+
+      return aDueDate.compareTo(bDueDate);
+    });
+
+    // Combine incomplete (prioritized) and recently completed tasks
+    final combinedTasks = <TaskModel>[];
+    combinedTasks.addAll(incompleteTasks.take(2)); // Max 2 incomplete tasks
+    if (combinedTasks.length < 3) {
+      combinedTasks.addAll(recentlyCompleted.take(3 - combinedTasks.length));
+    }
+
+    return combinedTasks.take(3).toList();
   }
 
-  bool _isRecentlyCompleted(TaskModel task) {
-    // For now, we'll just check if it's completed
-    // In a real app, you'd check if it was completed today
-    return task.isCompleted;
+  bool _isRecentlyCompleted(TaskModel task, DateTime today) {
+    if (!task.isCompleted) return false;
+    // Check if task was completed today (using updatedAt as completion time)
+    final completionDate = DateTime(
+      task.updatedAt.year,
+      task.updatedAt.month,
+      task.updatedAt.day,
+    );
+    return completionDate.isAtSameMomentAs(today);
   }
 
   String _formatEventDetails(EventModel event) {
@@ -387,5 +461,54 @@ class TodaysFocusWidget extends ConsumerWidget {
     String minuteStr = minute.toString().padLeft(2, '0');
 
     return '${formatHour(hour)}:$minuteStr $amPm';
+  }
+
+  String _formatTaskDueDate(TaskModel task) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final dueDate = DateTime(
+      task.dueDate.year,
+      task.dueDate.month,
+      task.dueDate.day,
+    );
+    final difference = dueDate.difference(today).inDays;
+
+    if (difference < 0) {
+      final overdueDays = -difference;
+      return 'Overdue by ${overdueDays == 1 ? '1 day' : '$overdueDays days'}';
+    } else if (difference == 0) {
+      return 'Due today';
+    } else if (difference == 1) {
+      return 'Due tomorrow';
+    } else if (difference <= 3) {
+      return 'Due in $difference days';
+    } else if (difference <= 7) {
+      return 'Due in $difference days';
+    } else {
+      return 'Due ${task.dueDate.day}/${task.dueDate.month}';
+    }
+  }
+
+  Color _getTaskDueDateColor(TaskModel task) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final dueDate = DateTime(
+      task.dueDate.year,
+      task.dueDate.month,
+      task.dueDate.day,
+    );
+    final difference = dueDate.difference(today).inDays;
+
+    if (difference < 0) {
+      return AppColors.errorColor; // Overdue - bright red
+    } else if (difference == 0) {
+      return const Color(0xFFEA5A00); // Due today - bright orange
+    } else if (difference == 1) {
+      return const Color(0xFFD946EF); // Due tomorrow - bright magenta
+    } else if (difference <= 3) {
+      return AppColors.primaryColor; // Due soon - purple
+    } else {
+      return AppColors.successColor; // Future tasks - green
+    }
   }
 }
