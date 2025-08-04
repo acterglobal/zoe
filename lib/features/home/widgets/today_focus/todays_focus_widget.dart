@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/events/widgets/event_widget.dart';
-import 'package:zoey/features/home/widgets/section/section_header_widget.dart';
-import 'package:zoey/features/home/widgets/today_focus/todays_item_container_widget.dart';
+import 'package:zoey/features/home/widgets/section_header/section_header_widget.dart';
+import 'package:zoey/features/home/widgets/today_focus/todays_item_widget.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
@@ -26,7 +26,10 @@ class TodaysFocusWidget extends ConsumerWidget {
     return Column(
       children: [
         const SizedBox(height: 24),
-        SectionHeaderWidget(title: L10n.of(context).todaysFocus),
+        SectionHeaderWidget(
+          title: L10n.of(context).todaysFocus,
+          icon: Icons.today_rounded,
+        ),
         const SizedBox(height: 16),
         if (todaysEvents.isNotEmpty) ...[
           _buildEventSection(context, todaysEvents),
@@ -40,7 +43,7 @@ class TodaysFocusWidget extends ConsumerWidget {
   }
 
   Widget _buildEventSection(BuildContext context, List<EventModel> events) {
-    return TodaysItemContainerWidget(
+    return TodaysItemWidget(
       title: L10n.of(context).upcomingEvents,
       icon: Icons.event_rounded,
       color: AppColors.secondaryColor,
@@ -59,7 +62,7 @@ class TodaysFocusWidget extends ConsumerWidget {
   }
 
   Widget _buildTaskSection(BuildContext context, List<TaskModel> tasks) {
-    return TodaysItemContainerWidget(
+    return TodaysItemWidget(
       title: L10n.of(context).activeTasks,
       icon: Icons.task_alt_rounded,
       color: AppColors.successColor,

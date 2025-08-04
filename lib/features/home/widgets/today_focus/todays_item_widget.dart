@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class TodaysItemContainerWidget extends StatelessWidget {
+class TodaysItemWidget extends StatelessWidget {
   final String title;
   final IconData icon;
   final Color color;
   final int count;
   final List<Widget> children;
 
-  const TodaysItemContainerWidget({
+  const TodaysItemWidget({
     super.key,
     required this.title,
     required this.icon,

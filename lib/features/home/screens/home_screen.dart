@@ -8,10 +8,10 @@ import 'package:zoey/core/constants/app_constants.dart';
 import 'package:zoey/core/preference_service/preferences_service.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
-import 'package:zoey/features/home/widgets/section/section_header_widget.dart';
-import 'package:zoey/features/home/widgets/stats_container/stats_container_widget.dart';
+import 'package:zoey/features/home/widgets/section_header/section_header_widget.dart';
+import 'package:zoey/features/home/widgets/stats_section/stats_section_widget.dart';
 import 'package:zoey/features/home/widgets/today_focus/todays_focus_widget.dart';
-import 'package:zoey/features/home/widgets/welcome_container/welcome_container_widget.dart';
+import 'package:zoey/features/home/widgets/welcome_section/welcome_section_widget.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 import 'package:zoey/features/sheet/widgets/sheet_list_widget.dart';
@@ -56,9 +56,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   children: [
                     _buildAppBar(context),
                     const SizedBox(height: 20),
-                    const WelcomeContainerWidget(),
+                    const WelcomeSectionWidget(),
                     const SizedBox(height: 16),
-                    const StatsContainerWidget(),
+                    const StatsSectionWidget(),
                     const TodaysFocusWidget(),
                     const SizedBox(height: 32),
                     _buildSheetsSection(context, ref),

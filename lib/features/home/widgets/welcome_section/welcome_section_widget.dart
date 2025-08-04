@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/common/widgets/state_widgets/error_state_widget.dart';
 import 'package:zoey/common/widgets/state_widgets/loading_state_widget.dart';
-import 'package:zoey/features/home/widgets/welcome_container/welcome_animation_widget.dart';
+import 'package:zoey/features/home/widgets/welcome_section/welcome_animation_widget.dart';
 import 'package:zoey/features/users/providers/user_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
-class WelcomeContainerWidget extends ConsumerWidget {
-  const WelcomeContainerWidget({super.key});
+class WelcomeSectionWidget extends ConsumerWidget {
+  const WelcomeSectionWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

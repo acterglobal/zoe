@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class SectionHeaderWidget extends StatelessWidget {
   final String title;
-  final IconData? icon;
+  final IconData icon;
   final Color? color;
 
   const SectionHeaderWidget({
     super.key,
     required this.title,
-    this.icon,
+    required this.icon,
     this.color,
   });
 
@@ -21,17 +21,15 @@ class SectionHeaderWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 4),
       child: Row(
         children: [
-          if (icon != null) ...[
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: effectiveColor.withValues(alpha: 0.1),
-              ),
-              child: Icon(icon!, color: effectiveColor, size: 18),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: effectiveColor.withValues(alpha: 0.1),
             ),
-            const SizedBox(width: 12),
-          ],
+            child: Icon(icon, color: effectiveColor, size: 18),
+          ),
+          const SizedBox(width: 12),
           Text(
             title,
             style: theme.textTheme.headlineSmall?.copyWith(

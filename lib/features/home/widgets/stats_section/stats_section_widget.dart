@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
-import 'package:zoey/features/home/widgets/stats_container/stats_widget.dart';
+import 'package:zoey/features/home/widgets/stats_section/stats_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
-class StatsContainerWidget extends ConsumerWidget {
-  const StatsContainerWidget({super.key});
+class StatsSectionWidget extends ConsumerWidget {
+  const StatsSectionWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
