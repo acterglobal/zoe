@@ -7,7 +7,6 @@ class StyledIconContainer extends StatelessWidget {
   final double size;
   final double iconSize;
   final BorderRadius? borderRadius;
-  final bool showHighlight;
   final double backgroundOpacity;
   final double borderOpacity;
   final double shadowOpacity;
@@ -20,7 +19,6 @@ class StyledIconContainer extends StatelessWidget {
     this.size = 64,
     this.iconSize = 32,
     this.borderRadius,
-    this.showHighlight = true,
     this.backgroundOpacity = 0.12,
     this.borderOpacity = 0.2,
     this.shadowOpacity = 0.15,
@@ -30,7 +28,6 @@ class StyledIconContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final effectivePrimaryColor = primaryColor ?? colorScheme.primary;
     final effectiveSecondaryColor = secondaryColor ?? colorScheme.secondary;
@@ -73,35 +70,7 @@ class StyledIconContainer extends StatelessWidget {
           ),
         ],
       ),
-      child: Stack(
-        children: [
-          // Background highlight for depth
-          if (showHighlight)
-            Positioned(
-              top: size * 0.125,
-              left: size * 0.125,
-              right: size * 0.25,
-              child: Container(
-                height: size * 0.19,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(size * 0.125),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white.withValues(alpha: isDark ? 0.15 : 0.4),
-                      Colors.transparent,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          // Icon
-          Center(
-            child: Icon(icon, color: effectivePrimaryColor, size: iconSize),
-          ),
-        ],
-      ),
+      child: Icon(icon, color: effectivePrimaryColor, size: iconSize),
     );
   }
 }

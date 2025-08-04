@@ -55,7 +55,7 @@ class PaperSheetBackgroundWidget extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: AppColors.getWarmPaperGradient(context),
+          colors: AppColors.getPaperSheetGradient(context),
           stops: const [0.0, 0.5, 1.0],
         ),
         // Enhanced shadow for more depth

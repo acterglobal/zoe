@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/common/providers/package_info_provider.dart';
 import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/common/widgets/animated_background_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoey/features/settings/actions/change_theme.dart';
 import 'package:zoey/features/settings/models/language_model.dart';
@@ -19,20 +18,18 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: AnimatedBackgroundWidget(
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Center(
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: Column(
-                  children: [
-                    ZoeAppBar(title: L10n.of(context).settings),
-                    const SizedBox(height: 8),
-                    _buildSettingsBodyUI(context, ref),
-                  ],
-                ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: Column(
+                children: [
+                  ZoeAppBar(title: L10n.of(context).settings),
+                  const SizedBox(height: 8),
+                  _buildSettingsBodyUI(context, ref),
+                ],
               ),
             ),
           ),

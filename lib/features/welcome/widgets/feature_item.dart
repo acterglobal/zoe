@@ -24,7 +24,7 @@ class FeatureItem extends StatelessWidget {
 
     return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(18),
       shadowColor: featureColors['primary'],
       child: Row(
         children: [

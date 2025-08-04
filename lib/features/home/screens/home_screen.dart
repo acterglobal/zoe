@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/widgets/animated_background_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoey/core/constants/app_constants.dart';
@@ -22,7 +21,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  
   @override
   void initState() {
     super.initState();
@@ -41,20 +39,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: _buildFloatingActionButton(context),
-      body: AnimatedBackgroundWidget(
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Center(
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: Column(
-                  children: [
-                    _buildCustomAppBar(context),
-                    const SizedBox(height: 24),
-                    _buildHomeBodyUI(context, ref),
-                  ],
-                ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: Column(
+                children: [
+                  _buildCustomAppBar(context),
+                  const SizedBox(height: 24),
+                  _buildHomeBodyUI(context, ref),
+                ],
               ),
             ),
           ),

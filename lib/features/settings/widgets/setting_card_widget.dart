@@ -25,10 +25,7 @@ class SettingCardWidget extends StatelessWidget {
             ),
           ),
         ),
-        GlassyContainer(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Column(children: children),
-        ),
+        GlassyContainer(child: Column(children: children)),
       ],
     );
   }

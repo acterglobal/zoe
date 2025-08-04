@@ -22,7 +22,7 @@ class SheetListItemWidget extends ConsumerWidget {
           context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id)),
       child: GlassyContainer(
         margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(12),
         child: Row(
           children: [
             _buildEmojiContainer(sheet.emoji, sheet.color, theme),
