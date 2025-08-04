@@ -102,7 +102,7 @@ class WelcomeSectionWidget extends ConsumerWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            DateTimeUtils.getCurrentDateFormatted(),
+            DateTimeUtils.getTodayDateFormatted(),
             style: theme.textTheme.bodyMedium?.copyWith(
               color: Colors.white.withValues(alpha: 0.9),
               fontWeight: FontWeight.w600,

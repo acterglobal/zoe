@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/utils/date_time_utils.dart';
+import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
+import 'package:zoey/features/task/utils/task_utils.dart';
 import 'package:zoey/features/task/widgets/task_checkbox_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class TaskWidget extends ConsumerWidget {
   final String taskId;
   final bool isEditing;
-  final bool isTodayFocusView;
 
-  const TaskWidget({
-    super.key,
-    required this.taskId,
-    required this.isEditing,
-    this.isTodayFocusView = false,
-  });
+  const TaskWidget({super.key, required this.taskId, required this.isEditing});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -97,19 +92,12 @@ class TaskWidget extends ConsumerWidget {
     WidgetRef ref,
     TaskModel task,
   ) {
-    final theme = Theme.of(context);
-    if (isTodayFocusView) {
-      return Text(
-        DateTimeUtils.formatTaskDueDate(context, task),
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: DateTimeUtils.getTaskDueDateColor(task),
-          fontWeight: FontWeight.w500,
-        ),
-      );
-    }
     return Text(
-      'Due: ${DateTimeUtils.formatDate(task.dueDate)}',
-      style: theme.textTheme.bodySmall,
+      TaskUtils.formatTaskDueDate(context, task),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+        color: CommonUtils.getColorByDateDifference(task.dueDate),
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 

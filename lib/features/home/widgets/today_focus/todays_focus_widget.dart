@@ -28,7 +28,7 @@ class TodaysFocusWidget extends ConsumerWidget {
         const SizedBox(height: 24),
         SectionHeaderWidget(
           title: L10n.of(context).todaysFocus,
-          icon: Icons.today_rounded,
+          icon: Icons.rocket_launch_rounded,
         ),
         const SizedBox(height: 16),
         if (todaysEvents.isNotEmpty) ...[
@@ -57,7 +57,7 @@ class TodaysFocusWidget extends ConsumerWidget {
       key: ValueKey(event.id),
       eventsId: event.id,
       isEditing: false,
-      isTodayFocusView: true,
+      margin: const EdgeInsets.only(top: 3, bottom: 3),
     );
   }
 
@@ -85,7 +85,6 @@ class TodaysFocusWidget extends ConsumerWidget {
         key: ValueKey(task.id),
         taskId: task.id,
         isEditing: false,
-        isTodayFocusView: true,
       ),
     );
   }

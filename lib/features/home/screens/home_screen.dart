@@ -137,7 +137,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       children: [
         SectionHeaderWidget(
           title: L10n.of(context).sheets,
-          icon: Icons.folder_rounded,
+          icon: Icons.description,
         ),
         const SizedBox(height: 16),
         SheetListWidget(shrinkWrap: true),
