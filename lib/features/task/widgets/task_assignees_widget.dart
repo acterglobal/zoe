@@ -56,11 +56,11 @@ class TaskAssigneesWidget extends ConsumerWidget {
               if (availableUsers.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
+                    backgroundColor: theme.colorScheme.surface,
                     content: Text(
                       l10n.allUsersAreAlreadyAssignedToThisTask,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.primary,
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                   ),
