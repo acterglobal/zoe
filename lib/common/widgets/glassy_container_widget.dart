@@ -43,9 +43,9 @@ class GlassyContainer extends StatelessWidget {
             colorScheme.surface.withValues(alpha: surfaceOpacity * 0.5),
           ]
         : [
-            AppColors.getWarmSurfaceWithAlpha(context, surfaceOpacity + 0.1),
-            AppColors.getWarmSurfaceWithAlpha(context, surfaceOpacity - 0.1),
-            AppColors.getWarmSurfaceWithAlpha(context, surfaceOpacity - 0.2),
+            AppColors.getModernSurfaceWithAlpha(context, surfaceOpacity + 0.1),
+            AppColors.getModernSurfaceWithAlpha(context, surfaceOpacity - 0.1),
+            AppColors.getModernSurfaceWithAlpha(context, surfaceOpacity - 0.2),
           ];
 
     return Container(
@@ -63,7 +63,7 @@ class GlassyContainer extends StatelessWidget {
           border: Border.all(
             color: isDark
                 ? Colors.white.withValues(alpha: borderOpacity)
-                : AppColors.getWarmSurfaceWithAlpha(
+                : AppColors.getModernSurfaceWithAlpha(
                     context,
                     borderOpacity + 0.7,
                   ),
