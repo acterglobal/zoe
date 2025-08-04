@@ -55,4 +55,29 @@ class CommonUtils {
 
     return false;
   }
+
+  Color getRandomColorFromName(String name) {
+    final colors = [
+      Colors.pink,
+      Colors.purple,
+      Colors.deepPurple,
+      Colors.indigo,
+      Colors.blue,
+      Colors.lightBlue,
+      Colors.cyan,
+      Colors.teal,
+      Colors.green,
+      Colors.lightGreen,
+      Colors.lime,
+      Colors.yellow,
+      Colors.amber,
+      Colors.orange,
+      Colors.brown,
+      Colors.grey,
+    ];
+
+    // color based on the name
+    int hash = name.hashCode;
+    return colors[hash.abs() % colors.length];
+  }
 }

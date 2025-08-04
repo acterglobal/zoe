@@ -4,7 +4,7 @@ import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/common/widgets/attribute_field_widget.dart';
 import 'package:zoey/features/task/actions/update_task_actions.dart';
 import 'package:zoey/features/task/models/task_model.dart';
-import 'package:zoey/features/task/widgets/task_checkbox_widget.dart';
+
 
 class TaskDetailsAdditionalFields extends ConsumerWidget {
   final TaskModel task;
@@ -31,16 +31,6 @@ class TaskDetailsAdditionalFields extends ConsumerWidget {
           valueWidget: Text(
             dueDateText,
             style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        const SizedBox(height: 10),
-        AttributeFieldWidget(
-          icon: Icons.check_box,
-          title: 'Completed',
-          valueWidget: SizedBox(
-            width: 20,
-            height: 20,
-            child: TaskCheckboxWidget(task: task),
           ),
         ),
       ],

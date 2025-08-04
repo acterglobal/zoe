@@ -11,6 +11,7 @@ import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/widgets/task_details_additional_fields.dart';
 import 'package:zoey/features/task/widgets/task_assignees_widget.dart';
+import 'package:zoey/features/task/widgets/task_checkbox_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class TaskDetailScreen extends ConsumerWidget {
@@ -85,6 +86,14 @@ class TaskDetailScreen extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Transform.scale(
+                scale: 1.5,
+                child: TaskCheckboxWidget(task: task),
+              ),
+            ),
+            const SizedBox(width: 16),
             Expanded(
               child: ZoeInlineTextEditWidget(
                 hintText: L10n.of(context).title,

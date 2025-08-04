@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/users/models/user_model.dart';
@@ -39,7 +40,7 @@ class TaskAssigneesWidget extends ConsumerWidget {
         .toList();
     return Row(
       children: [
-        Icon(Icons.people_rounded, size: 20, color: theme.colorScheme.primary),
+        Icon(Icons.people_rounded, size: 20),
         const SizedBox(width: 8),
         Text(
           l10n.assignees,
@@ -88,7 +89,6 @@ class TaskAssigneesWidget extends ConsumerWidget {
             },
             icon: Icon(
               Icons.add_circle_outline_rounded,
-              color: theme.colorScheme.primary,
               size: 24,
             ),
           ),
@@ -138,26 +138,27 @@ class TaskAssigneesWidget extends ConsumerWidget {
     if (user == null) return const SizedBox.shrink();
 
     final theme = Theme.of(context);
+    final randomColor = CommonUtils().getRandomColorFromName(user.name);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary.withValues(alpha: 0.05),
+        color: randomColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.2),
+          color: randomColor.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildAssigneeAvatar(context, user),
+          _buildAssigneeAvatar(context, user, randomColor),
           const SizedBox(width: 8),
           Text(
             user.name,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.primary,
+              color: randomColor,
               fontSize: 12,
             ),
           ),
@@ -179,19 +180,18 @@ class TaskAssigneesWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildAssigneeAvatar(BuildContext context, UserModel user) {
-    final theme = Theme.of(context);
+  Widget _buildAssigneeAvatar(BuildContext context, UserModel user, Color color) {
     return Container(
       width: 24,
       height: 24,
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary.withValues(alpha: 0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
         child: Text(
           user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
-          style: TextStyle(color: theme.colorScheme.primary, fontSize: 12),
+          style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ),
     );
