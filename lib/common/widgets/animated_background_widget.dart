@@ -71,7 +71,7 @@ class _AnimatedBackgroundWidgetState extends State<AnimatedBackgroundWidget>
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: AppColors.getWarmPaperGradient(context),
+          colors: AppColors.getModernGradient(context),
           stops: const [0.0, 0.5, 1.0],
         ),
       ),
