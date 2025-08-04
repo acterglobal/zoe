@@ -5,14 +5,21 @@ import 'package:zoey/l10n/generated/l10n.dart';
 
 class UserListWidget extends ConsumerWidget {
   final ProviderBase<List<String>> userIdList;
+  final Widget? addUserActionWidget;
+  final Function(String userId)? onUserSelected;
 
-  const UserListWidget({super.key, required this.userIdList});
+  const UserListWidget({
+    super.key,
+    required this.userIdList,
+    this.addUserActionWidget,
+    this.onUserSelected,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final userIds = ref.watch(userIdList);
-   
+
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
@@ -50,7 +57,12 @@ class UserListWidget extends ConsumerWidget {
               final userId = userIds[index];
               return Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
-                child: UserWidget(key: ValueKey(userId), userId: userId),
+                child: UserWidget(
+                  key: ValueKey(userId),
+                  userId: userId,
+                  addUserActionWidget: addUserActionWidget,
+                  onUserSelected: onUserSelected,
+                ),
               );
             },
           ),

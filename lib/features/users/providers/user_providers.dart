@@ -16,3 +16,9 @@ final getUserByIdProvider = Provider.family<UserModel?, String>((ref, userId) {
   final userList = ref.watch(userListProvider);
   return userList.where((u) => u.id == userId).firstOrNull;
 });
+
+// Provider that returns user IDs from a list of UserModel objects
+final userIdsFromUserModelsProvider =
+    Provider.family<List<String>, List<UserModel>>((ref, userModels) {
+      return userModels.map((user) => user.id).toList();
+    });

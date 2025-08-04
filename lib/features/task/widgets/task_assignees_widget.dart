@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
-import 'package:zoey/features/task/widgets/task_assignee_avatar_widget.dart';
-import 'package:zoey/features/task/widgets/task_assignee_list_widget.dart';
+import 'package:zoey/features/users/models/user_model.dart';
 import 'package:zoey/features/users/providers/user_providers.dart';
+import 'package:zoey/features/users/widgets/user_list_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class TaskAssigneesWidget extends ConsumerWidget {
@@ -31,6 +31,11 @@ class TaskAssigneesWidget extends ConsumerWidget {
 
   Widget _buildAssigneeHeader(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final allUsers = ref.read(userListProvider);
+    final currentAssignees = task.assignedUsers.toSet();
+    final availableUsers = allUsers
+        .where((user) => !currentAssignees.contains(user.id))
+        .toList();
     return Row(
       children: [
         Icon(Icons.people_rounded, size: 20, color: theme.colorScheme.primary),
@@ -50,7 +55,19 @@ class TaskAssigneesWidget extends ConsumerWidget {
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
-                builder: (context) => TaskAssigneeListWidget(task: task),
+                builder: (context) => UserListWidget(
+                  userIdList: userIdsFromUserModelsProvider(availableUsers),
+                  addUserActionWidget: Icon(
+                    Icons.add,
+                    size: 20,
+                    color: theme.colorScheme.primary,
+                  ),
+                  onUserSelected: (userId) {
+                    ref
+                        .read(taskListProvider.notifier)
+                        .addAssignee(context, ref, task, userId);
+                  },
+                ),
               );
             },
             icon: Icon(
@@ -119,7 +136,7 @@ class TaskAssigneesWidget extends ConsumerWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TaskAssigneeAvatarWidget(user: user),
+          _buildAssigneeAvatar(context, user),
           const SizedBox(width: 8),
           Text(
             user.name,
@@ -142,6 +159,27 @@ class TaskAssigneesWidget extends ConsumerWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+
+  Widget _buildAssigneeAvatar(
+    BuildContext context,
+    UserModel user,
+  ) {
+    final theme = Theme.of(context);
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Center(
+        child: Text(
+          user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
+          style: TextStyle(color: theme.colorScheme.primary, fontSize: 12),
+        ),
       ),
     );
   }

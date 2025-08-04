@@ -99,8 +99,6 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
     ref
         .read(taskListProvider.notifier)
         .updateTaskAssignees(task.id, updatedAssignees);
-
-    Navigator.of(context).pop();
   }
 
   void removeAssignee(WidgetRef ref, TaskModel task, String userId) {

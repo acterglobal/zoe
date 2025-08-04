@@ -4,15 +4,24 @@ import 'package:zoey/features/users/providers/user_providers.dart';
 
 class UserWidget extends ConsumerWidget {
   final String userId;
-  const UserWidget({super.key, required this.userId});
+  final Widget? addUserActionWidget;
+  final Function(String userId)? onUserSelected;
+  const UserWidget({super.key, required this.userId, this.addUserActionWidget, this.onUserSelected});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(getUserByIdProvider(userId));
     if (user == null) return const SizedBox.shrink();
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 6),
+    return GestureDetector(
+      onTap: () {
+        if (onUserSelected != null) {
+          onUserSelected!(userId);
+          Navigator.of(context).pop();
+        }
+      },
+      child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -21,7 +30,15 @@ class UserWidget extends ConsumerWidget {
           width: 1,
         ),
       ),
-      child: Text(user.name, style: theme.textTheme.bodyMedium),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(user.name, style: theme.textTheme.bodyMedium),
+          if (addUserActionWidget != null)
+              addUserActionWidget ?? const SizedBox.shrink(),
+          ],
+        ),
+      ),
     );
   }
 }
