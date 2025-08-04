@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Modern 2025 Color Palette - Inspired by Future Dusk & Teal trends
+  // Modern 2025 Color Palette - Electric Purple + Coral Pink
   static const Color primaryColor = Color(
-    0xFF4C5578,
-  ); // Future Dusk - sophisticated purple-blue
+    0xFF8B5CF6,
+  ); // Electric Purple - bold, energetic, tech-forward
   static const Color secondaryColor = Color(
-    0xFF71ADBA,
-  ); // Retro Blue - calming teal
-  static const Color accentColor = Color(0xFF9B59B6); // Modern Purple accent
+    0xFFF472B6,
+  ); // Coral Pink - warm, friendly, modern
+  static const Color accentColor = Color(0xFFA855F7); // Vibrant Purple accent
   static const Color successColor = Color(0xFF10B981); // Emerald green
   static const Color warningColor = Color(0xFFEDEAB1); // Celestial Yellow
   static const Color errorColor = Color(0xFFEF4444); // Modern red
@@ -23,10 +23,10 @@ class AppColors {
   static const Color darkBackground = Color(0xFF000000); // Pure black
   static const Color darkOnSurface = Color(0xFFF5F5F7); // Off-white text
 
-  // Modern Gradient Colors - 2025 Trends
-  static const Color gradientStart = Color(0xFF4C5578); // Future Dusk
-  static const Color gradientMiddle = Color(0xFF71ADBA); // Retro Blue
-  static const Color gradientEnd = Color(0xFF9B59B6); // Modern Purple
+  // Modern Gradient Colors - Purple + Coral Theme
+  static const Color gradientStart = Color(0xFF8B5CF6); // Electric Purple
+  static const Color gradientMiddle = Color(0xFFF472B6); // Coral Pink
+  static const Color gradientEnd = Color(0xFFA855F7); // Vibrant Purple
 
   // Modern Surface Colors - Clean & sophisticated
   static const Color modernSurfacePrimary = Color(0xFF0F0F11); // Deep charcoal
