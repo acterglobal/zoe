@@ -13,8 +13,14 @@ import 'package:zoey/l10n/generated/l10n.dart';
 class TaskWidget extends ConsumerWidget {
   final String taskId;
   final bool isEditing;
+  final bool isTodayFocusView;
 
-  const TaskWidget({super.key, required this.taskId, required this.isEditing});
+  const TaskWidget({
+    super.key,
+    required this.taskId,
+    required this.isEditing,
+    this.isTodayFocusView = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,8 +51,10 @@ class TaskWidget extends ConsumerWidget {
                 task.isCompleted,
                 isEditing,
               ),
-              const SizedBox(height: 4),
-              _buildTaskItemDueDate(context, ref, task.dueDate),
+              if (!task.isCompleted) ...[
+                const SizedBox(height: 4),
+                _buildTaskItemDueDate(context, ref, task),
+              ],
             ],
           ),
         ),
@@ -87,13 +95,21 @@ class TaskWidget extends ConsumerWidget {
   Widget _buildTaskItemDueDate(
     BuildContext context,
     WidgetRef ref,
-    DateTime? dueDate,
+    TaskModel task,
   ) {
-    if (dueDate == null) return const SizedBox.shrink();
-
+    final theme = Theme.of(context);
+    if (isTodayFocusView) {
+      return Text(
+        DateTimeUtils.formatTaskDueDate(context, task),
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: DateTimeUtils.getTaskDueDateColor(task),
+          fontWeight: FontWeight.w500,
+        ),
+      );
+    }
     return Text(
-      'Due: ${DateTimeUtils.formatDate(dueDate)}',
-      style: Theme.of(context).textTheme.bodySmall,
+      'Due: ${DateTimeUtils.formatDate(task.dueDate)}',
+      style: theme.textTheme.bodySmall,
     );
   }
 

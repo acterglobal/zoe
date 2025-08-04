@@ -13,11 +13,15 @@ import 'package:zoey/l10n/generated/l10n.dart';
 class EventWidget extends ConsumerWidget {
   final String eventsId;
   final bool isEditing;
+  final bool isTodayFocusView;
+  final EdgeInsetsGeometry? margin;
 
   const EventWidget({
     super.key,
     required this.eventsId,
     required this.isEditing,
+    this.isTodayFocusView = false,
+    this.margin,
   });
 
   @override
@@ -30,7 +34,8 @@ class EventWidget extends ConsumerWidget {
         AppRoutes.eventDetail.route.replaceAll(':eventId', eventsId),
       ),
       child: Card(
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+        margin:
+            margin ?? const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: _buildEventContent(context, ref, event, isEditing),
@@ -98,6 +103,16 @@ class EventWidget extends ConsumerWidget {
     WidgetRef ref,
     EventModel event,
   ) {
+    final theme = Theme.of(context);
+    if (isTodayFocusView) {
+      return Text(
+        DateTimeUtils.formatEventDateAndTime(context, event),
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: theme.colorScheme.secondary,
+          fontWeight: FontWeight.w500,
+        ),
+      );
+    }
     final startDateText = DateTimeUtils.formatDateTime(event.startDate);
     final endDateText = DateTimeUtils.formatDateTime(event.endDate);
     return Text(
