@@ -43,6 +43,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       floatingActionButton: _buildFloatingActionButton(context),
       body: AnimatedBackgroundWidget(
+        backgroundOpacity: 0.2,
         child: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
