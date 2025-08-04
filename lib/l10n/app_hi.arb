@@ -150,5 +150,7 @@
     "available": "उपलब्ध",
     "@available": {},
     "allUsersAreAlreadyAssignedToThisTask": "इस कार्य को सभी उपयोगकर्ताओं ने पहले से ही सोंपा है",
-    "@allUsersAreAlreadyAssignedToThisTask": {}
+    "@allUsersAreAlreadyAssignedToThisTask": {},
+    "availableMembersToAssignToThisTask": "इस कार्य को सोंपने के लिए उपलब्ध सदस्य",
+    "@availableMembersToAssignToThisTask": {}
 }

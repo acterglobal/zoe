@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/users/widgets/user_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
 
 class UserListWidget extends ConsumerWidget {
   final ProviderBase<List<String>> userIdList;
   final Widget? addUserActionWidget;
   final Function(String userId)? onUserSelected;
+  final String title;
 
   const UserListWidget({
     super.key,
     required this.userIdList,
     this.addUserActionWidget,
     this.onUserSelected,
+    required this.title,
   });
 
   @override
@@ -39,7 +40,7 @@ class UserListWidget extends ConsumerWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  L10n.of(context).usersInSheet,
+                  title,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: theme.colorScheme.onSurface,

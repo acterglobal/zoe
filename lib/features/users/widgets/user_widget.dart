@@ -6,7 +6,12 @@ class UserWidget extends ConsumerWidget {
   final String userId;
   final Widget? addUserActionWidget;
   final Function(String userId)? onUserSelected;
-  const UserWidget({super.key, required this.userId, this.addUserActionWidget, this.onUserSelected});
+  const UserWidget({
+    super.key,
+    required this.userId,
+    this.addUserActionWidget,
+    this.onUserSelected,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

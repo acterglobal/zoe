@@ -150,5 +150,7 @@
     "available": "Available",
     "@available": {},
     "allUsersAreAlreadyAssignedToThisTask": "All users are already assigned to this task",
-    "@allUsersAreAlreadyAssignedToThisTask": {}
+    "@allUsersAreAlreadyAssignedToThisTask": {},
+    "availableMembersToAssignToThisTask": "Available members to assign to this task",
+    "@availableMembersToAssignToThisTask": {}
 }

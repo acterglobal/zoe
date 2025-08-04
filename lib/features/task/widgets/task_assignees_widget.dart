@@ -31,6 +31,7 @@ class TaskAssigneesWidget extends ConsumerWidget {
 
   Widget _buildAssigneeHeader(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l10n = L10n.of(context);
     final allUsers = ref.read(userListProvider);
     final currentAssignees = task.assignedUsers.toSet();
     final availableUsers = allUsers
@@ -41,7 +42,7 @@ class TaskAssigneesWidget extends ConsumerWidget {
         Icon(Icons.people_rounded, size: 20, color: theme.colorScheme.primary),
         const SizedBox(width: 8),
         Text(
-          L10n.of(context).assignees,
+          l10n.assignees,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: theme.colorScheme.onSurface,
@@ -54,8 +55,12 @@ class TaskAssigneesWidget extends ConsumerWidget {
               if (availableUsers.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
+                    backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
                     content: Text(
-                      L10n.of(context).allUsersAreAlreadyAssignedToThisTask,
+                      l10n.allUsersAreAlreadyAssignedToThisTask,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.primary,
+                      ),
                     ),
                   ),
                 );
@@ -64,7 +69,7 @@ class TaskAssigneesWidget extends ConsumerWidget {
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
-                backgroundColor: Colors.transparent,
+                backgroundColor: theme.colorScheme.surface,
                 builder: (context) => UserListWidget(
                   userIdList: userIdsFromUserModelsProvider(availableUsers),
                   addUserActionWidget: Icon(
@@ -77,6 +82,7 @@ class TaskAssigneesWidget extends ConsumerWidget {
                         .read(taskListProvider.notifier)
                         .addAssignee(context, ref, task, userId);
                   },
+                  title: l10n.availableMembersToAssignToThisTask,
                 ),
               );
             },
