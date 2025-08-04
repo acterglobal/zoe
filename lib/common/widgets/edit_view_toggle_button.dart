@@ -32,7 +32,6 @@ class EditViewToggleButton extends ConsumerWidget {
         backgroundOpacity: isEditing ? 0.12 : 0.08,
         borderOpacity: isEditing ? 0.2 : 0.15,
         shadowOpacity: isEditing ? 0.15 : 0.1,
-        showHighlight: true,
       ),
     );
   }
