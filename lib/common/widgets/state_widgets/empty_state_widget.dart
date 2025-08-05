@@ -17,7 +17,7 @@ class EmptyStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final height = this.height ?? MediaQuery.of(context).size.height * .85;
+    final height = this.height ?? 300;
     final width = this.width ?? MediaQuery.of(context).size.width;
 
     return Container(
