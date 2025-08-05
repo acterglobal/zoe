@@ -174,5 +174,13 @@
     "guest": "Guest",
     "@guest": {},
     "welcomeBack": "Welcome Back,",
-    "@welcomeBack": {}
+    "@welcomeBack": {},
+    "noSheetsFound": "No sheets found!",
+    "@noSheetsFound": {},
+    "noEventsFound": "No events found!",
+    "@noEventsFound": {},
+    "noTasksFound": "No tasks found!",
+    "@noTasksFound": {},
+    "search": "Search",
+    "@search": {}
 }

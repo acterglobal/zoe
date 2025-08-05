@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 import 'package:zoey/features/sheet/widgets/sheet_list_item_widget.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class SheetListWidget extends ConsumerWidget {
   final bool shrinkWrap;
@@ -9,7 +11,11 @@ class SheetListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sheetList = ref.watch(sheetListProvider);
+    final sheetList = ref.watch(sheetListSearchProvider);
+    if (sheetList.isEmpty) {
+      return EmptyStateWidget(message: L10n.of(context).noSheetsFound);
+    }
+
     return ListView.builder(
       shrinkWrap: shrinkWrap,
       itemCount: sheetList.length,

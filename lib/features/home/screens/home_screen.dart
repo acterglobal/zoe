@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/common/widgets/animated_background_widget.dart';
+import 'package:zoey/common/widgets/max_width_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_icon_button_widget.dart';
 import 'package:zoey/core/constants/app_constants.dart';
@@ -50,8 +51,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Center(
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 600),
+              child: MaxWidthWidget(
                 child: Column(
                   children: [
                     _buildAppBar(context),
