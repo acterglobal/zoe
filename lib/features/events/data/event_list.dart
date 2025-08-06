@@ -17,9 +17,9 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 1)),
     endDate: DateTime.now().add(const Duration(days: 1, hours: 1)),
-    createdBy: 'user-1',
+    createdBy: 'user_1',
     rsvpResponses: {
-      'user-1': RsvpResponse(id: 'user-1', name: 'John Doe', status: RsvpStatus.yes),
+      'user_1': RsvpResponse(id: 'user_1', name: 'John Doe', status: RsvpStatus.yes),
     },
   ),
   EventModel(
@@ -36,9 +36,9 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 2)),
     endDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
-    createdBy: 'user-1',
+    createdBy: 'user_1',
     rsvpResponses: {
-      'user-1': RsvpResponse(id: 'user-1', name: 'John Doe', status: RsvpStatus.yes),
+      'user_1': RsvpResponse(id: 'user_1', name: 'John Doe', status: RsvpStatus.yes),
     },
   ),
 
@@ -57,11 +57,11 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 2)),
     endDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
-    createdBy: 'user-3',
+    createdBy: 'user_3',
     rsvpResponses: {
-      'user-1': RsvpResponse(id: 'user-1', name: 'John Doe', status: RsvpStatus.yes),
-      'user-2': RsvpResponse(id: 'user-2', name: 'Jane Doe', status: RsvpStatus.no),
-      'user-3': RsvpResponse(id: 'user-3', name: 'Jim Beam', status: RsvpStatus.maybe),
+      'user_1': RsvpResponse(id: 'user_1', name: 'John Doe', status: RsvpStatus.yes),
+      'user_2': RsvpResponse(id: 'user_2', name: 'Jane Doe', status: RsvpStatus.no),
+      'user_3': RsvpResponse(id: 'user_3', name: 'Jim Beam', status: RsvpStatus.maybe),
     },
   ),
   EventModel(
@@ -78,12 +78,12 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 5)),
     endDate: DateTime.now().add(const Duration(days: 5, hours: 1, minutes: 30)),
-    createdBy: 'user-4',
+    createdBy: 'user_4',
     rsvpResponses: {
-      'user-1': RsvpResponse(id: 'user-1', name: 'John Doe', status: RsvpStatus.yes),
-      'user-2': RsvpResponse(id: 'user-2', name: 'Jane Doe', status: RsvpStatus.no),
-      'user-3': RsvpResponse(id: 'user-3', name: 'Jim Beam', status: RsvpStatus.maybe),
-      'user-4': RsvpResponse(id: 'user-4', name: 'John Doe', status: RsvpStatus.yes),
+      'user_1': RsvpResponse(id: 'user_1', name: 'John Doe', status: RsvpStatus.no),
+      'user_2': RsvpResponse(id: 'user_2', name: 'Jane Doe', status: RsvpStatus.no),
+      'user_3': RsvpResponse(id: 'user_3', name: 'Jim Beam', status: RsvpStatus.maybe),
+      'user_4': RsvpResponse(id: 'user_4', name: 'John Doe', status: RsvpStatus.yes),
     },
   ),
   EventModel(
@@ -100,7 +100,7 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 7)),
     endDate: DateTime.now().add(const Duration(days: 7, hours: 1)),
-    createdBy: 'user-5',
+    createdBy: 'user_5',
     rsvpResponses: {},
   ),
   EventModel(
@@ -117,7 +117,7 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 14)),
     endDate: DateTime.now().add(const Duration(days: 14, hours: 2)),
-    createdBy: 'user-2',
+    createdBy: 'user_2',
     rsvpResponses: {},
   ),
 
@@ -136,7 +136,7 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 14)),
     endDate: DateTime.now().add(const Duration(days: 14, hours: 1)),
-    createdBy: 'user-6',
+    createdBy: 'user_6',
     rsvpResponses: {},
   ),
   EventModel(
@@ -153,7 +153,7 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 21)),
     endDate: DateTime.now().add(const Duration(days: 21, hours: 2)),
-    createdBy: 'user-7',
+    createdBy: 'user_7',
     rsvpResponses: {},
   ),
   EventModel(
@@ -170,7 +170,7 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 45)),
     endDate: DateTime.now().add(const Duration(days: 45, hours: 18)),
-    createdBy: 'user-8',
+    createdBy: 'user_8',
     rsvpResponses: {},
   ),
   EventModel(
@@ -187,7 +187,7 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 47)),
     endDate: DateTime.now().add(const Duration(days: 47, hours: 8)),
-    createdBy: 'user-9',
+    createdBy: 'user_9',
     rsvpResponses: {},
   ),
   EventModel(
@@ -204,7 +204,7 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 49)),
     endDate: DateTime.now().add(const Duration(days: 49, hours: 6)),
-    createdBy: 'user-10',
+    createdBy: 'user_10',
     rsvpResponses: {},
   ),
   EventModel(
@@ -221,7 +221,7 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 51)),
     endDate: DateTime.now().add(const Duration(days: 51, hours: 3)),
-    createdBy: 'user-2',
+    createdBy: 'user_2',
     rsvpResponses: {},
   ),
 ];
