@@ -7,7 +7,7 @@ import 'package:zoey/l10n/generated/l10n.dart';
 
 class SheetListWidget extends ConsumerWidget {
   final bool shrinkWrap;
-  const SheetListWidget({super.key, this.shrinkWrap = true});
+  const SheetListWidget({super.key, this.shrinkWrap = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
