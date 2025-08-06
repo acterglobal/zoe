@@ -174,5 +174,17 @@
     "guest": "Guest",
     "@guest": {},
     "welcomeBack": "Welcome Back,",
-    "@welcomeBack": {}
+    "@welcomeBack": {},
+    "assignees": "Assignees",
+    "@assignees": {},
+    "noAssigneesYet": "No assignees yet",
+    "@noAssigneesYet": {},
+    "addAssignee": "Add Assignee",
+    "@addAssignee": {},
+    "available": "Available",
+    "@available": {},
+    "allUsersAreAlreadyAssignedToThisTask": "All users are already assigned to this task",
+    "@allUsersAreAlreadyAssignedToThisTask": {},
+    "availableMembersToAssignToThisTask": "Available members to assign to this task",
+    "@availableMembersToAssignToThisTask": {}
 }

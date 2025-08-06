@@ -160,7 +160,10 @@ class SheetDetailScreen extends ConsumerWidget {
           context: context,
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
-          builder: (context) => UserListWidget(userIdList: listOfUsersBySheetIdProvider(sheetId)),
+          builder: (context) => UserListWidget(
+            userIdList: listOfUsersBySheetIdProvider(sheetId),
+            title: l10n.usersInSheet,
+          ),
         );
       },
       child: Container(

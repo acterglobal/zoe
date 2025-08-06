@@ -21,6 +21,14 @@ final taskByParentProvider = Provider.family<List<TaskModel>, String>((
   return taskList.where((t) => t.parentId == parentId).toList();
 });
 
+final listOfUsersByTaskIdProvider = Provider.family<List<String>, String>((
+  ref,
+  taskId,
+) {
+  final taskList = ref.watch(taskListProvider);
+  return taskList.where((t) => t.id == taskId).firstOrNull?.assignedUsers ?? [];
+});
+
 final todaysTasksProvider = Provider<List<TaskModel>>((ref) {
   final allTasks = ref.watch(taskListProvider);
   final todayTasks = allTasks.where((task) => task.dueDate.isToday).toList();
