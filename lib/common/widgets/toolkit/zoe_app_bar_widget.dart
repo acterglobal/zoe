@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_icon_button_widget.dart';
 
 class ZoeAppBar extends StatelessWidget {
   final String title;
@@ -19,33 +20,13 @@ class ZoeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return Row(
       children: [
         if (showBackButton) ...[
-          GestureDetector(
+          ZoeIconButtonWidget(
+            icon: Icons.arrow_back_rounded,
             onTap: onBackPressed ?? () => Navigator.of(context).pop(),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.black.withValues(alpha: 0.08),
-                border: Border.all(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.2)
-                      : Colors.black.withValues(alpha: 0.15),
-                  width: 0.5,
-                ),
-              ),
-              child: Icon(
-                Icons.arrow_back_rounded,
-                color: theme.colorScheme.onSurface,
-                size: 24,
-              ),
-            ),
           ),
           const SizedBox(width: 16),
         ],

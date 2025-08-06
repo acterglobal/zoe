@@ -6,7 +6,6 @@ class StyledContentContainer extends StatelessWidget {
   final Color? secondaryColor;
   final double size;
   final BorderRadius? borderRadius;
-  final bool showHighlight;
   final double backgroundOpacity;
   final double borderOpacity;
   final double shadowOpacity;
@@ -18,7 +17,6 @@ class StyledContentContainer extends StatelessWidget {
     this.secondaryColor,
     this.size = 64,
     this.borderRadius,
-    this.showHighlight = true,
     this.backgroundOpacity = 0.12,
     this.borderOpacity = 0.2,
     this.shadowOpacity = 0.15,
@@ -28,7 +26,6 @@ class StyledContentContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final effectivePrimaryColor = primaryColor ?? colorScheme.primary;
     final effectiveSecondaryColor = secondaryColor ?? colorScheme.secondary;
@@ -71,33 +68,7 @@ class StyledContentContainer extends StatelessWidget {
           ),
         ],
       ),
-      child: Stack(
-        children: [
-          // Background highlight for depth
-          if (showHighlight)
-            Positioned(
-              top: size * 0.125,
-              left: size * 0.125,
-              right: size * 0.25,
-              child: Container(
-                height: size * 0.19,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(size * 0.125),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white.withValues(alpha: isDark ? 0.15 : 0.4),
-                      Colors.transparent,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          // Custom content
-          Center(child: child),
-        ],
-      ),
+      child: Center(child: child),
     );
   }
 }
