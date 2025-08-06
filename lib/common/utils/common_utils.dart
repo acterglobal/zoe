@@ -64,15 +64,11 @@ class CommonUtils {
     final difference = dueDate.difference(today).inDays;
 
     if (difference < 0) {
-      return AppColors.errorColor;
+      return AppColors.errorColor; // Past
     } else if (difference == 0) {
-      return AppColors.brightOrangeColor;
-    } else if (difference == 1) {
-      return AppColors.brightMagentaColor;
-    } else if (difference <= 3) {
-      return AppColors.primaryColor;
+      return AppColors.successColor; // Today
     } else {
-      return AppColors.successColor;
+      return AppColors.brightMagentaColor; // Upcoming
     }
   }
 }

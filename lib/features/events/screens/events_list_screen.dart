@@ -37,22 +37,20 @@ class _EventsListScreenState extends ConsumerState<EventsListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: MaxWidthWidget(
           padding: const EdgeInsets.all(16),
-          child: MaxWidthWidget(
-            child: Column(
-              children: [
-                ZoeAppBar(title: L10n.of(context).events),
-                const SizedBox(height: 16),
-                ZoeSearchBarWidget(
-                  controller: searchController,
-                  onChanged: (value) =>
-                      ref.read(searchValueProvider.notifier).state = value,
-                ),
-                const SizedBox(height: 16),
-                _buildEventList(context, ref),
-              ],
-            ),
+          child: Column(
+            children: [
+              ZoeAppBar(title: L10n.of(context).events),
+              const SizedBox(height: 16),
+              ZoeSearchBarWidget(
+                controller: searchController,
+                onChanged: (value) =>
+                    ref.read(searchValueProvider.notifier).state = value,
+              ),
+              const SizedBox(height: 16),
+              Expanded(child: _buildEventList(context, ref)),
+            ],
           ),
         ),
       ),
@@ -67,9 +65,8 @@ class _EventsListScreenState extends ConsumerState<EventsListScreen> {
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
       itemCount: events.length,
-      padding: EdgeInsets.zero,
+      padding: const EdgeInsets.only(bottom: 30),
       itemBuilder: (context, index) {
         final event = events[index];
         return EventWidget(

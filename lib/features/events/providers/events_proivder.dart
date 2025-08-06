@@ -9,11 +9,41 @@ final eventListProvider =
       (ref) => EventNotifier(),
     );
 
-final eventListSearchProvider = Provider<List<EventModel>>((ref) {
+final todaysEventsProvider = Provider<List<EventModel>>((ref) {
+  final allEvents = ref.watch(eventListProvider);
+  final todayEvents = allEvents.where((event) {
+    return event.startDate.isToday;
+  }).toList();
+  todayEvents.sort((a, b) => a.startDate.compareTo(b.startDate));
+  return todayEvents;
+});
+
+final upcomingEventsProvider = Provider<List<EventModel>>((ref) {
   final eventList = ref.watch(eventListProvider);
+  final upcomingEvents = eventList.where((event) {
+    return event.startDate.isAfter(DateTime.now()) && !event.startDate.isToday;
+  }).toList();
+  upcomingEvents.sort((a, b) => a.startDate.compareTo(b.startDate));
+  return upcomingEvents;
+});
+
+final pastEventsProvider = Provider<List<EventModel>>((ref) {
+  final eventList = ref.watch(eventListProvider);
+  final pastEvents = eventList.where((event) {
+    return event.startDate.isBefore(DateTime.now()) && !event.startDate.isToday;
+  }).toList();
+  pastEvents.sort((a, b) => b.startDate.compareTo(a.startDate));
+  return pastEvents;
+});
+
+final eventListSearchProvider = Provider<List<EventModel>>((ref) {
+  final todayEvents = ref.watch(todaysEventsProvider);
+  final upcomingEvents = ref.watch(upcomingEventsProvider);
+  final pastEvents = ref.watch(pastEventsProvider);
   final searchValue = ref.watch(searchValueProvider);
-  if (searchValue.isEmpty) return eventList;
-  return eventList
+  final allEvents = [...todayEvents, ...upcomingEvents, ...pastEvents];
+  if (searchValue.isEmpty) return allEvents;
+  return allEvents
       .where((e) => e.title.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
 });
@@ -29,13 +59,4 @@ final eventByParentProvider = Provider.family<List<EventModel>, String>((
 ) {
   final eventList = ref.watch(eventListProvider);
   return eventList.where((e) => e.parentId == parentId).toList();
-});
-
-final todaysEventsProvider = Provider<List<EventModel>>((ref) {
-  final allEvents = ref.watch(eventListProvider);
-  final todayEvents = allEvents
-      .where((event) => event.startDate.isToday)
-      .toList();
-  todayEvents.sort((a, b) => a.startDate.compareTo(b.startDate));
-  return todayEvents;
 });
