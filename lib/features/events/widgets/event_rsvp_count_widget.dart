@@ -11,7 +11,7 @@ class EventRsvpCountWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final rsvpCount = ref.watch(eventListProvider.notifier).getRsvpCount(eventId);
+    final rsvpCount = ref.watch(eventListProvider.notifier).getRsvpStatusCount(eventId);
     final totalRsvpCount = ref.watch(eventListProvider.notifier).getTotalRsvpCount(eventId);
 
     if (totalRsvpCount == 0) return const SizedBox.shrink();

@@ -90,19 +90,15 @@ class EventNotifier extends StateNotifier<List<EventModel>> {
   }
 
   /// Get RSVP count for a specific event
-  Map<RsvpStatus, int> getRsvpCount(String eventId) {
+  Map<RsvpStatus, int> getRsvpStatusCount(String eventId) {
     final event = state.where((e) => e.id == eventId).firstOrNull;
     if (event == null) return {};
 
     final rsvpCount = <RsvpStatus, int>{};
-    for (final status in RsvpStatus.values) {
-      rsvpCount[status] = 0;
-    }
 
     for (final response in event.rsvpResponses.values) {
       rsvpCount[response.status] = (rsvpCount[response.status] ?? 0) + 1;
     }
-
     return rsvpCount;
   }
 
