@@ -14,7 +14,10 @@ final userListProvider = StateNotifierProvider<UserNotifier, List<UserModel>>(
 );
 
 // Provider that returns users for a specific sheet
-final usersBySheetIdProvider = Provider.family<List<UserModel>, String>((ref, sheetId) {
+final usersBySheetIdProvider = Provider.family<List<UserModel>, String>((
+  ref,
+  sheetId,
+) {
   final userList = ref.watch(userListProvider);
   final sheet = ref.watch(sheetProvider(sheetId));
   if (sheet == null) return [];

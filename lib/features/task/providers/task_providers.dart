@@ -21,7 +21,10 @@ final taskByParentProvider = Provider.family<List<TaskModel>, String>((
   return taskList.where((t) => t.parentId == parentId).toList();
 });
 
-final listOfUsersByTaskIdProvider = Provider.family<List<String>, String>((ref, taskId) {
+final listOfUsersByTaskIdProvider = Provider.family<List<String>, String>((
+  ref,
+  taskId,
+) {
   final taskList = ref.watch(taskListProvider);
   return taskList.where((t) => t.id == taskId).firstOrNull?.assignedUsers ?? [];
 });
