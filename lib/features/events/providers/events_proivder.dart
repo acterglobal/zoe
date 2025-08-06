@@ -47,12 +47,9 @@ final currentUserRsvpProvider = FutureProvider.family<RsvpResponse?, String>((
   final rsvpResponse = event.rsvpResponses[currentUserId];
   if (rsvpResponse == null) return null;
 
-  final user = ref.watch(getUserByIdProvider(currentUserId));
-  final userName = user?.name ?? currentUserId;
-
   return RsvpResponse(
     id: rsvpResponse.id,
-    name: userName,
+    name: rsvpResponse.name,
     status: rsvpResponse.status,
   );
 });
