@@ -43,49 +43,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: _buildFloatingActionButton(context),
-      body: AnimatedBackgroundWidget(
-        backgroundOpacity: 0.2,
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            child: Center(
-              child: MaxWidthWidget(
-                child: Column(
-                  children: [
-                    _buildAppBar(context),
-                    const SizedBox(height: 20),
-                    const WelcomeSectionWidget(),
-                    const SizedBox(height: 16),
-                    const StatsSectionWidget(),
-                    const TodaysFocusWidget(),
-                    const SizedBox(height: 32),
-                    _buildSheetsSection(context, ref),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
+    return AnimatedBackgroundWidget(
+      backgroundOpacity: 0.2,
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        floatingActionButton: _buildFloatingActionButton(),
+        body: _buildBody(),
       ),
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildAppNameIconWidget(context),
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: _buildAppNameIconWidget(),
+      actions: [
         ZoeIconButtonWidget(
           icon: Icons.settings_rounded,
           onTap: () => context.push(AppRoutes.settings.route),
         ),
+        const SizedBox(width: 16),
       ],
     );
   }
 
-  Widget _buildAppNameIconWidget(BuildContext context) {
+  Widget _buildAppNameIconWidget() {
     final theme = Theme.of(context);
 
     return Container(
@@ -119,7 +100,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context) {
+  Widget _buildBody() {
+    return SafeArea(
+      child: Center(
+        child: MaxWidthWidget(
+          isScrollable: true,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(
+            children: [
+              const WelcomeSectionWidget(),
+              const SizedBox(height: 16),
+              const StatsSectionWidget(),
+              const TodaysFocusWidget(),
+              const SizedBox(height: 32),
+              _buildSheetsSection(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFloatingActionButton() {
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
       onPressed: () async {
@@ -131,7 +133,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildSheetsSection(BuildContext context, WidgetRef ref) {
+  Widget _buildSheetsSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
