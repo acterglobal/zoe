@@ -11,14 +11,14 @@ class EventRsvpCountWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final rsvpStats = ref.watch(eventRsvpStatisticsProvider(eventId));
-    final totalResponses = ref.watch(eventTotalRsvpResponsesProvider(eventId));
+    final rsvpCount = ref.watch(eventRsvpCountProvider(eventId));
+    final totalCount = ref.watch(eventTotalRsvpCountProvider(eventId));
 
-    if (totalResponses == 0) return const SizedBox.shrink();
+    if (totalCount == 0) return const SizedBox.shrink();
 
-    final yesCount = rsvpStats[RsvpStatus.yes] ?? 0;
+    final yesCount = rsvpCount[RsvpStatus.yes] ?? 0;
 
-    return _buildRsvpCountText(context, yesCount, totalResponses);
+    return _buildRsvpCountText(context, yesCount, totalCount);
   }
 
   Widget _buildRsvpCountText(

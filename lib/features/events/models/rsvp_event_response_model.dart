@@ -1,6 +1,5 @@
 import 'package:zoey/features/users/models/user_model.dart';
 
-/// RSVP status enum for event responses
 enum RsvpStatus {
   yes('Yes', '✅'),
   no('No', '❌'),

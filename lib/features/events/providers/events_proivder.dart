@@ -23,6 +23,15 @@ final eventByParentProvider = Provider.family<List<EventModel>, String>((
   return eventList.where((e) => e.parentId == parentId).toList();
 });
 
+final todaysEventsProvider = Provider<List<EventModel>>((ref) {
+  final allEvents = ref.watch(eventListProvider);
+  final todayEvents = allEvents
+      .where((event) => event.startDate.isToday)
+      .toList();
+  todayEvents.sort((a, b) => a.startDate.compareTo(b.startDate));
+  return todayEvents;
+});
+
 final currentUserRsvpProvider = FutureProvider.family<RsvpResponse?, String>((
   ref,
   eventId,
@@ -48,19 +57,10 @@ final currentUserRsvpProvider = FutureProvider.family<RsvpResponse?, String>((
   );
 });
 
-final todaysEventsProvider = Provider<List<EventModel>>((ref) {
-  final allEvents = ref.watch(eventListProvider);
-  final todayEvents = allEvents
-      .where((event) => event.startDate.isToday)
-      .toList();
-  todayEvents.sort((a, b) => a.startDate.compareTo(b.startDate));
-  return todayEvents;
+final eventRsvpCountProvider = Provider.family<Map<RsvpStatus, int>, String>((ref, eventId) {
+  return ref.read(eventListProvider.notifier).getRsvpCount(eventId);
 });
 
-final eventRsvpStatisticsProvider = Provider.family<Map<RsvpStatus, int>, String>((ref, eventId) {
-  return ref.read(eventListProvider.notifier).getRsvpStatistics(eventId);
-});
-
-final eventTotalRsvpResponsesProvider = Provider.family<int, String>((ref, eventId) {
-  return ref.read(eventListProvider.notifier).getTotalRsvpResponses(eventId);
+final eventTotalRsvpCountProvider = Provider.family<int, String>((ref, eventId) {
+  return ref.read(eventListProvider.notifier).getTotalRsvpCount(eventId);
 });
