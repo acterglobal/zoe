@@ -1,10 +1,12 @@
 import 'package:zoey/features/content/models/content_model.dart';
+import 'package:zoey/features/events/models/rsvp_event_response_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 
 class EventModel extends ContentModel {
   /// EventModel properties
   final DateTime startDate;
   final DateTime endDate;
+  final Map<String, RsvpResponse> rsvpResponses;
 
   EventModel({
     /// ContentModel properties
@@ -21,6 +23,7 @@ class EventModel extends ContentModel {
     /// EventModel properties
     required this.startDate,
     required this.endDate,
+    this.rsvpResponses = const {},
   }) : super(type: ContentType.event, emoji: '📅');
 
   EventModel copyWith({
@@ -38,6 +41,7 @@ class EventModel extends ContentModel {
     /// EventModel properties
     DateTime? startDate,
     DateTime? endDate,
+    Map<String, RsvpResponse>? rsvpResponses,
   }) {
     return EventModel(
       /// ContentModel properties
@@ -54,6 +58,36 @@ class EventModel extends ContentModel {
       /// EventModel properties
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
+      rsvpResponses: rsvpResponses ?? this.rsvpResponses,
     );
+  }
+
+  /// Get RSVP response for a specific user
+  RsvpResponse? getRsvpResponse(String userId) {
+    return rsvpResponses[userId];
+  }
+
+  /// Get RSVP statistics
+  Map<RsvpStatus, int> getRsvpStatistics() {
+    final stats = <RsvpStatus, int>{};
+    for (final status in RsvpStatus.values) {
+      stats[status] = 0;
+    }
+    
+    for (final response in rsvpResponses.values) {
+      stats[response.status] = (stats[response.status] ?? 0) + 1;
+    }
+    
+    return stats;
+  }
+
+  /// Get total RSVP responses
+  int get totalRsvpResponses => rsvpResponses.length;
+
+  /// Get responses by status
+  List<RsvpResponse> getResponsesByStatus(RsvpStatus status) {
+    return rsvpResponses.values
+        .where((response) => response.status == status)
+        .toList();
   }
 }

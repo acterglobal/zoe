@@ -1,4 +1,5 @@
 import 'package:zoey/features/events/models/events_model.dart';
+import 'package:zoey/features/events/models/rsvp_event_response_model.dart';
 
 final eventList = [
   // Getting Started Guide (sheet-1) events
@@ -16,7 +17,10 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 1)),
     endDate: DateTime.now().add(const Duration(days: 1, hours: 1)),
-    createdBy: '',
+    createdBy: 'user-1',
+    rsvpResponses: {
+      'user-1': RsvpResponse(id: 'user-1', name: 'John Doe', status: RsvpStatus.yes),
+    },
   ),
   EventModel(
     sheetId: 'sheet-1',
@@ -32,7 +36,10 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 2)),
     endDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
-    createdBy: '',
+    createdBy: 'user-1',
+    rsvpResponses: {
+      'user-1': RsvpResponse(id: 'user-1', name: 'John Doe', status: RsvpStatus.yes),
+    },
   ),
 
   // Community Organization (sheet-2) events
@@ -50,7 +57,12 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 2)),
     endDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
-    createdBy: '',
+    createdBy: 'user-3',
+    rsvpResponses: {
+      'user-1': RsvpResponse(id: 'user-1', name: 'John Doe', status: RsvpStatus.yes),
+      'user-2': RsvpResponse(id: 'user-2', name: 'Jane Doe', status: RsvpStatus.no),
+      'user-3': RsvpResponse(id: 'user-3', name: 'Jim Beam', status: RsvpStatus.maybe),
+    },
   ),
   EventModel(
     sheetId: 'sheet-2',
@@ -66,7 +78,13 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 5)),
     endDate: DateTime.now().add(const Duration(days: 5, hours: 1, minutes: 30)),
-    createdBy: '',
+    createdBy: 'user-4',
+    rsvpResponses: {
+      'user-1': RsvpResponse(id: 'user-1', name: 'John Doe', status: RsvpStatus.yes),
+      'user-2': RsvpResponse(id: 'user-2', name: 'Jane Doe', status: RsvpStatus.no),
+      'user-3': RsvpResponse(id: 'user-3', name: 'Jim Beam', status: RsvpStatus.maybe),
+      'user-4': RsvpResponse(id: 'user-4', name: 'John Doe', status: RsvpStatus.yes),
+    },
   ),
   EventModel(
     sheetId: 'sheet-2',
@@ -82,7 +100,8 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 7)),
     endDate: DateTime.now().add(const Duration(days: 7, hours: 1)),
-    createdBy: '',
+    createdBy: 'user-5',
+    rsvpResponses: {},
   ),
   EventModel(
     sheetId: 'sheet-2',
@@ -98,7 +117,8 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 14)),
     endDate: DateTime.now().add(const Duration(days: 14, hours: 2)),
-    createdBy: '',
+    createdBy: 'user-2',
+    rsvpResponses: {},
   ),
 
   // Group Trip Planning (sheet-8) events
@@ -116,7 +136,8 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 14)),
     endDate: DateTime.now().add(const Duration(days: 14, hours: 1)),
-    createdBy: '',
+    createdBy: 'user-6',
+    rsvpResponses: {},
   ),
   EventModel(
     sheetId: 'sheet-8',
@@ -132,7 +153,8 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 21)),
     endDate: DateTime.now().add(const Duration(days: 21, hours: 2)),
-    createdBy: '',
+    createdBy: 'user-7',
+    rsvpResponses: {},
   ),
   EventModel(
     sheetId: 'sheet-8',
@@ -148,7 +170,8 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 45)),
     endDate: DateTime.now().add(const Duration(days: 45, hours: 18)),
-    createdBy: '',
+    createdBy: 'user-8',
+    rsvpResponses: {},
   ),
   EventModel(
     sheetId: 'sheet-8',
@@ -164,7 +187,8 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 47)),
     endDate: DateTime.now().add(const Duration(days: 47, hours: 8)),
-    createdBy: '',
+    createdBy: 'user-9',
+    rsvpResponses: {},
   ),
   EventModel(
     sheetId: 'sheet-8',
@@ -180,7 +204,8 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 49)),
     endDate: DateTime.now().add(const Duration(days: 49, hours: 6)),
-    createdBy: '',
+    createdBy: 'user-10',
+    rsvpResponses: {},
   ),
   EventModel(
     sheetId: 'sheet-8',
@@ -196,6 +221,7 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 51)),
     endDate: DateTime.now().add(const Duration(days: 51, hours: 3)),
-    createdBy: '',
+    createdBy: 'user-2',
+    rsvpResponses: {},
   ),
 ];

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/events/data/event_list.dart';
 import 'package:zoey/features/events/models/events_model.dart';
+import 'package:zoey/features/events/models/rsvp_event_response_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 
 class EventNotifier extends StateNotifier<List<EventModel>> {
@@ -67,6 +68,42 @@ class EventNotifier extends StateNotifier<List<EventModel>> {
       for (final event in state)
         if (event.id == eventId)
           event.copyWith(orderIndex: orderIndex)
+        else
+          event,
+    ];
+  }
+
+  /// Add or update RSVP response for a user
+  void updateRsvpResponse(
+    String eventId,
+    String userId,
+    RsvpStatus status,
+  ) {
+    state = [
+      for (final event in state)
+        if (event.id == eventId)
+          event.copyWith(
+            rsvpResponses: {
+              ...event.rsvpResponses,
+              userId: RsvpResponse(
+                id: userId,
+                name: userId,
+                status: status,
+              ),
+            },
+          )
+        else
+          event,
+    ];
+  }
+
+  void removeRsvpResponse(String eventId, String userId) {
+    state = [
+      for (final event in state)
+        if (event.id == eventId)
+          event.copyWith(
+            rsvpResponses: Map.from(event.rsvpResponses)..remove(userId),
+          )
         else
           event,
     ];

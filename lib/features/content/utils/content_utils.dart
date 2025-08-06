@@ -147,5 +147,5 @@ void addNewTaskListContent(WidgetRef ref, parentId, String sheetId) {
   // Add a default task item to the new list
   ref
       .read(taskListProvider.notifier)
-      .addTask('', toDoListContentModel.id, sheetId);
+      .addTask(ref, '', toDoListContentModel.id, sheetId);
 }

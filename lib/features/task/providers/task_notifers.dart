@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/core/preference_service/preferences_service.dart';
 import 'package:zoey/features/task/data/tasks.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
+import 'package:zoey/features/users/providers/user_providers.dart';
 
 class TaskNotifier extends StateNotifier<List<TaskModel>> {
   TaskNotifier() : super(tasks);
 
-  void addTask(String title, String parentId, String sheetId) async {
-    final createdBy = await PreferencesService().getLoginUserId();
+  void addTask(WidgetRef ref, String title, String parentId, String sheetId) async {
+    final createdBy = ref.read(loggedInUserProvider);
     final newTask = TaskModel(
       parentId: parentId,
       title: title,
       sheetId: sheetId,
       dueDate: DateTime.now(),
       isCompleted: false,
-      createdBy: createdBy,
+      createdBy: createdBy.value,
       assignedUsers: [],
     );
     state = [...state, newTask];
