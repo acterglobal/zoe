@@ -56,11 +56,3 @@ final currentUserRsvpProvider = FutureProvider.family<RsvpResponse?, String>((
     status: rsvpResponse.status,
   );
 });
-
-final eventRsvpCountProvider = Provider.family<Map<RsvpStatus, int>, String>((ref, eventId) {
-  return ref.read(eventListProvider.notifier).getRsvpCount(eventId);
-});
-
-final eventTotalRsvpCountProvider = Provider.family<int, String>((ref, eventId) {
-  return ref.read(eventListProvider.notifier).getTotalRsvpCount(eventId);
-});

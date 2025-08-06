@@ -20,6 +20,7 @@ final eventList = [
     createdBy: 'user_1',
     rsvpResponses: {
       'user_1': RsvpResponse(id: 'user_1', name: 'John Doe', status: RsvpStatus.yes),
+      'user_2': RsvpResponse(id: 'user_2', name: 'Jane Doe', status: RsvpStatus.yes),
     },
   ),
   EventModel(
@@ -62,6 +63,7 @@ final eventList = [
       'user_1': RsvpResponse(id: 'user_1', name: 'John Doe', status: RsvpStatus.yes),
       'user_2': RsvpResponse(id: 'user_2', name: 'Jane Doe', status: RsvpStatus.no),
       'user_3': RsvpResponse(id: 'user_3', name: 'Jim Beam', status: RsvpStatus.maybe),
+      'user_4': RsvpResponse(id: 'user_4', name: 'John Doe', status: RsvpStatus.yes),
     },
   ),
   EventModel(
