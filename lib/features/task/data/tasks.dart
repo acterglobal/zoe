@@ -33,6 +33,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(minutes: 30)),
+    createdBy: 'user_1',
     assignedUsers: ['user_2', 'user_5', 'user_8'],
   ),
   TaskModel(

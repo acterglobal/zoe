@@ -68,16 +68,27 @@ class CommonUtils {
       Colors.teal,
       Colors.green,
       Colors.lightGreen,
-      Colors.lime,
-      Colors.yellow,
-      Colors.amber,
-      Colors.orange,
+      Colors.deepOrange,
       Colors.brown,
-      Colors.grey,
     ];
 
     // color based on the name
     int hash = name.hashCode;
     return colors[hash.abs() % colors.length];
+  }
+
+  static void showSnackBar(BuildContext context, String message) {
+    final theme = Theme.of(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: theme.colorScheme.surface,
+        content: Text(
+          message,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurface,
+          ),
+        ),
+      ),
+    );
   }
 }

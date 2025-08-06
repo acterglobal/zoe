@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/utils/common_utils.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_user_avatar_widget.dart';
+import 'package:zoey/features/task/actions/add_assignee_action.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
-import 'package:zoey/features/users/models/user_model.dart';
 import 'package:zoey/features/users/providers/user_providers.dart';
-import 'package:zoey/features/users/widgets/user_list_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class TaskAssigneesWidget extends ConsumerWidget {
@@ -32,18 +32,12 @@ class TaskAssigneesWidget extends ConsumerWidget {
 
   Widget _buildAssigneeHeader(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final l10n = L10n.of(context);
-    final allUsers = ref.read(userListProvider);
-    final currentAssignees = task.assignedUsers.toSet();
-    final availableUsers = allUsers
-        .where((user) => !currentAssignees.contains(user.id))
-        .toList();
     return Row(
       children: [
         Icon(Icons.people_rounded, size: 20),
         const SizedBox(width: 8),
         Text(
-          l10n.assignees,
+          L10n.of(context).assignees,
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: theme.colorScheme.onSurface,
@@ -52,41 +46,7 @@ class TaskAssigneesWidget extends ConsumerWidget {
         const Spacer(),
         if (isEditing)
           IconButton(
-            onPressed: () {
-              if (availableUsers.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: theme.colorScheme.surface,
-                    content: Text(
-                      l10n.allUsersAreAlreadyAssignedToThisTask,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface,
-                      ),
-                    ),
-                  ),
-                );
-                return;
-              }
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                backgroundColor: theme.colorScheme.surface,
-                builder: (context) => UserListWidget(
-                  userIdList: userIdsFromUserModelsProvider(availableUsers),
-                  addUserActionWidget: Icon(
-                    Icons.add,
-                    size: 20,
-                    color: theme.colorScheme.primary,
-                  ),
-                  onUserSelected: (userId) {
-                    ref
-                        .read(taskListProvider.notifier)
-                        .addAssignee(context, ref, task, userId);
-                  },
-                  title: l10n.availableMembersToAssignToThisTask,
-                ),
-              );
-            },
+            onPressed: () => assignTask(context, ref, task),
             icon: Icon(
               Icons.add_circle_outline_rounded,
               size: 24,
@@ -153,7 +113,7 @@ class TaskAssigneesWidget extends ConsumerWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildAssigneeAvatar(context, user, randomColor),
+          ZoeUserAvatarWidget(user: user, color: randomColor),
           const SizedBox(width: 8),
           Text(
             user.name,
@@ -163,36 +123,22 @@ class TaskAssigneesWidget extends ConsumerWidget {
             ),
           ),
           if (isEditing) ...[
-            const SizedBox(width: 8),
-            GestureDetector(
-              onTap: () => ref
+            const SizedBox(width: 4),
+            IconButton(
+              visualDensity: VisualDensity.compact,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+              onPressed: () => ref
                   .read(taskListProvider.notifier)
                   .removeAssignee(ref, task, userId),
-              child: Icon(
+              icon: Icon(
                 Icons.close_rounded,
-                size: 16,
+                size: 14,
                 color: theme.colorScheme.error,
               ),
             ),
           ],
         ],
-      ),
-    );
-  }
-
-  Widget _buildAssigneeAvatar(BuildContext context, UserModel user, Color color) {
-    return Container(
-      width: 24,
-      height: 24,
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Center(
-        child: Text(
-          user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
-          style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.bold),
-        ),
       ),
     );
   }

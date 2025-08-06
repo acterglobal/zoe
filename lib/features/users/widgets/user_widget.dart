@@ -4,13 +4,13 @@ import 'package:zoey/features/users/providers/user_providers.dart';
 
 class UserWidget extends ConsumerWidget {
   final String userId;
-  final Widget? addUserActionWidget;
-  final Function(String userId)? onUserSelected;
+  final Widget? actionWidget;
+  final Function(String userId)? onTapUser;
   const UserWidget({
     super.key,
     required this.userId,
-    this.addUserActionWidget,
-    this.onUserSelected,
+    this.actionWidget,
+    this.onTapUser,
   });
 
   @override
@@ -20,8 +20,8 @@ class UserWidget extends ConsumerWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        if (onUserSelected != null) {
-          onUserSelected!(userId);
+        if (onTapUser != null) {
+          onTapUser!(userId);
           Navigator.of(context).pop();
         }
       },
@@ -39,8 +39,8 @@ class UserWidget extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(user.name, style: theme.textTheme.bodyMedium),
-          if (addUserActionWidget != null)
-              addUserActionWidget ?? const SizedBox.shrink(),
+          if (actionWidget != null)
+              actionWidget ?? const SizedBox.shrink(),
           ],
         ),
       ),

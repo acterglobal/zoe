@@ -4,15 +4,15 @@ import 'package:zoey/features/users/widgets/user_widget.dart';
 
 class UserListWidget extends ConsumerWidget {
   final ProviderBase<List<String>> userIdList;
-  final Widget? addUserActionWidget;
-  final Function(String userId)? onUserSelected;
+  final Widget? actionWidget;
+  final Function(String userId)? onTapUser;
   final String title;
 
   const UserListWidget({
     super.key,
     required this.userIdList,
-    this.addUserActionWidget,
-    this.onUserSelected,
+    this.actionWidget,
+    this.onTapUser,
     required this.title,
   });
 
@@ -61,8 +61,8 @@ class UserListWidget extends ConsumerWidget {
                 child: UserWidget(
                   key: ValueKey(userId),
                   userId: userId,
-                  addUserActionWidget: addUserActionWidget,
-                  onUserSelected: onUserSelected,
+                  actionWidget: actionWidget,
+                  onTapUser: onTapUser,
                 ),
               );
             },

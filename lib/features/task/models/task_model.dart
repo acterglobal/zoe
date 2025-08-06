@@ -37,7 +37,7 @@ class TaskModel extends ContentModel {
     int? orderIndex,
     String? createdBy,
 
-    /// EventModel properties
+    /// TaskModel properties
     DateTime? dueDate,
     bool? isCompleted,
     List<String>? assignedUsers,
@@ -54,7 +54,7 @@ class TaskModel extends ContentModel {
       orderIndex: orderIndex ?? this.orderIndex,
       createdBy: createdBy ?? this.createdBy,
 
-      /// EventModel properties
+      /// TaskModel properties
       dueDate: dueDate ?? this.dueDate,
       isCompleted: isCompleted ?? this.isCompleted,
       assignedUsers: assignedUsers ?? this.assignedUsers,

@@ -13,7 +13,7 @@ class TaskCheckboxWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Checkbox(
       value: task.isCompleted,
-      activeColor: AppColors.primaryColor,
+      activeColor: AppColors.successColor,
       checkColor: Colors.white,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.compact,
