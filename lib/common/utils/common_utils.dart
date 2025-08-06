@@ -55,4 +55,40 @@ class CommonUtils {
 
     return false;
   }
+
+  Color getRandomColorFromName(String name) {
+    final colors = [
+      Colors.pink,
+      Colors.purple,
+      Colors.deepPurple,
+      Colors.indigo,
+      Colors.blue,
+      Colors.lightBlue,
+      Colors.cyan,
+      Colors.teal,
+      Colors.green,
+      Colors.lightGreen,
+      Colors.deepOrange,
+      Colors.brown,
+    ];
+
+    // color based on the name
+    int hash = name.hashCode;
+    return colors[hash.abs() % colors.length];
+  }
+
+  static void showSnackBar(BuildContext context, String message) {
+    final theme = Theme.of(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: theme.colorScheme.surface,
+        content: Text(
+          message,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurface,
+          ),
+        ),
+      ),
+    );
+  }
 }

@@ -5,6 +5,7 @@ class TaskModel extends ContentModel {
   /// TaskModel properties
   final DateTime dueDate;
   final bool isCompleted;
+  final List<String> assignedUsers;
 
   TaskModel({
     /// ContentModel properties
@@ -21,6 +22,7 @@ class TaskModel extends ContentModel {
     /// TaskModel properties
     required this.dueDate,
     required this.isCompleted,
+    required this.assignedUsers,
   }) : super(type: ContentType.task, emoji: null);
 
   TaskModel copyWith({
@@ -35,9 +37,10 @@ class TaskModel extends ContentModel {
     int? orderIndex,
     String? createdBy,
 
-    /// EventModel properties
+    /// TaskModel properties
     DateTime? dueDate,
     bool? isCompleted,
+    List<String>? assignedUsers,
   }) {
     return TaskModel(
       /// ContentModel properties
@@ -51,9 +54,10 @@ class TaskModel extends ContentModel {
       orderIndex: orderIndex ?? this.orderIndex,
       createdBy: createdBy ?? this.createdBy,
 
-      /// EventModel properties
+      /// TaskModel properties
       dueDate: dueDate ?? this.dueDate,
       isCompleted: isCompleted ?? this.isCompleted,
+      assignedUsers: assignedUsers ?? this.assignedUsers,
     );
   }
 }
