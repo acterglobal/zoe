@@ -17,60 +17,43 @@ class EventRsvpWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentRsvp = ref.watch(currentUserRsvpProvider(eventId));
     final currentUser = ref.watch(loggedInUserProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildRsvpHeader(context, ref, currentRsvp.value),
+        _buildHeader(context, currentRsvp.value),
         const SizedBox(height: 16),
-        Row(
-          children: RsvpStatus.values
-              .where((s) => s != RsvpStatus.pending)
-              .map(
-                (status) => Expanded(
-                  child: _buildRsvpButton(
-                    context,
-                    ref,
-                    status,
-                    currentRsvp.value?.status == status,
-                    currentUser.value ?? '',
-                  ),
-                ),
-              )
-              .toList(),
-        ),
+        _buildRsvpButtons(context, ref, currentRsvp.value, currentUser.value ?? ''),
       ],
     );
   }
 
-  Widget _buildRsvpHeader(
-    BuildContext context,
-    WidgetRef ref,
-    RsvpResponse? currentRsvp,
-  ) {
+  // Header widget with status
+  Widget _buildHeader(BuildContext context, RsvpResponse? currentRsvp) {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
+    final hasRsvp = currentRsvp != null;
+    final statusColor = hasRsvp
+        ? CommonUtils.getRsvpStatusColor(currentRsvp.status)
+        : theme.colorScheme.primary;
 
     return Row(
       children: [
+        // Status Icon
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: currentRsvp != null
-                ? CommonUtils.getRsvpStatusColor(currentRsvp.status).withValues(alpha: 0.1)
-                : theme.colorScheme.primary.withValues(alpha: 0.08),
+            color: statusColor.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
           child: Icon(
-            currentRsvp != null
-                ? Icons.check_circle_rounded
-                : Icons.event_available_rounded,
-            color: currentRsvp != null
-                ? CommonUtils.getRsvpStatusColor(currentRsvp.status)
-                : theme.colorScheme.primary,
+            hasRsvp ? Icons.check_circle_rounded : Icons.event_available_rounded,
+            color: statusColor,
             size: 22,
           ),
         ),
         const SizedBox(width: 12),
+        // Title + Count + Status Badge
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,44 +63,12 @@ class EventRsvpWidget extends ConsumerWidget {
                 children: [
                   Text(
                     l10n.willYouAttend,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
                   ),
                   EventRsvpCountWidget(eventId: eventId),
                 ],
               ),
-              if (currentRsvp != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: CommonUtils.getRsvpStatusColor(
-                        currentRsvp.status,
-                      ).withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(currentRsvp.status.emoji),
-                        const SizedBox(width: 6),
-                        Text(
-                          currentRsvp.status.label,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: CommonUtils.getRsvpStatusColor(currentRsvp.status),
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              if (hasRsvp) _buildStatusBadge(currentRsvp.status, statusColor),
             ],
           ),
         ),
@@ -125,13 +76,68 @@ class EventRsvpWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildRsvpButton(
+  // Status badge UI
+  Widget _buildStatusBadge(RsvpStatus status, Color color) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(status.emoji),
+            const SizedBox(width: 6),
+            Text(
+              status.label,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: color,
+                fontSize: 13,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // RSVP button row
+  Widget _buildRsvpButtons(
     BuildContext context,
     WidgetRef ref,
-    RsvpStatus status,
-    bool isSelected,
+    RsvpResponse? currentRsvp,
     String currentUser,
   ) {
+    return Row(
+      children: RsvpStatus.values
+          .where((status) => status != RsvpStatus.pending)
+          .map(
+            (status) => Expanded(
+              child: _buildRsvpButton(
+                context: context,
+                ref: ref,
+                status: status,
+                isSelected: currentRsvp?.status == status,
+                currentUser: currentUser,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  // RSVP button item
+  Widget _buildRsvpButton({
+    required BuildContext context,
+    required WidgetRef ref,
+    required RsvpStatus status,
+    required bool isSelected,
+    required String currentUser,
+  }) {
     final theme = Theme.of(context);
     final statusColor = CommonUtils.getRsvpStatusColor(status);
 
@@ -140,9 +146,11 @@ class EventRsvpWidget extends ConsumerWidget {
       child: InkWell(
         onTap: () {
           HapticFeedback.lightImpact();
-          ref
-              .read(eventListProvider.notifier)
-              .updateRsvpResponse(eventId, currentUser, status);
+          ref.read(eventListProvider.notifier).updateRsvpResponse(
+                eventId,
+                currentUser,
+                status,
+              );
         },
         borderRadius: BorderRadius.circular(10),
         child: AnimatedContainer(
