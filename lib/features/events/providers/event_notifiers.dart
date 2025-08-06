@@ -74,22 +74,14 @@ class EventNotifier extends StateNotifier<List<EventModel>> {
   }
 
   /// Add or update RSVP response for a user
-  void updateRsvpResponse(
-    String eventId,
-    String userId,
-    RsvpStatus status,
-  ) {
+  void updateRsvpResponse(String eventId, String userId, RsvpStatus status) {
     state = [
       for (final event in state)
         if (event.id == eventId)
           event.copyWith(
             rsvpResponses: {
               ...event.rsvpResponses,
-              userId: RsvpResponse(
-                id: userId,
-                name: userId,
-                status: status,
-              ),
+              userId: RsvpResponse(id: userId, name: userId, status: status),
             },
           )
         else
@@ -107,5 +99,28 @@ class EventNotifier extends StateNotifier<List<EventModel>> {
         else
           event,
     ];
+  }
+
+  /// Get RSVP statistics for a specific event
+  Map<RsvpStatus, int> getRsvpStatistics(String eventId) {
+    final event = state.where((e) => e.id == eventId).firstOrNull;
+    if (event == null) return {};
+
+    final stats = <RsvpStatus, int>{};
+    for (final status in RsvpStatus.values) {
+      stats[status] = 0;
+    }
+
+    for (final response in event.rsvpResponses.values) {
+      stats[response.status] = (stats[response.status] ?? 0) + 1;
+    }
+
+    return stats;
+  }
+
+  /// Get total RSVP responses for a specific event
+  int getTotalRsvpResponses(String eventId) {
+    final event = state.where((e) => e.id == eventId).firstOrNull;
+    return event?.rsvpResponses.length ?? 0;
   }
 }

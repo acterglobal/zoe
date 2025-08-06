@@ -61,33 +61,4 @@ class EventModel extends ContentModel {
       rsvpResponses: rsvpResponses ?? this.rsvpResponses,
     );
   }
-
-  /// Get RSVP response for a specific user
-  RsvpResponse? getRsvpResponse(String userId) {
-    return rsvpResponses[userId];
-  }
-
-  /// Get RSVP statistics
-  Map<RsvpStatus, int> getRsvpStatistics() {
-    final stats = <RsvpStatus, int>{};
-    for (final status in RsvpStatus.values) {
-      stats[status] = 0;
-    }
-    
-    for (final response in rsvpResponses.values) {
-      stats[response.status] = (stats[response.status] ?? 0) + 1;
-    }
-    
-    return stats;
-  }
-
-  /// Get total RSVP responses
-  int get totalRsvpResponses => rsvpResponses.length;
-
-  /// Get responses by status
-  List<RsvpResponse> getResponsesByStatus(RsvpStatus status) {
-    return rsvpResponses.values
-        .where((response) => response.status == status)
-        .toList();
-  }
 }

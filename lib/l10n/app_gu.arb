@@ -154,5 +154,9 @@
     "availableMembersToAssignToThisTask": "આ કાર્યને સોંપવા માટે ઉપલબ્ધ સભ્યો",
     "@availableMembersToAssignToThisTask": {},
     "willYouAttend": "તમે આવશો?",
-    "@willYouAttend": {}
+    "@willYouAttend": {},
+    "isGoing": "{count} જાય છે",
+    "@isGoing": {},
+    "areGoing": "{count} જવાના છે",
+    "@areGoing": {}
 }

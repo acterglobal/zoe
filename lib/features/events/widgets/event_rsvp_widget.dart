@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/core/theme/colors/app_colors.dart';
+import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/features/events/models/rsvp_event_response_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
+import 'package:zoey/features/events/widgets/event_rsvp_count_widget.dart';
 import 'package:zoey/features/users/providers/user_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
@@ -19,7 +20,7 @@ class EventRsvpWidget extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildRsvpHeader(context, ref, currentRsvp),
+        _buildRsvpHeader(context, ref, currentRsvp.value),
         const SizedBox(height: 16),
         Row(
           children: RsvpStatus.values
@@ -30,7 +31,7 @@ class EventRsvpWidget extends ConsumerWidget {
                     context,
                     ref,
                     status,
-                    currentRsvp?.status == status,
+                    currentRsvp.value?.status == status,
                     currentUser.value ?? '',
                   ),
                 ),
@@ -55,7 +56,7 @@ class EventRsvpWidget extends ConsumerWidget {
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: currentRsvp != null
-                ? _getStatusColor(currentRsvp.status).withValues(alpha: 0.1)
+                ? CommonUtils.getRsvpStatusColor(currentRsvp.status).withValues(alpha: 0.1)
                 : theme.colorScheme.primary.withValues(alpha: 0.08),
             shape: BoxShape.circle,
           ),
@@ -64,7 +65,7 @@ class EventRsvpWidget extends ConsumerWidget {
                 ? Icons.check_circle_rounded
                 : Icons.event_available_rounded,
             color: currentRsvp != null
-                ? _getStatusColor(currentRsvp.status)
+                ? CommonUtils.getRsvpStatusColor(currentRsvp.status)
                 : theme.colorScheme.primary,
             size: 22,
           ),
@@ -74,11 +75,17 @@ class EventRsvpWidget extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                l10n.willYouAttend,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    l10n.willYouAttend,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  EventRsvpCountWidget(eventId: eventId),
+                ],
               ),
               if (currentRsvp != null)
                 Padding(
@@ -89,7 +96,7 @@ class EventRsvpWidget extends ConsumerWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: _getStatusColor(
+                      color: CommonUtils.getRsvpStatusColor(
                         currentRsvp.status,
                       ).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
@@ -103,7 +110,7 @@ class EventRsvpWidget extends ConsumerWidget {
                           currentRsvp.status.label,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            color: _getStatusColor(currentRsvp.status),
+                            color: CommonUtils.getRsvpStatusColor(currentRsvp.status),
                             fontSize: 13,
                           ),
                         ),
@@ -126,7 +133,7 @@ class EventRsvpWidget extends ConsumerWidget {
     String currentUser,
   ) {
     final theme = Theme.of(context);
-    final statusColor = _getStatusColor(status);
+    final statusColor = CommonUtils.getRsvpStatusColor(status);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -135,11 +142,7 @@ class EventRsvpWidget extends ConsumerWidget {
           HapticFeedback.lightImpact();
           ref
               .read(eventListProvider.notifier)
-              .updateRsvpResponse(
-                eventId,
-                currentUser,
-                status,
-              );
+              .updateRsvpResponse(eventId, currentUser, status);
         },
         borderRadius: BorderRadius.circular(10),
         child: AnimatedContainer(
@@ -176,18 +179,5 @@ class EventRsvpWidget extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  Color _getStatusColor(RsvpStatus status) {
-    switch (status) {
-      case RsvpStatus.yes:
-        return AppColors.successColor;
-      case RsvpStatus.no:
-        return AppColors.errorColor;
-      case RsvpStatus.maybe:
-        return AppColors.warningColor;
-      case RsvpStatus.pending:
-        return AppColors.accentColor;
-    }
   }
 }

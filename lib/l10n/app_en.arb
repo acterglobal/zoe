@@ -188,5 +188,9 @@
     "availableMembersToAssignToThisTask": "Available members to assign to this task",
     "@availableMembersToAssignToThisTask": {},
     "willYouAttend": "Will you attend?",
-    "@willYouAttend": {}
+    "@willYouAttend": {},
+    "isGoing": "{count} is going",
+    "@isGoing": {},
+    "areGoing": "{count} are going",
+    "@areGoing": {}
 }
