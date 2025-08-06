@@ -39,9 +39,10 @@ class _TasksListScreenState extends ConsumerState<TasksListScreen> {
     return Scaffold(
       body: SafeArea(
         child: MaxWidthWidget(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
+              const SizedBox(height: 16),
               ZoeAppBar(title: L10n.of(context).tasks),
               const SizedBox(height: 16),
               ZoeSearchBarWidget(
