@@ -8,13 +8,41 @@ final taskListProvider = StateNotifierProvider<TaskNotifier, List<TaskModel>>(
   (ref) => TaskNotifier(),
 );
 
+final todaysTasksProvider = Provider<List<TaskModel>>((ref) {
+  final allTasks = ref.watch(taskListProvider);
+  final todayTasks = allTasks.where((task) => task.dueDate.isToday).toList();
+  todayTasks.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+  return todayTasks;
+});
+
+final upcomingTasksProvider = Provider<List<TaskModel>>((ref) {
+  final allTasks = ref.watch(taskListProvider);
+  final upcomingTasks = allTasks.where((task) {
+    return task.dueDate.isAfter(DateTime.now()) && !task.dueDate.isToday;
+  }).toList();
+  upcomingTasks.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+  return upcomingTasks;
+});
+
+final pastDueTasksProvider = Provider<List<TaskModel>>((ref) {
+  final allTasks = ref.watch(taskListProvider);
+  final pastDueTasks = allTasks.where((task) {
+    return task.dueDate.isBefore(DateTime.now()) && !task.dueDate.isToday;
+  }).toList();
+  pastDueTasks.sort((a, b) => b.dueDate.compareTo(a.dueDate));
+  return pastDueTasks;
+});
+
 final taskListSearchProvider = Provider<List<TaskModel>>((ref) {
-  final taskList = ref.watch(taskListProvider);
+  final todayTasks = ref.watch(todaysTasksProvider);
+  final upcomingTasks = ref.watch(upcomingTasksProvider);
+  final pastDueTasks = ref.watch(pastDueTasksProvider);
   final searchValue = ref.watch(searchValueProvider);
-  if (searchValue.isEmpty) return taskList;
-  return taskList
-      .where((t) => t.title.toLowerCase().contains(searchValue.toLowerCase()))
-      .toList();
+  final allTasks = [...todayTasks, ...upcomingTasks, ...pastDueTasks];
+  if (searchValue.isEmpty) return allTasks;
+  return allTasks.where((task) {
+    return task.title.toLowerCase().contains(searchValue.toLowerCase());
+  }).toList();
 });
 
 final taskProvider = Provider.family<TaskModel?, String>((ref, taskId) {
@@ -29,11 +57,4 @@ final taskByParentProvider = Provider.family<List<TaskModel>, String>((
 ) {
   final taskList = ref.watch(taskListProvider);
   return taskList.where((t) => t.parentId == parentId).toList();
-});
-
-final todaysTasksProvider = Provider<List<TaskModel>>((ref) {
-  final allTasks = ref.watch(taskListProvider);
-  final todayTasks = allTasks.where((task) => task.dueDate.isToday).toList();
-  todayTasks.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-  return todayTasks;
 });

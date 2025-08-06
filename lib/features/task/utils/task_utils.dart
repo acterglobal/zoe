@@ -27,7 +27,7 @@ class TaskUtils {
     } else if (difference <= 7) {
       return L10n.of(context).dueInDays(difference);
     } else {
-      return L10n.of(context).dueDayMonth(task.dueDate.day, task.dueDate.month);
+      return L10n.of(context).dueAtDayMonth(task.dueDate.day, task.dueDate.month);
     }
   }
 }

@@ -38,22 +38,20 @@ class _TasksListScreenState extends ConsumerState<TasksListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: MaxWidthWidget(
           padding: const EdgeInsets.all(16),
-          child: MaxWidthWidget(
-            child: Column(
-              children: [
-                ZoeAppBar(title: L10n.of(context).tasks),
-                const SizedBox(height: 16),
-                ZoeSearchBarWidget(
-                  controller: searchController,
-                  onChanged: (value) =>
-                      ref.read(searchValueProvider.notifier).state = value,
-                ),
-                const SizedBox(height: 16),
-                _buildTaskList(context, ref),
-              ],
-            ),
+          child: Column(
+            children: [
+              ZoeAppBar(title: L10n.of(context).tasks),
+              const SizedBox(height: 16),
+              ZoeSearchBarWidget(
+                controller: searchController,
+                onChanged: (value) =>
+                    ref.read(searchValueProvider.notifier).state = value,
+              ),
+              const SizedBox(height: 16),
+              Expanded(child: _buildTaskList(context, ref)),
+            ],
           ),
         ),
       ),
@@ -68,9 +66,8 @@ class _TasksListScreenState extends ConsumerState<TasksListScreen> {
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
       itemCount: tasks.length,
-      padding: EdgeInsets.zero,
+      padding: const EdgeInsets.only(bottom: 30),
       itemBuilder: (context, index) {
         final task = tasks[index];
         return _buildTaskItem(context, task);
