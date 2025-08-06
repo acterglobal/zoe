@@ -27,6 +27,8 @@ class EventRsvpCountWidget extends ConsumerWidget {
   ) {
     final l10n = L10n.of(context);
 
+    if (yesCount == 0) return const SizedBox.shrink();
+
     String countText = yesCount == 1 ? l10n.isGoing(yesCount) : l10n.areGoing(yesCount);
 
     return Container(
