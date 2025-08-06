@@ -33,12 +33,16 @@ final pastDueTasksProvider = Provider<List<TaskModel>>((ref) {
   return pastDueTasks;
 });
 
-final taskListSearchProvider = Provider<List<TaskModel>>((ref) {
+final allTasksProvider = Provider<List<TaskModel>>((ref) {
   final todayTasks = ref.watch(todaysTasksProvider);
   final upcomingTasks = ref.watch(upcomingTasksProvider);
   final pastDueTasks = ref.watch(pastDueTasksProvider);
+  return [...todayTasks, ...upcomingTasks, ...pastDueTasks];
+});
+
+final taskListSearchProvider = Provider<List<TaskModel>>((ref) {
   final searchValue = ref.watch(searchValueProvider);
-  final allTasks = [...todayTasks, ...upcomingTasks, ...pastDueTasks];
+  final allTasks = ref.watch(allTasksProvider);
   if (searchValue.isEmpty) return allTasks;
   return allTasks.where((task) {
     return task.title.toLowerCase().contains(searchValue.toLowerCase());

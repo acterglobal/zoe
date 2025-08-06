@@ -36,12 +36,16 @@ final pastEventsProvider = Provider<List<EventModel>>((ref) {
   return pastEvents;
 });
 
-final eventListSearchProvider = Provider<List<EventModel>>((ref) {
+final allEventsProvider = Provider<List<EventModel>>((ref) {
   final todayEvents = ref.watch(todaysEventsProvider);
   final upcomingEvents = ref.watch(upcomingEventsProvider);
   final pastEvents = ref.watch(pastEventsProvider);
+  return [...todayEvents, ...upcomingEvents, ...pastEvents];
+});
+
+final eventListSearchProvider = Provider<List<EventModel>>((ref) {
   final searchValue = ref.watch(searchValueProvider);
-  final allEvents = [...todayEvents, ...upcomingEvents, ...pastEvents];
+  final allEvents = ref.watch(allEventsProvider);
   if (searchValue.isEmpty) return allEvents;
   return allEvents
       .where((e) => e.title.toLowerCase().contains(searchValue.toLowerCase()))
