@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoey/features/settings/models/language_model.dart';
 import 'package:zoey/features/settings/providers/local_provider.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
@@ -14,8 +15,8 @@ class LanguageSelectionScreen extends ConsumerWidget {
 
   AppBar _buildAppbar(BuildContext context) {
     return AppBar(
-      title: Text(L10n.of(context).selectLanguage),
-      centerTitle: true,
+      automaticallyImplyLeading: false,
+      title: ZoeAppBar(title: L10n.of(context).selectLanguage),
     );
   }
 
