@@ -160,5 +160,7 @@
     "linkTitle": "लिंक शीर्षक",
     "@linkTitle": {},
     "linkUrlPlaceholder": "लिंक दर्ज करें",
-    "@linkUrlPlaceholder": {}
+    "@linkUrlPlaceholder": {},
+    "couldNotOpenLink": "अमान्य लिंक नहीं खोला जा सका",
+    "@couldNotOpenLink": {}
 }

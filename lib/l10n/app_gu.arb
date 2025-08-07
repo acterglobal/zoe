@@ -160,5 +160,7 @@
     "linkTitle": "લિંક શીર્ષક",
     "@linkTitle": {},
     "linkUrlPlaceholder": "લિંક દાખલ કરો",
-    "@linkUrlPlaceholder": {}
+    "@linkUrlPlaceholder": {},
+    "couldNotOpenLink": "અમાન્ય લિંક ખોલી શક્યું નથી",
+    "@couldNotOpenLink": {}
 }

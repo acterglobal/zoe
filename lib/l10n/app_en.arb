@@ -194,5 +194,7 @@
     "linkTitle": "Link title",
     "@linkTitle": {},
     "linkUrlPlaceholder": "Enter URL",
-    "@linkUrlPlaceholder": {}
+    "@linkUrlPlaceholder": {},
+    "couldNotOpenLink": "Could not open invalid URL",
+    "@couldNotOpenLink": {}
 }

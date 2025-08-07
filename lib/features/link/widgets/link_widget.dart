@@ -107,23 +107,44 @@ class LinkWidget extends ConsumerWidget {
     String url,
     bool isEditing,
   ) {
+    final isValidUrl = url.isNotEmpty && CommonUtils.isValidUrl(url);
+    final theme = Theme.of(context);
+    final color = isValidUrl
+        ? theme.colorScheme.primary
+        : theme.colorScheme.onSurface;
+    
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).linkUrlPlaceholder,
       isEditing: isEditing,
       text: url,
-      textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-        color: url.isNotEmpty && CommonUtils.isValidUrl(url)
-              ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.onSurface,
-        decoration: url.isNotEmpty && CommonUtils.isValidUrl(url)
+      textStyle: theme.textTheme.bodyMedium?.copyWith(
+        color: color,
+        decoration: isValidUrl
             ? TextDecoration.underline
             : TextDecoration.none,
       ),
       onTextChanged: (value) =>
           ref.read(linkListProvider.notifier).updateLinkUrl(linkId, value),
-      onTapText: url.isNotEmpty && CommonUtils.isValidUrl(url)
+      onTapText: isValidUrl
           ? () async {
-              await CommonUtils.openUrl(url, context);
+              try {
+                final success = await CommonUtils.openUrl(url, context);
+                if (!success) {
+                  if (context.mounted) {
+                    CommonUtils.showSnackBar(
+                      context,
+                      L10n.of(context).couldNotOpenLink,
+                    );
+                  }
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  CommonUtils.showSnackBar(
+                    context,
+                    L10n.of(context).couldNotOpenLink,
+                  );
+                }
+              }
             }
           : null,
     );
