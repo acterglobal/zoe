@@ -109,6 +109,7 @@ class LinkWidget extends ConsumerWidget {
   ) {
     final isValidUrl = url.isNotEmpty && CommonUtils.isValidUrl(url);
     final theme = Theme.of(context);
+    final l10n = L10n.of(context);
     final color = isValidUrl
         ? theme.colorScheme.primary
         : theme.colorScheme.onSurface;
@@ -133,7 +134,7 @@ class LinkWidget extends ConsumerWidget {
                   if (context.mounted) {
                     CommonUtils.showSnackBar(
                       context,
-                      L10n.of(context).couldNotOpenLink,
+                      l10n.couldNotOpenLink,
                     );
                   }
                 }
@@ -141,7 +142,7 @@ class LinkWidget extends ConsumerWidget {
                 if (context.mounted) {
                   CommonUtils.showSnackBar(
                     context,
-                    L10n.of(context).couldNotOpenLink,
+                    l10n.couldNotOpenLink,
                   );
                 }
               }
