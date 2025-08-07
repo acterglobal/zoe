@@ -10,12 +10,12 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
   Ref ref;
   TaskNotifier(this.ref) : super(tasks);
 
-  void addTask({
+  Future<void> addTask({
     String title = '',
     required String parentId,
     required String sheetId,
     int? orderIndex,
-  }) {
+  }) async {
     // Single pass optimization: collect parent tasks and determine new orderIndex
     int newOrderIndex;
     Map<String, TaskModel> tasksToUpdate = {};
