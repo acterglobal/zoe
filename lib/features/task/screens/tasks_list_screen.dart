@@ -36,24 +36,31 @@ class _TasksListScreenState extends ConsumerState<TasksListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: MaxWidthWidget(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              const SizedBox(height: 16),
-              ZoeAppBar(title: L10n.of(context).tasks),
-              const SizedBox(height: 16),
-              ZoeSearchBarWidget(
-                controller: searchController,
-                onChanged: (value) =>
-                    ref.read(searchValueProvider.notifier).state = value,
-              ),
-              const SizedBox(height: 16),
-              Expanded(child: _buildTaskList(context, ref)),
-            ],
-          ),
+    return Scaffold(appBar: _buildAppBar(), body: _buildBody());
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      title: ZoeAppBar(title: L10n.of(context).tasks),
+    );
+  }
+
+  Widget _buildBody() {
+    return SafeArea(
+      child: MaxWidthWidget(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            ZoeSearchBarWidget(
+              controller: searchController,
+              onChanged: (value) =>
+                  ref.read(searchValueProvider.notifier).state = value,
+            ),
+            const SizedBox(height: 10),
+            Expanded(child: _buildTaskList(context, ref)),
+          ],
         ),
       ),
     );

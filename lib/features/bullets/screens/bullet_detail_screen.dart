@@ -4,6 +4,7 @@ import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/paper_sheet_background_widget.dart';
 
 import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullets/model/bullet_model.dart';
@@ -28,10 +29,8 @@ class BulletDetailScreen extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          actions: [
-            EditViewToggleButton(parentId: bulletId),
-            const SizedBox(width: 12),
-          ],
+          automaticallyImplyLeading: false,
+          title: ZoeAppBar(actions: [EditViewToggleButton(parentId: bulletId)]),
         ),
         body: Column(
           children: [

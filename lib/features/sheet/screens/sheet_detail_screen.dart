@@ -4,6 +4,7 @@ import 'package:zoey/common/widgets/emoji_picker/widgets/custom_emoji_picker_wid
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
 import 'package:zoey/common/widgets/paper_sheet_background_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
@@ -28,10 +29,14 @@ class SheetDetailScreen extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          actions: [
-            EditViewToggleButton(parentId: sheetId),
-            _buildDeleteButton(context, ref),
-          ],
+          automaticallyImplyLeading: false,
+          title: ZoeAppBar(
+            title: L10n.of(context).sheet,
+            actions: [
+              EditViewToggleButton(parentId: sheetId),
+              _buildDeleteButton(context, ref),
+            ],
+          ),
         ),
         body: Column(
           children: [
@@ -149,7 +154,6 @@ class SheetDetailScreen extends ConsumerWidget {
     List<String> usersInSheet,
     WidgetRef ref,
   ) {
-
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
     final userCount = usersInSheet.length;

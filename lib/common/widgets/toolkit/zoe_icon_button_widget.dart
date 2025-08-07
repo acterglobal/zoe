@@ -15,7 +15,7 @@ class ZoeIconButtonWidget extends StatelessWidget {
       onPressed: onTap,
       style: IconButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(10),
         backgroundColor: isDark
             ? Colors.white.withValues(alpha: 0.08)
             : Colors.black.withValues(alpha: 0.05),
