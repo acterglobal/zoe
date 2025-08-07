@@ -5,6 +5,7 @@ class DateTimeUtils {
   static const String dateFormat = 'd MMM yyyy';
   static const String timeFormat = 'hh:mm a';
   static const String dateTimeFormat = 'd MMM yyyy hh:mm a';
+  static const String dateFormatWithDay = 'EEE, MMM d';
 
   static String formatDate(DateTime date) {
     return DateFormat(dateFormat).format(date);
@@ -34,6 +35,11 @@ class DateTimeUtils {
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);
   }
 
+  static String getTodayDateFormatted({String? format}) {
+    final now = DateTime.now();
+    return DateFormat(format ?? dateFormatWithDay).format(now);
+  }
+
   static Future<DateTime?> showDatePickerDialog(
     BuildContext context, {
     DateTime? selectedDate,
@@ -58,5 +64,26 @@ class DateTimeUtils {
       context: context,
       initialTime: selectedTime ?? TimeOfDay.now(),
     );
+  }
+}
+
+extension DateTimeExtensions on DateTime {
+  bool get isToday {
+    final now = DateTime.now();
+    return year == now.year && month == now.month && day == now.day;
+  }
+
+  bool get isTomorrow {
+    final tomorrow = DateTime.now().add(const Duration(days: 1));
+    return year == tomorrow.year &&
+        month == tomorrow.month &&
+        day == tomorrow.day;
+  }
+
+  bool get isYesterday {
+    final yesterday = DateTime.now().subtract(const Duration(days: 1));
+    return year == yesterday.year &&
+        month == yesterday.month &&
+        day == yesterday.day;
   }
 }

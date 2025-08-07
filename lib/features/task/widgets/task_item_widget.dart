@@ -5,8 +5,10 @@ import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
+import 'package:zoey/features/task/utils/task_utils.dart';
 import 'package:zoey/features/task/widgets/task_checkbox_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
@@ -42,7 +44,10 @@ class TaskWidget extends ConsumerWidget {
             children: [
               _buildTaskItemTitle(context, ref, task, shouldFocus),
               const SizedBox(height: 4),
-              _buildTaskItemDueDate(context, ref, task.dueDate),
+              if (!task.isCompleted) ...[
+                const SizedBox(height: 4),
+                _buildTaskItemDueDate(context, ref, task),
+              ],
             ],
           ),
         ),
@@ -91,13 +96,17 @@ class TaskWidget extends ConsumerWidget {
   Widget _buildTaskItemDueDate(
     BuildContext context,
     WidgetRef ref,
-    DateTime? dueDate,
+    TaskModel task,
   ) {
-    if (dueDate == null) return const SizedBox.shrink();
+    final isToday = task.dueDate.isToday;
+    final isPast = task.dueDate.isBefore(DateTime.now()) && !isToday;
 
     return Text(
-      'Due: ${DateTimeUtils.formatDate(dueDate)}',
-      style: Theme.of(context).textTheme.bodySmall,
+      TaskUtils.formatTaskDueDate(context, task),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+        color: (isPast || isToday) ? AppColors.errorColor : null,
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 

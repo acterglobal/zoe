@@ -11,6 +11,7 @@ final lists = [
     emoji: '✨',
     listType: ContentType.bullet,
     orderIndex: 4,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-1',
@@ -20,6 +21,7 @@ final lists = [
     emoji: '🚀',
     listType: ContentType.task,
     orderIndex: 5,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-1',
@@ -29,6 +31,7 @@ final lists = [
     emoji: '🎯',
     listType: ContentType.bullet,
     orderIndex: 7,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-1',
@@ -38,6 +41,7 @@ final lists = [
     emoji: '🔗',
     listType: ContentType.bullet,
     orderIndex: 8,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-1',
@@ -47,6 +51,7 @@ final lists = [
     emoji: '📅',
     listType: ContentType.event,
     orderIndex: 8,
+    createdBy: '',
   ),
 
   // Community Organization (sheet-2)
@@ -58,6 +63,7 @@ final lists = [
     emoji: '🍊',
     listType: ContentType.task,
     orderIndex: 3,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-2',
@@ -67,6 +73,7 @@ final lists = [
     emoji: '👥',
     listType: ContentType.bullet,
     orderIndex: 4,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-2',
@@ -76,6 +83,7 @@ final lists = [
     emoji: '⚽',
     listType: ContentType.task,
     orderIndex: 5,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-2',
@@ -85,6 +93,7 @@ final lists = [
     emoji: '📅',
     listType: ContentType.event,
     orderIndex: 6,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-2',
@@ -94,6 +103,7 @@ final lists = [
     emoji: '📞',
     listType: ContentType.bullet,
     orderIndex: 8,
+    createdBy: '',
   ),
 
   // Inclusive Communication (sheet-3)
@@ -105,6 +115,7 @@ final lists = [
     emoji: '😔',
     listType: ContentType.bullet,
     orderIndex: 3,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-3',
@@ -114,6 +125,7 @@ final lists = [
     emoji: '🤗',
     listType: ContentType.task,
     orderIndex: 4,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-3',
@@ -123,6 +135,7 @@ final lists = [
     emoji: '🌟',
     listType: ContentType.bullet,
     orderIndex: 5,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-3',
@@ -132,6 +145,7 @@ final lists = [
     emoji: '❤️',
     listType: ContentType.bullet,
     orderIndex: 7,
+    createdBy: '',
   ),
 
   // Information Management (sheet-4)
@@ -143,6 +157,7 @@ final lists = [
     emoji: '📋',
     listType: ContentType.bullet,
     orderIndex: 3,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-4',
@@ -152,6 +167,7 @@ final lists = [
     emoji: '🎯',
     listType: ContentType.task,
     orderIndex: 4,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-4',
@@ -161,6 +177,7 @@ final lists = [
     emoji: '👥',
     listType: ContentType.bullet,
     orderIndex: 5,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-4',
@@ -170,6 +187,7 @@ final lists = [
     emoji: '📞',
     listType: ContentType.bullet,
     orderIndex: 7,
+    createdBy: '',
   ),
 
   // Group Visibility (sheet-5)
@@ -181,6 +199,7 @@ final lists = [
     emoji: '🌸',
     listType: ContentType.task,
     orderIndex: 3,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-5',
@@ -190,6 +209,7 @@ final lists = [
     emoji: '👀',
     listType: ContentType.bullet,
     orderIndex: 4,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-5',
@@ -199,6 +219,7 @@ final lists = [
     emoji: '🎉',
     listType: ContentType.task,
     orderIndex: 5,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-5',
@@ -208,6 +229,7 @@ final lists = [
     emoji: '📊',
     listType: ContentType.bullet,
     orderIndex: 7,
+    createdBy: '',
   ),
 
   // Stress-Free Organizing (sheet-6)
@@ -219,6 +241,7 @@ final lists = [
     emoji: '🧠',
     listType: ContentType.bullet,
     orderIndex: 3,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-6',
@@ -227,7 +250,8 @@ final lists = [
     title: 'Stress-Reduction Implementation',
     emoji: '😌',
     listType: ContentType.task,
-    orderIndex: 4,
+    orderIndex: 4,  
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-6',
@@ -237,6 +261,7 @@ final lists = [
     emoji: '💭',
     listType: ContentType.bullet,
     orderIndex: 5,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-6',
@@ -246,6 +271,7 @@ final lists = [
     emoji: '🛡️',
     listType: ContentType.bullet,
     orderIndex: 7,
+    createdBy: '',
   ),
 
   // Easy Handoffs (sheet-7)
@@ -257,6 +283,7 @@ final lists = [
     emoji: '🆘',
     listType: ContentType.bullet,
     orderIndex: 3,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-7',
@@ -266,6 +293,7 @@ final lists = [
     emoji: '📋',
     listType: ContentType.task,
     orderIndex: 4,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-7',
@@ -275,6 +303,7 @@ final lists = [
     emoji: '🏥',
     listType: ContentType.bullet,
     orderIndex: 5,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-7',
@@ -284,6 +313,7 @@ final lists = [
     emoji: '🔄',
     listType: ContentType.bullet,
     orderIndex: 7,
+    createdBy: '',
   ),
 
   // Group Trip Planning (sheet-8)
@@ -295,6 +325,7 @@ final lists = [
     emoji: '🗺️',
     listType: ContentType.bullet,
     orderIndex: 3,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-8',
@@ -304,6 +335,7 @@ final lists = [
     emoji: '🇯🇵',
     listType: ContentType.task,
     orderIndex: 4,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-8',
@@ -313,6 +345,7 @@ final lists = [
     emoji: '💰',
     listType: ContentType.bullet,
     orderIndex: 5,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-8',
@@ -322,6 +355,7 @@ final lists = [
     emoji: '📅',
     listType: ContentType.event,
     orderIndex: 6,
+    createdBy: '',
   ),
   ListModel(
     sheetId: 'sheet-8',
@@ -331,5 +365,6 @@ final lists = [
     emoji: '🌟',
     listType: ContentType.bullet,
     orderIndex: 8,
+    createdBy: '',
   ),
 ];

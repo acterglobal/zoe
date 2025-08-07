@@ -10,6 +10,8 @@ class SheetModel {
   final String title;
   final Description? description;
   final Color? color;
+  final String createdBy;
+  final List<String> users;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -19,11 +21,15 @@ class SheetModel {
     String? title,
     this.description,
     this.color,
+    String? createdBy,
+    List<String>? users,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : id = id ?? CommonUtils.generateRandomId(),
        emoji = emoji ?? '📄',
        title = title ?? 'Untitled',
+       createdBy = createdBy ?? CommonUtils.generateRandomId(),
+       users = users ?? [],
        createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now();
 
@@ -33,6 +39,8 @@ class SheetModel {
     String? title,
     Description? description,
     Color? color,
+    String? createdBy,
+    List<String>? users,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -42,6 +50,8 @@ class SheetModel {
       title: title ?? this.title,
       description: description ?? this.description,
       color: color ?? this.color,
+      createdBy: createdBy ?? this.createdBy,
+      users: users ?? this.users,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
     );

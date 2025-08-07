@@ -15,8 +15,11 @@ class TaskCheckboxWidget extends ConsumerWidget {
       value: task.isCompleted,
       activeColor: AppColors.successColor,
       checkColor: Colors.white,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.compact,
       side: BorderSide(
         color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+        width: 2.0,
       ),
       onChanged: (value) {
         ref
