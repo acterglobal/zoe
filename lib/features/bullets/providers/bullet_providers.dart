@@ -4,7 +4,7 @@ import 'package:zoey/features/bullets/providers/bullet_notifiers.dart';
 
 final bulletListProvider =
     StateNotifierProvider<BulletNotifier, List<BulletModel>>(
-      (ref) => BulletNotifier(),
+      (ref) => BulletNotifier(ref),
     );
 
 final bulletProvider = Provider.family<BulletModel?, String>((ref, bulletId) {
@@ -17,5 +17,12 @@ final bulletListByParentProvider = Provider.family<List<BulletModel>, String>((
   parentId,
 ) {
   final bulletList = ref.watch(bulletListProvider);
-  return bulletList.where((b) => b.parentId == parentId).toList();
+  final filteredBullets = bulletList
+      .where((b) => b.parentId == parentId)
+      .toList();
+  filteredBullets.sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+  return filteredBullets;
 });
+
+// Focus management for newly added bullets
+final bulletFocusProvider = StateProvider<String?>((ref) => null);

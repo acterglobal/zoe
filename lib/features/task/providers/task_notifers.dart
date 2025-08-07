@@ -7,20 +7,71 @@ import 'package:zoey/features/sheet/models/sheet_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 
 class TaskNotifier extends StateNotifier<List<TaskModel>> {
-  TaskNotifier() : super(tasks);
+  Ref ref;
+  TaskNotifier(this.ref) : super(tasks);
 
-  void addTask(String title, String parentId, String sheetId) async {
+  Future<void> addTask({
+    String title = '',
+    required String parentId,
+    required String sheetId,
+    int? orderIndex,
+  }) async {
+    // Single pass optimization: collect parent tasks and determine new orderIndex
+    int newOrderIndex;
+    Map<String, TaskModel> tasksToUpdate = {};
+
+    if (orderIndex == null) {
+      // Find max orderIndex for this parent in a single pass
+      int maxOrderIndex = -1;
+      for (final task in state) {
+        if (task.parentId == parentId && task.orderIndex > maxOrderIndex) {
+          maxOrderIndex = task.orderIndex;
+        }
+      }
+      newOrderIndex = maxOrderIndex + 1;
+    } else {
+      // Collect tasks that need orderIndex updates in a single pass
+      newOrderIndex = orderIndex;
+      for (final task in state) {
+        if (task.parentId == parentId && task.orderIndex >= orderIndex) {
+          tasksToUpdate[task.id] = task.copyWith(
+            orderIndex: task.orderIndex + 1,
+          );
+        }
+      }
+    }
+
     final createdBy = await PreferencesService().getLoginUserId();
+
+    // Create the new task
     final newTask = TaskModel(
       parentId: parentId,
       title: title,
       sheetId: sheetId,
+      orderIndex: newOrderIndex,
       dueDate: DateTime.now(),
       isCompleted: false,
       createdBy: createdBy,
       assignedUsers: [],
     );
-    state = [...state, newTask];
+
+    // Update state efficiently
+    if (orderIndex == null) {
+      // Simple append - no need to update existing tasks
+      state = [...state, newTask];
+    } else {
+      // Replace existing tasks with updated ones and add new task
+      final updatedState = <TaskModel>[];
+
+      // Single pass to build new state with O(1) lookup
+      for (final task in state) {
+        final updatedTask = tasksToUpdate[task.id];
+        updatedState.add(updatedTask ?? task);
+      }
+      updatedState.add(newTask);
+      state = updatedState;
+      ref.read(taskFocusProvider.notifier).state = newTask.id;
+    }
   }
 
   void deleteTask(String taskId) {
