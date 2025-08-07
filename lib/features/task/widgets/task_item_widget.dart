@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/utils/common_utils.dart';
+import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/utils/task_utils.dart';
@@ -92,10 +93,13 @@ class TaskWidget extends ConsumerWidget {
     WidgetRef ref,
     TaskModel task,
   ) {
+    final isToday = task.dueDate.isToday;
+    final isPast = task.dueDate.isBefore(DateTime.now()) && !isToday;
+
     return Text(
       TaskUtils.formatTaskDueDate(context, task),
       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-        color: CommonUtils.getColorByDateDifference(task.dueDate),
+        color: (isPast || isToday) ? AppColors.errorColor : null,
         fontWeight: FontWeight.w500,
       ),
     );

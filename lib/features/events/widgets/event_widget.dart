@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
@@ -104,10 +103,7 @@ class EventWidget extends ConsumerWidget {
   ) {
     return Text(
       EventUtils.formatEventDateAndTime(context, event),
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-        color: CommonUtils.getColorByDateDifference(event.startDate),
-        fontWeight: FontWeight.w500,
-      ),
+      style: Theme.of(context).textTheme.bodySmall,
     );
   }
 

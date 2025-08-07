@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class ZoeSearchBarWidget extends StatelessWidget {
   final TextEditingController controller;
   final Function(String) onChanged;
-  final String hintText;
+  final String? hintText;
+  final EdgeInsetsGeometry? margin;
 
   const ZoeSearchBarWidget({
     super.key,
     required this.controller,
     required this.onChanged,
-    required this.hintText,
+    this.hintText,
+    this.margin,
   });
 
   @override
@@ -18,13 +21,12 @@ class ZoeSearchBarWidget extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      margin: margin,
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
-          width: 1,
         ),
         boxShadow: [
           BoxShadow(
@@ -89,7 +91,7 @@ class ZoeSearchBarWidget extends StatelessWidget {
         textInputAction: TextInputAction.search,
         onChanged: onChanged,
         decoration: InputDecoration(
-          hintText: hintText,
+          hintText: hintText ?? L10n.of(context).search,
           hintStyle: TextStyle(
             color: textColor.withValues(alpha: 0.6),
             fontSize: 16,

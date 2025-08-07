@@ -5,11 +5,14 @@ import 'package:uuid/uuid.dart';
 import 'package:zoey/common/screens/page_not_found_screen.dart';
 import 'package:zoey/features/bullets/screens/bullet_detail_screen.dart';
 import 'package:zoey/features/events/screens/event_detail_screen.dart';
+import 'package:zoey/features/events/screens/events_list_screen.dart';
 import 'package:zoey/features/home/screens/home_screen.dart';
 import 'package:zoey/features/settings/screens/settings_screen.dart';
 import 'package:zoey/features/settings/screens/language_selection_screen.dart';
 import 'package:zoey/features/sheet/screens/sheet_detail_screen.dart';
+import 'package:zoey/features/sheet/screens/sheet_list_screen.dart';
 import 'package:zoey/features/task/screens/task_detail_screen.dart';
+import 'package:zoey/features/task/screens/tasks_list_screen.dart';
 import 'package:zoey/features/welcome/screens/welcome_screen.dart';
 import 'app_routes.dart';
 
@@ -36,6 +39,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const HomeScreen(),
       ),
 
+      // Sheets list route
+      GoRoute(
+        path: AppRoutes.sheetsList.route,
+        name: AppRoutes.sheetsList.name,
+        builder: (context, state) => const SheetListScreen(),
+      ),
+
       // Sheet detail route
       GoRoute(
         path: AppRoutes.sheet.route,
@@ -46,6 +56,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
 
+      // Tasks list route
+      GoRoute(
+        path: AppRoutes.tasksList.route,
+        name: AppRoutes.tasksList.name,
+        builder: (context, state) => const TasksListScreen(),
+      ),
+
+      // Task detail route
       GoRoute(
         path: AppRoutes.taskDetail.route,
         name: AppRoutes.taskDetail.name,
@@ -55,6 +73,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
 
+      // Events list route
+      GoRoute(
+        path: AppRoutes.eventsList.route,
+        name: AppRoutes.eventsList.name,
+        builder: (context, state) => const EventsListScreen(),
+      ),
+
+      // Event detail route
       GoRoute(
         path: AppRoutes.eventDetail.route,
         name: AppRoutes.eventDetail.name,
@@ -64,6 +90,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
 
+      // Bullet detail route
       GoRoute(
         path: AppRoutes.bulletDetail.route,
         name: AppRoutes.bulletDetail.name,
@@ -72,12 +99,14 @@ final routerProvider = Provider<GoRouter>((ref) {
           return BulletDetailScreen(bulletId: bulletId);
         },
       ),
+
       // Settings route
       GoRoute(
         path: AppRoutes.settings.route,
         name: AppRoutes.settings.name,
         builder: (context, state) => const SettingsScreen(),
       ),
+      
       // Language selection route
       GoRoute(
         path: AppRoutes.settingLanguage.route,
