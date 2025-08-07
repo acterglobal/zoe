@@ -11,6 +11,7 @@ class AddContentWidget extends ConsumerWidget {
   final VoidCallback onTapEvent;
   final VoidCallback onTapBulletedList;
   final VoidCallback onTapToDoList;
+  final VoidCallback onTapLink;
 
   const AddContentWidget({
     super.key,
@@ -19,6 +20,7 @@ class AddContentWidget extends ConsumerWidget {
     required this.onTapEvent,
     required this.onTapBulletedList,
     required this.onTapToDoList,
+    required this.onTapLink,
   });
 
   @override
@@ -49,6 +51,10 @@ class AddContentWidget extends ConsumerWidget {
             onTapToDoList: () {
               _toggleMenu(ref);
               onTapToDoList();
+            },
+            onTapLink: () {
+              _toggleMenu(ref);
+              onTapLink();
             },
           ),
       ],

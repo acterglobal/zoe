@@ -152,5 +152,13 @@
     "allUsersAreAlreadyAssignedToThisTask": "બધા વપરાશકર્તાઓ પહેલાથી જ આ કાર્યને સોંપેલ છે",
     "@allUsersAreAlreadyAssignedToThisTask": {},
     "availableMembersToAssignToThisTask": "આ કાર્યને સોંપવા માટે ઉપલબ્ધ સભ્યો",
-    "@availableMembersToAssignToThisTask": {}
+    "@availableMembersToAssignToThisTask": {},
+    "link": "લિંક",
+    "@link": {},
+    "addALink": "લિંક ઉમેરો",
+    "@addALink": {},
+    "linkTitle": "લિંક શીર્ષક",
+    "@linkTitle": {},
+    "linkUrlPlaceholder": "લિંક દાખલ કરો",
+    "@linkUrlPlaceholder": {}
 }

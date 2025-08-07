@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 import 'package:zoey/features/content/models/content_model.dart';
+import 'package:zoey/features/link/providers/link_providers.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
@@ -14,8 +15,9 @@ final contentListProvider = Provider<List<ContentModel>>((ref) {
   final lists = ref.watch(listsrovider);
   final bullets = ref.watch(bulletListProvider);
   final tasks = ref.watch(taskListProvider);
+  final links = ref.watch(linkListProvider);
 
-  final allContent = [...texts, ...events, ...lists, ...bullets, ...tasks];
+  final allContent = [...texts, ...events, ...lists, ...bullets, ...tasks, ...links];
   // Sort by parentId first, then by orderIndex within parent, then by createdAt as fallback
   allContent.sort((a, b) {
     // First sort by parent

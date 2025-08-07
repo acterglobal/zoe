@@ -152,5 +152,13 @@
     "allUsersAreAlreadyAssignedToThisTask": "इस कार्य को सभी उपयोगकर्ताओं ने पहले से ही सोंपा है",
     "@allUsersAreAlreadyAssignedToThisTask": {},
     "availableMembersToAssignToThisTask": "इस कार्य को सोंपने के लिए उपलब्ध सदस्य",
-    "@availableMembersToAssignToThisTask": {}
+    "@availableMembersToAssignToThisTask": {},
+    "link": "लिंक",
+    "@link": {},
+    "addALink": "लिंक जोड़ें",
+    "@addALink": {},
+    "linkTitle": "लिंक शीर्षक",
+    "@linkTitle": {},
+    "linkUrlPlaceholder": "लिंक दर्ज करें",
+    "@linkUrlPlaceholder": {}
 }

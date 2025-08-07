@@ -186,5 +186,13 @@
     "allUsersAreAlreadyAssignedToThisTask": "All users are already assigned to this task",
     "@allUsersAreAlreadyAssignedToThisTask": {},
     "availableMembersToAssignToThisTask": "Available members to assign to this task",
-    "@availableMembersToAssignToThisTask": {}
+    "@availableMembersToAssignToThisTask": {},
+    "link": "Link",
+    "@link": {},
+    "addALink": "Add a link",
+    "@addALink": {},
+    "linkTitle": "Link title",
+    "@linkTitle": {},
+    "linkUrlPlaceholder": "Enter URL",
+    "@linkUrlPlaceholder": {}
 }

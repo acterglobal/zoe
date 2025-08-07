@@ -1,7 +1,7 @@
 import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 
-enum ContentType { text, event, list, task, bullet }
+enum ContentType { text, event, list, task, bullet, link }
 
 abstract class ContentModel {
   final ContentType type;

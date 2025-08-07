@@ -6,6 +6,7 @@ class ContentMenuOptions extends StatelessWidget {
   final VoidCallback onTapEvent;
   final VoidCallback onTapBulletedList;
   final VoidCallback onTapToDoList;
+  final VoidCallback onTapLink;
 
   const ContentMenuOptions({
     super.key,
@@ -13,6 +14,7 @@ class ContentMenuOptions extends StatelessWidget {
     required this.onTapEvent,
     required this.onTapBulletedList,
     required this.onTapToDoList,
+    required this.onTapLink,
   });
 
   @override
@@ -54,6 +56,13 @@ class ContentMenuOptions extends StatelessWidget {
             title: L10n.of(context).toDoList,
             description: L10n.of(context).trackTasksWithCheckboxes,
             onTap: onTapToDoList,
+          ),
+          _buildAddContentOption(
+            context,
+            icon: Icons.link_outlined,
+            title: L10n.of(context).link,
+            description: L10n.of(context).addALink,
+            onTap: onTapLink,
           ),
         ],
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/content/providers/content_providers.dart';
 import 'package:zoey/features/content/models/content_model.dart';
+import 'package:zoey/features/link/models/link_model.dart';
+import 'package:zoey/features/link/providers/link_providers.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/list/providers/list_providers.dart';
@@ -59,6 +61,11 @@ void reorderContent(WidgetRef ref, String contentId, int newOrderIndex) {
       ref
           .read(bulletListProvider.notifier)
           .updateBulletOrderIndex(contentId, newOrderIndex);
+      break;
+    case ContentType.link:
+      ref
+          .read(linkListProvider.notifier)
+          .updateLinkOrderIndex(contentId, newOrderIndex);
       break;
   }
 }
@@ -148,4 +155,16 @@ void addNewTaskListContent(WidgetRef ref, parentId, String sheetId) {
   ref
       .read(taskListProvider.notifier)
       .addTask('', toDoListContentModel.id, sheetId);
+}
+
+void addNewLinkContent(WidgetRef ref, parentId, String sheetId) {
+  final orderIndex = _getNextOrderIndex(ref, parentId);
+  final linkContentModel = LinkModel(
+    parentId: parentId,
+    sheetId: sheetId,
+    title: '',
+    url: '',
+    orderIndex: orderIndex,
+  );
+  ref.read(linkListProvider.notifier).addLink(linkContentModel);
 }
