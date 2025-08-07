@@ -21,13 +21,7 @@ class CommonUtils {
     LaunchMode mode = LaunchMode.externalApplication,
   }) async {
     try {
-      // Add protocol if missing
-      String urlToOpen = url;
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        urlToOpen = 'https://$url';
-      }
-
-      final uri = Uri.parse(urlToOpen);
+      final uri = Uri.parse(getUrlWithProtocol(url));
       return await launchUrl(uri, mode: mode);
     } catch (e) {
       return false;
@@ -37,10 +31,7 @@ class CommonUtils {
   static bool isValidUrl(String url) {
     if (url.isEmpty) return false;
 
-    // Add protocol if missing
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      url = 'https://$url';
-    }
+    url = getUrlWithProtocol(url);
 
     final urlRegex = RegExp(
       r'((([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})|' // domain
@@ -116,5 +107,12 @@ class CommonUtils {
         ),
       ),
     );
+  }
+
+  static String getUrlWithProtocol(String url) {
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return 'https://$url';
+    }
+    return url;
   }
 }
