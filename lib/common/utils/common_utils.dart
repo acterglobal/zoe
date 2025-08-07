@@ -21,7 +21,13 @@ class CommonUtils {
     LaunchMode mode = LaunchMode.externalApplication,
   }) async {
     try {
-      final uri = Uri.parse(url);
+      // Add protocol if missing
+      String urlToOpen = url;
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        urlToOpen = 'https://$url';
+      }
+
+      final uri = Uri.parse(urlToOpen);
       return await launchUrl(uri, mode: mode);
     } catch (e) {
       return false;
