@@ -55,7 +55,7 @@ class DocumentWidget extends ConsumerWidget {
   // Builds the document item icon
   Widget _buildDocumentItemIcon(BuildContext context) {
     return Icon(
-      Icons.edit_document,
+      Icons.upload_file,
       size: 18,
       color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
     );
@@ -88,14 +88,12 @@ class DocumentWidget extends ConsumerWidget {
     return Row(
       children: [
         // Edit list item
-         Icon(
-            Icons.attach_file,
-            size: 16,
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: 0.4),
-          ),
-      
+        Icon(
+          Icons.attach_file,
+          size: 16,
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+        ),
+
         const SizedBox(width: 6),
 
         // Delete list item

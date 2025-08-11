@@ -185,12 +185,4 @@ void addNewDocumentContent(WidgetRef ref, parentId, String sheetId) {
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(documentListContentModel);
-
-  // Add a default document item to the new list
-  ref
-      .read(documentListProvider.notifier)
-      .addDocument(
-        parentId: documentListContentModel.id,
-        sheetId: sheetId,
-      );
 }

@@ -218,5 +218,13 @@
     "documentTitle": "Document title",
     "@documentTitle": {},
     "addAFile": "Add a file",
-    "@addAFile": {}
+    "@addAFile": {},
+    "addedDocuments": "Added {count} document(s)",
+    "@addedDocuments": {},
+    "failedToPickFile": "Failed to pick file: {error}",
+    "@failedToPickFile": {},
+    "addDocuments": "Add documents",
+    "@addDocuments": {},
+    "addItem": "Add item",
+    "@addItem": {}
 }

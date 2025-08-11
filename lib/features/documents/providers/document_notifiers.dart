@@ -24,6 +24,26 @@ class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
     state = [...state, newDocument];
   }
 
+  void updateDocumentFile(
+    String documentId,
+    String fileName,
+    String fileType,
+    String filePath,
+  ) {
+    state = [
+      for (final document in state)
+        if (document.id == documentId)
+          document.copyWith(
+            fileName: fileName,
+            fileType: fileType,
+            filePath: filePath,
+            title: fileName, // Set title to filename by default
+          )
+        else
+          document,
+    ];
+  }
+
   void deleteDocument(String documentId) {
     state = state.where((d) => d.id != documentId).toList();
   }

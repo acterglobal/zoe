@@ -184,5 +184,13 @@
     "documentTitle": "दस्तावेज नाम",
     "@documentTitle": {},
     "addAFile": "फाइल जोड़ें",
-    "@addAFile": {}
+    "@addAFile": {},
+    "addedDocuments": "{count} फाइलें जोड़ीं",
+    "@addedDocuments": {},
+    "failedToPickFile": "फाइल चुनने में विफल: {error}",
+    "@failedToPickFile": {},
+    "addDocuments": "फाइलें जोड़ें",
+    "@addDocuments": {},
+    "addItem": "आइटम जोड़ें",
+    "@addItem": {}
 }

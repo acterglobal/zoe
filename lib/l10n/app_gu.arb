@@ -184,5 +184,13 @@
     "documentTitle": "દસ્તાવેજ નામ",
     "@documentTitle": {},
     "addAFile": "ફાઇલ ઉમેરો",
-    "@addAFile": {}
+    "@addAFile": {},
+    "addedDocuments": "{count} ફાઇલ્સ ઉમેર્યા",
+    "@addedDocuments": {},
+    "failedToPickFile": "ફાઇલ પસંદ કરવામાં વિફલ: {error}",
+    "@failedToPickFile": {},
+    "addDocuments": "ફાઇલ્સ ઉમેરો",
+    "@addDocuments": {},
+    "addItem": "આઈટમ ઉમેરો",
+    "@addItem": {}
 }
