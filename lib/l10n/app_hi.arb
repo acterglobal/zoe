@@ -167,6 +167,8 @@
     "@isGoing": {},
     "areGoing": "{count} आएंगे",
     "@areGoing": {},
+    "membersGoingToEvent": "इवेंट जाने वाले सदस्य",
+    "@membersGoingToEvent": {},
     "link": "लिंक",
     "@link": {},
     "addALink": "लिंक जोड़ें",

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
+import 'package:zoey/features/users/widgets/user_list_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class EventRsvpCountWidget extends ConsumerWidget {
@@ -15,7 +16,10 @@ class EventRsvpCountWidget extends ConsumerWidget {
 
     if (totalRsvpCount == 0) return const SizedBox.shrink();
 
-    return _buildRsvpCountText(context, eventRSVPYesCount);
+    return GestureDetector(
+      onTap: () => _showRsvpUsersBottomSheet(context),
+      child: _buildRsvpCountText(context, eventRSVPYesCount),
+    );
   }
 
   Widget _buildRsvpCountText(
@@ -48,6 +52,25 @@ class EventRsvpCountWidget extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showRsvpUsersBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Consumer(
+        builder: (context, ref, child) {
+          return UserListWidget(
+            userIdList: eventRsvpYesUsersProvider(eventId),
+            title: L10n.of(context).membersGoingToEvent,
+            onTapUser: (userId) {
+              Navigator.of(context).pop();
+            },
+          );
+        },
       ),
     );
   }
