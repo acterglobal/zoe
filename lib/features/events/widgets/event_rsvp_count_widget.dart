@@ -66,9 +66,6 @@ class EventRsvpCountWidget extends ConsumerWidget {
           return UserListWidget(
             userIdList: eventRsvpYesUsersProvider(eventId),
             title: L10n.of(context).membersGoingToEvent,
-            onTapUser: (userId) {
-              Navigator.of(context).pop();
-            },
           );
         },
       ),
