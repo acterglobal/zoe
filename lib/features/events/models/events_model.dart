@@ -1,10 +1,23 @@
 import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 
+enum RsvpStatus {
+  yes,
+  no,
+  maybe;
+
+  String get name => switch (this) {
+        yes => 'Yes',
+        no => 'No',
+        maybe => 'Maybe',
+      };
+}
+
 class EventModel extends ContentModel {
   /// EventModel properties
   final DateTime startDate;
   final DateTime endDate;
+  final Map<String, RsvpStatus> rsvpResponses;
 
   EventModel({
     /// ContentModel properties
@@ -21,6 +34,7 @@ class EventModel extends ContentModel {
     /// EventModel properties
     required this.startDate,
     required this.endDate,
+    this.rsvpResponses = const {},
   }) : super(type: ContentType.event, emoji: '📅');
 
   EventModel copyWith({
@@ -38,6 +52,7 @@ class EventModel extends ContentModel {
     /// EventModel properties
     DateTime? startDate,
     DateTime? endDate,
+    Map<String, RsvpStatus>? rsvpResponses,
   }) {
     return EventModel(
       /// ContentModel properties
@@ -54,6 +69,7 @@ class EventModel extends ContentModel {
       /// EventModel properties
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
+      rsvpResponses: rsvpResponses ?? this.rsvpResponses,
     );
   }
 }

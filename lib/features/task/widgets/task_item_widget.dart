@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/utils/common_utils.dart';
+import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/task/models/task_model.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/utils/task_utils.dart';
@@ -20,16 +21,18 @@ class TaskWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final task = ref.watch(taskProvider(taskId));
+    final focusedTaskId = ref.watch(taskFocusProvider);
+    final shouldFocus = focusedTaskId == taskId;
     if (task == null) return const SizedBox.shrink();
 
-    return _buildTaskItemContent(context, ref, task, isEditing);
+    return _buildTaskItemContent(context, ref, task, shouldFocus);
   }
 
   Widget _buildTaskItemContent(
     BuildContext context,
     WidgetRef ref,
     TaskModel task,
-    bool isEditing,
+    bool shouldFocus,
   ) {
     return Row(
       children: [
@@ -39,13 +42,8 @@ class TaskWidget extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildTaskItemTitle(
-                context,
-                ref,
-                task.title,
-                task.isCompleted,
-                isEditing,
-              ),
+              _buildTaskItemTitle(context, ref, task, shouldFocus),
+              const SizedBox(height: 4),
               if (!task.isCompleted) ...[
                 const SizedBox(height: 4),
                 _buildTaskItemDueDate(context, ref, task),
@@ -63,22 +61,30 @@ class TaskWidget extends ConsumerWidget {
   Widget _buildTaskItemTitle(
     BuildContext context,
     WidgetRef ref,
-    String title,
-    bool isCompleted,
-    bool isEditing,
+    TaskModel task,
+    bool shouldFocus,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).taskItem,
-      text: title,
+      text: task.title,
       isEditing: isEditing,
+      autoFocus: shouldFocus,
+      textInputAction: TextInputAction.next,
       textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-        decoration: isCompleted
+        decoration: task.isCompleted
             ? TextDecoration.lineThrough
             : TextDecoration.none,
       ),
       onTextChanged: (value) {
         ref.read(taskListProvider.notifier).updateTaskTitle(taskId, value);
       },
+      onEnterPressed: () => ref
+          .read(taskListProvider.notifier)
+          .addTask(
+            parentId: task.parentId,
+            sheetId: task.sheetId,
+            orderIndex: task.orderIndex + 1,
+          ),
       onBackspaceEmptyText: () =>
           ref.read(taskListProvider.notifier).deleteTask(taskId),
       onTapText: () => context.push(
@@ -92,10 +98,13 @@ class TaskWidget extends ConsumerWidget {
     WidgetRef ref,
     TaskModel task,
   ) {
+    final isToday = task.dueDate.isToday;
+    final isPast = task.dueDate.isBefore(DateTime.now()) && !isToday;
+
     return Text(
       TaskUtils.formatTaskDueDate(context, task),
       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-        color: CommonUtils.getColorByDateDifference(task.dueDate),
+        color: (isPast || isToday) ? AppColors.errorColor : null,
         fontWeight: FontWeight.w500,
       ),
     );

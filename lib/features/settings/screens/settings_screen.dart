@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/common/providers/package_info_provider.dart';
+import 'package:zoey/common/widgets/max_width_widget.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoey/features/settings/actions/change_theme.dart';
@@ -18,23 +19,23 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      appBar: _buildAppBar(context),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 600),
-              child: Column(
-                children: [
-                  ZoeAppBar(title: L10n.of(context).settings),
-                  const SizedBox(height: 8),
-                  _buildSettingsBodyUI(context, ref),
-                ],
-              ),
-            ),
+        child: Center(
+          child: MaxWidthWidget(
+            isScrollable: true,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _buildSettingsBodyUI(context, ref),
           ),
         ),
       ),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      title: ZoeAppBar(title: L10n.of(context).settings),
     );
   }
 

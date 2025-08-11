@@ -4,6 +4,7 @@ import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoey/common/widgets/paper_sheet_background_widget.dart';
 
 import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
@@ -11,6 +12,7 @@ import 'package:zoey/features/content/widgets/content_widget.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/events/widgets/event_details_additional_fields.dart';
+import 'package:zoey/features/events/widgets/event_rsvp_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 class EventDetailScreen extends ConsumerWidget {
@@ -29,10 +31,8 @@ class EventDetailScreen extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          actions: [
-            EditViewToggleButton(parentId: eventId),
-            const SizedBox(width: 12),
-          ],
+          automaticallyImplyLeading: false,
+          title: ZoeAppBar(actions: [EditViewToggleButton(parentId: eventId)]),
         ),
         body: Column(
           children: [
@@ -67,6 +67,8 @@ class EventDetailScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildEventHeader(context, ref, event, isEditing),
+          const SizedBox(height: 16),
+          EventRsvpWidget(eventId: eventId),
           const SizedBox(height: 16),
           ContentWidget(parentId: eventId, sheetId: event.sheetId),
         ],
