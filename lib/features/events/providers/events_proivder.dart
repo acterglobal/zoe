@@ -67,9 +67,9 @@ final eventByParentProvider = Provider.family<List<EventModel>, String>((
 });
 
 final currentUserRsvpProvider = FutureProvider.family<RsvpStatus?, String>((
-    ref,
-    eventId,
-    ) async {
+  ref,
+  eventId,
+) async {
   final eventList = ref.watch(eventListProvider);
   final event = eventList.where((e) => e.id == eventId).firstOrNull;
   if (event == null) return null;
