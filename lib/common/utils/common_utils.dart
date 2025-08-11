@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zoey/l10n/generated/l10n.dart';
 
 class CommonUtils {
   static String generateRandomId() => const Uuid().v4();
@@ -20,6 +21,10 @@ class CommonUtils {
     LaunchMode mode = LaunchMode.externalApplication,
   }) async {
     try {
+      if (!isValidUrl(url)) {
+        showSnackBar(context, L10n.of(context).couldNotOpenLink);
+        return false;
+      }
       final uri = Uri.parse(getUrlWithProtocol(url));
       return await launchUrl(uri, mode: mode);
     } catch (e) {

@@ -109,7 +109,6 @@ class LinkWidget extends ConsumerWidget {
   ) {
     final isValidUrl = url.isNotEmpty && CommonUtils.isValidUrl(url);
     final theme = Theme.of(context);
-    final l10n = L10n.of(context);
     final color = isValidUrl
         ? theme.colorScheme.primary
         : theme.colorScheme.onSurface;
@@ -126,28 +125,7 @@ class LinkWidget extends ConsumerWidget {
       ),
       onTextChanged: (value) =>
           ref.read(linkListProvider.notifier).updateLinkUrl(linkId, value),
-      onTapText: isValidUrl
-          ? () async {
-              try {
-                final success = await CommonUtils.openUrl(url, context);
-                if (!success) {
-                  if (context.mounted) {
-                    CommonUtils.showSnackBar(
-                      context,
-                      l10n.couldNotOpenLink,
-                    );
-                  }
-                }
-              } catch (e) {
-                if (context.mounted) {
-                  CommonUtils.showSnackBar(
-                    context,
-                    l10n.couldNotOpenLink,
-                  );
-                }
-              }
-            }
-          : null,
+      onTapText: () => CommonUtils.openUrl(url, context),
     );
   }
 }
