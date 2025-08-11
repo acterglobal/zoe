@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/features/events/models/events_model.dart';
-import 'package:zoey/features/events/models/rsvp_event_response_model.dart';
 import 'package:zoey/features/events/providers/event_notifiers.dart';
 import 'package:zoey/features/users/providers/user_providers.dart';
 
@@ -32,7 +31,7 @@ final todaysEventsProvider = Provider<List<EventModel>>((ref) {
   return todayEvents;
 });
 
-final currentUserRsvpProvider = FutureProvider.family<RsvpResponse?, String>((
+final currentUserRsvpProvider = FutureProvider.family<RsvpStatus?, String>((
   ref,
   eventId,
 ) async {
@@ -47,9 +46,5 @@ final currentUserRsvpProvider = FutureProvider.family<RsvpResponse?, String>((
   final rsvpResponse = event.rsvpResponses[currentUserId];
   if (rsvpResponse == null) return null;
 
-  return RsvpResponse(
-    id: rsvpResponse.id,
-    name: rsvpResponse.name,
-    status: rsvpResponse.status,
-  );
+  return rsvpResponse;
 });

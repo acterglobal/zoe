@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/events/data/event_list.dart';
 import 'package:zoey/features/events/models/events_model.dart';
-import 'package:zoey/features/events/models/rsvp_event_response_model.dart';
 import 'package:zoey/features/sheet/models/sheet_model.dart';
 
 class EventNotifier extends StateNotifier<List<EventModel>> {
@@ -81,7 +80,7 @@ class EventNotifier extends StateNotifier<List<EventModel>> {
           event.copyWith(
             rsvpResponses: {
               ...event.rsvpResponses,
-              userId: RsvpResponse(id: userId, name: userId, status: status),
+              userId: status,
             },
           )
         else
@@ -97,7 +96,7 @@ class EventNotifier extends StateNotifier<List<EventModel>> {
     final rsvpCount = <RsvpStatus, int>{};
 
     for (final response in event.rsvpResponses.values) {
-      rsvpCount[response.status] = (rsvpCount[response.status] ?? 0) + 1;
+      rsvpCount[response] = (rsvpCount[response] ?? 0) + 1;
     }
     return rsvpCount;
   }

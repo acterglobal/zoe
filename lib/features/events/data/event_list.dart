@@ -1,5 +1,4 @@
 import 'package:zoey/features/events/models/events_model.dart';
-import 'package:zoey/features/events/models/rsvp_event_response_model.dart';
 
 final eventList = [
   // Getting Started Guide (sheet-1) events
@@ -18,9 +17,9 @@ final eventList = [
     startDate: DateTime.now().add(const Duration(days: 1)),
     endDate: DateTime.now().add(const Duration(days: 1, hours: 1)),
     createdBy: 'user_1',
-    rsvpResponses: {
-      'user_1': RsvpResponse(id: 'user_1', name: 'John Doe', status: RsvpStatus.yes),
-      'user_2': RsvpResponse(id: 'user_2', name: 'Jane Doe', status: RsvpStatus.yes),
+    rsvpResponses: {  
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
     },
   ),
   EventModel(
@@ -39,7 +38,7 @@ final eventList = [
     endDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
     createdBy: 'user_1',
     rsvpResponses: {
-      'user_1': RsvpResponse(id: 'user_1', name: 'John Doe', status: RsvpStatus.yes),
+      'user_1': RsvpStatus.yes,
     },
   ),
 
@@ -60,10 +59,10 @@ final eventList = [
     endDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
     createdBy: 'user_3',
     rsvpResponses: {
-      'user_1': RsvpResponse(id: 'user_1', name: 'John Doe', status: RsvpStatus.yes),
-      'user_2': RsvpResponse(id: 'user_2', name: 'Jane Doe', status: RsvpStatus.no),
-      'user_3': RsvpResponse(id: 'user_3', name: 'Jim Beam', status: RsvpStatus.maybe),
-      'user_4': RsvpResponse(id: 'user_4', name: 'John Doe', status: RsvpStatus.yes),
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.no,
+      'user_3': RsvpStatus.maybe,
+      'user_4': RsvpStatus.yes,
     },
   ),
   EventModel(
@@ -82,10 +81,10 @@ final eventList = [
     endDate: DateTime.now().add(const Duration(days: 5, hours: 1, minutes: 30)),
     createdBy: 'user_4',
     rsvpResponses: {
-      'user_1': RsvpResponse(id: 'user_1', name: 'John Doe', status: RsvpStatus.no),
-      'user_2': RsvpResponse(id: 'user_2', name: 'Jane Doe', status: RsvpStatus.no),
-      'user_3': RsvpResponse(id: 'user_3', name: 'Jim Beam', status: RsvpStatus.maybe),
-      'user_4': RsvpResponse(id: 'user_4', name: 'John Doe', status: RsvpStatus.yes),
+      'user_1': RsvpStatus.no,
+      'user_2': RsvpStatus.no,
+      'user_3': RsvpStatus.maybe,
+      'user_4': RsvpStatus.yes,
     },
   ),
   EventModel(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
-import 'package:zoey/features/events/models/rsvp_event_response_model.dart';
 
 class CommonUtils {
   static String generateRandomId() => const Uuid().v4();
@@ -96,19 +95,6 @@ class CommonUtils {
     // color based on the name
     int hash = name.hashCode;
     return colors[hash.abs() % colors.length];
-  }
-
-  static Color getRsvpStatusColor(RsvpStatus status) {
-    switch (status) {
-      case RsvpStatus.yes:
-        return AppColors.successColor;
-      case RsvpStatus.no:
-        return AppColors.errorColor;
-      case RsvpStatus.maybe:
-        return AppColors.primaryColor;
-      case RsvpStatus.pending:
-        return AppColors.accentColor;
-    }
   }
 
   static void showSnackBar(BuildContext context, String message) {

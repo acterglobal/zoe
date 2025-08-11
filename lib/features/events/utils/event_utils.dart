@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:zoey/common/utils/date_time_utils.dart';
+import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
@@ -27,5 +28,16 @@ class EventUtils {
       DateTimeUtils.timeFormat,
     ).format(event.startDate);
     return L10n.of(context).dayAtTime(dayText, timeText);
+  }
+
+  static Color getRsvpStatusColor(RsvpStatus status) {
+    switch (status) {
+      case RsvpStatus.yes:
+        return AppColors.successColor;
+      case RsvpStatus.no:
+        return AppColors.errorColor;
+      case RsvpStatus.maybe:
+        return AppColors.primaryColor;
+    }
   }
 }
