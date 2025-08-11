@@ -210,5 +210,13 @@
     "linkUrlPlaceholder": "Enter URL",
     "@linkUrlPlaceholder": {},
     "couldNotOpenLink": "Could not open invalid URL",
-    "@couldNotOpenLink": {}
+    "@couldNotOpenLink": {},
+    "document": "Document",
+    "@document": {},
+    "addADocument": "Add a document",
+    "@addADocument": {},
+    "documentTitle": "Document title",
+    "@documentTitle": {},
+    "addAFile": "Add a file",
+    "@addAFile": {}
 }

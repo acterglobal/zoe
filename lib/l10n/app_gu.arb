@@ -176,5 +176,13 @@
     "linkUrlPlaceholder": "લિંક દાખલ કરો",
     "@linkUrlPlaceholder": {},
     "couldNotOpenLink": "અમાન્ય લિંક ખોલી શક્યું નથી",
-    "@couldNotOpenLink": {}
+    "@couldNotOpenLink": {},
+    "document": "દસ્તાવેજ",
+    "@document": {},
+    "addADocument": "દસ્તાવેજ ઉમેરો",
+    "@addADocument": {},
+    "documentTitle": "દસ્તાવેજ નામ",
+    "@documentTitle": {},
+    "addAFile": "ફાઇલ ઉમેરો",
+    "@addAFile": {}
 }

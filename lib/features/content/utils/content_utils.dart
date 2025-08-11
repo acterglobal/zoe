@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/content/providers/content_providers.dart';
 import 'package:zoey/features/content/models/content_model.dart';
+import 'package:zoey/features/documents/providers/document_providers.dart';
 import 'package:zoey/features/link/models/link_model.dart';
 import 'package:zoey/features/link/providers/link_providers.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
@@ -66,6 +67,11 @@ void reorderContent(WidgetRef ref, String contentId, int newOrderIndex) {
       ref
           .read(linkListProvider.notifier)
           .updateLinkOrderIndex(contentId, newOrderIndex);
+      break;
+    case ContentType.document:
+      ref
+          .read(documentListProvider.notifier)
+          .updateDocumentOrderIndex(contentId, newOrderIndex);
       break;
   }
 }
@@ -167,4 +173,24 @@ void addNewLinkContent(WidgetRef ref, parentId, String sheetId) {
     orderIndex: orderIndex,
   );
   ref.read(linkListProvider.notifier).addLink(linkContentModel);
+}
+
+void addNewDocumentContent(WidgetRef ref, parentId, String sheetId) {
+  final orderIndex = _getNextOrderIndex(ref, parentId);
+  final documentListContentModel = ListModel(
+    parentId: parentId,
+    sheetId: sheetId,
+    title: '',
+    listType: ContentType.document,
+    orderIndex: orderIndex,
+  );
+  ref.read(listsrovider.notifier).addList(documentListContentModel);
+
+  // Add a default document item to the new list
+  ref
+      .read(documentListProvider.notifier)
+      .addDocument(
+        parentId: documentListContentModel.id,
+        sheetId: sheetId,
+      );
 }

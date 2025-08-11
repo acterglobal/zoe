@@ -7,6 +7,7 @@ class ContentMenuOptions extends StatelessWidget {
   final VoidCallback onTapBulletedList;
   final VoidCallback onTapToDoList;
   final VoidCallback onTapLink;
+  final VoidCallback onTapDocument;
 
   const ContentMenuOptions({
     super.key,
@@ -15,6 +16,7 @@ class ContentMenuOptions extends StatelessWidget {
     required this.onTapBulletedList,
     required this.onTapToDoList,
     required this.onTapLink,
+    required this.onTapDocument,
   });
 
   @override
@@ -63,6 +65,13 @@ class ContentMenuOptions extends StatelessWidget {
             title: L10n.of(context).link,
             description: L10n.of(context).addALink,
             onTap: onTapLink,
+          ),
+          _buildAddContentOption(
+            context,
+            icon: Icons.file_present,
+            title: L10n.of(context).document,
+            description: L10n.of(context).addADocument,
+            onTap: onTapDocument,
           ),
         ],
       ),

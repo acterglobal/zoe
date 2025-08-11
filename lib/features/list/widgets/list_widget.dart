@@ -5,6 +5,8 @@ import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 import 'package:zoey/features/content/models/content_model.dart';
+import 'package:zoey/features/documents/providers/document_providers.dart';
+import 'package:zoey/features/documents/widgets/document_list_widget.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/events/widgets/event_list_widget.dart';
@@ -123,7 +125,10 @@ class ListWidget extends ConsumerWidget {
         parentId: listId,
         isEditing: isEditing,
       ),
-
+      ContentType.document => DocumentListWidget(
+        parentId: listId,
+        isEditing: isEditing,
+      ),
       _ => const SizedBox.shrink(),
     };
   }
@@ -186,6 +191,12 @@ class ListWidget extends ConsumerWidget {
                       orderIndex: 0,
                       url: '',
                     ),
+                  );
+              break;
+            case ContentType.document:
+              ref.read(documentListProvider.notifier).addDocument(
+                    parentId: listId,
+                    sheetId: sheetId,
                   );
               break;
             default:
