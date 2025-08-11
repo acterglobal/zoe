@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
@@ -11,25 +10,23 @@ class EventRsvpCountWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final rsvpCount = ref.watch(eventListProvider.notifier).getRsvpStatusCount(eventId);
-    final totalRsvpCount = ref.watch(eventListProvider.notifier).getTotalRsvpCount(eventId);
+    final eventRSVPYesCount = ref.watch(eventRsvpYesCountProvider(eventId));
+    final totalRsvpCount = ref.watch(eventTotalRsvpCountProvider(eventId));
 
     if (totalRsvpCount == 0) return const SizedBox.shrink();
 
-    final yesCount = rsvpCount[RsvpStatus.yes] ?? 0;
-
-    return _buildRsvpCountText(context, yesCount);
+    return _buildRsvpCountText(context, eventRSVPYesCount);
   }
 
   Widget _buildRsvpCountText(
     BuildContext context,
-    int yesCount
+    int eventRSVPYesCount
   ) {
     final l10n = L10n.of(context);
 
-    if (yesCount == 0) return const SizedBox.shrink();
+    if (eventRSVPYesCount == 0) return const SizedBox.shrink();
 
-    String countText = yesCount == 1 ? l10n.isGoing(yesCount) : l10n.areGoing(yesCount);
+    String countText = eventRSVPYesCount == 1 ? l10n.isGoing(eventRSVPYesCount) : l10n.areGoing(eventRSVPYesCount);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -38,7 +35,7 @@ class EventRsvpCountWidget extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            yesCount == 1 ? Icons.person_rounded : Icons.people_rounded,
+            eventRSVPYesCount == 1 ? Icons.person_rounded : Icons.people_rounded,
             size: 16,
           ),
           const SizedBox(width: 6),

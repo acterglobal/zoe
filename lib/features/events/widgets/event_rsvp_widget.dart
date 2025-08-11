@@ -49,7 +49,7 @@ class EventRsvpWidget extends ConsumerWidget {
           ),
         ),
         const SizedBox(width: 12),
-        // Title + Count + Status Badge
+        // Title + Count
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

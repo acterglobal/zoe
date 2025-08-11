@@ -78,32 +78,10 @@ class EventNotifier extends StateNotifier<List<EventModel>> {
       for (final event in state)
         if (event.id == eventId)
           event.copyWith(
-            rsvpResponses: {
-              ...event.rsvpResponses,
-              userId: status,
-            },
+            rsvpResponses: {...event.rsvpResponses, userId: status},
           )
         else
           event,
     ];
-  }
-
-  /// Get RSVP count for a specific event
-  Map<RsvpStatus, int> getRsvpStatusCount(String eventId) {
-    final event = state.where((e) => e.id == eventId).firstOrNull;
-    if (event == null) return {};
-
-    final rsvpCount = <RsvpStatus, int>{};
-
-    for (final response in event.rsvpResponses.values) {
-      rsvpCount[response] = (rsvpCount[response] ?? 0) + 1;
-    }
-    return rsvpCount;
-  }
-
-  /// Get total RSVP count for a specific event
-  int getTotalRsvpCount(String eventId) {
-    final event = state.where((e) => e.id == eventId).firstOrNull;
-    return event?.rsvpResponses.length ?? 0;
   }
 }

@@ -83,3 +83,25 @@ final currentUserRsvpProvider = FutureProvider.family<RsvpStatus?, String>((
 
   return rsvpResponse;
 });
+
+/// Provider for RSVP yes count of a specific event
+final eventRsvpYesCountProvider = Provider.family<int, String>((ref, eventId) {
+  final eventList = ref.watch(eventListProvider);
+  final event = eventList.where((e) => e.id == eventId).firstOrNull;
+  if (event == null) return 0;
+
+  int eventRSVPYesCount = 0;
+  for (final response in event.rsvpResponses.values) {
+    if (response == RsvpStatus.yes) {
+      eventRSVPYesCount++;
+    }
+  }
+  return eventRSVPYesCount;
+});
+
+/// Provider for total RSVP count of a specific event
+final eventTotalRsvpCountProvider = Provider.family<int, String>((ref, eventId) {
+  final eventList = ref.watch(eventListProvider);
+  final event = eventList.where((e) => e.id == eventId).firstOrNull;
+  return event?.rsvpResponses.length ?? 0;
+});
