@@ -87,8 +87,12 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
     return Card(
       margin: const EdgeInsets.only(top: 4, bottom: 4),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        child: LinkWidget(key: Key(link.id), linkId: link.id, isEditing: false),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+        child: LinkWidget(
+          key: Key(link.id),
+          linkId: link.id,
+          isEditing: false,
+        ),
       ),
     );
   }
