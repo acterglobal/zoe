@@ -152,5 +152,11 @@
     "allUsersAreAlreadyAssignedToThisTask": "બધા વપરાશકર્તાઓ પહેલાથી જ આ કાર્યને સોંપેલ છે",
     "@allUsersAreAlreadyAssignedToThisTask": {},
     "availableMembersToAssignToThisTask": "આ કાર્યને સોંપવા માટે ઉપલબ્ધ સભ્યો",
-    "@availableMembersToAssignToThisTask": {}
+    "@availableMembersToAssignToThisTask": {},
+    "willYouAttend": "તમે આવશો?",
+    "@willYouAttend": {},
+    "isGoing": "{count} જાય છે",
+    "@isGoing": {},
+    "areGoing": "{count} જવાના છે",
+    "@areGoing": {}
 }

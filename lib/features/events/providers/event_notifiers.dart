@@ -71,4 +71,17 @@ class EventNotifier extends StateNotifier<List<EventModel>> {
           event,
     ];
   }
+
+  /// Add or update RSVP response for a user
+  void updateRsvpResponse(String eventId, String userId, RsvpStatus status) {
+    state = [
+      for (final event in state)
+        if (event.id == eventId)
+          event.copyWith(
+            rsvpResponses: {...event.rsvpResponses, userId: status},
+          )
+        else
+          event,
+    ];
+  }
 }

@@ -9,6 +9,11 @@ final isUserLoggedInProvider = FutureProvider<bool>((ref) async {
   return userId != null && userId.isNotEmpty;
 });
 
+final loggedInUserProvider = FutureProvider<String?>((ref) async {
+  final userId = await PreferencesService().getLoginUserId();
+  return userId;
+});
+
 final userListProvider = StateNotifierProvider<UserNotifier, List<UserModel>>(
   (ref) => UserNotifier(),
 );

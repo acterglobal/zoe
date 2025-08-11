@@ -3,6 +3,7 @@ import 'package:zoey/common/providers/common_providers.dart';
 import 'package:zoey/common/utils/date_time_utils.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/event_notifiers.dart';
+import 'package:zoey/features/users/providers/user_providers.dart';
 
 final eventListProvider =
     StateNotifierProvider<EventNotifier, List<EventModel>>(
@@ -63,4 +64,44 @@ final eventByParentProvider = Provider.family<List<EventModel>, String>((
 ) {
   final eventList = ref.watch(eventListProvider);
   return eventList.where((e) => e.parentId == parentId).toList();
+});
+
+final currentUserRsvpProvider = FutureProvider.family<RsvpStatus?, String>((
+  ref,
+  eventId,
+) async {
+  final eventList = ref.watch(eventListProvider);
+  final event = eventList.where((e) => e.id == eventId).firstOrNull;
+  if (event == null) return null;
+
+  // Get the current user ID from the loggedInUserProvider
+  final currentUserId = await ref.read(loggedInUserProvider.future);
+  if (currentUserId == null || currentUserId.isEmpty) return null;
+
+  final rsvpResponse = event.rsvpResponses[currentUserId];
+  if (rsvpResponse == null) return null;
+
+  return rsvpResponse;
+});
+
+/// Provider for RSVP yes count of a specific event
+final eventRsvpYesCountProvider = Provider.family<int, String>((ref, eventId) {
+  final eventList = ref.watch(eventListProvider);
+  final event = eventList.where((e) => e.id == eventId).firstOrNull;
+  if (event == null) return 0;
+
+  int eventRSVPYesCount = 0;
+  for (final response in event.rsvpResponses.values) {
+    if (response == RsvpStatus.yes) {
+      eventRSVPYesCount++;
+    }
+  }
+  return eventRSVPYesCount;
+});
+
+/// Provider for total RSVP count of a specific event
+final eventTotalRsvpCountProvider = Provider.family<int, String>((ref, eventId) {
+  final eventList = ref.watch(eventListProvider);
+  final event = eventList.where((e) => e.id == eventId).firstOrNull;
+  return event?.rsvpResponses.length ?? 0;
 });
