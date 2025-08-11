@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/features/documents/data/document_data.dart';
 import 'package:zoey/features/documents/models/document_model.dart';
-import 'package:zoey/features/sheet/models/sheet_model.dart';
 
 class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
   DocumentNotifier() : super(documentList);
@@ -37,7 +36,7 @@ class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
             fileName: fileName,
             fileType: fileType,
             filePath: filePath,
-            title: fileName, // Set title to filename by default
+            title: fileName,
           )
         else
           document,
@@ -53,26 +52,6 @@ class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
       for (final document in state)
         if (document.id == documentId)
           document.copyWith(title: title)
-        else
-          document,
-    ];
-  }
-
-  void updateDocumentDescription(String documentId, Description description) {
-    state = [
-      for (final document in state)
-        if (document.id == documentId)
-          document.copyWith(description: description)
-        else
-          document,
-    ];
-  }
-
-  void updateDocumentParentId(String documentId, String parentId) {
-    state = [
-      for (final document in state)
-        if (document.id == documentId)
-          document.copyWith(parentId: parentId)
         else
           document,
     ];
