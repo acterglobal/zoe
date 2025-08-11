@@ -30,23 +30,27 @@ class UserListWidget extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.people_rounded,
-                  color: theme.colorScheme.primary,
-                  size: 24,
-                ),
-                const SizedBox(width: 12),
-                Text(
+            padding: const EdgeInsets.only(left: 20,right: 5, top: 10, bottom: 10),
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Icon(
+                Icons.people_rounded,
+                color: theme.colorScheme.primary,
+                size: 24,
+              ),
+              title: Text(
                   title,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: theme.colorScheme.onSurface,
-                  ),
                 ),
-              ],
+              ),
+              trailing: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(Icons.close_rounded, size: 20),
+              ),
             ),
           ),
           ListView.builder(

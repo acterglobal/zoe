@@ -201,6 +201,8 @@
     "@isGoing": {},
     "areGoing": "{count} are going",
     "@areGoing": {},
+    "membersGoingToEvent": "Members going to event",
+    "@membersGoingToEvent": {},
     "link": "Link",
     "@link": {},
     "addALink": "Add a link",
