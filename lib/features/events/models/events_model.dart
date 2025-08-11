@@ -5,6 +5,12 @@ enum RsvpStatus {
   yes,
   no,
   maybe;
+
+  String get name => switch (this) {
+        yes => 'Yes',
+        no => 'No',
+        maybe => 'Maybe',
+      };
 }
 
 class EventModel extends ContentModel {
