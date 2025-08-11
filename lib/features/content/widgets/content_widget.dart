@@ -7,6 +7,7 @@ import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/utils/content_utils.dart';
 import 'package:zoey/features/content/widgets/add_content_widget.dart';
 import 'package:zoey/features/events/widgets/event_widget.dart';
+import 'package:zoey/features/link/widgets/link_widget.dart';
 import 'package:zoey/features/list/widgets/list_widget.dart';
 import 'package:zoey/features/task/widgets/task_item_widget.dart';
 import 'package:zoey/features/text/widgets/text_widget.dart';
@@ -79,6 +80,7 @@ class ContentWidget extends ConsumerWidget {
           onTapBulletedList: () =>
               addNewBulletedListContent(ref, parentId, sheetId),
           onTapToDoList: () => addNewTaskListContent(ref, parentId, sheetId),
+          onTapLink: () => addNewLinkContent(ref, parentId, sheetId),
         ),
         const SizedBox(height: 200),
       ],
@@ -113,6 +115,10 @@ class ContentWidget extends ConsumerWidget {
       ),
       ContentType.bullet => BulletItemWidget(
         bulletId: contentId,
+        isEditing: isEditing,
+      ),
+      ContentType.link => LinkWidget(
+        linkId: contentId,
         isEditing: isEditing,
       ),
     };

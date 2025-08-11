@@ -8,6 +8,9 @@ import 'package:zoey/features/content/models/content_model.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/events/widgets/event_list_widget.dart';
+import 'package:zoey/features/link/models/link_model.dart';
+import 'package:zoey/features/link/providers/link_providers.dart';
+import 'package:zoey/features/link/widgets/link_list_widget.dart';
 import 'package:zoey/features/list/providers/list_providers.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/task/widgets/task_list_widget.dart';
@@ -116,6 +119,11 @@ class ListWidget extends ConsumerWidget {
         parentId: listId,
         isEditing: isEditing,
       ),
+      ContentType.link => LinkListWidget(
+        parentId: listId,
+        isEditing: isEditing,
+      ),
+
       _ => const SizedBox.shrink(),
     };
   }
@@ -166,6 +174,17 @@ class ListWidget extends ConsumerWidget {
                       title: '',
                       orderIndex: 0,
                       description: (plainText: '', htmlText: ''),
+                    ),
+                  );
+              break;
+            case ContentType.link:
+              ref.read(linkListProvider.notifier).addLink(
+                    LinkModel(
+                      sheetId: sheetId,
+                      parentId: listId,
+                      title: '',
+                      orderIndex: 0,
+                      url: '',
                     ),
                   );
               break;

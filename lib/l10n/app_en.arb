@@ -187,7 +187,6 @@
     "@allUsersAreAlreadyAssignedToThisTask": {},
     "availableMembersToAssignToThisTask": "Available members to assign to this task",
     "@availableMembersToAssignToThisTask": {},
-    "@welcomeBack": {},
     "noSheetsFound": "No sheets found!",
     "@noSheetsFound": {},
     "noEventsFound": "No events found!",
@@ -201,5 +200,15 @@
     "isGoing": "{count} is going",
     "@isGoing": {},
     "areGoing": "{count} are going",
-    "@areGoing": {}
+    "@areGoing": {},
+    "link": "Link",
+    "@link": {},
+    "addALink": "Add a link",
+    "@addALink": {},
+    "linkTitle": "Link title",
+    "@linkTitle": {},
+    "linkUrlPlaceholder": "Enter URL",
+    "@linkUrlPlaceholder": {},
+    "couldNotOpenLink": "Could not open invalid URL",
+    "@couldNotOpenLink": {}
 }
