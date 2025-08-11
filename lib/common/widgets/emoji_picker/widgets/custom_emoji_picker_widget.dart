@@ -46,6 +46,7 @@ class _CustomEmojiPickerWidgetState
             controller: searchController,
             onChanged: searchEmoji,
             hintText: L10n.of(context).searchEmojis,
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           ),
           Expanded(child: _buildContent(context)),
         ],

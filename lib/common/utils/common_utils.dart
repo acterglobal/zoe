@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zoey/core/theme/colors/app_colors.dart';
 
 class CommonUtils {
   static String generateRandomId() => const Uuid().v4();
@@ -55,25 +54,6 @@ class CommonUtils {
     }
 
     return false;
-  }
-
-  static Color getColorByDateDifference(DateTime date) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final dueDate = DateTime(date.year, date.month, date.day);
-    final difference = dueDate.difference(today).inDays;
-
-    if (difference < 0) {
-      return AppColors.errorColor;
-    } else if (difference == 0) {
-      return AppColors.brightOrangeColor;
-    } else if (difference == 1) {
-      return AppColors.brightMagentaColor;
-    } else if (difference <= 3) {
-      return AppColors.primaryColor;
-    } else {
-      return AppColors.successColor;
-    }
   }
 
   Color getRandomColorFromName(String name) {

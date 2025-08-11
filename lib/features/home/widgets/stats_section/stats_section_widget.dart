@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/home/widgets/stats_section/stats_widget.dart';
@@ -24,6 +26,7 @@ class StatsSectionWidget extends ConsumerWidget {
             count: sheetList.length.toString(),
             title: L10n.of(context).sheets,
             color: AppColors.primaryColor,
+            onTap: () => context.push(AppRoutes.sheetsList.route),
           ),
         ),
         const SizedBox(width: 12),
@@ -33,6 +36,7 @@ class StatsSectionWidget extends ConsumerWidget {
             count: eventList.length.toString(),
             title: L10n.of(context).events,
             color: AppColors.secondaryColor,
+            onTap: () => context.push(AppRoutes.eventsList.route),
           ),
         ),
         const SizedBox(width: 12),
@@ -42,6 +46,7 @@ class StatsSectionWidget extends ConsumerWidget {
             count: taskList.length.toString(),
             title: L10n.of(context).tasks,
             color: AppColors.successColor,
+            onTap: () => context.push(AppRoutes.tasksList.route),
           ),
         ),
       ],
