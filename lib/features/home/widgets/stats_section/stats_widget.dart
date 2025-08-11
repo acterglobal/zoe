@@ -23,7 +23,7 @@ class StatsWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: theme.colorScheme.surface,
@@ -37,8 +37,7 @@ class StatsWidget extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(8),
@@ -48,16 +47,7 @@ class StatsWidget extends StatelessWidget {
               ),
               child: Icon(icon, color: color, size: 20),
             ),
-            const SizedBox(height: 12),
-            Text(
-              count,
-              style: theme.textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: theme.colorScheme.onSurface,
-                letterSpacing: -0.5,
-              ),
-            ),
-            const SizedBox(height: 4),
+            const SizedBox(width: 12),
             Text(
               title,
               style: theme.textTheme.bodyMedium?.copyWith(

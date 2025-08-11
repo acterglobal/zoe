@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/providers/common_providers.dart';
 import 'package:zoey/features/link/models/link_model.dart';
 import 'package:zoey/features/link/providers/link_notifiers.dart';
 
@@ -17,4 +18,14 @@ final linkByParentProvider = Provider.family<List<LinkModel>, String>((
 ) {
   final linkList = ref.watch(linkListProvider);
   return linkList.where((l) => l.parentId == parentId).toList();
+});
+
+final linkListSearchProvider = Provider<List<LinkModel>>((ref) {
+  final linkList = ref.watch(linkListProvider);
+  final searchValue = ref.watch(searchValueProvider);
+  if (searchValue.isEmpty) return linkList;
+  return linkList
+      .where((l) => l.title.toLowerCase().contains(searchValue.toLowerCase()) ||
+                    l.url.toLowerCase().contains(searchValue.toLowerCase()))
+      .toList();
 });

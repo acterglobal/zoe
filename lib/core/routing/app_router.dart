@@ -7,6 +7,7 @@ import 'package:zoey/features/bullets/screens/bullet_detail_screen.dart';
 import 'package:zoey/features/events/screens/event_detail_screen.dart';
 import 'package:zoey/features/events/screens/events_list_screen.dart';
 import 'package:zoey/features/home/screens/home_screen.dart';
+import 'package:zoey/features/link/screens/links_list_screen.dart';
 import 'package:zoey/features/settings/screens/settings_screen.dart';
 import 'package:zoey/features/settings/screens/language_selection_screen.dart';
 import 'package:zoey/features/sheet/screens/sheet_detail_screen.dart';
@@ -106,7 +107,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: AppRoutes.settings.name,
         builder: (context, state) => const SettingsScreen(),
       ),
-      
+
+      // Links list route
+      GoRoute(
+        path: AppRoutes.linksList.route,
+        name: AppRoutes.linksList.name,
+        builder: (context, state) => const LinksListScreen(),
+      ),
+
       // Language selection route
       GoRoute(
         path: AppRoutes.settingLanguage.route,

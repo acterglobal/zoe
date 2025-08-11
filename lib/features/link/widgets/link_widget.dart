@@ -13,7 +13,11 @@ class LinkWidget extends ConsumerWidget {
   final String linkId;
   final bool isEditing;
 
-  const LinkWidget({super.key, required this.linkId, required this.isEditing});
+  const LinkWidget({
+    super.key, 
+    required this.linkId, 
+    required this.isEditing,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -94,7 +98,7 @@ class LinkWidget extends ConsumerWidget {
       text: title,
       textStyle: Theme.of(
         context,
-      ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+      ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
       onTextChanged: (value) =>
           ref.read(linkListProvider.notifier).updateLinkTitle(linkId, value),
     );
@@ -107,9 +111,9 @@ class LinkWidget extends ConsumerWidget {
     String url,
     bool isEditing,
   ) {
-    final isValidUrl = url.isNotEmpty && CommonUtils.isValidUrl(url);
+   
     final theme = Theme.of(context);
-    final color = isValidUrl
+    final color = url.isNotEmpty && CommonUtils.isValidUrl(url)
         ? theme.colorScheme.primary
         : theme.colorScheme.onSurface;
     
@@ -117,11 +121,9 @@ class LinkWidget extends ConsumerWidget {
       hintText: L10n.of(context).linkUrlPlaceholder,
       isEditing: isEditing,
       text: url,
-      textStyle: theme.textTheme.bodyMedium?.copyWith(
+      textStyle: theme.textTheme.bodySmall?.copyWith(
         color: color,
-        decoration: isValidUrl
-            ? TextDecoration.underline
-            : TextDecoration.none,
+        decoration: TextDecoration.none,
       ),
       onTextChanged: (value) =>
           ref.read(linkListProvider.notifier).updateLinkUrl(linkId, value),
