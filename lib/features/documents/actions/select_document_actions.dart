@@ -13,10 +13,7 @@ Future<void> pickDocumentFile(
 ) async {
   final l10n = L10n.of(context);
   try {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.any,
-      allowMultiple: true,
-    );
+    final result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
     if (result != null && result.files.isNotEmpty) {
       for (final file in result.files) {
@@ -53,5 +50,69 @@ Future<void> pickDocumentFile(
     if (context.mounted) {
       CommonUtils.showSnackBar(context, l10n.failedToPickFile(e.toString()));
     }
+  }
+}
+
+Color getFileTypeColor(String fileType) {
+  final ext = fileType.toLowerCase();
+  switch (ext) {
+    case 'pdf':
+      return Colors.red;
+    case 'doc':
+    case 'docx':
+      return Colors.blue;
+    case 'xls':
+    case 'xlsx':
+      return Colors.green;
+    case 'ppt':
+    case 'pptx':
+      return Colors.orange;
+    case 'jpg':
+    case 'jpeg':
+    case 'png':
+    case 'gif':
+    case 'webp':
+      return Colors.purple;
+    case 'mp3':
+    case 'wav':
+      return Colors.teal;
+    case 'mp4':
+    case 'avi':
+    case 'mov':
+      return Colors.indigo;
+    default:
+      return Colors.blueGrey;
+  }
+}
+
+IconData getFileTypeIcon(String fileType) {
+  final ext = fileType.toLowerCase();
+  switch (ext) {
+    case 'pdf':
+      return Icons.picture_as_pdf;
+    case 'doc':
+    case 'docx':
+      return Icons.description;
+    case 'xls':
+    case 'xlsx':
+      return Icons.table_chart;
+    case 'ppt':
+    case 'pptx':
+      return Icons.slideshow;
+    case 'jpg':
+    case 'jpeg':
+    case 'png':
+    case 'gif':
+    case 'webp':
+      return Icons.image;
+    case 'mp3':
+    case 'wav':
+      return Icons.audiotrack;
+    case 'mp4':
+    case 'avi':
+    case 'mov':
+      return Icons.video_file;
+    default:
+      return Icons.insert_drive_file;
   }
 }
