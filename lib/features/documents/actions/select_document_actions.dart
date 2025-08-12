@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/features/documents/providers/document_providers.dart';
+import 'package:zoey/features/documents/utils/document_utils.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
 Future<void> selectDocumentFile(
@@ -24,7 +25,7 @@ Future<void> selectDocumentFile(
             title: file.name,
             fileType: file.extension ?? 'unknown',
             filePath: file.path ?? '',
-            fileSize: _fileSizeFormat(file.size),
+            fileSize: fileSizeFormat(file.size),
           );
     }
 
@@ -35,18 +36,6 @@ Future<void> selectDocumentFile(
         l10n.addedDocuments(result.files.length),
       );
     }
-  }
-}
-
-String _fileSizeFormat(int bytes) {
-  if (bytes < 1024) {
-    return '$bytes B';
-  } else if (bytes < 1024 * 1024) {
-    return '${(bytes / 1024).toStringAsFixed(1)} KB';
-  } else if (bytes < 1024 * 1024 * 1024) {
-    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
-  } else {
-    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
   }
 }
 
