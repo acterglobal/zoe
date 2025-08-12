@@ -29,6 +29,11 @@ class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
     String fileType,
     String filePath,
   ) {
+    // Extract filename without extension for title
+    final title = fileName.contains('.') 
+        ? fileName.substring(0, fileName.lastIndexOf('.'))
+        : fileName;
+        
     state = [
       for (final document in state)
         if (document.id == documentId)
@@ -36,7 +41,7 @@ class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
             fileName: fileName,
             fileType: fileType,
             filePath: filePath,
-            title: fileName,
+            title: title,
           )
         else
           document,
