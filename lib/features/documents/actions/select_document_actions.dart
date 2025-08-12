@@ -18,20 +18,12 @@ Future<void> pickDocumentFile(
     for (final file in result.files) {
       ref
           .read(documentListProvider.notifier)
-          .addDocument(parentId: listId, sheetId: sheetId);
-
-      // Get the newly added document to update it with file info
-      final documents = ref.read(documentListProvider);
-      final newDocument = documents.last;
-
-      // Update the document with file information
-      ref
-          .read(documentListProvider.notifier)
-          .updateDocumentFile(
-            newDocument.id,
-            file.name,
-            file.extension ?? 'unknown',
-            file.path ?? '',
+          .addDocument(
+            parentId: listId,
+            sheetId: sheetId,
+            title: file.name,
+            fileType: file.extension ?? 'unknown',
+            filePath: file.path ?? '',
           );
     }
 

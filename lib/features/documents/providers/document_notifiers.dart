@@ -6,46 +6,28 @@ class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
   DocumentNotifier() : super(documentList);
 
   void addDocument({
-    String title = '',
+    required String title,
     required String parentId,
     required String sheetId,
+    required String fileType,
+    required String filePath,
     int? orderIndex,
   }) {
+
+     // Extract filename without extension for title
+    final extractedTitle = title.contains('.') 
+        ? title.substring(0, title.lastIndexOf('.'))
+        : title;
+
     final newDocument = DocumentModel(
       parentId: parentId,
-      title: title,
+      title: extractedTitle,
       sheetId: sheetId,
-      fileName: '',
-      fileType: '',
-      filePath: '',
-      orderIndex: 0,
+      fileType: fileType,
+      filePath: filePath,
+      orderIndex: orderIndex ?? 0,
     );
     state = [...state, newDocument];
-  }
-
-  void updateDocumentFile(
-    String documentId,
-    String fileName,
-    String fileType,
-    String filePath,
-  ) {
-    // Extract filename without extension for title
-    final title = fileName.contains('.') 
-        ? fileName.substring(0, fileName.lastIndexOf('.'))
-        : fileName;
-        
-    state = [
-      for (final document in state)
-        if (document.id == documentId)
-          document.copyWith(
-            fileName: fileName,
-            fileType: fileType,
-            filePath: filePath,
-            title: title,
-          )
-        else
-          document,
-    ];
   }
 
   void deleteDocument(String documentId) {
