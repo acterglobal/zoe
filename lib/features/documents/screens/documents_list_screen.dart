@@ -133,32 +133,12 @@ class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen> {
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
-          document.fileSize,
+          '${document.fileSize}  •  ${document.fileType.toUpperCase()}',
           style: theme.textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-        ),
-        trailing: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface.withValues(alpha: 0.6),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.1),
-              width: 1
-            ),
-          ),
-          child: Text(
-            document.fileType.toUpperCase(),
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w500,
-              fontSize: 8,
-              letterSpacing: 0.5,
-            ),
-          ),
         ),
       ),
     );
