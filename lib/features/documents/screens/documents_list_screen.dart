@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/providers/common_providers.dart';
+import 'package:zoey/common/utils/file_utils.dart';
+import 'package:zoey/common/widgets/glassy_container_widget.dart';
 import 'package:zoey/common/widgets/max_width_widget.dart';
 import 'package:zoey/common/widgets/state_widgets/empty_state_widget.dart';
+import 'package:zoey/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoey/features/documents/actions/select_document_actions.dart';
@@ -86,43 +89,22 @@ class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen> {
 
   Widget _buildDocumentItem(BuildContext context, DocumentModel document) {
     final theme = Theme.of(context);
-    final fileTypeColor = getFileTypeColor(document.fileType);
-    final fileTypeIcon = getFileTypeIcon(document.fileType);
+    final fileTypeColor = getFileTypeColor(document.filePath);
+    final fileTypeIcon = getFileTypeIcon(document.filePath);
 
-    return Container(
+    return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: theme.colorScheme.surface,
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.08),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.shadow.withValues(alpha: 0.04),
-            blurRadius: 4,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
+      borderRadius: BorderRadius.circular(12),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        leading: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: fileTypeColor,
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: fileTypeColor.withValues(alpha: 0.3),
-                blurRadius: 4,
-                offset: const Offset(0, 1),
-              ),
-            ],
-          ),
-          child: Icon(fileTypeIcon, color: Colors.white, size: 20),
+        leading: StyledIconContainer(
+          icon: fileTypeIcon,
+          primaryColor: fileTypeColor,
+          size: 48,
+          iconSize: 24,
+          backgroundOpacity: 0.1,
+          borderOpacity: 0.15,
+          shadowOpacity: 0.12,
         ),
         title: Text(
           document.title,
@@ -133,7 +115,7 @@ class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen> {
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
-          '${document.fileSize}  •  ${document.fileType.toUpperCase()}',
+          '${getFileSize(document.filePath)}  •  ${getFileType(document.filePath).toUpperCase()}',
           style: theme.textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           ),

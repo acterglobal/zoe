@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/utils/file_utils.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
 import 'package:zoey/features/documents/actions/select_document_actions.dart';
 import 'package:zoey/features/documents/models/document_model.dart';
@@ -78,7 +79,7 @@ class DocumentWidget extends ConsumerWidget {
   }
 
   Widget _buildDocumentIcon(DocumentModel document) {
-    final color = getFileTypeColor(document.fileType);
+    final color = getFileTypeColor(document.filePath);
     return Container(
       width: 32,
       height: 32,
@@ -94,7 +95,7 @@ class DocumentWidget extends ConsumerWidget {
         ],
       ),
       child: Icon(
-        getFileTypeIcon(document.fileType),
+        getFileTypeIcon(document.filePath),
         color: AppColors.lightBackground,
         size: 16,
       ),
@@ -135,7 +136,7 @@ class DocumentWidget extends ConsumerWidget {
         ),
       ),
       child: Text(
-        document.fileType.toUpperCase(),
+        getFileType(document.filePath).toUpperCase(),
         style: theme.textTheme.labelSmall?.copyWith(
           color: theme.colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w500,

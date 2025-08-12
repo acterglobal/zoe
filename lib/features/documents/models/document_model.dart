@@ -1,9 +1,7 @@
 import 'package:zoey/features/content/models/content_model.dart';
 
 class DocumentModel extends ContentModel {
-  final String fileType;
   final String filePath;
-  final String fileSize;
 
   DocumentModel({
     /// ContentModel properties
@@ -17,9 +15,7 @@ class DocumentModel extends ContentModel {
     super.orderIndex,
 
     /// DocumentModel properties
-    required this.fileType,
     required this.filePath,
-    required this.fileSize,
   }) : super(type: ContentType.document, emoji: null);
 
   DocumentModel copyWith({
@@ -34,9 +30,7 @@ class DocumentModel extends ContentModel {
     int? orderIndex,
 
     /// DocumentModel properties
-    String? fileType,
     String? filePath,
-    String? fileSize,
   }) {
     return DocumentModel(
       /// ContentModel properties
@@ -50,9 +44,7 @@ class DocumentModel extends ContentModel {
       orderIndex: orderIndex ?? this.orderIndex,
 
       /// DocumentModel properties
-      fileType: fileType ?? this.fileType,
       filePath: filePath ?? this.filePath,
-      fileSize: fileSize ?? this.fileSize,
     );
   }
 }
