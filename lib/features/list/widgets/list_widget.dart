@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/emoji_widget.dart';
@@ -5,6 +6,8 @@ import 'package:zoey/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 import 'package:zoey/features/content/models/content_model.dart';
+import 'package:zoey/features/documents/actions/select_document_actions.dart';
+import 'package:zoey/features/documents/widgets/document_list_widget.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/events/widgets/event_list_widget.dart';
@@ -20,7 +23,6 @@ import 'package:zoey/features/text/models/text_model.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 import 'package:zoey/features/text/widgets/text_list_widget.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
-
 import '../../../common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 
 class ListWidget extends ConsumerWidget {
@@ -53,7 +55,7 @@ class ListWidget extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildListEmoji(context, ref, list),
-            Expanded(child: _buildListTitle(context, ref, list.title)),
+            Expanded(child: _buildListTitle(context, ref, list)),
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
@@ -84,11 +86,11 @@ class ListWidget extends ConsumerWidget {
   }
 
   // Builds the list title
-  Widget _buildListTitle(BuildContext context, WidgetRef ref, String title) {
+  Widget _buildListTitle(BuildContext context, WidgetRef ref, ListModel list) {
     return ZoeInlineTextEditWidget(
-      hintText: L10n.of(context).listTitle,
+      hintText: list.listType == ContentType.document ? L10n.of(context).documentTitle : L10n.of(context).listTitle ,
       isEditing: isEditing,
-      text: title,
+      text: list.title,
       textStyle: Theme.of(
         context,
       ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
@@ -123,7 +125,10 @@ class ListWidget extends ConsumerWidget {
         parentId: listId,
         isEditing: isEditing,
       ),
-
+      ContentType.document => DocumentListWidget(
+        parentId: listId,
+        isEditing: isEditing,
+      ),
       _ => const SizedBox.shrink(),
     };
   }
@@ -135,6 +140,7 @@ class ListWidget extends ConsumerWidget {
     ListModel list,
   ) {
     final sheetId = list.sheetId;
+    final l10n = L10n.of(context);
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 24),
       child: GestureDetector(
@@ -188,6 +194,9 @@ class ListWidget extends ConsumerWidget {
                     ),
                   );
               break;
+            case ContentType.document:
+              selectDocumentFile(context, ref, listId, sheetId);
+              break;
             default:
               break;
           }
@@ -201,7 +210,7 @@ class ListWidget extends ConsumerWidget {
             ),
             const SizedBox(width: 6),
             Text(
-              'Add item',
+              list.listType == ContentType.document ? l10n.addDocuments : l10n.addItem,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 14,

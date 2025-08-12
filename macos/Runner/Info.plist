@@ -32,5 +32,9 @@
 	<string>public.app-category.productivity</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Zoey needs access to your photo library to allow you to add images to your notes, tasks, and other content.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Zoey needs access to your documents folder to allow you to add and manage document files.</string>
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>Zoey needs access to your desktop folder to allow you to add and manage document files.</string>
 </dict>
 </plist>

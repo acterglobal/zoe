@@ -6,6 +6,7 @@ import 'package:zoey/features/content/providers/content_providers.dart';
 import 'package:zoey/features/content/providers/content_menu_providers.dart';
 import 'package:zoey/features/content/utils/content_utils.dart';
 import 'package:zoey/features/content/widgets/add_content_widget.dart';
+import 'package:zoey/features/documents/widgets/document_widget.dart';
 import 'package:zoey/features/events/widgets/event_widget.dart';
 import 'package:zoey/features/link/widgets/link_widget.dart';
 import 'package:zoey/features/list/widgets/list_widget.dart';
@@ -81,6 +82,7 @@ class ContentWidget extends ConsumerWidget {
               addNewBulletedListContent(ref, parentId, sheetId),
           onTapToDoList: () => addNewTaskListContent(ref, parentId, sheetId),
           onTapLink: () => addNewLinkContent(ref, parentId, sheetId),
+          onTapDocument: () => addNewDocumentContent(ref, parentId, sheetId),
         ),
         const SizedBox(height: 200),
       ],
@@ -97,28 +99,20 @@ class ContentWidget extends ConsumerWidget {
     final key = ValueKey('${content.type.name}-$contentId');
 
     Widget contentWidget = switch (content.type) {
-      ContentType.text => TextWidget(
-        textId: contentId,
-        isEditing: isEditing,
-      ),
+      ContentType.text => TextWidget(textId: contentId, isEditing: isEditing),
       ContentType.event => EventWidget(
         eventsId: contentId,
         isEditing: isEditing,
       ),
-      ContentType.list => ListWidget(
-        listId: contentId,
-        isEditing: isEditing,
-      ),
-      ContentType.task => TaskWidget(
-        taskId: contentId,
-        isEditing: isEditing,
-      ),
+      ContentType.list => ListWidget(listId: contentId, isEditing: isEditing),
+      ContentType.task => TaskWidget(taskId: contentId, isEditing: isEditing),
       ContentType.bullet => BulletItemWidget(
         bulletId: contentId,
         isEditing: isEditing,
       ),
-      ContentType.link => LinkWidget(
-        linkId: contentId,
+      ContentType.link => LinkWidget(linkId: contentId, isEditing: isEditing),
+      ContentType.document => DocumentWidget(
+        documentId: contentId,
         isEditing: isEditing,
       ),
     };

@@ -182,5 +182,21 @@
     "linkUrlPlaceholder": "લિંક દાખલ કરો",
     "@linkUrlPlaceholder": {},
     "couldNotOpenLink": "અમાન્ય લિંક ખોલી શક્યું નથી",
-    "@couldNotOpenLink": {}
+    "@couldNotOpenLink": {},
+    "document": "દસ્તાવેજ",
+    "@document": {},
+    "addADocument": "દસ્તાવેજ ઉમેરો",
+    "@addADocument": {},
+    "documentTitle": "દસ્તાવેજ નામ",
+    "@documentTitle": {},
+    "addAFile": "ફાઇલ ઉમેરો",
+    "@addAFile": {},
+    "addedDocuments": "{count} ફાઇલ્સ ઉમેર્યા",
+    "@addedDocuments": {},
+    "failedToPickFile": "ફાઇલ પસંદ કરવામાં વિફલ: {error}",
+    "@failedToPickFile": {},
+    "addDocuments": "ફાઇલ્સ ઉમેરો",
+    "@addDocuments": {},
+    "addItem": "આઈટમ ઉમેરો",
+    "@addItem": {}
 }
