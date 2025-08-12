@@ -12,11 +12,54 @@ Future<void> pickDocumentFile(
   String sheetId,
 ) async {
   final l10n = L10n.of(context);
+  
   try {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    // Show loading indicator
+    if (context.mounted) {
+      CommonUtils.showSnackBar(
+        context,
+        l10n.pickingFiles,
+        duration: const Duration(seconds: 1),
+      );
+    }
 
-    if (result != null && result.files.isNotEmpty) {
-      for (final file in result.files) {
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.any,
+      allowCompression: false,
+      withData: false,
+      withReadStream: true,
+    );
+
+    if (result == null || result.files.isEmpty) {
+      // User cancelled or no files selected
+      return;
+    }
+
+    // Validate files before processing
+    final validFiles = result.files.where((file) {
+      if (file.name.isEmpty) return false;
+      if (file.size > 100 * 1024 * 1024) return false; // 100MB limit
+      return true;
+    }).toList();
+
+    if (validFiles.isEmpty) {
+      if (context.mounted) {
+        CommonUtils.showSnackBar(
+          context,
+          l10n.noValidFilesSelected,
+          isError: true,
+        );
+      }
+      return;
+    }
+
+    // Process valid files
+    int successCount = 0;
+    int errorCount = 0;
+
+    for (final file in validFiles) {
+      try {
         // Add the document first
         ref
             .read(documentListProvider.notifier)
@@ -35,21 +78,47 @@ Future<void> pickDocumentFile(
               file.extension ?? 'unknown',
               file.path ?? '',
             );
-      }
 
-      // Show success message
-      if (context.mounted) {
+        successCount++;
+      } catch (e) {
+        errorCount++;
+        // Log error for debugging
+        debugPrint('Error processing file ${file.name}: $e');
+      }
+    }
+
+    // Show appropriate result message
+    if (context.mounted) {
+      if (successCount > 0 && errorCount == 0) {
         CommonUtils.showSnackBar(
           context,
-          l10n.addedDocuments(result.files.length),
+          l10n.addedDocuments(successCount),
+        );
+      } else if (successCount > 0 && errorCount > 0) {
+        CommonUtils.showSnackBar(
+          context,
+          '${l10n.addedDocuments(successCount)}. ${l10n.failedToAddDocuments(errorCount)}',
+          isError: true,
+        );
+      } else {
+        CommonUtils.showSnackBar(
+          context,
+          l10n.failedToAddDocuments(errorCount),
+          isError: true,
         );
       }
     }
+
   } catch (e) {
-    // Show error message if file picking fails
+    // Handle file picker errors
     if (context.mounted) {
-      CommonUtils.showSnackBar(context, l10n.failedToPickFile(e.toString()));
+      CommonUtils.showSnackBar(
+        context,
+        l10n.failedToPickFile(e.toString()),
+        isError: true,
+      );
     }
+    debugPrint('File picker error: $e');
   }
 }
 
