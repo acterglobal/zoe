@@ -12,100 +12,36 @@ Future<void> pickDocumentFile(
   String sheetId,
 ) async {
   final l10n = L10n.of(context);
-  
-  try {
-    final result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-      type: FileType.any,
-      allowCompression: false,
-      withData: false,
-      withReadStream: true,
-    );
+  final result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
-    if (result == null || result.files.isEmpty) {
-      // User cancelled or no files selected
-      return;
+  if (result != null && result.files.isNotEmpty) {
+    for (final file in result.files) {
+      ref
+          .read(documentListProvider.notifier)
+          .addDocument(parentId: listId, sheetId: sheetId);
+
+      // Get the newly added document to update it with file info
+      final documents = ref.read(documentListProvider);
+      final newDocument = documents.last;
+
+      // Update the document with file information
+      ref
+          .read(documentListProvider.notifier)
+          .updateDocumentFile(
+            newDocument.id,
+            file.name,
+            file.extension ?? 'unknown',
+            file.path ?? '',
+          );
     }
 
-    // Validate files before processing
-    final validFiles = result.files.where((file) {
-      if (file.name.isEmpty) return false;
-      if (file.size > 100 * 1024 * 1024) return false; // 100MB limit
-      return true;
-    }).toList();
-
-    if (validFiles.isEmpty) {
-      if (context.mounted) {
-        CommonUtils.showSnackBar(
-          context,
-          'No valid files selected',
-        );
-      }
-      return;
-    }
-
-    // Process valid files
-    int successCount = 0;
-    int errorCount = 0;
-
-    for (final file in validFiles) {
-      try {
-        // Add the document first
-        ref
-            .read(documentListProvider.notifier)
-            .addDocument(parentId: listId, sheetId: sheetId);
-
-        // Get the newly added document to update it with file info
-        final documents = ref.read(documentListProvider);
-        final newDocument = documents.last;
-
-        // Update the document with file information
-        ref
-            .read(documentListProvider.notifier)
-            .updateDocumentFile(
-              newDocument.id,
-              file.name,
-              file.extension ?? 'unknown',
-              file.path ?? '',
-            );
-
-        successCount++;
-      } catch (e) {
-        errorCount++;
-        // Log error for debugging
-        debugPrint('Error processing file ${file.name}: $e');
-      }
-    }
-
-    // Show appropriate result message
-    if (context.mounted) {
-      if (successCount > 0 && errorCount == 0) {
-        CommonUtils.showSnackBar(
-          context,
-          l10n.addedDocuments(successCount),
-        );
-      } else if (successCount > 0 && errorCount > 0) {
-        CommonUtils.showSnackBar(
-          context,
-          '${l10n.addedDocuments(successCount)}. Failed to add $errorCount documents.',
-        );
-      } else {
-        CommonUtils.showSnackBar(
-          context,
-          'Failed to add $errorCount documents.',
-        );
-      }
-    }
-
-  } catch (e) {
-    // Handle file picker errors
+    // Show success message
     if (context.mounted) {
       CommonUtils.showSnackBar(
         context,
-        l10n.failedToPickFile(e.toString()),
+        l10n.addedDocuments(result.files.length),
       );
     }
-    debugPrint('File picker error: $e');
   }
 }
 
