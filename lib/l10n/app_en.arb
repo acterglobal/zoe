@@ -219,6 +219,8 @@
     "@couldNotOpenLink": {},
     "document": "Document",
     "@document": {},
+    "documents": "Documents",
+    "@documents": {},
     "addADocument": "Add a document",
     "@addADocument": {},
     "documentTitle": "Document title",

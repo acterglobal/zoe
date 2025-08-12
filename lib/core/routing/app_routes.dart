@@ -9,6 +9,7 @@ enum AppRoutes {
   eventDetail('/event/:eventId'),
   bulletDetail('/bullet/:bulletId'),
   linksList('/links-list'),
+  documentsList('/documents-list'),
   settings('/settings'),
   settingLanguage('/settings/language');
 
