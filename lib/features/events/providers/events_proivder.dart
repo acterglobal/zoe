@@ -105,3 +105,16 @@ final eventTotalRsvpCountProvider = Provider.family<int, String>((ref, eventId) 
   final event = eventList.where((e) => e.id == eventId).firstOrNull;
   return event?.rsvpResponses.length ?? 0;
 });
+
+/// Provider for getting user whose RSVP to a specific event is "yes"
+final eventRsvpYesUsersProvider = Provider.family<List<String>, String>((ref, eventId) {
+  final eventList = ref.watch(eventListProvider);
+  final event = eventList.where((e) => e.id == eventId).firstOrNull;
+  if (event == null) return [];
+  
+  // Filter for only users whose RSVP is "yes"
+  return event.rsvpResponses.entries
+      .where((entry) => entry.value == RsvpStatus.yes)
+      .map((entry) => entry.key)
+      .toList();
+});
