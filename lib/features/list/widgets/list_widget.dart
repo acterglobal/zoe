@@ -195,7 +195,7 @@ class ListWidget extends ConsumerWidget {
                   );
               break;
             case ContentType.document:
-              pickDocumentFile(context, ref, listId, sheetId);
+              selectDocumentFile(context, ref, listId, sheetId);
               break;
             default:
               break;

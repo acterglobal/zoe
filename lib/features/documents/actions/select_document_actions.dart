@@ -5,7 +5,7 @@ import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/features/documents/providers/document_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
-Future<void> pickDocumentFile(
+Future<void> selectDocumentFile(
   BuildContext context,
   WidgetRef ref,
   String listId,
