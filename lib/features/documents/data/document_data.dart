@@ -9,6 +9,7 @@ final documentList = [
     sheetId: 'sheet-1',
     fileType: 'pdf',
     filePath: 'path/to/project_proposal.pdf',
+    fileSize: '100KB',
   ),
   DocumentModel(
     id: 'document-2',
@@ -17,6 +18,7 @@ final documentList = [
     sheetId: 'sheet-1',
     fileType: 'docx',
     filePath: 'path/to/meeting_notes.docx',
+    fileSize: '100KB',
   ),
   DocumentModel(
     id: 'document-3',
@@ -25,6 +27,7 @@ final documentList = [
     sheetId: 'sheet-1',
     fileType: 'xlsx',
     filePath: 'path/to/budget.xlsx',
+    fileSize: '100KB',
   ),
   
   // Sheet 2 Documents
@@ -35,6 +38,7 @@ final documentList = [
     sheetId: 'sheet-2',
     fileType: 'fig',
     filePath: 'path/to/design_mockups.fig',
+    fileSize: '200MB',
   ),
   DocumentModel(
     id: 'document-5',
@@ -43,6 +47,7 @@ final documentList = [
     sheetId: 'sheet-2',
     fileType: 'zip',
     filePath: 'path/to/logo_package.zip',
+    fileSize: '100MB',
   ),
   DocumentModel(
     id: 'document-6',
@@ -51,6 +56,7 @@ final documentList = [
     sheetId: 'sheet-2',
     fileType: 'pdf',
     filePath: 'path/to/brand_guidelines.pdf',
+    fileSize: '100KB',
   ),
   
   // Sheet 3 Documents
@@ -61,6 +67,7 @@ final documentList = [
     sheetId: 'sheet-3',
     fileType: 'md',
     filePath: 'path/to/api_docs.md',
+    fileSize: '500KB',
   ),
   DocumentModel(
     id: 'document-8',
@@ -69,6 +76,7 @@ final documentList = [
     sheetId: 'sheet-3',
     fileType: 'sql',
     filePath: 'path/to/schema.sql',
+    fileSize: '100KB',
   ),
   DocumentModel(
     id: 'document-9',
@@ -77,6 +85,7 @@ final documentList = [
     sheetId: 'sheet-3',
     fileType: 'html',
     filePath: 'path/to/test_results.html',
+    fileSize: '10KB',
   ),
   
   // Sheet 4 Documents
@@ -87,6 +96,7 @@ final documentList = [
     sheetId: 'sheet-4',
     fileType: 'pptx',
     filePath: 'path/to/marketing_plan.pptx',
+    fileSize: '50KB',
   ),
   DocumentModel(
     id: 'document-11',
@@ -95,6 +105,7 @@ final documentList = [
     sheetId: 'sheet-4',
     fileType: 'csv',
     filePath: 'path/to/content_calendar.csv',
+    fileSize: '55KB',
   ),
   DocumentModel(
     id: 'document-12',
@@ -103,5 +114,6 @@ final documentList = [
     sheetId: 'sheet-4',
     fileType: 'json',
     filePath: 'path/to/analytics.json',
+    fileSize: '100KB',
   ),
 ];

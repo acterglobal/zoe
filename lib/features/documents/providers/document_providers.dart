@@ -26,7 +26,6 @@ final documentListSearchProvider = Provider<List<DocumentModel>>((ref) {
   final searchValue = ref.watch(searchValueProvider);
   if (searchValue.isEmpty) return documentList;
   return documentList
-      .where((d) => d.title.toLowerCase().contains(searchValue.toLowerCase()) ||
-                    d.fileName.toLowerCase().contains(searchValue.toLowerCase()))
+      .where((d) => d.title.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
 });

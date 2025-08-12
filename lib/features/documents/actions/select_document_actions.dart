@@ -24,6 +24,7 @@ Future<void> selectDocumentFile(
             title: file.name,
             fileType: file.extension ?? 'unknown',
             filePath: file.path ?? '',
+            fileSize: _fileSizeFormat(file.size),
           );
     }
 
@@ -34,6 +35,18 @@ Future<void> selectDocumentFile(
         l10n.addedDocuments(result.files.length),
       );
     }
+  }
+}
+
+String _fileSizeFormat(int bytes) {
+  if (bytes < 1024) {
+    return '$bytes B';
+  } else if (bytes < 1024 * 1024) {
+    return '${(bytes / 1024).toStringAsFixed(1)} KB';
+  } else if (bytes < 1024 * 1024 * 1024) {
+    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+  } else {
+    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
   }
 }
 

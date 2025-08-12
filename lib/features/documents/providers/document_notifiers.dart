@@ -11,6 +11,7 @@ class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
     required String sheetId,
     required String fileType,
     required String filePath,
+    required String fileSize,
     int? orderIndex,
   }) {
 
@@ -25,6 +26,7 @@ class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
       sheetId: sheetId,
       fileType: fileType,
       filePath: filePath,
+      fileSize: fileSize,
       orderIndex: orderIndex ?? 0,
     );
     state = [...state, newDocument];

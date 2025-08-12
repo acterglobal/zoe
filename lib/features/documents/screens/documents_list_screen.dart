@@ -14,7 +14,8 @@ class DocumentsListScreen extends ConsumerStatefulWidget {
   const DocumentsListScreen({super.key});
 
   @override
-  ConsumerState<DocumentsListScreen> createState() => _DocumentsListScreenState();
+  ConsumerState<DocumentsListScreen> createState() =>
+      _DocumentsListScreenState();
 }
 
 class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen> {
@@ -87,7 +88,7 @@ class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen> {
     final theme = Theme.of(context);
     final fileTypeColor = getFileTypeColor(document.fileType);
     final fileTypeIcon = getFileTypeIcon(document.fileType);
-    
+
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
@@ -121,11 +122,7 @@ class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen> {
               ),
             ],
           ),
-          child: Icon(
-            fileTypeIcon,
-            color: Colors.white,
-            size: 20,
-          ),
+          child: Icon(fileTypeIcon, color: Colors.white, size: 20),
         ),
         title: Text(
           document.title,
@@ -136,12 +133,32 @@ class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen> {
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
-          document.fileName,
+          document.fileSize,
           style: theme.textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
+        ),
+        trailing: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface.withValues(alpha: 0.6),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: theme.colorScheme.outline.withValues(alpha: 0.1),
+              width: 1
+            ),
+          ),
+          child: Text(
+            document.fileType.toUpperCase(),
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w500,
+              fontSize: 8,
+              letterSpacing: 0.5,
+            ),
+          ),
         ),
       ),
     );
