@@ -55,7 +55,7 @@ class ListWidget extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildListEmoji(context, ref, list),
-            Expanded(child: _buildListTitle(context, ref, list.title, list)),
+            Expanded(child: _buildListTitle(context, ref, list)),
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
@@ -86,11 +86,11 @@ class ListWidget extends ConsumerWidget {
   }
 
   // Builds the list title
-  Widget _buildListTitle(BuildContext context, WidgetRef ref, String title, ListModel list) {
+  Widget _buildListTitle(BuildContext context, WidgetRef ref, ListModel list) {
     return ZoeInlineTextEditWidget(
       hintText: list.listType == ContentType.document ? L10n.of(context).documentTitle : L10n.of(context).listTitle ,
       isEditing: isEditing,
-      text: title,
+      text: list.title,
       textStyle: Theme.of(
         context,
       ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
