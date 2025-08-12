@@ -14,15 +14,6 @@ Future<void> pickDocumentFile(
   final l10n = L10n.of(context);
   
   try {
-    // Show loading indicator
-    if (context.mounted) {
-      CommonUtils.showSnackBar(
-        context,
-        l10n.pickingFiles,
-        duration: const Duration(seconds: 1),
-      );
-    }
-
     final result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
       type: FileType.any,
@@ -47,8 +38,7 @@ Future<void> pickDocumentFile(
       if (context.mounted) {
         CommonUtils.showSnackBar(
           context,
-          l10n.noValidFilesSelected,
-          isError: true,
+          'No valid files selected',
         );
       }
       return;
@@ -97,14 +87,12 @@ Future<void> pickDocumentFile(
       } else if (successCount > 0 && errorCount > 0) {
         CommonUtils.showSnackBar(
           context,
-          '${l10n.addedDocuments(successCount)}. ${l10n.failedToAddDocuments(errorCount)}',
-          isError: true,
+          '${l10n.addedDocuments(successCount)}. Failed to add $errorCount documents.',
         );
       } else {
         CommonUtils.showSnackBar(
           context,
-          l10n.failedToAddDocuments(errorCount),
-          isError: true,
+          'Failed to add $errorCount documents.',
         );
       }
     }
@@ -115,7 +103,6 @@ Future<void> pickDocumentFile(
       CommonUtils.showSnackBar(
         context,
         l10n.failedToPickFile(e.toString()),
-        isError: true,
       );
     }
     debugPrint('File picker error: $e');
