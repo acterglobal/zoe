@@ -47,64 +47,28 @@ Future<void> pickDocumentFile(
 
 Color getFileTypeColor(String fileType) {
   final ext = fileType.toLowerCase();
-  switch (ext) {
-    case 'pdf':
-      return Colors.red;
-    case 'doc':
-    case 'docx':
-      return Colors.blue;
-    case 'xls':
-    case 'xlsx':
-      return Colors.green;
-    case 'ppt':
-    case 'pptx':
-      return Colors.orange;
-    case 'jpg':
-    case 'jpeg':
-    case 'png':
-    case 'gif':
-    case 'webp':
-      return Colors.purple;
-    case 'mp3':
-    case 'wav':
-      return Colors.teal;
-    case 'mp4':
-    case 'avi':
-    case 'mov':
-      return Colors.indigo;
-    default:
-      return Colors.blueGrey;
-  }
+  return switch (ext) {
+    'pdf' => Colors.red,
+    'doc' || 'docx' => Colors.blue,
+    'xls' || 'xlsx' => Colors.green,
+    'ppt' || 'pptx' => Colors.orange,
+    'jpg' || 'jpeg' || 'png' || 'gif' || 'webp' => Colors.purple,
+    'mp3' || 'wav' => Colors.teal,
+    'mp4' || 'avi' || 'mov' => Colors.indigo,
+    _ => Colors.blueGrey,
+  };
 }
 
 IconData getFileTypeIcon(String fileType) {
   final ext = fileType.toLowerCase();
-  switch (ext) {
-    case 'pdf':
-      return Icons.picture_as_pdf;
-    case 'doc':
-    case 'docx':
-      return Icons.description;
-    case 'xls':
-    case 'xlsx':
-      return Icons.table_chart;
-    case 'ppt':
-    case 'pptx':
-      return Icons.slideshow;
-    case 'jpg':
-    case 'jpeg':
-    case 'png':
-    case 'gif':
-    case 'webp':
-      return Icons.image;
-    case 'mp3':
-    case 'wav':
-      return Icons.audiotrack;
-    case 'mp4':
-    case 'avi':
-    case 'mov':
-      return Icons.video_file;
-    default:
-      return Icons.insert_drive_file;
-  }
+  return switch (ext) {
+    'pdf' => Icons.picture_as_pdf,
+    'doc' || 'docx' => Icons.description,
+    'xls' || 'xlsx' => Icons.table_chart,
+    'ppt' || 'pptx' => Icons.slideshow,
+    'jpg' || 'jpeg' || 'png' || 'gif' || 'webp' => Icons.image,
+    'mp3' || 'wav' => Icons.audiotrack,
+    'mp4' || 'avi' || 'mov' => Icons.video_file,
+    _ => Icons.insert_drive_file,
+  };
 }
