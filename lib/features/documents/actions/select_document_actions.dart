@@ -5,7 +5,7 @@ import 'package:zoey/common/utils/common_utils.dart';
 import 'package:zoey/features/documents/providers/document_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
-Future<void> pickDocumentFile(
+Future<void> selectDocumentFile(
   BuildContext context,
   WidgetRef ref,
   String listId,
@@ -18,20 +18,12 @@ Future<void> pickDocumentFile(
     for (final file in result.files) {
       ref
           .read(documentListProvider.notifier)
-          .addDocument(parentId: listId, sheetId: sheetId);
-
-      // Get the newly added document to update it with file info
-      final documents = ref.read(documentListProvider);
-      final newDocument = documents.last;
-
-      // Update the document with file information
-      ref
-          .read(documentListProvider.notifier)
-          .updateDocumentFile(
-            newDocument.id,
-            file.name,
-            file.extension ?? 'unknown',
-            file.path ?? '',
+          .addDocument(
+            parentId: listId,
+            sheetId: sheetId,
+            title: file.name,
+            fileType: file.extension ?? 'unknown',
+            filePath: file.path ?? '',
           );
     }
 
