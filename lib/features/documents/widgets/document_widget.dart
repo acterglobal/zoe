@@ -103,9 +103,10 @@ class DocumentWidget extends ConsumerWidget {
 
   Widget _buildDocumentFileName(BuildContext context, DocumentModel document) {
     final theme = Theme.of(context);
-    return Center(
+    return SizedBox(
+      height: 22,
       child: Text(
-        document.fileName.isNotEmpty ? document.fileName : document.title,
+        document.title,
         style: theme.textTheme.bodySmall?.copyWith(
           fontWeight: FontWeight.w600,
           fontSize: 8,
