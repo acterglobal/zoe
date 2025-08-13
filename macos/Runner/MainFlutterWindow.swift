@@ -5,25 +5,6 @@ class MainFlutterWindow: NSWindow {
   override func awakeFromNib() {
     let flutterViewController = FlutterViewController()
     
-    let windowWidth: CGFloat = 1024
-    let windowHeight: CGFloat = 1920
-    
-    // Get screen dimensions to center the window
-    if let screen = NSScreen.main {
-      let screenRect = screen.visibleFrame
-      let windowRect = NSRect(
-        x: (screenRect.width - windowWidth),
-        y: (screenRect.height - windowHeight),
-        width: windowWidth,
-        height: windowHeight
-      )
-      self.setFrame(windowRect, display: true)
-    } else {
-      // Fallback if no screen is available
-      let windowRect = NSRect(x: 0, y: 0, width: windowWidth, height: windowHeight)
-      self.setFrame(windowRect, display: true)
-    }
-    
     // Set minimum window size to maintain mobile aspect ratio
     self.minSize = NSSize(width: 350, height: 600)
     
@@ -32,5 +13,18 @@ class MainFlutterWindow: NSWindow {
     RegisterGeneratedPlugins(registry: flutterViewController)
 
     super.awakeFromNib()
+    
+    // Maximize window after everything is set up
+    DispatchQueue.main.async {
+      self.maximizeWindow()
+    }
+  }
+  
+  private func maximizeWindow() {
+    if let screen = NSScreen.main {
+      let visibleFrame = screen.visibleFrame
+      // Set window to use the full visible frame (maximum size while respecting menu bar and dock)
+      self.setFrame(visibleFrame, display: true, animate: false)
+    }
   }
 }

@@ -13,11 +13,7 @@ class LinkWidget extends ConsumerWidget {
   final String linkId;
   final bool isEditing;
 
-  const LinkWidget({
-    super.key, 
-    required this.linkId, 
-    required this.isEditing,
-  });
+  const LinkWidget({super.key, required this.linkId, required this.isEditing});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,31 +33,38 @@ class LinkWidget extends ConsumerWidget {
     WidgetRef ref,
     LinkModel linkContent,
   ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+    return Row(
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildLinkContentEmoji(context, ref, linkContent.emoji),
-            Expanded(
-              child: _buildLinkContentTitle(context, ref, linkContent.title),
-            ),
-            const SizedBox(width: 6),
-            if (isEditing)
-              ZoeDeleteButtonWidget(
-                onTap: () =>
-                    ref.read(linkListProvider.notifier).deleteLink(linkId),
+        _buildLinkContentEmoji(context, ref, linkContent.emoji),
+        const SizedBox(width: 6),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: _buildLinkContentTitle(
+                      context,
+                      ref,
+                      linkContent.title,
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  if (isEditing)
+                    ZoeDeleteButtonWidget(
+                      onTap: () => ref
+                          .read(linkListProvider.notifier)
+                          .deleteLink(linkId),
+                    ),
+                ],
               ),
-          ],
-        ),
-        const SizedBox(height: 6),
-        _buildUrl(
-          context,
-          ref,
-          linkContent.url,
-          isEditing,
+              const SizedBox(height: 6),
+              _buildUrl(context, ref, linkContent.url, isEditing),
+            ],
+          ),
         ),
       ],
     );
@@ -76,6 +79,7 @@ class LinkWidget extends ConsumerWidget {
     return EmojiWidget(
       isEditing: isEditing,
       emoji: emoji ?? '🔗',
+      size: 20,
       onTap: (currentEmoji) => showCustomEmojiPicker(
         context,
         ref,
@@ -111,12 +115,11 @@ class LinkWidget extends ConsumerWidget {
     String url,
     bool isEditing,
   ) {
-   
     final theme = Theme.of(context);
     final color = url.isNotEmpty && CommonUtils.isValidUrl(url)
         ? theme.colorScheme.primary
         : theme.colorScheme.onSurface;
-    
+
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).linkUrlPlaceholder,
       isEditing: isEditing,
