@@ -12,7 +12,6 @@ import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 import 'package:zoey/common/widgets/coming_soon_badge_widget.dart';
 
-
 class StatsSectionWidget extends ConsumerWidget {
   const StatsSectionWidget({super.key});
 
@@ -69,7 +68,7 @@ class StatsSectionWidget extends ConsumerWidget {
                 icon: Icons.link_rounded,
                 count: linkList.length.toString(),
                 title: L10n.of(context).links,
-                color: AppColors.warningColor,
+                color: Colors.blueAccent,
                 onTap: () => context.push(AppRoutes.linksList.route),
               ),
             ),
@@ -105,7 +104,9 @@ class StatsSectionWidget extends ConsumerWidget {
                     right: 2,
                     child: ComingSoonBadge(
                       text: L10n.of(context).comingSoon,
-                      borderColor: AppColors.brightMagentaColor.withValues(alpha: 0.2),
+                      borderColor: AppColors.brightMagentaColor.withValues(
+                        alpha: 0.2,
+                      ),
                     ),
                   ),
                 ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
+import 'package:zoey/common/widgets/max_width_widget.dart';
 import 'package:zoey/common/widgets/paper_sheet_background_widget.dart';
 
 import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
@@ -34,21 +35,23 @@ class EventDetailScreen extends ConsumerWidget {
           automaticallyImplyLeading: false,
           title: ZoeAppBar(actions: [EditViewToggleButton(parentId: eventId)]),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  _buildBody(context, ref, event, isEditing),
-                  buildQuillEditorPositionedToolbar(
-                    context,
-                    ref,
-                    isEditing: isEditing,
-                  ),
-                ],
+        body: MaxWidthWidget(
+          child: Column(
+            children: [
+              Expanded(
+                child: Stack(
+                  children: [
+                    _buildBody(context, ref, event, isEditing),
+                    buildQuillEditorPositionedToolbar(
+                      context,
+                      ref,
+                      isEditing: isEditing,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

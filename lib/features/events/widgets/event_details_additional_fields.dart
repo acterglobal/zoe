@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/utils/date_time_utils.dart';
-import 'package:zoey/common/widgets/attribute_field_widget.dart';
 import 'package:zoey/features/events/actions/update_event_time_actions.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 
@@ -26,50 +25,162 @@ class EventDetailsAdditionalFields extends ConsumerWidget {
 
     return Column(
       children: [
-        AttributeFieldWidget(
-          icon: Icons.calendar_month,
-          title: 'Start Date',
-          isEditing: isEditing,
-          onTapValue: () => updateEventStartDate(context, ref, event),
-          valueWidget: Text(
-            startDateText,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+        _buildDateTimeCard(
+          context: context,
+          title: 'Start',
+          icon: Icons.play_circle_outline,
+          dateText: startDateText,
+          timeText: startTimeText,
+          onDateTap: isEditing
+              ? () => updateEventStartDate(context, ref, event)
+              : null,
+          onTimeTap: isEditing
+              ? () => updateEventStartTime(context, ref, event)
+              : null,
         ),
-        const SizedBox(height: 5),
-        AttributeFieldWidget(
-          icon: Icons.calendar_month,
-          title: 'Start Time',
-          isEditing: isEditing,
-          onTapValue: () => updateEventStartTime(context, ref, event),
-          valueWidget: Text(
-            startTimeText,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        const SizedBox(height: 5),
-        AttributeFieldWidget(
-          icon: Icons.calendar_month,
-          title: 'End Date',
-          isEditing: isEditing,
-          onTapValue: () => updateEventEndDate(context, ref, event),
-          valueWidget: Text(
-            endDateText,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        const SizedBox(height: 5),
-        AttributeFieldWidget(
-          icon: Icons.calendar_month,
-          title: 'End Time',
-          isEditing: isEditing,
-          onTapValue: () => updateEventEndTime(context, ref, event),
-          valueWidget: Text(
-            endTimeText,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+        const SizedBox(height: 12),
+        _buildDateTimeCard(
+          context: context,
+          title: 'End',
+          icon: Icons.stop_circle_outlined,
+          dateText: endDateText,
+          timeText: endTimeText,
+          onDateTap: isEditing
+              ? () => updateEventEndDate(context, ref, event)
+              : null,
+          onTimeTap: isEditing
+              ? () => updateEventEndTime(context, ref, event)
+              : null,
         ),
       ],
+    );
+  }
+
+  Widget _buildDateTimeCard({
+    required BuildContext context,
+    required String title,
+    required IconData icon,
+    required String dateText,
+    required String timeText,
+    VoidCallback? onDateTap,
+    VoidCallback? onTimeTap,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.15),
+        ),
+      ),
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                icon,
+                size: 20,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _buildFieldItem(
+                  context: context,
+                  icon: Icons.calendar_today_outlined,
+                  label: 'Date',
+                  value: dateText,
+                  onTap: onDateTap,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildFieldItem(
+                  context: context,
+                  icon: Icons.access_time,
+                  label: 'Time',
+                  value: timeText,
+                  onTap: onTimeTap,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFieldItem({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required String value,
+    VoidCallback? onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Theme.of(
+            context,
+          ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(8),
+          border: onTap != null
+              ? Border.all(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.3),
+                )
+              : null,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  icon,
+                  size: 16,
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.6),
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  label,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              value,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

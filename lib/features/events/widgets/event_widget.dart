@@ -93,6 +93,9 @@ class EventWidget extends ConsumerWidget {
       onTextChanged: (value) => ref
           .read(eventListProvider.notifier)
           .updateEventTitle(eventsId, value),
+      onTapText: () => context.push(
+        AppRoutes.eventDetail.route.replaceAll(':eventId', eventsId),
+      ),
     );
   }
 
