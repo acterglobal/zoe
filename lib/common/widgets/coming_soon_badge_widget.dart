@@ -28,7 +28,6 @@ class ComingSoonBadge extends StatelessWidget {
       margin: margin,
       padding: padding ?? const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        // color: backgroundColor ?? theme.colorScheme.surface.withValues(alpha: 0.9),
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(8),
           bottomLeft: Radius.circular(8),
