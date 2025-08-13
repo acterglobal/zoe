@@ -13,6 +13,9 @@ class GlassyContainer extends StatelessWidget {
   final double borderOpacity;
   final double surfaceOpacity;
   final List<Color>? customGradientColors;
+  final double? width;
+  final double? height;
+  final VoidCallback? onTap;
 
   const GlassyContainer({
     super.key,
@@ -27,6 +30,9 @@ class GlassyContainer extends StatelessWidget {
     this.borderOpacity = 0.15, // Slightly increased for definition
     this.surfaceOpacity = 0.85, // Slightly increased for better visibility
     this.customGradientColors,
+    this.width,
+    this.height,
+    this.onTap,
   });
 
   @override
@@ -48,8 +54,12 @@ class GlassyContainer extends StatelessWidget {
             AppColors.getModernSurfaceWithAlpha(context, surfaceOpacity - 0.2),
           ];
 
-    return Container(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
       margin: margin,
+      width: width,
+      height: height,
       child: Container(
         padding: padding,
         decoration: BoxDecoration(
@@ -89,8 +99,9 @@ class GlassyContainer extends StatelessWidget {
               spreadRadius: 0,
             ),
           ],
+          ),
+          child: child,
         ),
-        child: child,
       ),
     );
   }

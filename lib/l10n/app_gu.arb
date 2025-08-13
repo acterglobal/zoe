@@ -200,5 +200,11 @@
     "addDocuments": "ફાઇલ્સ ઉમેરો",
     "@addDocuments": {},
     "addItem": "આઈટમ ઉમેરો",
-    "@addItem": {}
+    "@addItem": {},
+    "noDocumentsFound": "ફાઇલ્સ મળ્યું નથી",
+    "@noDocumentsFound": {},
+    "polls": "પોલ્સ",
+    "@polls": {},
+    "comingSoon": "સમયપછી",
+    "@comingSoon": {}
 }

@@ -200,5 +200,11 @@
     "addDocuments": "फाइलें जोड़ें",
     "@addDocuments": {},
     "addItem": "आइटम जोड़ें",
-    "@addItem": {}
+    "@addItem": {},
+    "noDocumentsFound": "फाइलें नहीं मिली",
+    "@noDocumentsFound": {},
+    "polls": "पोल्स",
+    "@polls": {},
+    "comingSoon": "जल्द ही",
+    "@comingSoon": {}
 }

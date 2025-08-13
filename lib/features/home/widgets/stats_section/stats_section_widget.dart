@@ -10,6 +10,8 @@ import 'package:zoey/features/link/providers/link_providers.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:zoey/common/widgets/coming_soon_badge_widget.dart';
+
 
 class StatsSectionWidget extends ConsumerWidget {
   const StatsSectionWidget({super.key});
@@ -74,13 +76,42 @@ class StatsSectionWidget extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 12),
-        // Documents
-        StatsWidget(
-          icon: Icons.insert_drive_file_rounded,
-          count: documentList.length.toString(),
-          title: L10n.of(context).documents,
-          color: AppColors.brightOrangeColor,
-          onTap: () => context.push(AppRoutes.documentsList.route),
+
+        // Documents and Polls
+        Row(
+          children: [
+            Expanded(
+              child: StatsWidget(
+                icon: Icons.insert_drive_file_rounded,
+                count: documentList.length.toString(),
+                title: L10n.of(context).documents,
+                color: AppColors.brightOrangeColor,
+                onTap: () => context.push(AppRoutes.documentsList.route),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Stack(
+                children: [
+                  StatsWidget(
+                    icon: Icons.poll_sharp,
+                    count: '0',
+                    title: L10n.of(context).polls,
+                    color: AppColors.brightMagentaColor,
+                    onTap: () => {},
+                  ),
+                  Positioned(
+                    top: 2,
+                    right: 2,
+                    child: ComingSoonBadge(
+                      text: L10n.of(context).comingSoon,
+                      borderColor: AppColors.brightMagentaColor.withValues(alpha: 0.2),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );

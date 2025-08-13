@@ -234,5 +234,11 @@
     "addDocuments": "Add documents",
     "@addDocuments": {},
     "addItem": "Add item",
-    "@addItem": {}
+    "@addItem": {},
+    "noDocumentsFound": "No documents found",
+    "@noDocumentsFound": {},
+    "polls": "Polls",
+    "@polls": {},
+    "comingSoon": "Coming Soon",
+    "@comingSoon": {}
 }
