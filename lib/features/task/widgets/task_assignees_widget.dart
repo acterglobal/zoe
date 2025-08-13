@@ -47,10 +47,7 @@ class TaskAssigneesWidget extends ConsumerWidget {
         if (isEditing)
           IconButton(
             onPressed: () => assignTask(context, ref, task),
-            icon: Icon(
-              Icons.add_circle_outline_rounded,
-              size: 24,
-            ),
+            icon: Icon(Icons.add_circle_outline_rounded, size: 24),
           ),
       ],
     );
@@ -105,15 +102,12 @@ class TaskAssigneesWidget extends ConsumerWidget {
       decoration: BoxDecoration(
         color: randomColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: randomColor.withValues(alpha: 0.3),
-          width: 1,
-        ),
+        border: Border.all(color: randomColor.withValues(alpha: 0.3), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ZoeUserAvatarWidget(user: user, color: randomColor),
+          ZoeUserAvatarWidget(user: user),
           const SizedBox(width: 8),
           Text(
             user.name,

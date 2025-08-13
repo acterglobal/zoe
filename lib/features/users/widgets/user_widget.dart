@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoey/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoey/features/users/providers/user_providers.dart';
 
 class UserWidget extends ConsumerWidget {
@@ -26,21 +27,20 @@ class UserWidget extends ConsumerWidget {
         }
       },
       child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      margin: EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.2),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(user.name, style: theme.textTheme.bodyMedium),
-          if (actionWidget != null)
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+        margin: const EdgeInsets.only(bottom: 8),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ZoeUserAvatarWidget(user: user),
+            const SizedBox(width: 8),
+            Text(user.name, style: theme.textTheme.bodyMedium),
+            const Spacer(),
+            if (actionWidget != null) ...[
+              const SizedBox(width: 8),
               actionWidget ?? const SizedBox.shrink(),
+            ],
           ],
         ),
       ),
