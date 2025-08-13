@@ -9,7 +9,6 @@ class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
     required String title,
     required String parentId,
     required String sheetId,
-    required String fileType,
     required String filePath,
     int? orderIndex,
   }) {
@@ -23,7 +22,6 @@ class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
       parentId: parentId,
       title: extractedTitle,
       sheetId: sheetId,
-      fileType: fileType,
       filePath: filePath,
       orderIndex: orderIndex ?? 0,
     );

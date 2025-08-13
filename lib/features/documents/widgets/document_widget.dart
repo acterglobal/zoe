@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/core/theme/colors/app_colors.dart';
+import 'package:zoey/common/utils/file_utils.dart';
+import 'package:zoey/common/widgets/glassy_container_widget.dart';
+import 'package:zoey/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoey/features/documents/actions/select_document_actions.dart';
 import 'package:zoey/features/documents/models/document_model.dart';
 import 'package:zoey/features/documents/providers/document_providers.dart';
@@ -8,11 +10,13 @@ import 'package:zoey/features/documents/providers/document_providers.dart';
 class DocumentWidget extends ConsumerWidget {
   final String documentId;
   final bool isEditing;
+  final bool isVertical;
 
   const DocumentWidget({
     super.key,
     required this.documentId,
     required this.isEditing,
+    this.isVertical = false,
   });
 
   @override
@@ -21,7 +25,48 @@ class DocumentWidget extends ConsumerWidget {
 
     if (documentItem == null) return const SizedBox.shrink();
 
-    return _buildDocumentThumbnail(context, ref, documentItem);
+    return !isVertical
+        ? _buildDocumentThumbnail(context, ref, documentItem)
+        : _buildDocumentItem(context, documentItem);
+  }
+
+  Widget _buildDocumentItem(BuildContext context, DocumentModel document) {
+    final theme = Theme.of(context);
+    final fileTypeColor = getFileTypeColor(document.filePath);
+    final fileTypeIcon = getFileTypeIcon(document.filePath);
+
+    return GlassyContainer(
+      margin: const EdgeInsets.only(bottom: 8),
+      borderRadius: BorderRadius.circular(12),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+        leading: StyledIconContainer(
+          icon: fileTypeIcon,
+          primaryColor: fileTypeColor,
+          size: 48,
+          iconSize: 24,
+          backgroundOpacity: 0.1,
+          borderOpacity: 0.15,
+          shadowOpacity: 0.12,
+        ),
+        title: Text(
+          document.title,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: Text(
+          '${getFileSize(document.filePath)}  •  ${getFileType(document.filePath).toUpperCase()}',
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
   }
 
   Widget _buildDocumentThumbnail(
@@ -29,25 +74,12 @@ class DocumentWidget extends ConsumerWidget {
     WidgetRef ref,
     DocumentModel document,
   ) {
-    final theme = Theme.of(context);
-    return Container(
+    return GlassyContainer(
       width: 80,
       height: 100,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: theme.colorScheme.surface,
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.08),
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.shadow.withValues(alpha: 0.06),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      margin: const EdgeInsets.only(bottom: 16),
+      borderRadius: BorderRadius.circular(12),
+      borderOpacity: 0.05,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -78,26 +110,16 @@ class DocumentWidget extends ConsumerWidget {
   }
 
   Widget _buildDocumentIcon(DocumentModel document) {
-    final color = getFileTypeColor(document.fileType);
-    return Container(
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: color.withValues(alpha: 0.3),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Icon(
-        getFileTypeIcon(document.fileType),
-        color: AppColors.lightBackground,
-        size: 16,
-      ),
+    final fileTypeColor = getFileTypeColor(document.filePath);
+    return StyledIconContainer(
+      icon: getFileTypeIcon(document.filePath),
+      primaryColor: fileTypeColor,
+      size: 32,
+      iconSize: 16,
+      backgroundOpacity: 0.1,
+      borderOpacity: 0.15,
+      shadowOpacity: 0.12,
+      borderRadius: BorderRadius.circular(12),
     );
   }
 
@@ -124,18 +146,13 @@ class DocumentWidget extends ConsumerWidget {
     DocumentModel document,
   ) {
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface.withValues(alpha: 0.6),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.1),
-          width: 0.5,
-        ),
-      ),
+    return GlassyContainer(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.only(top: 2),
+      borderOpacity: 0.08,
+      shadowOpacity: 0.05,
       child: Text(
-        document.fileType.toUpperCase(),
+        getFileType(document.filePath).toUpperCase(),
         style: theme.textTheme.labelSmall?.copyWith(
           color: theme.colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w500,
@@ -152,30 +169,21 @@ class DocumentWidget extends ConsumerWidget {
     DocumentModel document,
   ) {
     final theme = Theme.of(context);
-    return GestureDetector(
-      onTap: () {
-        ref.read(documentListProvider.notifier).deleteDocument(document.id);
-      },
-      child: Container(
+    return GlassyContainer(
         width: 20,
         height: 20,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: theme.colorScheme.surface.withValues(alpha: 0.8),
-          boxShadow: [
-            BoxShadow(
-              color: theme.colorScheme.error.withValues(alpha: 0.2),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
+        borderRadius: BorderRadius.circular(12),
+        shadowColor: theme.colorScheme.error,
+        borderOpacity: 0.05,
+        shadowOpacity: 1,
         child: Icon(
           Icons.close_rounded,
           color: theme.colorScheme.error,
           size: 12,
         ),
-      ),
+        onTap: () {
+          ref.read(documentListProvider.notifier).deleteDocument(document.id);
+      },
     );
   }
 }

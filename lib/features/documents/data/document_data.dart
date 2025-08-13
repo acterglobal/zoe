@@ -7,7 +7,6 @@ final documentList = [
     title: 'Project Proposal',
     parentId: 'list-document-1',
     sheetId: 'sheet-1',
-    fileType: 'pdf',
     filePath: 'path/to/project_proposal.pdf',
   ),
   DocumentModel(
@@ -15,7 +14,6 @@ final documentList = [
     title: 'Meeting Notes',
     parentId: 'list-document-1',
     sheetId: 'sheet-1',
-    fileType: 'docx',
     filePath: 'path/to/meeting_notes.docx',
   ),
   DocumentModel(
@@ -23,7 +21,6 @@ final documentList = [
     title: 'Budget Spreadsheet',
     parentId: 'list-document-1',
     sheetId: 'sheet-1',
-    fileType: 'xlsx',
     filePath: 'path/to/budget.xlsx',
   ),
   
@@ -33,7 +30,6 @@ final documentList = [
     title: 'Design Mockups',
     parentId: 'list-document-2',
     sheetId: 'sheet-2',
-    fileType: 'fig',
     filePath: 'path/to/design_mockups.fig',
   ),
   DocumentModel(
@@ -41,7 +37,6 @@ final documentList = [
     title: 'Logo Assets',
     parentId: 'list-document-2',
     sheetId: 'sheet-2',
-    fileType: 'zip',
     filePath: 'path/to/logo_package.zip',
   ),
   DocumentModel(
@@ -49,7 +44,6 @@ final documentList = [
     title: 'Brand Guidelines',
     parentId: 'list-document-2',
     sheetId: 'sheet-2',
-    fileType: 'pdf',
     filePath: 'path/to/brand_guidelines.pdf',
   ),
   
@@ -59,7 +53,6 @@ final documentList = [
     title: 'API Documentation',
     parentId: 'list-document-3',
     sheetId: 'sheet-3',
-    fileType: 'md',
     filePath: 'path/to/api_docs.md',
   ),
   DocumentModel(
@@ -67,7 +60,6 @@ final documentList = [
     title: 'Database Schema',
     parentId: 'list-document-3',
     sheetId: 'sheet-3',
-    fileType: 'sql',
     filePath: 'path/to/schema.sql',
   ),
   DocumentModel(
@@ -75,7 +67,6 @@ final documentList = [
     title: 'Test Results',
     parentId: 'list-document-3',
     sheetId: 'sheet-3',
-    fileType: 'html',
     filePath: 'path/to/test_results.html',
   ),
   
@@ -85,7 +76,6 @@ final documentList = [
     title: 'Marketing Plan',
     parentId: 'list-document-4',
     sheetId: 'sheet-4',
-    fileType: 'pptx',
     filePath: 'path/to/marketing_plan.pptx',
   ),
   DocumentModel(
@@ -93,7 +83,6 @@ final documentList = [
     title: 'Social Media Content',
     parentId: 'list-document-4',
     sheetId: 'sheet-4',
-    fileType: 'csv',
     filePath: 'path/to/content_calendar.csv',
   ),
   DocumentModel(
@@ -101,7 +90,6 @@ final documentList = [
     title: 'Campaign Analytics',
     parentId: 'list-document-4',
     sheetId: 'sheet-4',
-    fileType: 'json',
     filePath: 'path/to/analytics.json',
   ),
 ];

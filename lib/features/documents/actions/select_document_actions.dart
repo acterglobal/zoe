@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoey/common/utils/common_utils.dart';
+import 'package:zoey/common/utils/file_utils.dart';
 import 'package:zoey/features/documents/providers/document_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
 
@@ -22,7 +23,6 @@ Future<void> selectDocumentFile(
             parentId: listId,
             sheetId: sheetId,
             title: file.name,
-            fileType: file.extension ?? 'unknown',
             filePath: file.path ?? '',
           );
     }
@@ -37,8 +37,8 @@ Future<void> selectDocumentFile(
   }
 }
 
-Color getFileTypeColor(String fileType) {
-  final ext = fileType.toLowerCase();
+Color getFileTypeColor(String filePath) {
+  final ext = getFileType(filePath);
   return switch (ext) {
     'pdf' => Colors.red,
     'doc' || 'docx' => Colors.blue,
@@ -51,8 +51,8 @@ Color getFileTypeColor(String fileType) {
   };
 }
 
-IconData getFileTypeIcon(String fileType) {
-  final ext = fileType.toLowerCase();
+IconData getFileTypeIcon(String filePath) {
+  final ext = getFileType(filePath);
   return switch (ext) {
     'pdf' => Icons.picture_as_pdf,
     'doc' || 'docx' => Icons.description,

@@ -3,12 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoey/core/routing/app_routes.dart';
 import 'package:zoey/core/theme/colors/app_colors.dart';
+import 'package:zoey/features/documents/providers/document_providers.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/home/widgets/stats_section/stats_widget.dart';
 import 'package:zoey/features/link/providers/link_providers.dart';
 import 'package:zoey/features/sheet/providers/sheet_providers.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:zoey/common/widgets/coming_soon_badge_widget.dart';
+
 
 class StatsSectionWidget extends ConsumerWidget {
   const StatsSectionWidget({super.key});
@@ -19,6 +22,7 @@ class StatsSectionWidget extends ConsumerWidget {
     final eventList = ref.watch(eventListProvider);
     final taskList = ref.watch(taskListProvider);
     final linkList = ref.watch(linkListProvider);
+    final documentList = ref.watch(documentListProvider);
 
     return Column(
       children: [
@@ -67,6 +71,44 @@ class StatsSectionWidget extends ConsumerWidget {
                 title: L10n.of(context).links,
                 color: AppColors.warningColor,
                 onTap: () => context.push(AppRoutes.linksList.route),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+
+        // Documents and Polls
+        Row(
+          children: [
+            Expanded(
+              child: StatsWidget(
+                icon: Icons.insert_drive_file_rounded,
+                count: documentList.length.toString(),
+                title: L10n.of(context).documents,
+                color: AppColors.brightOrangeColor,
+                onTap: () => context.push(AppRoutes.documentsList.route),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Stack(
+                children: [
+                  StatsWidget(
+                    icon: Icons.poll_sharp,
+                    count: '0',
+                    title: L10n.of(context).polls,
+                    color: AppColors.brightMagentaColor,
+                    onTap: () => {},
+                  ),
+                  Positioned(
+                    top: 2,
+                    right: 2,
+                    child: ComingSoonBadge(
+                      text: L10n.of(context).comingSoon,
+                      borderColor: AppColors.brightMagentaColor.withValues(alpha: 0.2),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zoey/common/screens/page_not_found_screen.dart';
 import 'package:zoey/features/bullets/screens/bullet_detail_screen.dart';
+import 'package:zoey/features/documents/screens/documents_list_screen.dart';
 import 'package:zoey/features/events/screens/event_detail_screen.dart';
 import 'package:zoey/features/events/screens/events_list_screen.dart';
 import 'package:zoey/features/home/screens/home_screen.dart';
@@ -113,6 +114,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.linksList.route,
         name: AppRoutes.linksList.name,
         builder: (context, state) => const LinksListScreen(),
+      ),
+
+      // Documents list route
+      GoRoute(
+        path: AppRoutes.documentsList.route,
+        name: AppRoutes.documentsList.name,
+        builder: (context, state) => const DocumentsListScreen(),
       ),
 
       // Language selection route
