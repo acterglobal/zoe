@@ -1,10 +1,10 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/widgets/emoji_picker/emoji_picker_config.dart';
-import 'package:zoey/common/widgets/emoji_picker/providers/emoji_search_provider.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_search_bar_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/common/widgets/emoji_picker/emoji_picker_config.dart';
+import 'package:Zoe/common/widgets/emoji_picker/providers/emoji_search_provider.dart';
+import 'package:Zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class CustomEmojiPickerWidget extends ConsumerStatefulWidget {
   final Function(String emoji) onEmojiSelected;

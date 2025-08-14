@@ -1,4 +1,4 @@
-import 'package:zoey/features/documents/models/document_model.dart';
+import 'package:Zoe/features/documents/models/document_model.dart';
 
 final documentList = [
   // Sheet 1 Documents

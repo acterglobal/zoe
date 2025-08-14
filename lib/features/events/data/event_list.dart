@@ -1,4 +1,4 @@
-import 'package:zoey/features/events/models/events_model.dart';
+import 'package:Zoe/features/events/models/events_model.dart';
 
 final eventList = [
   // Getting Started Guide (sheet-1) events

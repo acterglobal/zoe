@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:zoey/features/sheet/models/sheet_model.dart';
+import 'package:Zoe/features/sheet/models/sheet_model.dart';
 
 final sheetList = [
   SheetModel(

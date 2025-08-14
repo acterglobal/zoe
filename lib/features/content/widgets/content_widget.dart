@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/bullets/widgets/bullet_item_widget.dart';
-import 'package:zoey/features/content/models/content_model.dart';
-import 'package:zoey/features/content/providers/content_providers.dart';
-import 'package:zoey/features/content/providers/content_menu_providers.dart';
-import 'package:zoey/features/content/utils/content_utils.dart';
-import 'package:zoey/features/content/widgets/add_content_widget.dart';
-import 'package:zoey/features/documents/widgets/document_widget.dart';
-import 'package:zoey/features/events/widgets/event_widget.dart';
-import 'package:zoey/features/link/widgets/link_widget.dart';
-import 'package:zoey/features/list/widgets/list_widget.dart';
-import 'package:zoey/features/task/widgets/task_item_widget.dart';
-import 'package:zoey/features/text/widgets/text_widget.dart';
+import 'package:Zoe/features/bullets/widgets/bullet_item_widget.dart';
+import 'package:Zoe/features/content/models/content_model.dart';
+import 'package:Zoe/features/content/providers/content_providers.dart';
+import 'package:Zoe/features/content/providers/content_menu_providers.dart';
+import 'package:Zoe/features/content/utils/content_utils.dart';
+import 'package:Zoe/features/content/widgets/add_content_widget.dart';
+import 'package:Zoe/features/documents/widgets/document_widget.dart';
+import 'package:Zoe/features/events/widgets/event_widget.dart';
+import 'package:Zoe/features/link/widgets/link_widget.dart';
+import 'package:Zoe/features/list/widgets/list_widget.dart';
+import 'package:Zoe/features/task/widgets/task_item_widget.dart';
+import 'package:Zoe/features/text/widgets/text_widget.dart';
 
 class ContentWidget extends ConsumerWidget {
   final String parentId;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
-import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_toolbar_widget.dart';
+import 'package:Zoe/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
+import 'package:Zoe/common/widgets/quill_editor/widgets/quill_editor_toolbar_widget.dart';
 
 Widget buildQuillEditorPositionedToolbar(
   BuildContext context,

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/users/data/user_list.dart';
-import 'package:zoey/features/users/models/user_model.dart';
+import 'package:Zoe/features/users/data/user_list.dart';
+import 'package:Zoe/features/users/models/user_model.dart';
 
 class UserNotifier extends StateNotifier<List<UserModel>> {
   UserNotifier() : super(userList);

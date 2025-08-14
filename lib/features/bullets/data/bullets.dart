@@ -1,4 +1,4 @@
-import 'package:zoey/features/bullets/model/bullet_model.dart';
+import 'package:Zoe/features/bullets/model/bullet_model.dart';
 
 final bulletList = [
   // Getting Started Guide (sheet-1) bullets

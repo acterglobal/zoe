@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/utils/common_utils.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_user_avatar_widget.dart';
-import 'package:zoey/features/task/actions/add_assignee_action.dart';
-import 'package:zoey/features/task/models/task_model.dart';
-import 'package:zoey/features/task/providers/task_providers.dart';
-import 'package:zoey/features/users/providers/user_providers.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/common/utils/common_utils.dart';
+import 'package:Zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
+import 'package:Zoe/features/task/actions/add_assignee_action.dart';
+import 'package:Zoe/features/task/models/task_model.dart';
+import 'package:Zoe/features/task/providers/task_providers.dart';
+import 'package:Zoe/features/users/providers/user_providers.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class TaskAssigneesWidget extends ConsumerWidget {
   final TaskModel task;

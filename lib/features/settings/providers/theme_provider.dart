@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/providers/service_providers.dart';
-import 'package:zoey/features/settings/models/theme.dart';
+import 'package:Zoe/common/providers/service_providers.dart';
+import 'package:Zoe/features/settings/models/theme.dart';
 
 /// Provider for the theme
 final themeProvider = StateNotifierProvider<ThemeNotifier, AppThemeMode>((ref) {

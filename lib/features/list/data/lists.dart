@@ -1,5 +1,5 @@
-import 'package:zoey/features/content/models/content_model.dart';
-import 'package:zoey/features/list/models/list_model.dart';
+import 'package:Zoe/features/content/models/content_model.dart';
+import 'package:Zoe/features/list/models/list_model.dart';
 
 final lists = [
   // Getting Started Guide (sheet-1)

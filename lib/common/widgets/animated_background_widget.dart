@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import 'package:zoey/core/theme/colors/app_colors.dart';
+import 'package:Zoe/core/theme/colors/app_colors.dart';
 
 class AnimatedBackgroundWidget extends StatefulWidget {
   final Widget child;

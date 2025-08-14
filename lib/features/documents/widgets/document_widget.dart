@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/utils/file_utils.dart';
-import 'package:zoey/common/widgets/glassy_container_widget.dart';
-import 'package:zoey/common/widgets/styled_icon_container_widget.dart';
-import 'package:zoey/features/documents/actions/select_document_actions.dart';
-import 'package:zoey/features/documents/models/document_model.dart';
-import 'package:zoey/features/documents/providers/document_providers.dart';
+import 'package:Zoe/common/utils/file_utils.dart';
+import 'package:Zoe/common/widgets/glassy_container_widget.dart';
+import 'package:Zoe/common/widgets/styled_icon_container_widget.dart';
+import 'package:Zoe/features/documents/actions/select_document_actions.dart';
+import 'package:Zoe/features/documents/models/document_model.dart';
+import 'package:Zoe/features/documents/providers/document_providers.dart';
 
 class DocumentWidget extends ConsumerWidget {
   final String documentId;

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/content/models/content_model.dart';
-import 'package:zoey/features/list/data/lists.dart';
-import 'package:zoey/features/list/models/list_model.dart';
-import 'package:zoey/features/sheet/models/sheet_model.dart';
+import 'package:Zoe/features/content/models/content_model.dart';
+import 'package:Zoe/features/list/data/lists.dart';
+import 'package:Zoe/features/list/models/list_model.dart';
+import 'package:Zoe/features/sheet/models/sheet_model.dart';
 
 class ListNotifier extends StateNotifier<List<ListModel>> {
   ListNotifier() : super(lists);

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/utils/common_utils.dart';
-import 'package:zoey/common/widgets/quill_editor/config/quill_editor_manager.dart';
-import 'package:zoey/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
+import 'package:Zoe/common/utils/common_utils.dart';
+import 'package:Zoe/common/widgets/quill_editor/config/quill_editor_manager.dart';
+import 'package:Zoe/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
 import 'package:flutter_quill_delta_from_html/flutter_quill_delta_from_html.dart';
 import 'dart:convert';
 
-import 'package:zoey/features/sheet/models/sheet_model.dart';
+import 'package:Zoe/features/sheet/models/sheet_model.dart';
 
 class ZoeHtmlTextEditWidget extends ConsumerStatefulWidget {
   final Description? description;

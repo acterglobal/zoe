@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:zoey/features/settings/models/language_model.dart';
-import 'package:zoey/core/preference_service/preferences_service.dart';
+import 'package:Zoe/features/settings/models/language_model.dart';
+import 'package:Zoe/core/preference_service/preferences_service.dart';
 
 class LocaleNotifier extends StateNotifier<String> {
   LocaleNotifier() : super('en');

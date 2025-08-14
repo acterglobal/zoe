@@ -1,6 +1,6 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/widgets/emoji_picker/emoji_picker_config.dart';
+import 'package:Zoe/common/widgets/emoji_picker/emoji_picker_config.dart';
 
 class EmojiSearchNotifier extends StateNotifier<EmojiSearchState> {
   EmojiSearchNotifier() : super(const EmojiSearchState());

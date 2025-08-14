@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/widgets/edit_view_toggle_button.dart';
-import 'package:zoey/common/widgets/paper_sheet_background_widget.dart';
-import 'package:zoey/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/features/content/providers/content_menu_providers.dart';
-import 'package:zoey/features/content/widgets/content_widget.dart';
-import 'package:zoey/features/task/models/task_model.dart';
-import 'package:zoey/features/task/providers/task_providers.dart';
-import 'package:zoey/features/task/widgets/task_details_additional_fields.dart';
-import 'package:zoey/features/task/widgets/task_assignees_widget.dart';
-import 'package:zoey/features/task/widgets/task_checkbox_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/common/widgets/edit_view_toggle_button.dart';
+import 'package:Zoe/common/widgets/paper_sheet_background_widget.dart';
+import 'package:Zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:Zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:Zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
+import 'package:Zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:Zoe/features/content/providers/content_menu_providers.dart';
+import 'package:Zoe/features/content/widgets/content_widget.dart';
+import 'package:Zoe/features/task/models/task_model.dart';
+import 'package:Zoe/features/task/providers/task_providers.dart';
+import 'package:Zoe/features/task/widgets/task_details_additional_fields.dart';
+import 'package:Zoe/features/task/widgets/task_assignees_widget.dart';
+import 'package:Zoe/features/task/widgets/task_checkbox_widget.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class TaskDetailScreen extends ConsumerWidget {
   final String taskId;

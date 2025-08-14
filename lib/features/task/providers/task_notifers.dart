@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/core/preference_service/preferences_service.dart';
-import 'package:zoey/features/task/data/tasks.dart';
-import 'package:zoey/features/task/models/task_model.dart';
-import 'package:zoey/features/sheet/models/sheet_model.dart';
-import 'package:zoey/features/task/providers/task_providers.dart';
+import 'package:Zoe/core/preference_service/preferences_service.dart';
+import 'package:Zoe/features/task/data/tasks.dart';
+import 'package:Zoe/features/task/models/task_model.dart';
+import 'package:Zoe/features/sheet/models/sheet_model.dart';
+import 'package:Zoe/features/task/providers/task_providers.dart';
 
 class TaskNotifier extends StateNotifier<List<TaskModel>> {
   Ref ref;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/core/theme/colors/app_colors.dart';
+import 'package:Zoe/core/theme/colors/app_colors.dart';
 
 class GlassyContainer extends StatelessWidget {
   final Widget child;
@@ -57,48 +57,48 @@ class GlassyContainer extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-      margin: margin,
-      width: width,
-      height: height,
-      child: Container(
-        padding: padding,
-        decoration: BoxDecoration(
-          borderRadius: effectiveBorderRadius,
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: customGradientColors ?? defaultGradientColors,
-            stops: const [0.0, 0.5, 1.0],
-          ),
-          border: Border.all(
-            color: isDark
-                ? Colors.white.withValues(alpha: borderOpacity)
-                : AppColors.getModernSurfaceWithAlpha(
-                    context,
-                    borderOpacity + 0.7,
-                  ),
-            width: 1.5,
-          ),
-          boxShadow: [
-            // Subtle inner glow effect for glassmorphism
-            BoxShadow(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.03)
-                  : Colors.black.withValues(alpha: 0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-              spreadRadius: 0,
+        margin: margin,
+        width: width,
+        height: height,
+        child: Container(
+          padding: padding,
+          decoration: BoxDecoration(
+            borderRadius: effectiveBorderRadius,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: customGradientColors ?? defaultGradientColors,
+              stops: const [0.0, 0.5, 1.0],
             ),
-            // Very subtle depth shadow
-            BoxShadow(
+            border: Border.all(
               color: isDark
-                  ? Colors.black.withValues(alpha: 0.2)
-                  : Colors.black.withValues(alpha: 0.03),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
-              spreadRadius: 0,
+                  ? Colors.white.withValues(alpha: borderOpacity)
+                  : AppColors.getModernSurfaceWithAlpha(
+                      context,
+                      borderOpacity + 0.7,
+                    ),
+              width: 1.5,
             ),
-          ],
+            boxShadow: [
+              // Subtle inner glow effect for glassmorphism
+              BoxShadow(
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.03)
+                    : Colors.black.withValues(alpha: 0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+                spreadRadius: 0,
+              ),
+              // Very subtle depth shadow
+              BoxShadow(
+                color: isDark
+                    ? Colors.black.withValues(alpha: 0.2)
+                    : Colors.black.withValues(alpha: 0.03),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+                spreadRadius: 0,
+              ),
+            ],
           ),
           child: child,
         ),

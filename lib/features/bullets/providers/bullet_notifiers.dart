@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/bullets/data/bullets.dart';
-import 'package:zoey/features/bullets/model/bullet_model.dart';
-import 'package:zoey/features/bullets/providers/bullet_providers.dart';
-import 'package:zoey/features/sheet/models/sheet_model.dart';
+import 'package:Zoe/features/bullets/data/bullets.dart';
+import 'package:Zoe/features/bullets/model/bullet_model.dart';
+import 'package:Zoe/features/bullets/providers/bullet_providers.dart';
+import 'package:Zoe/features/sheet/models/sheet_model.dart';
 
 class BulletNotifier extends StateNotifier<List<BulletModel>> {
   Ref ref;

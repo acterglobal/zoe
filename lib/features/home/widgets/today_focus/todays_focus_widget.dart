@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/core/theme/colors/app_colors.dart';
-import 'package:zoey/features/events/providers/events_proivder.dart';
-import 'package:zoey/features/events/widgets/event_widget.dart';
-import 'package:zoey/features/home/widgets/section_header/section_header_widget.dart';
-import 'package:zoey/features/home/widgets/today_focus/todays_item_widget.dart';
-import 'package:zoey/features/events/models/events_model.dart';
-import 'package:zoey/features/task/models/task_model.dart';
-import 'package:zoey/features/task/providers/task_providers.dart';
-import 'package:zoey/features/task/widgets/task_item_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/core/theme/colors/app_colors.dart';
+import 'package:Zoe/features/events/providers/events_proivder.dart';
+import 'package:Zoe/features/events/widgets/event_widget.dart';
+import 'package:Zoe/features/home/widgets/section_header/section_header_widget.dart';
+import 'package:Zoe/features/home/widgets/today_focus/todays_item_widget.dart';
+import 'package:Zoe/features/events/models/events_model.dart';
+import 'package:Zoe/features/task/models/task_model.dart';
+import 'package:Zoe/features/task/providers/task_providers.dart';
+import 'package:Zoe/features/task/widgets/task_item_widget.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class TodaysFocusWidget extends ConsumerWidget {
   const TodaysFocusWidget({super.key});

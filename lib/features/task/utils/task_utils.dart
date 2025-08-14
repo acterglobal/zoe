@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/features/task/models/task_model.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/features/task/models/task_model.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class TaskUtils {
   static String formatTaskDueDate(BuildContext context, TaskModel task) {

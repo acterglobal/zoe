@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/widgets/glassy_container_widget.dart';
-import 'package:zoey/common/widgets/styled_content_container_widget.dart';
-import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/sheet/providers/sheet_providers.dart';
+import 'package:Zoe/common/widgets/glassy_container_widget.dart';
+import 'package:Zoe/common/widgets/styled_content_container_widget.dart';
+import 'package:Zoe/core/routing/app_routes.dart';
+import 'package:Zoe/features/sheet/providers/sheet_providers.dart';
 
 class SheetListItemWidget extends ConsumerWidget {
   final String sheetId;

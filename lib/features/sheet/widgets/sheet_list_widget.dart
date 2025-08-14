@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/widgets/state_widgets/empty_state_widget.dart';
-import 'package:zoey/features/sheet/providers/sheet_providers.dart';
-import 'package:zoey/features/sheet/widgets/sheet_list_item_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/common/widgets/state_widgets/empty_state_widget.dart';
+import 'package:Zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:Zoe/features/sheet/widgets/sheet_list_item_widget.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class SheetListWidget extends ConsumerWidget {
   final bool shrinkWrap;

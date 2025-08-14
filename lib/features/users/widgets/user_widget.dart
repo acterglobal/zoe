@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_user_avatar_widget.dart';
-import 'package:zoey/features/users/providers/user_providers.dart';
+import 'package:Zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
+import 'package:Zoe/features/users/providers/user_providers.dart';
 
 class UserWidget extends ConsumerWidget {
   final String userId;

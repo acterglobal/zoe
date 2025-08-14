@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/sheet/models/sheet_model.dart';
-import 'package:zoey/features/sheet/providers/sheet_providers.dart';
+import 'package:Zoe/features/sheet/models/sheet_model.dart';
+import 'package:Zoe/features/sheet/providers/sheet_providers.dart';
 
 /// Updates the title of the sheet
 void updateSheetTitle(WidgetRef ref, String sheetId, String title) {

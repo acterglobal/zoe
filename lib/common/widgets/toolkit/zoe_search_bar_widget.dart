@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class ZoeSearchBarWidget extends StatelessWidget {
   final TextEditingController controller;

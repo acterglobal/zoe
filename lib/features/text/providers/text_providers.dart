@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/text/models/text_model.dart';
-import 'package:zoey/features/text/providers/text_notifiers.dart';
+import 'package:Zoe/features/text/models/text_model.dart';
+import 'package:Zoe/features/text/providers/text_notifiers.dart';
 
 final textListProvider = StateNotifierProvider<TextNotifier, List<TextModel>>(
   (ref) => TextNotifier(),

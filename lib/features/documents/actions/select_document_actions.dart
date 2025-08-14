@@ -1,10 +1,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/utils/common_utils.dart';
-import 'package:zoey/common/utils/file_utils.dart';
-import 'package:zoey/features/documents/providers/document_providers.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/common/utils/common_utils.dart';
+import 'package:Zoe/common/utils/file_utils.dart';
+import 'package:Zoe/features/documents/providers/document_providers.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 Future<void> selectDocumentFile(
   BuildContext context,

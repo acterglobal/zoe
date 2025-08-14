@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import 'package:zoey/common/widgets/animated_background_widget.dart';
-import 'package:zoey/core/theme/colors/app_colors.dart';
+import 'package:Zoe/common/widgets/animated_background_widget.dart';
+import 'package:Zoe/core/theme/colors/app_colors.dart';
 
 class PaperSheetBackgroundWidget extends StatelessWidget {
   final Widget child;

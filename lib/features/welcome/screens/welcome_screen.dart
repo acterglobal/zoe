@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/widgets/animated_background_widget.dart';
-import 'package:zoey/common/widgets/app_icon_widget.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_primary_button.dart';
-import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/features/welcome/data/feature_data.dart';
-import 'package:zoey/features/welcome/widgets/feature_item.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/common/widgets/animated_background_widget.dart';
+import 'package:Zoe/common/widgets/app_icon_widget.dart';
+import 'package:Zoe/common/widgets/toolkit/zoe_primary_button.dart';
+import 'package:Zoe/core/routing/app_routes.dart';
+import 'package:Zoe/features/welcome/data/feature_data.dart';
+import 'package:Zoe/features/welcome/widgets/feature_item.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class WelcomeScreen extends ConsumerStatefulWidget {
   const WelcomeScreen({super.key});

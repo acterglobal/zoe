@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/link/data/link_list.dart';
-import 'package:zoey/features/link/models/link_model.dart';
+import 'package:Zoe/features/link/data/link_list.dart';
+import 'package:Zoe/features/link/models/link_model.dart';
 
 class LinkNotifier extends StateNotifier<List<LinkModel>> {
   LinkNotifier() : super(linkList);

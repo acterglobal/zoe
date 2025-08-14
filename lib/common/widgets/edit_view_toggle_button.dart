@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/widgets/quill_editor/actions/quill_actions.dart';
-import 'package:zoey/common/widgets/styled_icon_container_widget.dart';
-import 'package:zoey/features/content/providers/content_menu_providers.dart';
+import 'package:Zoe/common/widgets/quill_editor/actions/quill_actions.dart';
+import 'package:Zoe/common/widgets/styled_icon_container_widget.dart';
+import 'package:Zoe/features/content/providers/content_menu_providers.dart';
 
 class EditViewToggleButton extends ConsumerWidget {
   final String parentId;

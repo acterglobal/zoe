@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/utils/date_time_utils.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_close_button_widget.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/core/theme/colors/app_colors.dart';
-import 'package:zoey/features/task/models/task_model.dart';
-import 'package:zoey/features/task/providers/task_providers.dart';
-import 'package:zoey/features/task/utils/task_utils.dart';
-import 'package:zoey/features/task/widgets/task_checkbox_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/common/utils/date_time_utils.dart';
+import 'package:Zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
+import 'package:Zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:Zoe/core/routing/app_routes.dart';
+import 'package:Zoe/core/theme/colors/app_colors.dart';
+import 'package:Zoe/features/task/models/task_model.dart';
+import 'package:Zoe/features/task/providers/task_providers.dart';
+import 'package:Zoe/features/task/utils/task_utils.dart';
+import 'package:Zoe/features/task/widgets/task_checkbox_widget.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class TaskWidget extends ConsumerWidget {
   final String taskId;

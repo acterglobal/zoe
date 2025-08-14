@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/utils/date_time_utils.dart';
-import 'package:zoey/features/events/actions/update_event_time_actions.dart';
-import 'package:zoey/features/events/models/events_model.dart';
+import 'package:Zoe/common/utils/date_time_utils.dart';
+import 'package:Zoe/features/events/actions/update_event_time_actions.dart';
+import 'package:Zoe/features/events/models/events_model.dart';
 
 class EventDetailsAdditionalFields extends ConsumerWidget {
   final EventModel event;

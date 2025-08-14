@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/providers/common_providers.dart';
-import 'package:zoey/features/documents/models/document_model.dart';
-import 'package:zoey/features/documents/providers/document_notifiers.dart';
+import 'package:Zoe/common/providers/common_providers.dart';
+import 'package:Zoe/features/documents/models/document_model.dart';
+import 'package:Zoe/features/documents/providers/document_notifiers.dart';
 
 final documentListProvider =
     StateNotifierProvider<DocumentNotifier, List<DocumentModel>>(

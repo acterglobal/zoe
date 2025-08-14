@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/common/widgets/glassy_container_widget.dart';
+import 'package:Zoe/common/widgets/glassy_container_widget.dart';
 
 class SettingCardWidget extends StatelessWidget {
   final String title;

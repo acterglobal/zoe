@@ -1,4 +1,4 @@
-import 'package:zoey/features/text/models/text_model.dart';
+import 'package:Zoe/features/text/models/text_model.dart';
 
 final textList = [
   // Getting Started Guide (sheet-1)

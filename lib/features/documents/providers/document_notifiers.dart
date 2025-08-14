@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/documents/data/document_data.dart';
-import 'package:zoey/features/documents/models/document_model.dart';
+import 'package:Zoe/features/documents/data/document_data.dart';
+import 'package:Zoe/features/documents/models/document_model.dart';
 
 class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
   DocumentNotifier() : super(documentList);

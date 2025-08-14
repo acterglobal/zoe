@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/documents/providers/document_providers.dart';
-import 'package:zoey/features/documents/widgets/document_widget.dart';
+import 'package:Zoe/features/documents/providers/document_providers.dart';
+import 'package:Zoe/features/documents/widgets/document_widget.dart';
 
 class DocumentListWidget extends ConsumerWidget {
   final String parentId;

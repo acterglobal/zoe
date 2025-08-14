@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/events/providers/events_proivder.dart';
-import 'package:zoey/features/users/widgets/user_list_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/features/events/providers/events_proivder.dart';
+import 'package:Zoe/features/users/widgets/user_list_widget.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class EventRsvpCountWidget extends ConsumerWidget {
   final String eventId;

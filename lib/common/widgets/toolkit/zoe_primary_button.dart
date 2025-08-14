@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/common/widgets/shimmer_overlay_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/common/widgets/shimmer_overlay_widget.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class ZoePrimaryButton extends StatelessWidget {
   final String? text;

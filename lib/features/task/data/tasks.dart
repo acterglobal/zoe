@@ -1,4 +1,4 @@
-import 'package:zoey/features/task/models/task_model.dart';
+import 'package:Zoe/features/task/models/task_model.dart';
 
 final tasks = [
   // Getting Started Guide (sheet-1) tasks

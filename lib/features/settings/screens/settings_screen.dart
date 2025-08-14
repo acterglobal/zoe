@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/providers/package_info_provider.dart';
-import 'package:zoey/common/widgets/max_width_widget.dart';
-import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoey/features/settings/actions/change_theme.dart';
-import 'package:zoey/features/settings/models/language_model.dart';
-import 'package:zoey/features/settings/providers/local_provider.dart';
-import 'package:zoey/features/settings/providers/theme_provider.dart';
-import 'package:zoey/features/settings/widgets/setting_card_widget.dart';
-import 'package:zoey/features/settings/widgets/setting_item_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:Zoe/common/providers/package_info_provider.dart';
+import 'package:Zoe/common/widgets/max_width_widget.dart';
+import 'package:Zoe/core/routing/app_routes.dart';
+import 'package:Zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:Zoe/features/settings/actions/change_theme.dart';
+import 'package:Zoe/features/settings/models/language_model.dart';
+import 'package:Zoe/features/settings/providers/local_provider.dart';
+import 'package:Zoe/features/settings/providers/theme_provider.dart';
+import 'package:Zoe/features/settings/widgets/setting_card_widget.dart';
+import 'package:Zoe/features/settings/widgets/setting_item_widget.dart';
+import 'package:Zoe/l10n/generated/l10n.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});

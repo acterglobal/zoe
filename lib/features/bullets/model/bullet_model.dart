@@ -1,5 +1,5 @@
-import 'package:zoey/features/content/models/content_model.dart';
-import 'package:zoey/features/sheet/models/sheet_model.dart';
+import 'package:Zoe/features/content/models/content_model.dart';
+import 'package:Zoe/features/sheet/models/sheet_model.dart';
 
 class BulletModel extends ContentModel {
   BulletModel({
