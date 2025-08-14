@@ -5,7 +5,7 @@ final polls = [
   PollModel(
     id: 'poll-1',
     sheetId: 'sheet-1',
-    parentId: 'list-polls-1',
+    parentId: 'sheet-1',
     orderIndex: 1,
     question: 'What feature would you like to explore first?',
     startDate: DateTime.now().subtract(const Duration(days: 1)),
@@ -97,7 +97,7 @@ final polls = [
   PollModel(
     id: 'poll-community-1',
     sheetId: 'sheet-2',
-    parentId: 'list-polls-community-1',
+    parentId: 'sheet-2',
     question: 'Which snacks should we bring for the next game?',
     startDate: DateTime.now().subtract(const Duration(days: 1)),
     endDate: DateTime.now().add(const Duration(days: 7)),
@@ -167,6 +167,7 @@ final polls = [
       ),
     ],
     isMultipleChoice: true,
+    status: PollStatus.ended,
     participants: [
       'user_1',
       'user_2',
@@ -190,7 +191,7 @@ final polls = [
   PollModel(
     id: 'poll-community-2',
     sheetId: 'sheet-2',
-    parentId: 'list-polls-community-1',
+    parentId: 'sheet-2',
     question: 'What time works best for team practice?',
     startDate: DateTime.now().subtract(const Duration(days: 1)),
     endDate: DateTime.now().add(const Duration(days: 7)),
@@ -255,6 +256,7 @@ final polls = [
       ),
     ],
     isMultipleChoice: true,
+    status: PollStatus.started,
     participants: [
       'user_1',
       'user_2',
@@ -276,7 +278,7 @@ final polls = [
   PollModel(
     id: 'poll-inclusive-1',
     sheetId: 'sheet-3',
-    parentId: 'list-polls-inclusive-1',
+    parentId: 'sheet-3',
     orderIndex: 1,
     question: 'How do you prefer to receive team updates?',
     startDate: DateTime.now().subtract(const Duration(days: 1)),
@@ -356,6 +358,7 @@ final polls = [
       ),
     ],
     isMultipleChoice: false,
+    status: PollStatus.started,
     participants: [
       'user_1',
       'user_2',
@@ -415,7 +418,7 @@ final polls = [
   PollModel(
     id: 'poll-trip-1',
     sheetId: 'sheet-8',
-    parentId: 'list-polls-trip-1',
+    parentId: 'sheet-8',
     question: 'Which cities should we visit in Japan?',
     startDate: DateTime.now().subtract(const Duration(days: 1)),
     endDate: DateTime.now().add(const Duration(days: 7)),
@@ -453,6 +456,7 @@ final polls = [
       ),
     ],
     isMultipleChoice: true,
+    status: PollStatus.ended,
     participants: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
     createdBy: 'user_5',
   ),
@@ -460,7 +464,7 @@ final polls = [
   PollModel(
     id: 'poll-trip-2',
     sheetId: 'sheet-8',
-    parentId: 'list-polls-trip-1',
+    parentId: 'sheet-8',
     question: 'What type of accommodation do you prefer?',
     startDate: DateTime.now().subtract(const Duration(days: 1)),
     endDate: DateTime.now().add(const Duration(days: 7)),
@@ -492,6 +496,7 @@ final polls = [
       ),
     ],
     isMultipleChoice: false,
+    status: PollStatus.ended,
     participants: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
     createdBy: 'user_5',
   ),
