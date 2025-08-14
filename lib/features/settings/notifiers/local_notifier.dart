@@ -8,7 +8,7 @@ import 'package:zoe/core/preference_service/preferences_service.dart';
 class LocaleNotifier extends StateNotifier<String> {
   LocaleNotifier() : super('en');
 
-  static const languagePrefKey = 'zoey.language';
+  static const languagePrefKey = 'zoe.language';
 
   Future<void> initLanguage() async {
     final prefInstance = await sharedPrefs();

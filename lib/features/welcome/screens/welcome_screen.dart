@@ -76,7 +76,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
 
   Widget _buildAppTitle() {
     return Text(
-      L10n.of(context).welcomeToZoey,
+      L10n.of(context).welcomeToZoe,
       style: Theme.of(context).textTheme.headlineLarge,
     );
   }

@@ -102,7 +102,7 @@ class SettingsScreen extends ConsumerWidget {
       children: [
         SettingItemWidget(
           title: L10n.of(context).shareApp,
-          subtitle: L10n.of(context).tellYourFriendsAboutZoey,
+          subtitle: L10n.of(context).tellYourFriendsAboutZoe,
           icon: Icons.share_rounded,
           iconColor: const Color(0xFF3B82F6), // Blue
           onTap: () {},

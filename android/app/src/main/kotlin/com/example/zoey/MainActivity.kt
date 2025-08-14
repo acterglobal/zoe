@@ -1,4 +1,4 @@
-package com.example.zoey
+package com.example.zoe
 
 import io.flutter.embedding.android.FlutterActivity
 
