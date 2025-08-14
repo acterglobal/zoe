@@ -9,6 +9,7 @@ import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/list/providers/list_providers.dart';
 import 'package:zoey/features/bullets/providers/bullet_providers.dart';
 import 'package:zoey/features/task/providers/task_providers.dart';
+import 'package:zoey/features/polls/providers/poll_providers.dart';
 import 'package:zoey/features/events/models/events_model.dart';
 import 'package:zoey/features/list/models/list_model.dart';
 import 'package:zoey/features/text/models/text_model.dart';
@@ -72,6 +73,11 @@ void reorderContent(WidgetRef ref, String contentId, int newOrderIndex) {
       ref
           .read(documentListProvider.notifier)
           .updateDocumentOrderIndex(contentId, newOrderIndex);
+      break;
+    case ContentType.poll:
+      ref
+          .read(pollListProvider.notifier)
+          .updatePollOrderIndex(contentId, newOrderIndex);
       break;
   }
 }
@@ -185,4 +191,16 @@ void addNewDocumentContent(WidgetRef ref, parentId, String sheetId) {
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(documentListContentModel);
+}
+
+void addNewPollContent(WidgetRef ref, parentId, String sheetId) {
+  final orderIndex = _getNextOrderIndex(ref, parentId);
+  ref
+      .read(pollListProvider.notifier)
+      .addPoll(
+        parentId: parentId,
+        sheetId: sheetId,
+        orderIndex: orderIndex,
+        question: '',
+      );
 }

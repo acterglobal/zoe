@@ -6,6 +6,7 @@ import 'package:zoey/features/task/providers/task_providers.dart';
 import 'package:zoey/features/text/providers/text_providers.dart';
 import 'package:zoey/features/events/providers/events_proivder.dart';
 import 'package:zoey/features/list/providers/list_providers.dart';
+import 'package:zoey/features/polls/providers/poll_providers.dart';
 
 // Computed provider that combines data from individual module providers
 // Sorted by orderIndex within each parent, then by createdAt as fallback
@@ -16,8 +17,17 @@ final contentListProvider = Provider<List<ContentModel>>((ref) {
   final bullets = ref.watch(bulletListProvider);
   final tasks = ref.watch(taskListProvider);
   final links = ref.watch(linkListProvider);
+  final polls = ref.watch(pollListProvider);
 
-  final allContent = [...texts, ...events, ...lists, ...bullets, ...tasks, ...links];
+  final allContent = [
+    ...texts,
+    ...events,
+    ...lists,
+    ...bullets,
+    ...tasks,
+    ...links,
+    ...polls,
+  ];
   // Sort by parentId first, then by orderIndex within parent, then by createdAt as fallback
   allContent.sort((a, b) {
     // First sort by parent

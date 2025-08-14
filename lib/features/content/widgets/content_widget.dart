@@ -12,6 +12,7 @@ import 'package:zoey/features/link/widgets/link_widget.dart';
 import 'package:zoey/features/list/widgets/list_widget.dart';
 import 'package:zoey/features/task/widgets/task_item_widget.dart';
 import 'package:zoey/features/text/widgets/text_widget.dart';
+import 'package:zoey/features/polls/widgets/poll_widget.dart';
 
 class ContentWidget extends ConsumerWidget {
   final String parentId;
@@ -83,6 +84,7 @@ class ContentWidget extends ConsumerWidget {
           onTapToDoList: () => addNewTaskListContent(ref, parentId, sheetId),
           onTapLink: () => addNewLinkContent(ref, parentId, sheetId),
           onTapDocument: () => addNewDocumentContent(ref, parentId, sheetId),
+          onTapPoll: () => addNewPollContent(ref, parentId, sheetId),
         ),
         const SizedBox(height: 200),
       ],
@@ -115,6 +117,7 @@ class ContentWidget extends ConsumerWidget {
         documentId: contentId,
         isEditing: isEditing,
       ),
+      ContentType.poll => PollWidget(pollId: contentId, isEditing: isEditing),
     };
 
     // For ReorderableListView, we need to wrap with drag handle when editing
