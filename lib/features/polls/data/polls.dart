@@ -495,7 +495,7 @@ final polls = [
         voters: ['user_6'],
       ),
     ],
-    isMultipleChoice: false,
+    isMultipleChoice: true,
     status: PollStatus.ended,
     participants: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
     createdBy: 'user_5',

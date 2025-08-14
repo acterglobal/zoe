@@ -238,5 +238,12 @@
     "startPoll": "पोल शुरू करें",
     "@startPoll": {},
     "endPoll": "पोल समाप्त करें",
-    "@endPoll": {}
+    "@endPoll": {},
+    "noPollsFound": "कोई पोल नहीं मिला!",
+    "@noPollsFound": {},
+    "started": "सक्रिय पोल्स",
+    "@started": {},
+    "ended": "समाप्त पोल्स",
+    "@ended": {}
+
 }

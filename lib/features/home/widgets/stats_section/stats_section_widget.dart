@@ -7,10 +7,10 @@ import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';
 import 'package:zoe/features/home/widgets/stats_section/stats_widget.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-import 'package:zoe/common/widgets/coming_soon_badge_widget.dart';
 
 class StatsSectionWidget extends ConsumerWidget {
   const StatsSectionWidget({super.key});
@@ -22,7 +22,7 @@ class StatsSectionWidget extends ConsumerWidget {
     final taskList = ref.watch(taskListProvider);
     final linkList = ref.watch(linkListProvider);
     final documentList = ref.watch(documentListProvider);
-
+    final pollList = ref.watch(pollListProvider);
     return Column(
       children: [
         // Top row: Sheets and Events
@@ -90,26 +90,12 @@ class StatsSectionWidget extends ConsumerWidget {
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: Stack(
-                children: [
-                  StatsWidget(
-                    icon: Icons.poll_sharp,
-                    count: '0',
-                    title: L10n.of(context).polls,
-                    color: AppColors.brightMagentaColor,
-                    onTap: () => {},
-                  ),
-                  Positioned(
-                    top: 2,
-                    right: 2,
-                    child: ComingSoonBadge(
-                      text: L10n.of(context).comingSoon,
-                      borderColor: AppColors.brightMagentaColor.withValues(
-                        alpha: 0.2,
-                      ),
-                    ),
-                  ),
-                ],
+              child: StatsWidget(
+                icon: Icons.poll_rounded,
+                count: pollList.length.toString(),
+                title: L10n.of(context).polls,
+                color: AppColors.brightMagentaColor,
+                onTap: () => context.push(AppRoutes.pollsList.route),
               ),
             ),
           ],
