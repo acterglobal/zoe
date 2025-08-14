@@ -145,7 +145,7 @@ class PollWidget extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                voteCheckboxWidget(context, poll, option, isVoted),
+                pollCheckboxWidget(context, poll, option, isVoted),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -300,7 +300,6 @@ class PollWidget extends ConsumerWidget {
     );
   }
 
-  // Show locked message for closed polls
   Widget _buildPollClosedMessage(
     BuildContext context,
     WidgetRef ref,
@@ -337,7 +336,6 @@ class PollWidget extends ConsumerWidget {
     );
   }
 
-  /// Rich vote count display with modern styling
   Widget _buildVoteCount(BuildContext context, int votes, bool isVoted) {
     final color = AppColors.brightMagentaColor;
     final theme = Theme.of(context);

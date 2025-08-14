@@ -2,7 +2,7 @@
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 
-Widget voteCheckboxWidget(
+Widget pollCheckboxWidget(
     BuildContext context,
     PollModel poll,
     PollOption option,
