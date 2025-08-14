@@ -52,10 +52,13 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
     return AppBar(
       automaticallyImplyLeading: false,
       title: ZoeAppBar(title: L10n.of(context).polls),
-      bottom: ZoeGlassyTabWidget(
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: ZoeGlassyTabWidget(
         tabTexts: [L10n.of(context).started, L10n.of(context).ended],
-        selectedIndex: _tabController.index,
-        onTabChanged: (index) => _tabController.animateTo(index),
+          selectedIndex: _tabController.index,
+          onTabChanged: (index) => _tabController.animateTo(index),
+        ),
       ),
     );
   }
