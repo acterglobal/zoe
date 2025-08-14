@@ -7,6 +7,7 @@ import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class PollWidget extends ConsumerWidget {
@@ -107,7 +108,8 @@ class PollWidget extends ConsumerWidget {
   ) {
     final totalVotes = poll.totalVotes;
     final percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0.0;
-    final isVoted = option.voters.contains('user_1');
+    final currentUserId = ref.watch(loggedInUserProvider).value;
+    final isVoted = currentUserId != null && option.voters.contains(currentUserId);
     final color = AppColors.brightMagentaColor;
     final theme = Theme.of(context);
 
@@ -116,9 +118,14 @@ class PollWidget extends ConsumerWidget {
       children: [
         GestureDetector(
           onTap: poll.isStarted
-              ? () => ref
-                    .read(pollListProvider.notifier)
-                    .voteOnPoll(pollId, option.id, 'user_1')
+              ? () {
+                  final currentUserId = ref.read(loggedInUserProvider).value;
+                  if (currentUserId != null) {
+                    ref
+                        .read(pollListProvider.notifier)
+                        .voteOnPoll(pollId, option.id, currentUserId);
+                  }
+                }
               : null,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
