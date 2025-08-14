@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/common/widgets/styled_icon_container_widget.dart';
+import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 
 class SettingItemWidget extends StatelessWidget {
   final String title;

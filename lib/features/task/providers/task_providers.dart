@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/providers/common_providers.dart';
-import 'package:zoey/common/utils/date_time_utils.dart';
-import 'package:zoey/features/task/models/task_model.dart';
-import 'package:zoey/features/task/providers/task_notifers.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/date_time_utils.dart';
+import 'package:zoe/features/task/models/task_model.dart';
+import 'package:zoe/features/task/providers/task_notifers.dart';
 
 final taskListProvider = StateNotifierProvider<TaskNotifier, List<TaskModel>>(
   (ref) => TaskNotifier(ref),

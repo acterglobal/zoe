@@ -13,7 +13,7 @@ PODS:
     - FlutterMacOS
   - quill_native_bridge_macos (0.0.1):
     - FlutterMacOS
-  - rust_lib_zoey (0.0.1):
+  - rust_lib_zoe (0.0.1):
     - FlutterMacOS
   - share_plus (0.0.1):
     - FlutterMacOS
@@ -34,7 +34,7 @@ DEPENDENCIES:
   - package_info_plus (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
   - quill_native_bridge_macos (from `Flutter/ephemeral/.symlinks/plugins/quill_native_bridge_macos/macos`)
-  - rust_lib_zoey (from `Flutter/ephemeral/.symlinks/plugins/rust_lib_zoey/macos`)
+  - rust_lib_zoe (from `Flutter/ephemeral/.symlinks/plugins/rust_lib_zoe/macos`)
   - share_plus (from `Flutter/ephemeral/.symlinks/plugins/share_plus/macos`)
   - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
@@ -55,8 +55,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
   quill_native_bridge_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/quill_native_bridge_macos/macos
-  rust_lib_zoey:
-    :path: Flutter/ephemeral/.symlinks/plugins/rust_lib_zoey/macos
+  rust_lib_zoe:
+    :path: Flutter/ephemeral/.symlinks/plugins/rust_lib_zoe/macos
   share_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/share_plus/macos
   shared_preferences_foundation:
@@ -74,7 +74,7 @@ SPEC CHECKSUMS:
   package_info_plus: 12f1c5c2cfe8727ca46cbd0b26677728972d9a5b
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   quill_native_bridge_macos: 3a5f378bc757eb92825193853020b759b56cbb2c
-  rust_lib_zoey: 5a441a1c0cab1082ef6c1dd1d652a00f4880a354
+  rust_lib_zoe: 3dd16424114843c68481df2b60e62e49bd201b0f
   share_plus: 76dd39142738f7a68dd57b05093b5e8193f220f7
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   url_launcher_macos: c82c93949963e55b228a30115bd219499a6fe404

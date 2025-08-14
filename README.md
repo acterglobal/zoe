@@ -1,4 +1,4 @@
-# Zoey - Personal Workspace App
+# Zoe - Personal Workspace App
 
 A modern, joyful Flutter app for organizing thoughts, tasks, and ideas with beautiful simplicity. Built with a Notion-like structure featuring sheets and dynamic content blocks.
 

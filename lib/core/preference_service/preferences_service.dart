@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zoey/core/preference_service/preference_constants.dart';
-import 'package:zoey/features/settings/models/theme.dart';
+import 'package:zoe/core/preference_service/preference_constants.dart';
+import 'package:zoe/features/settings/models/theme.dart';
 
 class PreferencesService {
   static final PreferencesService _instance = PreferencesService._internal();

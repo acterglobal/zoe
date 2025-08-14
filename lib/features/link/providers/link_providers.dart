@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/providers/common_providers.dart';
-import 'package:zoey/features/link/models/link_model.dart';
-import 'package:zoey/features/link/providers/link_notifiers.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/features/link/models/link_model.dart';
+import 'package:zoe/features/link/providers/link_notifiers.dart';
 
 final linkListProvider = StateNotifierProvider<LinkNotifier, List<LinkModel>>(
   (ref) => LinkNotifier(),

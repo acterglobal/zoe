@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/providers/common_providers.dart';
-import 'package:zoey/common/utils/date_time_utils.dart';
-import 'package:zoey/features/events/models/events_model.dart';
-import 'package:zoey/features/events/providers/event_notifiers.dart';
-import 'package:zoey/features/users/providers/user_providers.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/date_time_utils.dart';
+import 'package:zoe/features/events/models/events_model.dart';
+import 'package:zoe/features/events/providers/event_notifiers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 
 final eventListProvider =
     StateNotifierProvider<EventNotifier, List<EventModel>>(

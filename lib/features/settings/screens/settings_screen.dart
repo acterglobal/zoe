@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/common/providers/package_info_provider.dart';
-import 'package:zoey/common/widgets/max_width_widget.dart';
-import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoey/features/settings/actions/change_theme.dart';
-import 'package:zoey/features/settings/models/language_model.dart';
-import 'package:zoey/features/settings/providers/local_provider.dart';
-import 'package:zoey/features/settings/providers/theme_provider.dart';
-import 'package:zoey/features/settings/widgets/setting_card_widget.dart';
-import 'package:zoey/features/settings/widgets/setting_item_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:zoe/common/providers/package_info_provider.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/features/settings/actions/change_theme.dart';
+import 'package:zoe/features/settings/models/language_model.dart';
+import 'package:zoe/features/settings/providers/local_provider.dart';
+import 'package:zoe/features/settings/providers/theme_provider.dart';
+import 'package:zoe/features/settings/widgets/setting_card_widget.dart';
+import 'package:zoe/features/settings/widgets/setting_item_widget.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -102,7 +102,7 @@ class SettingsScreen extends ConsumerWidget {
       children: [
         SettingItemWidget(
           title: L10n.of(context).shareApp,
-          subtitle: L10n.of(context).tellYourFriendsAboutZoey,
+          subtitle: L10n.of(context).tellYourFriendsAboutZoe,
           icon: Icons.share_rounded,
           iconColor: const Color(0xFF3B82F6), // Blue
           onTap: () {},
