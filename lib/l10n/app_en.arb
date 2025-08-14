@@ -1,7 +1,7 @@
 {
-    "zoeyApp": "Zoey App",
+    "zoeyApp": "Zoe App",
     "@zoeyApp": {},
-    "welcomeToZoey": "Welcome to Zoey",
+    "welcomeToZoey": "Welcome to Zoe",
     "@welcomeToZoey": {},
     "yourPersonalWorkspace": "Your personal workspace for organizing thoughts, tasks, and ideas with beautiful simplicity.",
     "@yourPersonalWorkspace": {},
@@ -39,7 +39,7 @@
     "@app": {},
     "shareApp": "Share App",
     "@shareApp": {},
-    "tellYourFriendsAboutZoey": "Tell your friends about Zoey",
+    "tellYourFriendsAboutZoey": "Tell your friends about Zoe",
     "@tellYourFriendsAboutZoey": {},
     "rateApp": "Rate App",
     "@rateApp": {},

@@ -4,16 +4,16 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>CFBundleDisplayName</key>
-	<string>Zoey</string>
+    <key>CFBundleDisplayName</key>
+    <string>Zoe</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>zoey</string>
+    <key>CFBundleName</key>
+    <string>zoe</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -45,7 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Zoey needs access to your photo library to allow you to add images to your notes, tasks, and other content.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Zoe needs access to your photo library to allow you to add images to your notes, tasks, and other content.</string>
 </dict>
 </plist>
