@@ -31,11 +31,10 @@ class PollOption {
 enum PollStatus { notStarted, started, ended }
 
 class PollModel extends ContentModel {
-  /// PollModel properties
-  final String question; // The main poll question
+  final String question;
   final List<PollOption> options;
-  final DateTime startDate; // When the poll becomes active
-  final DateTime? endDate; // When the poll expires
+  final DateTime startDate;
+  final DateTime? endDate;
   final bool isMultipleChoice;
   final List<String> participants;
   final PollStatus status;
@@ -100,38 +99,11 @@ class PollModel extends ContentModel {
     );
   }
 
-  /// Get total votes across all options
   int get totalVotes => options.fold(0, (sum, option) => sum + option.votes);
 
-  /// Check if poll has expired
-  bool get hasExpired => endDate != null && DateTime.now().isAfter(endDate!);
+  bool get isStarted => status == PollStatus.started;
 
-  /// Check if poll is started
-  bool get isStarted => status == PollStatus.started && !hasExpired;
-
-  /// Check if poll is not started
   bool get isNotStarted => status == PollStatus.notStarted;
 
-  /// Check if poll is ended
   bool get isEnded => status == PollStatus.ended;
-
-  /// Get percentage for an option
-  double getOptionPercentage(String optionId) {
-    if (totalVotes == 0) return 0.0;
-    final option = options.firstWhere((opt) => opt.id == optionId);
-    return (option.votes / totalVotes) * 100;
-  }
-
-  /// Check if a user has voted
-  bool hasUserVoted(String userId) {
-    return options.any((option) => option.voters.contains(userId));
-  }
-
-  /// Get user's votes
-  List<String> getUserVotes(String userId) {
-    return options
-        .where((option) => option.voters.contains(userId))
-        .map((option) => option.id)
-        .toList();
-  }
 }
