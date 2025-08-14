@@ -10,6 +10,7 @@ import 'package:zoe/features/documents/widgets/document_widget.dart';
 import 'package:zoe/features/events/widgets/event_widget.dart';
 import 'package:zoe/features/link/widgets/link_widget.dart';
 import 'package:zoe/features/list/widgets/list_widget.dart';
+import 'package:zoe/features/polls/widgets/poll_widget.dart';
 import 'package:zoe/features/task/widgets/task_item_widget.dart';
 import 'package:zoe/features/text/widgets/text_widget.dart';
 

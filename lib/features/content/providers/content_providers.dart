@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';

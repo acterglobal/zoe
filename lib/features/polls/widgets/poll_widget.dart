@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/widgets/glassy_container_widget.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoey/core/theme/colors/app_colors.dart';
-import 'package:zoey/features/polls/models/poll_model.dart';
-import 'package:zoey/features/polls/providers/poll_providers.dart';
-import 'package:zoey/features/polls/widgets/poll_checkbox_widget.dart';
-import 'package:zoey/features/polls/widgets/poll_settings_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:zoe/common/widgets/glassy_container_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
+import 'package:zoe/features/polls/models/poll_model.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
+import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class PollWidget extends ConsumerWidget {
   final String pollId;
@@ -59,7 +59,7 @@ class PollWidget extends ConsumerWidget {
         Expanded(
           child: ZoeInlineTextEditWidget(
             hintText: L10n.of(context).pollTitle,
-            text: poll.title,
+            text: poll.question,
             isEditing: poll.isNotStarted && isEditing,
             textInputAction: TextInputAction.next,
             textStyle: Theme.of(
@@ -118,7 +118,7 @@ class PollWidget extends ConsumerWidget {
           onTap: poll.isStarted
               ? () => ref
                     .read(pollListProvider.notifier)
-                    .voteOnPoll(poll.id, option.id, 'user_1')
+                    .voteOnPoll(pollId, option.id, 'user_1')
               : null,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -165,7 +165,7 @@ class PollWidget extends ConsumerWidget {
               onPressed: () {
                 ref
                     .read(pollListProvider.notifier)
-                    .deletePollOption(poll.id, option.id);
+                    .deletePollOption(pollId, option.id);
               },
               icon: Icon(
                 Icons.cancel,
@@ -194,7 +194,7 @@ class PollWidget extends ConsumerWidget {
       onTextChanged: (value) {
         ref
             .read(pollListProvider.notifier)
-            .updatePollOptionText(poll.id, option.id, value);
+            .updatePollOptionText(pollId, option.id, value);
       },
     );
   }

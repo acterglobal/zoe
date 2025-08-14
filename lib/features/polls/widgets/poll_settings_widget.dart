@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/polls/models/poll_model.dart';
-import 'package:zoey/features/polls/providers/poll_providers.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:zoe/features/polls/models/poll_model.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 Widget addPollOptionWidget(
   BuildContext context,

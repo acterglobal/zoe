@@ -1,4 +1,4 @@
-import 'package:zoey/features/content/models/content_model.dart';
+import 'package:zoe/features/content/models/content_model.dart';
 
 class PollOption {
   final String id;

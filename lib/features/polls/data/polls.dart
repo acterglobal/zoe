@@ -1,4 +1,4 @@
-import 'package:zoey/features/polls/models/poll_model.dart';
+import 'package:zoe/features/polls/models/poll_model.dart';
 
 final polls = [
   // Getting Started Guide (sheet-1) polls

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/utils/common_utils.dart';
-import 'package:zoey/core/preference_service/preferences_service.dart';
-import 'package:zoey/features/polls/data/polls.dart';
-import 'package:zoey/features/polls/models/poll_model.dart';
+import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/core/preference_service/preferences_service.dart';
+import 'package:zoe/features/polls/data/polls.dart';
+import 'package:zoe/features/polls/models/poll_model.dart';
 
 class PollNotifier extends StateNotifier<List<PollModel>> {
   Ref ref;
