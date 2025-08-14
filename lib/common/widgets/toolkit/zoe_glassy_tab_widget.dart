@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 
-class ZoeGlassyTabWidget extends StatelessWidget {
+class ZoeGlassyTabWidget extends StatelessWidget
+    implements PreferredSizeWidget {
   final List<String> tabTexts;
   final int selectedIndex;
   final Function(int) onTabChanged;
@@ -10,6 +11,9 @@ class ZoeGlassyTabWidget extends StatelessWidget {
   final EdgeInsets? margin;
   final double? borderRadius;
   final double? borderOpacity;
+
+  @override
+  Size get preferredSize => Size.fromHeight(height ?? 60);
 
   const ZoeGlassyTabWidget({
     super.key,
