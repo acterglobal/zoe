@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/features/link/providers/link_providers.dart';
-import 'package:Zoe/features/link/widgets/link_widget.dart';
+import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/link/widgets/link_widget.dart';
 
 class LinkListWidget extends ConsumerWidget {
   final String parentId;

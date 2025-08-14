@@ -1,17 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/features/content/providers/content_providers.dart';
-import 'package:Zoe/features/content/models/content_model.dart';
-import 'package:Zoe/features/documents/providers/document_providers.dart';
-import 'package:Zoe/features/link/models/link_model.dart';
-import 'package:Zoe/features/link/providers/link_providers.dart';
-import 'package:Zoe/features/text/providers/text_providers.dart';
-import 'package:Zoe/features/events/providers/events_proivder.dart';
-import 'package:Zoe/features/list/providers/list_providers.dart';
-import 'package:Zoe/features/bullets/providers/bullet_providers.dart';
-import 'package:Zoe/features/task/providers/task_providers.dart';
-import 'package:Zoe/features/events/models/events_model.dart';
-import 'package:Zoe/features/list/models/list_model.dart';
-import 'package:Zoe/features/text/models/text_model.dart';
+import 'package:zoe/features/content/providers/content_providers.dart';
+import 'package:zoe/features/content/models/content_model.dart';
+import 'package:zoe/features/documents/providers/document_providers.dart';
+import 'package:zoe/features/link/models/link_model.dart';
+import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/text/providers/text_providers.dart';
+import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/list/providers/list_providers.dart';
+import 'package:zoe/features/bullets/providers/bullet_providers.dart';
+import 'package:zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/features/events/models/events_model.dart';
+import 'package:zoe/features/list/models/list_model.dart';
+import 'package:zoe/features/text/models/text_model.dart';
 
 // Helper function to get the next orderIndex for a parent
 int _getNextOrderIndex(WidgetRef ref, String parentId) {

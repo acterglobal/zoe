@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:Zoe/core/routing/app_routes.dart';
-import 'package:Zoe/core/theme/colors/app_colors.dart';
-import 'package:Zoe/features/documents/providers/document_providers.dart';
-import 'package:Zoe/features/events/providers/events_proivder.dart';
-import 'package:Zoe/features/home/widgets/stats_section/stats_widget.dart';
-import 'package:Zoe/features/link/providers/link_providers.dart';
-import 'package:Zoe/features/sheet/providers/sheet_providers.dart';
-import 'package:Zoe/features/task/providers/task_providers.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
-import 'package:Zoe/common/widgets/coming_soon_badge_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
+import 'package:zoe/features/documents/providers/document_providers.dart';
+import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/home/widgets/stats_section/stats_widget.dart';
+import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
+import 'package:zoe/common/widgets/coming_soon_badge_widget.dart';
 
 class StatsSectionWidget extends ConsumerWidget {
   const StatsSectionWidget({super.key});

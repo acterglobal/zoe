@@ -1,5 +1,5 @@
-import 'package:Zoe/common/utils/common_utils.dart';
-import 'package:Zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 
 enum ContentType { text, event, list, task, bullet, link, document }
 

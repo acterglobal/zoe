@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class CommonUtils {
   static String generateRandomId() => const Uuid().v4();

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/common/utils/date_time_utils.dart';
-import 'package:Zoe/common/widgets/state_widgets/error_state_widget.dart';
-import 'package:Zoe/common/widgets/state_widgets/loading_state_widget.dart';
-import 'package:Zoe/features/home/widgets/welcome_section/welcome_animation_widget.dart';
-import 'package:Zoe/features/users/providers/user_providers.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/common/utils/date_time_utils.dart';
+import 'package:zoe/common/widgets/state_widgets/error_state_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/loading_state_widget.dart';
+import 'package:zoe/features/home/widgets/welcome_section/welcome_animation_widget.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class WelcomeSectionWidget extends ConsumerWidget {
   const WelcomeSectionWidget({super.key});

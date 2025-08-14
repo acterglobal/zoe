@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/features/sheet/data/sheet_data.dart';
-import 'package:Zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/sheet/data/sheet_data.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 
 class SheetNotifier extends StateNotifier<List<SheetModel>> {
   SheetNotifier() : super(sheetList);

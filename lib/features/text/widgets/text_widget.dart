@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
-import 'package:Zoe/common/widgets/emoji_widget.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:Zoe/features/sheet/models/sheet_model.dart';
-import 'package:Zoe/features/text/models/text_model.dart';
-import 'package:Zoe/features/text/providers/text_providers.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
+import 'package:zoe/common/widgets/emoji_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/text/models/text_model.dart';
+import 'package:zoe/features/text/providers/text_providers.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class TextWidget extends ConsumerWidget {
   final String textId;

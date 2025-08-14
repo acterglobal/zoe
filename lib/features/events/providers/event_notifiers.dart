@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/features/events/data/event_list.dart';
-import 'package:Zoe/features/events/models/events_model.dart';
-import 'package:Zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/events/data/event_list.dart';
+import 'package:zoe/features/events/models/events_model.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 
 class EventNotifier extends StateNotifier<List<EventModel>> {
   EventNotifier() : super(eventList);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/features/text/providers/text_providers.dart';
-import 'package:Zoe/features/text/widgets/text_widget.dart';
+import 'package:zoe/features/text/providers/text_providers.dart';
+import 'package:zoe/features/text/widgets/text_widget.dart';
 
 class TextListWidget extends ConsumerWidget {
   final String parentId;

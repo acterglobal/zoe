@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/features/bullets/providers/bullet_providers.dart';
-import 'package:Zoe/features/content/models/content_model.dart';
-import 'package:Zoe/features/link/providers/link_providers.dart';
-import 'package:Zoe/features/task/providers/task_providers.dart';
-import 'package:Zoe/features/text/providers/text_providers.dart';
-import 'package:Zoe/features/events/providers/events_proivder.dart';
-import 'package:Zoe/features/list/providers/list_providers.dart';
+import 'package:zoe/features/bullets/providers/bullet_providers.dart';
+import 'package:zoe/features/content/models/content_model.dart';
+import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/features/text/providers/text_providers.dart';
+import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/list/providers/list_providers.dart';
 
 // Computed provider that combines data from individual module providers
 // Sorted by orderIndex within each parent, then by createdAt as fallback

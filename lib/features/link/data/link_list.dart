@@ -1,4 +1,4 @@
-import 'package:Zoe/features/link/models/link_model.dart';
+import 'package:zoe/features/link/models/link_model.dart';
 
 final linkList = [
   // Getting Started Guide (sheet-1)

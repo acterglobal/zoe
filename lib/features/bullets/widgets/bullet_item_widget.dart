@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:Zoe/core/routing/app_routes.dart';
-import 'package:Zoe/features/bullets/model/bullet_model.dart';
-import 'package:Zoe/features/bullets/providers/bullet_providers.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/bullets/model/bullet_model.dart';
+import 'package:zoe/features/bullets/providers/bullet_providers.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class BulletItemWidget extends ConsumerWidget {
   final String bulletId;

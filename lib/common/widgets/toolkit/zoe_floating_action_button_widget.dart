@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Zoe/common/widgets/shimmer_overlay_widget.dart';
+import 'package:zoe/common/widgets/shimmer_overlay_widget.dart';
 
 class ZoeFloatingActionButton extends StatelessWidget {
   final VoidCallback onPressed;

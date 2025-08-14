@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:Zoe/common/utils/common_utils.dart';
-import 'package:Zoe/common/widgets/animated_textfield_widget.dart';
-import 'package:Zoe/common/widgets/styled_icon_container_widget.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_primary_button.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_secondary_button.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/animated_textfield_widget.dart';
+import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_secondary_button.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows a bottom sheet for inserting a link
 Future<String?> showAddLinkBottomSheet(

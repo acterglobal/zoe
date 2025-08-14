@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:Zoe/core/constants/app_constants.dart';
-import 'package:Zoe/core/preference_service/preferences_service.dart';
-import 'package:Zoe/features/settings/providers/local_provider.dart';
-import 'package:Zoe/features/settings/providers/theme_provider.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/core/constants/app_constants.dart';
+import 'package:zoe/core/preference_service/preferences_service.dart';
+import 'package:zoe/features/settings/providers/local_provider.dart';
+import 'package:zoe/features/settings/providers/theme_provider.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 import 'core/routing/app_router.dart';
 import 'core/rust/frb_generated.dart';
 import 'core/theme/app_theme.dart';

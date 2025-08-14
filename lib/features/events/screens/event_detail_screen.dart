@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/common/widgets/edit_view_toggle_button.dart';
-import 'package:Zoe/common/widgets/max_width_widget.dart';
-import 'package:Zoe/common/widgets/paper_sheet_background_widget.dart';
+import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
+import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 
-import 'package:Zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:Zoe/features/content/providers/content_menu_providers.dart';
-import 'package:Zoe/features/content/widgets/content_widget.dart';
-import 'package:Zoe/features/events/models/events_model.dart';
-import 'package:Zoe/features/events/providers/events_proivder.dart';
-import 'package:Zoe/features/events/widgets/event_details_additional_fields.dart';
-import 'package:Zoe/features/events/widgets/event_rsvp_widget.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/features/content/providers/content_menu_providers.dart';
+import 'package:zoe/features/content/widgets/content_widget.dart';
+import 'package:zoe/features/events/models/events_model.dart';
+import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/widgets/event_details_additional_fields.dart';
+import 'package:zoe/features/events/widgets/event_rsvp_widget.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class EventDetailScreen extends ConsumerWidget {
   final String eventId;

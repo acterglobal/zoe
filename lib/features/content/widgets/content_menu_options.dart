@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class ContentMenuOptions extends StatelessWidget {
   final VoidCallback onTapText;

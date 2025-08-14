@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/common/providers/common_providers.dart';
-import 'package:Zoe/common/widgets/max_width_widget.dart';
-import 'package:Zoe/common/widgets/state_widgets/empty_state_widget.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
-import 'package:Zoe/features/events/providers/events_proivder.dart';
-import 'package:Zoe/features/events/widgets/event_widget.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
+import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/widgets/event_widget.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class EventsListScreen extends ConsumerStatefulWidget {
   const EventsListScreen({super.key});

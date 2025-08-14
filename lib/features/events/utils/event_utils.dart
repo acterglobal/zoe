@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:Zoe/common/utils/date_time_utils.dart';
-import 'package:Zoe/core/theme/colors/app_colors.dart';
-import 'package:Zoe/features/events/models/events_model.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/common/utils/date_time_utils.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
+import 'package:zoe/features/events/models/events_model.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class EventUtils {
   static String formatEventDateAndTime(BuildContext context, EventModel event) {

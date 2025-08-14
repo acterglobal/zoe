@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:Zoe/common/utils/common_utils.dart';
-import 'package:Zoe/features/users/models/user_model.dart';
+import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 
 class ZoeUserAvatarWidget extends StatelessWidget {
   final UserModel user;

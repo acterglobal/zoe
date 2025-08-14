@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/common/utils/date_time_utils.dart';
-import 'package:Zoe/features/task/models/task_model.dart';
-import 'package:Zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/common/utils/date_time_utils.dart';
+import 'package:zoe/features/task/models/task_model.dart';
+import 'package:zoe/features/task/providers/task_providers.dart';
 
 Future<void> updateTaskDueDate(
   BuildContext context,

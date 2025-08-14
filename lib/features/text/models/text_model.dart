@@ -1,5 +1,5 @@
-import 'package:Zoe/features/content/models/content_model.dart';
-import 'package:Zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/content/models/content_model.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 
 class TextModel extends ContentModel {
   TextModel({

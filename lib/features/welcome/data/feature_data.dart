@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Zoe/features/welcome/models/feature_model.dart';
+import 'package:zoe/features/welcome/models/feature_model.dart';
 
 final features = [
   FeatureModel(

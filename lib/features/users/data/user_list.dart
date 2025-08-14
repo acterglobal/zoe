@@ -1,4 +1,4 @@
-import 'package:Zoe/features/users/models/user_model.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 
 final userList = [
   UserModel(id: 'user_1', name: 'John Doe'),

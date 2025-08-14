@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/features/users/widgets/user_widget.dart';
+import 'package:zoe/features/users/widgets/user_widget.dart';
 
 class UserListWidget extends ConsumerWidget {
   final ProviderBase<List<String>> userIdList;

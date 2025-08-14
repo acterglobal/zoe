@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:Zoe/common/utils/common_utils.dart';
-import 'package:Zoe/common/widgets/quill_editor/widgets/quill_toolbar_widget.dart';
+import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/quill_editor/widgets/quill_toolbar_widget.dart';
 
 class QuillEditorToolbarWidget extends StatelessWidget {
   final QuillController controller;

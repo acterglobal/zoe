@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:Zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 
 /// Description with both plain text and HTML support
 typedef Description = ({String? plainText, String? htmlText});

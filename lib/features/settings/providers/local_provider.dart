@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/features/settings/notifiers/local_notifier.dart';
+import 'package:zoe/features/settings/notifiers/local_notifier.dart';
 
 final localeProvider = StateNotifierProvider<LocaleNotifier, String>(
   (ref) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/features/events/providers/events_proivder.dart';
-import 'package:Zoe/features/events/widgets/event_widget.dart';
+import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/widgets/event_widget.dart';
 
 class EventListWidget extends ConsumerWidget {
   final String parentId;

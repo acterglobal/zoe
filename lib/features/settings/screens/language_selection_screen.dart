@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:Zoe/features/settings/models/language_model.dart';
-import 'package:Zoe/features/settings/providers/local_provider.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/features/settings/models/language_model.dart';
+import 'package:zoe/features/settings/providers/local_provider.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class LanguageSelectionScreen extends ConsumerWidget {
   const LanguageSelectionScreen({super.key});

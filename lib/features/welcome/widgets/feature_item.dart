@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:Zoe/common/widgets/glassy_container_widget.dart';
-import 'package:Zoe/common/widgets/styled_icon_container_widget.dart';
-import 'package:Zoe/common/utils/feature_colors_utils.dart';
+import 'package:zoe/common/widgets/glassy_container_widget.dart';
+import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
+import 'package:zoe/common/utils/feature_colors_utils.dart';
 
 class FeatureItem extends StatelessWidget {
   final String title;

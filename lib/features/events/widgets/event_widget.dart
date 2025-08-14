@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
-import 'package:Zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:Zoe/core/routing/app_routes.dart';
-import 'package:Zoe/features/events/models/events_model.dart';
-import 'package:Zoe/features/events/providers/events_proivder.dart';
-import 'package:Zoe/features/events/utils/event_utils.dart';
-import 'package:Zoe/features/events/widgets/event_date_widget.dart';
-import 'package:Zoe/l10n/generated/l10n.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/events/models/events_model.dart';
+import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/utils/event_utils.dart';
+import 'package:zoe/features/events/widgets/event_date_widget.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class EventWidget extends ConsumerWidget {
   final String eventsId;

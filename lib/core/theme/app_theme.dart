@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:Zoe/core/theme/colors/app_colors.dart';
-import 'package:Zoe/core/theme/colors/colors_cheme.dart';
-import 'package:Zoe/core/theme/components/app_bar_theme_data.dart';
-import 'package:Zoe/core/theme/components/button_theme_data.dart';
-import 'package:Zoe/core/theme/components/input_decoration.dart';
-import 'package:Zoe/core/theme/components/text_theme_data.dart';
-import 'package:Zoe/core/theme/components/date_picker_theme_data.dart';
-import 'package:Zoe/core/theme/components/floating_action_button_theme_data.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
+import 'package:zoe/core/theme/colors/colors_cheme.dart';
+import 'package:zoe/core/theme/components/app_bar_theme_data.dart';
+import 'package:zoe/core/theme/components/button_theme_data.dart';
+import 'package:zoe/core/theme/components/input_decoration.dart';
+import 'package:zoe/core/theme/components/text_theme_data.dart';
+import 'package:zoe/core/theme/components/date_picker_theme_data.dart';
+import 'package:zoe/core/theme/components/floating_action_button_theme_data.dart';
 
 class AppTheme {
   static ThemeData get lightTheme {

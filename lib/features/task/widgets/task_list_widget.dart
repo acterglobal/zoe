@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:Zoe/core/routing/app_routes.dart';
-import 'package:Zoe/features/task/providers/task_providers.dart';
-import 'package:Zoe/features/task/widgets/task_item_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/features/task/widgets/task_item_widget.dart';
 
 class TaskListWidget extends ConsumerWidget {
   final String parentId;

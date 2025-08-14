@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:Zoe/common/utils/date_time_utils.dart';
-import 'package:Zoe/features/events/models/events_model.dart';
+import 'package:zoe/common/utils/date_time_utils.dart';
+import 'package:zoe/features/events/models/events_model.dart';
 
 class EventDateWidget extends StatelessWidget {
   final EventModel event;
