@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/providers/common_providers.dart';
-import 'package:zoey/features/sheet/models/sheet_model.dart';
-import 'package:zoey/features/sheet/providers/sheet_notifiers.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/sheet/providers/sheet_notifiers.dart';
 
 final sheetListProvider =
     StateNotifierProvider<SheetNotifier, List<SheetModel>>(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/content/providers/content_menu_providers.dart';
-import 'package:zoey/features/content/widgets/content_menu_options.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:zoe/features/content/providers/content_menu_providers.dart';
+import 'package:zoe/features/content/widgets/content_menu_options.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class AddContentWidget extends ConsumerWidget {
   final bool isEditing;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/settings/models/theme.dart';
-import 'package:zoey/features/settings/providers/theme_provider.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:zoe/features/settings/models/theme.dart';
+import 'package:zoe/features/settings/providers/theme_provider.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 void showThemeDialog(BuildContext context, WidgetRef ref) {
   showDialog(

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/common/providers/common_providers.dart';
-import 'package:zoey/common/widgets/max_width_widget.dart';
-import 'package:zoey/common/widgets/state_widgets/empty_state_widget.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_search_bar_widget.dart';
-import 'package:zoey/features/link/models/link_model.dart';
-import 'package:zoey/features/link/providers/link_providers.dart';
-import 'package:zoey/features/link/widgets/link_widget.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
+import 'package:zoe/features/link/models/link_model.dart';
+import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/link/widgets/link_widget.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class LinksListScreen extends ConsumerStatefulWidget {
   const LinksListScreen({super.key});

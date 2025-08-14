@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/text/data/text_list.dart';
-import 'package:zoey/features/text/models/text_model.dart';
-import 'package:zoey/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/text/data/text_list.dart';
+import 'package:zoe/features/text/models/text_model.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 
 class TextNotifier extends StateNotifier<List<TextModel>> {
   TextNotifier() : super(textList);

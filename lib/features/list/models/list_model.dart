@@ -1,5 +1,5 @@
-import 'package:zoey/features/content/models/content_model.dart';
-import 'package:zoey/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/content/models/content_model.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 
 class ListModel extends ContentModel {
   /// ListModel properties

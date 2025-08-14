@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:zoey/common/utils/common_utils.dart';
-import 'package:zoey/common/widgets/quill_editor/widgets/quill_toolbar_widget.dart';
+import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/quill_editor/widgets/quill_toolbar_widget.dart';
 
 class QuillEditorToolbarWidget extends StatelessWidget {
   final QuillController controller;
@@ -24,28 +24,30 @@ class QuillEditorToolbarWidget extends StatelessWidget {
     final curve = isDesktopPlatform ? Curves.easeInOut : Curves.easeOut;
 
     return AnimatedContainer(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          boxShadow: isToolbarVisible ? [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ] : null,
-        ),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        boxShadow: isToolbarVisible
+            ? [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ]
+            : null,
+      ),
+      duration: Duration(milliseconds: duration),
+      curve: curve,
+      height: isToolbarVisible ? 60 : 0,
+      child: AnimatedOpacity(
         duration: Duration(milliseconds: duration),
-        curve: curve,
-        height: isToolbarVisible ? 60 : 0,
-        child: AnimatedOpacity(
-          duration: Duration(milliseconds: duration),
-          opacity: isToolbarVisible ? 1.0 : 0.0,
-          child: QuillToolbar(
-            controller: controller,
-            focusNode: focusNode,
-            onButtonPressed: onReturnFocusToEditor,
-          ),
+        opacity: isToolbarVisible ? 1.0 : 0.0,
+        child: QuillToolbar(
+          controller: controller,
+          focusNode: focusNode,
+          onButtonPressed: onReturnFocusToEditor,
         ),
+      ),
     );
   }
 }

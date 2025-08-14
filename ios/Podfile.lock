@@ -49,7 +49,7 @@ PODS:
     - FlutterMacOS
   - quill_native_bridge_ios (0.0.1):
     - Flutter
-  - rust_lib_zoey (0.0.1):
+  - rust_lib_zoe (0.0.1):
     - Flutter
   - SDWebImage (5.21.1):
     - SDWebImage/Core (= 5.21.1)
@@ -76,7 +76,7 @@ DEPENDENCIES:
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - quill_native_bridge_ios (from `.symlinks/plugins/quill_native_bridge_ios/ios`)
-  - rust_lib_zoey (from `.symlinks/plugins/rust_lib_zoey/ios`)
+  - rust_lib_zoe (from `.symlinks/plugins/rust_lib_zoe/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
@@ -108,8 +108,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   quill_native_bridge_ios:
     :path: ".symlinks/plugins/quill_native_bridge_ios/ios"
-  rust_lib_zoey:
-    :path: ".symlinks/plugins/rust_lib_zoey/ios"
+  rust_lib_zoe:
+    :path: ".symlinks/plugins/rust_lib_zoe/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
@@ -131,7 +131,7 @@ SPEC CHECKSUMS:
   package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   quill_native_bridge_ios: 2b01d585fcc73d0f5eed78c0bd244ee564b06f5a
-  rust_lib_zoey: ed6ca1f63613ef2959a147dd900f5e24adb54856
+  rust_lib_zoe: d2bb35243543f03422f93299022fa31fb8dad11d
   SDWebImage: f29024626962457f3470184232766516dee8dfea
   share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78

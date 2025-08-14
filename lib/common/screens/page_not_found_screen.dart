@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoey/core/routing/app_routes.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class PageNotFoundScreen extends StatelessWidget {
   const PageNotFoundScreen({super.key});

@@ -1,8 +1,8 @@
-# Font Setup for Zoey
+# Font Setup for Zoe
 
 ## Typography
 
-Zoey uses the **Inter** font family, specifically designed for user interfaces and digital reading. Inter provides excellent readability for note-taking and content creation apps.
+Zoe uses the **Inter** font family, specifically designed for user interfaces and digital reading. Inter provides excellent readability for note-taking and content creation apps.
 
 ## Automatic Fallbacks
 
@@ -56,7 +56,7 @@ For the best typography experience, install Inter font on your system:
 
 ## Verify Installation
 
-After installing, restart Zoey to see the improved typography. The font will be automatically applied to:
+After installing, restart Zoe to see the improved typography. The font will be automatically applied to:
 
 - Sheet titles and descriptions
 - Content block headings  

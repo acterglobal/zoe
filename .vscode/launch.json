@@ -6,18 +6,18 @@
     "configurations": [
     
         {
-            "name": "zoey",
+            "name": "zoe",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "zoey (profile mode)",
+            "name": "zoe (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "zoey (release mode)",
+            "name": "zoe (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

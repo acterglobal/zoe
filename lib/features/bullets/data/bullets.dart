@@ -1,4 +1,4 @@
-import 'package:zoey/features/bullets/model/bullet_model.dart';
+import 'package:zoe/features/bullets/model/bullet_model.dart';
 
 final bulletList = [
   // Getting Started Guide (sheet-1) bullets
@@ -169,9 +169,9 @@ final bulletList = [
     orderIndex: 1,
     description: (
       plainText:
-          'Start with something you\'re working on to see how Zoey can help organize your thoughts and tasks',
+          'Start with something you\'re working on to see how Zoe can help organize your thoughts and tasks',
       htmlText:
-          '<p>Start with something you\'re working on to see how Zoey can help organize your thoughts and tasks</p>',
+          '<p>Start with something you\'re working on to see how Zoe can help organize your thoughts and tasks</p>',
     ),
     createdBy: '',
   ),
@@ -221,13 +221,13 @@ final bulletList = [
     id: 'bullet-item-16',
     sheetId: 'sheet-1',
     parentId: 'list-bulleted-3',
-    title: 'Explore the settings to customize your Zoey experience',
+    title: 'Explore the settings to customize your Zoe experience',
     orderIndex: 5,
     description: (
       plainText:
-          'Adjust themes and preferences to make Zoey feel like your own personal workspace',
+          'Adjust themes and preferences to make Zoe feel like your own personal workspace',
       htmlText:
-          '<p>Adjust themes and preferences to make Zoey feel like your own personal workspace</p>',
+          '<p>Adjust themes and preferences to make Zoe feel like your own personal workspace</p>',
     ),
     createdBy: '',
   ),
@@ -911,9 +911,9 @@ final bulletList = [
     orderIndex: 1,
     description: (
       plainText:
-          'Sarah, Soccer Team Manager: "Now I just add it to Zoey and know it\'ll get handled. Game changer for my mental health!"',
+          'Sarah, Soccer Team Manager: "Now I just add it to Zoe and know it\'ll get handled. Game changer for my mental health!"',
       htmlText:
-          '<p>Sarah, Soccer Team Manager: "Now I just add it to Zoey and know it\'ll get handled. Game changer for my mental health!"</p>',
+          '<p>Sarah, Soccer Team Manager: "Now I just add it to Zoe and know it\'ll get handled. Game changer for my mental health!"</p>',
     ),
     createdBy: '',
   ),
@@ -1130,9 +1130,9 @@ final bulletList = [
     orderIndex: 2,
     description: (
       plainText:
-          'Tap "Make [Parent] Organizer" in Zoey app - takes 30 seconds to transfer full responsibility',
+          'Tap "Make [Parent] Organizer" in Zoe app - takes 30 seconds to transfer full responsibility',
       htmlText:
-          '<p>Tap "Make [Parent] Organizer" in Zoey app - takes 30 seconds to transfer full responsibility</p>',
+          '<p>Tap "Make [Parent] Organizer" in Zoe app - takes 30 seconds to transfer full responsibility</p>',
     ),
     createdBy: '',
   ),
@@ -1305,9 +1305,9 @@ final bulletList = [
     orderIndex: 2,
     description: (
       plainText:
-          'Zoey kept everyone informed about plans and expenses, accommodating different tech comfort levels from grandparents to teens',
+          'Zoe kept everyone informed about plans and expenses, accommodating different tech comfort levels from grandparents to teens',
       htmlText:
-          '<p>Zoey kept everyone informed about plans and expenses, accommodating different tech comfort levels from grandparents to teens</p>',
+          '<p>Zoe kept everyone informed about plans and expenses, accommodating different tech comfort levels from grandparents to teens</p>',
     ),
     createdBy: '',
   ),

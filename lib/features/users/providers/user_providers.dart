@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoey/features/users/models/user_model.dart';
-import 'package:zoey/features/users/providers/user_notifiers.dart';
-import 'package:zoey/core/preference_service/preferences_service.dart';
-import 'package:zoey/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/users/models/user_model.dart';
+import 'package:zoe/features/users/providers/user_notifiers.dart';
+import 'package:zoe/core/preference_service/preferences_service.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 
 final isUserLoggedInProvider = FutureProvider<bool>((ref) async {
   final userId = await PreferencesService().getLoginUserId();

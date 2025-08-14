@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:zoey/common/utils/common_utils.dart';
-import 'package:zoey/common/widgets/animated_textfield_widget.dart';
-import 'package:zoey/common/widgets/styled_icon_container_widget.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_primary_button.dart';
-import 'package:zoey/common/widgets/toolkit/zoe_secondary_button.dart';
-import 'package:zoey/l10n/generated/l10n.dart';
+import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/animated_textfield_widget.dart';
+import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_secondary_button.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows a bottom sheet for inserting a link
 Future<String?> showAddLinkBottomSheet(
@@ -63,7 +63,13 @@ class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(child: StyledIconContainer(icon: Icons.link_outlined, size: 72,borderRadius: BorderRadius.circular(36),)),
+          Center(
+            child: StyledIconContainer(
+              icon: Icons.link_outlined,
+              size: 72,
+              borderRadius: BorderRadius.circular(36),
+            ),
+          ),
           const SizedBox(height: 24),
           buildInsertLinkText(),
           const SizedBox(height: 16),
@@ -130,7 +136,7 @@ class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
     );
   }
 
-/// get specific error message for url validation
+  /// get specific error message for url validation
   static String _getUrlErrorMessage(BuildContext context, String url) {
     if (url.isEmpty) {
       return L10n.of(context).urlCannotBeEmpty;
