@@ -56,7 +56,6 @@ class PollModel extends ContentModel {
   final DateTime startDate;
   final DateTime? endDate;
   final bool isMultipleChoice;
-  final List<String> participants;
   final PollStatus status;
 
   PollModel({
@@ -75,7 +74,6 @@ class PollModel extends ContentModel {
     required this.startDate,
     this.endDate,
     this.isMultipleChoice = false,
-    this.participants = const [],
     this.status = PollStatus.notStarted,
   }) : super(type: ContentType.poll, emoji: '📊', title: question);
 
@@ -95,7 +93,6 @@ class PollModel extends ContentModel {
     DateTime? startDate,
     DateTime? endDate,
     bool? isMultipleChoice,
-    List<String>? participants,
     PollStatus? status,
   }) {
     return PollModel(
@@ -114,7 +111,6 @@ class PollModel extends ContentModel {
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       isMultipleChoice: isMultipleChoice ?? this.isMultipleChoice,
-      participants: participants ?? this.participants,
       status: status ?? this.status,
     );
   }
