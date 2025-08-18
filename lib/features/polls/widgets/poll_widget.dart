@@ -5,6 +5,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
@@ -40,7 +41,8 @@ class PollWidget extends ConsumerWidget {
         _buildPollOptionsList(context, ref, poll),
         const SizedBox(height: 12),
         _buildPollActions(context, ref, poll),
-        if (poll.isEnded) _buildPollClosedMessage(context, ref, poll),
+        if (PollUtils.isCompleted(poll))
+          _buildPollClosedMessage(context, ref, poll),
       ],
     );
   }
@@ -62,7 +64,7 @@ class PollWidget extends ConsumerWidget {
           child: ZoeInlineTextEditWidget(
             hintText: L10n.of(context).pollTitle,
             text: poll.question,
-            isEditing: poll.isNotStarted && isEditing,
+            isEditing: PollUtils.isDraft(poll) && isEditing,
             textInputAction: TextInputAction.next,
             textStyle: Theme.of(
               context,
@@ -95,8 +97,10 @@ class PollWidget extends ConsumerWidget {
     PollModel poll,
   ) {
     return Column(
-      children: poll.options.map((option) {
-        return _buildPollOptionWidget(context, ref, poll, option);
+      children: poll.options.asMap().entries.map((entry) {
+        final index = entry.key;
+        final option = entry.value;
+        return _buildPollOptionWidget(context, ref, poll, option, index);
       }).toList(),
     );
   }
@@ -106,20 +110,24 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
     PollOption option,
+    int optionIndex,
   ) {
     final totalVotes = poll.totalVotes;
-    final percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0.0;
+    final percentage = totalVotes > 0
+        ? (option.votes.length / totalVotes) * 100
+        : 0.0;
     final currentUserId = ref.watch(loggedInUserProvider).value;
     final isVoted =
-        currentUserId != null && option.voters.contains(currentUserId);
-    final color = AppColors.brightMagentaColor;
+        currentUserId != null &&
+        option.votes.any((vote) => vote.userId == currentUserId);
+    final color = PollUtils.getColorFromOptionIndex(optionIndex);
     final theme = Theme.of(context);
 
     return Stack(
       clipBehavior: Clip.none,
       children: [
         GestureDetector(
-          onTap: poll.isStarted
+          onTap: PollUtils.isActive(poll)
               ? () {
                   final currentUserId = ref.read(loggedInUserProvider).value;
                   if (currentUserId != null) {
@@ -147,7 +155,7 @@ class PollWidget extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                pollCheckboxWidget(context, poll, option, isVoted),
+                pollCheckboxWidget(context, poll, option, isVoted, optionIndex),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -155,17 +163,24 @@ class PollWidget extends ConsumerWidget {
                     children: [
                       _buildEditableOptionText(context, ref, poll, option),
                       const SizedBox(height: 2),
-                      _buildVoteProgress(context, percentage, option.votes),
+                      _buildVoteProgress(
+                        context,
+                        percentage,
+                        option,
+                        optionIndex,
+                      ),
                     ],
                   ),
                 ),
                 const SizedBox(width: 12),
-                _buildVoteCount(context, option.votes, isVoted),
+                _buildVoteCount(context, option, isVoted, optionIndex),
               ],
             ),
           ),
         ),
-        if (poll.isNotStarted && isEditing && poll.options.length > 1)
+        if (PollUtils.isDraft(poll) &&
+            isEditing &&
+            poll.options.length > 1)
           Positioned(
             top: -16,
             right: -16,
@@ -196,7 +211,7 @@ class PollWidget extends ConsumerWidget {
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).enterOptionText,
       text: option.title,
-      isEditing: poll.isNotStarted && isEditing,
+      isEditing: PollUtils.isDraft(poll) && isEditing,
       textStyle: Theme.of(
         context,
       ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
@@ -211,10 +226,11 @@ class PollWidget extends ConsumerWidget {
   Widget _buildVoteProgress(
     BuildContext context,
     double percentage,
-    int votes,
+    PollOption option,
+    int optionIndex,
   ) {
-    if (votes == 0) return const SizedBox.shrink();
-    final color = AppColors.brightMagentaColor;
+    if (option.votes.isEmpty) return const SizedBox.shrink();
+    final color = PollUtils.getColorFromOptionIndex(optionIndex);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -297,17 +313,19 @@ class PollWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (poll.isNotStarted && isEditing) ...[
+            if (PollUtils.isDraft(poll) && isEditing)
               addPollOptionWidget(context, ref, poll),
+            if (PollUtils.isDraft(poll)) ...[
+              const Spacer(),
               startPollButtonWidget(context, ref, poll),
             ],
-            if (poll.isStarted && !isEditing) ...[
+            if (PollUtils.isActive(poll) && !isEditing) ...[
               const Spacer(),
               endPollButtonWidget(context, ref, poll),
             ],
           ],
         ),
-        if (poll.isNotStarted && isEditing) ...[
+        if (PollUtils.isDraft(poll) && isEditing) ...[
           const SizedBox(height: 12),
           choiceTypeSelectorWidget(context, ref, poll),
         ],
@@ -320,7 +338,7 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
   ) {
-    if (poll.isStarted) return const SizedBox.shrink();
+    if (PollUtils.isActive(poll)) return const SizedBox.shrink();
     final theme = Theme.of(context);
     return GlassyContainer(
       padding: const EdgeInsets.all(8),
@@ -351,8 +369,13 @@ class PollWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildVoteCount(BuildContext context, int votes, bool isVoted) {
-    final color = AppColors.brightMagentaColor;
+  Widget _buildVoteCount(
+    BuildContext context,
+    PollOption option,
+    bool isVoted,
+    int optionIndex,
+  ) {
+    final color = PollUtils.getColorFromOptionIndex(optionIndex);
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(5),
@@ -369,7 +392,7 @@ class PollWidget extends ConsumerWidget {
         shape: BoxShape.circle,
       ),
       child: Text(
-        '$votes',
+        '${option.votes.length}',
         style: theme.textTheme.bodySmall?.copyWith(
           color: isVoted ? color : theme.colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w600,

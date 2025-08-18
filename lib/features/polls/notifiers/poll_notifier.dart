@@ -15,6 +15,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
     required String sheetId,
     List<PollOption> options = const [],
     bool isMultipleChoice = false,
+    DateTime? startDate,
     DateTime? endDate,
     int? orderIndex,
   }) async {
@@ -26,7 +27,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
       question: question,
       sheetId: sheetId,
       orderIndex: orderIndex,
-      startDate: DateTime.now(),
+      startDate: startDate,
       endDate: endDate,
       options: options.isEmpty
           ? [
@@ -35,7 +36,6 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
             ]
           : options,
       isMultipleChoice: isMultipleChoice,
-      status: PollStatus.notStarted,
       createdBy: createdBy,
     );
 
@@ -122,7 +122,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
   PollModel _updatePollVotes(PollModel poll, String optionId, String userId) {
     // Check if user has already voted on this option
     final hasVotedOnOption = poll.options.any(
-      (option) => option.id == optionId && option.voters.contains(userId),
+      (option) => option.id == optionId && option.votes.any((vote) => vote.userId == userId),
     );
 
     if (hasVotedOnOption) {
@@ -131,8 +131,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
         options: poll.options.map((option) {
           if (option.id == optionId) {
             return option.copyWith(
-              votes: option.votes - 1,
-              voters: option.voters.where((voter) => voter != userId).toList(),
+              votes: option.votes.where((voter) => voter.userId != userId).toList(),
             );
           }
           return option;
@@ -143,10 +142,9 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
       if (!poll.isMultipleChoice) {
         // For single choice, remove all previous votes from this user
         final updatedOptions = poll.options.map((option) {
-          if (option.voters.contains(userId)) {
+          if (option.votes.any((vote) => vote.userId == userId)) {
             return option.copyWith(
-              votes: option.votes - 1,
-              voters: option.voters.where((voter) => voter != userId).toList(),
+              votes: option.votes.where((vote) => vote.userId != userId).toList(),
             );
           }
           return option;
@@ -156,8 +154,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
         final finalOptions = updatedOptions.map((option) {
           if (option.id == optionId) {
             return option.copyWith(
-              votes: option.votes + 1,
-              voters: [...option.voters, userId],
+              votes: [...option.votes, Vote(userId: userId)],
             );
           }
           return option;
@@ -170,8 +167,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
           options: poll.options.map((option) {
             if (option.id == optionId) {
               return option.copyWith(
-                votes: option.votes + 1,
-                voters: [...option.voters, userId],
+                votes: [...option.votes, Vote(userId: userId)],
               );
             }
             return option;
@@ -195,7 +191,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
     state = [
       for (final poll in state)
         if (poll.id == pollId)
-          poll.copyWith(status: PollStatus.ended, endDate: DateTime.now())
+          poll.copyWith(endDate: DateTime.now())
         else
           poll,
     ];
@@ -205,7 +201,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
     state = [
       for (final poll in state)
         if (poll.id == pollId)
-          poll.copyWith(status: PollStatus.started, startDate: DateTime.now())
+          poll.copyWith(startDate: DateTime.now())
         else
           poll,
     ];

@@ -241,10 +241,6 @@
     "@endPoll": {},
     "noPollsFound": "कोई पोल नहीं मिला!",
     "@noPollsFound": {},
-    "started": "सक्रिय पोल्स",
-    "@started": {},
-    "ended": "समाप्त पोल्स",
-    "@ended": {},
     "votersOfThisPoll": "इस पोल के वोटर्स",
     "@votersOfThisPoll": {}
 

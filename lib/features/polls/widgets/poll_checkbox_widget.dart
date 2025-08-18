@@ -1,14 +1,16 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
+import 'package:zoe/features/polls/utils/poll_utils.dart';
 
 Widget pollCheckboxWidget(
     BuildContext context,
     PollModel poll,
     PollOption option,
     bool isVoted,
+    int optionIndex,
   ) {
-    final color = AppColors.brightMagentaColor.withValues(alpha: 0.6);
+    final color = PollUtils.getColorFromOptionIndex(optionIndex).withValues(alpha: 0.6);
     final themeColor = Theme.of(context).colorScheme;
     return Container(
       width: 16,

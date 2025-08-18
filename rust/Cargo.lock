@@ -1324,7 +1324,6 @@ dependencies = [
 [[package]]
 name = "forward-compatible-enum"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#308dd9da751eecb3a19d9f661933899c358cb042"
 dependencies = [
  "postcard",
  "proc-macro2",
@@ -6060,7 +6059,6 @@ dependencies = [
 [[package]]
 name = "zoe-app-primitives"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#308dd9da751eecb3a19d9f661933899c358cb042"
 dependencies = [
  "blake3",
  "ed25519-dalek",
@@ -6075,7 +6073,6 @@ dependencies = [
 [[package]]
 name = "zoe-blob-store"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#308dd9da751eecb3a19d9f661933899c358cb042"
 dependencies = [
  "anyhow",
  "chrono",
@@ -6099,7 +6096,6 @@ dependencies = [
 [[package]]
 name = "zoe-client"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#308dd9da751eecb3a19d9f661933899c358cb042"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -6128,7 +6124,6 @@ dependencies = [
 [[package]]
 name = "zoe-encrypted-storage"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#308dd9da751eecb3a19d9f661933899c358cb042"
 dependencies = [
  "aead",
  "aes-gcm",
@@ -6141,7 +6136,6 @@ dependencies = [
 [[package]]
 name = "zoe-wire-protocol"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#308dd9da751eecb3a19d9f661933899c358cb042"
 dependencies = [
  "anyhow",
  "argon2",
