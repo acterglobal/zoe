@@ -14,7 +14,6 @@ final polls = [
       PollOption(
         id: 'option-1-1',
         title: 'Task management and to-do lists',
-        votes: 12,
         voters: [
           'user_1',
           'user_2',
@@ -33,7 +32,6 @@ final polls = [
       PollOption(
         id: 'option-1-2',
         title: 'Event planning and scheduling',
-        votes: 8,
         voters: [
           'user_13',
           'user_14',
@@ -48,13 +46,11 @@ final polls = [
       PollOption(
         id: 'option-1-3',
         title: 'Document organization',
-        votes: 5,
         voters: ['user_21', 'user_22', 'user_23', 'user_24', 'user_25'],
       ),
       PollOption(
         id: 'option-1-4',
         title: 'Link and resource sharing',
-        votes: 3,
         voters: ['user_26', 'user_27', 'user_28'],
       ),
     ],
@@ -106,7 +102,6 @@ final polls = [
       PollOption(
         id: 'option-community-1-1',
         title: 'Orange slices',
-        votes: 15,
         voters: [
           'user_1',
           'user_2',
@@ -128,7 +123,6 @@ final polls = [
       PollOption(
         id: 'option-community-1-2',
         title: 'Granola bars',
-        votes: 12,
         voters: [
           'user_1',
           'user_2',
@@ -147,7 +141,6 @@ final polls = [
       PollOption(
         id: 'option-community-1-3',
         title: 'Bananas',
-        votes: 8,
         voters: [
           'user_1',
           'user_2',
@@ -162,7 +155,6 @@ final polls = [
       PollOption(
         id: 'option-community-1-4',
         title: 'Trail mix',
-        votes: 6,
         voters: ['user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7'],
       ),
     ],
@@ -200,7 +192,6 @@ final polls = [
       PollOption(
         id: 'option-community-2-1',
         title: 'Monday 4:00 PM',
-        votes: 8,
         voters: [
           'user_1',
           'user_2',
@@ -215,7 +206,6 @@ final polls = [
       PollOption(
         id: 'option-community-2-2',
         title: 'Tuesday 5:00 PM',
-        votes: 12,
         voters: [
           'user_1',
           'user_2',
@@ -234,13 +224,11 @@ final polls = [
       PollOption(
         id: 'option-community-2-3',
         title: 'Wednesday 4:30 PM',
-        votes: 6,
         voters: ['user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7'],
       ),
       PollOption(
         id: 'option-community-2-4',
         title: 'Saturday 9:00 AM',
-        votes: 10,
         voters: [
           'user_1',
           'user_2',
@@ -287,7 +275,6 @@ final polls = [
       PollOption(
         id: 'option-inclusive-1-1',
         title: 'Text messages',
-        votes: 18,
         voters: [
           'user_1',
           'user_2',
@@ -312,7 +299,6 @@ final polls = [
       PollOption(
         id: 'option-inclusive-1-2',
         title: 'Email',
-        votes: 12,
         voters: [
           'user_19',
           'user_20',
@@ -331,7 +317,6 @@ final polls = [
       PollOption(
         id: 'option-inclusive-1-3',
         title: 'Group chat app',
-        votes: 15,
         voters: [
           'user_31',
           'user_32',
@@ -353,7 +338,6 @@ final polls = [
       PollOption(
         id: 'option-inclusive-1-4',
         title: 'Phone calls',
-        votes: 5,
         voters: ['user_46', 'user_47', 'user_48', 'user_49', 'user_50'],
       ),
     ],
@@ -427,31 +411,26 @@ final polls = [
       PollOption(
         id: 'option-trip-1-1',
         title: 'Tokyo',
-        votes: 6,
         voters: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
       ),
       PollOption(
         id: 'option-trip-1-2',
         title: 'Kyoto',
-        votes: 6,
         voters: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
       ),
       PollOption(
         id: 'option-trip-1-3',
         title: 'Osaka',
-        votes: 4,
         voters: ['user_1', 'user_2', 'user_3', 'user_4'],
       ),
       PollOption(
         id: 'option-trip-1-4',
         title: 'Hiroshima',
-        votes: 3,
         voters: ['user_2', 'user_3', 'user_4'],
       ),
       PollOption(
         id: 'option-trip-1-5',
         title: 'Nara',
-        votes: 2,
         voters: ['user_1', 'user_5'],
       ),
     ],
@@ -473,25 +452,21 @@ final polls = [
       PollOption(
         id: 'option-trip-2-1',
         title: 'Traditional ryokan',
-        votes: 3,
         voters: ['user_1', 'user_2', 'user_3'],
       ),
       PollOption(
         id: 'option-trip-2-2',
         title: 'Modern hotel',
-        votes: 2,
         voters: ['user_4', 'user_5'],
       ),
       PollOption(
         id: 'option-trip-2-3',
         title: 'Vacation rental/Airbnb',
-        votes: 4,
         voters: ['user_1', 'user_3', 'user_5', 'user_6'],
       ),
       PollOption(
         id: 'option-trip-2-4',
         title: 'Hostel',
-        votes: 1,
         voters: ['user_6'],
       ),
     ],

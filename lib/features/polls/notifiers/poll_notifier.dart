@@ -131,7 +131,6 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
         options: poll.options.map((option) {
           if (option.id == optionId) {
             return option.copyWith(
-              votes: option.votes - 1,
               voters: option.voters.where((voter) => voter != userId).toList(),
             );
           }
@@ -145,7 +144,6 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
         final updatedOptions = poll.options.map((option) {
           if (option.voters.contains(userId)) {
             return option.copyWith(
-              votes: option.votes - 1,
               voters: option.voters.where((voter) => voter != userId).toList(),
             );
           }
@@ -156,7 +154,6 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
         final finalOptions = updatedOptions.map((option) {
           if (option.id == optionId) {
             return option.copyWith(
-              votes: option.votes + 1,
               voters: [...option.voters, userId],
             );
           }
@@ -170,7 +167,6 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
           options: poll.options.map((option) {
             if (option.id == optionId) {
               return option.copyWith(
-                votes: option.votes + 1,
                 voters: [...option.voters, userId],
               );
             }
