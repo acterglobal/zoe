@@ -240,12 +240,5 @@
     "endPoll": "પોલ સમાપ્ત કરો",
     "@endPoll": {},
     "noPollsFound": "કોઈ પોલ મળ્યા નથી!",
-    "@noPollsFound": {},
-    "activePolls": "સક્રિય પોલ્સ",
-    "@activePolls": {},
-    "inactivePolls": "સક્રિય પોલ્સ નથી",
-    "@inactivePolls": {},
-    "completedPolls": "પૂર્ણ પોલ્સ",
-    "@completedPolls": {}
-
+    "@noPollsFound": {}
 }

@@ -274,12 +274,5 @@
     "endPoll": "End Poll",
     "@endPoll": {},
     "noPollsFound": "No polls found!",
-    "@noPollsFound": {},
-    "activePolls": "Active Polls",
-    "@activePolls": {},
-    "inactivePolls": "Inactive Polls",
-    "@inactivePolls": {},
-    "completedPolls": "Completed Polls",
-    "@ended": {}
-
+    "@noPollsFound": {}
 }

@@ -1,15 +1,27 @@
 import 'package:zoe/features/polls/models/poll_model.dart';
 
-enum PollStatus { notStarted, started, ended }
+enum PollStatus {
+  notStarted,
+  started,
+  ended;
+
+  String get name => switch (this) {
+    notStarted => 'Not Started',
+    started => 'Started',
+    ended => 'Ended',
+  };
+}
 
 class PollUtils {
   static PollStatus getPollStatus(PollModel poll) {
     final now = DateTime.now();
-    
+
     if (poll.startDate == null && poll.endDate == null) {
       return PollStatus.notStarted;
     } else if (poll.startDate != null && poll.endDate == null) {
-      return now.isAfter(poll.startDate!) ? PollStatus.started : PollStatus.notStarted;
+      return now.isAfter(poll.startDate!)
+          ? PollStatus.started
+          : PollStatus.notStarted;
     } else if (poll.startDate != null && poll.endDate != null) {
       if (now.isBefore(poll.startDate!)) {
         return PollStatus.notStarted;

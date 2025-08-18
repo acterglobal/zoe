@@ -9,6 +9,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_glassy_tab_widget.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -53,7 +54,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
       automaticallyImplyLeading: false,
       title: ZoeAppBar(title: L10n.of(context).polls),
       bottom: ZoeGlassyTabWidget(
-        tabTexts: [L10n.of(context).inactivePolls, L10n.of(context).activePolls, L10n.of(context).completedPolls],
+        tabTexts: [PollStatus.notStarted.name, PollStatus.started.name, PollStatus.ended.name],
           selectedIndex: _tabController.index,
           onTabChanged: (index) => _tabController.animateTo(index),
         ),
