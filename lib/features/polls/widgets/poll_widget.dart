@@ -178,9 +178,7 @@ class PollWidget extends ConsumerWidget {
             ),
           ),
         ),
-        if (PollUtils.isDraft(poll) &&
-            isEditing &&
-            poll.options.length > 1)
+        if (PollUtils.isDraft(poll) && isEditing && poll.options.length > 1)
           Positioned(
             top: -16,
             right: -16,

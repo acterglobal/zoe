@@ -39,5 +39,9 @@ final pollListSearchProvider = Provider<List<PollModel>>((ref) {
 
 final pollVotersProvider = Provider.family<List<String>, String>((ref, pollId) {
   final poll = ref.watch(pollProvider(pollId));
-  return poll?.participants ?? [];
+ 
+  if (poll == null) return [];
+  return poll.options
+      .expand((option) => option.votes.map((vote) => vote.userId))
+      .toList();
 });
