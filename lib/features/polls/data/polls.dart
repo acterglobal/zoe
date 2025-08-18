@@ -9,7 +9,9 @@ final polls = [
     orderIndex: 1,
     question: 'What feature would you like to explore first?',
     startDate: DateTime.now().subtract(const Duration(days: 1)),
-    endDate: DateTime.now().subtract(const Duration(days: 1)), // This poll is ended
+    endDate: DateTime.now().subtract(
+      const Duration(days: 1),
+    ), // This poll is ended
     options: [
       PollOption(
         id: 'option-1-1',
@@ -75,7 +77,9 @@ final polls = [
     parentId: 'sheet-2',
     question: 'Which snacks should we bring for the next game?',
     startDate: DateTime.now().subtract(const Duration(days: 1)),
-    endDate: DateTime.now().subtract(const Duration(days: 2)), // This poll is ended
+    endDate: DateTime.now().subtract(
+      const Duration(days: 2),
+    ), // This poll is ended
     orderIndex: 1,
     options: [
       PollOption(
@@ -103,32 +107,112 @@ final polls = [
         id: 'option-community-1-2',
         title: 'Granola bars',
         votes: [
-          Vote(userId: 'user_1', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_2', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_3', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_4', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_5', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_6', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_7', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_8', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_9', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_10', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_11', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_12', createdAt: DateTime.now(), updatedAt: DateTime.now()),
+          Vote(
+            userId: 'user_1',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_2',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_3',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_4',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_5',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_6',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_7',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_8',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_9',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_10',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_11',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_12',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
         ],
       ),
       PollOption(
         id: 'option-community-1-3',
         title: 'Bananas',
         votes: [
-          Vote(userId: 'user_1', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_2', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_3', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_4', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_5', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_6', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_7', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_8', createdAt: DateTime.now(), updatedAt: DateTime.now()),
+          Vote(
+            userId: 'user_1',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_2',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_3',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_4',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_5',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_6',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_7',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_8',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
         ],
       ),
       PollOption(
@@ -161,9 +245,21 @@ final polls = [
         id: 'option-community-2-1',
         title: 'Monday 4:00 PM',
         votes: [
-          Vote(userId: 'user_1', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_2', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_3', createdAt: DateTime.now(), updatedAt: DateTime.now()),
+          Vote(
+            userId: 'user_1',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_2',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_3',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
           Vote(userId: 'user_4'),
           Vote(userId: 'user_5'),
           Vote(userId: 'user_6'),
@@ -175,9 +271,21 @@ final polls = [
         id: 'option-community-2-2',
         title: 'Tuesday 5:00 PM',
         votes: [
-          Vote(userId: 'user_1', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_2', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_3', createdAt: DateTime.now(), updatedAt: DateTime.now()),
+          Vote(
+            userId: 'user_1',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_2',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_3',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
           Vote(userId: 'user_4'),
           Vote(userId: 'user_5'),
           Vote(userId: 'user_6'),
@@ -193,7 +301,11 @@ final polls = [
         id: 'option-community-2-3',
         title: 'Wednesday 4:30 PM',
         votes: [
-          Vote(userId: 'user_2', createdAt: DateTime.now(), updatedAt: DateTime.now()),
+          Vote(
+            userId: 'user_2',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
           Vote(userId: 'user_5'),
@@ -205,7 +317,11 @@ final polls = [
         id: 'option-community-2-4',
         title: 'Saturday 9:00 AM',
         votes: [
-          Vote(userId: 'user_1', createdAt: DateTime.now(), updatedAt: DateTime.now()),
+          Vote(
+            userId: 'user_1',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
           Vote(userId: 'user_2'),
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
@@ -236,24 +352,96 @@ final polls = [
         id: 'option-inclusive-1-1',
         title: 'Text messages',
         votes: [
-          Vote(userId: 'user_1', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_2', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_3', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_4', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_5', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_6', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_7', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_8', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_9', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_10', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_11', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_12', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_13', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_14', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_15', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_16', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_17', createdAt: DateTime.now(), updatedAt: DateTime.now()),
-          Vote(userId: 'user_18', createdAt: DateTime.now(), updatedAt: DateTime.now()),
+          Vote(
+            userId: 'user_1',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_2',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_3',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_4',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_5',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_6',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_7',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_8',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_9',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_10',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_11',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_12',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_13',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_14',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_15',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_16',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_17',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+          Vote(
+            userId: 'user_18',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
         ],
       ),
       PollOption(
@@ -416,12 +604,41 @@ final polls = [
       PollOption(
         id: 'option-trip-2-4',
         title: 'Hostel',
-        votes: [
-          Vote(userId: 'user_6'),
-        ],
+        votes: [Vote(userId: 'user_6')],
       ),
     ],
     isMultipleChoice: false,
     createdBy: 'user_5',
+  ),
+
+  PollModel(
+    id: 'poll-test-1',
+    sheetId: 'sheet-1',
+    parentId: 'sheet-1',
+    question: 'What is your favorite color?',
+    isMultipleChoice: true,
+    createdBy: 'user_1',
+    options: [
+      PollOption(
+        id: 'option-test-1-1',
+        title: 'Red',
+      ),
+      PollOption(
+        id: 'option-test-1-2',
+        title: 'Blue',
+      ),
+      PollOption(
+        id: 'option-test-1-3',
+        title: 'Green',
+      ),
+      PollOption(
+        id: 'option-test-1-4',
+        title: 'Yellow',
+      ),
+      PollOption(
+        id: 'option-test-1-5',
+        title: 'Purple',
+      ),
+    ],
   ),
 ];

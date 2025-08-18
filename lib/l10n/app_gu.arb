@@ -238,5 +238,7 @@
     "startPoll": "પોલ શરૂ કરો",
     "@startPoll": {},
     "endPoll": "પોલ સમાપ્ત કરો",
-    "@endPoll": {}
+    "@endPoll": {},
+    "noPollsFound": "કોઈ પોલ મળ્યા નથી!",
+    "@noPollsFound": {}
 }

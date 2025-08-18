@@ -272,5 +272,7 @@
     "startPoll": "Start Poll",
     "@startPoll": {},
     "endPoll": "End Poll",
-    "@endPoll": {}
+    "@endPoll": {},
+    "noPollsFound": "No polls found!",
+    "@noPollsFound": {}
 }
