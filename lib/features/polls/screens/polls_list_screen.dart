@@ -54,7 +54,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
       automaticallyImplyLeading: false,
       title: ZoeAppBar(title: L10n.of(context).polls),
       bottom: ZoeGlassyTabWidget(
-        tabTexts: [PollStatus.drafted.name, PollStatus.active.name, PollStatus.completed.name],
+        tabTexts: [PollStatus.draft.name, PollStatus.active.name, PollStatus.completed.name],
           selectedIndex: _tabController.index,
           onTabChanged: (index) => _tabController.animateTo(index),
         ),

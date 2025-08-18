@@ -15,17 +15,17 @@ final pollProvider = Provider.family<PollModel?, String>((ref, pollId) {
 
 final notActivePollListProvider = Provider<List<PollModel>>((ref) {
   final pollList = ref.watch(pollListProvider);
-  return pollList.where((p) => PollUtils.isNotStarted(p)).toList();
+  return pollList.where((p) => PollUtils.isDraft(p)).toList();
 });
 
 final activePollListProvider = Provider<List<PollModel>>((ref) {
   final pollList = ref.watch(pollListProvider);
-  return pollList.where((p) => PollUtils.isStarted(p)).toList();
+  return pollList.where((p) => PollUtils.isActive(p)).toList();
 });
 
 final completedPollListProvider = Provider<List<PollModel>>((ref) {
   final pollList = ref.watch(pollListProvider);
-  return pollList.where((p) => PollUtils.isEnded(p)).toList();
+  return pollList.where((p) => PollUtils.isCompleted(p)).toList();
 });
 
 final pollListSearchProvider = Provider<List<PollModel>>((ref) {

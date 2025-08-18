@@ -40,7 +40,7 @@ class PollWidget extends ConsumerWidget {
         _buildPollOptionsList(context, ref, poll),
         const SizedBox(height: 12),
         _buildPollActions(context, ref, poll),
-        if (PollUtils.isEnded(poll))
+        if (PollUtils.isCompleted(poll))
           _buildPollClosedMessage(context, ref, poll),
       ],
     );
@@ -63,7 +63,7 @@ class PollWidget extends ConsumerWidget {
           child: ZoeInlineTextEditWidget(
             hintText: L10n.of(context).pollTitle,
             text: poll.question,
-            isEditing: PollUtils.isNotStarted(poll) && isEditing,
+            isEditing: PollUtils.isDraft(poll) && isEditing,
             textInputAction: TextInputAction.next,
             textStyle: Theme.of(
               context,
@@ -126,7 +126,7 @@ class PollWidget extends ConsumerWidget {
       clipBehavior: Clip.none,
       children: [
         GestureDetector(
-          onTap: PollUtils.isStarted(poll)
+          onTap: PollUtils.isActive(poll)
               ? () {
                   final currentUserId = ref.read(loggedInUserProvider).value;
                   if (currentUserId != null) {
@@ -177,7 +177,7 @@ class PollWidget extends ConsumerWidget {
             ),
           ),
         ),
-        if (PollUtils.isNotStarted(poll) &&
+        if (PollUtils.isDraft(poll) &&
             isEditing &&
             poll.options.length > 1)
           Positioned(
@@ -210,7 +210,7 @@ class PollWidget extends ConsumerWidget {
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).enterOptionText,
       text: option.title,
-      isEditing: PollUtils.isNotStarted(poll) && isEditing,
+      isEditing: PollUtils.isDraft(poll) && isEditing,
       textStyle: Theme.of(
         context,
       ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
@@ -299,19 +299,19 @@ class PollWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (PollUtils.isNotStarted(poll) && isEditing)
+            if (PollUtils.isDraft(poll) && isEditing)
               addPollOptionWidget(context, ref, poll),
-            if (PollUtils.isNotStarted(poll)) ...[
+            if (PollUtils.isDraft(poll)) ...[
               const Spacer(),
               startPollButtonWidget(context, ref, poll),
             ],
-            if (PollUtils.isStarted(poll) && !isEditing) ...[
+            if (PollUtils.isActive(poll) && !isEditing) ...[
               const Spacer(),
               endPollButtonWidget(context, ref, poll),
             ],
           ],
         ),
-        if (PollUtils.isNotStarted(poll) && isEditing) ...[
+        if (PollUtils.isDraft(poll) && isEditing) ...[
           const SizedBox(height: 12),
           choiceTypeSelectorWidget(context, ref, poll),
         ],
@@ -324,7 +324,7 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
   ) {
-    if (PollUtils.isStarted(poll)) return const SizedBox.shrink();
+    if (PollUtils.isActive(poll)) return const SizedBox.shrink();
     final theme = Theme.of(context);
     return GlassyContainer(
       padding: const EdgeInsets.all(8),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 
 enum PollStatus {
-  drafted,
+  draft,
   active,
   completed;
 
   String get name => switch (this) {
-    drafted => 'Drafted',
+    draft => 'Draft',
     active => 'Active',
     completed => 'Completed',
   };
@@ -18,35 +18,35 @@ class PollUtils {
     final now = DateTime.now();
 
     if (poll.startDate == null && poll.endDate == null) {
-      return PollStatus.drafted;
+      return PollStatus.draft;
     } else if (poll.startDate != null && poll.endDate == null) {
       return now.isAfter(poll.startDate!)
           ? PollStatus.active
-          : PollStatus.drafted;
+          : PollStatus.draft;
     } else if (poll.startDate != null && poll.endDate != null) {
       if (now.isBefore(poll.startDate!)) {
-        return PollStatus.drafted;
+        return PollStatus.draft;
       } else if (now.isAfter(poll.endDate!)) {
         return PollStatus.completed;
       } else {
         return PollStatus.active;
       }
     }
-    return PollStatus.drafted;
+    return PollStatus.draft;
   }
 
   /// Checks if a poll has started
-  static bool isStarted(PollModel poll) {
+  static bool isActive(PollModel poll) {
     return getPollStatus(poll) == PollStatus.active;
   }
 
   /// Checks if a poll has not started yet
-  static bool isNotStarted(PollModel poll) {
-    return getPollStatus(poll) == PollStatus.drafted;
+  static bool isDraft(PollModel poll) {
+    return getPollStatus(poll) == PollStatus.draft;
   }
 
   /// Checks if a poll has ended
-  static bool isEnded(PollModel poll) {
+  static bool isCompleted(PollModel poll) {
     return getPollStatus(poll) == PollStatus.completed;
   }
 
