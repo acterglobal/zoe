@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 
 enum PollStatus {
@@ -47,5 +48,29 @@ class PollUtils {
   /// Checks if a poll has ended
   static bool isEnded(PollModel poll) {
     return getPollStatus(poll) == PollStatus.completed;
+  }
+
+  /// Get a color from option index
+  static Color getColorFromOptionIndex(int optionIndex) {
+    final colors = [
+      Colors.pink,
+      Colors.blue,
+      Colors.orange,
+      Colors.purple,
+      Colors.green,
+      Colors.red,
+      Colors.indigo,
+      Colors.teal,
+      Colors.amber,
+      Colors.deepPurple,
+      Colors.brown,
+      Colors.cyan,
+      Colors.deepOrange,
+      Colors.lightBlue,
+      Colors.lightGreen,
+    ];
+
+    // Color based on option index
+    return colors[optionIndex % colors.length];
   }
 }
