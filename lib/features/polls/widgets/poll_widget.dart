@@ -5,6 +5,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
@@ -39,7 +40,7 @@ class PollWidget extends ConsumerWidget {
         _buildPollOptionsList(context, ref, poll),
         const SizedBox(height: 12),
         _buildPollActions(context, ref, poll),
-        if (poll.isEnded) _buildPollClosedMessage(context, ref, poll),
+        if (PollUtils.isEnded(poll)) _buildPollClosedMessage(context, ref, poll),
       ],
     );
   }
@@ -61,7 +62,7 @@ class PollWidget extends ConsumerWidget {
           child: ZoeInlineTextEditWidget(
             hintText: L10n.of(context).pollTitle,
             text: poll.question,
-            isEditing: poll.isNotStarted && isEditing,
+            isEditing: PollUtils.isNotStarted(poll) && isEditing,
             textInputAction: TextInputAction.next,
             textStyle: Theme.of(
               context,
@@ -117,7 +118,7 @@ class PollWidget extends ConsumerWidget {
       clipBehavior: Clip.none,
       children: [
         GestureDetector(
-          onTap: poll.isStarted
+          onTap: PollUtils.isStarted(poll)
               ? () {
                   final currentUserId = ref.read(loggedInUserProvider).value;
                   if (currentUserId != null) {
@@ -163,7 +164,7 @@ class PollWidget extends ConsumerWidget {
             ),
           ),
         ),
-        if (poll.isNotStarted && isEditing && poll.options.length > 1)
+        if (PollUtils.isNotStarted(poll) && isEditing && poll.options.length > 1)
           Positioned(
             top: -16,
             right: -16,
@@ -194,7 +195,7 @@ class PollWidget extends ConsumerWidget {
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).enterOptionText,
       text: option.title,
-      isEditing: poll.isNotStarted && isEditing,
+      isEditing: PollUtils.isNotStarted(poll) && isEditing,
       textStyle: Theme.of(
         context,
       ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
@@ -282,17 +283,17 @@ class PollWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (poll.isNotStarted && isEditing) ...[
+            if (PollUtils.isNotStarted(poll) && isEditing) ...[
               addPollOptionWidget(context, ref, poll),
               startPollButtonWidget(context, ref, poll),
             ],
-            if (poll.isStarted && !isEditing) ...[
+            if (PollUtils.isStarted(poll) && !isEditing) ...[
               const Spacer(),
               endPollButtonWidget(context, ref, poll),
             ],
           ],
         ),
-        if (poll.isNotStarted && isEditing) ...[
+        if (PollUtils.isNotStarted(poll) && isEditing) ...[
           const SizedBox(height: 12),
           choiceTypeSelectorWidget(context, ref, poll),
         ],
@@ -305,7 +306,7 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
   ) {
-    if (poll.isStarted) return const SizedBox.shrink();
+    if (PollUtils.isStarted(poll)) return const SizedBox.shrink();
     final theme = Theme.of(context);
     return GlassyContainer(
       padding: const EdgeInsets.all(8),

@@ -9,7 +9,7 @@ final polls = [
     orderIndex: 1,
     question: 'What feature would you like to explore first?',
     startDate: DateTime.now().subtract(const Duration(days: 1)),
-    endDate: DateTime.now().add(const Duration(days: 7)),
+    endDate: DateTime.now().subtract(const Duration(days: 1)), // This poll is ended
     options: [
       PollOption(
         id: 'option-1-1',
@@ -65,7 +65,6 @@ final polls = [
       ),
     ],
     isMultipleChoice: false,
-    status: PollStatus.started,
     createdBy: 'user_1',
   ),
 
@@ -76,7 +75,7 @@ final polls = [
     parentId: 'sheet-2',
     question: 'Which snacks should we bring for the next game?',
     startDate: DateTime.now().subtract(const Duration(days: 1)),
-    endDate: DateTime.now().add(const Duration(days: 7)),
+    endDate: DateTime.now().subtract(const Duration(days: 2)), // This poll is ended
     orderIndex: 1,
     options: [
       PollOption(
@@ -146,7 +145,6 @@ final polls = [
       ),
     ],
     isMultipleChoice: true,
-    status: PollStatus.ended,
     createdBy: 'user_1',
   ),
 
@@ -221,7 +219,6 @@ final polls = [
       ),
     ],
     isMultipleChoice: true,
-    status: PollStatus.started,
     createdBy: 'user_1',
   ),
 
@@ -311,7 +308,6 @@ final polls = [
       ),
     ],
     isMultipleChoice: false,
-    status: PollStatus.started,
     createdBy: 'user_6',
   ),
 
@@ -378,7 +374,6 @@ final polls = [
       ),
     ],
     isMultipleChoice: true,
-    status: PollStatus.ended,
     createdBy: 'user_5',
   ),
 
@@ -427,7 +422,6 @@ final polls = [
       ),
     ],
     isMultipleChoice: false,
-    status: PollStatus.ended,
     createdBy: 'user_5',
   ),
 ];

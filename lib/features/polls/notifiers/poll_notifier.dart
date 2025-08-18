@@ -35,7 +35,6 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
             ]
           : options,
       isMultipleChoice: isMultipleChoice,
-      status: PollStatus.notStarted,
       createdBy: createdBy,
     );
 
@@ -131,7 +130,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
         options: poll.options.map((option) {
           if (option.id == optionId) {
             return option.copyWith(
-              votes: option.votes.where((vote) => vote.userId != userId).toList(),
+              votes: option.votes.where((voter) => voter.userId != userId).toList(),
             );
           }
           return option;
@@ -191,7 +190,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
     state = [
       for (final poll in state)
         if (poll.id == pollId)
-          poll.copyWith(status: PollStatus.ended, endDate: DateTime.now())
+          poll.copyWith(endDate: DateTime.now())
         else
           poll,
     ];
@@ -201,7 +200,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
     state = [
       for (final poll in state)
         if (poll.id == pollId)
-          poll.copyWith(status: PollStatus.started, startDate: DateTime.now())
+          poll.copyWith(startDate: DateTime.now())
         else
           poll,
     ];

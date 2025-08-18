@@ -48,15 +48,12 @@ class Vote{
   }
 }
 
-enum PollStatus { notStarted, started, ended }
-
 class PollModel extends ContentModel {
   final String question;
   final List<PollOption> options;
-  final DateTime startDate;
+  final DateTime? startDate;
   final DateTime? endDate;
   final bool isMultipleChoice;
-  final PollStatus status;
 
   PollModel({
     /// ContentModel properties
@@ -71,10 +68,9 @@ class PollModel extends ContentModel {
     /// PollModel properties
     required this.question,
     required this.options,
-    required this.startDate,
+    this.startDate,
     this.endDate,
     this.isMultipleChoice = false,
-    this.status = PollStatus.notStarted,
   }) : super(type: ContentType.poll, emoji: '📊', title: question);
 
   PollModel copyWith({
@@ -93,7 +89,6 @@ class PollModel extends ContentModel {
     DateTime? startDate,
     DateTime? endDate,
     bool? isMultipleChoice,
-    PollStatus? status,
   }) {
     return PollModel(
       /// ContentModel properties
@@ -111,15 +106,8 @@ class PollModel extends ContentModel {
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       isMultipleChoice: isMultipleChoice ?? this.isMultipleChoice,
-      status: status ?? this.status,
     );
   }
 
   int get totalVotes => options.fold(0, (sum, option) => sum + option.votes.length);
-
-  bool get isStarted => status == PollStatus.started;
-
-  bool get isNotStarted => status == PollStatus.notStarted;
-
-  bool get isEnded => status == PollStatus.ended;
 }
