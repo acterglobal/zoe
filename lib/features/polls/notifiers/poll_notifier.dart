@@ -15,6 +15,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
     required String sheetId,
     List<PollOption> options = const [],
     bool isMultipleChoice = false,
+    DateTime? startDate,
     DateTime? endDate,
     int? orderIndex,
   }) async {
@@ -26,7 +27,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
       question: question,
       sheetId: sheetId,
       orderIndex: orderIndex,
-      startDate: DateTime.now(),
+      startDate: startDate,
       endDate: endDate,
       options: options.isEmpty
           ? [

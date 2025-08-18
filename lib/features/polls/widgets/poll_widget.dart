@@ -40,7 +40,8 @@ class PollWidget extends ConsumerWidget {
         _buildPollOptionsList(context, ref, poll),
         const SizedBox(height: 12),
         _buildPollActions(context, ref, poll),
-        if (PollUtils.isEnded(poll)) _buildPollClosedMessage(context, ref, poll),
+        if (PollUtils.isEnded(poll))
+          _buildPollClosedMessage(context, ref, poll),
       ],
     );
   }
@@ -108,9 +109,13 @@ class PollWidget extends ConsumerWidget {
     PollOption option,
   ) {
     final totalVotes = poll.totalVotes;
-    final percentage = totalVotes > 0 ? (option.votes.length / totalVotes) * 100 : 0.0;
+    final percentage = totalVotes > 0
+        ? (option.votes.length / totalVotes) * 100
+        : 0.0;
     final currentUserId = ref.watch(loggedInUserProvider).value;
-    final isVoted = currentUserId != null && option.votes.any((vote) => vote.userId == currentUserId);
+    final isVoted =
+        currentUserId != null &&
+        option.votes.any((vote) => vote.userId == currentUserId);
     final color = AppColors.brightMagentaColor;
     final theme = Theme.of(context);
 
@@ -154,7 +159,11 @@ class PollWidget extends ConsumerWidget {
                     children: [
                       _buildEditableOptionText(context, ref, poll, option),
                       const SizedBox(height: 2),
-                      _buildVoteProgress(context, percentage, option.votes.length),
+                      _buildVoteProgress(
+                        context,
+                        percentage,
+                        option.votes.length,
+                      ),
                     ],
                   ),
                 ),
@@ -164,7 +173,9 @@ class PollWidget extends ConsumerWidget {
             ),
           ),
         ),
-        if (PollUtils.isNotStarted(poll) && isEditing && poll.options.length > 1)
+        if (PollUtils.isNotStarted(poll) &&
+            isEditing &&
+            poll.options.length > 1)
           Positioned(
             top: -16,
             right: -16,
@@ -283,8 +294,10 @@ class PollWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (PollUtils.isNotStarted(poll) && isEditing) ...[
+            if (PollUtils.isNotStarted(poll) && isEditing)
               addPollOptionWidget(context, ref, poll),
+            if (PollUtils.isNotStarted(poll)) ...[
+              const Spacer(),
               startPollButtonWidget(context, ref, poll),
             ],
             if (PollUtils.isStarted(poll) && !isEditing) ...[
