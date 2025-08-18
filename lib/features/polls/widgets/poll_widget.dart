@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
@@ -116,7 +117,7 @@ class PollWidget extends ConsumerWidget {
     final isVoted =
         currentUserId != null &&
         option.votes.any((vote) => vote.userId == currentUserId);
-    final color = AppColors.brightMagentaColor;
+    final color = CommonUtils().getRandomColorFromName(option.title);
     final theme = Theme.of(context);
 
     return Stack(
@@ -162,13 +163,13 @@ class PollWidget extends ConsumerWidget {
                       _buildVoteProgress(
                         context,
                         percentage,
-                        option.votes.length,
+                        option
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(width: 12),
-                _buildVoteCount(context, option.votes.length, isVoted),
+                _buildVoteCount(context, option, isVoted),
               ],
             ),
           ),
@@ -221,10 +222,10 @@ class PollWidget extends ConsumerWidget {
   Widget _buildVoteProgress(
     BuildContext context,
     double percentage,
-    int votes,
+    PollOption option,
   ) {
-    if (votes == 0) return const SizedBox.shrink();
-    final color = AppColors.brightMagentaColor;
+    if (option.votes.isEmpty) return const SizedBox.shrink();
+    final color = CommonUtils().getRandomColorFromName(option.title);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -350,8 +351,8 @@ class PollWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildVoteCount(BuildContext context, int votes, bool isVoted) {
-    final color = AppColors.brightMagentaColor;
+  Widget _buildVoteCount(BuildContext context, PollOption option, bool isVoted) {
+    final color = CommonUtils().getRandomColorFromName(option.title);
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(5),
@@ -368,7 +369,7 @@ class PollWidget extends ConsumerWidget {
         shape: BoxShape.circle,
       ),
       child: Text(
-        '$votes',
+        '${option.votes.length}',
         style: theme.textTheme.bodySmall?.copyWith(
           color: isVoted ? color : theme.colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w600,
