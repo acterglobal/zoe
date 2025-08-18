@@ -8,6 +8,7 @@ import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/features/users/widgets/user_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class PollWidget extends ConsumerWidget {
@@ -109,7 +110,8 @@ class PollWidget extends ConsumerWidget {
     final totalVotes = poll.totalVotes;
     final percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0.0;
     final currentUserId = ref.watch(loggedInUserProvider).value;
-    final isVoted = currentUserId != null && option.voters.contains(currentUserId);
+    final isVoted =
+        currentUserId != null && option.voters.contains(currentUserId);
     final color = AppColors.brightMagentaColor;
     final theme = Theme.of(context);
 
@@ -252,23 +254,36 @@ class PollWidget extends ConsumerWidget {
   ) {
     final l10n = L10n.of(context);
     final theme = Theme.of(context);
-    return Row(
-      children: [
-        Icon(
-          poll.totalVotes == 1 ? Icons.person_outline : Icons.people_outline,
-          size: 16,
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
-        const SizedBox(width: 4),
-        Text(
-          poll.totalVotes == 1
-              ? l10n.vote(poll.totalVotes)
-              : l10n.votes(poll.totalVotes),
-          style: theme.textTheme.bodySmall?.copyWith(
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: theme.colorScheme.surface,
+          builder: (context) => UserListWidget(
+            userIdList: pollVotersProvider(pollId),
+            title: l10n.votersOfThisPoll,
+          ),
+        );
+      },
+      child: Row(
+        children: [
+          Icon(
+            poll.totalVotes == 1 ? Icons.person_outline : Icons.people_outline,
+            size: 16,
             color: theme.colorScheme.onSurfaceVariant,
           ),
-        ),
-      ],
+          const SizedBox(width: 4),
+          Text(
+            poll.totalVotes == 1
+                ? l10n.vote(poll.totalVotes)
+                : l10n.votes(poll.totalVotes),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

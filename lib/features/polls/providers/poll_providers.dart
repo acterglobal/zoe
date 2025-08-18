@@ -30,3 +30,8 @@ final pollListSearchProvider = Provider<List<PollModel>>((ref) {
     return poll.question.toLowerCase().contains(searchValue.toLowerCase());
   }).toList();
 });
+
+final pollVotersProvider = Provider.family<List<String>, String>((ref, pollId) {
+  final poll = ref.watch(pollProvider(pollId));
+  return poll?.participants ?? [];
+});

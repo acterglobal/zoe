@@ -244,6 +244,8 @@
     "started": "सक्रिय पोल्स",
     "@started": {},
     "ended": "समाप्त पोल्स",
-    "@ended": {}
+    "@ended": {},
+    "votersOfThisPoll": "इस पोल के वोटर्स",
+    "@votersOfThisPoll": {}
 
 }

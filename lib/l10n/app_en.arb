@@ -278,6 +278,8 @@
     "started": "Active Polls",
     "@started": {},
     "ended": "Completed Polls",
-    "@ended": {}
+    "@ended": {},
+    "votersOfThisPoll": "Voters of this poll",
+    "@votersOfThisPoll": {}
 
 }
