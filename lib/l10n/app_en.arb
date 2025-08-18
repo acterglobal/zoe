@@ -275,9 +275,11 @@
     "@endPoll": {},
     "noPollsFound": "No polls found!",
     "@noPollsFound": {},
-    "started": "Active Polls",
-    "@started": {},
-    "ended": "Completed Polls",
+    "activePolls": "Active Polls",
+    "@activePolls": {},
+    "inactivePolls": "Inactive Polls",
+    "@inactivePolls": {},
+    "completedPolls": "Completed Polls",
     "@ended": {}
 
 }

@@ -241,9 +241,11 @@
     "@endPoll": {},
     "noPollsFound": "કોઈ પોલ મળ્યા નથી!",
     "@noPollsFound": {},
-    "started": "સક્રિય પોલ્સ",
-    "@started": {},
-    "ended": "સમાપ્ત પોલ્સ",
-    "@ended": {}
+    "activePolls": "સક્રિય પોલ્સ",
+    "@activePolls": {},
+    "inactivePolls": "સક્રિય પોલ્સ નથી",
+    "@inactivePolls": {},
+    "completedPolls": "પૂર્ણ પોલ્સ",
+    "@completedPolls": {}
 
 }

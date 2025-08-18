@@ -610,4 +610,35 @@ final polls = [
     isMultipleChoice: false,
     createdBy: 'user_5',
   ),
+
+  PollModel(
+    id: 'poll-test-1',
+    sheetId: 'sheet-1',
+    parentId: 'sheet-1',
+    question: 'What is your favorite color?',
+    isMultipleChoice: true,
+    createdBy: 'user_1',
+    options: [
+      PollOption(
+        id: 'option-test-1-1',
+        title: 'Red',
+      ),
+      PollOption(
+        id: 'option-test-1-2',
+        title: 'Blue',
+      ),
+      PollOption(
+        id: 'option-test-1-3',
+        title: 'Green',
+      ),
+      PollOption(
+        id: 'option-test-1-4',
+        title: 'Yellow',
+      ),
+      PollOption(
+        id: 'option-test-1-5',
+        title: 'Purple',
+      ),
+    ],
+  ),
 ];

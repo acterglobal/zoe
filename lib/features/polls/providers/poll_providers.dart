@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/notifiers/poll_notifier.dart';
+import 'package:zoe/features/polls/utils/poll_utils.dart';
 
 final pollListProvider = StateNotifierProvider<PollNotifier, List<PollModel>>(
   (ref) => PollNotifier(ref),
@@ -12,14 +13,19 @@ final pollProvider = Provider.family<PollModel?, String>((ref, pollId) {
   return pollList.where((p) => p.id == pollId).firstOrNull;
 });
 
-final startedPollListProvider = Provider<List<PollModel>>((ref) {
+final notActivePollListProvider = Provider<List<PollModel>>((ref) {
   final pollList = ref.watch(pollListProvider);
-  return pollList.where((p) => p.status == PollStatus.started).toList();
+  return pollList.where((p) => PollUtils.isNotStarted(p)).toList();
 });
 
-final endedPollListProvider = Provider<List<PollModel>>((ref) {
+final activePollListProvider = Provider<List<PollModel>>((ref) {
   final pollList = ref.watch(pollListProvider);
-  return pollList.where((p) => p.status == PollStatus.ended).toList();
+  return pollList.where((p) => PollUtils.isStarted(p)).toList();
+});
+
+final completedPollListProvider = Provider<List<PollModel>>((ref) {
+  final pollList = ref.watch(pollListProvider);
+  return pollList.where((p) => PollUtils.isEnded(p)).toList();
 });
 
 final pollListSearchProvider = Provider<List<PollModel>>((ref) {

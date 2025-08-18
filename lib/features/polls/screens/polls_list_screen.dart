@@ -27,7 +27,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       setState(() {}); // Rebuild UI when tab changes
     });
@@ -53,7 +53,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
       automaticallyImplyLeading: false,
       title: ZoeAppBar(title: L10n.of(context).polls),
       bottom: ZoeGlassyTabWidget(
-        tabTexts: [L10n.of(context).started, L10n.of(context).ended],
+        tabTexts: [L10n.of(context).inactivePolls, L10n.of(context).activePolls, L10n.of(context).completedPolls],
           selectedIndex: _tabController.index,
           onTabChanged: (index) => _tabController.animateTo(index),
         ),
@@ -81,7 +81,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [_buildStartedPollsTab(), _buildEndedPollsTab()],
+              children: [_buildNotActivePollsTab(), _buildActivePollsTab(), _buildCompletedPollsTab()],
             ),
           ),
         ],
@@ -89,17 +89,24 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
     );
   }
 
-  Widget _buildStartedPollsTab() {
+  Widget _buildNotActivePollsTab() {
     return MaxWidthWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: _buildPollList(context, ref, startedPollListProvider, true),
+      child: _buildPollList(context, ref, notActivePollListProvider, false),
     );
   }
 
-  Widget _buildEndedPollsTab() {
+  Widget _buildActivePollsTab() {
     return MaxWidthWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: _buildPollList(context, ref, endedPollListProvider, false),
+      child: _buildPollList(context, ref, activePollListProvider, true),
+    );
+  }
+
+  Widget _buildCompletedPollsTab() {
+    return MaxWidthWidget(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: _buildPollList(context, ref, completedPollListProvider, false),
     );
   }
 

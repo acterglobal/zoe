@@ -63,7 +63,7 @@ class ZoeGlassyTabWidget extends StatelessWidget
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.all(4),
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.primaryColor.withValues(alpha: 0.2)
@@ -83,7 +83,7 @@ class ZoeGlassyTabWidget extends StatelessWidget
                     context,
                   ).colorScheme.onSurface.withValues(alpha: 0.6),
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-            fontSize: 14,
+            fontSize: 12,
           ),
         ),
       ),
