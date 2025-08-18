@@ -107,9 +107,9 @@ class PollWidget extends ConsumerWidget {
     PollOption option,
   ) {
     final totalVotes = poll.totalVotes;
-    final percentage = totalVotes > 0 ? (option.voters.length / totalVotes) * 100 : 0.0;
+    final percentage = totalVotes > 0 ? (option.votes.length / totalVotes) * 100 : 0.0;
     final currentUserId = ref.watch(loggedInUserProvider).value;
-    final isVoted = currentUserId != null && option.voters.contains(currentUserId);
+    final isVoted = currentUserId != null && option.votes.any((vote) => vote.userId == currentUserId);
     final color = AppColors.brightMagentaColor;
     final theme = Theme.of(context);
 
@@ -153,12 +153,12 @@ class PollWidget extends ConsumerWidget {
                     children: [
                       _buildEditableOptionText(context, ref, poll, option),
                       const SizedBox(height: 2),
-                      _buildVoteProgress(context, percentage, option.voters.length),
+                      _buildVoteProgress(context, percentage, option.votes.length),
                     ],
                   ),
                 ),
                 const SizedBox(width: 12),
-                _buildVoteCount(context, option.voters.length, isVoted),
+                _buildVoteCount(context, option.votes.length, isVoted),
               ],
             ),
           ),

@@ -122,7 +122,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
   PollModel _updatePollVotes(PollModel poll, String optionId, String userId) {
     // Check if user has already voted on this option
     final hasVotedOnOption = poll.options.any(
-      (option) => option.id == optionId && option.voters.contains(userId),
+      (option) => option.id == optionId && option.votes.any((vote) => vote.userId == userId),
     );
 
     if (hasVotedOnOption) {
@@ -131,7 +131,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
         options: poll.options.map((option) {
           if (option.id == optionId) {
             return option.copyWith(
-              voters: option.voters.where((voter) => voter != userId).toList(),
+              votes: option.votes.where((vote) => vote.userId != userId).toList(),
             );
           }
           return option;
@@ -142,9 +142,9 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
       if (!poll.isMultipleChoice) {
         // For single choice, remove all previous votes from this user
         final updatedOptions = poll.options.map((option) {
-          if (option.voters.contains(userId)) {
+          if (option.votes.any((vote) => vote.userId == userId)) {
             return option.copyWith(
-              voters: option.voters.where((voter) => voter != userId).toList(),
+              votes: option.votes.where((vote) => vote.userId != userId).toList(),
             );
           }
           return option;
@@ -154,7 +154,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
         final finalOptions = updatedOptions.map((option) {
           if (option.id == optionId) {
             return option.copyWith(
-              voters: [...option.voters, userId],
+              votes: [...option.votes, Vote(userId: userId)],
             );
           }
           return option;
@@ -167,7 +167,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
           options: poll.options.map((option) {
             if (option.id == optionId) {
               return option.copyWith(
-                voters: [...option.voters, userId],
+                votes: [...option.votes, Vote(userId: userId)],
               );
             }
             return option;

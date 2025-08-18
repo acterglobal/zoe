@@ -3,23 +3,47 @@ import 'package:zoe/features/content/models/content_model.dart';
 class PollOption {
   final String id;
   final String title;
-  final List<String> voters;
+  final List<Vote> votes;
 
   const PollOption({
     required this.id,
     required this.title,
-    this.voters = const [],
+    this.votes = const [],
   });
 
   PollOption copyWith({
     String? id,
     String? title,
-    List<String>? voters,
+    List<Vote>? votes,
   }) {
     return PollOption(
       id: id ?? this.id,
       title: title ?? this.title,
-      voters: voters ?? this.voters,
+      votes: votes ?? this.votes,
+    );
+  }
+}
+
+class Vote{
+  final String userId;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  Vote({
+    required this.userId,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  Vote copyWith({ 
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return Vote(
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }
@@ -95,7 +119,7 @@ class PollModel extends ContentModel {
     );
   }
 
-  int get totalVotes => options.fold(0, (sum, option) => sum + option.voters.length);
+  int get totalVotes => options.fold(0, (sum, option) => sum + option.votes.length);
 
   bool get isStarted => status == PollStatus.started;
 
