@@ -1,7 +1,7 @@
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 
-enum ContentType { text, event, list, task, bullet, link, document }
+enum ContentType { text, event, list, task, bullet, link, document, poll }
 
 abstract class ContentModel {
   final ContentType type;

@@ -13,6 +13,7 @@ class AddContentWidget extends ConsumerWidget {
   final VoidCallback onTapToDoList;
   final VoidCallback onTapLink;
   final VoidCallback onTapDocument;
+  final VoidCallback onTapPoll;
 
   const AddContentWidget({
     super.key,
@@ -23,6 +24,7 @@ class AddContentWidget extends ConsumerWidget {
     required this.onTapToDoList,
     required this.onTapLink,
     required this.onTapDocument,
+    required this.onTapPoll,
   });
 
   @override
@@ -62,6 +64,10 @@ class AddContentWidget extends ConsumerWidget {
               _toggleMenu(ref);
               onTapDocument();
             },
+            onTapPoll: () {
+              _toggleMenu(ref);
+              onTapPoll();
+            },
           ),
       ],
     );
@@ -85,7 +91,9 @@ class AddContentWidget extends ConsumerWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              isShowMenu ? L10n.of(context).cancel : L10n.of(context).addContent,
+              isShowMenu
+                  ? L10n.of(context).cancel
+                  : L10n.of(context).addContent,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
               ),

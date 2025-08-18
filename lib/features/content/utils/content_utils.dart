@@ -4,6 +4,7 @@ import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
@@ -72,6 +73,11 @@ void reorderContent(WidgetRef ref, String contentId, int newOrderIndex) {
       ref
           .read(documentListProvider.notifier)
           .updateDocumentOrderIndex(contentId, newOrderIndex);
+      break;
+    case ContentType.poll:
+      ref
+          .read(pollListProvider.notifier)
+          .updatePollOrderIndex(contentId, newOrderIndex);
       break;
   }
 }
@@ -185,4 +191,16 @@ void addNewDocumentContent(WidgetRef ref, parentId, String sheetId) {
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(documentListContentModel);
+}
+
+void addNewPollContent(WidgetRef ref, parentId, String sheetId) {
+  final orderIndex = _getNextOrderIndex(ref, parentId);
+  ref
+      .read(pollListProvider.notifier)
+      .addPoll(
+        parentId: parentId,
+        sheetId: sheetId,
+        orderIndex: orderIndex,
+        question: '',
+      );
 }

@@ -75,7 +75,7 @@ final lists = [
     orderIndex: 4,
     createdBy: '',
   ),
-  
+
   // Document Lists for different sheets
   ListModel(
     sheetId: 'sheet-1',
@@ -292,7 +292,7 @@ final lists = [
     title: 'Stress-Reduction Implementation',
     emoji: '😌',
     listType: ContentType.task,
-    orderIndex: 4,  
+    orderIndex: 4,
     createdBy: '',
   ),
   ListModel(

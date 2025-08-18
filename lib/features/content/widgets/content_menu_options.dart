@@ -8,6 +8,7 @@ class ContentMenuOptions extends StatelessWidget {
   final VoidCallback onTapToDoList;
   final VoidCallback onTapLink;
   final VoidCallback onTapDocument;
+  final VoidCallback onTapPoll;
 
   const ContentMenuOptions({
     super.key,
@@ -17,6 +18,7 @@ class ContentMenuOptions extends StatelessWidget {
     required this.onTapToDoList,
     required this.onTapLink,
     required this.onTapDocument,
+    required this.onTapPoll,
   });
 
   @override
@@ -37,7 +39,6 @@ class ContentMenuOptions extends StatelessWidget {
             description: L10n.of(context).startWritingWithPlainText,
             onTap: onTapText,
           ),
-
           _buildAddContentOption(
             context,
             icon: Icons.event_outlined,
@@ -72,6 +73,13 @@ class ContentMenuOptions extends StatelessWidget {
             title: L10n.of(context).document,
             description: L10n.of(context).addADocument,
             onTap: onTapDocument,
+          ),
+          _buildAddContentOption(
+            context,
+            icon: Icons.poll_outlined,
+            title: L10n.of(context).poll,
+            description: L10n.of(context).createAPoll,
+            onTap: onTapPoll,
           ),
         ],
       ),
