@@ -3,41 +3,57 @@ import 'package:zoe/features/content/models/content_model.dart';
 class PollOption {
   final String id;
   final String title;
-  final int votes;
-  final List<String> voters;
+  final List<Vote> votes;
 
   const PollOption({
     required this.id,
     required this.title,
-    this.votes = 0,
-    this.voters = const [],
+    this.votes = const [],
   });
 
   PollOption copyWith({
     String? id,
     String? title,
-    int? votes,
-    List<String>? voters,
+    List<Vote>? votes,
   }) {
     return PollOption(
       id: id ?? this.id,
       title: title ?? this.title,
       votes: votes ?? this.votes,
-      voters: voters ?? this.voters,
     );
   }
 }
 
-enum PollStatus { notStarted, started, ended }
+class Vote{
+  final String userId;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  Vote({
+    required this.userId,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  Vote copyWith({ 
+    String? userId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return Vote(
+      userId: userId ?? this.userId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+}
 
 class PollModel extends ContentModel {
   final String question;
   final List<PollOption> options;
-  final DateTime startDate;
+  final DateTime? startDate;
   final DateTime? endDate;
   final bool isMultipleChoice;
-  final List<String> participants;
-  final PollStatus status;
 
   PollModel({
     /// ContentModel properties
@@ -52,11 +68,9 @@ class PollModel extends ContentModel {
     /// PollModel properties
     required this.question,
     required this.options,
-    required this.startDate,
+    this.startDate,
     this.endDate,
     this.isMultipleChoice = false,
-    this.participants = const [],
-    this.status = PollStatus.notStarted,
   }) : super(type: ContentType.poll, emoji: '📊', title: question);
 
   PollModel copyWith({
@@ -75,8 +89,6 @@ class PollModel extends ContentModel {
     DateTime? startDate,
     DateTime? endDate,
     bool? isMultipleChoice,
-    List<String>? participants,
-    PollStatus? status,
   }) {
     return PollModel(
       /// ContentModel properties
@@ -94,16 +106,8 @@ class PollModel extends ContentModel {
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       isMultipleChoice: isMultipleChoice ?? this.isMultipleChoice,
-      participants: participants ?? this.participants,
-      status: status ?? this.status,
     );
   }
 
-  int get totalVotes => options.fold(0, (sum, option) => sum + option.votes);
-
-  bool get isStarted => status == PollStatus.started;
-
-  bool get isNotStarted => status == PollStatus.notStarted;
-
-  bool get isEnded => status == PollStatus.ended;
+  int get totalVotes => options.fold(0, (sum, option) => sum + option.votes.length);
 }
