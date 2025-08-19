@@ -48,35 +48,33 @@ final pollTotalVotesBySheetIdProvider = Provider.family<int, String>((
       .fold(0, (sum, poll) => sum + poll.totalVotes);
 });
 
-final pollVotesBySheetMembersProvider = Provider.family<Map<String, List<String>>, String>((ref, pollId) {
+final pollVotingDataProvider = Provider.family<Map<String, dynamic>, String>((
+  ref,
+  pollId,
+) {
   final poll = ref.watch(pollProvider(pollId));
   if (poll == null) return {};
-  
+
   final sheetMembers = ref.watch(usersBySheetIdProvider(poll.sheetId));
-  final Map<String, List<String>> memberVotes = {};
-  
+
+  // count how many members voted
+  int membersVoted = 0;
   for (final member in sheetMembers) {
-    memberVotes[member.id] = [];
-  }
-  
-  for (final option in poll.options) {
-    for (final vote in option.votes) {
-      if (memberVotes.containsKey(vote.userId)) {
-        memberVotes[vote.userId]?.add(option.title);
+    bool hasVoted = false;
+    for (final option in poll.options) {
+      if (option.votes.any((vote) => vote.userId == member.id)) {
+        hasVoted = true;
+        break;
       }
     }
+    if (hasVoted) membersVoted++;
   }
-  
-  return memberVotes;
-});
 
-// Provider to get voting status for each sheet member is voted or not
-final pollMemberVotingStatusProvider = Provider.family<List<MapEntry<String, List<String>>>, String>((ref, pollId) {
-  final memberVotes = ref.watch(pollVotesBySheetMembersProvider(pollId));
-  final sheetMembers = ref.watch(usersBySheetIdProvider(ref.watch(pollProvider(pollId))?.sheetId ?? ''));
-  
-  return sheetMembers.map((member) {
-    final votes = memberVotes[member.id] ?? [];
-    return MapEntry(member.id, votes);
-  }).toList();
+  return {
+    'totalMembers': sheetMembers.length,
+    'membersVoted': membersVoted,
+    'participationRate': sheetMembers.isNotEmpty
+        ? (membersVoted / sheetMembers.length * 100)
+        : 0.0,
+  };
 });

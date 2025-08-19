@@ -4,25 +4,26 @@ import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class PollVotedMembersWidget extends ConsumerWidget {
-  final List<MapEntry<String, List<String>>> memberVotingStatus;
+  final Map<String, List<String>> memberVotingStatus;
   const PollVotedMembersWidget({super.key, required this.memberVotingStatus});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l10n = L10n.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
             Text(
-              L10n.of(context).votingStatusByMembers,
+              l10n.votingStatusByMembers,
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
               ),
             ),
             const SizedBox(height: 8),
-            ...memberVotingStatus.map((entry) {
+            ...memberVotingStatus.entries.map((entry) {
               final userId = entry.key;
               final votes = entry.value;
               final user = ref.watch(getUserByIdProvider(userId));
@@ -57,7 +58,7 @@ class PollVotedMembersWidget extends ConsumerWidget {
                       ),
                     ),
                     Text(
-                      votes.isNotEmpty ? '✓ Voted' : 'Pending',
+                      votes.isNotEmpty ? l10n.voted : '',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: votes.isNotEmpty
                             ? theme.colorScheme.primary

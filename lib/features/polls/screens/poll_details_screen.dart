@@ -64,20 +64,14 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
   ) {
     final totalVotes = ref.watch(pollTotalVotesBySheetIdProvider(poll.sheetId));
     final totalMembers = ref.watch(usersBySheetIdProvider(poll.sheetId)).length;
-    final membersVotedStatus = ref.watch(
-      pollMemberVotingStatusProvider(poll.id),
-    );
+    final votingData = ref.watch(pollVotingDataProvider(poll.id));
     final theme = Theme.of(context);
 
     // Count how many members have voted
-    final membersVoted = membersVotedStatus
-        .where((entry) => entry.value.isNotEmpty)
-        .length;
+    final membersVoted = votingData['membersVoted'] as int;
 
     // Calculate participation rate based on members who voted
-    final participationRate = totalMembers > 0
-        ? (membersVoted / totalMembers * 100).toStringAsFixed(0)
-        : '0';
+    final participationRate = votingData['participationRate'] as double;
 
     return GlassyContainer(
       padding: const EdgeInsets.all(16),
@@ -159,9 +153,9 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
             ),
           ),
       
-          if (membersVotedStatus.isNotEmpty && _showVotingStatus)
+          if (membersVoted > 0 && _showVotingStatus)
             PollVotedMembersWidget(
-              memberVotingStatus: membersVotedStatus,
+              memberVotingStatus: votingData['memberVotingStatus'],
             ),
         ],
       ),
