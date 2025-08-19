@@ -171,6 +171,7 @@ class PollWidget extends ConsumerWidget {
                       const SizedBox(height: 2),
                       PollProgressWidget(
                         percentage: percentage,
+                        option: option,
                         optionIndex: optionIndex,
                         height: 4.0,
                         maxWidth: 0.6,

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 
 class PollProgressWidget extends StatelessWidget {
   final double percentage;
   final int optionIndex;
+  final PollOption option;
   final double height;
   final double maxWidth;
   final bool showPercentage;
@@ -14,6 +16,7 @@ class PollProgressWidget extends StatelessWidget {
     super.key,
     required this.percentage,
     required this.optionIndex,
+    required this.option,
     this.height = 8.0,
     this.maxWidth = 0.8, // 80% of parent width by default
     this.showPercentage = true,
@@ -25,6 +28,7 @@ class PollProgressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final color = PollUtils.getColorFromOptionIndex(optionIndex);
+    if (option.votes.isEmpty) return const SizedBox.shrink();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

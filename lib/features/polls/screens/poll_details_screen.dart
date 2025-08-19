@@ -249,6 +249,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
           PollProgressWidget(
             percentage: percentage,
             optionIndex: pollOptionKey,
+            option: pollOptionValue,
           ),
           const SizedBox(height: 16),
           _buildUsersVotedList(context, ref, pollOptionValue),
