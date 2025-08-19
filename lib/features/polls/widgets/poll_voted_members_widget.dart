@@ -21,7 +21,7 @@ class PollVotedMembersWidget extends ConsumerWidget {
         const SizedBox(height: 16),
             Text(
               l10n.votingStatusByMembers,
-              style: theme.textTheme.titleSmall?.copyWith(
+              style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
               ),
