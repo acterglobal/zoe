@@ -167,10 +167,14 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     WidgetRef ref,
     PollModel poll,
   ) {
+    // Sort options by vote count (highest first)
+    final sortedOptions = poll.options.asMap().entries.toList()
+      ..sort((a, b) => b.value.votes.length.compareTo(a.value.votes.length));
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ...poll.options.asMap().entries.map(
+        ...sortedOptions.map(
           (pollOption) =>
               _buildPollOption(context, ref, poll, pollOption),
         ),
