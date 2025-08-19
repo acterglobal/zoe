@@ -61,10 +61,9 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     PollModel poll,
     WidgetRef ref,
   ) {
-    final totalVotes = ref.watch(pollTotalVotesBySheetIdProvider(poll.sheetId));
     final votingData = ref.watch(pollVotingDataProvider(poll.id));
     final theme = Theme.of(context);
-    
+
     final totalMembers = votingData['totalMembers'];
     final membersVoted = votingData['membersVoted'];
     final participationRate = votingData['participationRate'];
@@ -103,7 +102,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
             child: Row(
               children: [
                 Icon(
-                  totalVotes == 1 ? Icons.person_outline : Icons.people_outline,
+                  Icons.people_outline,
                   size: 18,
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
@@ -150,9 +149,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
           ),
 
           if (membersVoted > 0 && _showVotingStatus)
-            PollVotedMembersWidget(
-              pollId: poll.id,
-            ),
+            PollVotedMembersWidget(pollId: poll.id),
         ],
       ),
     );

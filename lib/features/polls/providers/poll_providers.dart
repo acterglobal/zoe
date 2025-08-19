@@ -38,16 +38,6 @@ final pollListSearchProvider = Provider<List<PollModel>>((ref) {
   }).toList();
 });
 
-final pollTotalVotesBySheetIdProvider = Provider.family<int, String>((
-  ref,
-  sheetId,
-) {
-  final pollList = ref.watch(pollListProvider);
-  return pollList
-      .where((p) => p.sheetId == sheetId)
-      .fold(0, (sum, poll) => sum + poll.totalVotes);
-});
-
 final pollVotingDataProvider = Provider.family<Map<String, dynamic>, String>((
   ref,
   pollId,
