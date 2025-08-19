@@ -65,11 +65,9 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     final votingData = ref.watch(pollVotingDataProvider(poll.id));
     final theme = Theme.of(context);
     
-
     final totalMembers = votingData['totalMembers'];
     final membersVoted = votingData['membersVoted'];
     final participationRate = votingData['participationRate'];
-    final memberVotingStatus = votingData['memberVotingStatus'];
 
     return GlassyContainer(
       padding: const EdgeInsets.all(16),
@@ -153,7 +151,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
 
           if (membersVoted > 0 && _showVotingStatus)
             PollVotedMembersWidget(
-              memberVotingStatus: memberVotingStatus,
+              pollId: poll.id,
             ),
         ],
       ),

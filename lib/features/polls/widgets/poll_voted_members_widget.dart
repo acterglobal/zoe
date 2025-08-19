@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class PollVotedMembersWidget extends ConsumerWidget {
-  final List<MapEntry<String, List<String>>> memberVotingStatus;
-  const PollVotedMembersWidget({super.key, required this.memberVotingStatus});
+  final String pollId;
+  const PollVotedMembersWidget({super.key, required this.pollId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final votingData = ref.watch(pollVotingDataProvider(pollId));
+    final memberVotingStatus = votingData['memberVotingStatus'];
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
