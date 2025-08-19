@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
@@ -7,7 +8,15 @@ import 'package:zoe/l10n/generated/l10n.dart';
 
 class SheetListWidget extends ConsumerWidget {
   final bool shrinkWrap;
-  const SheetListWidget({super.key, this.shrinkWrap = false});
+  final bool isCompact;
+  final int? maxItems;
+
+  const SheetListWidget({
+    super.key,
+    this.shrinkWrap = false,
+    this.isCompact = false,
+    this.maxItems,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,13 +25,17 @@ class SheetListWidget extends ConsumerWidget {
       return EmptyStateWidget(message: L10n.of(context).noSheetsFound);
     }
 
+    final itemCount = maxItems != null
+        ? min(maxItems!, sheetList.length)
+        : sheetList.length;
+
     return ListView.builder(
       shrinkWrap: shrinkWrap,
-      itemCount: sheetList.length,
+      itemCount: itemCount,
       physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
       itemBuilder: (context, index) {
         final sheet = sheetList[index];
-        return SheetListItemWidget(sheetId: sheet.id);
+        return SheetListItemWidget(sheetId: sheet.id, isCompact: isCompact);
       },
     );
   }

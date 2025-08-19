@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/animated_background_widget.dart';
+import 'package:zoe/common/widgets/drawer/hamburger_drawer_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
-import 'package:zoe/core/constants/app_constants.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
@@ -46,56 +46,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return AnimatedBackgroundWidget(
       backgroundOpacity: 0.2,
       child: Scaffold(
-        appBar: _buildAppBar(),
+        appBar: _buildAppBar(context),
+        drawer: const HamburgerDrawerWidget(),
         floatingActionButton: _buildFloatingActionButton(),
         body: _buildBody(),
       ),
     );
   }
 
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(BuildContext context) {
     return AppBar(
-      title: _buildAppNameIconWidget(),
-      actions: [
-        ZoeIconButtonWidget(
-          icon: Icons.settings_rounded,
-          onTap: () => context.push(AppRoutes.settings.route),
-        ),
-        const SizedBox(width: 16),
-      ],
-    );
-  }
-
-  Widget _buildAppNameIconWidget() {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: theme.colorScheme.primary.withValues(alpha: 0.1),
-        border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.rocket_launch_rounded,
-            color: theme.colorScheme.primary,
-            size: 20,
+      leading: Builder(
+        builder: (context) => Padding(
+          padding: const EdgeInsets.all(8),
+          child: ZoeIconButtonWidget(
+            icon: Icons.menu_rounded,
+            size: 22,
+            padding: 0,
+            onTap: () => Scaffold.of(context).openDrawer(),
           ),
-          const SizedBox(width: 8),
-          Text(
-            AppConstants.appName,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: theme.colorScheme.primary,
-              letterSpacing: -0.3,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -138,11 +108,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionHeaderWidget(
-          title: L10n.of(context).sheets,
+          title: L10n.of(context).recentSheets,
           icon: Icons.description,
         ),
         const SizedBox(height: 16),
-        SheetListWidget(shrinkWrap: true),
+        SheetListWidget(shrinkWrap: true, maxItems: 3),
         const SizedBox(height: 100), // Space for FAB
       ],
     );
