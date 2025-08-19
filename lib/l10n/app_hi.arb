@@ -242,6 +242,23 @@
     "noPollsFound": "कोई पोल नहीं मिला!",
     "@noPollsFound": {},
     "votersOfThisPoll": "इस पोल के वोटर्स",
-    "@votersOfThisPoll": {}
-
+    "@votersOfThisPoll": {},
+    "pollDetails": "पोल विशेषताएं",
+    "@pollDetails": {},
+    "membersVoted": "{count} में से {totalMembers} सदस्य वोट करें",
+    "@membersVoted": {},
+    "participation": "{count} संगठन",
+    "@participation": {},
+    "noVotesYet": "वोट करें नहीं है",
+    "@noVotesYet": {},
+    "voters": "वोटर्स",
+    "@voters": {},
+    "you": "आप",
+    "@you": {},
+    "votingStatusByMembers": "सदस्यों की वोटिंग स्थिति",
+    "@votingStatusByMembers": {},
+    "viewVotes": "वोट देखें",
+    "@viewVotes": {},   
+    "thisPollIsNotYetStarted": "यह पोल अभी तक शुरू नहीं हुआ है",
+    "@thisPollIsNotYetStarted": {}
 }

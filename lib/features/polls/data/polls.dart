@@ -17,22 +17,17 @@ final polls = [
         id: 'option-1-1',
         title: 'Task management and to-do lists',
         votes: [
-          Vote(userId: 'user_1'),
+          Vote(userId: 'user_1', createdAt: DateTime.now().subtract(const Duration(days: 1)), updatedAt: DateTime.now().subtract(const Duration(days: 1))),
           Vote(userId: 'user_2'),
           Vote(userId: 'user_3'),
-          Vote(userId: 'user_4'),
-          Vote(userId: 'user_5'),
-          Vote(userId: 'user_6'),
         ],
       ),
       PollOption(
         id: 'option-1-2',
         title: 'Event planning and scheduling',
         votes: [
-          Vote(userId: 'user_7'),
-          Vote(userId: 'user_8'),
-          Vote(userId: 'user_9'),
-          Vote(userId: 'user_10'),
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
         ],
       ),
       PollOption(
@@ -41,7 +36,6 @@ final polls = [
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
-          Vote(userId: 'user_5'),
         ],
       ),
       PollOption(
@@ -49,7 +43,6 @@ final polls = [
         title: 'Link and resource sharing',
         votes: [
           Vote(userId: 'user_2'),
-          Vote(userId: 'user_4'),
         ],
       ),
     ],
@@ -243,21 +236,6 @@ final polls = [
         title: 'Text messages',
         votes: [
           Vote(
-            userId: 'user_1',
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          ),
-          Vote(
-            userId: 'user_2',
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          ),
-          Vote(
-            userId: 'user_3',
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          ),
-          Vote(
             userId: 'user_4',
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
@@ -272,44 +250,28 @@ final polls = [
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
           ),
-          Vote(
-            userId: 'user_7',
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          ),
         ],
       ),
       PollOption(
         id: 'option-inclusive-1-2',
         title: 'Email',
         votes: [
-          Vote(userId: 'user_8'),
-          Vote(userId: 'user_9'),
-          Vote(userId: 'user_10'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_5'),
         ],
       ),
       PollOption(
         id: 'option-inclusive-1-3',
         title: 'Group chat app',
         votes: [
-          Vote(userId: 'user_1'),
-          Vote(userId: 'user_2'),
-          Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
           Vote(userId: 'user_5'),
-        ],
-      ),
-      PollOption(
-        id: 'option-inclusive-1-4',
-        title: 'Phone calls',
-        votes: [
           Vote(userId: 'user_6'),
-          Vote(userId: 'user_7'),
         ],
       ),
     ],
-    isMultipleChoice: false,
-    createdBy: 'user_6',
+    isMultipleChoice: true,
+    createdBy: 'user_3',
   ),
 
   // Group Trip Planning (sheet-8) polls
@@ -326,20 +288,16 @@ final polls = [
         id: 'option-trip-1-1',
         title: 'Tokyo',
         votes: [
-          Vote(userId: 'user_1'),
-          Vote(userId: 'user_2'),
-          Vote(userId: 'user_3'),
-          Vote(userId: 'user_4'),
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
         ],
       ),
       PollOption(
         id: 'option-trip-1-2',
         title: 'Kyoto',
         votes: [
-          Vote(userId: 'user_5'),
-          Vote(userId: 'user_6'),
-          Vote(userId: 'user_7'),
-          Vote(userId: 'user_8'),
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
         ],
       ),
       PollOption(
@@ -354,16 +312,14 @@ final polls = [
         id: 'option-trip-1-4',
         title: 'Hiroshima',
         votes: [
-          Vote(userId: 'user_1'),
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_9'),
         ],
       ),
       PollOption(
         id: 'option-trip-1-5',
         title: 'Nara',
         votes: [
-          Vote(userId: 'user_3'),
-          Vote(userId: 'user_4'),
+          Vote(userId: 'user_10'),
         ],
       ),
     ],
@@ -384,27 +340,24 @@ final polls = [
         id: 'option-trip-2-1',
         title: 'Traditional ryokan',
         votes: [
-          Vote(userId: 'user_1'),
-          Vote(userId: 'user_2'),
-          Vote(userId: 'user_3'),
-          Vote(userId: 'user_4'),
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
         ],
       ),
       PollOption(
         id: 'option-trip-2-2',
         title: 'Modern hotel',
         votes: [
-          Vote(userId: 'user_5'),
-          Vote(userId: 'user_6'),
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
         ],
       ),
       PollOption(
         id: 'option-trip-2-3',
         title: 'Vacation rental/Airbnb',
         votes: [
-          Vote(userId: 'user_7'),
-          Vote(userId: 'user_8'),
           Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
         ],
       ),
       PollOption(

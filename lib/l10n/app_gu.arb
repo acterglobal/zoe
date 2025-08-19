@@ -242,6 +242,23 @@
     "noPollsFound": "કોઈ પોલ મળ્યા નથી!",
     "@noPollsFound": {},
     "votersOfThisPoll": "આ પોલના વોટર્સ",
-    "@votersOfThisPoll": {}
-
+    "@votersOfThisPoll": {},
+    "pollDetails": "પોલ વિશેની વિગતો",
+    "@pollDetails": {},
+    "membersVoted": "{count} માંથી {totalMembers} સભ્યો વોટ કર્યા",
+    "@membersVoted": {},
+    "participation": "{count} સંસાધન",
+    "@participation": {},
+    "noVotesYet": "વોટ કર્યા નથી",
+    "@noVotesYet": {},
+    "voters": "વોટર્સ",
+    "@voters": {},
+    "you": "તમે",
+    "@you": {},
+    "votingStatusByMembers": "સભ્યોની વોટિંગ સ્થિતિ",
+    "@votingStatusByMembers": {},
+    "viewVotes": "વોટ્સ જુઓ",
+    "@viewVotes": {},
+    "thisPollIsNotYetStarted": "આ પોલ હજુ સુધી શરૂ થયેલ નથી",
+    "@thisPollIsNotYetStarted": {}
 }

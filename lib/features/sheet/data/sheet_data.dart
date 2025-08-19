@@ -28,7 +28,7 @@ final sheetList = [
           '<p>Perfect for sports teams, school parent groups, and community volunteers. Learn how to coordinate snacks, manage carpools, organize events, and keep everyone informed without the chaos of endless group chat scrolling.</p>',
     ),
     createdBy: 'user_1',
-    users: [],
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
   ),
   SheetModel(
     id: 'sheet-3',

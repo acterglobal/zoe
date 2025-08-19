@@ -276,6 +276,24 @@
     "noPollsFound": "No polls found!",
     "@noPollsFound": {},
     "votersOfThisPoll": "Voters of this poll",
-    "@votersOfThisPoll": {}
+    "@votersOfThisPoll": {},
+    "pollDetails": "Poll Details",
+    "@pollDetails": {},
+    "membersVoted": "{count} of {totalMembers} members voted",
+    "@membersVoted": {},
+    "participation": "{count} participation",
+    "@participation": {},
+    "noVotesYet": "No votes yet",
+    "@noVotesYet": {},
+    "voters": "Voters",
+    "@voters": {},
+    "you": "You",
+    "@you": {},
+    "votingStatusByMembers": "Voting status by members",
+    "@votingStatusByMembers": {},
+    "viewVotes": "View votes",
+    "@viewVotes": {},
+    "thisPollIsNotYetStarted": "This poll is not yet started",
+    "@thisPollIsNotYetStarted": {}
 
 }

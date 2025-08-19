@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-import 'package:zoe/features/users/widgets/user_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
+import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
 
 class PollWidget extends ConsumerWidget {
   final String pollId;
@@ -136,7 +138,9 @@ class PollWidget extends ConsumerWidget {
                         .voteOnPoll(pollId, option.id, currentUserId);
                   }
                 }
-              : null,
+              : (){
+                CommonUtils.showSnackBar(context, L10n.of(context).thisPollIsNotYetStarted);
+              },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             margin: const EdgeInsets.only(bottom: 8),
@@ -163,11 +167,16 @@ class PollWidget extends ConsumerWidget {
                     children: [
                       _buildEditableOptionText(context, ref, poll, option),
                       const SizedBox(height: 2),
-                      _buildVoteProgress(
-                        context,
-                        percentage,
-                        option,
-                        optionIndex,
+                      PollProgressWidget(
+                        percentage: percentage,
+                        optionIndex: optionIndex,
+                        height: 4.0,
+                        maxWidth: 0.6,
+                        showPercentage: true,
+                        percentageStyle: theme.textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 10,
+                        ),
                       ),
                     ],
                   ),
@@ -221,77 +230,32 @@ class PollWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildVoteProgress(
-    BuildContext context,
-    double percentage,
-    PollOption option,
-    int optionIndex,
-  ) {
-    if (option.votes.isEmpty) return const SizedBox.shrink();
-    final color = PollUtils.getColorFromOptionIndex(optionIndex);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
-          children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 800),
-              curve: Curves.easeOutCubic,
-              height: 4,
-              width:
-                  (MediaQuery.of(context).size.width * 0.6 * (percentage / 100))
-                      .clamp(0, MediaQuery.of(context).size.width * 0.6),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.6),
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 6),
-        Text(
-          '${percentage.toStringAsFixed(1)}%',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w700,
-            fontSize: 10,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTotalVotesCountWidget(
+  Widget _buildViewVotesDetailsButton(
     BuildContext context,
     WidgetRef ref,
     PollModel poll,
   ) {
-    final l10n = L10n.of(context);
+
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: theme.colorScheme.surface,
-          builder: (context) => UserListWidget(
-            userIdList: pollVotersProvider(pollId),
-            title: l10n.votersOfThisPoll,
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PollDetailsScreen(pollId: pollId),
           ),
         );
       },
       child: Row(
         children: [
           Icon(
-            poll.totalVotes == 1 ? Icons.person_outline : Icons.people_outline,
+            Icons.visibility,
             size: 16,
             color: theme.colorScheme.onSurfaceVariant,
           ),
           const SizedBox(width: 4),
           Text(
-            poll.totalVotes == 1
-                ? l10n.vote(poll.totalVotes)
-                : l10n.votes(poll.totalVotes),
+            L10n.of(context).viewVotes,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -314,7 +278,7 @@ class PollWidget extends ConsumerWidget {
             if (PollUtils.isDraft(poll) && isEditing)
               addPollOptionWidget(context, ref, poll),
             if (PollUtils.isDraft(poll)) ...[
-              const Spacer(),
+              _buildPollClosedMessage(context, ref, poll),
               startPollButtonWidget(context, ref, poll),
             ],
             if (PollUtils.isActive(poll) && !isEditing) ...[
@@ -353,7 +317,8 @@ class PollWidget extends ConsumerWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                L10n.of(context).thisPollIsClosed,
+                PollUtils.isDraft(poll)
+                ? L10n.of(context).thisPollIsNotYetStarted : L10n.of(context).thisPollIsClosed,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.errorContainer,
                   fontWeight: FontWeight.w500,
@@ -361,7 +326,8 @@ class PollWidget extends ConsumerWidget {
               ),
             ],
           ),
-          _buildTotalVotesCountWidget(context, ref, poll),
+          if (!PollUtils.isDraft(poll))
+            _buildViewVotesDetailsButton(context, ref, poll),
         ],
       ),
     );
