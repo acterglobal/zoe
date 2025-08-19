@@ -131,7 +131,7 @@ SPEC CHECKSUMS:
   package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   quill_native_bridge_ios: 2b01d585fcc73d0f5eed78c0bd244ee564b06f5a
-  rust_lib_zoe: d2bb35243543f03422f93299022fa31fb8dad11d
+  rust_lib_zoe: e997a4f770a0a6d0d9eaac838279668537a6918e
   SDWebImage: f29024626962457f3470184232766516dee8dfea
   share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
