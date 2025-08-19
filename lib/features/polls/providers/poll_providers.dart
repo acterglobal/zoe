@@ -48,6 +48,7 @@ final pollTotalVotesBySheetIdProvider = Provider.family<int, String>((
       .fold(0, (sum, poll) => sum + poll.totalVotes);
 });
 
+// One simple provider for all poll voting data
 final pollVotingDataProvider = Provider.family<Map<String, dynamic>, String>((
   ref,
   pollId,
@@ -59,12 +60,15 @@ final pollVotingDataProvider = Provider.family<Map<String, dynamic>, String>((
 
   // count how many members voted
   int membersVoted = 0;
+  final Map<String, List<String>> memberVotes = {};
+  
   for (final member in sheetMembers) {
+    memberVotes[member.id] = [];
     bool hasVoted = false;
     for (final option in poll.options) {
       if (option.votes.any((vote) => vote.userId == member.id)) {
         hasVoted = true;
-        break;
+        memberVotes[member.id]!.add(option.title);
       }
     }
     if (hasVoted) membersVoted++;
@@ -76,5 +80,9 @@ final pollVotingDataProvider = Provider.family<Map<String, dynamic>, String>((
     'participationRate': sheetMembers.isNotEmpty
         ? (membersVoted / sheetMembers.length * 100)
         : 0.0,
+    'memberVotingStatus': sheetMembers.map((member) {
+      final votes = memberVotes[member.id] ?? [];
+      return MapEntry(member.id, votes);
+    }).toList(),
   };
 });

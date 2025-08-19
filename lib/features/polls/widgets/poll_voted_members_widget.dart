@@ -4,7 +4,7 @@ import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class PollVotedMembersWidget extends ConsumerWidget {
-  final Map<String, List<String>> memberVotingStatus;
+  final List<MapEntry<String, List<String>>> memberVotingStatus;
   const PollVotedMembersWidget({super.key, required this.memberVotingStatus});
 
   @override
@@ -23,7 +23,7 @@ class PollVotedMembersWidget extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 8),
-            ...memberVotingStatus.entries.map((entry) {
+            ...memberVotingStatus.map((entry) {
               final userId = entry.key;
               final votes = entry.value;
               final user = ref.watch(getUserByIdProvider(userId));

@@ -8,7 +8,6 @@ import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_voter_item_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_voted_members_widget.dart';
-import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
 
@@ -63,15 +62,14 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     WidgetRef ref,
   ) {
     final totalVotes = ref.watch(pollTotalVotesBySheetIdProvider(poll.sheetId));
-    final totalMembers = ref.watch(usersBySheetIdProvider(poll.sheetId)).length;
     final votingData = ref.watch(pollVotingDataProvider(poll.id));
     final theme = Theme.of(context);
+    
 
-    // Count how many members have voted
-    final membersVoted = votingData['membersVoted'] as int;
-
-    // Calculate participation rate based on members who voted
-    final participationRate = votingData['participationRate'] as double;
+    final totalMembers = votingData['totalMembers'];
+    final membersVoted = votingData['membersVoted'];
+    final participationRate = votingData['participationRate'];
+    final memberVotingStatus = votingData['memberVotingStatus'];
 
     return GlassyContainer(
       padding: const EdgeInsets.all(16),
@@ -127,15 +125,15 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                           Icon(
-                                  _showVotingStatus
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  size: 20,
-                                  color: _showVotingStatus
-                                      ? theme.colorScheme.primary
-                                      : theme.colorScheme.onSurfaceVariant,
-                                ),
+                          Icon(
+                            _showVotingStatus
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            size: 20,
+                            color: _showVotingStatus
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.onSurfaceVariant,
+                          ),
                         ],
                       ),
                       Text(
@@ -152,10 +150,10 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
               ],
             ),
           ),
-      
+
           if (membersVoted > 0 && _showVotingStatus)
             PollVotedMembersWidget(
-              memberVotingStatus: votingData['memberVotingStatus'],
+              memberVotingStatus: memberVotingStatus,
             ),
         ],
       ),
@@ -170,13 +168,12 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     // Sort options by vote count (highest first)
     final sortedOptions = poll.options.asMap().entries.toList()
       ..sort((a, b) => b.value.votes.length.compareTo(a.value.votes.length));
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ...sortedOptions.map(
-          (pollOption) =>
-              _buildPollOption(context, ref, poll, pollOption),
+          (pollOption) => _buildPollOption(context, ref, poll, pollOption),
         ),
       ],
     );
@@ -188,7 +185,6 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     PollModel poll,
     MapEntry<int, PollOption> pollOption,
   ) {
-
     final pollOptionKey = pollOption.key;
     final pollOptionValue = pollOption.value;
 
@@ -203,8 +199,6 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     final isMaxVotes =
         pollOptionValue.votes.length ==
         poll.options.map((o) => o.votes.length).reduce((a, b) => a > b ? a : b);
-
-   
 
     return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 16),
@@ -252,7 +246,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
             option: pollOptionValue,
           ),
           const SizedBox(height: 16),
-          _buildUsersVotedList(context, ref, pollOptionValue),
+          _buildUsersVotedList(context, ref, pollOptionValue, pollOptionKey),
         ],
       ),
     );
@@ -262,6 +256,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     BuildContext context,
     WidgetRef ref,
     PollOption pollOption,
+    int optionIndex,
   ) {
     final theme = Theme.of(context);
     if (pollOption.votes.isEmpty) {
@@ -285,7 +280,9 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
           ),
         ),
         const SizedBox(height: 8),
-        ...pollOption.votes.map((vote) => PollVoterItemWidget(vote: vote)),
+        ...pollOption.votes.map(
+          (vote) => PollVoterItemWidget(vote: vote, optionIndex: optionIndex),
+        ),
       ],
     );
   }

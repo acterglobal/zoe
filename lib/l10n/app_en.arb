@@ -299,7 +299,7 @@
     "@viewVotes": {},
     "thisPollIsNotYetStarted": "This poll is not yet started",
     "@thisPollIsNotYetStarted": {},
-    "voted": "Voted",
+    "voted": "✓ voted",
     "@voted": {}
 
 }

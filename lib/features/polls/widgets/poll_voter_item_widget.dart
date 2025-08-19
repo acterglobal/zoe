@@ -4,12 +4,14 @@ import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
+import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class PollVoterItemWidget extends ConsumerWidget {
   final Vote vote;
-  const PollVoterItemWidget({super.key, required this.vote});
+  final int optionIndex;
+  const PollVoterItemWidget({super.key, required this.vote, required this.optionIndex});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,6 +19,7 @@ class PollVoterItemWidget extends ConsumerWidget {
     final isCurrentUser = currentUserId == vote.userId;
     final voteTime = vote.createdAt ?? DateTime.now();
     final theme = Theme.of(context);
+    final color = PollUtils.getColorFromOptionIndex(optionIndex);
 
     return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 8),
@@ -29,7 +32,7 @@ class PollVoterItemWidget extends ConsumerWidget {
             icon: Icons.person,
             iconSize: 20,
             size: 32,
-            primaryColor: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+            primaryColor: color,
             shadowOpacity: 0.05,
           ),
           const SizedBox(width: 12),
@@ -44,7 +47,7 @@ class PollVoterItemWidget extends ConsumerWidget {
                             vote.userId),
                   style: isCurrentUser
                       ? theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.primary,
+                          color: color,
                         )
                       : theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,

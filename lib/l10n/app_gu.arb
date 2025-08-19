@@ -261,6 +261,6 @@
     "@viewVotes": {},
     "thisPollIsNotYetStarted": "આ પોલ હજુ સુધી શરૂ થયેલ નથી",
     "@thisPollIsNotYetStarted": {},
-    "voted": "વોટ કર્યું",
+    "voted": "✓ વોટ કર્યું",
     "@voted": {}
 }
