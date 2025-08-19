@@ -27,8 +27,10 @@ class SheetListItemWidget extends ConsumerWidget {
         : _buildExpandedDesign(context, theme, sheet);
 
     return GestureDetector(
-      onTap: () =>
-          context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id)),
+      onTap: () {
+        if (context.canPop()) context.pop();
+        context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id));
+      },
       child: child,
     );
   }
