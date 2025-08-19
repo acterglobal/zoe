@@ -48,7 +48,6 @@ final pollTotalVotesBySheetIdProvider = Provider.family<int, String>((
       .fold(0, (sum, poll) => sum + poll.totalVotes);
 });
 
-// One simple provider for all poll voting data
 final pollVotingDataProvider = Provider.family<Map<String, dynamic>, String>((
   ref,
   pollId,
@@ -68,7 +67,7 @@ final pollVotingDataProvider = Provider.family<Map<String, dynamic>, String>((
     for (final option in poll.options) {
       if (option.votes.any((vote) => vote.userId == member.id)) {
         hasVoted = true;
-        memberVotes[member.id]!.add(option.title);
+        memberVotes[member.id]?.add(option.title);
       }
     }
     if (hasVoted) membersVoted++;
