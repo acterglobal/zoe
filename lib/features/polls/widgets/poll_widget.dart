@@ -139,7 +139,9 @@ class PollWidget extends ConsumerWidget {
                   }
                 }
               : (){
-                CommonUtils.showSnackBar(context, L10n.of(context).thisPollIsNotYetStarted);
+                if(PollUtils.isDraft(poll)) {
+                  CommonUtils.showSnackBar(context, L10n.of(context).thisPollIsNotYetStarted);
+                }
               },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
