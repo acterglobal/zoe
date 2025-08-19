@@ -9,12 +9,10 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `ClientInner`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `try_from`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `blob_client`, `signing_key`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Client>>
 abstract class Client implements RustOpaqueInterface {
-  /// Get the underlying blob client for advanced operations
-  Future<void> blobClient();
-
   /// Create a new ClientBuilder for constructing a Client
   static Future<ClientBuilder> builder() =>
       RustLib.instance.api.zoeClientClientClientBuilder();
@@ -30,34 +28,50 @@ abstract class Client implements RustOpaqueInterface {
   /// `true` if the file exists in storage, `false` otherwise
   Future<bool> hasFile({required FileRef storedInfo});
 
-  /// Retrieve a file from storage and decrypt it
+  /// Retrieve a file from storage and save it to disk
   ///
   /// This method:
-  /// 1. Retrieves the encrypted data from blob storage using the hash
-  /// 2. Decrypts the data using the provided encryption info
-  /// 3. Returns the original file content
+  /// 1. Retrieves the encrypted data from blob storage using the FileRef
+  /// 2. Decrypts the content
+  /// 3. Writes the decrypted content to the specified path
   ///
   /// # Arguments
   ///
-  /// * `stored_info` - Metadata from when the file was stored
+  /// * `file_ref` - Metadata for the file to retrieve
+  /// * `output_path` - Path where the decrypted file should be saved
+  ///
+  /// # Errors
+  ///
+  /// Returns an error if:
+  /// - The file cannot be found in storage
+  /// - Decryption fails
+  /// - Writing to disk fails
+  Future<void> retrieveFile({
+    required FileRef fileRef,
+    required PathBuf outputPath,
+  });
+
+  /// Retrieve a file from storage as bytes
+  ///
+  /// This method:
+  /// 1. Retrieves the encrypted data from blob storage using the FileRef
+  /// 2. Decrypts the content
+  /// 3. Returns the decrypted content as bytes
+  ///
+  /// # Arguments
+  ///
+  /// * `file_ref` - Metadata for the file to retrieve
   ///
   /// # Returns
   ///
-  /// The original file content as bytes
-  Future<Uint8List> retrieveFile({required FileRef storedInfo});
-
-  /// Save retrieved file content to disk
+  /// The decrypted file content as `Vec<u8>`
   ///
-  /// This is a convenience method that combines `retrieve_file` with writing to disk.
+  /// # Errors
   ///
-  /// # Arguments
-  ///
-  /// * `stored_info` - Metadata from when the file was stored
-  /// * `output_path` - Path where to write the retrieved file
-  Future<void> retrieveFileToDisk({
-    required FileRef storedInfo,
-    required Path outputPath,
-  });
+  /// Returns an error if:
+  /// - The file cannot be found in storage
+  /// - Decryption fails
+  Future<Uint8List> retrieveFileBytes({required FileRef fileRef});
 
   /// Store raw data (not from a file) with encryption and blob storage
   ///
@@ -92,8 +106,15 @@ abstract class Client implements RustOpaqueInterface {
   ///
   /// # Returns
   ///
-  /// `FileRef` containing the blob hash, encryption info, and metadata
-  Future<FileRef> storeFile({required Path filePath});
+  /// A `FileRef` containing the metadata needed to retrieve the file
+  ///
+  /// # Errors
+  ///
+  /// Returns an error if:
+  /// - The file cannot be read
+  /// - Encryption fails
+  /// - Blob storage operation fails
+  Future<FileRef> storeFile({required PathBuf filePath});
 }
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ClientBuilder>>
@@ -111,8 +132,6 @@ abstract class ClientBuilder implements RustOpaqueInterface {
     required VerifyingKey serverPublicKey,
     required SocketAddr serverAddr,
   });
-
-  Future<void> signingKey({required SigningKey signingKey});
 }
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ClientSecret>>
@@ -121,10 +140,27 @@ abstract class ClientSecret implements RustOpaqueInterface {
 
   static Future<ClientSecret> fromHex({required String value}) =>
       RustLib.instance.api.zoeClientClientClientSecretFromHex(value: value);
+
+  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
+  static Future<ClientSecret> newInstance({
+    required SigningKey signingKey,
+    required VerifyingKey serverPublicKey,
+    required SocketAddr serverAddr,
+  }) => RustLib.instance.api.zoeClientClientClientSecretNew(
+    signingKey: signingKey,
+    serverPublicKey: serverPublicKey,
+    serverAddr: serverAddr,
+  );
 }
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<FileRef>>
 abstract class FileRef implements RustOpaqueInterface {}
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Path>>
-abstract class Path implements RustOpaqueInterface {}
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PathBuf>>
+abstract class PathBuf implements RustOpaqueInterface {}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SocketAddr>>
+abstract class SocketAddr implements RustOpaqueInterface {}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<VerifyingKey>>
+abstract class VerifyingKey implements RustOpaqueInterface {}
