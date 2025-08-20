@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/zoe_circle_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
@@ -197,16 +198,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     int index,
   ) {
     final theme = Theme.of(context);
-    final totalVotes = poll.totalVotes;
-    final percentage = totalVotes > 0
-        ? (pollOption.votes.length / totalVotes) * 100
-        : 0.0;
     final color = PollUtils.getColorFromOptionIndex(index);
-
-    // display the star if the option has the max votes
-    final isMaxVotes =
-        pollOption.votes.length ==
-        poll.options.map((o) => o.votes.length).reduce((a, b) => a > b ? a : b);
 
     return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 16),
@@ -217,11 +209,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
         children: [
           Row(
             children: [
-              Container(
-                width: 12,
-                height: 12,
-                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-              ),
+              ZoeCircleWidget(size: 12, color: color),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -233,7 +221,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
               ),
               Row(
                 children: [
-                  if (isMaxVotes)
+                  if (PollUtils.hasMaxVotes(pollOption, poll))
                     Icon(Icons.star, size: 20, color: Colors.amber),
                   const SizedBox(width: 8),
                   Text(
@@ -249,7 +237,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
           ),
           const SizedBox(height: 12),
           PollProgressWidget(
-            percentage: percentage,
+            percentage: PollUtils.calculateVotePercentage(pollOption, poll),
             optionIndex: index,
             option: pollOption,
           ),

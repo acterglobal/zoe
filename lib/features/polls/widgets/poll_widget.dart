@@ -129,20 +129,22 @@ class PollWidget extends ConsumerWidget {
       clipBehavior: Clip.none,
       children: [
         GestureDetector(
-          onTap: PollUtils.isActive(poll)
-              ? () {
-                  final currentUserId = ref.read(loggedInUserProvider).value;
-                  if (currentUserId != null) {
-                    ref
-                        .read(pollListProvider.notifier)
-                        .voteOnPoll(pollId, option.id, currentUserId);
-                  }
-                }
-              : (){
-                if(PollUtils.isDraft(poll)) {
-                  CommonUtils.showSnackBar(context, L10n.of(context).thisPollIsNotYetStarted);
-                }
-              },
+          onTap: () {
+            if (PollUtils.isActive(poll)) {
+              final currentUserId = ref.read(loggedInUserProvider).value;
+              if (currentUserId != null) {
+                ref
+                    .read(pollListProvider.notifier)
+                    .voteOnPoll(pollId, option.id, currentUserId);
+              }
+            }
+            if (PollUtils.isDraft(poll)) {
+              CommonUtils.showSnackBar(
+                context,
+                L10n.of(context).thisPollIsNotYetStarted,
+              );
+            }
+          },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             margin: const EdgeInsets.only(bottom: 8),
@@ -238,7 +240,6 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
   ) {
-
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
@@ -316,14 +317,19 @@ class PollWidget extends ConsumerWidget {
               Icon(
                 Icons.lock,
                 size: 16,
-                color:  PollUtils.isDraft(poll) ? theme.colorScheme.onSurface.withValues(alpha: 0.4) : theme.colorScheme.errorContainer,
+                color: PollUtils.isDraft(poll)
+                    ? theme.colorScheme.onSurface.withValues(alpha: 0.4)
+                    : theme.colorScheme.errorContainer,
               ),
               const SizedBox(width: 8),
               Text(
                 PollUtils.isDraft(poll)
-                ? L10n.of(context).thisPollIsNotYetStarted : L10n.of(context).thisPollIsClosed,
+                    ? L10n.of(context).thisPollIsNotYetStarted
+                    : L10n.of(context).thisPollIsClosed,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color:  PollUtils.isDraft(poll) ? theme.colorScheme.onSurface.withValues(alpha: 0.4) : theme.colorScheme.errorContainer,
+                  color: PollUtils.isDraft(poll)
+                      ? theme.colorScheme.onSurface.withValues(alpha: 0.4)
+                      : theme.colorScheme.errorContainer,
                   fontWeight: FontWeight.w500,
                 ),
               ),
