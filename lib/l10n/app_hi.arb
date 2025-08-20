@@ -240,5 +240,15 @@
     "endPoll": "पोल समाप्त करें",
     "@endPoll": {},
     "noPollsFound": "कोई पोल नहीं मिला!",
-    "@noPollsFound": {}
+    "@noPollsFound": {},
+    "documentNotFound": "फाइल नहीं मिली",
+    "@documentNotFound": {},
+    "checkOutThis": "इसे देखें",
+    "@checkOutThis": {},
+    "failedToShare": "फाइल साझा करने में विफल: {fileType}",
+    "@failedToShare": {},
+    "unsupportedFileType": "असमर्थित फाइल प्रकार",
+    "@unsupportedFileType": {},
+    "downloadingWillBeAvailableSoon": "डाउनलोड जल्द ही उपलब्ध होगा",
+    "@downloadingWillBeAvailableSoon": {}
 }

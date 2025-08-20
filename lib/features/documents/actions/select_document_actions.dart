@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/utils/file_utils.dart';
+import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -64,3 +68,23 @@ IconData getFileTypeIcon(String filePath) {
     _ => Icons.insert_drive_file,
   };
 }
+
+  Future<void> shareDocument(BuildContext context, DocumentModel document) async {
+    try {
+      final file = File(document.filePath);
+      if (file.existsSync()) {
+        final fileType = isImageDocument(document) ? 'image' : isVideoDocument(document) ? 'video' : 'document';
+        await Share.shareXFiles(
+          [XFile(document.filePath)],
+          text: '${L10n.of(context).checkOutThis} $fileType: ${document.title}',
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        CommonUtils.showSnackBar(
+          context,
+          L10n.of(context).failedToShare(isImageDocument(document) ? 'image' : isVideoDocument(document) ? 'video' : 'document'),
+        );
+      }
+    }
+  }

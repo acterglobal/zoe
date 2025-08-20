@@ -79,6 +79,12 @@ dependencies:
   # Emoji picker
   emoji_picker_flutter: ^4.3.0
 
+  # Video player
+  video_player: ^2.10.0
+  
+  # Audio player
+  audioplayers: ^6.5.0 
+
 # Added cause; without this, it gives a 'Terminating app due to uncaught exception 'NSInvalidArgumentException'' error on macOS.
 dependency_overrides:
   flutter_quill:

@@ -278,5 +278,17 @@
     "endPoll": "End Poll",
     "@endPoll": {},
     "noPollsFound": "No polls found!",
-    "@noPollsFound": {}
+    "@noPollsFound": {},
+    "documentNotFound": "Document not found",
+    "@documentNotFound": {},
+    "checkOutThis": "Check out this",
+    "@checkOutThis": {},
+    "failedToShare": "Failed to share {fileType}",
+    "@failedToShare": {},
+    "unsupportedFileType": "Unsupported file type",
+    "@unsupportedFileType": {},
+    "downloadingWillBeAvailableSoon": "Downloading will be available soon",
+    "@downloadingWillBeAvailableSoon": {},
+    "videoFileNotFound": "Video file not found: {filePath}",
+    "@videoFileNotFound": {}
 }

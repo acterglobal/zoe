@@ -6,6 +6,7 @@ import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/features/documents/actions/select_document_actions.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
+import 'package:zoe/features/documents/screens/document_preview_screen.dart';
 
 class DocumentWidget extends ConsumerWidget {
   final String documentId;
@@ -65,8 +66,22 @@ class DocumentWidget extends ConsumerWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
+        onTap: () => _handleDocumentTap(context, document),
       ),
     );
+  }
+
+  void _handleDocumentTap(BuildContext context, DocumentModel document) {
+     Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => DocumentPreviewScreen(
+            document: document,
+            isImage: isImageDocument(document),
+            isVideo: isVideoDocument(document),
+            isMusic: isMusicDocument(document),
+          ),
+        ),
+      );
   }
 
   Widget _buildDocumentThumbnail(
@@ -74,37 +89,41 @@ class DocumentWidget extends ConsumerWidget {
     WidgetRef ref,
     DocumentModel document,
   ) {
-    return GlassyContainer(
-      width: 80,
-      height: 100,
-      margin: const EdgeInsets.only(bottom: 16),
-      borderRadius: BorderRadius.circular(12),
-      borderOpacity: 0.05,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildDocumentIcon(document),
-                  const SizedBox(height: 6),
-                  _buildDocumentFileName(context, document),
-                  const SizedBox(height: 3),
-                  _buildDocumentFileTypeBadge(context, document),
-                ],
+    
+    return GestureDetector(
+      onTap: () => _handleDocumentTap(context, document),
+      child: GlassyContainer(
+        width: 80,
+        height: 100,
+        margin: const EdgeInsets.only(bottom: 16),
+        borderRadius: BorderRadius.circular(12),
+        borderOpacity: 0.05,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildDocumentIcon(document),
+                    const SizedBox(height: 6),
+                    _buildDocumentFileName(context, document),
+                    const SizedBox(height: 3),
+                    _buildDocumentFileTypeBadge(context, document),
+                  ],
+                ),
               ),
             ),
-          ),
-          if (isEditing)
-            Positioned(
-              top: -5,
-              right: -5,
-              child: _buildDeleteButton(ref, context, document),
-            ),
-        ],
+            if (isEditing)
+              Positioned(
+                top: -5,
+                right: -5,
+                child: _buildDeleteButton(ref, context, document),
+              ),
+          ],
+        ),
       ),
     );
   }
