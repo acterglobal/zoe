@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_voter_item_widget.dart';
-import 'package:zoe/features/polls/widgets/poll_voted_members_widget.dart';
+import 'package:zoe/features/users/widgets/user_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
 
@@ -26,9 +27,6 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final poll = ref.watch(pollProvider(widget.pollId));
-    if (poll == null) {
-      return const SizedBox.shrink();
-    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -36,7 +34,13 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
         automaticallyImplyLeading: false,
         title: ZoeAppBar(title: L10n.of(context).pollDetails),
       ),
-      body: _buildBody(context, ref, poll),
+      body: poll != null
+          ? _buildBody(context, ref, poll)
+          : Center(
+              child: EmptyStateWidget(
+                message: L10n.of(context).pollDetailsNotFound,
+              ),
+            ),
     );
   }
 
@@ -61,12 +65,11 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     PollModel poll,
     WidgetRef ref,
   ) {
-    final votingData = ref.watch(pollVotingDataProvider(poll.id));
     final theme = Theme.of(context);
 
-    final totalMembers = votingData['totalMembers'];
-    final membersVoted = votingData['membersVoted'];
-    final participationRate = votingData['participationRate'];
+    final totalMembers = ref.watch(pollSheetMembersProvider(poll.id)).length;
+    final membersVoted = ref.watch(pollVotedMembersProvider(poll.id)).length;
+    final participationRate = (membersVoted / totalMembers) * 100;
 
     return GlassyContainer(
       padding: const EdgeInsets.all(16),
@@ -122,14 +125,28 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Icon(
-                            _showVotingStatus
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            size: 20,
-                            color: _showVotingStatus
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.onSurfaceVariant,
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) =>
+                                    _buildPollParticipantsBottomSheet(
+                                      context,
+                                      ref,
+                                      poll,
+                                    ),
+                              );
+                            },
+                            icon: Icon(
+                              _showVotingStatus
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              size: 20,
+                              color: _showVotingStatus
+                                  ? theme.colorScheme.primary
+                                  : theme.colorScheme.onSurfaceVariant,
+                            ),
                           ),
                         ],
                       ),
@@ -147,9 +164,6 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
               ],
             ),
           ),
-
-          if (membersVoted > 0 && _showVotingStatus)
-            PollVotedMembersWidget(pollId: poll.id),
         ],
       ),
     );
@@ -161,16 +175,17 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     PollModel poll,
   ) {
     // Sort options by vote count (highest first)
-    final sortedOptions = poll.options.asMap().entries.toList()
-      ..sort((a, b) => b.value.votes.length.compareTo(a.value.votes.length));
+    final sortedOptions = List<PollOption>.from(poll.options)
+      ..sort((a, b) => b.votes.length.compareTo(a.votes.length));
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ...sortedOptions.map(
-          (pollOption) => _buildPollOption(context, ref, poll, pollOption),
-        ),
-      ],
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: sortedOptions.length,
+      itemBuilder: (context, index) {
+        final pollOption = sortedOptions[index];
+        return _buildPollOption(context, ref, poll, pollOption, index);
+      },
     );
   }
 
@@ -178,21 +193,19 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     BuildContext context,
     WidgetRef ref,
     PollModel poll,
-    MapEntry<int, PollOption> pollOption,
+    PollOption pollOption,
+    int index,
   ) {
-    final pollOptionKey = pollOption.key;
-    final pollOptionValue = pollOption.value;
-
     final theme = Theme.of(context);
     final totalVotes = poll.totalVotes;
     final percentage = totalVotes > 0
-        ? (pollOptionValue.votes.length / totalVotes) * 100
+        ? (pollOption.votes.length / totalVotes) * 100
         : 0.0;
-    final color = PollUtils.getColorFromOptionIndex(pollOptionKey);
+    final color = PollUtils.getColorFromOptionIndex(index);
 
     // display the star if the option has the max votes
     final isMaxVotes =
-        pollOptionValue.votes.length ==
+        pollOption.votes.length ==
         poll.options.map((o) => o.votes.length).reduce((a, b) => a > b ? a : b);
 
     return GlassyContainer(
@@ -212,7 +225,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  pollOptionValue.title,
+                  pollOption.title,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -224,7 +237,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
                     Icon(Icons.star, size: 20, color: Colors.amber),
                   const SizedBox(width: 8),
                   Text(
-                    '${pollOptionValue.votes.length} vote${pollOptionValue.votes.length == 1 ? '' : 's'}',
+                    '${pollOption.votes.length} vote${pollOption.votes.length == 1 ? '' : 's'}',
                     style: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
@@ -237,11 +250,11 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
           const SizedBox(height: 12),
           PollProgressWidget(
             percentage: percentage,
-            optionIndex: pollOptionKey,
-            option: pollOptionValue,
+            optionIndex: index,
+            option: pollOption,
           ),
           const SizedBox(height: 16),
-          _buildUsersVotedList(context, ref, pollOptionValue, pollOptionKey),
+          _buildUsersVotedList(context, ref, pollOption, index),
         ],
       ),
     );
@@ -275,10 +288,39 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
           ),
         ),
         const SizedBox(height: 8),
-        ...pollOption.votes.map(
-          (vote) => PollVoterItemWidget(vote: vote, optionIndex: optionIndex),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: pollOption.votes.length,
+          itemBuilder: (context, index) {
+            final vote = pollOption.votes[index];
+            return PollVoterItemWidget(vote: vote, optionIndex: optionIndex);
+          },
         ),
       ],
+    );
+  }
+
+  Widget _buildPollParticipantsBottomSheet(
+    BuildContext context,
+    WidgetRef ref,
+    PollModel poll,
+  ) {
+    return UserListWidget(
+      userIdList: pollSheetMemberIdsProvider(poll.id),
+      title: L10n.of(context).pollParticipants,
+      actionWidget: (userId) {
+        final votedMemberIds = ref.read(pollVotedMemberIdsProvider(poll.id));
+        final hasVoted = votedMemberIds.contains(userId);
+        return hasVoted
+            ? Text(
+                L10n.of(context).voted,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              )
+            : const SizedBox.shrink();
+      },
     );
   }
 }

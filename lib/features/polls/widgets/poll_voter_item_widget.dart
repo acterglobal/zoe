@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
-import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
-import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -15,11 +14,14 @@ class PollVoterItemWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+  
+    final user = ref.watch(getUserByIdProvider(vote.userId));
+    if (user == null) return const SizedBox.shrink();
+
     final currentUserId = ref.watch(loggedInUserProvider).value;
     final isCurrentUser = currentUserId == vote.userId;
     final voteTime = vote.createdAt ?? DateTime.now();
     final theme = Theme.of(context);
-    final color = PollUtils.getColorFromOptionIndex(optionIndex);
 
     return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 8),
@@ -28,13 +30,7 @@ class PollVoterItemWidget extends ConsumerWidget {
       borderOpacity: 0.08,
       child: Row(
         children: [
-          StyledIconContainer(
-            icon: Icons.person,
-            iconSize: 20,
-            size: 32,
-            primaryColor: color,
-            shadowOpacity: 0.05,
-          ),
+          ZoeUserAvatarWidget(user: user,),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -45,11 +41,7 @@ class PollVoterItemWidget extends ConsumerWidget {
                       ? L10n.of(context).you
                       : (ref.watch(getUserByIdProvider(vote.userId))?.name ??
                             vote.userId),
-                  style: isCurrentUser
-                      ? theme.textTheme.bodyMedium?.copyWith(
-                          color: color,
-                        )
-                      : theme.textTheme.bodyMedium?.copyWith(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                 ),

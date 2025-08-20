@@ -316,14 +316,14 @@ class PollWidget extends ConsumerWidget {
               Icon(
                 Icons.lock,
                 size: 16,
-                color: theme.colorScheme.errorContainer,
+                color:  PollUtils.isDraft(poll) ? theme.colorScheme.onSurface.withValues(alpha: 0.4) : theme.colorScheme.errorContainer,
               ),
               const SizedBox(width: 8),
               Text(
                 PollUtils.isDraft(poll)
                 ? L10n.of(context).thisPollIsNotYetStarted : L10n.of(context).thisPollIsClosed,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.errorContainer,
+                  color:  PollUtils.isDraft(poll) ? theme.colorScheme.onSurface.withValues(alpha: 0.4) : theme.colorScheme.errorContainer,
                   fontWeight: FontWeight.w500,
                 ),
               ),

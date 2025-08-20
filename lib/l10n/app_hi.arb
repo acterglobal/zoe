@@ -262,5 +262,9 @@
     "thisPollIsNotYetStarted": "यह पोल अभी तक शुरू नहीं हुआ है",
     "@thisPollIsNotYetStarted": {},
     "voted": "✓ वोट करें",
-    "@voted": {}
+    "@voted": {},
+    "pollDetailsNotFound": "पोल विशेषताएं नहीं मिली",
+    "@pollDetailsNotFound": {},
+    "pollParticipants": "पोल सदस्य",
+    "@pollParticipants": {}
 }

@@ -4,6 +4,7 @@ import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/notifiers/poll_notifier.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 
 final pollListProvider = StateNotifierProvider<PollNotifier, List<PollModel>>(
   (ref) => PollNotifier(ref),
@@ -38,40 +39,52 @@ final pollListSearchProvider = Provider<List<PollModel>>((ref) {
   }).toList();
 });
 
-final pollVotingDataProvider = Provider.family<Map<String, dynamic>, String>((
-  ref,
-  pollId,
-) {
+// Provider for sheet members of a poll
+final pollSheetMembersProvider = Provider.family<List<UserModel>, String>((ref, pollId) {
   final poll = ref.watch(pollProvider(pollId));
-  if (poll == null) return {};
-
-  final sheetMembers = ref.watch(usersBySheetIdProvider(poll.sheetId));
-
-  // count how many members voted
-  int membersVoted = 0;
-  final Map<String, List<String>> memberVotes = {};
+  if (poll == null) return [];
   
-  for (final member in sheetMembers) {
-    memberVotes[member.id] = [];
-    bool hasVoted = false;
-    for (final option in poll.options) {
-      if (option.votes.any((vote) => vote.userId == member.id)) {
-        hasVoted = true;
-        memberVotes[member.id]?.add(option.title);
-      }
-    }
-    if (hasVoted) membersVoted++;
-  }
-
-  return {
-    'totalMembers': sheetMembers.length,
-    'membersVoted': membersVoted,
-    'participationRate': sheetMembers.isNotEmpty
-        ? (membersVoted / sheetMembers.length * 100)
-        : 0.0,
-    'memberVotingStatus': sheetMembers.map((member) {
-      final votes = memberVotes[member.id] ?? [];
-      return MapEntry(member.id, votes);
-    }).toList(),
-  };
+  return ref.watch(usersBySheetIdProvider(poll.sheetId));
 });
+
+// Provider for members who have voted
+final pollVotedMembersProvider = Provider.family<List<UserModel>, String>((ref, pollId) {
+  final poll = ref.watch(pollProvider(pollId));
+  final members = ref.watch(pollSheetMembersProvider(pollId));
+  
+  if (poll == null) return [];
+  
+  return members.where((member) {
+    return poll.options.any((option) => 
+      option.votes.any((vote) => vote.userId == member.id)
+    );
+  }).toList();
+});
+
+// Provider for poll sheet member IDs
+final pollSheetMemberIdsProvider = Provider.family<List<String>, String>((ref, pollId) {
+  final members = ref.watch(pollSheetMembersProvider(pollId));
+  final List<String> memberIds = [];
+  
+  for (final member in members) {
+    memberIds.add(member.id);
+  }
+  
+  return memberIds;
+});
+
+// Provider for poll sheet member IDs who have voted
+final pollVotedMemberIdsProvider = Provider.family<List<String>, String>((ref, pollId) {
+  final votedMembers = ref.watch(pollVotedMembersProvider(pollId));
+  final List<String> votedMemberIds = [];
+  
+  for (final member in votedMembers) {
+    votedMemberIds.add(member.id);
+  }
+  
+  return votedMemberIds;
+});
+
+
+
+

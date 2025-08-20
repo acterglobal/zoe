@@ -90,7 +90,7 @@ final polls = [
             updatedAt: DateTime.now(),
           ),
           Vote(
-            userId: 'user_10',
+            userId: 'user_7',
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
           ),

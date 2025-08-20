@@ -262,5 +262,9 @@
     "thisPollIsNotYetStarted": "આ પોલ હજુ સુધી શરૂ થયેલ નથી",
     "@thisPollIsNotYetStarted": {},
     "voted": "✓ વોટ કર્યું",
-    "@voted": {}
+    "@voted": {},
+    "pollDetailsNotFound": "પોલ વિગતો મળ્યા નથી",
+    "@pollDetailsNotFound": {},
+    "pollParticipants": "પોલ સભ્યો",
+    "@pollParticipants": {}
 }

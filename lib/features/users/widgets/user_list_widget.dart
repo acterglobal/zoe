@@ -4,7 +4,7 @@ import 'package:zoe/features/users/widgets/user_widget.dart';
 
 class UserListWidget extends ConsumerWidget {
   final ProviderBase<List<String>> userIdList;
-  final Widget? actionWidget;
+  final Widget? Function(String userId)? actionWidget;
   final Function(String userId)? onTapUser;
   final String title;
 
@@ -53,23 +53,25 @@ class UserListWidget extends ConsumerWidget {
               ),
             ),
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: userIds.length,
-            itemBuilder: (context, index) {
-              final userId = userIds[index];
-              return Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
-                child: UserWidget(
+          Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: userIds.length,
+              itemBuilder: (context, index) {
+                final userId = userIds[index];
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
+                                  child: UserWidget(
                   key: ValueKey(userId),
                   userId: userId,
-                  actionWidget: actionWidget,
+                  actionWidget: actionWidget?.call(userId),
                   onTapUser: onTapUser,
                 ),
-              );
-            },
+                );
+              },
+            ),
           ),
           const SizedBox(height: 20),
         ],
