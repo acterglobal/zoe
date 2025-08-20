@@ -66,12 +66,6 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     PollModel poll,
     WidgetRef ref,
   ) {
-    final theme = Theme.of(context);
-
-    final totalMembers = ref.watch(pollSheetMembersProvider(poll.id)).length;
-    final membersVoted = ref.watch(pollVotedMembersProvider(poll.id)).length;
-    final participationRate = (membersVoted / totalMembers) * 100;
-
     return GlassyContainer(
       padding: const EdgeInsets.all(16),
       borderRadius: BorderRadius.circular(16),
@@ -97,69 +91,75 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
             ],
           ),
           const SizedBox(height: 12),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _showVotingStatus = !_showVotingStatus;
-              });
-            },
-            child: Row(
+          _buildPollVotingStatus(context, ref, poll),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPollVotingStatus(BuildContext context, WidgetRef ref, PollModel poll) {
+    final theme = Theme.of(context);
+
+    final totalMembers = ref.watch(pollSheetMembersProvider(poll.id)).length;
+    final membersVoted = ref.watch(pollVotedMembersProvider(poll.id)).length;
+    final participationRate = (membersVoted / totalMembers) * 100;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _showVotingStatus = !_showVotingStatus;
+        });
+      },
+      child: Row(
+        children: [
+          Icon(
+            Icons.people_outline,
+            size: 18,
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  Icons.people_outline,
-                  size: 18,
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      L10n.of(context).membersVoted(membersVoted, totalMembers),
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) =>
+                              _buildPollParticipantsBottomSheet(
+                                context,
+                                ref,
+                                poll,
+                              ),
+                        );
+                      },
+                      icon: Icon(
+                        _showVotingStatus
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        size: 20,
+                        color: _showVotingStatus
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            L10n.of(
-                              context,
-                            ).membersVoted(membersVoted, totalMembers),
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (context) =>
-                                    _buildPollParticipantsBottomSheet(
-                                      context,
-                                      ref,
-                                      poll,
-                                    ),
-                              );
-                            },
-                            icon: Icon(
-                              _showVotingStatus
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              size: 20,
-                              color: _showVotingStatus
-                                  ? theme.colorScheme.primary
-                                  : theme.colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        L10n.of(context).participation('$participationRate%'),
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          color: theme.colorScheme.onSurface.withValues(
-                            alpha: 0.6,
-                          ),
-                        ),
-                      ),
-                    ],
+                Text(
+                  L10n.of(context).participation('$participationRate%'),
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
               ],
@@ -198,7 +198,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     int index,
   ) {
     final theme = Theme.of(context);
-    final color = PollUtils.getColorFromOptionIndex(index);
+    final color = PollUtils.getColorFromOptionId(pollOption.id, poll);
 
     return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 16),
@@ -237,8 +237,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
           ),
           const SizedBox(height: 12),
           PollProgressWidget(
-            percentage: PollUtils.calculateVotePercentage(pollOption, poll),
-            optionIndex: index,
+            poll: poll,
             option: pollOption,
           ),
           const SizedBox(height: 16),

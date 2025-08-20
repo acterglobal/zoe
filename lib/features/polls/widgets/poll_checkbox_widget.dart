@@ -8,9 +8,8 @@ Widget pollCheckboxWidget(
     PollModel poll,
     PollOption option,
     bool isVoted,
-    int optionIndex,
   ) {
-    final color = PollUtils.getColorFromOptionIndex(optionIndex).withValues(alpha: 0.6);
+    final color = PollUtils.getColorFromOptionId(option.id, poll).withValues(alpha: 0.6);
     final themeColor = Theme.of(context).colorScheme;
     return Container(
       width: 16,

@@ -114,15 +114,9 @@ class PollWidget extends ConsumerWidget {
     PollOption option,
     int optionIndex,
   ) {
-    final totalVotes = poll.totalVotes;
-    final percentage = totalVotes > 0
-        ? (option.votes.length / totalVotes) * 100
-        : 0.0;
-    final currentUserId = ref.watch(loggedInUserProvider).value;
-    final isVoted =
-        currentUserId != null &&
-        option.votes.any((vote) => vote.userId == currentUserId);
-    final color = PollUtils.getColorFromOptionIndex(optionIndex);
+   
+    final isVoted = PollUtils.isUserVoted(poll, option, ref);
+    final color = PollUtils.getColorFromOptionId(option.id, poll);
     final theme = Theme.of(context);
 
     return Stack(
@@ -163,7 +157,7 @@ class PollWidget extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                pollCheckboxWidget(context, poll, option, isVoted, optionIndex),
+                pollCheckboxWidget(context, poll, option, isVoted),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -172,9 +166,8 @@ class PollWidget extends ConsumerWidget {
                       _buildEditableOptionText(context, ref, poll, option),
                       const SizedBox(height: 2),
                       PollProgressWidget(
-                        percentage: percentage,
                         option: option,
-                        optionIndex: optionIndex,
+                        poll: poll,
                         height: 4.0,
                         maxWidth: 0.6,
                         showPercentage: true,
@@ -187,7 +180,7 @@ class PollWidget extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                _buildVoteCount(context, option, isVoted, optionIndex),
+                _buildVoteCount(context, poll, option, isVoted),
               ],
             ),
           ),
@@ -344,11 +337,11 @@ class PollWidget extends ConsumerWidget {
 
   Widget _buildVoteCount(
     BuildContext context,
+    PollModel poll,
     PollOption option,
     bool isVoted,
-    int optionIndex,
   ) {
-    final color = PollUtils.getColorFromOptionIndex(optionIndex);
+    final color = PollUtils.getColorFromOptionId(option.id, poll);
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(5),

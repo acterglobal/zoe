@@ -3,9 +3,8 @@ import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 
 class PollProgressWidget extends StatelessWidget {
-  final double percentage;
-  final int optionIndex;
   final PollOption option;
+  final PollModel poll;
   final double height;
   final double maxWidth;
   final bool showPercentage;
@@ -14,9 +13,8 @@ class PollProgressWidget extends StatelessWidget {
 
   const PollProgressWidget({
     super.key,
-    required this.percentage,
-    required this.optionIndex,
     required this.option,
+    required this.poll,
     this.height = 8.0,
     this.maxWidth = 0.8, // 80% of parent width by default
     this.showPercentage = true,
@@ -27,41 +25,25 @@ class PollProgressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = PollUtils.getColorFromOptionIndex(optionIndex);
+    final color = PollUtils.getColorFromOptionId(option.id, poll);
     if (option.votes.isEmpty) return const SizedBox.shrink();
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Stack(
-          children: [
-            Container(
-              height: height,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(height / 2),
-              ),
-            ),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 800),
-              curve: Curves.easeOutCubic,
-              height: height,
-              width:
-                  (MediaQuery.of(context).size.width *
-                          maxWidth *
-                          (percentage / 100))
-                      .clamp(0, MediaQuery.of(context).size.width * maxWidth),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.8),
-                borderRadius: BorderRadius.circular(height / 2),
-              ),
-            ),
-          ],
+        SizedBox(
+          height: height,
+          child: LinearProgressIndicator(
+            value: PollUtils.calculateVotePercentage(option, poll) / 100,
+            backgroundColor: theme.colorScheme.surface.withValues(alpha: 0.6),
+            valueColor: AlwaysStoppedAnimation<Color>(color.withValues(alpha: 0.8)),
+            borderRadius: BorderRadius.circular(height / 2),
+          ),
         ),
         if (showPercentage) ...[
           SizedBox(height: height / 2),
           Text(
-            '${percentage.toStringAsFixed(1)}%',
+            '${PollUtils.calculateVotePercentage(option, poll).toStringAsFixed(1)}%',
             style:
                 percentageStyle ??
                 theme.textTheme.bodySmall?.copyWith(
