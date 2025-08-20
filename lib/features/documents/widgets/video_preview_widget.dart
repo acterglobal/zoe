@@ -104,13 +104,13 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
       return GlassyContainer(
         height: 300,
         borderRadius: BorderRadius.circular(16),
-        child: const Center(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularProgressIndicator(),
               SizedBox(height: 16),
-              Text('Initializing video player...'),
+              Text(L10n.of(context).initializingVideoPlayer),
             ],
           ),
         ),

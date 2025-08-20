@@ -68,7 +68,7 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen>
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
-      floatingActionButton: widget.isImage || widget.isVideo
+      floatingActionButton: widget.isImage || widget.isVideo || widget.isMusic
           ? Stack(
               children: [
                 Positioned(
@@ -116,7 +116,7 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen>
           : null,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: ZoeAppBar(title: widget.document.title),
+        title: ZoeAppBar(title: widget.document.title)
       ),
       body: _buildBody(context, theme),
     );

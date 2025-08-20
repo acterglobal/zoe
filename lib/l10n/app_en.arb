@@ -290,5 +290,9 @@
     "downloadingWillBeAvailableSoon": "Downloading will be available soon",
     "@downloadingWillBeAvailableSoon": {},
     "videoFileNotFound": "Video file not found: {filePath}",
-    "@videoFileNotFound": {}
+    "@videoFileNotFound": {},
+    "initializingVideoPlayer": "Initializing video player...",
+    "@initializingVideoPlayer": {},
+    "initializingAudioPlayer": "Initializing audio player...",  
+    "@initializingAudioPlayer": {}
 }

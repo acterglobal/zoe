@@ -7,6 +7,7 @@ import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/media_controller_widget.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/utils/document_media_utils.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class MusicPreviewWidget extends ConsumerStatefulWidget {
   final DocumentModel document;
@@ -21,7 +22,7 @@ class MusicPreviewWidget extends ConsumerStatefulWidget {
 }
 
 class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
-  // Audio player state
+
   AudioPlayer? _audioPlayer;
   bool _isPlaying = false;
   Duration _position = Duration.zero;
@@ -40,14 +41,12 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
     super.dispose();
   }
 
-  // MARK: - Audio Player Initialization
   Future<void> _initializeAudioPlayer() async {
     final file = File(widget.document.filePath);
     if (!file.existsSync()) return;
 
     _audioPlayer = AudioPlayer();
     
-    // Setup listeners
     _audioPlayer!.onPositionChanged.listen((Duration position) {
       if (mounted) {
         setState(() {
@@ -81,7 +80,6 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
       }
     });
 
-    // Load the audio file
     await _audioPlayer!.setSource(DeviceFileSource(widget.document.filePath));
     
     setState(() {
@@ -89,7 +87,6 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
     });
   }
 
-  // MARK: - Audio Controls
   void _togglePlayPause() async {
     if (_audioPlayer != null && _isInitialized) {
       if (_isPlaying) {
@@ -98,7 +95,6 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
         await _audioPlayer!.resume();
       }
     } else {
-      // Mock mode
       setState(() {
         _isPlaying = !_isPlaying;
       });
@@ -110,7 +106,6 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
       final validatedPosition = DocumentMediaUtils.validateSeekPosition(position, _duration);
       await _audioPlayer!.seek(validatedPosition);
     } else {
-      // Mock mode
       final validatedPosition = DocumentMediaUtils.validateSeekPosition(position, _duration);
       setState(() {
         _position = validatedPosition;
@@ -161,13 +156,13 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
       return GlassyContainer(
         height: 300,
         borderRadius: BorderRadius.circular(16),
-        child: const Center(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularProgressIndicator(),
               SizedBox(height: 16),
-              Text('Initializing audio player...'),
+              Text(L10n.of(context).initializingAudioPlayer),
             ],
           ),
         ),
@@ -202,7 +197,6 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
       borderRadius: BorderRadius.circular(16),
       child: Column(
         children: [
-          // Music visualization area
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -220,7 +214,6 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Music icon
                     GlassyContainer(
                       width: 60,
                       height: 60,

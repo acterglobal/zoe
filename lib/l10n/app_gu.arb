@@ -250,5 +250,11 @@
     "unsupportedFileType": "અસમર્થિત ફાઇલ પ્રકાર",
     "@unsupportedFileType": {},
     "downloadingWillBeAvailableSoon": "ડાઉનલોડ કરવાનું સમયપછી ઉપલબ્ધ થશે",
-    "@downloadingWillBeAvailableSoon": {}
+    "@downloadingWillBeAvailableSoon": {},
+    "videoFileNotFound": "વિડિઓ ફાઇલ મળ્યું નથી: {filePath}",
+    "@videoFileNotFound": {},
+    "initializingVideoPlayer": "વિડિઓ પ્લેયર શરૂ કરો...",
+    "@initializingVideoPlayer": {},
+    "initializingAudioPlayer": "ઑડિઓ પ્લેયર શરૂ કરો...",
+    "@initializingAudioPlayer": {}
 }
