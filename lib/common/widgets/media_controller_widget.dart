@@ -34,9 +34,18 @@ class MediaControllerWidget extends StatelessWidget {
       child: Column(
         children: [
           _buildProgressSlider(context, theme),
-          const SizedBox(height: 16),
-          
-          // Control buttons
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildTimeText(context, theme, position),
+                _buildTimeText(context, theme, duration),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -55,16 +64,7 @@ class MediaControllerWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
           
-          // Time display
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildTimeText(context, theme, position),
-              _buildTimeText(context, theme, duration),
-            ],
-          ),
         ],
       ),
     );
@@ -114,7 +114,7 @@ class MediaControllerWidget extends StatelessWidget {
       _formatDuration(time),
       style: theme.textTheme.labelSmall?.copyWith(
         color: theme.colorScheme.onSurface,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
       ),
     );
   }

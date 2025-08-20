@@ -140,9 +140,8 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
       );
     }
 
-    return GlassyContainer(
+    return SizedBox(
       height: 320,
-      borderRadius: BorderRadius.circular(16),
       child: Stack(
         children: [
           AspectRatio(

@@ -182,7 +182,7 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Document not found',
+              L10n.of(context).documentNotFound,
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.error,
               ),
@@ -192,9 +192,8 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
       );
     }
 
-    return GlassyContainer(
+    return SizedBox(
       height: 300,
-      borderRadius: BorderRadius.circular(16),
       child: Column(
         children: [
           Expanded(
