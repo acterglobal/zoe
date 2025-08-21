@@ -85,7 +85,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
                   poll.question,
                   style: Theme.of(
                     context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+                  ).textTheme.titleLarge,
                 ),
               ),
             ],
@@ -98,7 +98,8 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
   }
 
   Widget _buildPollVotingStatus(BuildContext context, WidgetRef ref, PollModel poll) {
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     final totalMembers = ref.watch(pollSheetMembersProvider(poll.id)).length;
     final membersVoted = ref.watch(pollVotedMembersProvider(poll.id)).length;
@@ -115,7 +116,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
           Icon(
             Icons.people_outline,
             size: 18,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            color: colorScheme.onSurface.withValues(alpha: 0.6),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -127,9 +128,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
                   children: [
                     Text(
                       L10n.of(context).membersVoted(membersVoted, totalMembers),
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: textTheme.titleSmall,
                     ),
                     IconButton(
                       padding: EdgeInsets.zero,
@@ -150,16 +149,16 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
                             : Icons.visibility,
                         size: 20,
                         color: _showVotingStatus
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.onSurfaceVariant,
+                            ? colorScheme.primary
+                            : colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
                 ),
                 Text(
                   L10n.of(context).participation('$participationRate%'),
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                  style: textTheme.titleSmall?.copyWith(
+                    color: colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
               ],
@@ -197,7 +196,8 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     PollOption pollOption,
     int index,
   ) {
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     final color = PollUtils.getColorFromOptionId(pollOption.id, poll);
 
     return GlassyContainer(
@@ -214,9 +214,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
               Expanded(
                 child: Text(
                   pollOption.title,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: textTheme.titleMedium,
                 ),
               ),
               Row(
@@ -226,9 +224,8 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
                   const SizedBox(width: 8),
                   Text(
                     '${pollOption.votes.length} vote${pollOption.votes.length == 1 ? '' : 's'}',
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                    style: textTheme.titleSmall?.copyWith(
+                      color: colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
                 ],

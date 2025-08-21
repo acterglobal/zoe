@@ -9,8 +9,11 @@ Widget pollCheckboxWidget(
     PollOption option,
     bool isVoted,
   ) {
+    
     final color = PollUtils.getColorFromOptionId(option.id, poll).withValues(alpha: 0.6);
-    final themeColor = Theme.of(context).colorScheme;
+    final themeOutline = Theme.of(context).colorScheme.outline;
+    final themeSurface = Theme.of(context).colorScheme.surface;
+
     return Container(
       width: 16,
       height: 16,
@@ -19,11 +22,11 @@ Widget pollCheckboxWidget(
               shape: BoxShape.rectangle,
               color: isVoted
                   ? color
-                  : themeColor.surface.withValues(alpha: 0.8),
+                  : themeSurface.withValues(alpha: 0.8),
               border: Border.all(
                 color: isVoted
                     ? color
-                    : themeColor.outline.withValues(alpha: 0.2),
+                    : themeOutline.withValues(alpha: 0.2),
                 width: 1,
               ),
             )
@@ -31,11 +34,11 @@ Widget pollCheckboxWidget(
               shape: BoxShape.circle,
               color: isVoted
                   ? color
-                  : themeColor.surface.withValues(alpha: 0.8),
+                  : themeSurface.withValues(alpha: 0.8),
               border: Border.all(
                 color: isVoted
                     ? color
-                    : themeColor.outline.withValues(alpha: 0.2),
+                    : themeOutline.withValues(alpha: 0.2),
                 width: 1,
               ),
             ),

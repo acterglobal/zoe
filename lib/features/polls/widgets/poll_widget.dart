@@ -54,6 +54,7 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
   ) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         Icon(
@@ -68,9 +69,7 @@ class PollWidget extends ConsumerWidget {
             text: poll.question,
             isEditing: PollUtils.isDraft(poll) && isEditing,
             textInputAction: TextInputAction.next,
-            textStyle: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+            textStyle: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
             onTextChanged: (value) {
               ref
                   .read(pollListProvider.notifier)
@@ -86,7 +85,7 @@ class PollWidget extends ConsumerWidget {
             child: Icon(
               Icons.delete,
               size: 16,
-              color: Theme.of(context).colorScheme.error,
+              color: theme.colorScheme.error,
             ),
           ),
       ],
@@ -342,25 +341,26 @@ class PollWidget extends ConsumerWidget {
     bool isVoted,
   ) {
     final color = PollUtils.getColorFromOptionId(option.id, poll);
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: isVoted
             ? color.withValues(alpha: 0.15)
-            : theme.colorScheme.surface.withValues(alpha: 0.2),
+            : colorScheme.surface.withValues(alpha: 0.2),
         border: Border.all(
           color: isVoted
               ? color.withValues(alpha: 0.3)
-              : theme.colorScheme.outline.withValues(alpha: 0.15),
+              : colorScheme.outline.withValues(alpha: 0.15),
           width: 1,
         ),
         shape: BoxShape.circle,
       ),
       child: Text(
         '${option.votes.length}',
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: isVoted ? color : theme.colorScheme.onSurfaceVariant,
+        style: textTheme.bodySmall?.copyWith(
+          color: isVoted ? color : colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w600,
           fontSize: 10,
         ),
