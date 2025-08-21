@@ -34,26 +34,36 @@ class TaskWidget extends ConsumerWidget {
     TaskModel task,
     bool shouldFocus,
   ) {
-    return Row(
-      children: [
-        TaskCheckboxWidget(task: task),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTaskItemTitle(context, ref, task, shouldFocus),
-              const SizedBox(height: 4),
-              if (!task.isCompleted) ...[
-                const SizedBox(height: 4),
-                _buildTaskItemDueDate(context, ref, task),
-              ],
-            ],
-          ),
-        ),
-        const SizedBox(width: 6),
-        if (isEditing) _buildTaskItemActions(context, ref),
-      ],
+    final color = Theme.of(context).colorScheme.surface;
+    return InkWell(
+      onTap: () => context.push(
+        AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
+      ),
+      borderRadius: BorderRadius.circular(8),
+      splashColor: color,
+      highlightColor: color,
+      hoverColor: color,
+      child: Row(
+          children: [
+            TaskCheckboxWidget(task: task),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildTaskItemTitle(context, ref, task, shouldFocus),
+                  const SizedBox(height: 4),
+                  if (!task.isCompleted) ...[
+                    const SizedBox(height: 4),
+                    _buildTaskItemDueDate(context, ref, task),
+                  ],
+                ],
+              ),
+            ),
+            const SizedBox(width: 6),
+            if (isEditing) _buildTaskItemActions(context, ref),
+          ],
+      ),
     );
   }
 
@@ -87,9 +97,6 @@ class TaskWidget extends ConsumerWidget {
           ),
       onBackspaceEmptyText: () =>
           ref.read(taskListProvider.notifier).deleteTask(taskId),
-      onTapText: () => context.push(
-        AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
-      ),
     );
   }
 
