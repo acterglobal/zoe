@@ -72,16 +72,17 @@ class DocumentWidget extends ConsumerWidget {
   }
 
   void _handleDocumentTap(BuildContext context, DocumentModel document) {
-     Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => DocumentPreviewScreen(
-            document: document,
-            isImage: isImageDocument(document),
-            isVideo: isVideoDocument(document),
-            isMusic: isMusicDocument(document),
-          ),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => DocumentPreviewScreen(
+          document: document,
+          isImage: isImageDocument(document),
+          isVideo: isVideoDocument(document),
+          isMusic: isMusicDocument(document),
+          isPdf: isPdfDocument(document),
         ),
-      );
+      ),
+    );
   }
 
   Widget _buildDocumentThumbnail(
@@ -89,7 +90,6 @@ class DocumentWidget extends ConsumerWidget {
     WidgetRef ref,
     DocumentModel document,
   ) {
-    
     return GestureDetector(
       onTap: () => _handleDocumentTap(context, document),
       child: GlassyContainer(
@@ -189,19 +189,19 @@ class DocumentWidget extends ConsumerWidget {
   ) {
     final theme = Theme.of(context);
     return GlassyContainer(
-        width: 20,
-        height: 20,
-        borderRadius: BorderRadius.circular(12),
-        shadowColor: theme.colorScheme.error,
-        borderOpacity: 0.05,
-        shadowOpacity: 1,
-        child: Icon(
-          Icons.close_rounded,
-          color: theme.colorScheme.error,
-          size: 12,
-        ),
-        onTap: () {
-          ref.read(documentListProvider.notifier).deleteDocument(document.id);
+      width: 20,
+      height: 20,
+      borderRadius: BorderRadius.circular(12),
+      shadowColor: theme.colorScheme.error,
+      borderOpacity: 0.05,
+      shadowOpacity: 1,
+      child: Icon(
+        Icons.close_rounded,
+        color: theme.colorScheme.error,
+        size: 12,
+      ),
+      onTap: () {
+        ref.read(documentListProvider.notifier).deleteDocument(document.id);
       },
     );
   }

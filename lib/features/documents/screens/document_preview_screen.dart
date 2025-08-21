@@ -8,6 +8,7 @@ import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/widgets/image_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/music_preview_widget.dart';
+import 'package:zoe/features/documents/widgets/pdf_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/unsupported_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/video_preview_widget.dart';
 import 'package:zoe/features/documents/actions/select_document_actions.dart';
@@ -19,6 +20,7 @@ class DocumentPreviewScreen extends ConsumerStatefulWidget {
   final bool isImage;
   final bool isVideo;
   final bool isMusic;
+  final bool isPdf;
 
   const DocumentPreviewScreen({
     super.key,
@@ -27,6 +29,7 @@ class DocumentPreviewScreen extends ConsumerStatefulWidget {
     this.isImage = false,
     this.isVideo = false,
     this.isMusic = false,
+    this.isPdf = false,
   });
 
   @override
@@ -68,7 +71,8 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen>
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
-      floatingActionButton: widget.isImage || widget.isVideo || widget.isMusic
+      floatingActionButton:
+          widget.isImage || widget.isVideo || widget.isMusic || widget.isPdf
           ? Stack(
               children: [
                 Positioned(
@@ -90,19 +94,22 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen>
                     child: AnimatedRotation(
                       turns: _isExpanded ? 0.125 : 0.0,
                       duration: const Duration(milliseconds: 300),
-                      child: Icon(Icons.menu_rounded,color: AppColors.darkOnSurface),
+                      child: Icon(
+                        Icons.menu_rounded,
+                        color: AppColors.darkOnSurface,
+                      ),
                     ),
                   ),
                 ),
                 _buildMenu(
-                  context, 
-                  Icons.share_rounded, 
+                  context,
+                  Icons.share_rounded,
                   80,
                   onTap: () => shareDocument(context, widget.document),
                 ),
                 _buildMenu(
-                  context, 
-                  Icons.download_rounded, 
+                  context,
+                  Icons.download_rounded,
                   140,
                   onTap: () {
                     CommonUtils.showSnackBar(
@@ -116,13 +123,18 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen>
           : null,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: ZoeAppBar(title: widget.document.title)
+        title: ZoeAppBar(title: widget.document.title),
       ),
       body: _buildBody(context, theme),
     );
   }
 
-  Widget _buildMenu(BuildContext context, IconData icon, double offset, {VoidCallback? onTap}) {
+  Widget _buildMenu(
+    BuildContext context,
+    IconData icon,
+    double offset, {
+    VoidCallback? onTap,
+  }) {
     final theme = Theme.of(context);
     return Positioned(
       bottom: 10,
@@ -158,7 +170,6 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen>
   }
 
   Widget _buildBody(BuildContext context, ThemeData theme) {
-   
     final file = File(widget.document.filePath);
     if (!file.existsSync()) {
       return Center(
@@ -171,8 +182,8 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen>
               color: theme.colorScheme.error,
             ),
             const SizedBox(height: 16),
-              Text(
-              L10n.of(context).documentNotFound, 
+            Text(
+              L10n.of(context).documentNotFound,
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.error,
               ),
@@ -192,6 +203,10 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen>
 
     if (widget.isMusic) {
       return MusicPreviewWidget(document: widget.document);
+    }
+
+    if (widget.isPdf) {
+      return PdfPreviewWidget(document: widget.document);
     }
 
     return UnsupportedPreviewWidget(document: widget.document);
