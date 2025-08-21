@@ -320,5 +320,13 @@
     "initializingVideoPlayer": "Initializing video player...",
     "@initializingVideoPlayer": {},
     "initializingAudioPlayer": "Initializing audio player...",
-    "@initializingAudioPlayer": {}
+    "@initializingAudioPlayer": {},
+    "pdfViewer": "PDF Viewer",
+    "@pdfViewer": {},
+    "zoomIn": "Zoom In",
+    "@zoomIn": {},
+    "zoomOut": "Zoom Out",
+    "@zoomOut": {},
+    "zoomToFit": "Zoom to Fit",
+    "@zoomToFit": {}
 }

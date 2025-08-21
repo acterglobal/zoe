@@ -282,5 +282,13 @@
     "initializingVideoPlayer": "वीडियो प्लेयर शुरू करें...",
     "@initializingVideoPlayer": {},
     "initializingAudioPlayer": "ऑडियो प्लेयर शुरू करें...",
-    "@initializingAudioPlayer": {}
+    "@initializingAudioPlayer": {},
+    "pdfViewer": "पीडीएफ व्यूअर",
+    "@pdfViewer": {},
+    "zoomIn": "झूम इन",
+    "@zoomIn": {},
+    "zoomOut": "झूम आउट",
+    "@zoomOut": {},
+    "zoomToFit": "झूम टू फिट",
+    "@zoomToFit": {}
 }

@@ -282,5 +282,13 @@
     "initializingVideoPlayer": "વિડિઓ પ્લેયર શરૂ કરો...",
     "@initializingVideoPlayer": {},
     "initializingAudioPlayer": "ઑડિઓ પ્લેયર શરૂ કરો...",
-    "@initializingAudioPlayer": {}
+    "@initializingAudioPlayer": {},
+    "pdfViewer": "પીડીએફ વીવર",
+    "@pdfViewer": {},
+    "zoomIn": "ઝૂમ ઇન",
+    "@zoomIn": {},
+    "zoomOut": "ઝૂમ આઉટ",
+    "@zoomOut": {},
+    "zoomToFit": "ઝૂમ ટૂ ફિટ",
+    "@zoomToFit": {}
 }

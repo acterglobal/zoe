@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfViewer.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class PdfPreviewWidget extends ConsumerStatefulWidget {
   final DocumentModel document;
@@ -49,6 +50,7 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
   }
 
   Widget _buildPdfToolbar(BuildContext context, ThemeData theme) {
+    final l10n = L10n.of(context);
     return GlassyContainer(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -63,17 +65,14 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'PDF Viewer',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onSurface,
-              ),
+              l10n.pdfViewer,
+              style: theme.textTheme.titleMedium
             ),
           ),
           _buildToolbarButton(
             context,
             Icons.zoom_in_rounded,
-            'Zoom In',
+            l10n.zoomIn,
             () => _pdfViewerController.zoomLevel = 
                 (_pdfViewerController.zoomLevel * 1.25).clamp(0.25, 3.0),
           ),
@@ -81,7 +80,7 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
           _buildToolbarButton(
             context,
             Icons.zoom_out_rounded,
-            'Zoom Out',
+            l10n.zoomOut,
             () => _pdfViewerController.zoomLevel = 
                 (_pdfViewerController.zoomLevel / 1.25).clamp(0.25, 3.0),
           ),
@@ -89,7 +88,7 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
           _buildToolbarButton(
             context,
             Icons.fit_screen_rounded,
-            'Fit Page',
+            l10n.zoomToFit,
             () => _pdfViewerController.zoomLevel = 1.0,
           ),
         ],
