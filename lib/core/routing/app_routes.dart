@@ -11,6 +11,7 @@ enum AppRoutes {
   linksList('/links-list'),
   documentsList('/documents-list'),
   pollsList('/polls-list'),
+  pollDetails('/poll/:pollId'),
   settings('/settings'),
   settingLanguage('/settings/language');
 

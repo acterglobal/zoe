@@ -9,6 +9,7 @@ import 'package:zoe/features/events/screens/event_detail_screen.dart';
 import 'package:zoe/features/events/screens/events_list_screen.dart';
 import 'package:zoe/features/home/screens/home_screen.dart';
 import 'package:zoe/features/link/screens/links_list_screen.dart';
+import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 import 'package:zoe/features/polls/screens/polls_list_screen.dart';
 import 'package:zoe/features/settings/screens/settings_screen.dart';
 import 'package:zoe/features/settings/screens/language_selection_screen.dart';
@@ -129,6 +130,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.pollsList.route,
         name: AppRoutes.pollsList.name,
         builder: (context, state) => const PollsListScreen(),
+      ),
+
+      // Poll details route
+      GoRoute(
+        path: AppRoutes.pollDetails.route,
+        name: AppRoutes.pollDetails.name,
+        builder: (context, state) {
+          final pollId = state.pathParameters['pollId'] ?? Uuid().v4();
+          return PollDetailsScreen(pollId: pollId);
+        },
       ),
 
       // Language selection route

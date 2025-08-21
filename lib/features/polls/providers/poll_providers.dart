@@ -3,6 +3,8 @@ import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/notifiers/poll_notifier.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 
 final pollListProvider = StateNotifierProvider<PollNotifier, List<PollModel>>(
   (ref) => PollNotifier(ref),
@@ -36,3 +38,20 @@ final pollListSearchProvider = Provider<List<PollModel>>((ref) {
     return poll.question.toLowerCase().contains(searchValue.toLowerCase());
   }).toList();
 });
+
+// Provider for members who have voted
+final pollVotedMembersProvider = Provider.family<List<UserModel>, String>((ref, pollId) {
+  final poll = ref.watch(pollProvider(pollId));
+  if (poll == null) return [];
+  
+  final members = ref.watch(usersBySheetIdProvider(poll.sheetId));
+  
+  return members.where((member) {
+    return poll.options.any((option) => 
+      option.votes.any((vote) => vote.userId == member.id)
+    );
+  }).toList();
+});
+
+
+
