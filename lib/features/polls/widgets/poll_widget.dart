@@ -143,14 +143,10 @@ class PollWidget extends ConsumerWidget {
             margin: const EdgeInsets.only(bottom: 8),
             clipBehavior: Clip.none,
             decoration: BoxDecoration(
-              color: isVoted
-                  ? color.withValues(alpha: 0.08)
-                  : theme.colorScheme.surface.withValues(alpha: 0.7),
+              color:  theme.colorScheme.surface.withValues(alpha: 0.7),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: isVoted
-                    ? color.withValues(alpha: 0.4)
-                    : color.withValues(alpha: 0.1),
+                color:  color.withValues(alpha: 0.1),
                 width: isVoted ? 1 : 0.5,
               ),
             ),
@@ -296,7 +292,7 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
   ) {
-    if (PollUtils.isActive(poll)) return const SizedBox.shrink();
+    if (PollUtils.isActive(poll) || (PollUtils.isDraft(poll) && isEditing)) return const SizedBox.shrink();
     final theme = Theme.of(context);
     return GlassyContainer(
       padding: const EdgeInsets.all(8),

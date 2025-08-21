@@ -18,31 +18,29 @@ final polls = [
         title: 'Task management and to-do lists',
         votes: [
           Vote(userId: 'user_1', createdAt: DateTime.now().subtract(const Duration(days: 1)), updatedAt: DateTime.now().subtract(const Duration(days: 1))),
-          Vote(userId: 'user_2'),
-          Vote(userId: 'user_3'),
         ],
       ),
       PollOption(
         id: 'option-1-2',
         title: 'Event planning and scheduling',
         votes: [
-          Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
         ],
       ),
       PollOption(
         id: 'option-1-3',
         title: 'Document organization',
         votes: [
-          Vote(userId: 'user_1'),
-          Vote(userId: 'user_3'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_5'),
         ],
       ),
       PollOption(
         id: 'option-1-4',
         title: 'Link and resource sharing',
         votes: [
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_6'),
         ],
       ),
     ],
