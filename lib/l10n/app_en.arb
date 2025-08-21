@@ -328,5 +328,11 @@
     "zoomOut": "Zoom Out",
     "@zoomOut": {},
     "zoomToFit": "Zoom to Fit",
-    "@zoomToFit": {}
+    "@zoomToFit": {},
+    "pdfFileNotFound": "PDF file not found",
+    "@pdfFileNotFound": {},
+    "loadingPDF": "Loading PDF...",
+    "@loadingPDF": {},
+    "pdfFileNotFoundDescription": "Please check if the file exists and is not corrupted",
+    "@pdfFileNotFoundDescription": {}
 }

@@ -290,5 +290,11 @@
     "zoomOut": "झूम आउट",
     "@zoomOut": {},
     "zoomToFit": "झूम टू फिट",
-    "@zoomToFit": {}
+    "@zoomToFit": {},
+    "pdfFileNotFound": "पीडीएफ फाइल नहीं मिली",
+    "@pdfFileNotFound": {},
+    "loadingPDF": "पीडीएफ लोड हो रहा है...",
+    "@loadingPDF": {},
+    "pdfFileNotFoundDescription": "कृपया फाइल को जाँचें यदि यह मौजूद है और चुनौती नहीं है",
+    "@pdfFileNotFoundDescription": {}
 }

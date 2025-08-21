@@ -131,7 +131,7 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
       return _buildErrorContainer(
         context,
         theme,
-        'PDF file not found',
+        L10n.of(context).pdfFileNotFound,
         Icons.error_outline_rounded,
       );
     }
@@ -190,7 +190,7 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Loading PDF...',
+              L10n.of(context).loadingPDF,
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -229,7 +229,7 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Please check if the file exists and is not corrupted',
+            L10n.of(context).pdfFileNotFoundDescription,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
