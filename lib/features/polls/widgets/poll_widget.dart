@@ -170,7 +170,6 @@ class PollWidget extends ConsumerWidget {
                         color: color,
                         height: 4.0,
                         maxWidth: 0.6,
-                        showPercentage: true,
                         percentageStyle: theme.textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: 10,
