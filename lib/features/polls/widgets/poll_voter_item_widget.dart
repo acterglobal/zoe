@@ -8,12 +8,10 @@ import 'package:zoe/features/users/providers/user_providers.dart';
 
 class PollVoterItemWidget extends ConsumerWidget {
   final Vote vote;
-  final int optionIndex;
 
   const PollVoterItemWidget({
     super.key,
     required this.vote,
-    required this.optionIndex,
   });
 
   @override

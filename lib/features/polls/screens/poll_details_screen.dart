@@ -23,7 +23,6 @@ class PollDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
-  bool _showVotingStatus = false;
 
   @override
   Widget build(BuildContext context) {
@@ -105,13 +104,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     final membersVoted = ref.watch(pollVotedMembersProvider(poll.id)).length;
     final participationRate = (membersVoted / totalMembers) * 100;
 
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _showVotingStatus = !_showVotingStatus;
-        });
-      },
-      child: Row(
+    return Row(
         children: [
           Icon(
             Icons.people_outline,
@@ -144,13 +137,9 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
                         );
                       },
                       icon: Icon(
-                        _showVotingStatus
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                        Icons.visibility,
                         size: 20,
-                        color: _showVotingStatus
-                            ? colorScheme.primary
-                            : colorScheme.onSurfaceVariant,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -165,7 +154,6 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
             ),
           ),
         ],
-      ),
     );
   }
 
@@ -184,7 +172,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
       itemCount: sortedOptions.length,
       itemBuilder: (context, index) {
         final pollOption = sortedOptions[index];
-        return _buildPollOption(context, ref, poll, pollOption, index);
+        return _buildPollOption(context, ref, poll, pollOption);
       },
     );
   }
@@ -194,11 +182,11 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     WidgetRef ref,
     PollModel poll,
     PollOption pollOption,
-    int index,
   ) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final color = PollUtils.getColorFromOptionId(pollOption.id, poll);
+    final voteCount = '${pollOption.votes.length} vote${pollOption.votes.length == 1 ? '' : 's'}';
 
     return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 16),
@@ -223,7 +211,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
                     Icon(Icons.star, size: 20, color: Colors.amber),
                   const SizedBox(width: 8),
                   Text(
-                    '${pollOption.votes.length} vote${pollOption.votes.length == 1 ? '' : 's'}',
+                    voteCount,
                     style: textTheme.titleSmall?.copyWith(
                       color: colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
@@ -239,7 +227,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
             color: color,
           ),
           const SizedBox(height: 16),
-          _buildUsersVotedList(context, ref, pollOption, index),
+          _buildUsersVotedList(context, ref, pollOption),
         ],
       ),
     );
@@ -249,7 +237,6 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     BuildContext context,
     WidgetRef ref,
     PollOption pollOption,
-    int optionIndex,
   ) {
     final theme = Theme.of(context);
     if (pollOption.votes.isEmpty) {
@@ -279,7 +266,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
           itemCount: pollOption.votes.length,
           itemBuilder: (context, index) {
             final vote = pollOption.votes[index];
-            return PollVoterItemWidget(vote: vote, optionIndex: optionIndex);
+            return PollVoterItemWidget(vote: vote);
           },
         ),
       ],
