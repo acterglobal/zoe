@@ -17,7 +17,11 @@ final polls = [
         id: 'option-1-1',
         title: 'Task management and to-do lists',
         votes: [
-          Vote(userId: 'user_1', createdAt: DateTime.now().subtract(const Duration(days: 1)), updatedAt: DateTime.now().subtract(const Duration(days: 1))),
+          Vote(
+            userId: 'user_1',
+            createdAt: DateTime.now().subtract(const Duration(days: 1)),
+            updatedAt: DateTime.now().subtract(const Duration(days: 1)),
+          ),
         ],
       ),
       PollOption(
@@ -28,21 +32,8 @@ final polls = [
           Vote(userId: 'user_3'),
         ],
       ),
-      PollOption(
-        id: 'option-1-3',
-        title: 'Document organization',
-        votes: [
-          Vote(userId: 'user_4'),
-          Vote(userId: 'user_5'),
-        ],
-      ),
-      PollOption(
-        id: 'option-1-4',
-        title: 'Link and resource sharing',
-        votes: [
-          Vote(userId: 'user_6'),
-        ],
-      ),
+      PollOption(id: 'option-1-3', title: 'Document organization'),
+      PollOption(id: 'option-1-4', title: 'Link and resource sharing'),
     ],
     isMultipleChoice: false,
     createdBy: 'user_1',
@@ -309,16 +300,7 @@ final polls = [
       PollOption(
         id: 'option-trip-1-4',
         title: 'Hiroshima',
-        votes: [
-          Vote(userId: 'user_9'),
-        ],
-      ),
-      PollOption(
-        id: 'option-trip-1-5',
-        title: 'Nara',
-        votes: [
-          Vote(userId: 'user_10'),
-        ],
+        votes: [Vote(userId: 'user_9')],
       ),
     ],
     isMultipleChoice: true,
@@ -337,32 +319,15 @@ final polls = [
       PollOption(
         id: 'option-trip-2-1',
         title: 'Traditional ryokan',
-        votes: [
-          Vote(userId: 'user_9'),
-          Vote(userId: 'user_10'),
-        ],
+        votes: [Vote(userId: 'user_9')],
       ),
       PollOption(
         id: 'option-trip-2-2',
         title: 'Modern hotel',
-        votes: [
-          Vote(userId: 'user_9'),
-          Vote(userId: 'user_10'),
-        ],
-      ),
-      PollOption(
-        id: 'option-trip-2-3',
-        title: 'Vacation rental/Airbnb',
-        votes: [
-          Vote(userId: 'user_9'),
-          Vote(userId: 'user_10'),
-        ],
-      ),
-      PollOption(
-        id: 'option-trip-2-4',
-        title: 'Hostel',
         votes: [Vote(userId: 'user_10')],
       ),
+      PollOption(id: 'option-trip-2-3', title: 'Vacation rental/Airbnb'),
+      PollOption(id: 'option-trip-2-4', title: 'Hostel'),
     ],
     isMultipleChoice: false,
     createdBy: 'user_5',

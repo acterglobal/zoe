@@ -43,6 +43,7 @@ class TaskWidget extends ConsumerWidget {
       splashColor: color,
       highlightColor: color,
       hoverColor: color,
+      focusColor: color,
       child: Row(
           children: [
             TaskCheckboxWidget(task: task),
@@ -97,6 +98,9 @@ class TaskWidget extends ConsumerWidget {
           ),
       onBackspaceEmptyText: () =>
           ref.read(taskListProvider.notifier).deleteTask(taskId),
+      onTapText: () => context.push(
+        AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
+      ),
     );
   }
 
