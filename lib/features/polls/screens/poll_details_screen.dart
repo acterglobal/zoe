@@ -279,8 +279,11 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     WidgetRef ref,
     PollModel poll,
   ) {
+    
+    final memberIds = ref.watch(usersBySheetIdProvider(poll.sheetId)).map((user) => user.id).toList();
+    
     return UserListWidget(
-      userIdList: pollSheetMemberIdsProvider(poll.id),
+      userIdList: Provider((ref) => memberIds),
       title: L10n.of(context).pollParticipants,
       actionWidget: (userId) {
         final votedMembers = ref.read(pollVotedMembersProvider(poll.id));

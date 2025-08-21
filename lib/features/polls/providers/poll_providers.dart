@@ -53,21 +53,5 @@ final pollVotedMembersProvider = Provider.family<List<UserModel>, String>((ref, 
   }).toList();
 });
 
-// Provider for poll sheet member IDs
-final pollSheetMemberIdsProvider = Provider.family<List<String>, String>((ref, pollId) {
-  final poll = ref.watch(pollProvider(pollId));
-  if (poll == null) return [];
-  
-  final members = ref.watch(usersBySheetIdProvider(poll.sheetId));
-  final List<String> memberIds = [];
-  
-  for (final member in members) {
-    memberIds.add(member.id);
-  }
-  
-  return memberIds;
-});
-
-
 
 
