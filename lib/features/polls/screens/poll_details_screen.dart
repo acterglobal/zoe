@@ -9,6 +9,7 @@ import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_voter_item_widget.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/features/users/widgets/user_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
@@ -100,7 +101,7 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    final totalMembers = ref.watch(pollSheetMembersProvider(poll.id)).length;
+    final totalMembers = ref.watch(usersBySheetIdProvider(poll.sheetId)).length;
     final membersVoted = ref.watch(pollVotedMembersProvider(poll.id)).length;
     final participationRate = (membersVoted / totalMembers) * 100;
 
@@ -282,8 +283,8 @@ class _PollDetailsScreenState extends ConsumerState<PollDetailsScreen> {
       userIdList: pollSheetMemberIdsProvider(poll.id),
       title: L10n.of(context).pollParticipants,
       actionWidget: (userId) {
-        final votedMemberIds = ref.read(pollVotedMemberIdsProvider(poll.id));
-        final hasVoted = votedMemberIds.contains(userId);
+        final votedMembers = ref.read(pollVotedMembersProvider(poll.id));
+        final hasVoted = votedMembers.any((member) => member.id == userId);
         return hasVoted
             ? Text(
                 L10n.of(context).voted,

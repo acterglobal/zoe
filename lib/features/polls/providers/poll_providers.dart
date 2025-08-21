@@ -39,20 +39,12 @@ final pollListSearchProvider = Provider<List<PollModel>>((ref) {
   }).toList();
 });
 
-// Provider for sheet members of a poll
-final pollSheetMembersProvider = Provider.family<List<UserModel>, String>((ref, pollId) {
-  final poll = ref.watch(pollProvider(pollId));
-  if (poll == null) return [];
-  
-  return ref.watch(usersBySheetIdProvider(poll.sheetId));
-});
-
 // Provider for members who have voted
 final pollVotedMembersProvider = Provider.family<List<UserModel>, String>((ref, pollId) {
   final poll = ref.watch(pollProvider(pollId));
-  final members = ref.watch(pollSheetMembersProvider(pollId));
-  
   if (poll == null) return [];
+  
+  final members = ref.watch(usersBySheetIdProvider(poll.sheetId));
   
   return members.where((member) {
     return poll.options.any((option) => 
@@ -63,7 +55,10 @@ final pollVotedMembersProvider = Provider.family<List<UserModel>, String>((ref, 
 
 // Provider for poll sheet member IDs
 final pollSheetMemberIdsProvider = Provider.family<List<String>, String>((ref, pollId) {
-  final members = ref.watch(pollSheetMembersProvider(pollId));
+  final poll = ref.watch(pollProvider(pollId));
+  if (poll == null) return [];
+  
+  final members = ref.watch(usersBySheetIdProvider(poll.sheetId));
   final List<String> memberIds = [];
   
   for (final member in members) {
@@ -71,18 +66,6 @@ final pollSheetMemberIdsProvider = Provider.family<List<String>, String>((ref, p
   }
   
   return memberIds;
-});
-
-// Provider for poll sheet member IDs who have voted
-final pollVotedMemberIdsProvider = Provider.family<List<String>, String>((ref, pollId) {
-  final votedMembers = ref.watch(pollVotedMembersProvider(pollId));
-  final List<String> votedMemberIds = [];
-  
-  for (final member in votedMembers) {
-    votedMemberIds.add(member.id);
-  }
-  
-  return votedMemberIds;
 });
 
 
