@@ -296,7 +296,7 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
   ) {
-    if (PollUtils.isActive(poll)) return const SizedBox.shrink();
+    if (PollUtils.isActive(poll) || (PollUtils.isDraft(poll) && isEditing)) return const SizedBox.shrink();
     final theme = Theme.of(context);
     return GlassyContainer(
       padding: const EdgeInsets.all(8),
