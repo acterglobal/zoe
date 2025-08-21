@@ -296,5 +296,21 @@
     "loadingPDF": "पीडीएफ लोड हो रहा है...",
     "@loadingPDF": {},
     "pdfFileNotFoundDescription": "कृपया फाइल को जाँचें यदि यह मौजूद है और चुनौती नहीं है",
-    "@pdfFileNotFoundDescription": {}
+    "@pdfFileNotFoundDescription": {},
+    "selectDocument": "फाइल चुनें",
+    "@selectDocument": {},
+    "chooseHowToAddDocument": "फाइल कैसे जोड़ें",
+    "@chooseHowToAddDocument": {},
+    "filePicker": "फाइल पिकर",
+    "@filePicker": {},
+    "browseFiles": "फाइलें ब्राउज करें",
+    "@browseFiles": {},
+    "camera": "कैमरा",
+    "@camera": {},
+    "takePhotoOrVideo": "फोटो या वीडियो लें",
+    "@takePhotoOrVideo": {},
+    "photoGallery": "फोटो गैलरी",
+    "@photoGallery": {},
+    "selectFromGallery": "गैलरी से चुनें",
+    "@selectFromGallery": {}
 }

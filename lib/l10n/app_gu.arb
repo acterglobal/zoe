@@ -296,6 +296,22 @@
     "loadingPDF": "પીડીએફ લોડ કરી રહ્યું છે...",
     "@loadingPDF": {},
     "pdfFileNotFoundDescription": "કૃપા કરીને ફાઇલને જાંચો જો તે અસ્તિત્વમાં છે અને કોઈ સંકળાયેલ નથી",
-    "@pdfFileNotFoundDescription": {}
+    "@pdfFileNotFoundDescription": {},
+    "selectDocument": "ફાઇલ પસંદ કરો",
+    "@selectDocument": {},
+    "chooseHowToAddDocument": "ફાઇલ કેવી રીતે ઉમેરવો તે પસંદ કરો",
+    "@chooseHowToAddDocument": {},
+    "filePicker": "ફાઇલ પસંદક",
+    "@filePicker": {},
+    "browseFiles": "ફાઇલ્સ બ્રાઉઝ કરો",
+    "@browseFiles": {},
+    "camera": "કેમરા",
+    "@camera": {},
+    "takePhotoOrVideo": "ફોટો અથવા વિડિઓ લેવો",
+    "@takePhotoOrVideo": {},
+    "photoGallery": "ફોટો ગેલરી",
+    "@photoGallery": {},
+    "selectFromGallery": "ગેલરીમાંથી પસંદ કરો",
+    "@selectFromGallery": {}
 
 }

@@ -61,6 +61,7 @@ dependencies:
   
   # File handling
   file_picker: ^10.2.4
+  image_picker: ^1.2.0
   
   # Settings and sharing
   url_launcher: ^6.2.5

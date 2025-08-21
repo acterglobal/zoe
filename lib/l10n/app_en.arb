@@ -334,5 +334,21 @@
     "loadingPDF": "Loading PDF...",
     "@loadingPDF": {},
     "pdfFileNotFoundDescription": "Please check if the file exists and is not corrupted",
-    "@pdfFileNotFoundDescription": {}
+    "@pdfFileNotFoundDescription": {},
+    "selectDocument": "Select Document",
+    "@selectDocument": {},
+    "chooseHowToAddDocument": "Choose how you want to add a document",
+    "@chooseHowToAddDocument": {},
+    "filePicker": "File Picker",
+    "@filePicker": {},
+    "browseFiles": "Browse files",
+    "@browseFiles": {},
+    "camera": "Camera",
+    "@camera": {},
+    "takePhotoOrVideo": "Take photo or video",
+    "@takePhotoOrVideo": {},
+    "photoGallery": "Photo Gallery",
+    "@photoGallery": {},
+    "selectFromGallery": "Select from gallery",
+    "@selectFromGallery": {}
 }
