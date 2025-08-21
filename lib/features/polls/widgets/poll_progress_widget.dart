@@ -36,7 +36,7 @@ class PollProgressWidget extends StatelessWidget {
           height: height,
           child: LinearProgressIndicator(
             value: PollUtils.calculateVotePercentage(option, poll) / 100,
-            backgroundColor: theme.colorScheme.surface.withValues(alpha: 0.6),
+            backgroundColor: color.withValues(alpha: 0.1),
             valueColor: AlwaysStoppedAnimation<Color>(color.withValues(alpha: 0.8)),
             borderRadius: BorderRadius.circular(height / 2),
           ),
