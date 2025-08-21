@@ -9,19 +9,20 @@ Widget addPollOptionWidget(
   WidgetRef ref,
   PollModel poll,
 ) {
+  final theme = Theme.of(context);
   return GestureDetector(
     onTap: () => ref.read(pollListProvider.notifier).addPollOption(poll.id, ''),
     child: Row(
       children: [
         Icon(
           Icons.add_circle,
-          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
           size: 24,
         ),
         const SizedBox(width: 4),
         Text(
           L10n.of(context).addOption,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: theme.textTheme.bodySmall,
         ),
       ],
     ),
@@ -47,9 +48,8 @@ Widget startPollButtonWidget(
         const SizedBox(width: 8),
         Text(
           L10n.of(context).startPoll,
-          style: theme.textTheme.bodySmall?.copyWith(
+          style: theme.textTheme.titleSmall?.copyWith(
             color: theme.colorScheme.primary,
-            fontWeight: FontWeight.w600,
           ),
         ),
       ],
@@ -121,7 +121,7 @@ Widget choiceOptionWidget({
   required WidgetRef ref,
   required PollModel poll,
 }) {
-  final theme = Theme.of(context);
+  final colorScheme = Theme.of(context).colorScheme;
   return GestureDetector(
     onTap: () =>
         ref.read(pollListProvider.notifier).togglePollMultipleChoice(poll.id),
@@ -129,7 +129,7 @@ Widget choiceOptionWidget({
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: isSelected
-            ? (theme.colorScheme.primary.withValues(alpha: 0.15))
+            ? (colorScheme.primary.withValues(alpha: 0.15))
             : Colors.transparent,
         borderRadius: BorderRadius.circular(16),
       ),
@@ -140,16 +140,16 @@ Widget choiceOptionWidget({
             icon,
             size: 16,
             color: isSelected
-                ? (theme.colorScheme.primary)
-                : (theme.colorScheme.onSurface.withValues(alpha: 0.7)),
+                ? (colorScheme.primary)
+                : (colorScheme.onSurface.withValues(alpha: 0.7)),
           ),
           const SizedBox(width: 6),
           Text(
             label,
-            style: theme.textTheme.bodySmall?.copyWith(
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: isSelected
-                  ? (theme.colorScheme.primary)
-                  : (theme.colorScheme.onSurface.withValues(alpha: 0.7)),
+                  ? (colorScheme.primary)
+                  : (colorScheme.onSurface.withValues(alpha: 0.7)),
               fontSize: 12,
             ),
           ),

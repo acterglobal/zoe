@@ -48,3 +48,19 @@ final userIdsFromUserModelsProvider =
     Provider.family<List<String>, List<UserModel>>((ref, userModels) {
       return userModels.map((user) => user.id).toList();
     });
+
+// Provider that returns user display name for a user ID
+final userDisplayNameProvider = Provider.family<String, String>((ref, userId) {
+  final currentUserId = ref.watch(loggedInUserProvider).valueOrNull ?? '';
+  final user = ref.watch(getUserByIdProvider(userId));
+  
+  if (currentUserId == userId) {
+    return 'You';
+  }
+  
+  if (user != null && user.name.isNotEmpty) {
+    return user.name;
+  }
+  
+  return userId;
+});

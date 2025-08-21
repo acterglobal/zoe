@@ -29,7 +29,7 @@ Future<void> assignTask(
     backgroundColor: theme.colorScheme.surface,
     builder: (context) => UserListWidget(
       userIdList: userIdsFromUserModelsProvider(availableUsers),
-      actionWidget: Icon(Icons.add, size: 20, color: theme.colorScheme.primary),
+      actionWidget: (userId) => Icon(Icons.add, size: 20, color: theme.colorScheme.primary),
       onTapUser: (userId) {
         ref
             .read(taskListProvider.notifier)
