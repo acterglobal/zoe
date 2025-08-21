@@ -6,6 +6,7 @@ class PollProgressWidget extends StatelessWidget {
   final PollOption option;
   final PollModel poll;
   final double height;
+  final Color color;
   final double maxWidth;
   final bool showPercentage;
   final TextStyle? percentageStyle;
@@ -15,6 +16,7 @@ class PollProgressWidget extends StatelessWidget {
     super.key,
     required this.option,
     required this.poll,
+    required this.color,
     this.height = 8.0,
     this.maxWidth = 0.8, // 80% of parent width by default
     this.showPercentage = true,
@@ -25,7 +27,6 @@ class PollProgressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = PollUtils.getColorFromOptionId(option.id, poll);
     if (option.votes.isEmpty) return const SizedBox.shrink();
     
     return Column(

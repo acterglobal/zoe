@@ -167,6 +167,7 @@ class PollWidget extends ConsumerWidget {
                       PollProgressWidget(
                         option: option,
                         poll: poll,
+                        color: color,
                         height: 4.0,
                         maxWidth: 0.6,
                         showPercentage: true,
