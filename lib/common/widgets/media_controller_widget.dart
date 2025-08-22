@@ -24,12 +24,9 @@ class MediaControllerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
+    return Column(
         children: [
           _buildProgressSlider(context),
-          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -54,8 +51,8 @@ class MediaControllerWidget extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 8),
         ],
-      ),
     );
   }
 
@@ -91,10 +88,13 @@ class MediaControllerWidget extends StatelessWidget {
 
   Widget _buildTimeText(BuildContext context, Duration time) {
     final theme = Theme.of(context);
-    return Text(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Text(
       DocumentMediaUtils.formatDuration(time),
       style: theme.textTheme.labelSmall?.copyWith(
         color: theme.colorScheme.onSurface,
+      ),
       ),
     );
   }
@@ -107,9 +107,10 @@ class MediaControllerWidget extends StatelessWidget {
       data: SliderTheme.of(context).copyWith(
         activeTrackColor: theme.primary,
         inactiveTrackColor: theme.onSurface.withValues(alpha: 0.3),
+        padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 10),
         thumbColor: theme.primary,
         overlayColor: theme.primary.withValues(alpha: 0.2),
-        trackHeight: 4,
+        trackHeight: 3,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
       ),
       child: Slider(
