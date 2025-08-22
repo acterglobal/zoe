@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
@@ -51,7 +54,7 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(36),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 12),
           Text(
             l10n.selectDocument,
             style: theme.textTheme.headlineSmall?.copyWith(
@@ -68,8 +71,9 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
-          _buildOptionButton(
+          if (!CommonUtils.isDesktop(context)) ...[
+            const SizedBox(height: 32),
+            _buildOptionButton(
             context,
             icon: Icons.camera_alt_rounded,
             title: l10n.camera,
@@ -77,6 +81,7 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
             color: AppColors.brightOrangeColor,
             onTap: () => Navigator.of(context).pop(DocumentSource.camera),
           ),
+          ],
           const SizedBox(height: 16),
           _buildOptionButton(
             context,

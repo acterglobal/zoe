@@ -69,58 +69,6 @@
     <true/>
     <key>LSSupportsOpeningDocumentsInPlace</key>
     <true/>
-    
-    <!-- Document types that can be opened -->
-    <key>CFBundleDocumentTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeName</key>
-            <string>All Files</string>
-            <key>CFBundleTypeRole</key>
-            <string>Viewer</string>
-            <key>LSHandlerRank</key>
-            <string>Owner</string>
-            <key>LSItemContentTypes</key>
-            <array>
-                <string>public.item</string>
-                <string>public.data</string>
-                <string>public.content</string>
-                <string>public.audio</string>
-                <string>public.movie</string>
-                <string>public.text</string>
-                <string>public.image</string>
-                <string>public.contact</string>
-                <string>public.archive</string>
-                <string>public.database</string>
-                <string>public.calendar</string>
-                <string>public.message</string>
-                <string>public.presentation</string>
-                <string>public.spreadsheet</string>
-                <string>public.plain-text</string>
-                <string>public.rtf</string>
-                <string>public.html</string>
-                <string>public.xml</string>
-                <string>public.source-code</string>
-                <string>public.audiovisual-content</string>
-                <string>public.3d-content</string>
-                <string>public.folder</string>
-            </array>
-        </dict>
-    </array>
-    
-    <!-- Import/Export document types -->
-    <key>UTImportedTypeDeclarations</key>
-    <array>
-        <dict>
-            <key>UTTypeIdentifier</key>
-            <string>public.item</string>
-            <key>UTTypeDescription</key>
-            <string>All Files</string>
-            <key>UTTypeConformsTo</key>
-            <array>
-                <string>public.data</string>
-            </array>
-        </dict>
-    </array>
+
 </dict>
 </plist>
