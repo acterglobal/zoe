@@ -7,7 +7,7 @@ import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows a bottom sheet for selecting document source
-Future<DocumentSource?> showDocumentSelectionBottomSheet(BuildContext context) async {
+Future<DocumentSource?> showDocumentSelectionBottomSheet(BuildContext context) {
   return showModalBottomSheet<DocumentSource>(
     context: context,
     isScrollControlled: true,

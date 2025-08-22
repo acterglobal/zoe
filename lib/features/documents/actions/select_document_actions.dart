@@ -12,33 +12,59 @@ import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/documents/widgets/document_selection_bottom_sheet.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-Future<void> selectDocumentFile(
+void selectDocumentSource(
   BuildContext context,
   WidgetRef ref,
   String listId,
   String sheetId,
-) async {
-  
-  // Show document selection bottom sheet
-  final source = await showDocumentSelectionBottomSheet(context);
-  if (source == null) return;
+) {
+  final source = showModalBottomSheet<DocumentSource>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Theme.of(context).colorScheme.surface,
+    enableDrag: true,
+    showDragHandle: true,
+    elevation: 6,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
+    builder: (context) => const DocumentSelectionBottomSheetWidget(),
+  );
 
-  try {
-    if (!context.mounted) return;
-    
-    await switch (source) {
-      DocumentSource.camera => handleCameraSelection(context, ref, listId, sheetId),
-      DocumentSource.photoGallery => handlePhotoGallerySelection(context, ref, listId, sheetId),
-      DocumentSource.filePicker => handleFilePickerSelection(context, ref, listId, sheetId),
-    };
-  } catch (e) {
-    if (context.mounted) {
-      CommonUtils.showSnackBar(
-        context,
-        L10n.of(context).failedToAddDocument(e.toString()),
-      );
+  source.then((selectedSource) {
+    if (selectedSource == null || !context.mounted) return;
+
+    try {
+      final result = switch (selectedSource) {
+        DocumentSource.camera => handleCameraSelection(
+          context,
+          ref,
+          listId,
+          sheetId,
+        ),
+        DocumentSource.photoGallery => handlePhotoGallerySelection(
+          context,
+          ref,
+          listId,
+          sheetId,
+        ),
+        DocumentSource.filePicker => handleFilePickerSelection(
+          context,
+          ref,
+          listId,
+          sheetId,
+        ),
+      };
+      result;
+    } catch (e) {
+      if (context.mounted) {
+        CommonUtils.showSnackBar(
+          context,
+          L10n.of(context).failedToAddDocument(e.toString()),
+        );
+      }
     }
-  }
+  });
 }
 
 Future<void> handleCameraSelection(
@@ -79,9 +105,7 @@ Future<void> handlePhotoGallerySelection(
   String sheetId,
 ) async {
   final imagePicker = ImagePicker();
-  final images = await imagePicker.pickMultiImage(
-    imageQuality: 80,
-  );
+  final images = await imagePicker.pickMultiImage(imageQuality: 80);
 
   if (images.isNotEmpty) {
     for (final image in images) {
@@ -161,25 +185,30 @@ IconData getFileTypeIcon(String filePath) {
   };
 }
 
-  Future<void> shareDocument(BuildContext context, DocumentModel document) async {
-    try {
-      final file = File(document.filePath);
-      if (file.existsSync()) {
-        final fileType = isImageDocument(document) ? 'image' : isVideoDocument(document) ? 'video' : 'document';
-        await Share.shareXFiles(
-          [XFile(document.filePath)],
-          text: '${L10n.of(context).checkOutThis} $fileType: ${document.title}',
-        );
-      }
-    } catch (e) {
-      if (context.mounted) {
-        CommonUtils.showSnackBar(
-          context,
-          L10n.of(context).failedToShare(isImageDocument(document) ? 'image' : isVideoDocument(document) ? 'video' : 'document'),
-        );
-      }
+Future<void> shareDocument(BuildContext context, DocumentModel document) async {
+  final fileType = isImageDocument(document)
+      ? 'image'
+      : isVideoDocument(document)
+      ? 'video'
+      : isMusicDocument(document)
+      ? 'audio'
+      : isPdfDocument(document)
+      ? 'PDF'
+      : 'file';
+
+  try {
+    final file = File(document.filePath);
+    if (file.existsSync()) {
+      await Share.shareXFiles([
+        XFile(document.filePath),
+      ], text: '${L10n.of(context).checkOutThis} $fileType: ${document.title}');
+    }
+  } catch (e) {
+    if (context.mounted) {
+      CommonUtils.showSnackBar(
+        context,
+        L10n.of(context).failedToShare(fileType),
+      );
     }
   }
-
-  
-  
+}

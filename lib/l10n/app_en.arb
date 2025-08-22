@@ -358,5 +358,9 @@
     "photosAddedSuccessfully": "{count} photos added successfully",
     "@photosAddedSuccessfully": {},
     "photoCapturedAndAddedSuccessfully": "Photo captured and added successfully",
-    "@photoCapturedAndAddedSuccessfully": {}
+    "@photoCapturedAndAddedSuccessfully": {},
+    "failedToLoadPDF": "Failed to load PDF: {error}",
+    "@failedToLoadPDF": {},
+    "failedToLoadImage": "Failed to load image",
+    "@failedToLoadImage": {}
 }

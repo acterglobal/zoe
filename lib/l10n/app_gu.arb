@@ -320,6 +320,10 @@
     "photosAddedSuccessfully": "{count} ફોટોસ સફળતાપૂર્વક ઉમેરવામાં થયેલા છે",
     "@photosAddedSuccessfully": {},
     "photoCapturedAndAddedSuccessfully": "ફોટો લેવામાં સફળતાપૂર્વક ઉમેરવામાં થયેલા છે",
-    "@photoCapturedAndAddedSuccessfully": {}
+    "@photoCapturedAndAddedSuccessfully": {},
+    "failedToLoadPDF": "પીડીએફ લોડ કરવામાં વિફલ: {error}",
+    "@failedToLoadPDF": {},
+    "failedToLoadImage": "ફોટો લોડ કરવામાં વિફલ",
+    "@failedToLoadImage": {}
 
 }

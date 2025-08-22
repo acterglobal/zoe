@@ -20,8 +20,8 @@ class PdfPreviewWidget extends ConsumerStatefulWidget {
 
 class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
   late PdfViewerController _pdfViewerController;
-  bool _isLoading = true;
-  String? _errorMessage;
+  bool isLoading = true;
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -51,6 +51,7 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
   Widget _buildPdfToolbar(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
+
     return GlassyContainer(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -72,7 +73,6 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
           _buildToolbarButton(
             context,
             Icons.zoom_in_rounded,
-            l10n.zoomIn,
             () => _pdfViewerController.zoomLevel = 
                 (_pdfViewerController.zoomLevel * 1.25).clamp(0.25, 3.0),
           ),
@@ -80,7 +80,6 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
           _buildToolbarButton(
             context,
             Icons.zoom_out_rounded,
-            l10n.zoomOut,
             () => _pdfViewerController.zoomLevel = 
                 (_pdfViewerController.zoomLevel / 1.25).clamp(0.25, 3.0),
           ),
@@ -88,7 +87,6 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
           _buildToolbarButton(
             context,
             Icons.fit_screen_rounded,
-            l10n.zoomToFit,
             () => _pdfViewerController.zoomLevel = 1.0,
           ),
         ],
@@ -99,28 +97,20 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
   Widget _buildToolbarButton(
     BuildContext context,
     IconData icon,
-    String tooltip,
     VoidCallback onPressed,
   ) {
-    final theme = Theme.of(context);
-    return Tooltip(
-      message: tooltip,
-      child: GlassyContainer(
+    return GlassyContainer(
+        onTap: onPressed,
         width: 40,
         height: 40,
         borderRadius: BorderRadius.circular(12),
         borderOpacity: 0.1,
         shadowOpacity: 0.05,
-        child: IconButton(
-          onPressed: onPressed,
-          icon: Icon(
+        child: Icon(
             icon,
             size: 20,
-            color: theme.colorScheme.onSurfaceVariant,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
-          padding: EdgeInsets.zero,
-        ),
-      ),
     );
   }
 
@@ -132,14 +122,6 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
         context,
         L10n.of(context).pdfFileNotFound,
         Icons.error_outline_rounded,
-      );
-    }
-
-    if (_errorMessage != null) {
-      return _buildErrorContainer(
-        context,
-        _errorMessage!,
-        Icons.broken_image_rounded,
       );
     }
 
@@ -156,17 +138,17 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
               controller: _pdfViewerController,
               onDocumentLoaded: (PdfDocumentLoadedDetails details) {
                 setState(() {
-                  _isLoading = false;
+                  isLoading = false;
                 });
               },
               onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
                 setState(() {
-                  _isLoading = false;
-                  _errorMessage = 'Failed to load PDF: ${details.error}';
+                  isLoading = false;
+                  errorMessage = L10n.of(context).failedToLoadPDF(details.error.toString());
                 });
               },
             ),
-            if (_isLoading)
+            if (isLoading)
               _buildLoadingOverlay(context),
           ],
         ),

@@ -320,5 +320,9 @@
     "photosAddedSuccessfully": "{count} फोटों सफलतापूर्वक जोड़ीं",
     "@photosAddedSuccessfully": {},
     "photoCapturedAndAddedSuccessfully": "फोटो देखा और सफलतापूर्वक जोड़ी",
-    "@photoCapturedAndAddedSuccessfully": {}
+    "@photoCapturedAndAddedSuccessfully": {},
+    "failedToLoadPDF": "पीडीएफ लोड करने में विफल: {error}",
+    "@failedToLoadPDF": {},
+    "failedToLoadImage": "फोटो लोड करने में विफल",
+    "@failedToLoadImage": {}
 }
