@@ -312,6 +312,14 @@
     "photoGallery": "ફોટો ગેલરી",
     "@photoGallery": {},
     "selectFromGallery": "ગેલરીમાંથી પસંદ કરો",
-    "@selectFromGallery": {}
+    "@selectFromGallery": {},
+    "failedToAddDocument": "ફાઇલ ઉમેરવામાં વિફલ: {error}",
+    "@failedToAddDocument": {},
+    "filesAddedSuccessfully": "{count} ફાઇલ્સ સફળતાપૂર્વક ઉમેરવામાં થયેલા છે",
+    "@filesAddedSuccessfully": {},
+    "photosAddedSuccessfully": "{count} ફોટોસ સફળતાપૂર્વક ઉમેરવામાં થયેલા છે",
+    "@photosAddedSuccessfully": {},
+    "photoCapturedAndAddedSuccessfully": "ફોટો લેવામાં સફળતાપૂર્વક ઉમેરવામાં થયેલા છે",
+    "@photoCapturedAndAddedSuccessfully": {}
 
 }

@@ -1,5 +1,11 @@
 import 'package:zoe/features/content/models/content_model.dart';
 
+enum DocumentSource {
+  camera,
+  photoGallery,
+  filePicker,
+}
+
 class DocumentModel extends ContentModel {
   final String filePath;
 

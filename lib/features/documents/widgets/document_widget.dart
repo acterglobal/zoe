@@ -90,9 +90,8 @@ class DocumentWidget extends ConsumerWidget {
     WidgetRef ref,
     DocumentModel document,
   ) {
-    return GestureDetector(
-      onTap: () => _handleDocumentTap(context, document),
-      child: GlassyContainer(
+    return GlassyContainer(
+        onTap: () => _handleDocumentTap(context, document),
         width: 80,
         height: 100,
         margin: const EdgeInsets.only(bottom: 16),
@@ -124,7 +123,6 @@ class DocumentWidget extends ConsumerWidget {
               ),
           ],
         ),
-      ),
     );
   }
 

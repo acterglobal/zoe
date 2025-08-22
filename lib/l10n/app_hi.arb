@@ -312,5 +312,13 @@
     "photoGallery": "फोटो गैलरी",
     "@photoGallery": {},
     "selectFromGallery": "गैलरी से चुनें",
-    "@selectFromGallery": {}
+    "@selectFromGallery": {},
+    "failedToAddDocument": "फाइल जोड़ने में विफल: {error}",
+    "@failedToAddDocument": {},
+    "filesAddedSuccessfully": "{count} फाइलें सफलतापूर्वक जोड़ीं",
+    "@filesAddedSuccessfully": {},
+    "photosAddedSuccessfully": "{count} फोटों सफलतापूर्वक जोड़ीं",
+    "@photosAddedSuccessfully": {},
+    "photoCapturedAndAddedSuccessfully": "फोटो देखा और सफलतापूर्वक जोड़ी",
+    "@photoCapturedAndAddedSuccessfully": {}
 }

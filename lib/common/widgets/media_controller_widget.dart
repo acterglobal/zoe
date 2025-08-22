@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
+import 'package:zoe/features/documents/utils/document_media_utils.dart';
 
 class MediaControllerWidget extends StatelessWidget {
   final bool isPlaying;
@@ -9,8 +10,6 @@ class MediaControllerWidget extends StatelessWidget {
   final VoidCallback onSeekBackward;
   final VoidCallback onSeekForward;
   final ValueChanged<Duration> onSeekTo;
-  final String? title;
-  final bool showTitle;
 
   const MediaControllerWidget({
     super.key,
@@ -21,29 +20,22 @@ class MediaControllerWidget extends StatelessWidget {
     required this.onSeekBackward,
     required this.onSeekForward,
     required this.onSeekTo,
-    this.title,
-    this.showTitle = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          _buildProgressSlider(context, theme),
+          _buildProgressSlider(context),
           const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildTimeText(context, theme, position),
-                _buildTimeText(context, theme, duration),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildTimeText(context, position),
+              _buildTimeText(context, duration),
+            ],
           ),
           const SizedBox(height: 8),
           Row(
@@ -51,20 +43,17 @@ class MediaControllerWidget extends StatelessWidget {
             children: [
               _buildSeekButton(
                 context,
-                theme,
-                icon: Icons.replay_10_rounded,
-                onTap: onSeekBackward,
+                Icons.replay_10_rounded,
+                onSeekBackward,
               ),
-              _buildPlayPauseButton(context, theme),
+              _buildPlayPauseButton(context),
               _buildSeekButton(
                 context,
-                theme,
-                icon: Icons.forward_10_rounded,
-                onTap: onSeekForward,
+                Icons.forward_10_rounded,
+                onSeekForward,
               ),
             ],
           ),
-          
         ],
       ),
     );
@@ -72,62 +61,54 @@ class MediaControllerWidget extends StatelessWidget {
 
   Widget _buildSeekButton(
     BuildContext context,
-    ThemeData theme, {
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
+    IconData icon,
+    VoidCallback onTap,
+  ) {
+    return GlassyContainer(
+      padding: const EdgeInsets.all(12),
+      surfaceOpacity: 0.5,
+      borderOpacity: 0.1,
+      borderRadius: BorderRadius.circular(12),
       onTap: onTap,
-      child: GlassyContainer(
-        padding: const EdgeInsets.all(12),
-        surfaceOpacity: 0.3,
-        borderOpacity: 0.1,
-        borderRadius: BorderRadius.circular(12),
-        child: Icon(
-          icon,
-          color: theme.colorScheme.primary,
-          size: 24,
-        ),
-      ),
+      child: Icon(icon, color: Theme.of(context).colorScheme.onSurface, size: 24),
     );
   }
 
-  Widget _buildPlayPauseButton(BuildContext context, ThemeData theme) {
-    return GestureDetector(
+  Widget _buildPlayPauseButton(BuildContext context) {
+    return GlassyContainer(
+      padding: const EdgeInsets.all(12),
+      surfaceOpacity: 0.5,
+      borderOpacity: 0.15,
+      borderRadius: BorderRadius.circular(12),
       onTap: onPlayPause,
-      child: GlassyContainer(
-        padding: const EdgeInsets.all(12),
-        surfaceOpacity: 0.4,
-        borderOpacity: 0.15,
-        borderRadius: BorderRadius.circular(12),
-        child: Icon(
-          isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
-          color: theme.colorScheme.primary,
-          size: 24,
-        ),
+      child: Icon(
+        isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+        color: Theme.of(context).colorScheme.onSurface,
+        size: 24,
       ),
     );
   }
 
-  Widget _buildTimeText(BuildContext context, ThemeData theme, Duration time) {
+  Widget _buildTimeText(BuildContext context, Duration time) {
+    final theme = Theme.of(context);
     return Text(
-      _formatDuration(time),
+      DocumentMediaUtils.formatDuration(time),
       style: theme.textTheme.labelSmall?.copyWith(
         color: theme.colorScheme.onSurface,
-        fontWeight: FontWeight.w500,
       ),
     );
   }
 
-  Widget _buildProgressSlider(BuildContext context, ThemeData theme) {
+  Widget _buildProgressSlider(BuildContext context) {
+    final theme = Theme.of(context).colorScheme;
     if (duration.inMilliseconds == 0) return const SizedBox.shrink();
-    
+
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
-        activeTrackColor: theme.colorScheme.primary,
-        inactiveTrackColor: theme.colorScheme.onSurface.withValues(alpha: 0.3),
-        thumbColor: theme.colorScheme.primary,
-        overlayColor: theme.colorScheme.primary.withValues(alpha: 0.2),
+        activeTrackColor: theme.primary,
+        inactiveTrackColor: theme.onSurface.withValues(alpha: 0.3),
+        thumbColor: theme.primary,
+        overlayColor: theme.primary.withValues(alpha: 0.2),
         trackHeight: 4,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
       ),
@@ -143,18 +124,5 @@ class MediaControllerWidget extends StatelessWidget {
         },
       ),
     );
-  }
-
-  String _formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final hours = duration.inHours;
-    final minutes = duration.inMinutes.remainder(60);
-    final seconds = duration.inSeconds.remainder(60);
-    
-    if (hours > 0) {
-      return '$hours:${twoDigits(minutes)}:${twoDigits(seconds)}';
-    } else {
-      return '${twoDigits(minutes)}:${twoDigits(seconds)}';
-    }
   }
 }

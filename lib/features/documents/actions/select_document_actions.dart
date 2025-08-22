@@ -24,22 +24,18 @@ Future<void> selectDocumentFile(
   if (source == null) return;
 
   try {
-    switch (source) {
-      case DocumentSource.camera:
-        await handleCameraSelection(context, ref, listId, sheetId);
-        break;
-      case DocumentSource.photoGallery:
-        await handlePhotoGallerySelection(context, ref, listId, sheetId);
-        break;
-      case DocumentSource.filePicker:
-        await handleFilePickerSelection(context, ref, listId, sheetId);
-        break;
-    }
+    if (!context.mounted) return;
+    
+    await switch (source) {
+      DocumentSource.camera => handleCameraSelection(context, ref, listId, sheetId),
+      DocumentSource.photoGallery => handlePhotoGallerySelection(context, ref, listId, sheetId),
+      DocumentSource.filePicker => handleFilePickerSelection(context, ref, listId, sheetId),
+    };
   } catch (e) {
     if (context.mounted) {
       CommonUtils.showSnackBar(
         context,
-        'Failed to add document: $e',
+        L10n.of(context).failedToAddDocument(e.toString()),
       );
     }
   }
@@ -70,7 +66,7 @@ Future<void> handleCameraSelection(
     if (context.mounted) {
       CommonUtils.showSnackBar(
         context,
-        'Photo captured and added successfully',
+        L10n.of(context).photoCapturedAndAddedSuccessfully,
       );
     }
   }
@@ -102,7 +98,7 @@ Future<void> handlePhotoGallerySelection(
     if (context.mounted) {
       CommonUtils.showSnackBar(
         context,
-        '${images.length} photos added successfully',
+        L10n.of(context).photosAddedSuccessfully(images.length),
       );
     }
   }
@@ -131,7 +127,7 @@ Future<void> handleFilePickerSelection(
     if (context.mounted) {
       CommonUtils.showSnackBar(
         context,
-        '${result.files.length} files added successfully',
+        L10n.of(context).filesAddedSuccessfully(result.files.length),
       );
     }
   }
@@ -184,3 +180,6 @@ IconData getFileTypeIcon(String filePath) {
       }
     }
   }
+
+  
+  

@@ -3,6 +3,7 @@ import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
+import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows a bottom sheet for selecting document source
@@ -19,12 +20,6 @@ Future<DocumentSource?> showDocumentSelectionBottomSheet(BuildContext context) a
     ),
     builder: (context) => const DocumentSelectionBottomSheetWidget(),
   );
-}
-
-enum DocumentSource {
-  camera,
-  photoGallery,
-  filePicker,
 }
 
 class DocumentSelectionBottomSheetWidget extends StatelessWidget {

@@ -37,19 +37,19 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     
     return Column(
       children: [
-        _buildPdfToolbar(context, theme),
+        _buildPdfToolbar(context),
         Expanded(
-          child: _buildPdfContainer(context, theme),
+          child: _buildPdfContainer(context),
         ),
       ],
     );
   }
 
-  Widget _buildPdfToolbar(BuildContext context, ThemeData theme) {
+  Widget _buildPdfToolbar(BuildContext context) {
+    final theme = Theme.of(context);
     final l10n = L10n.of(context);
     return GlassyContainer(
       margin: const EdgeInsets.all(16),
@@ -124,13 +124,12 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
     );
   }
 
-  Widget _buildPdfContainer(BuildContext context, ThemeData theme) {
+  Widget _buildPdfContainer(BuildContext context) {
     final file = File(widget.document.filePath);
     
     if (!file.existsSync()) {
       return _buildErrorContainer(
         context,
-        theme,
         L10n.of(context).pdfFileNotFound,
         Icons.error_outline_rounded,
       );
@@ -139,7 +138,6 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
     if (_errorMessage != null) {
       return _buildErrorContainer(
         context,
-        theme,
         _errorMessage!,
         Icons.broken_image_rounded,
       );
@@ -169,14 +167,15 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
               },
             ),
             if (_isLoading)
-              _buildLoadingOverlay(context, theme),
+              _buildLoadingOverlay(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildLoadingOverlay(BuildContext context, ThemeData theme) {
+  Widget _buildLoadingOverlay(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       color: theme.colorScheme.surface.withValues(alpha: 0.9),
       child: Center(
@@ -203,10 +202,10 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
 
   Widget _buildErrorContainer(
     BuildContext context,
-    ThemeData theme,
     String message,
     IconData icon,
   ) {
+    final theme = Theme.of(context);
     return GlassyContainer(
       borderRadius: BorderRadius.circular(20),
       padding: const EdgeInsets.all(24),

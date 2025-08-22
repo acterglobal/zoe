@@ -23,22 +23,26 @@ String getFileSize(String filePath) {
   return file.existsSync() ? fileSizeFormat(file.lengthSync()) : '0 B';
 }
 
+String convertToLowerCase(DocumentModel document) {
+  return getFileType(document.filePath).toLowerCase();
+}
+
 bool isImageDocument(DocumentModel document) {
-  final fileType = getFileType(document.filePath).toLowerCase();
+  final fileType = convertToLowerCase(document);
   return ['jpg', 'jpeg', 'png', 'gif', 'webp'].contains(fileType);
 }
 
 bool isVideoDocument(DocumentModel document) {
-  final fileType = getFileType(document.filePath).toLowerCase();
+  final fileType = convertToLowerCase(document);
   return ['mp4', 'mov', 'avi', 'wmv', 'flv'].contains(fileType);
 }
 
 bool isMusicDocument(DocumentModel document) {
-  final fileType = getFileType(document.filePath).toLowerCase();
+  final fileType = convertToLowerCase(document);
   return ['mp3', 'wav', 'm4a', 'ogg', 'flac'].contains(fileType);
 }
 
 bool isPdfDocument(DocumentModel document) {
-  final fileType = getFileType(document.filePath).toLowerCase();
+  final fileType = convertToLowerCase(document);
   return ['pdf'].contains(fileType);
 }

@@ -350,5 +350,13 @@
     "photoGallery": "Photo Gallery",
     "@photoGallery": {},
     "selectFromGallery": "Select from gallery",
-    "@selectFromGallery": {}
+    "@selectFromGallery": {},
+    "failedToAddDocument": "Failed to add document: {error}",
+    "@failedToAddDocument": {},
+    "filesAddedSuccessfully": "{count} files added successfully",
+    "@filesAddedSuccessfully": {},
+    "photosAddedSuccessfully": "{count} photos added successfully",
+    "@photosAddedSuccessfully": {},
+    "photoCapturedAndAddedSuccessfully": "Photo captured and added successfully",
+    "@photoCapturedAndAddedSuccessfully": {}
 }

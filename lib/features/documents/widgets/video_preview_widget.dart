@@ -35,6 +35,7 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
     super.dispose();
   }
 
+  /// Video Player Setup
   Future<void> _initializeVideoPlayer() async {
     final file = File(widget.document.filePath);
     if (!file.existsSync()) return;
@@ -52,103 +53,141 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
       });
     });
 
-    setState(() {
-      _videoPlayerController = controller;
-    });
+    setState(() => _videoPlayerController = controller);
   }
 
-  void _togglePlayPause() {
+  /// Controls video player
+  Future<void> _togglePlayPause() async {
     final controller = _videoPlayerController;
     if (controller == null || !controller.value.isInitialized) return;
 
-    if (_isPlaying) {
-      controller.pause();
-    } else {
+    await MediaControllerUtils.executeOperation(() async {
+      if (_isPlaying) {
+        controller.pause();
+      } else {
+        if (VideoUtils.needsReset(_position, _duration)) {
+          await _resetAndPlay();
+        } else {
+          controller.play();
+        }
+      }
+    });
+  }
+
+  Future<void> _resetAndPlay() async {
+    final controller = _videoPlayerController;
+    if (controller == null) return;
+
+    try {
+      await controller.seekTo(Duration.zero);
+      controller.play();
+      setState(() => _position = Duration.zero);
+    } catch (e) {
       controller.play();
     }
   }
 
-  void _seekTo(Duration position) {
+  Future<void> _seekTo(Duration position) async {
     final controller = _videoPlayerController;
     if (controller == null || !controller.value.isInitialized) return;
 
-    final validatedPosition = DocumentMediaUtils.validateSeekPosition(position, _duration);
-    controller.seekTo(validatedPosition);
+    await MediaControllerUtils.executeOperation(() async {
+      final validated = DocumentMediaUtils.validateSeekPosition(position, _duration);
+      await controller.seekTo(validated);
+    });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return SingleChildScrollView(
-      child: _buildVideoContainer(context, theme),
-    );
-  }
-
-  Widget _buildVideoContainer(BuildContext context, ThemeData theme) {
-    return GlassyContainer(
-      borderRadius: BorderRadius.circular(20),
-      padding: const EdgeInsets.all(8),
-      margin: const EdgeInsets.all(16),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: _buildVideoContent(context, theme),
+  void _seekBackward() {
+    _seekTo(
+      DocumentMediaUtils.calculateBackwardSeek(
+        _position,
+        const Duration(seconds: 10),
       ),
     );
   }
 
-  Widget _buildVideoContent(BuildContext context, ThemeData theme) {
+  void _seekForward() {
+    _seekTo(
+      DocumentMediaUtils.calculateForwardSeek(
+        _position,
+        const Duration(seconds: 10),
+        _duration,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return SingleChildScrollView(
+      child: GlassyContainer(
+        borderRadius: BorderRadius.circular(20),
+        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.all(16),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: _buildContent(context),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final controller = _videoPlayerController;
 
-    if (controller == null) {
-      return GlassyContainer(
-        height: 300,
-        borderRadius: BorderRadius.circular(16),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 16),
-              Text(L10n.of(context).initializingVideoPlayer),
-            ],
-          ),
-        ),
-      );
-    }
+    if (controller == null) return _buildLoading(context);
+    if (!File(widget.document.filePath).existsSync()) return _buildError(context);
 
-    final file = File(widget.document.filePath);
-    if (!file.existsSync()) {
-      return Center(
+    return _buildPlayer(controller, context);
+  }
+
+  Widget _buildLoading(BuildContext context) {
+    return GlassyContainer(
+      height: 300,
+      borderRadius: BorderRadius.circular(16),
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline_rounded,
-              size: 64,
-              color: theme.colorScheme.error,
-            ),
+            const CircularProgressIndicator(),
             const SizedBox(height: 16),
-            Text(
-              L10n.of(context).documentNotFound,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.error,
-              ),
-            ),
+            Text(L10n.of(context).initializingVideoPlayer),
           ],
         ),
-      );
-    }
+      ),
+    );
+  }
 
-    return SizedBox(
-      height: 320,
+  Widget _buildError(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.error_outline_rounded,
+              size: 64, color: theme.colorScheme.error),
+          const SizedBox(height: 16),
+          Text(
+            L10n.of(context).documentNotFound,
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.error,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlayer(VideoPlayerController controller, BuildContext context) {
+   
+    return GlassyContainer(
+      width: double.infinity,
       child: Stack(
         children: [
           AspectRatio(
             aspectRatio: controller.value.aspectRatio,
             child: VideoPlayer(controller),
           ),
-          // Video controls overlay
           Positioned(
             bottom: -10,
             left: 0,
@@ -158,21 +197,8 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
               position: _position,
               duration: _duration,
               onPlayPause: _togglePlayPause,
-              onSeekBackward: () {
-                final newPosition = DocumentMediaUtils.calculateBackwardSeek(
-                  _position, 
-                  const Duration(seconds: 10)
-                );
-                _seekTo(newPosition);
-              },
-              onSeekForward: () {
-                final newPosition = DocumentMediaUtils.calculateForwardSeek(
-                  _position, 
-                  const Duration(seconds: 10), 
-                  _duration
-                );
-                _seekTo(newPosition);
-              },
+              onSeekBackward: _seekBackward,
+              onSeekForward: _seekForward,
               onSeekTo: _seekTo,
             ),
           ),
