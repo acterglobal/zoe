@@ -25,6 +25,7 @@ class _ImagePreviewWidgetState extends ConsumerState<ImagePreviewWidget> {
 
     return GlassyContainer(
       borderRadius: BorderRadius.circular(20),
+      width: double.infinity,
       padding: const EdgeInsets.all(8),
       margin: const EdgeInsets.all(16),
       child: ClipRRect(

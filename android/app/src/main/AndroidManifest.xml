@@ -13,10 +13,6 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     
-    <!-- Additional permissions for better file access -->
-    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    
     <application
         android:label="Zoe"
         android:name="${applicationName}"
@@ -60,10 +56,6 @@
             <data android:mimeType="text/plain"/>
         </intent>
         <!-- File access queries -->
-        <intent>
-            <action android:name="android.intent.action.GET_CONTENT" />
-            <data android:mimeType="*/*" />
-        </intent>
         <intent>
             <action android:name="android.intent.action.OPEN_DOCUMENT" />
             <data android:mimeType="*/*" />
