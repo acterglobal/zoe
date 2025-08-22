@@ -39,6 +39,7 @@ class DocumentWidget extends ConsumerWidget {
     return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 8),
       borderRadius: BorderRadius.circular(12),
+      onTap: () => _handleDocumentTap(context, document),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
         leading: StyledIconContainer(
@@ -66,7 +67,6 @@ class DocumentWidget extends ConsumerWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        onTap: () => _handleDocumentTap(context, document),
       ),
     );
   }

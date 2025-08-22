@@ -311,8 +311,8 @@
     "@checkOutThis": {},
     "failedToShare": "Failed to share {fileType}",
     "@failedToShare": {},
-    "unsupportedFileType": "Unsupported file type",
-    "@unsupportedFileType": {},
+    "thisFileIsNotSupported": "This file is not supported",
+    "@thisFileIsNotSupported": {},
     "downloadingWillBeAvailableSoon": "Downloading will be available soon",
     "@downloadingWillBeAvailableSoon": {},
     "videoFileNotFound": "Video file not found: {filePath}",
@@ -362,5 +362,8 @@
     "failedToLoadPDF": "Failed to load PDF: {error}",
     "@failedToLoadPDF": {},
     "failedToLoadImage": "Failed to load image",
-    "@failedToLoadImage": {}
+    "@failedToLoadImage": {},
+    "failedToLoadVideo": "Failed to load video",
+    "@failedToLoadVideo": {}
+
 }

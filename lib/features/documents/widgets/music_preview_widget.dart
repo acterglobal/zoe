@@ -7,6 +7,7 @@ import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/media_controller_widget.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/utils/document_media_utils.dart';
+import 'package:zoe/features/documents/utils/media_controller_utils.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class MusicPreviewWidget extends ConsumerStatefulWidget {
@@ -77,7 +78,7 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
       if (_isPlaying) {
         await _audioPlayer.pause();
       } else {
-        if (AudioUtils.needsReset(_position, _duration)) {
+        if (DocumentMediaUtils.needsReset(_position, _duration)) {
           await _resetAndPlay();
         } else {
           await _audioPlayer.resume();

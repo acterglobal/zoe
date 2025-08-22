@@ -6,6 +6,8 @@ import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/media_controller_widget.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/utils/document_media_utils.dart';
+import 'package:zoe/features/documents/utils/media_controller_utils.dart';
+import 'package:zoe/features/documents/widgets/document_error_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class VideoPreviewWidget extends ConsumerStatefulWidget {
@@ -65,7 +67,7 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
       if (_isPlaying) {
         controller.pause();
       } else {
-        if (VideoUtils.needsReset(_position, _duration)) {
+        if (DocumentMediaUtils.needsReset(_position, _duration)) {
           await _resetAndPlay();
         } else {
           controller.play();
@@ -136,7 +138,7 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
     final controller = _videoPlayerController;
 
     if (controller == null) return _buildLoading(context);
-    if (!File(widget.document.filePath).existsSync()) return _buildError(context);
+    if (!File(widget.document.filePath).existsSync()) return DocumentErrorWidget(errorName:L10n.of(context).failedToLoadVideo);
 
     return _buildPlayer(controller, context);
   }
@@ -154,26 +156,6 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
             Text(L10n.of(context).initializingVideoPlayer),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildError(BuildContext context) {
-    final theme = Theme.of(context);
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.error_outline_rounded,
-              size: 64, color: theme.colorScheme.error),
-          const SizedBox(height: 16),
-          Text(
-            L10n.of(context).documentNotFound,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: theme.colorScheme.error,
-            ),
-          ),
-        ],
       ),
     );
   }

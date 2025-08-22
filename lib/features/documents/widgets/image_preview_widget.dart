@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
+import 'package:zoe/features/documents/widgets/document_error_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class ImagePreviewWidget extends ConsumerStatefulWidget {
@@ -32,37 +33,9 @@ class _ImagePreviewWidgetState extends ConsumerState<ImagePreviewWidget> {
           File(widget.document.filePath),
           fit: BoxFit.contain,
           errorBuilder: (context, error, stackTrace) {
-            return _buildImageError(context);
+            return DocumentErrorWidget(errorName:L10n.of(context).failedToLoadImage);
           },
         ),
-      ),
-    );
-  }
-
-  Widget _buildImageError(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      height: 300,
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.broken_image_rounded,
-            size: 64,
-            color: colorScheme.onSurfaceVariant,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            L10n.of(context).failedToLoadImage,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ],
       ),
     );
   }

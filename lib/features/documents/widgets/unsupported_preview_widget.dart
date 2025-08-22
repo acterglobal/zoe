@@ -29,7 +29,7 @@ class UnsupportedPreviewWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            L10n.of(context).unsupportedFileType,
+            L10n.of(context).thisFileIsNotSupported,
             style: theme.textTheme.bodyLarge?.copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),

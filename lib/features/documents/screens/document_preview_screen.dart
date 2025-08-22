@@ -2,15 +2,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/features/documents/actions/select_document_actions.dart';
+import 'package:zoe/features/documents/widgets/document_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_floating_action_widget.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/widgets/image_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/music_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/pdf_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/unsupported_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/video_preview_widget.dart';
-import 'package:zoe/features/documents/actions/select_document_actions.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class DocumentPreviewScreen extends ConsumerStatefulWidget {
@@ -39,38 +39,25 @@ class DocumentPreviewScreen extends ConsumerStatefulWidget {
 class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen> {
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
-    final onPrimary = Theme.of(context).colorScheme.onPrimary;
-    final secondary = Theme.of(context).colorScheme.secondary;
-    final onSecondary = Theme.of(context).colorScheme.onSecondary;
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      floatingActionButton:
-          widget.isImage || widget.isVideo || widget.isMusic || widget.isPdf
-          ? ZoeFloatingAction(
-              icon: Icons.menu_rounded,
-              length: 56.0,
-              backgroundColor: primary,
-              foregroundColor: onPrimary,
-              borderColor: primary,
-              shadowColor: primary,
-              menuBackgroundColor: secondary,
-              menuForegroundColor: onSecondary,
-              menuBorderColor: secondary,
-              menuShadowColor: secondary,
-              onShare: () => shareDocument(context, widget.document),
-              onDownload: () {
-                CommonUtils.showSnackBar(
-                  context,
-                  L10n.of(context).downloadingWillBeAvailableSoon,
-                );
-              },
-            )
-          : null,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: ZoeAppBar(title: widget.document.title),
+        title: ZoeAppBar(
+          title: widget.document.title,
+          actions:
+              widget.isImage || widget.isVideo || widget.isMusic || widget.isPdf
+              ? [
+                  DocumentActionButtons(
+                    onDownload: () => CommonUtils.showSnackBar(
+                      context,
+                      L10n.of(context).downloadingWillBeAvailableSoon,
+                    ),
+                    onShare: () => shareDocument(context, widget.document),
+                  ),
+                ]
+              : null,
+        ),
       ),
       body: _buildBody(context),
     );

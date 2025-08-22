@@ -1,6 +1,5 @@
-/// Common utilities for media document handling (audio/video)
 class DocumentMediaUtils {
-  
+
   static Duration calculateBackwardSeek(
     Duration currentPosition,
     Duration seekAmount,
@@ -30,7 +29,7 @@ class DocumentMediaUtils {
     if (position > totalDuration) return totalDuration;
     return position;
   }
-  
+
   static double calculateProgressPercentage(
     Duration position,
     Duration totalDuration,
@@ -47,66 +46,16 @@ class DocumentMediaUtils {
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
     final seconds = duration.inSeconds.remainder(60);
-    
+
     if (hours > 0) {
       return '$hours:${twoDigits(minutes)}:${twoDigits(seconds)}';
     } else {
       return '${twoDigits(minutes)}:${twoDigits(seconds)}';
     }
   }
-}
 
-/// Media Control Utilities
-class MediaControllerUtils {
-  static bool _isProcessing = false;
-  
-  /// Check if a media operation is currently in progress
-  static bool get isProcessing => _isProcessing;
-  
-  /// Execute a media operation with protection against duplicates
-  static Future<T?> executeOperation<T>(Future<T> Function() operation) async {
-    if (_isProcessing) return null;
-    
-    _isProcessing = true;
-    try {
-      return await operation();
-    } finally {
-      _isProcessing = false;
-    }
-  }
-  
-  /// Reset the processing state (useful for cleanup)
-  static void resetProcessing() {
-    _isProcessing = false;
-  }
-}
-
-/// Audio-specific utilities
-class AudioUtils {
-  /// Check if audio is at the end and needs reset
   static bool needsReset(Duration position, Duration duration) {
-    return position >= duration - const Duration(milliseconds: 100) || 
-           position == Duration.zero;
-  }
-  
-  /// Get safe seek position for audio (avoid end positions)
-  static Duration getSafeSeekPosition(Duration position, Duration duration) {
-    final safeEndPosition = duration - const Duration(milliseconds: 200);
-    return position > safeEndPosition ? safeEndPosition : position;
-  }
-}
-
-/// Video-specific utilities
-class VideoUtils {
-  /// Check if video is at the end and needs reset
-  static bool needsReset(Duration position, Duration duration) {
-    return position >= duration - const Duration(milliseconds: 100) || 
-           position == Duration.zero;
-  }
-  
-  /// Get safe seek position for video (avoid end positions)
-  static Duration getSafeSeekPosition(Duration position, Duration duration) {
-    final safeEndPosition = duration - const Duration(milliseconds: 200);
-    return position > safeEndPosition ? safeEndPosition : position;
+    return position >= duration - const Duration(milliseconds: 100) ||
+        position == Duration.zero;
   }
 }
