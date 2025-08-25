@@ -33,21 +33,12 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
       padding: EdgeInsets.only(
         left: 16.0,
         right: 16.0,
-        top: 16.0,
         bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
-            child: StyledIconContainer(
-              icon: Icons.add,
-              size: 72,
-              borderRadius: BorderRadius.circular(36),
-            ),
-          ),
-          const SizedBox(height: 12),
           Text(
             l10n.selectDocument,
             style: theme.textTheme.headlineSmall?.copyWith(
