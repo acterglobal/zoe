@@ -87,10 +87,14 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
             onSubmitted: (value) => widget.onEnterPressed?.call(),
           )
         : SelectableText(
-            controller.text.isEmpty ? (widget.hintText ?? '') : controller.text,
-            style: controller.text.isEmpty && widget.hintText != null
-                ? widget.textStyle?.copyWith(color: Theme.of(context).hintColor)
-                : widget.textStyle,
+            widget.text?.isNotEmpty == true
+                ? widget.text!
+                : (widget.hintText ?? ''),
+            style: widget.text?.isNotEmpty == true
+                ? widget.textStyle
+                : widget.textStyle?.copyWith(
+                    color: Theme.of(context).hintColor,
+                  ),
             onTap: widget.onTapText,
           );
   }
