@@ -61,6 +61,7 @@ class PollModel extends ContentModel {
     super.id,
     required super.parentId,
     required super.sheetId,
+    required super.title,
     super.description,
     super.createdAt,
     super.updatedAt,
@@ -73,13 +74,14 @@ class PollModel extends ContentModel {
     this.startDate,
     this.endDate,
     this.isMultipleChoice = false,
-  }) : super(type: ContentType.poll, emoji: '📊', title: question);
+  }) : super(type: ContentType.poll, emoji: '📊');
 
   PollModel copyWith({
     /// ContentModel properties
     String? id,
     String? sheetId,
     String? parentId,
+    String? title,
     Description? description,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -98,6 +100,7 @@ class PollModel extends ContentModel {
       id: id ?? this.id,
       sheetId: sheetId ?? this.sheetId,
       parentId: parentId ?? this.parentId,
+      title: title ?? this.title,
       description: description ?? this.description,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),

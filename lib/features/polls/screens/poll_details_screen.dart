@@ -90,6 +90,7 @@ class PollDetailsScreen extends ConsumerWidget {
             Expanded(
               child: ZoeInlineTextEditWidget(
                 hintText: L10n.of(context).title,
+                text: poll.title,
                 isEditing: isEditing,
                 textStyle: TextStyle(
                   fontSize: 36,
@@ -99,7 +100,7 @@ class PollDetailsScreen extends ConsumerWidget {
                 ),
                 onTextChanged: (value) => ref
                     .read(pollListProvider.notifier)
-                    .updatePollQuestion(pollId, value),
+                    .updatePollTitle(pollId, value),
               ),
             ),
           ],

@@ -202,5 +202,6 @@ void addNewPollContent(WidgetRef ref, parentId, String sheetId) {
         sheetId: sheetId,
         orderIndex: orderIndex,
         question: '',
+        title: '',
       );
 }

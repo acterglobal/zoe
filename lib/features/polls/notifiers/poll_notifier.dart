@@ -14,6 +14,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
     required String question,
     required String parentId,
     required String sheetId,
+    required String title,
     List<PollOption> options = const [],
     bool isMultipleChoice = false,
     DateTime? startDate,
@@ -27,6 +28,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
       parentId: parentId,
       question: question,
       sheetId: sheetId,
+      title: title,
       orderIndex: orderIndex,
       startDate: startDate,
       endDate: endDate,
@@ -51,6 +53,13 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
     state = [
       for (final poll in state)
         if (poll.id == pollId) poll.copyWith(question: question) else poll,
+    ];
+  }
+
+  void updatePollTitle(String pollId, String title) {
+    state = [
+      for (final poll in state)
+        if (poll.id == pollId) poll.copyWith(title: title) else poll,
     ];
   }
 
