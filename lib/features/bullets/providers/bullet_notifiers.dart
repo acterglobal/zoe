@@ -67,7 +67,12 @@ class BulletNotifier extends StateNotifier<List<BulletModel>> {
   }
 
   void deleteBullet(String bulletId) {
+    // Get the previous bullet id
+    final previousBulletId = getPreviousBulletId(bulletId);
+    // Remove the bullet from the state
     state = state.where((b) => b.id != bulletId).toList();
+    // Set the focus to the previous bullet
+    ref.read(bulletFocusProvider.notifier).state = previousBulletId;
   }
 
   void updateBulletTitle(String bulletId, String title) {
@@ -105,5 +110,26 @@ class BulletNotifier extends StateNotifier<List<BulletModel>> {
         else
           bullet,
     ];
+  }
+
+  String? getPreviousBulletId(String bulletId) {
+    try {
+      // Get the bullet for the parent
+      final bullet = state.where((b) => b.id == bulletId).firstOrNull;
+      if (bullet == null) return null;
+      final parentId = bullet.parentId;
+      
+      // Get the parent bullet list from current state
+      final parentBullets = state.where((b) => b.parentId == parentId).toList()
+        ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+      // Get the current bullet index
+      final currentBulletIndex = parentBullets.indexOf(bullet);
+      // If the current bullet is the first bullet, return null
+      if (currentBulletIndex <= 0) return null;
+      // Return the previous bullet id
+      return parentBullets[currentBulletIndex - 1].id;
+    } catch (e) {
+      return null;
+    }
   }
 }
