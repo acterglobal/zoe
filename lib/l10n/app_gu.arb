@@ -243,8 +243,10 @@
     "@noPollsFound": {},
     "votersOfThisPoll": "આ પોલના વોટર્સ",
     "@votersOfThisPoll": {},
-    "pollDetails": "પોલ વિશેની વિગતો",
-    "@pollDetails": {},
+    "pollResults": "પોલ પરિણામો",
+    "@pollResults": {},
+    "pollResultsNotFound": "પોલ પરિણામો મળ્યા નથી",
+    "@pollResultsNotFound": {},
     "membersVoted": "{count} માંથી {totalMembers} સભ્યો વોટ કર્યા",
     "@membersVoted": {},
     "participation": "{count} સંસાધન",
@@ -266,5 +268,7 @@
     "pollDetailsNotFound": "પોલ વિગતો મળ્યા નથી",
     "@pollDetailsNotFound": {},
     "pollParticipants": "પોલ સભ્યો",
-    "@pollParticipants": {}
+    "@pollParticipants": {},
+    "pollNotFound": "પોલ મળ્યું નથી",
+    "@pollNotFound": {}
 }

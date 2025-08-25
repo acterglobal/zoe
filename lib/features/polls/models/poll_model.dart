@@ -1,4 +1,5 @@
 import 'package:zoe/features/content/models/content_model.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 
 class PollOption {
   final String id;
@@ -60,6 +61,7 @@ class PollModel extends ContentModel {
     super.id,
     required super.parentId,
     required super.sheetId,
+    super.description,
     super.createdAt,
     super.updatedAt,
     super.orderIndex,
@@ -78,6 +80,7 @@ class PollModel extends ContentModel {
     String? id,
     String? sheetId,
     String? parentId,
+    Description? description,
     DateTime? createdAt,
     DateTime? updatedAt,
     int? orderIndex,
@@ -95,6 +98,7 @@ class PollModel extends ContentModel {
       id: id ?? this.id,
       sheetId: sheetId ?? this.sheetId,
       parentId: parentId ?? this.parentId,
+      description: description ?? this.description,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
       orderIndex: orderIndex ?? this.orderIndex,

@@ -243,8 +243,10 @@
     "@noPollsFound": {},
     "votersOfThisPoll": "इस पोल के वोटर्स",
     "@votersOfThisPoll": {},
-    "pollDetails": "पोल विशेषताएं",
-    "@pollDetails": {},
+    "pollResults": "पोल परिणाम",
+    "@pollResults": {},
+    "pollResultsNotFound": "पोल परिणाम नहीं मिला",
+    "@pollResultsNotFound": {},
     "membersVoted": "{count} में से {totalMembers} सदस्य वोट करें",
     "@membersVoted": {},
     "participation": "{count} संगठन",
@@ -266,5 +268,7 @@
     "pollDetailsNotFound": "पोल विशेषताएं नहीं मिली",
     "@pollDetailsNotFound": {},
     "pollParticipants": "पोल सदस्य",
-    "@pollParticipants": {}
+    "@pollParticipants": {},
+    "pollNotFound": "पोल नहीं मिला",
+    "@pollNotFound": {}
 }
