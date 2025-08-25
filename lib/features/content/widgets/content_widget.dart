@@ -77,14 +77,32 @@ class ContentWidget extends ConsumerWidget {
               ),
         AddContentWidget(
           isEditing: isEditing,
-          onTapText: () => addNewTextContent(ref, parentId, sheetId),
-          onTapEvent: () => addNewEventListContent(ref, parentId, sheetId),
-          onTapBulletedList: () =>
-              addNewBulletedListContent(ref, parentId, sheetId),
-          onTapToDoList: () => addNewTaskListContent(ref, parentId, sheetId),
-          onTapLink: () => addNewLinkContent(ref, parentId, sheetId),
-          onTapDocument: () => addNewDocumentContent(ref, parentId, sheetId),
-          onTapPoll: () => addNewPollContent(ref, parentId, sheetId),
+          onTapText: () =>
+              addNewTextContent(ref: ref, parentId: parentId, sheetId: sheetId),
+          onTapEvent: () => addNewEventListContent(
+            ref: ref,
+            parentId: parentId,
+            sheetId: sheetId,
+          ),
+          onTapBulletedList: () => addNewBulletedListContent(
+            ref: ref,
+            parentId: parentId,
+            sheetId: sheetId,
+          ),
+          onTapToDoList: () => addNewTaskListContent(
+            ref: ref,
+            parentId: parentId,
+            sheetId: sheetId,
+          ),
+          onTapLink: () =>
+              addNewLinkContent(ref: ref, parentId: parentId, sheetId: sheetId),
+          onTapDocument: () => addNewDocumentContent(
+            ref: ref,
+            parentId: parentId,
+            sheetId: sheetId,
+          ),
+          onTapPoll: () =>
+              addNewPollContent(ref: ref, parentId: parentId, sheetId: sheetId),
         ),
         const SizedBox(height: 200),
       ],
