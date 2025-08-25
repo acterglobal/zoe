@@ -324,5 +324,9 @@
     "failedToLoadPDF": "पीडीएफ लोड करने में विफल: {error}",
     "@failedToLoadPDF": {},
     "failedToLoadImage": "फोटो लोड करने में विफल",
-    "@failedToLoadImage": {}
+    "@failedToLoadImage": {},
+    "failedToLoadVideo": "वीडियो लोड करने में विफल",
+    "@failedToLoadVideo": {},
+    "failedToLoadFile": "फाइल लोड करने में विफल",
+    "@failedToLoadFile": {}
 }

@@ -46,3 +46,12 @@ bool isPdfDocument(DocumentModel document) {
   final fileType = convertToLowerCase(document);
   return ['pdf'].contains(fileType);
 }
+
+bool isTextDocument(DocumentModel document) {
+  final fileType = convertToLowerCase(document);
+  return [
+    'txt', 'md', 'json', 'xml', 'html', 'htm', 'css', 'js', 'dart', 'py', 
+    'java', 'cpp', 'c', 'h', 'cs', 'php', 'rb', 'go', 'rs', 'swift', 'kt',
+    'sql', 'yaml', 'yml', 'ini', 'cfg', 'conf', 'log', 'csv', 'tsv'
+  ].contains(fileType);
+}

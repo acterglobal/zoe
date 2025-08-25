@@ -167,6 +167,7 @@ Color getFileTypeColor(String filePath) {
     'jpg' || 'jpeg' || 'png' || 'gif' || 'webp' => Colors.purple,
     'mp3' || 'wav' => Colors.teal,
     'mp4' || 'avi' || 'mov' => Colors.indigo,
+    'txt' || 'md' || 'json' || 'xml' || 'html' || 'css' || 'js' || 'dart' || 'py' || 'java' || 'cpp' || 'c' || 'cs' || 'php' || 'rb' || 'go' || 'rs' || 'swift' || 'kt' || 'sql' || 'yaml' || 'yml' => Colors.amber,
     _ => Colors.blueGrey,
   };
 }
@@ -181,6 +182,7 @@ IconData getFileTypeIcon(String filePath) {
     'jpg' || 'jpeg' || 'png' || 'gif' || 'webp' => Icons.image,
     'mp3' || 'wav' => Icons.audiotrack,
     'mp4' || 'avi' || 'mov' => Icons.video_file,
+    'txt' || 'md' || 'json' || 'xml' || 'html' || 'css' || 'js' || 'dart' || 'py' || 'java' || 'cpp' || 'c' || 'cs' || 'php' || 'rb' || 'go' || 'rs' || 'swift' || 'kt' || 'sql' || 'yaml' || 'yml' => Icons.text_fields,
     _ => Icons.insert_drive_file,
   };
 }
@@ -194,6 +196,8 @@ Future<void> shareDocument(BuildContext context, DocumentModel document) async {
       ? 'audio'
       : isPdfDocument(document)
       ? 'PDF'
+      : isTextDocument(document)
+      ? 'text'
       : 'file';
 
   try {

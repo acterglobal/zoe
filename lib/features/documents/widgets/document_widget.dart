@@ -80,6 +80,7 @@ class DocumentWidget extends ConsumerWidget {
           isVideo: isVideoDocument(document),
           isMusic: isMusicDocument(document),
           isPdf: isPdfDocument(document),
+          isText: isTextDocument(document),
         ),
       ),
     );

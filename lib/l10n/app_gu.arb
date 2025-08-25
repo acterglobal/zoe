@@ -324,6 +324,10 @@
     "failedToLoadPDF": "પીડીએફ લોડ કરવામાં વિફલ: {error}",
     "@failedToLoadPDF": {},
     "failedToLoadImage": "ફોટો લોડ કરવામાં વિફલ",
-    "@failedToLoadImage": {}
+    "@failedToLoadImage": {},   
+    "failedToLoadVideo": "વિડિઓ લોડ કરવામાં વિફલ",
+    "@failedToLoadVideo": {},
+    "failedToLoadFile": "ફાઇલ લોડ કરવામાં વિફલ",
+    "@failedToLoadFile": {}
 
 }

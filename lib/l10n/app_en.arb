@@ -364,6 +364,10 @@
     "failedToLoadImage": "Failed to load image",
     "@failedToLoadImage": {},
     "failedToLoadVideo": "Failed to load video",
-    "@failedToLoadVideo": {}
+    "@failedToLoadVideo": {},
+    "failedToLoadFile": "Failed to load file",
+    "@failedToLoadFile": {},
+    "searchInText": "Search in text...",
+    "@searchInText": {}
 
 }

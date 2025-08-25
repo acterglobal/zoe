@@ -9,6 +9,7 @@ import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/widgets/image_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/music_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/pdf_preview_widget.dart';
+import 'package:zoe/features/documents/widgets/text_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/unsupported_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/video_preview_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -20,6 +21,7 @@ class DocumentPreviewScreen extends ConsumerStatefulWidget {
   final bool isVideo;
   final bool isMusic;
   final bool isPdf;
+  final bool isText;
 
   const DocumentPreviewScreen({
     super.key,
@@ -29,6 +31,7 @@ class DocumentPreviewScreen extends ConsumerStatefulWidget {
     this.isVideo = false,
     this.isMusic = false,
     this.isPdf = false,
+    this.isText = false,
   });
 
   @override
@@ -46,7 +49,7 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen> {
         title: ZoeAppBar(
           title: widget.document.title,
           actions:
-              widget.isImage || widget.isVideo || widget.isMusic || widget.isPdf
+              widget.isImage || widget.isVideo || widget.isMusic || widget.isPdf || widget.isText
               ? [
                   DocumentActionButtons(
                     onDownload: () => CommonUtils.showSnackBar(
@@ -102,6 +105,10 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen> {
 
     if (widget.isPdf) {
       return PdfPreviewWidget(document: widget.document);
+    }
+
+    if (widget.isText) {
+      return TextPreviewWidget(document: widget.document);
     }
 
     return UnsupportedPreviewWidget(document: widget.document);
