@@ -2,6 +2,15 @@ import 'dart:io';
 
 import 'package:zoe/features/documents/models/document_model.dart';
 
+enum DocumentFileType { 
+  unknown, 
+  image, 
+  video, 
+  music, 
+  pdf, 
+  text
+}
+
 String fileSizeFormat(int bytes) {
   if (bytes < 1024) {
     return '$bytes B';
@@ -12,6 +21,15 @@ String fileSizeFormat(int bytes) {
   } else {
     return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
   }
+}
+
+DocumentFileType getDocumentType(DocumentModel document) {
+  if (isImageDocument(document)) return DocumentFileType.image;
+  if (isVideoDocument(document)) return DocumentFileType.video;
+  if (isMusicDocument(document)) return DocumentFileType.music;
+  if (isPdfDocument(document)) return DocumentFileType.pdf;
+  if (isTextDocument(document)) return DocumentFileType.text;
+  return DocumentFileType.unknown;
 }
 
 String getFileType(String filePath) {

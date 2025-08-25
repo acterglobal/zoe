@@ -82,7 +82,7 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
             title: l10n.filePicker,
             subtitle: l10n.browseFiles,
             color: AppColors.secondaryColor,
-            onTap: () => Navigator.of(context).pop(DocumentSource.filePicker),
+            onTap: () => Navigator.of(context).pop(DocumentSource.fileChooser),
           ),
           const SizedBox(height: 16),
         ],

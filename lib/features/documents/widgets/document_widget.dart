@@ -39,7 +39,17 @@ class DocumentWidget extends ConsumerWidget {
     return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 8),
       borderRadius: BorderRadius.circular(12),
-      onTap: () => _handleDocumentTap(context, document),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DocumentPreviewScreen(
+              document: document,
+              fileType: getDocumentType(document),
+            ),
+          ),
+        );
+      },
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
         leading: StyledIconContainer(
@@ -71,28 +81,23 @@ class DocumentWidget extends ConsumerWidget {
     );
   }
 
-  void _handleDocumentTap(BuildContext context, DocumentModel document) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => DocumentPreviewScreen(
-          document: document,
-          isImage: isImageDocument(document),
-          isVideo: isVideoDocument(document),
-          isMusic: isMusicDocument(document),
-          isPdf: isPdfDocument(document),
-          isText: isTextDocument(document),
-        ),
-      ),
-    );
-  }
-
   Widget _buildDocumentThumbnail(
     BuildContext context,
     WidgetRef ref,
     DocumentModel document,
   ) {
     return GlassyContainer(
-        onTap: () => _handleDocumentTap(context, document),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DocumentPreviewScreen(
+                document: document,
+                fileType: getDocumentType(document),
+              ),
+            ),
+          );
+        },
         width: 80,
         height: 100,
         margin: const EdgeInsets.only(bottom: 16),

@@ -48,7 +48,7 @@ void selectDocumentSource(
           listId,
           sheetId,
         ),
-        DocumentSource.filePicker => handleFilePickerSelection(
+        DocumentSource.fileChooser => handleFileChooserSelection(
           context,
           ref,
           listId,
@@ -128,7 +128,7 @@ Future<void> handlePhotoGallerySelection(
   }
 }
 
-Future<void> handleFilePickerSelection(
+Future<void> handleFileChooserSelection(
   BuildContext context,
   WidgetRef ref,
   String listId,

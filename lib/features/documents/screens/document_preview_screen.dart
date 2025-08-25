@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/utils/file_utils.dart';
 import 'package:zoe/features/documents/actions/select_document_actions.dart';
 import 'package:zoe/features/documents/widgets/document_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
@@ -17,21 +18,13 @@ import 'package:zoe/l10n/generated/l10n.dart';
 class DocumentPreviewScreen extends ConsumerStatefulWidget {
   final DocumentModel document;
   final bool isEditing;
-  final bool isImage;
-  final bool isVideo;
-  final bool isMusic;
-  final bool isPdf;
-  final bool isText;
+  final DocumentFileType fileType;
 
   const DocumentPreviewScreen({
     super.key,
     required this.document,
     this.isEditing = false,
-    this.isImage = false,
-    this.isVideo = false,
-    this.isMusic = false,
-    this.isPdf = false,
-    this.isText = false,
+    required this.fileType,
   });
 
   @override
@@ -49,7 +42,7 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen> {
         title: ZoeAppBar(
           title: widget.document.title,
           actions:
-              widget.isImage || widget.isVideo || widget.isMusic || widget.isPdf || widget.isText
+              widget.fileType != DocumentFileType.unknown
               ? [
                   DocumentActionButtons(
                     onDownload: () => CommonUtils.showSnackBar(
@@ -91,26 +84,14 @@ class _DocumentPreviewScreenState extends ConsumerState<DocumentPreviewScreen> {
       );
     }
 
-    if (widget.isImage) {
-      return ImagePreviewWidget(document: widget.document);
+    switch (widget.fileType) {
+      case DocumentFileType.image : return ImagePreviewWidget(document: widget.document);
+      case DocumentFileType.video : return VideoPreviewWidget(document: widget.document);
+      case DocumentFileType.music : return MusicPreviewWidget(document: widget.document);
+      case DocumentFileType.pdf : return PdfPreviewWidget(document: widget.document);
+      case DocumentFileType.text : return TextPreviewWidget(document: widget.document);
+      default : return UnsupportedPreviewWidget(document: widget.document);
     }
-
-    if (widget.isVideo) {
-      return VideoPreviewWidget(document: widget.document);
-    }
-
-    if (widget.isMusic) {
-      return MusicPreviewWidget(document: widget.document);
-    }
-
-    if (widget.isPdf) {
-      return PdfPreviewWidget(document: widget.document);
-    }
-
-    if (widget.isText) {
-      return TextPreviewWidget(document: widget.document);
-    }
-
-    return UnsupportedPreviewWidget(document: widget.document);
   }
 }
+

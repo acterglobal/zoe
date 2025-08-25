@@ -3,7 +3,7 @@ import 'package:zoe/features/content/models/content_model.dart';
 enum DocumentSource {
   camera,
   photoGallery,
-  filePicker,
+  fileChooser,
 }
 
 class DocumentModel extends ContentModel {
