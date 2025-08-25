@@ -10,6 +10,7 @@ enum AppRoutes {
   bulletDetail('/bullet/:bulletId'),
   linksList('/links-list'),
   documentsList('/documents-list'),
+  documentPreview('/document/:documentId'),
   pollsList('/polls-list'),
   pollDetails('/poll/:pollId'),
   settings('/settings'),

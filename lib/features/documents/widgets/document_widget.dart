@@ -6,7 +6,8 @@ import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/features/documents/actions/select_document_actions.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
-import 'package:zoe/features/documents/screens/document_preview_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 
 class DocumentWidget extends ConsumerWidget {
   final String documentId;
@@ -40,14 +41,10 @@ class DocumentWidget extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 8),
       borderRadius: BorderRadius.circular(12),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DocumentPreviewScreen(
-              document: document,
-              fileType: getDocumentType(document),
-            ),
-          ),
+        context.pushNamed(
+          AppRoutes.documentPreview.name,
+          pathParameters: {'documentId': document.id},
+          extra: document,
         );
       },
       child: ListTile(
@@ -88,14 +85,10 @@ class DocumentWidget extends ConsumerWidget {
   ) {
     return GlassyContainer(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DocumentPreviewScreen(
-                document: document,
-                fileType: getDocumentType(document),
-              ),
-            ),
+          context.pushNamed(
+            AppRoutes.documentPreview.name,
+            pathParameters: {'documentId': document.id},
+            extra: document,
           );
         },
         width: 80,

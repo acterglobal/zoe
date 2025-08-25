@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 import 'package:zoe/common/screens/page_not_found_screen.dart';
 import 'package:zoe/features/bullets/screens/bullet_detail_screen.dart';
 import 'package:zoe/features/documents/screens/documents_list_screen.dart';
+import 'package:zoe/features/documents/widgets/document_error_widget.dart';
 import 'package:zoe/features/events/screens/event_detail_screen.dart';
 import 'package:zoe/features/events/screens/events_list_screen.dart';
 import 'package:zoe/features/home/screens/home_screen.dart';
@@ -18,6 +19,10 @@ import 'package:zoe/features/sheet/screens/sheet_list_screen.dart';
 import 'package:zoe/features/task/screens/task_detail_screen.dart';
 import 'package:zoe/features/task/screens/tasks_list_screen.dart';
 import 'package:zoe/features/welcome/screens/welcome_screen.dart';
+import 'package:zoe/features/documents/screens/document_preview_screen.dart';
+import 'package:zoe/features/documents/providers/document_providers.dart';
+import 'package:zoe/common/utils/file_utils.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 import 'app_routes.dart';
 
 // Global navigator key for accessing the router
@@ -123,6 +128,28 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.documentsList.route,
         name: AppRoutes.documentsList.name,
         builder: (context, state) => const DocumentsListScreen(),
+      ),
+
+      // Document preview route
+      GoRoute(
+        path: AppRoutes.documentPreview.route,
+        name: AppRoutes.documentPreview.name,
+        builder: (context, state) {
+          final documentId = state.pathParameters['documentId'] ?? Uuid().v4();
+          return Consumer(
+            builder: (context, ref, child) {
+              final document = ref.watch(documentProvider(documentId));
+              if (document == null) {
+                return DocumentErrorWidget(errorName: L10n.of(context).documentNotFound);
+              }
+              final fileType = getDocumentType(document);
+              return DocumentPreviewScreen(
+                document: document,
+                fileType: fileType,
+              );
+            },
+          );
+        },
       ),
 
       // Polls list route
