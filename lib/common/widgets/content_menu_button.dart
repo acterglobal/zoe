@@ -21,17 +21,16 @@ class ContentMenuButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider(parentId));
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
 
     final items = _buildMenuItems(context, isEditing);
 
     return PopupMenuButton<ContentMenuAction>(
       onSelected: (action) => _handleMenuSelection(context, ref, action),
       offset: const Offset(2, 50),
-      elevation: 8,
-      shadowColor: theme.colorScheme.primary.withValues(alpha: 0.3),
+      elevation: 10,
+      shadowColor: colorScheme.primary.withValues(alpha: 0.6),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      color: theme.colorScheme.surface,
       itemBuilder: (context) => items
           .map(
             (item) => PopupMenuItem<ContentMenuAction>(
@@ -44,8 +43,8 @@ class ContentMenuButton extends ConsumerWidget {
         icon: Icons.more_vert_rounded,
         size: 40,
         iconSize: 20,
-        primaryColor: theme.colorScheme.onSurface,
-        secondaryColor: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+        primaryColor: colorScheme.onSurface,
+        secondaryColor: colorScheme.onSurface.withValues(alpha: 0.4),
         backgroundOpacity: 0.08,
         borderOpacity: 0.15,
         shadowOpacity: 0.1,
@@ -102,17 +101,10 @@ class ContentMenuButton extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         children: [
-          StyledIconContainer(
-            icon: item.icon,
-            size: 40,
-            iconSize: 20,
-            primaryColor: color,
-            secondaryColor: item.isDestructive
-                ? colorScheme.error.withValues(alpha: 0.7)
-                : colorScheme.secondary,
-            backgroundOpacity: item.isDestructive ? 0.12 : 0.08,
-            borderOpacity: item.isDestructive ? 0.2 : 0.15,
-            shadowOpacity: item.isDestructive ? 0.15 : 0.1,
+          Icon(
+            item.icon,
+            size: 20,
+            color: color,
           ),
           const SizedBox(width: 16),
           _buildMenuTitleSubtitle(context, item),
