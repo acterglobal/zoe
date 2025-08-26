@@ -57,7 +57,7 @@ class PollDetailsScreen extends ConsumerWidget {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, sheetId: poll.sheetId),
+      onPressed: () => showAddContentBottomSheet(context, parentId: pollId, sheetId: poll.sheetId),
     );
   }
 

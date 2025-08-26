@@ -59,7 +59,7 @@ class TaskDetailScreen extends ConsumerWidget {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, sheetId: task.sheetId),
+      onPressed: () => showAddContentBottomSheet(context, parentId: taskId, sheetId: task.sheetId),
     );
   }
   

@@ -64,7 +64,7 @@ class EventDetailScreen extends ConsumerWidget {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, sheetId: event.sheetId),
+      onPressed: () => showAddContentBottomSheet(context, parentId: eventId, sheetId: event.sheetId),
     );
   }
   /// Builds the main body

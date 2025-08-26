@@ -59,7 +59,7 @@ class BulletDetailScreen extends ConsumerWidget {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, sheetId: bullet.sheetId),
+      onPressed: () => showAddContentBottomSheet(context, parentId: bulletId, sheetId: bullet.sheetId),
     );
   }
 

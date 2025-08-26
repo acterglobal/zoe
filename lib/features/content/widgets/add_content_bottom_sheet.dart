@@ -7,6 +7,7 @@ import 'package:zoe/l10n/generated/l10n.dart';
 
 void showAddContentBottomSheet(
   BuildContext context, {
+  required String parentId,
   required String sheetId,
 }) {
   showModalBottomSheet(
@@ -19,14 +20,15 @@ void showAddContentBottomSheet(
         topRight: Radius.circular(20),
       ),
     ),
-    builder: (context) => AddContentBottomSheet(sheetId: sheetId),
+    builder: (context) => AddContentBottomSheet(parentId: parentId, sheetId: sheetId),
   );
 }
 
 class AddContentBottomSheet extends ConsumerWidget {
+  final String parentId;
   final String sheetId;
 
-  const AddContentBottomSheet({super.key, required this.sheetId});
+  const AddContentBottomSheet({super.key, required this.parentId, required this.sheetId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,7 +47,7 @@ class AddContentBottomSheet extends ConsumerWidget {
               context.pop();
               addNewTextContent(
                 ref: ref,
-                parentId: sheetId,
+                parentId: parentId,
                 sheetId: sheetId,
                 addAtTop: true,
               );
@@ -54,7 +56,7 @@ class AddContentBottomSheet extends ConsumerWidget {
               context.pop();
               addNewEventContent(
                 ref: ref,
-                parentId: sheetId,
+                parentId: parentId,
                 sheetId: sheetId,
                 addAtTop: true,
               );
@@ -63,7 +65,7 @@ class AddContentBottomSheet extends ConsumerWidget {
               context.pop();
               addNewBulletedListContent(
                 ref: ref,
-                parentId: sheetId,
+                parentId: parentId,
                 sheetId: sheetId,
                 addAtTop: true,
               );
@@ -72,7 +74,7 @@ class AddContentBottomSheet extends ConsumerWidget {
               context.pop();
               addNewTaskListContent(
                 ref: ref,
-                parentId: sheetId,
+                parentId: parentId,
                 sheetId: sheetId,
                 addAtTop: true,
               );
@@ -81,7 +83,7 @@ class AddContentBottomSheet extends ConsumerWidget {
               context.pop();
               addNewLinkContent(
                 ref: ref,
-                parentId: sheetId,
+                parentId: parentId,
                 sheetId: sheetId,
                 addAtTop: true,
               );
@@ -90,7 +92,7 @@ class AddContentBottomSheet extends ConsumerWidget {
               context.pop();
               addNewDocumentContent(
                 ref: ref,
-                parentId: sheetId,
+                parentId: parentId,
                 sheetId: sheetId,
                 addAtTop: true,
               );
@@ -99,7 +101,7 @@ class AddContentBottomSheet extends ConsumerWidget {
               context.pop();
               addNewPollContent(
                 ref: ref,
-                parentId: sheetId,
+                parentId: parentId,
                 sheetId: sheetId,
                 addAtTop: true,
               );
