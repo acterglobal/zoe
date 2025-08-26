@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_secondary_button.dart';
-import 'package:zoe/features/whatsapp_connect/providers/whatsapp_group_connect_provider.dart';
-import 'package:zoe/features/whatsapp_connect/utils/image_utils.dart';
-import 'package:zoe/features/whatsapp_connect/widgets/info_header_widget.dart';
-import 'package:zoe/features/whatsapp_connect/widgets/permission_step_widget.dart';
-import 'package:zoe/features/whatsapp_connect/widgets/important_note_widget.dart';
+import 'package:zoe/features/whatsapp/providers/whatsapp_group_connect_provider.dart';
+import 'package:zoe/features/whatsapp/utils/image_utils.dart';
+import 'package:zoe/features/whatsapp/widgets/info_header_widget.dart';
+import 'package:zoe/features/whatsapp/widgets/permission_step_widget.dart';
+import 'package:zoe/features/whatsapp/widgets/important_note_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class GroupPermissionWidget extends ConsumerWidget {

@@ -6,8 +6,8 @@ import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_content_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
-import 'package:zoe/features/whatsapp_connect/providers/whatsapp_group_connect_provider.dart';
-import 'package:zoe/features/whatsapp_connect/widgets/info_header_widget.dart';
+import 'package:zoe/features/whatsapp/providers/whatsapp_group_connect_provider.dart';
+import 'package:zoe/features/whatsapp/widgets/info_header_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class GroupLinkWidget extends ConsumerStatefulWidget {

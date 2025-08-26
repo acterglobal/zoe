@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/features/whatsapp_connect/model/whatsapp_group_connect_state.dart';
+import 'package:zoe/features/whatsapp/model/whatsapp_group_connect_state.dart';
 
 final whatsappGroupConnectProvider =
     StateNotifierProvider.autoDispose<

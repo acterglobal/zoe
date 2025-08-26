@@ -21,7 +21,7 @@ import 'package:zoe/features/task/screens/task_detail_screen.dart';
 import 'package:zoe/features/task/screens/tasks_list_screen.dart';
 import 'package:zoe/features/text/screens/text_block_details_screen.dart';
 import 'package:zoe/features/welcome/screens/welcome_screen.dart';
-import 'package:zoe/features/whatsapp_connect/screens/whatsapp_group_connect_screen.dart';
+import 'package:zoe/features/whatsapp/screens/whatsapp_group_connect_screen.dart';
 import 'app_routes.dart';
 
 // Global navigator key for accessing the router
