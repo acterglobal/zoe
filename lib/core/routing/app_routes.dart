@@ -8,10 +8,13 @@ enum AppRoutes {
   eventsList('/events-list'),
   eventDetail('/event/:eventId'),
   bulletDetail('/bullet/:bulletId'),
+  listDetail('/list/:listId'),
   linksList('/links-list'),
   documentsList('/documents-list'),
   pollsList('/polls-list'),
   pollDetails('/poll/:pollId'),
+  pollResults('/poll-results/:pollId'),
+  textBlockDetails('/text-block/:textBlockId'),
   settings('/settings'),
   settingLanguage('/settings/language');
 

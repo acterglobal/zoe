@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
@@ -100,6 +102,9 @@ class TextWidget extends ConsumerWidget {
       ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
       onTextChanged: (value) =>
           ref.read(textListProvider.notifier).updateTextTitle(textId, value),
+      onTapText: () => context.push(
+        AppRoutes.textBlockDetails.route.replaceAll(':textBlockId', textId),
+      ),
     );
   }
 
@@ -121,6 +126,9 @@ class TextWidget extends ConsumerWidget {
       onContentChanged: (description) => ref
           .read(textListProvider.notifier)
           .updateTextDescription(textId, description),
+      onTap: () => context.push(
+        AppRoutes.textBlockDetails.route.replaceAll(':textBlockId', textId),
+      ),
     );
   }
 }

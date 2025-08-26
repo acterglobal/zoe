@@ -79,10 +79,10 @@ class ContentWidget extends ConsumerWidget {
           isEditing: isEditing,
           onTapText: () =>
               addNewTextContent(ref: ref, parentId: parentId, sheetId: sheetId),
-          onTapEvent: () => addNewEventListContent(
+          onTapEvent: () => addNewEventContent(
             ref: ref,
             parentId: parentId,
-            sheetId: sheetId,
+            sheetId: sheetId,            
           ),
           onTapBulletedList: () => addNewBulletedListContent(
             ref: ref,

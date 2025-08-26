@@ -50,6 +50,12 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
   @override
   void didUpdateWidget(ZoeInlineTextEditWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+    
+    // Update controller text when widget text changes
+    if (widget.text != oldWidget.text) {
+      controller.text = widget.text ?? '';
+    }
+    
     // Request focus when autoFocus changes to true
     if (widget.autoFocus && !oldWidget.autoFocus && widget.isEditing) {
       textFieldFocusNode.requestFocus();
