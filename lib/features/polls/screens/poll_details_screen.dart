@@ -4,8 +4,6 @@ import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
@@ -64,61 +62,12 @@ class PollDetailsScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildPollHeader(context, ref, poll, isEditing),
           const SizedBox(height: 16),
           PollWidget(pollId: pollId, isEditing: isEditing),
           const SizedBox(height: 16),
           ContentWidget(parentId: pollId, sheetId: poll.sheetId),
         ],
       ),
-    );
-  }
-
-  /// Builds the header
-  Widget _buildPollHeader(
-    BuildContext context,
-    WidgetRef ref,
-    PollModel poll,
-    bool isEditing,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ZoeInlineTextEditWidget(
-                hintText: L10n.of(context).title,
-                text: poll.title,
-                isEditing: isEditing,
-                textStyle: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  height: 1.2,
-                ),
-                onTextChanged: (value) => ref
-                    .read(pollListProvider.notifier)
-                    .updatePollTitle(pollId, value),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        ZoeHtmlTextEditWidget(
-          hintText: L10n.of(context).addADescription,
-          isEditing: isEditing,
-          description: poll.description,
-          textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'poll-description-$pollId', // Add unique editor ID
-          onContentChanged: (description) => Future.microtask(
-            () => ref
-                .read(pollListProvider.notifier)
-                .updatePollDescription(pollId, description),
-          ),
-        ),
-      ],
     );
   }
 }

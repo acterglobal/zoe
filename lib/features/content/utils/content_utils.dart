@@ -250,6 +250,5 @@ void addNewPollContent({
         sheetId: sheetId,
         orderIndex: orderIndex,
         question: '',
-        title: '',
       );
 }
