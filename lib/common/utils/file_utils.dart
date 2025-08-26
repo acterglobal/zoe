@@ -41,32 +41,28 @@ String getFileSize(String filePath) {
   return file.existsSync() ? fileSizeFormat(file.lengthSync()) : '0 B';
 }
 
-String convertToLowerCase(DocumentModel document) {
-  return getFileType(document.filePath).toLowerCase();
-}
-
 bool isImageDocument(DocumentModel document) {
-  final fileType = convertToLowerCase(document);
+  final fileType = getFileType(document.filePath).toLowerCase();
   return ['jpg', 'jpeg', 'png', 'gif', 'webp'].contains(fileType);
 }
 
 bool isVideoDocument(DocumentModel document) {
-  final fileType = convertToLowerCase(document);
+  final fileType = getFileType(document.filePath).toLowerCase();
   return ['mp4', 'mov', 'avi', 'wmv', 'flv'].contains(fileType);
 }
 
 bool isMusicDocument(DocumentModel document) {
-  final fileType = convertToLowerCase(document);
+  final fileType = getFileType(document.filePath).toLowerCase();
   return ['mp3', 'wav', 'm4a', 'ogg', 'flac'].contains(fileType);
 }
 
 bool isPdfDocument(DocumentModel document) {
-  final fileType = convertToLowerCase(document);
+  final fileType = getFileType(document.filePath).toLowerCase();
   return ['pdf'].contains(fileType);
 }
 
 bool isTextDocument(DocumentModel document) {
-  final fileType = convertToLowerCase(document);
+  final fileType = getFileType(document.filePath).toLowerCase();
   return [
     'txt', 'md', 'json', 'xml', 'html', 'htm', 'css', 'js', 'dart', 'py', 
     'java', 'cpp', 'c', 'h', 'cs', 'php', 'rb', 'go', 'rs', 'swift', 'kt',
