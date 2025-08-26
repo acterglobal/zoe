@@ -41,11 +41,7 @@ class DocumentWidget extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 8),
       borderRadius: BorderRadius.circular(12),
       onTap: () {
-        context.pushNamed(
-          AppRoutes.documentPreview.name,
-          pathParameters: {'documentId': document.id},
-          extra: document,
-        );
+        context.push(AppRoutes.documentPreview.route.replaceAll(':documentId', document.id));
       },
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
@@ -85,11 +81,7 @@ class DocumentWidget extends ConsumerWidget {
   ) {
     return GlassyContainer(
         onTap: () {
-          context.pushNamed(
-            AppRoutes.documentPreview.name,
-            pathParameters: {'documentId': document.id},
-            extra: document,
-          );
+          context.push(AppRoutes.documentPreview.route.replaceAll(':documentId', document.id));
         },
         width: 80,
         height: 100,

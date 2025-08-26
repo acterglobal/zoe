@@ -1,8 +1,7 @@
 class MediaControllerUtils {
   static bool _isProcessing = false;
 
-  static bool get isProcessing => _isProcessing;
-
+  // Runs an operation, but only if nothing else is running
   static Future<T?> executeOperation<T>(Future<T> Function() operation) async {
     if (_isProcessing) return null;
 
@@ -12,9 +11,5 @@ class MediaControllerUtils {
     } finally {
       _isProcessing = false;
     }
-  }
-
-  static void resetProcessing() {
-    _isProcessing = false;
   }
 }

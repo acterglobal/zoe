@@ -336,6 +336,10 @@
     "failedToLoadVideo": "વિડિઓ લોડ કરવામાં વિફલ",
     "@failedToLoadVideo": {},
     "failedToLoadFile": "ફાઇલ લોડ કરવામાં વિફલ",
-    "@failedToLoadFile": {}
+    "@failedToLoadFile": {},
+    "searchInText": "ટેક્સ્ટમાં શોધો...",
+    "@searchInText": {},
+    "unknownDocument": "અજ્ઞાત ફાઇલ",
+    "@unknownDocument": {}
 
 }

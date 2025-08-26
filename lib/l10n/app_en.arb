@@ -376,6 +376,8 @@
     "failedToLoadFile": "Failed to load file",
     "@failedToLoadFile": {},
     "searchInText": "Search in text...",
-    "@searchInText": {}
+    "@searchInText": {},
+    "unknownDocument": "Unknown Document",
+    "@unknownDocument": {}
 
 }

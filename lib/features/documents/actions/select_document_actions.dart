@@ -9,7 +9,7 @@ import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/utils/file_utils.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
-import 'package:zoe/features/documents/widgets/document_selection_bottom_sheet.dart';
+import 'package:zoe/common/widgets/document_selection_bottom_sheet.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 void selectDocumentSource(
@@ -18,53 +18,12 @@ void selectDocumentSource(
   String listId,
   String sheetId,
 ) {
-  final source = showModalBottomSheet<DocumentSource>(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Theme.of(context).colorScheme.surface,
-    enableDrag: true,
-    showDragHandle: true,
-    elevation: 6,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-    ),
-    builder: (context) => const DocumentSelectionBottomSheetWidget(),
+  showDocumentSelectionBottomSheet(
+    context,
+    onTapCamera: () => handleCameraSelection(context, ref, listId, sheetId),
+    onTapGallery: () => handlePhotoGallerySelection(context, ref, listId, sheetId),
+    onTapFileChooser: () => handleFileChooserSelection(context, ref, listId, sheetId),
   );
-
-  source.then((selectedSource) {
-    if (selectedSource == null || !context.mounted) return;
-
-    try {
-      final result = switch (selectedSource) {
-        DocumentSource.camera => handleCameraSelection(
-          context,
-          ref,
-          listId,
-          sheetId,
-        ),
-        DocumentSource.photoGallery => handlePhotoGallerySelection(
-          context,
-          ref,
-          listId,
-          sheetId,
-        ),
-        DocumentSource.fileChooser => handleFileChooserSelection(
-          context,
-          ref,
-          listId,
-          sheetId,
-        ),
-      };
-      result;
-    } catch (e) {
-      if (context.mounted) {
-        CommonUtils.showSnackBar(
-          context,
-          L10n.of(context).failedToAddDocument(e.toString()),
-        );
-      }
-    }
-  });
 }
 
 Future<void> handleCameraSelection(

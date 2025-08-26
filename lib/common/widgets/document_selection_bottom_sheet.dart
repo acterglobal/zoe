@@ -3,12 +3,16 @@ import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
-import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows a bottom sheet for selecting document source
-Future<DocumentSource?> showDocumentSelectionBottomSheet(BuildContext context) {
-  return showModalBottomSheet<DocumentSource>(
+void showDocumentSelectionBottomSheet(
+  BuildContext context, {
+  required VoidCallback onTapCamera,
+  required VoidCallback onTapGallery,
+  required VoidCallback onTapFileChooser,
+}) {
+  showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Theme.of(context).colorScheme.surface,
@@ -18,12 +22,25 @@ Future<DocumentSource?> showDocumentSelectionBottomSheet(BuildContext context) {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
-    builder: (context) => const DocumentSelectionBottomSheetWidget(),
+    builder: (context) => DocumentSelectionBottomSheetWidget(
+      onTapCamera: onTapCamera,
+      onTapGallery: onTapGallery,
+      onTapFileChooser: onTapFileChooser,
+    ),
   );
 }
 
 class DocumentSelectionBottomSheetWidget extends StatelessWidget {
-  const DocumentSelectionBottomSheetWidget({super.key});
+  final VoidCallback onTapCamera;
+  final VoidCallback onTapGallery;
+  final VoidCallback onTapFileChooser;
+
+  const DocumentSelectionBottomSheetWidget({
+    super.key,
+    required this.onTapCamera,
+    required this.onTapGallery,
+    required this.onTapFileChooser,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +80,10 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
             title: l10n.camera,
             subtitle: l10n.takePhotoOrVideo,
             color: AppColors.brightOrangeColor,
-            onTap: () => Navigator.of(context).pop(DocumentSource.camera),
+            onTap: () {
+              Navigator.of(context).pop();
+              onTapCamera();
+            },
           ),
           ],
           const SizedBox(height: 16),
@@ -73,7 +93,10 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
             title: l10n.photoGallery,
             subtitle: l10n.selectFromGallery,
             color: AppColors.successColor,
-            onTap: () => Navigator.of(context).pop(DocumentSource.photoGallery),
+            onTap: () {
+              Navigator.of(context).pop();
+              onTapGallery();
+            },
           ),
           const SizedBox(height: 16),
           _buildOptionButton(
@@ -82,7 +105,10 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
             title: l10n.filePicker,
             subtitle: l10n.browseFiles,
             color: AppColors.secondaryColor,
-            onTap: () => Navigator.of(context).pop(DocumentSource.fileChooser),
+            onTap: () {
+              Navigator.of(context).pop();
+              onTapFileChooser();
+            },
           ),
           const SizedBox(height: 16),
         ],
@@ -122,17 +148,12 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.onSurface,
-                    ),
+                    style: theme.textTheme.titleMedium
                   ),
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
+                    style: theme.textTheme.bodySmall,
                   ),
                 ],
               ),

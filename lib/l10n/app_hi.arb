@@ -336,5 +336,9 @@
     "failedToLoadVideo": "वीडियो लोड करने में विफल",
     "@failedToLoadVideo": {},
     "failedToLoadFile": "फाइल लोड करने में विफल",
-    "@failedToLoadFile": {}
+    "@failedToLoadFile": {},
+    "searchInText": "टेक्स्ट में खोजें...",
+    "@searchInText": {},
+    "unknownDocument": "अजगर फाइल",
+    "@unknownDocument": {}
 }
