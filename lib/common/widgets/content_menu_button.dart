@@ -59,26 +59,8 @@ class ContentMenuButton extends ConsumerWidget {
   ) {
     final items = <MenuItemDataModel>[];
     
-    // Only add connect option if showConnectOption is true (sheet detail pages)
-    if (showConnectOption) {
-      items.add(
-        MenuItemDataModel(
-          action: ContentMenuAction.connect,
-          icon: Icons.link_rounded,
-          title: L10n.of(context).connect,
-          subtitle: L10n.of(context).connectWithOtherContent,
-        ),
-      );
-    }
-    
     // Add other menu items
     items.addAll([
-      MenuItemDataModel(
-        action: ContentMenuAction.share,
-        icon: Icons.share_rounded,
-        title: L10n.of(context).share,
-        subtitle: L10n.of(context).shareThisContent,
-      ),
       MenuItemDataModel(
         action: ContentMenuAction.edit,
         icon: isEditing ? Icons.save_rounded : Icons.edit_rounded,
@@ -86,6 +68,19 @@ class ContentMenuButton extends ConsumerWidget {
         subtitle: isEditing
             ? L10n.of(context).saveChanges
             : L10n.of(context).editThisContent,
+      ),
+      if (showConnectOption)
+      MenuItemDataModel(
+        action: ContentMenuAction.connect,
+        icon: Icons.link_rounded,
+        title: L10n.of(context).connect,
+        subtitle: L10n.of(context).connectWithOtherContent,
+      ),
+      MenuItemDataModel(
+        action: ContentMenuAction.share,
+        icon: Icons.share_rounded,
+        title: L10n.of(context).share,
+        subtitle: L10n.of(context).shareThisContent,
       ),
       MenuItemDataModel(
         action: ContentMenuAction.delete,
