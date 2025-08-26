@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
+import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
+import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
@@ -10,36 +12,37 @@ import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
-import 'package:zoe/features/task/models/task_model.dart';
-import 'package:zoe/features/task/providers/task_providers.dart';
-import 'package:zoe/features/task/widgets/task_details_additional_fields.dart';
-import 'package:zoe/features/task/widgets/task_assignees_widget.dart';
-import 'package:zoe/features/task/widgets/task_checkbox_widget.dart';
+import 'package:zoe/features/text/models/text_model.dart';
+import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-class TaskDetailScreen extends ConsumerWidget {
-  final String taskId;
+class TextBlockDetailsScreen extends ConsumerWidget {
+  final String textBlockId;
 
-  const TaskDetailScreen({super.key, required this.taskId});
+  const TextBlockDetailsScreen({super.key, required this.textBlockId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final task = ref.watch(taskProvider(taskId));
-    if (task == null) return Center(child: Text(L10n.of(context).taskNotFound));
-    final isEditing = ref.watch(isEditValueProvider(taskId));
+    final isEditing = ref.watch(isEditValueProvider(textBlockId));
+    final textBlock = ref.watch(textProvider(textBlockId));
+    if (textBlock == null) {
+      return Center(child: Text(L10n.of(context).textBlockNotFound));
+    }
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [ContentMenuButton(parentId: taskId)]),
+          title: ZoeAppBar(
+            actions: [ContentMenuButton(parentId: textBlockId)],
+          ),
         ),
         body: Column(
           children: [
             Expanded(
               child: Stack(
                 children: [
-                  _buildBody(context, ref, task, isEditing),
+                  _buildBody(context, ref, textBlock, isEditing),
                   buildQuillEditorPositionedToolbar(
                     context,
                     ref,
@@ -50,24 +53,28 @@ class TaskDetailScreen extends ConsumerWidget {
             ),
           ],
         ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, task),
+        floatingActionButton: _buildFloatingActionButton(context, isEditing, textBlock),
       ),
     );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context, bool isEditing, TaskModel task) {
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    bool isEditing,
+    TextModel textBlock,
+  ) {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: taskId, sheetId: task.sheetId),
+      onPressed: () => showAddContentBottomSheet(context, parentId: textBlockId, sheetId: textBlock.sheetId),
     );
   }
-  
+
   /// Builds the main body
   Widget _buildBody(
     BuildContext context,
     WidgetRef ref,
-    TaskModel task,
+    TextModel textBlock,
     bool isEditing,
   ) {
     return SingleChildScrollView(
@@ -75,40 +82,47 @@ class TaskDetailScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildTaskHeader(context, ref, task, isEditing),
+          _buildTextBlockHeader(context, ref, textBlock, isEditing),
           const SizedBox(height: 16),
-          ContentWidget(parentId: taskId, sheetId: task.sheetId),
+          ContentWidget(parentId: textBlockId, sheetId: textBlock.sheetId),
         ],
       ),
     );
   }
 
   /// Builds the header
-  Widget _buildTaskHeader(
+  Widget _buildTextBlockHeader(
     BuildContext context,
     WidgetRef ref,
-    TaskModel task,
+    TextModel textBlock,
     bool isEditing,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: Transform.scale(
-                scale: 1.5,
-                child: TaskCheckboxWidget(task: task),
+            EmojiWidget(
+              isEditing: isEditing,
+              size: 36,
+              emoji: textBlock.emoji ?? '𝑻',
+              onTap: (currentEmoji) => showCustomEmojiPicker(
+                context,
+                ref,
+                onEmojiSelected: (emoji) {
+                  ref
+                      .read(textListProvider.notifier)
+                      .updateTextEmoji(textBlockId, emoji);
+                },
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 10),
             Expanded(
               child: ZoeInlineTextEditWidget(
                 hintText: L10n.of(context).title,
                 isEditing: isEditing,
-                text: task.title,
+                text: textBlock.title,
                 textStyle: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
@@ -116,8 +130,8 @@ class TaskDetailScreen extends ConsumerWidget {
                   height: 1.2,
                 ),
                 onTextChanged: (value) => ref
-                    .read(taskListProvider.notifier)
-                    .updateTaskTitle(taskId, value),
+                    .read(textListProvider.notifier)
+                    .updateTextTitle(textBlockId, value),
               ),
             ),
           ],
@@ -126,19 +140,16 @@ class TaskDetailScreen extends ConsumerWidget {
         ZoeHtmlTextEditWidget(
           hintText: L10n.of(context).addADescription,
           isEditing: isEditing,
-          description: task.description,
+          description: textBlock.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'task-description-$taskId', // Add unique editor ID
+          editorId:
+              'text-block-description-$textBlockId', // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => ref
-                .read(taskListProvider.notifier)
-                .updateTaskDescription(taskId, description),
+                .read(textListProvider.notifier)
+                .updateTextDescription(textBlockId, description),
           ),
         ),
-        const SizedBox(height: 16),
-        TaskDetailsAdditionalFields(task: task, isEditing: isEditing),
-        const SizedBox(height: 16),
-        TaskAssigneesWidget(task: task, isEditing: isEditing),
       ],
     );
   }

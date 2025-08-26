@@ -17,7 +17,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(minutes: 15)),
     createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_3', 'user_7'],
+    assignedUsers: ['user_1', 'user_2', 'user_3'],
   ),
   TaskModel(
     id: 'task-2',
@@ -34,7 +34,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(minutes: 30)),
     createdBy: 'user_1',
-    assignedUsers: ['user_2', 'user_5', 'user_8'],
+    assignedUsers: ['user_2'],
   ),
   TaskModel(
     id: 'task-3',
@@ -51,7 +51,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(hours: 1)),
     createdBy: 'user_1',
-    assignedUsers: ['user_4', 'user_9'],
+    assignedUsers: ['user_2', 'user_3'],
   ),
   TaskModel(
     id: 'task-4',
@@ -68,7 +68,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(hours: 2)),
     createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_6', 'user_10'],
+    assignedUsers: ['user_1', 'user_2', 'user_3'],
   ),
   TaskModel(
     id: 'task-5',
@@ -85,7 +85,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(hours: 4)),
     createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_6', 'user_10'],
+    assignedUsers: ['user_1', 'user_3'],
   ),
   TaskModel(
     id: 'task-6',
@@ -102,7 +102,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(hours: 6)),
     createdBy: 'user_2',
-    assignedUsers: ['user_1', 'user_6', 'user_10'],
+    assignedUsers: ['user_1', 'user_2'],
   ),
   TaskModel(
     id: 'task-7',
@@ -119,7 +119,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(hours: 8)),
     createdBy: 'user_3',
-    assignedUsers: ['user_1', 'user_6', 'user_10'],
+    assignedUsers: ['user_1'],
   ),
   TaskModel(
     id: 'task-8',
@@ -135,7 +135,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
-    createdBy: 'user_9',
+    createdBy: 'user_1',
     assignedUsers: ['user_1'],
   ),
   TaskModel(
@@ -153,7 +153,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
     createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_6', 'user_10'],
+    assignedUsers: ['user_1', 'user_2', 'user_3'],
   ),
 
   // Community Organization (sheet-2) tasks
@@ -294,7 +294,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
     createdBy: 'user_6',
-    assignedUsers: ['user_1', 'user_2', 'user_3'],
+    assignedUsers: ['user_4', 'user_5'],
   ),
   TaskModel(
     id: 'task-inclusive-2',
@@ -311,7 +311,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
     createdBy: 'user_6',
-    assignedUsers: ['user_1', 'user_2'],
+    assignedUsers: ['user_4', 'user_5', 'user_6'],
   ),
   TaskModel(
     id: 'task-inclusive-3',
@@ -344,8 +344,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
-    createdBy: 'user_7',
-    assignedUsers: ['user_3'],
+    createdBy: 'user_5',
+    assignedUsers: ['user_4', 'user_5'],
   ),
 
   // Information Management (sheet-4) tasks
@@ -364,7 +364,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
     createdBy: 'user_6',
-    assignedUsers: ['user_2', 'user_3'],
+    assignedUsers: ['user_4', 'user_5'],
   ),
   TaskModel(
     id: 'task-info-2',
@@ -380,8 +380,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
-    createdBy: 'user_8',
-    assignedUsers: ['user_7', 'user_2', 'user_3', 'user_4'],
+    createdBy: 'user_4',
+    assignedUsers: ['user_4', 'user_5', 'user_6'],
   ),
   TaskModel(
     id: 'task-info-3',
@@ -397,19 +397,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
-    createdBy: 'user_8',
-    assignedUsers: [
-      'user_1',
-      'user_2',
-      'user_3',
-      'user_4',
-      'user_5',
-      'user_6',
-      'user_7',
-      'user_8',
-      'user_9',
-      'user_10',
-    ],
+    createdBy: 'user_4',
+    assignedUsers: ['user_4', 'user_5', 'user_6'],
   ),
   TaskModel(
     id: 'task-info-4',
@@ -425,8 +414,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
-    createdBy: 'user_8',
-    assignedUsers: ['user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+    createdBy: 'user_4',
+    assignedUsers: ['user_4', 'user_6'],
   ),
 
   // Group Visibility (sheet-5) tasks
@@ -444,7 +433,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 5)),
-    createdBy: 'user_8',
+    createdBy: 'user_4',
     assignedUsers: [],
   ),
   TaskModel(
@@ -461,15 +450,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 5)),
-    createdBy: 'user_8',
-    assignedUsers: [
-      'user_1',
-      'user_2',
-      'user_7',
-      'user_8',
-      'user_9',
-      'user_10',
-    ],
+    createdBy: 'user_5',
+    assignedUsers: ['user_5'],
   ),
   TaskModel(
     id: 'task-visibility-potluck-3',
@@ -485,8 +467,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 5)),
-    createdBy: 'user_4',
-    assignedUsers: ['user_1', 'user_8', 'user_9', 'user_10'],
+    createdBy: 'user_5',
+    assignedUsers: ['user_4', 'user_5'],
   ),
   TaskModel(
     id: 'task-visibility-potluck-4',
@@ -503,14 +485,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 5)),
     createdBy: 'user_4',
-    assignedUsers: [
-      'user_5',
-      'user_6',
-      'user_7',
-      'user_8',
-      'user_9',
-      'user_10',
-    ],
+    assignedUsers: ['user_4', 'user_5', 'user_6'],
   ),
 
   TaskModel(
@@ -527,8 +502,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
-    createdBy: 'user_1',
-    assignedUsers: ['user_10'],
+    createdBy: 'user_4',
+    assignedUsers: ['user_4', 'user_5', 'user_6'],
   ),
   TaskModel(
     id: 'task-visibility-party-2',
@@ -544,15 +519,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
-    createdBy: 'user_9',
-    assignedUsers: [
-      'user_1',
-      'user_6',
-      'user_7',
-      'user_8',
-      'user_9',
-      'user_10',
-    ],
+    createdBy: 'user_4',
+    assignedUsers: ['user_4', 'user_6'],
   ),
   TaskModel(
     id: 'task-visibility-party-3',
@@ -568,8 +536,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
-    createdBy: 'user_2',
-    assignedUsers: ['user_8'],
+    createdBy: 'user_6',
+    assignedUsers: ['user_4', 'user_5'],
   ),
 
   // Stress-Free Organizing (sheet-6) tasks
@@ -587,19 +555,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
-    createdBy: 'user_2',
-    assignedUsers: [
-      'user_1',
-      'user_2',
-      'user_3',
-      'user_4',
-      'user_5',
-      'user_6',
-      'user_7',
-      'user_8',
-      'user_9',
-      'user_10',
-    ],
+    createdBy: 'user_7',
+    assignedUsers: ['user_7', 'user_8'],
   ),
   TaskModel(
     id: 'task-stress-2',
@@ -615,7 +572,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
-    createdBy: 'user_2',
+    createdBy: 'user_7',
     assignedUsers: [],
   ),
   TaskModel(
@@ -632,19 +589,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
-    createdBy: 'user_3',
-    assignedUsers: [
-      'user_1',
-      'user_2',
-      'user_3',
-      'user_4',
-      'user_5',
-      'user_6',
-      'user_7',
-      'user_8',
-      'user_9',
-      'user_10',
-    ],
+    createdBy: 'user_7',
+    assignedUsers: ['user_7', 'user_8'],
   ),
   TaskModel(
     id: 'task-stress-4',
@@ -660,8 +606,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
-    createdBy: 'user_4',
-    assignedUsers: ['user_1', 'user_2'],
+    createdBy: 'user_7',
+    assignedUsers: ['user_8'],
   ),
 
   // Easy Handoffs (sheet-7) tasks
@@ -679,8 +625,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
-    createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_7', 'user_8', 'user_9', 'user_10'],
+    createdBy: 'user_9',
+    assignedUsers: ['user_9', 'user_10'],
   ),
   TaskModel(
     id: 'task-handoff-2',
@@ -696,8 +642,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
-    createdBy: 'user_3',
-    assignedUsers: ['user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+    createdBy: 'user_9',
+    assignedUsers: ['user_9'],
   ),
   TaskModel(
     id: 'task-handoff-3',
@@ -713,7 +659,7 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
-    createdBy: 'user_3',
+    createdBy: 'user_9',
     assignedUsers: ['user_9', 'user_10'],
   ),
   TaskModel(
@@ -730,8 +676,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
-    createdBy: 'user_3',
-    assignedUsers: ['user_5'],
+    createdBy: 'user_10',
+    assignedUsers: ['user_9'],
   ),
 
   // Group Trip Planning (sheet-8) tasks
@@ -767,7 +713,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 10)),
     createdBy: 'user_5',
-    assignedUsers: [],
+    assignedUsers: ['user_4', 'user_5', 'user_6'],
   ),
   TaskModel(
     id: 'task-trip-3',
@@ -801,7 +747,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 5)),
     createdBy: 'user_5',
-    assignedUsers: [],
+    assignedUsers: ['user_4', 'user_5', 'user_6'],
   ),
   TaskModel(
     id: 'task-trip-5',
@@ -818,6 +764,6 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 21)),
     createdBy: 'user_5',
-    assignedUsers: [],
+    assignedUsers: ['user_1', 'user_2', 'user_3'],
   ),
 ];

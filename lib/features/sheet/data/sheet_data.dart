@@ -42,7 +42,7 @@ final sheetList = [
           '<p>Ensure everyone feels included and stays informed. Discover strategies for accommodating busy parents, new members, and people with different communication styles so nobody gets left behind.</p>',
     ),
     createdBy: 'user_3',
-    users: ['user_4', 'user_5', 'user_6'],
+    users: ['user_3','user_4', 'user_5', 'user_6'],
   ),
   SheetModel(
     id: 'sheet-4',
@@ -84,7 +84,7 @@ final sheetList = [
           '<p>Reduce the mental load and sleep peacefully knowing nothing will be forgotten. Learn how to set up automatic reminders, delegate tasks effectively, and organize without carrying everything in your head.</p>',
     ),
     createdBy: 'user_6',
-    users: ['user_7', 'user_8'],
+    users: ['user_6', 'user_7', 'user_8'],
   ),
   SheetModel(
     id: 'sheet-7',
@@ -98,7 +98,7 @@ final sheetList = [
           '<p>Life happens - emergencies, work trips, family obligations. Learn how to seamlessly pass organizing responsibilities to other parents with full context so events run smoothly even when you can\'t be there.</p>',
     ),
     createdBy: 'user_7',
-    users: ['user_9'],
+    users: ['user_7', 'user_9', 'user_10'],
   ),
   SheetModel(
     id: 'sheet-8',
@@ -112,6 +112,6 @@ final sheetList = [
           '<p>Plan amazing group adventures from brainstorming destinations to tracking expenses. Learn how to coordinate with friends, family, or colleagues to create unforgettable trips without the usual planning stress.</p>',
     ),
     createdBy: 'user_8',
-    users: ['user_9', 'user_10'],
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
   ),
 ];
