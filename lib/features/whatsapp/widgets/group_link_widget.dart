@@ -50,7 +50,7 @@ class _GroupLinkWidgetState extends ConsumerState<GroupLinkWidget> {
           secondaryColor: AppColors.successColor.withValues(alpha: 0.1),
           iconColor: AppColors.successColor,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 15),
         _buildGroupLinkSection(),
         const Spacer(),
         _buildNavigationButton(),
@@ -69,7 +69,7 @@ class _GroupLinkWidgetState extends ConsumerState<GroupLinkWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildGroupLinkTitle(),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
             _buildGroupTextField(),
             const SizedBox(height: 10),
             _buildGroupLinkHint(),

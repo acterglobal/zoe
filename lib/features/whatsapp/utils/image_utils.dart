@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class ImageUtils {
-  static const String _basePath = 'assets/images/whatsapp/';
+  static const String _basePath = 'assets/images/whatsapp';
 
   static const String permissonAndroidDark =
       '$_basePath/permisson_android_dark.png';
