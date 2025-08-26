@@ -4,7 +4,9 @@ import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
+import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
@@ -46,7 +48,16 @@ class PollDetailsScreen extends ConsumerWidget {
             ),
           ],
         ),
+        floatingActionButton: _buildFloatingActionButton(context, isEditing, poll),
       ),
+    );
+  }
+
+  Widget _buildFloatingActionButton(BuildContext context, bool isEditing, PollModel poll) {
+    if (!isEditing) return const SizedBox.shrink();
+    return ZoeFloatingActionButton(
+      icon: Icons.add_rounded,
+      onPressed: () => showAddContentBottomSheet(context, parentId: pollId, sheetId: poll.sheetId),
     );
   }
 

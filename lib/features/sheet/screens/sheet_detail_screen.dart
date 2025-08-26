@@ -65,7 +65,7 @@ class SheetDetailScreen extends ConsumerWidget {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, sheetId: sheetId),
+      onPressed: () => showAddContentBottomSheet(context, parentId: sheetId, sheetId: sheetId),
     );
   }
 
