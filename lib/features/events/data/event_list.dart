@@ -4,10 +4,10 @@ final eventList = [
   // Getting Started Guide (sheet-1) events
   EventModel(
     sheetId: 'sheet-1',
-    parentId: 'list-events-1',
+    parentId: 'sheet-1',
     id: 'event-1',
     title: 'Team Meeting',
-    orderIndex: 1,
+    orderIndex: 6,
     description: (
       plainText:
           'Weekly team sync to discuss project progress, upcoming deadlines, and coordinate tasks.',
@@ -17,17 +17,17 @@ final eventList = [
     startDate: DateTime.now().add(const Duration(days: 1)),
     endDate: DateTime.now().add(const Duration(days: 1, hours: 1)),
     createdBy: 'user_1',
-    rsvpResponses: {  
+    rsvpResponses: {
       'user_1': RsvpStatus.yes,
       'user_2': RsvpStatus.yes,
     },
   ),
   EventModel(
     sheetId: 'sheet-1',
-    parentId: 'list-events-1',
+    parentId: 'sheet-1',
     id: 'event-2',
     title: 'Product Demo',
-    orderIndex: 2,
+    orderIndex: 7,
     description: (
       plainText:
           'Demo of new features to stakeholders and gather feedback for future improvements.',
@@ -45,10 +45,10 @@ final eventList = [
   // Community Organization (sheet-2) events
   EventModel(
     sheetId: 'sheet-2',
-    parentId: 'list-events-community-1',
+    parentId: 'sheet-2',
     id: 'event-community-1',
     title: 'Saturday Game vs. Lightning Bolts',
-    orderIndex: 1,
+    orderIndex: 7,
     description: (
       plainText:
           'Home game at Lincoln Elementary field. Arrive 30 minutes early for warm-up. Snacks provided by volunteer parents.',
@@ -67,10 +67,10 @@ final eventList = [
   ),
   EventModel(
     sheetId: 'sheet-2',
-    parentId: 'list-events-community-1',
+    parentId: 'sheet-2',
     id: 'event-community-2',
     title: 'Weekly Practice',
-    orderIndex: 2,
+    orderIndex: 8,
     description: (
       plainText:
           'Regular team practice at Riverside Park. Focus on passing drills and scrimmage play. Bring water bottles and shin guards.',
@@ -125,7 +125,7 @@ final eventList = [
   // Group Trip Planning (sheet-8) events
   EventModel(
     sheetId: 'sheet-8',
-    parentId: 'list-events-trip-1',
+    parentId: 'sheet-8',
     id: 'event-trip-1',
     title: 'Flight Booking Deadline',
     orderIndex: 1,
@@ -142,7 +142,7 @@ final eventList = [
   ),
   EventModel(
     sheetId: 'sheet-8',
-    parentId: 'list-events-trip-1',
+    parentId: 'sheet-8',
     id: 'event-trip-2',
     title: 'Pre-Trip Planning Meeting',
     orderIndex: 2,
@@ -159,7 +159,7 @@ final eventList = [
   ),
   EventModel(
     sheetId: 'sheet-8',
-    parentId: 'list-events-trip-1',
+    parentId: 'sheet-8',
     id: 'event-trip-3',
     title: 'Travel Day - Departure',
     orderIndex: 3,
@@ -176,7 +176,7 @@ final eventList = [
   ),
   EventModel(
     sheetId: 'sheet-8',
-    parentId: 'list-events-trip-1',
+    parentId: 'sheet-8',
     id: 'event-trip-4',
     title: 'Tokyo Cherry Blossom Festival',
     orderIndex: 4,
@@ -193,7 +193,7 @@ final eventList = [
   ),
   EventModel(
     sheetId: 'sheet-8',
-    parentId: 'list-events-trip-1',
+    parentId: 'sheet-8',
     id: 'event-trip-5',
     title: 'Kyoto Temple Tour',
     orderIndex: 5,
@@ -210,7 +210,7 @@ final eventList = [
   ),
   EventModel(
     sheetId: 'sheet-8',
-    parentId: 'list-events-trip-1',
+    parentId: 'sheet-8',
     id: 'event-trip-6',
     title: 'Group Farewell Dinner',
     orderIndex: 6,

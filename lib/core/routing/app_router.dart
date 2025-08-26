@@ -11,6 +11,7 @@ import 'package:zoe/features/home/screens/home_screen.dart';
 import 'package:zoe/features/link/screens/links_list_screen.dart';
 import 'package:zoe/features/list/screens/list_details_screen.dart';
 import 'package:zoe/features/polls/screens/poll_details_screen.dart';
+import 'package:zoe/features/polls/screens/poll_results_screen.dart';
 import 'package:zoe/features/polls/screens/polls_list_screen.dart';
 import 'package:zoe/features/settings/screens/settings_screen.dart';
 import 'package:zoe/features/settings/screens/language_selection_screen.dart';
@@ -18,6 +19,7 @@ import 'package:zoe/features/sheet/screens/sheet_detail_screen.dart';
 import 'package:zoe/features/sheet/screens/sheet_list_screen.dart';
 import 'package:zoe/features/task/screens/task_detail_screen.dart';
 import 'package:zoe/features/task/screens/tasks_list_screen.dart';
+import 'package:zoe/features/text/screens/text_block_details_screen.dart';
 import 'package:zoe/features/welcome/screens/welcome_screen.dart';
 import 'app_routes.dart';
 
@@ -152,7 +154,28 @@ final routerProvider = Provider<GoRouter>((ref) {
           return PollDetailsScreen(pollId: pollId);
         },
       ),
-      
+
+      // Poll results route
+      GoRoute(
+        path: AppRoutes.pollResults.route,
+        name: AppRoutes.pollResults.name,
+        builder: (context, state) {
+          final pollId = state.pathParameters['pollId'] ?? Uuid().v4();
+          return PollResultsScreen(pollId: pollId);
+        },
+      ),
+
+      // Text Block Details route
+      GoRoute(
+        path: AppRoutes.textBlockDetails.route,
+        name: AppRoutes.textBlockDetails.name,
+        builder: (context, state) {
+          final textBlockId =
+              state.pathParameters['textBlockId'] ?? Uuid().v4();
+          return TextBlockDetailsScreen(textBlockId: textBlockId);
+        },
+      ),
+
       // Language selection route
       GoRoute(
         path: AppRoutes.settingLanguage.route,

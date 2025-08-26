@@ -18,6 +18,7 @@ class ZoeHtmlTextEditWidget extends ConsumerStatefulWidget {
   final Function(QuillController?, FocusNode?)? onFocusChanged;
   final TextStyle? textStyle;
   final String? editorId; // Add editorId parameter
+  final VoidCallback? onTap; // Add onTap callback for non-editing mode
 
   const ZoeHtmlTextEditWidget({
     super.key,
@@ -29,6 +30,7 @@ class ZoeHtmlTextEditWidget extends ConsumerStatefulWidget {
     this.onFocusChanged,
     this.textStyle,
     this.editorId, // Add to constructor
+    this.onTap, // Add onTap parameter
   });
 
   @override
@@ -203,7 +205,10 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
         ),
       );
     } else {
-      return _buildViewWidget();
+      return Listener(
+        onPointerDown: (event) => widget.onTap?.call(),
+        child: _buildViewWidget(),
+      );
     }
   }
 

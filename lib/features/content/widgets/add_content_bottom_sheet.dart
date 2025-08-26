@@ -52,7 +52,7 @@ class AddContentBottomSheet extends ConsumerWidget {
             },
             onTapEvent: () {
               context.pop();
-              addNewEventListContent(
+              addNewEventContent(
                 ref: ref,
                 parentId: sheetId,
                 sheetId: sheetId,
