@@ -75,7 +75,12 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
   }
 
   void deleteTask(String taskId) {
+    // Get the focus task id (previous or next)
+    final focusTaskId = getFocusTaskId(taskId);
+    // Remove the task from the state
     state = state.where((t) => t.id != taskId).toList();
+    // Set the focus to the focus task
+    ref.read(taskFocusProvider.notifier).state = focusTaskId;
   }
 
   void toggleTaskCompletion(String taskId) {
@@ -159,5 +164,36 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
     ref
         .read(taskListProvider.notifier)
         .updateTaskAssignees(task.id, updatedAssignees);
+  }
+
+  String? getFocusTaskId(String taskId) {
+    try {
+      // Get the task for the parent from current state
+      final task = state.where((t) => t.id == taskId).firstOrNull;
+      if (task == null) return null;
+      final parentId = task.parentId;
+
+      // Get the parent task list from current state
+      final parentTasks = state.where((t) => t.parentId == parentId).toList()
+        ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+
+      // Get the current task index
+      final currentTaskIndex = parentTasks.indexOf(task);
+
+      // If the current task is the first task, try to return the next task
+      if (currentTaskIndex <= 0) {
+        // Check if there's a next task available
+        if (currentTaskIndex < parentTasks.length - 1) {
+          // Return the next task id
+          return parentTasks[currentTaskIndex + 1].id;
+        }
+        return null;
+      }
+
+      // Return the previous task id
+      return parentTasks[currentTaskIndex - 1].id;
+    } catch (e) {
+      return null;
+    }
   }
 }

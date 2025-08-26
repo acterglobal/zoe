@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
+import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
+import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
@@ -32,7 +34,7 @@ class TextBlockDetailsScreen extends ConsumerWidget {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: ZoeAppBar(
-            actions: [EditViewToggleButton(parentId: textBlockId)],
+            actions: [ContentMenuButton(parentId: textBlockId)],
           ),
         ),
         body: Column(
@@ -51,7 +53,20 @@ class TextBlockDetailsScreen extends ConsumerWidget {
             ),
           ],
         ),
+        floatingActionButton: _buildFloatingActionButton(context, isEditing, textBlock),
       ),
+    );
+  }
+
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    bool isEditing,
+    TextModel textBlock,
+  ) {
+    if (!isEditing) return const SizedBox.shrink();
+    return ZoeFloatingActionButton(
+      icon: Icons.add_rounded,
+      onPressed: () => showAddContentBottomSheet(context, parentId: textBlockId, sheetId: textBlock.sheetId),
     );
   }
 
