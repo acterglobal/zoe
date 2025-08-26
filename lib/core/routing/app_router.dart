@@ -148,8 +148,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.textBlockDetails.route,
         name: AppRoutes.textBlockDetails.name,
         builder: (context, state) {
-          final textId = state.pathParameters['textBlockId'] ?? Uuid().v4();
-          return TextBlockDetailsScreen(textId: textId);
+          final textBlockId = state.pathParameters['textBlockId'] ?? Uuid().v4();
+          return TextBlockDetailsScreen(textBlockId: textBlockId);
         },
       ),
 

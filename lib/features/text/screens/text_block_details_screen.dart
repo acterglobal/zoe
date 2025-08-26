@@ -13,14 +13,14 @@ import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class TextBlockDetailsScreen extends ConsumerWidget {
-  final String textId;
+  final String textBlockId;
 
-  const TextBlockDetailsScreen({super.key, required this.textId});
+  const TextBlockDetailsScreen({super.key, required this.textBlockId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider(textId));
-    final textBlock = ref.watch(textProvider(textId));
+    final isEditing = ref.watch(isEditValueProvider(textBlockId));
+    final textBlock = ref.watch(textProvider(textBlockId));
     if (textBlock == null) {
       return Center(child: Text(L10n.of(context).textBlockNotFound));
     }
@@ -29,7 +29,7 @@ class TextBlockDetailsScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [EditViewToggleButton(parentId: textId)]),
+          title: ZoeAppBar(actions: [EditViewToggleButton(parentId: textBlockId)]),
         ),
         body: Column(
           children: [
@@ -65,7 +65,7 @@ class TextBlockDetailsScreen extends ConsumerWidget {
         children: [
           _buildTextBlockHeader(context, ref, textBlock, isEditing),
           const SizedBox(height: 16),
-          ContentWidget(parentId: textId, sheetId: textBlock.sheetId),
+          ContentWidget(parentId: textBlockId, sheetId: textBlock.sheetId),
         ],
       ),
     );
@@ -97,7 +97,7 @@ class TextBlockDetailsScreen extends ConsumerWidget {
                 ),
                 onTextChanged: (value) => ref
                     .read(textListProvider.notifier)
-                    .updateTextTitle(textId, value),
+                    .updateTextTitle(textBlockId, value),
               ),
             ),
           ],
@@ -108,11 +108,11 @@ class TextBlockDetailsScreen extends ConsumerWidget {
           isEditing: isEditing,
           description: textBlock.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'text-block-description-$textId', // Add unique editor ID
+          editorId: 'text-block-description-$textBlockId', // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => ref
                 .read(textListProvider.notifier)
-                .updateTextDescription(textId, description),
+                .updateTextDescription(textBlockId, description),
           ),
         ),
       ],
