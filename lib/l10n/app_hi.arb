@@ -266,5 +266,7 @@
     "pollDetailsNotFound": "पोल विशेषताएं नहीं मिली",
     "@pollDetailsNotFound": {},
     "pollParticipants": "पोल सदस्य",
-    "@pollParticipants": {}
+    "@pollParticipants": {},
+    "listNotFound": "सूची नहीं मिली",
+    "@listNotFound": {}
 }

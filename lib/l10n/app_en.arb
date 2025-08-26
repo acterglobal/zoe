@@ -304,6 +304,7 @@
     "pollDetailsNotFound": "Poll details not found",
     "@pollDetailsNotFound": {},
     "pollParticipants": "Poll participants",
-    "@pollParticipants": {}
-
+    "@pollParticipants": {},
+    "listNotFound": "List not found",
+    "@listNotFound": {}
 }
