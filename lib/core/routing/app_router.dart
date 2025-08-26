@@ -9,6 +9,7 @@ import 'package:zoe/features/events/screens/event_detail_screen.dart';
 import 'package:zoe/features/events/screens/events_list_screen.dart';
 import 'package:zoe/features/home/screens/home_screen.dart';
 import 'package:zoe/features/link/screens/links_list_screen.dart';
+import 'package:zoe/features/list/screens/list_details_screen.dart';
 import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 import 'package:zoe/features/polls/screens/poll_results_screen.dart';
 import 'package:zoe/features/polls/screens/polls_list_screen.dart';
@@ -103,6 +104,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final bulletId = state.pathParameters['bulletId'] ?? Uuid().v4();
           return BulletDetailScreen(bulletId: bulletId);
+        },
+      ),
+
+      // List detail route
+      GoRoute(
+        path: AppRoutes.listDetail.route,
+        name: AppRoutes.listDetail.name,
+        builder: (context, state) {
+          final listId = state.pathParameters['listId'] ?? Uuid().v4();
+          return ListDetailsScreen(listId: listId);
         },
       ),
 

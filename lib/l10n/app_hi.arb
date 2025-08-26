@@ -272,5 +272,7 @@
     "pollNotFound": "पोल नहीं मिला",
     "@pollNotFound": {},
     "textBlockNotFound": "टेक्स्ट ब्लॉक नहीं मिला",
-    "@textBlockNotFound": {}
+    "@textBlockNotFound": {},
+    "listNotFound": "सूची नहीं मिली",
+    "@listNotFound": {}
 }
