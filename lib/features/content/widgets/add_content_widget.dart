@@ -43,7 +43,6 @@ class AddContentWidget extends ConsumerWidget {
               _toggleMenu(ref);
               onTapText();
             },
-
             onTapEvent: () {
               _toggleMenu(ref);
               onTapEvent();
