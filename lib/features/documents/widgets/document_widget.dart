@@ -6,6 +6,8 @@ import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/features/documents/actions/select_document_actions.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 
 class DocumentWidget extends ConsumerWidget {
   final String documentId;
@@ -38,6 +40,9 @@ class DocumentWidget extends ConsumerWidget {
     return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 8),
       borderRadius: BorderRadius.circular(12),
+      onTap: () {
+        context.push(AppRoutes.documentPreview.route.replaceAll(':documentId', document.id));
+      },
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
         leading: StyledIconContainer(
@@ -75,37 +80,40 @@ class DocumentWidget extends ConsumerWidget {
     DocumentModel document,
   ) {
     return GlassyContainer(
-      width: 80,
-      height: 100,
-      margin: const EdgeInsets.only(bottom: 16),
-      borderRadius: BorderRadius.circular(12),
-      borderOpacity: 0.05,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildDocumentIcon(document),
-                  const SizedBox(height: 6),
-                  _buildDocumentFileName(context, document),
-                  const SizedBox(height: 3),
-                  _buildDocumentFileTypeBadge(context, document),
-                ],
+        onTap: () {
+          context.push(AppRoutes.documentPreview.route.replaceAll(':documentId', document.id));
+        },
+        width: 80,
+        height: 100,
+        margin: const EdgeInsets.only(bottom: 16),
+        borderRadius: BorderRadius.circular(12),
+        borderOpacity: 0.05,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildDocumentIcon(document),
+                    const SizedBox(height: 6),
+                    _buildDocumentFileName(context, document),
+                    const SizedBox(height: 3),
+                    _buildDocumentFileTypeBadge(context, document),
+                  ],
+                ),
               ),
             ),
-          ),
-          if (isEditing)
-            Positioned(
-              top: -5,
-              right: -5,
-              child: _buildDeleteButton(ref, context, document),
-            ),
-        ],
-      ),
+            if (isEditing)
+              Positioned(
+                top: -5,
+                right: -5,
+                child: _buildDeleteButton(ref, context, document),
+              ),
+          ],
+        ),
     );
   }
 
@@ -170,19 +178,19 @@ class DocumentWidget extends ConsumerWidget {
   ) {
     final theme = Theme.of(context);
     return GlassyContainer(
-        width: 20,
-        height: 20,
-        borderRadius: BorderRadius.circular(12),
-        shadowColor: theme.colorScheme.error,
-        borderOpacity: 0.05,
-        shadowOpacity: 1,
-        child: Icon(
-          Icons.close_rounded,
-          color: theme.colorScheme.error,
-          size: 12,
-        ),
-        onTap: () {
-          ref.read(documentListProvider.notifier).deleteDocument(document.id);
+      width: 20,
+      height: 20,
+      borderRadius: BorderRadius.circular(12),
+      shadowColor: theme.colorScheme.error,
+      borderOpacity: 0.05,
+      shadowOpacity: 1,
+      child: Icon(
+        Icons.close_rounded,
+        color: theme.colorScheme.error,
+        size: 12,
+      ),
+      onTap: () {
+        ref.read(documentListProvider.notifier).deleteDocument(document.id);
       },
     );
   }
