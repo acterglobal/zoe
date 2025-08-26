@@ -13,7 +13,8 @@ enum AppRoutes {
   pollsList('/polls-list'),
   pollDetails('/poll/:pollId'),
   settings('/settings'),
-  settingLanguage('/settings/language');
+  settingLanguage('/settings/language'),
+  whatsappGroupConnect('/whatsapp-group-connect');
 
   final String route;
   const AppRoutes(this.route);

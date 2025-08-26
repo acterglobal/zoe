@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/sheet/actions/delete_sheet.dart';
@@ -53,6 +56,10 @@ class SheetDetailScreen extends ConsumerWidget {
               ),
             ),
           ],
+        ),
+        floatingActionButton: ZoeFloatingActionButton(
+          icon: Icons.wechat_sharp,
+          onPressed: () => context.push(AppRoutes.whatsappGroupConnect.route),
         ),
       ),
     );

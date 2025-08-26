@@ -18,6 +18,7 @@ import 'package:zoe/features/sheet/screens/sheet_list_screen.dart';
 import 'package:zoe/features/task/screens/task_detail_screen.dart';
 import 'package:zoe/features/task/screens/tasks_list_screen.dart';
 import 'package:zoe/features/welcome/screens/welcome_screen.dart';
+import 'package:zoe/features/whatsapp_connect/screens/whatsapp_group_connect_screen.dart';
 import 'app_routes.dart';
 
 // Global navigator key for accessing the router
@@ -147,6 +148,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.settingLanguage.route,
         name: AppRoutes.settingLanguage.name,
         builder: (context, state) => const LanguageSelectionScreen(),
+      ),
+
+      // WhatsApp group connect route
+      GoRoute(
+        path: AppRoutes.whatsappGroupConnect.route,
+        name: AppRoutes.whatsappGroupConnect.name,
+        builder: (context, state) => const WhatsAppGroupConnectScreen(),
       ),
     ],
     errorBuilder: (context, state) => const PageNotFoundScreen(),
