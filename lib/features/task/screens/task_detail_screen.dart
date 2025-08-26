@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
+import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
@@ -30,7 +30,7 @@ class TaskDetailScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [EditViewToggleButton(parentId: taskId)]),
+          title: ZoeAppBar(actions: [ContentMenuButton(parentId: taskId)]),
         ),
         body: Column(
           children: [

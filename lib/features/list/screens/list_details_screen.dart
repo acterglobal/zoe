@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
+import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
@@ -30,7 +30,7 @@ class ListDetailsScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [EditViewToggleButton(parentId: listId)]),
+          title: ZoeAppBar(actions: [ContentMenuButton(parentId: listId)]),
         ),
         body: Column(
           children: [
