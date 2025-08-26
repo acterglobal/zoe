@@ -71,7 +71,7 @@ class PollModel extends ContentModel {
     this.startDate,
     this.endDate,
     this.isMultipleChoice = false,
-  }) : super(type: ContentType.poll, emoji: '📊', title: '');
+  }) : super(type: ContentType.poll, emoji: '📊', title: question);
 
   PollModel copyWith({
     /// ContentModel properties
