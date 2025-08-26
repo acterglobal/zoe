@@ -50,6 +50,12 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
   @override
   void didUpdateWidget(ZoeInlineTextEditWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+    
+    // Update controller text when widget text changes
+    if (widget.text != oldWidget.text) {
+      controller.text = widget.text ?? '';
+    }
+    
     // Request focus when autoFocus changes to true
     if (widget.autoFocus && !oldWidget.autoFocus && widget.isEditing) {
       textFieldFocusNode.requestFocus();
@@ -87,14 +93,10 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
             onSubmitted: (value) => widget.onEnterPressed?.call(),
           )
         : SelectableText(
-            widget.text?.isNotEmpty == true
-                ? widget.text!
-                : (widget.hintText ?? ''),
-            style: widget.text?.isNotEmpty == true
-                ? widget.textStyle
-                : widget.textStyle?.copyWith(
-                    color: Theme.of(context).hintColor,
-                  ),
+            controller.text.isEmpty ? (widget.hintText ?? '') : controller.text,
+            style: controller.text.isEmpty && widget.hintText != null
+                ? widget.textStyle?.copyWith(color: Theme.of(context).hintColor)
+                : widget.textStyle,
             onTap: widget.onTapText,
           );
   }

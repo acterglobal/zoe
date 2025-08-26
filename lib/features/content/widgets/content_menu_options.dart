@@ -42,7 +42,7 @@ class ContentMenuOptions extends StatelessWidget {
           _buildAddContentOption(
             context,
             icon: Icons.event_outlined,
-            title: L10n.of(context).eventList,
+            title: L10n.of(context).event,
             description: L10n.of(context).scheduleAndTrackEvents,
             onTap: onTapEvent,
           ),
