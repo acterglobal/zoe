@@ -12,6 +12,7 @@ class InfoHeaderWidget extends StatelessWidget {
   final double containerSize;
   final Color? primaryColor;
   final Color? secondaryColor;
+  final Color? iconColor;
 
   const InfoHeaderWidget({
     super.key,
@@ -24,6 +25,7 @@ class InfoHeaderWidget extends StatelessWidget {
     this.containerSize = 56.0,
     this.primaryColor,
     this.secondaryColor,
+    this.iconColor,
   });
 
   @override
@@ -33,6 +35,7 @@ class InfoHeaderWidget extends StatelessWidget {
 
     final primary = primaryColor ?? colorScheme.primary;
     final secondary = secondaryColor ?? colorScheme.secondary;
+    final iconColor = this.iconColor ?? primary;
 
     return GlassyContainer(
       padding: EdgeInsets.all(containerPadding),
@@ -46,7 +49,7 @@ class InfoHeaderWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             child: Icon(
               icon,
-              color: primary,
+              color: iconColor,
               size: iconSize,
             ),
           ),

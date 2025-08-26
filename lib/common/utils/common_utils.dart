@@ -60,7 +60,7 @@ class CommonUtils {
 
   static bool isValidWhatsAppGroupLink(String link) {
     final whatsappGroupLinkPattern = RegExp(
-      r'https?:\/\/chat\.whatsapp\.com\/([A-Za-z0-9]{22})(?:\/)?(?:\?[^\s#]*)?',
+      r'^https?:\/\/chat\.whatsapp\.com\/([A-Za-z0-9]{22})(?:\/)?(?:\?[^\s#]*)?$',
     );
     return whatsappGroupLinkPattern.hasMatch(link);
   }

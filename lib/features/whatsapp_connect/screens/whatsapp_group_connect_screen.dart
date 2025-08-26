@@ -10,7 +10,8 @@ import 'package:zoe/features/whatsapp_connect/providers/whatsapp_group_connect_p
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class WhatsAppGroupConnectScreen extends ConsumerWidget {
-  const WhatsAppGroupConnectScreen({super.key});
+  final String sheetId;
+  const WhatsAppGroupConnectScreen({super.key, required this.sheetId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,7 +44,7 @@ class WhatsAppGroupConnectScreen extends ConsumerWidget {
             Expanded(
               child: state.currentStep == 1
                   ? const GroupLinkWidget()
-                  : const GroupPermissionWidget(),
+                  : GroupPermissionWidget(sheetId: sheetId),
             ),
           ],
         ),

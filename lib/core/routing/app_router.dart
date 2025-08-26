@@ -188,7 +188,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.whatsappGroupConnect.route,
         name: AppRoutes.whatsappGroupConnect.name,
-        builder: (context, state) => const WhatsAppGroupConnectScreen(),
+        builder: (context, state) {
+          final sheetId = state.pathParameters['sheetId'] ?? Uuid().v4();
+          return WhatsAppGroupConnectScreen(sheetId: sheetId);
+        },
       ),
     ],
     errorBuilder: (context, state) => const PageNotFoundScreen(),

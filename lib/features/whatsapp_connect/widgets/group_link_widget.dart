@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_content_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/whatsapp_connect/providers/whatsapp_group_connect_provider.dart';
 import 'package:zoe/features/whatsapp_connect/widgets/info_header_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -42,7 +44,11 @@ class _GroupLinkWidgetState extends ConsumerState<GroupLinkWidget> {
         InfoHeaderWidget(
           title: L10n.of(context).whatsAppGroup,
           subtitle: L10n.of(context).connectWhatsAppDescription,
-          icon: Icons.chat_bubble_outline,
+          icon: LineAwesome.whatsapp,
+          iconSize: 35,
+          primaryColor: AppColors.successColor.withValues(alpha: 0.1),
+          secondaryColor: AppColors.successColor.withValues(alpha: 0.1),
+          iconColor: AppColors.successColor,
         ),
         const SizedBox(height: 20),
         _buildGroupLinkSection(),
@@ -58,6 +64,7 @@ class _GroupLinkWidgetState extends ConsumerState<GroupLinkWidget> {
       borderRadius: BorderRadius.circular(20),
       child: Form(
         key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -173,7 +180,7 @@ class _GroupLinkWidgetState extends ConsumerState<GroupLinkWidget> {
 
   Widget _buildNavigationButton() {
     return ZoePrimaryButton(
-      text: L10n.of(context).nextEnableGroupPermission,
+      text: L10n.of(context).nextEnableInvites,
       icon: Icons.arrow_forward_rounded,
       onPressed: () {
         if (_formKey.currentState?.validate() == false) return;

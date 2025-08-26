@@ -6,7 +6,6 @@ class ImportantNoteWidget extends StatelessWidget {
   final String title;
   final String message;
   final IconData icon;
-  final IconData? priorityIcon;
   final double containerPadding;
   final double borderRadius;
   final Color? primaryColor;
@@ -17,7 +16,6 @@ class ImportantNoteWidget extends StatelessWidget {
     required this.title,
     required this.message,
     this.icon = Icons.admin_panel_settings_outlined,
-    this.priorityIcon,
     this.containerPadding = 20.0,
     this.borderRadius = 16.0,
     this.primaryColor,
@@ -43,35 +41,19 @@ class ImportantNoteWidget extends StatelessWidget {
             primaryColor: primary,
             secondaryColor: secondary,
             borderRadius: BorderRadius.circular(12),
-            child: Icon(
-              icon,
-              color: primary,
-              size: 24,
-            ),
+            child: Icon(icon, color: primary, size: 24),
           ),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    if (priorityIcon != null) ...[
-                      Icon(
-                        priorityIcon,
-                        color: primary,
-                        size: 18,
-                      ),
-                      const SizedBox(width: 6),
-                    ],
-                    Text(
-                      title,
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: primary,
-                      ),
-                    ),
-                  ],
+                Text(
+                  title,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: primary,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
