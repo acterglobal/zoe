@@ -10,7 +10,9 @@ import 'package:zoe/features/events/screens/event_detail_screen.dart';
 import 'package:zoe/features/events/screens/events_list_screen.dart';
 import 'package:zoe/features/home/screens/home_screen.dart';
 import 'package:zoe/features/link/screens/links_list_screen.dart';
+import 'package:zoe/features/list/screens/list_details_screen.dart';
 import 'package:zoe/features/polls/screens/poll_details_screen.dart';
+import 'package:zoe/features/polls/screens/poll_results_screen.dart';
 import 'package:zoe/features/polls/screens/polls_list_screen.dart';
 import 'package:zoe/features/settings/screens/settings_screen.dart';
 import 'package:zoe/features/settings/screens/language_selection_screen.dart';
@@ -18,6 +20,7 @@ import 'package:zoe/features/sheet/screens/sheet_detail_screen.dart';
 import 'package:zoe/features/sheet/screens/sheet_list_screen.dart';
 import 'package:zoe/features/task/screens/task_detail_screen.dart';
 import 'package:zoe/features/task/screens/tasks_list_screen.dart';
+import 'package:zoe/features/text/screens/text_block_details_screen.dart';
 import 'package:zoe/features/welcome/screens/welcome_screen.dart';
 import 'package:zoe/features/documents/screens/document_preview_screen.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
@@ -109,6 +112,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
 
+      // List detail route
+      GoRoute(
+        path: AppRoutes.listDetail.route,
+        name: AppRoutes.listDetail.name,
+        builder: (context, state) {
+          final listId = state.pathParameters['listId'] ?? Uuid().v4();
+          return ListDetailsScreen(listId: listId);
+        },
+      ),
+
       // Settings route
       GoRoute(
         path: AppRoutes.settings.route,
@@ -166,6 +179,27 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final pollId = state.pathParameters['pollId'] ?? Uuid().v4();
           return PollDetailsScreen(pollId: pollId);
+        },
+      ),
+
+      // Poll results route
+      GoRoute(
+        path: AppRoutes.pollResults.route,
+        name: AppRoutes.pollResults.name,
+        builder: (context, state) {
+          final pollId = state.pathParameters['pollId'] ?? Uuid().v4();
+          return PollResultsScreen(pollId: pollId);
+        },
+      ),
+
+      // Text Block Details route
+      GoRoute(
+        path: AppRoutes.textBlockDetails.route,
+        name: AppRoutes.textBlockDetails.name,
+        builder: (context, state) {
+          final textBlockId =
+              state.pathParameters['textBlockId'] ?? Uuid().v4();
+          return TextBlockDetailsScreen(textBlockId: textBlockId);
         },
       ),
 

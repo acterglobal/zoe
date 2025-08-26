@@ -43,16 +43,6 @@ final lists = [
     orderIndex: 8,
     createdBy: '',
   ),
-  ListModel(
-    sheetId: 'sheet-1',
-    parentId: 'sheet-1',
-    id: 'list-events-1',
-    title: 'Upcoming Events',
-    emoji: '📅',
-    listType: ContentType.event,
-    orderIndex: 8,
-    createdBy: '',
-  ),
 
   // Community Organization (sheet-2)
   ListModel(
@@ -125,16 +115,6 @@ final lists = [
     emoji: '⚽',
     listType: ContentType.task,
     orderIndex: 5,
-    createdBy: '',
-  ),
-  ListModel(
-    sheetId: 'sheet-2',
-    parentId: 'sheet-2',
-    id: 'list-events-community-1',
-    title: 'Team Schedule & Important Dates',
-    emoji: '📅',
-    listType: ContentType.event,
-    orderIndex: 6,
     createdBy: '',
   ),
   ListModel(
@@ -387,16 +367,6 @@ final lists = [
     emoji: '💰',
     listType: ContentType.bullet,
     orderIndex: 5,
-    createdBy: '',
-  ),
-  ListModel(
-    sheetId: 'sheet-8',
-    parentId: 'sheet-8',
-    id: 'list-events-trip-1',
-    title: 'Trip Timeline & Milestones',
-    emoji: '📅',
-    listType: ContentType.event,
-    orderIndex: 6,
     createdBy: '',
   ),
   ListModel(

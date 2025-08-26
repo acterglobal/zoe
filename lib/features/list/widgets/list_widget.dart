@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/documents/actions/select_document_actions.dart';
@@ -96,6 +98,7 @@ class ListWidget extends ConsumerWidget {
       ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
       onTextChanged: (value) =>
           ref.read(listsrovider.notifier).updateListTitle(listId, value),
+      onTapText: () => context.push(AppRoutes.listDetail.route.replaceAll(':listId', listId)),
     );
   }
 

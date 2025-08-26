@@ -14,8 +14,12 @@ import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 
-// Helper function to get the next orderIndex for a parent
-int _getNextOrderIndex(WidgetRef ref, String parentId) {
+// Helper function to get the new orderIndex for a parent
+int _getNewOrderIndex({
+  required WidgetRef ref,
+  required String parentId,
+  bool addAtTop = false,
+}) {
   final contentList = ref.read(contentListProvider);
   final parentContent = contentList
       .where((c) => c.parentId == parentId)
@@ -23,11 +27,19 @@ int _getNextOrderIndex(WidgetRef ref, String parentId) {
 
   if (parentContent.isEmpty) return 0;
 
-  final maxOrderIndex = parentContent
-      .map((c) => c.orderIndex)
-      .reduce((max, current) => current > max ? current : max);
-
-  return maxOrderIndex + 1;
+  if (addAtTop) {
+    // Get minimum order index and subtract 1 to add at top
+    final minOrderIndex = parentContent
+        .map((c) => c.orderIndex)
+        .reduce((min, current) => current < min ? current : min);
+    return minOrderIndex - 1;
+  } else {
+    // Get maximum order index and add 1 to add at bottom
+    final maxOrderIndex = parentContent
+        .map((c) => c.orderIndex)
+        .reduce((max, current) => current > max ? current : max);
+    return maxOrderIndex + 1;
+  }
 }
 
 // Helper function to reorder content within a parent
@@ -82,8 +94,17 @@ void reorderContent(WidgetRef ref, String contentId, int newOrderIndex) {
   }
 }
 
-void addNewTextContent(WidgetRef ref, parentId, String sheetId) {
-  final orderIndex = _getNextOrderIndex(ref, parentId);
+void addNewTextContent({
+  required WidgetRef ref,
+  required String parentId,
+  required String sheetId,
+  bool addAtTop = false,
+}) {
+  final orderIndex = _getNewOrderIndex(
+    ref: ref,
+    parentId: parentId,
+    addAtTop: addAtTop,
+  );
   final textContentModel = TextModel(
     parentId: parentId,
     sheetId: sheetId,
@@ -94,8 +115,17 @@ void addNewTextContent(WidgetRef ref, parentId, String sheetId) {
   ref.read(textListProvider.notifier).addText(textContentModel);
 }
 
-void addNewEventContent(WidgetRef ref, parentId, String sheetId) {
-  final orderIndex = _getNextOrderIndex(ref, parentId);
+void addNewEventContent({
+  required WidgetRef ref,
+  required String parentId,
+  required String sheetId,
+  bool addAtTop = false,
+}) {
+  final orderIndex = _getNewOrderIndex(
+    ref: ref,
+    parentId: parentId,
+    addAtTop: addAtTop,
+  );
   final eventContentModel = EventModel(
     parentId: parentId,
     sheetId: sheetId,
@@ -108,35 +138,17 @@ void addNewEventContent(WidgetRef ref, parentId, String sheetId) {
   ref.read(eventListProvider.notifier).addEvent(eventContentModel);
 }
 
-void addNewEventListContent(WidgetRef ref, parentId, String sheetId) {
-  final orderIndex = _getNextOrderIndex(ref, parentId);
-  final eventListContentModel = ListModel(
+void addNewBulletedListContent({
+  required WidgetRef ref,
+  required String parentId,
+  required String sheetId,
+  bool addAtTop = false,
+}) {
+  final orderIndex = _getNewOrderIndex(
+    ref: ref,
     parentId: parentId,
-    sheetId: sheetId,
-    title: '',
-    listType: ContentType.event,
-    orderIndex: orderIndex,
+    addAtTop: addAtTop,
   );
-  ref.read(listsrovider.notifier).addList(eventListContentModel);
-
-  // Add a default event item to the new list
-  ref
-      .read(eventListProvider.notifier)
-      .addEvent(
-        EventModel(
-          parentId: eventListContentModel.id,
-          sheetId: sheetId,
-          title: '',
-          description: (plainText: '', htmlText: ''),
-          startDate: DateTime.now(),
-          endDate: DateTime.now(),
-          orderIndex: 0,
-        ),
-      );
-}
-
-void addNewBulletedListContent(WidgetRef ref, parentId, String sheetId) {
-  final orderIndex = _getNextOrderIndex(ref, parentId);
   final bulletedListContentModel = ListModel(
     parentId: parentId,
     sheetId: sheetId,
@@ -152,8 +164,17 @@ void addNewBulletedListContent(WidgetRef ref, parentId, String sheetId) {
       .addBullet(parentId: bulletedListContentModel.id, sheetId: sheetId);
 }
 
-void addNewTaskListContent(WidgetRef ref, parentId, String sheetId) {
-  final orderIndex = _getNextOrderIndex(ref, parentId);
+void addNewTaskListContent({
+  required WidgetRef ref,
+  required String parentId,
+  required String sheetId,
+  bool addAtTop = false,
+}) {
+  final orderIndex = _getNewOrderIndex(
+    ref: ref,
+    parentId: parentId,
+    addAtTop: addAtTop,
+  );
   final toDoListContentModel = ListModel(
     parentId: parentId,
     sheetId: sheetId,
@@ -169,8 +190,17 @@ void addNewTaskListContent(WidgetRef ref, parentId, String sheetId) {
       .addTask(parentId: toDoListContentModel.id, sheetId: sheetId);
 }
 
-void addNewLinkContent(WidgetRef ref, parentId, String sheetId) {
-  final orderIndex = _getNextOrderIndex(ref, parentId);
+void addNewLinkContent({
+  required WidgetRef ref,
+  required String parentId,
+  required String sheetId,
+  bool addAtTop = false,
+}) {
+  final orderIndex = _getNewOrderIndex(
+    ref: ref,
+    parentId: parentId,
+    addAtTop: addAtTop,
+  );
   final linkContentModel = LinkModel(
     parentId: parentId,
     sheetId: sheetId,
@@ -181,8 +211,17 @@ void addNewLinkContent(WidgetRef ref, parentId, String sheetId) {
   ref.read(linkListProvider.notifier).addLink(linkContentModel);
 }
 
-void addNewDocumentContent(WidgetRef ref, parentId, String sheetId) {
-  final orderIndex = _getNextOrderIndex(ref, parentId);
+void addNewDocumentContent({
+  required WidgetRef ref,
+  required String parentId,
+  required String sheetId,
+  bool addAtTop = false,
+}) {
+  final orderIndex = _getNewOrderIndex(
+    ref: ref,
+    parentId: parentId,
+    addAtTop: addAtTop,
+  );
   final documentListContentModel = ListModel(
     parentId: parentId,
     sheetId: sheetId,
@@ -193,8 +232,17 @@ void addNewDocumentContent(WidgetRef ref, parentId, String sheetId) {
   ref.read(listsrovider.notifier).addList(documentListContentModel);
 }
 
-void addNewPollContent(WidgetRef ref, parentId, String sheetId) {
-  final orderIndex = _getNextOrderIndex(ref, parentId);
+void addNewPollContent({
+  required WidgetRef ref,
+  required String parentId,
+  required String sheetId,
+  bool addAtTop = false,
+}) {
+  final orderIndex = _getNewOrderIndex(
+    ref: ref,
+    parentId: parentId,
+    addAtTop: addAtTop,
+  );
   ref
       .read(pollListProvider.notifier)
       .addPoll(
