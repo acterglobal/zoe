@@ -4,9 +4,11 @@ import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
+import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
@@ -48,10 +50,19 @@ class TaskDetailScreen extends ConsumerWidget {
             ),
           ],
         ),
+        floatingActionButton: _buildFloatingActionButton(context, isEditing, task),
       ),
     );
   }
 
+  Widget _buildFloatingActionButton(BuildContext context, bool isEditing, TaskModel task) {
+    if (!isEditing) return const SizedBox.shrink();
+    return ZoeFloatingActionButton(
+      icon: Icons.add_rounded,
+      onPressed: () => showAddContentBottomSheet(context, sheetId: task.sheetId),
+    );
+  }
+  
   /// Builds the main body
   Widget _buildBody(
     BuildContext context,
