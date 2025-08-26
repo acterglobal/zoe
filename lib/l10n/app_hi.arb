@@ -270,5 +270,7 @@
     "pollParticipants": "पोल सदस्य",
     "@pollParticipants": {},
     "pollNotFound": "पोल नहीं मिला",
-    "@pollNotFound": {}
+    "@pollNotFound": {},
+    "textBlockNotFound": "टेक्स्ट ब्लॉक नहीं मिला",
+    "@textBlockNotFound": {}
 }
