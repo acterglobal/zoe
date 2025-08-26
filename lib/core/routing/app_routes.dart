@@ -12,6 +12,7 @@ enum AppRoutes {
   documentsList('/documents-list'),
   pollsList('/polls-list'),
   pollDetails('/poll/:pollId'),
+  pollResults('/poll-results/:pollId'),
   textBlockDetails('/text-block/:textBlockId'),
   settings('/settings'),
   settingLanguage('/settings/language');
