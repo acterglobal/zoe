@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
+import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
+import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
@@ -81,8 +83,21 @@ class ListDetailsScreen extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            EmojiWidget(
+              isEditing: isEditing,
+              emoji: list.emoji ?? '🔸',
+              size: 36,
+              onTap: (currentEmoji) => showCustomEmojiPicker(
+                context,
+                ref,
+                onEmojiSelected: (emoji) {
+                  ref.read(listsrovider.notifier).updateListEmoji(listId, emoji);
+                },
+              ),
+            ),
+            const SizedBox(width: 10),
             Expanded(
               child: ZoeInlineTextEditWidget(
                 hintText: L10n.of(context).title,
