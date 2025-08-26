@@ -304,6 +304,8 @@
     "pollDetailsNotFound": "Poll details not found",
     "@pollDetailsNotFound": {},
     "pollParticipants": "Poll participants",
-    "@pollParticipants": {}
+    "@pollParticipants": {},
+    "textBlockNotFound": "Text block not found",
+    "@textBlockNotFound": {}
 
 }

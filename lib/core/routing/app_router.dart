@@ -17,6 +17,7 @@ import 'package:zoe/features/sheet/screens/sheet_detail_screen.dart';
 import 'package:zoe/features/sheet/screens/sheet_list_screen.dart';
 import 'package:zoe/features/task/screens/task_detail_screen.dart';
 import 'package:zoe/features/task/screens/tasks_list_screen.dart';
+import 'package:zoe/features/text/screens/text_block_details_screen.dart';
 import 'package:zoe/features/welcome/screens/welcome_screen.dart';
 import 'app_routes.dart';
 
@@ -139,6 +140,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final pollId = state.pathParameters['pollId'] ?? Uuid().v4();
           return PollDetailsScreen(pollId: pollId);
+        },
+      ),
+
+      // Text Block Details route
+      GoRoute(
+        path: AppRoutes.textBlockDetails.route,
+        name: AppRoutes.textBlockDetails.name,
+        builder: (context, state) {
+          final textId = state.pathParameters['textBlockId'] ?? Uuid().v4();
+          return TextBlockDetailsScreen(textId: textId);
         },
       ),
 
