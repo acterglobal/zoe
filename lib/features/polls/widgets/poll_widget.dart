@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
-import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
@@ -55,7 +56,11 @@ class PollWidget extends ConsumerWidget {
     PollModel poll,
   ) {
     final theme = Theme.of(context);
-    return Row(
+    return GestureDetector(
+      onTap: () {
+        context.push(AppRoutes.pollDetails.route.replaceAll(':pollId', pollId));
+      },
+      child: Row(
       children: [
         Icon(
           Icons.poll_outlined,
@@ -75,6 +80,9 @@ class PollWidget extends ConsumerWidget {
                   .read(pollListProvider.notifier)
                   .updatePollQuestion(pollId, value);
             },
+            onTapText: () {
+              context.push(AppRoutes.pollDetails.route.replaceAll(':pollId', pollId));
+            },
           ),
         ),
         if (isEditing)
@@ -88,7 +96,8 @@ class PollWidget extends ConsumerWidget {
               color: theme.colorScheme.error,
             ),
           ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -231,12 +240,7 @@ class PollWidget extends ConsumerWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PollDetailsScreen(pollId: pollId),
-          ),
-        );
+        context.push(AppRoutes.pollResults.route.replaceAll(':pollId', pollId));
       },
       child: Row(
         children: [
