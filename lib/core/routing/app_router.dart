@@ -22,6 +22,7 @@ import 'package:zoe/features/task/screens/tasks_list_screen.dart';
 import 'package:zoe/features/text/screens/text_block_details_screen.dart';
 import 'package:zoe/features/welcome/screens/welcome_screen.dart';
 import 'package:zoe/features/whatsapp/screens/whatsapp_group_connect_screen.dart';
+import 'package:zoe/features/documents/screens/document_preview_screen.dart';
 import 'app_routes.dart';
 
 // Global navigator key for accessing the router
@@ -137,6 +138,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.documentsList.route,
         name: AppRoutes.documentsList.name,
         builder: (context, state) => const DocumentsListScreen(),
+      ),
+
+      // Document preview route
+      GoRoute(
+        path: AppRoutes.documentPreview.route,
+        name: AppRoutes.documentPreview.name,
+        builder: (context, state) {
+          final documentId = state.pathParameters['documentId'] ?? Uuid().v4();
+          return DocumentPreviewScreen(documentId: documentId);
+        },
       ),
 
       // Polls list route
