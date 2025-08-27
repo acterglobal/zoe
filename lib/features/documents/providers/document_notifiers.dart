@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/features/documents/data/document_data.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 
 class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
   DocumentNotifier() : super(documentList);
@@ -37,6 +38,16 @@ class DocumentNotifier extends StateNotifier<List<DocumentModel>> {
       for (final document in state)
         if (document.id == documentId)
           document.copyWith(title: title)
+        else
+          document,
+    ];
+  }
+
+  void updateDocumentDescription(String documentId, Description description) {
+    state = [
+      for (final document in state)
+        if (document.id == documentId)
+          document.copyWith(description: description)
         else
           document,
     ];
