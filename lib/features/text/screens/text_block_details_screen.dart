@@ -5,6 +5,7 @@ import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widg
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -25,36 +26,46 @@ class TextBlockDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider(textBlockId));
     final textBlock = ref.watch(textProvider(textBlockId));
-    if (textBlock == null) {
-      return Center(child: Text(L10n.of(context).textBlockNotFound));
-    }
+
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: ZoeAppBar(
-            actions: [ContentMenuButton(parentId: textBlockId)],
+            actions: [
+              textBlock != null ? ContentMenuButton(parentId: textBlockId) : const SizedBox.shrink(),
+            ],
           ),
         ),
         body: Column(
           children: [
             Expanded(
-              child: Stack(
-                children: [
-                  _buildBody(context, ref, textBlock, isEditing),
-                  buildQuillEditorPositionedToolbar(
-                    context,
-                    ref,
-                    isEditing: isEditing,
-                  ),
-                ],
-              ),
+              child: _buildStateWidget(context, ref, textBlock, isEditing),
             ),
           ],
         ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, textBlock),
+        floatingActionButton: textBlock != null
+            ? _buildFloatingActionButton(context, isEditing, textBlock)
+            : null,
       ),
+    );
+  }
+
+  Widget _buildStateWidget(BuildContext context, WidgetRef ref, TextModel? textBlock, bool isEditing) {
+    if (textBlock == null) {
+      return Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).textBlockNotFound,
+          icon: Icons.text_snippet_outlined,
+        ),
+      );
+    }
+    return Stack(
+      children: [
+        _buildBody(context, ref, textBlock, isEditing),
+        buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
+      ],
     );
   }
 

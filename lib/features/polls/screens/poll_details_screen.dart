@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
@@ -22,34 +23,46 @@ class PollDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider(pollId));
     final poll = ref.watch(pollProvider(pollId));
-    if (poll == null) {
-      return Center(child: Text(L10n.of(context).pollNotFound));
-    }
+
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [ContentMenuButton(parentId: pollId)]),
+          title: ZoeAppBar(
+            actions: [
+              poll != null ? ContentMenuButton(parentId: pollId) : const SizedBox.shrink(),
+            ],
+          ),
         ),
         body: Column(
           children: [
             Expanded(
-              child: Stack(
-                children: [
-                  _buildBody(context, ref, poll, isEditing),
-                  buildQuillEditorPositionedToolbar(
-                    context,
-                    ref,
-                    isEditing: isEditing,
-                  ),
-                ],
-              ),
+              child: _buildStateWidget(context, ref, poll, isEditing),
             ),
           ],
         ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, poll),
+        floatingActionButton: poll != null
+            ? _buildFloatingActionButton(context, isEditing, poll)
+            : null,
       ),
+    );
+  }
+
+  Widget _buildStateWidget(BuildContext context, WidgetRef ref, PollModel? poll, bool isEditing) {
+    if (poll == null) {
+      return Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).pollNotFound,
+          icon: Icons.poll_outlined,
+        ),
+      );
+    }
+    return Stack(
+      children: [
+        _buildBody(context, ref, poll, isEditing),
+        buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
+      ],
     );
   }
 

@@ -5,6 +5,7 @@ import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widg
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -24,34 +25,46 @@ class ListDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider(listId));
     final list = ref.watch(listItemProvider(listId));
-    if (list == null) {
-      return Center(child: Text(L10n.of(context).listNotFound));
-    }
+
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [ContentMenuButton(parentId: listId)]),
+          title: ZoeAppBar(
+            actions: [
+              list != null ? ContentMenuButton(parentId: listId) : const SizedBox.shrink(),
+            ],
+          ),
         ),
         body: Column(
           children: [
             Expanded(
-              child: Stack(
-                children: [
-                  _buildBody(context, ref, list, isEditing),
-                  buildQuillEditorPositionedToolbar(
-                    context,
-                    ref,
-                    isEditing: isEditing,
-                  ),
-                ],
-              ),
+              child: _buildStateWidget(context, ref, list, isEditing),
             ),
           ],
         ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, list),
+        floatingActionButton: list != null
+            ? _buildFloatingActionButton(context, isEditing, list)
+            : null,
       ),
+    );
+  }
+
+  Widget _buildStateWidget(BuildContext context, WidgetRef ref, ListModel? list, bool isEditing) {
+    if (list == null) {
+      return Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).listNotFound,
+          icon: Icons.list_outlined,
+        ),
+      );
+    }
+    return Stack(
+      children: [
+        _buildBody(context, ref, list, isEditing),
+        buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
+      ],
     );
   }
 

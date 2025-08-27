@@ -5,6 +5,7 @@ import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -26,37 +27,49 @@ class EventDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final event = ref.watch(eventProvider(eventId));
-    if (event == null) {
-      return Center(child: Text(L10n.of(context).eventNotFound));
-    }
     final isEditing = ref.watch(isEditValueProvider(eventId));
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [ContentMenuButton(parentId: eventId)]),
+          title: ZoeAppBar(
+            actions: [
+              event != null ? ContentMenuButton(parentId: eventId) : const SizedBox.shrink(),
+            ],
+          ),
         ),
         body: MaxWidthWidget(
           child: Column(
             children: [
               Expanded(
-                child: Stack(
-                  children: [
-                    _buildBody(context, ref, event, isEditing),
-                    buildQuillEditorPositionedToolbar(
-                      context,
-                      ref,
-                      isEditing: isEditing,
-                    ),
-                  ],
-                ),
+                child: _buildStateWidget(context, ref, event, isEditing),
               ),
             ],
           ),
         ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, event),
+        floatingActionButton: event != null
+            ? _buildFloatingActionButton(context, isEditing, event)
+            : null,
       ),
+    );
+  }
+
+  Widget _buildStateWidget(BuildContext context, WidgetRef ref, EventModel? event, bool isEditing) {
+    if (event == null) {
+      return Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).eventNotFound,
+          icon: Icons.event_outlined,
+        ),
+      );
+    }
+    
+    return Stack(
+      children: [
+        _buildBody(context, ref, event, isEditing),
+        buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
+      ],
     );
   }
 
