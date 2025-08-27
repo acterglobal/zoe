@@ -26,40 +26,40 @@ class PollDetailsScreen extends ConsumerWidget {
     final poll = ref.watch(pollProvider(pollId));
 
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
+      child: poll != null ? Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: ZoeAppBar(
             actions: [
-              poll != null ? ContentMenuButton(parentId: pollId) : const SizedBox.shrink(),
+              ContentMenuButton(parentId: pollId),
             ],
           ),
         ),
         body: MaxWidthWidget(
-          child: _buildStateWidget(context, ref, poll, isEditing),
+          child: Stack(
+            children: [
+              _buildBody(context, ref, poll, isEditing),
+              buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
+            ],
+          ),
         ),
-        floatingActionButton: poll != null
-            ? _buildFloatingActionButton(context, isEditing, poll)
-            : null,
-      ),
+        floatingActionButton: _buildFloatingActionButton(context, isEditing, poll),
+      ): _buildEmptyPollWidget(context),
     );
   }
 
-  Widget _buildStateWidget(BuildContext context, WidgetRef ref, PollModel? poll, bool isEditing) {
-    if (poll == null) {
-      return Center(
+  Widget _buildEmptyPollWidget(BuildContext context) {
+
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
         child: EmptyStateWidget(
           message: L10n.of(context).pollNotFound,
           icon: Icons.poll_outlined,
         ),
-      );
-    }
-    return Stack(
-      children: [
-        _buildBody(context, ref, poll, isEditing),
-        buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
-      ],
+      ),
     );
   }
 

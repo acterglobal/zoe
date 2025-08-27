@@ -27,40 +27,39 @@ class BulletDetailScreen extends ConsumerWidget {
     final bullet = ref.watch(bulletProvider(bulletId));
 
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
+      child: bullet != null ? Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: ZoeAppBar(
             actions: [
-              bullet != null ? ContentMenuButton(parentId: bulletId) : const SizedBox.shrink(),
+              ContentMenuButton(parentId: bulletId),
             ],
           ),
         ),
         body: MaxWidthWidget(
-          child: _buildStateWidget(context, ref, bullet, isEditing),
+          child: Stack(
+            children: [
+              _buildBody(context, ref, bullet, isEditing),
+              buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
+            ],
+          ),
         ),
-        floatingActionButton: bullet != null
-            ? _buildFloatingActionButton(context, isEditing, bullet)
-            : null,
-      ),
+        floatingActionButton: _buildFloatingActionButton(context, isEditing, bullet),
+      ): _buildEmptyBulletWidget(context),
     );
   }
 
-  Widget _buildStateWidget(BuildContext context, WidgetRef ref, BulletModel? bullet, bool isEditing) {
-    if (bullet == null) {
-      return Center(
+  Widget _buildEmptyBulletWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
         child: EmptyStateWidget(
           message: L10n.of(context).bulletNotFound,
           icon: Icons.format_list_bulleted_outlined,
         ),
-      );
-    }
-    return Stack(
-      children: [
-        _buildBody(context, ref, bullet, isEditing),
-        buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
-      ],
+      ),
     );
   }
 

@@ -28,40 +28,39 @@ class ListDetailsScreen extends ConsumerWidget {
     final list = ref.watch(listItemProvider(listId));
 
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
+      child: list != null ? Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: ZoeAppBar(
             actions: [
-              list != null ? ContentMenuButton(parentId: listId) : const SizedBox.shrink(),
+              ContentMenuButton(parentId: listId),
             ],
           ),
         ),
         body: MaxWidthWidget(
-          child: _buildStateWidget(context, ref, list, isEditing),
+          child: Stack(
+            children: [
+              _buildBody(context, ref, list, isEditing),
+              buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
+            ],
+          ),
         ),
-        floatingActionButton: list != null
-            ? _buildFloatingActionButton(context, isEditing, list)
-            : null,
-      ),
+        floatingActionButton: _buildFloatingActionButton(context, isEditing, list),
+      ): _buildEmptyListWidget(context),
     );
   }
 
-  Widget _buildStateWidget(BuildContext context, WidgetRef ref, ListModel? list, bool isEditing) {
-    if (list == null) {
-      return Center(
+  Widget _buildEmptyListWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
         child: EmptyStateWidget(
           message: L10n.of(context).listNotFound,
           icon: Icons.list_outlined,
         ),
-      );
-    }
-    return Stack(
-      children: [
-        _buildBody(context, ref, list, isEditing),
-        buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
-      ],
+      ),
     );
   }
 

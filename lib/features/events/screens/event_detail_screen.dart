@@ -29,51 +29,66 @@ class EventDetailScreen extends ConsumerWidget {
     final event = ref.watch(eventProvider(eventId));
     final isEditing = ref.watch(isEditValueProvider(eventId));
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(
-            actions: [
-              event != null ? ContentMenuButton(parentId: eventId) : const SizedBox.shrink(),
-            ],
-          ),
-        ),
-        body: MaxWidthWidget(
-          child: _buildStateWidget(context, ref, event, isEditing),
-        ),
-        floatingActionButton: event != null
-            ? _buildFloatingActionButton(context, isEditing, event)
-            : null,
-      ),
+      child: event != null
+          ? Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                title: ZoeAppBar(
+                  actions: [ContentMenuButton(parentId: eventId)],
+                ),
+              ),
+              body: MaxWidthWidget(
+                child: Stack(
+                  children: [
+                    _buildBody(context, ref, event, isEditing),
+                    buildQuillEditorPositionedToolbar(
+                      context,
+                      ref,
+                      isEditing: isEditing,
+                    ),
+                  ],
+                ),
+              ),
+              floatingActionButton: _buildFloatingActionButton(
+                context,
+                isEditing,
+                event,
+              ),
+            )
+          : _buildEmptyEventWidget(context),
     );
   }
 
-  Widget _buildStateWidget(BuildContext context, WidgetRef ref, EventModel? event, bool isEditing) {
-    if (event == null) {
-      return Center(
+  Widget _buildEmptyEventWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
         child: EmptyStateWidget(
           message: L10n.of(context).eventNotFound,
           icon: Icons.event_outlined,
         ),
-      );
-    }
-    
-    return Stack(
-      children: [
-        _buildBody(context, ref, event, isEditing),
-        buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
-      ],
+      ),
     );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context, bool isEditing, EventModel event) {
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    bool isEditing,
+    EventModel event,
+  ) {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: eventId, sheetId: event.sheetId),
+      onPressed: () => showAddContentBottomSheet(
+        context,
+        parentId: eventId,
+        sheetId: event.sheetId,
+      ),
     );
   }
+
   /// Builds the main body
   Widget _buildBody(
     BuildContext context,
@@ -133,7 +148,8 @@ class EventDetailScreen extends ConsumerWidget {
           isEditing: isEditing,
           description: event.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'event-description-$eventId', // Add unique editor ID
+          editorId: 'event-description-$eventId',
+          // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => ref
                 .read(eventListProvider.notifier)

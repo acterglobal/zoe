@@ -29,40 +29,47 @@ class TextBlockDetailsScreen extends ConsumerWidget {
     final textBlock = ref.watch(textProvider(textBlockId));
 
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(
-            actions: [
-              textBlock != null ? ContentMenuButton(parentId: textBlockId) : const SizedBox.shrink(),
-            ],
-          ),
-        ),
-        body: MaxWidthWidget(
-          child: _buildStateWidget(context, ref, textBlock, isEditing),
-        ),
-        floatingActionButton: textBlock != null
-            ? _buildFloatingActionButton(context, isEditing, textBlock)
-            : null,
-      ),
+      child: textBlock != null
+          ? Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                title: ZoeAppBar(
+                  actions: [ContentMenuButton(parentId: textBlockId)],
+                ),
+              ),
+              body: MaxWidthWidget(
+                child: Stack(
+                  children: [
+                    _buildBody(context, ref, textBlock, isEditing),
+                    buildQuillEditorPositionedToolbar(
+                      context,
+                      ref,
+                      isEditing: isEditing,
+                    ),
+                  ],
+                ),
+              ),
+              floatingActionButton: _buildFloatingActionButton(
+                context,
+                isEditing,
+                textBlock,
+              ),
+            )
+          : _buildEmptyTextBlockWidget(context),
     );
   }
 
-  Widget _buildStateWidget(BuildContext context, WidgetRef ref, TextModel? textBlock, bool isEditing) {
-    if (textBlock == null) {
-      return Center(
+  Widget _buildEmptyTextBlockWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
         child: EmptyStateWidget(
           message: L10n.of(context).textBlockNotFound,
           icon: Icons.text_snippet_outlined,
         ),
-      );
-    }
-    return Stack(
-      children: [
-        _buildBody(context, ref, textBlock, isEditing),
-        buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
-      ],
+      ),
     );
   }
 
@@ -74,7 +81,11 @@ class TextBlockDetailsScreen extends ConsumerWidget {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: textBlockId, sheetId: textBlock.sheetId),
+      onPressed: () => showAddContentBottomSheet(
+        context,
+        parentId: textBlockId,
+        sheetId: textBlock.sheetId,
+      ),
     );
   }
 
@@ -150,8 +161,8 @@ class TextBlockDetailsScreen extends ConsumerWidget {
           isEditing: isEditing,
           description: textBlock.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId:
-              'text-block-description-$textBlockId', // Add unique editor ID
+          editorId: 'text-block-description-$textBlockId',
+          // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => ref
                 .read(textListProvider.notifier)

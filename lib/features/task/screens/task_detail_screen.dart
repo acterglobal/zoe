@@ -29,26 +29,42 @@ class TaskDetailScreen extends ConsumerWidget {
     final task = ref.watch(taskProvider(taskId));
     final isEditing = ref.watch(isEditValueProvider(taskId));
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
+      child: task != null ? Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: ZoeAppBar(
             actions: [
-              task != null ? ContentMenuButton(parentId: taskId) : const SizedBox.shrink(),
+              ContentMenuButton(parentId: taskId),
             ],
           ),
         ),
         body: MaxWidthWidget(
-          child: _buildStateWidget(context, ref, task, isEditing),
+          child: Stack(
+            children: [
+              _buildBody(context, ref, task, isEditing),
+              buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
+            ],
+          ),
         ),
-        floatingActionButton: task != null
-            ? _buildFloatingActionButton(
-                context,
-                isEditing,
-                task,
-              )
-            : null,
+        floatingActionButton: _buildFloatingActionButton(
+          context,
+          isEditing,
+          task,
+        ),
+      ): _buildEmptyTaskWidget(context),
+    );
+  }
+
+  Widget _buildEmptyTaskWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).taskNotFound,
+          icon: Icons.task_alt_outlined,
+        ),
       ),
     );
   }
@@ -66,29 +82,6 @@ class TaskDetailScreen extends ConsumerWidget {
         parentId: taskId,
         sheetId: task.sheetId,
       ),
-    );
-  }
-
-  Widget _buildStateWidget(
-    BuildContext context,
-    WidgetRef ref,
-    TaskModel? task,
-    bool isEditing,
-  ) {
-    if (task == null) {
-      return Center(
-        child: EmptyStateWidget(
-          message: L10n.of(context).taskNotFound,
-          icon: Icons.task_alt_outlined,
-        ),
-      );
-    }
-
-    return Stack(
-      children: [
-        _buildBody(context, ref, task, isEditing),
-        buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
-      ],
     );
   }
 
