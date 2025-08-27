@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/step_indicator_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_secondary_button.dart';
 import 'package:zoe/features/whatsapp/providers/whatsapp_group_connect_provider.dart';
@@ -17,12 +19,19 @@ class GroupPermissionWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(whatsappGroupConnectProvider);
+
     return Column(
       children: [
         InfoHeaderWidget(
           title: L10n.of(context).enableInvites,
           subtitle: L10n.of(context).enableInvitesDescription,
-          icon: Icons.settings_outlined,
+          icon: OctIcons.shield,
+        ),
+        const SizedBox(height: 10),
+        StepIndicatorWidget(
+          currentStep: state.currentStep,
+          totalSteps: state.totalSteps,
         ),
         Expanded(child: _buildPermissionContent(context)),
         _buildNavigationButtons(context, ref),

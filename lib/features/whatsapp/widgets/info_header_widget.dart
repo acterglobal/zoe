@@ -19,10 +19,10 @@ class InfoHeaderWidget extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.icon,
-    this.containerPadding = 20.0,
-    this.borderRadius = 20.0,
-    this.iconSize = 28.0,
-    this.containerSize = 56.0,
+    this.containerPadding = 12,
+    this.borderRadius = 18,
+    this.iconSize = 22,
+    this.containerSize = 40,
     this.primaryColor,
     this.secondaryColor,
     this.iconColor,
@@ -46,30 +46,26 @@ class InfoHeaderWidget extends StatelessWidget {
             size: containerSize,
             primaryColor: primary,
             secondaryColor: secondary,
-            borderRadius: BorderRadius.circular(16),
-            child: Icon(
-              icon,
-              color: iconColor,
-              size: iconSize,
-            ),
+            borderRadius: BorderRadius.circular(10),
+            child: Icon(icon, color: iconColor, size: iconSize),
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: theme.textTheme.headlineSmall?.copyWith(
+                  style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                     letterSpacing: -0.5,
                     color: colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 3),
                 Text(
                   subtitle,
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  style: theme.textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurface.withValues(alpha: 0.7),
                     height: 1.4,
                   ),
