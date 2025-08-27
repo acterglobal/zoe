@@ -3,7 +3,7 @@ import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_content_container_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-class PermissionStepWidget extends StatelessWidget {
+class GuideStepWidget extends StatelessWidget {
   final int stepNumber;
   final String title;
   final String description;
@@ -12,7 +12,7 @@ class PermissionStepWidget extends StatelessWidget {
   final double containerPadding;
   final double borderRadius;
 
-  const PermissionStepWidget({
+  const GuideStepWidget({
     super.key,
     required this.stepNumber,
     required this.title,

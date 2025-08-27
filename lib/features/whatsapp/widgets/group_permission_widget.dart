@@ -9,7 +9,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_secondary_button.dart';
 import 'package:zoe/features/whatsapp/providers/whatsapp_group_connect_provider.dart';
 import 'package:zoe/features/whatsapp/utils/image_utils.dart';
 import 'package:zoe/features/whatsapp/widgets/info_header_widget.dart';
-import 'package:zoe/features/whatsapp/widgets/permission_step_widget.dart';
+import 'package:zoe/features/whatsapp/widgets/guide_step_widget.dart';
 import 'package:zoe/features/whatsapp/widgets/important_note_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -44,14 +44,14 @@ class GroupPermissionWidget extends ConsumerWidget {
       child: Column(
         children: [
           const SizedBox(height: 20),
-          PermissionStepWidget(
+          GuideStepWidget(
             stepNumber: 1,
             title: L10n.of(context).navigateToGroupPermissions,
             description: L10n.of(context).navigateToGroupPermissionsDescription,
             imagePath: ImageUtils.getGroupPermissionImagePath(context),
           ),
           const SizedBox(height: 24),
-          PermissionStepWidget(
+          GuideStepWidget(
             stepNumber: 2,
             title: L10n.of(context).enableInviteViaOption,
             description: L10n.of(context).enableInviteViaOptionDescription,

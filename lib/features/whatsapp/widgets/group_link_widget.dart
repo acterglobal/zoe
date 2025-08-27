@@ -3,9 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/step_indicator_widget.dart';
+import 'package:zoe/common/widgets/styled_content_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/features/whatsapp/providers/whatsapp_group_connect_provider.dart';
+import 'package:zoe/features/whatsapp/utils/image_utils.dart';
 import 'package:zoe/features/whatsapp/widgets/info_header_widget.dart';
+import 'package:zoe/features/whatsapp/widgets/guide_step_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class GroupLinkWidget extends ConsumerStatefulWidget {
@@ -16,6 +19,7 @@ class GroupLinkWidget extends ConsumerStatefulWidget {
 }
 
 class _GroupLinkWidgetState extends ConsumerState<GroupLinkWidget> {
+  final _scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
   final _groupLinkController = TextEditingController();
 
@@ -51,11 +55,36 @@ class _GroupLinkWidgetState extends ConsumerState<GroupLinkWidget> {
           currentStep: state.currentStep,
           totalSteps: state.totalSteps,
         ),
-        const SizedBox(height: 10),
-        _buildGroupLinkSection(),
-        const Spacer(),
+        Expanded(child: _buildGuideStepContent(context)),
         _buildNavigationButton(),
       ],
+    );
+  }
+
+  Widget _buildGuideStepContent(BuildContext context) {
+    return SingleChildScrollView(
+      controller: _scrollController,
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          GuideStepWidget(
+            stepNumber: 1,
+            title: L10n.of(context).navigateToMembersSection,
+            description: L10n.of(context).navigateToMembersSectionDescription,
+            imagePath: ImageUtils.getInviteMemberImagePath(context),
+          ),
+          const SizedBox(height: 24),
+          GuideStepWidget(
+            stepNumber: 2,
+            title: L10n.of(context).copyGroupLink,
+            description: L10n.of(context).copyGroupLinkDescription,
+            imagePath: ImageUtils.getCopyLinkImagePath(context),
+          ),
+          const SizedBox(height: 24),
+          _buildGroupLinkSection(),
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 
@@ -84,12 +113,28 @@ class _GroupLinkWidgetState extends ConsumerState<GroupLinkWidget> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Text(
-      L10n.of(context).groupLink,
-      style: theme.textTheme.titleMedium?.copyWith(
-        fontWeight: FontWeight.w600,
-        color: colorScheme.onSurface,
-      ),
+    return Row(
+      children: [
+        StyledContentContainer(
+          size: 40,
+          borderRadius: BorderRadius.circular(12),
+          child: Text(
+            '3',
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: colorScheme.onSurface,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Text(
+          L10n.of(context).groupLink,
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: colorScheme.onSurface,
+          ),
+        ),
+      ],
     );
   }
 
@@ -167,12 +212,31 @@ class _GroupLinkWidgetState extends ConsumerState<GroupLinkWidget> {
     );
   }
 
+  // Scroll to bottom of the screen
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      final maxScrollExtent = _scrollController.position.maxScrollExtent;
+      final currentScrollOffset = _scrollController.offset;
+      // Check if there's more content to scroll
+      if (currentScrollOffset < maxScrollExtent) {
+        _scrollController.animateTo(
+          maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
+  }
+
   Widget _buildNavigationButton() {
     return ZoePrimaryButton(
       text: L10n.of(context).nextEnableInvites,
       icon: Icons.arrow_forward_rounded,
       onPressed: () {
-        if (_formKey.currentState?.validate() == false) return;
+        if (_formKey.currentState?.validate() == false) {
+          _scrollToBottom();
+          return;
+        }
         ref
             .read(whatsappGroupConnectProvider.notifier)
             .updateGroupLink(_groupLinkController.text);
