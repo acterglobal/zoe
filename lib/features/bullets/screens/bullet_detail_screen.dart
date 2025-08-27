@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -23,42 +25,72 @@ class BulletDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider(bulletId));
     final bullet = ref.watch(bulletProvider(bulletId));
-    if (bullet == null) {
-      return Center(child: Text(L10n.of(context).bulletNotFound));
-    }
+
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [ContentMenuButton(parentId: bulletId)]),
+      child: bullet != null
+          ? _buildDataBulletWidget(context, ref, bullet, isEditing)
+          : _buildEmptyBulletWidget(context),
+    );
+  }
+
+  Widget _buildEmptyBulletWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).bulletNotFound,
+          icon: Icons.format_list_bulleted_outlined,
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  _buildBody(context, ref, bullet, isEditing),
-                  buildQuillEditorPositionedToolbar(
-                    context,
-                    ref,
-                    isEditing: isEditing,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, bullet),
       ),
     );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context, bool isEditing, BulletModel bullet) {
+  Widget _buildDataBulletWidget(
+    BuildContext context,
+    WidgetRef ref,
+    BulletModel bullet,
+    bool isEditing,
+  ) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: bulletId)]),
+      ),
+      body: MaxWidthWidget(
+        child: Stack(
+          children: [
+            _buildBody(context, ref, bullet, isEditing),
+            buildQuillEditorPositionedToolbar(
+              context,
+              ref,
+              isEditing: isEditing,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: _buildFloatingActionButton(
+        context,
+        isEditing,
+        bullet,
+      ),
+    );
+  }
+
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    bool isEditing,
+    BulletModel bullet,
+  ) {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: bulletId, sheetId: bullet.sheetId),
+      onPressed: () => showAddContentBottomSheet(
+        context,
+        parentId: bulletId,
+        sheetId: bullet.sheetId,
+      ),
     );
   }
 
@@ -119,7 +151,8 @@ class BulletDetailScreen extends ConsumerWidget {
           isEditing: isEditing,
           description: bullet.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'bullet-description-$bulletId', // Add unique editor ID
+          editorId: 'bullet-description-$bulletId',
+          // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => ref
                 .read(bulletListProvider.notifier)

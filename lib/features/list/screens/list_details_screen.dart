@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -24,35 +26,46 @@ class ListDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider(listId));
     final list = ref.watch(listItemProvider(listId));
-    if (list == null) {
-      return Center(child: Text(L10n.of(context).listNotFound));
-    }
+
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
+      child: list != null ? _buildDataListWidget(context, ref, list, isEditing) : _buildEmptyListWidget(context),
+    );
+  }
+
+  Widget _buildEmptyListWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).listNotFound,
+          icon: Icons.list_outlined,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataListWidget(BuildContext context, WidgetRef ref, ListModel list, bool isEditing) {
+    return Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [ContentMenuButton(parentId: listId)]),
+          title: ZoeAppBar(
+            actions: [
+              ContentMenuButton(parentId: listId),
+            ],
+          ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  _buildBody(context, ref, list, isEditing),
-                  buildQuillEditorPositionedToolbar(
-                    context,
-                    ref,
-                    isEditing: isEditing,
-                  ),
-                ],
-              ),
-            ),
-          ],
+        body: MaxWidthWidget(
+          child: Stack(
+            children: [
+              _buildBody(context, ref, list, isEditing),
+              buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
+            ],
+          ),
         ),
         floatingActionButton: _buildFloatingActionButton(context, isEditing, list),
-      ),
-    );
+      );
   }
 
   Widget _buildFloatingActionButton(BuildContext context, bool isEditing, ListModel list) {

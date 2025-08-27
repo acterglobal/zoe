@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -25,35 +27,55 @@ class TextBlockDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider(textBlockId));
     final textBlock = ref.watch(textProvider(textBlockId));
-    if (textBlock == null) {
-      return Center(child: Text(L10n.of(context).textBlockNotFound));
-    }
+
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(
-            actions: [ContentMenuButton(parentId: textBlockId)],
-          ),
+      child: textBlock != null
+          ? _buildDataTextBlockWidget(context, ref, textBlock, isEditing)
+          : _buildEmptyTextBlockWidget(context),
+    );
+  }
+
+  Widget _buildEmptyTextBlockWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).textBlockNotFound,
+          icon: Icons.text_snippet_outlined,
         ),
-        body: Column(
+      ),
+    );
+  }
+
+  Widget _buildDataTextBlockWidget(
+    BuildContext context,
+    WidgetRef ref,
+    TextModel textBlock,
+    bool isEditing,
+  ) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: textBlockId)]),
+      ),
+      body: MaxWidthWidget(
+        child: Stack(
           children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  _buildBody(context, ref, textBlock, isEditing),
-                  buildQuillEditorPositionedToolbar(
-                    context,
-                    ref,
-                    isEditing: isEditing,
-                  ),
-                ],
-              ),
+            _buildBody(context, ref, textBlock, isEditing),
+            buildQuillEditorPositionedToolbar(
+              context,
+              ref,
+              isEditing: isEditing,
             ),
           ],
         ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, textBlock),
+      ),
+      floatingActionButton: _buildFloatingActionButton(
+        context,
+        isEditing,
+        textBlock,
       ),
     );
   }
@@ -66,7 +88,11 @@ class TextBlockDetailsScreen extends ConsumerWidget {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: textBlockId, sheetId: textBlock.sheetId),
+      onPressed: () => showAddContentBottomSheet(
+        context,
+        parentId: textBlockId,
+        sheetId: textBlock.sheetId,
+      ),
     );
   }
 
@@ -142,8 +168,8 @@ class TextBlockDetailsScreen extends ConsumerWidget {
           isEditing: isEditing,
           description: textBlock.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId:
-              'text-block-description-$textBlockId', // Add unique editor ID
+          editorId: 'text-block-description-$textBlockId',
+          // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => ref
                 .read(textListProvider.notifier)

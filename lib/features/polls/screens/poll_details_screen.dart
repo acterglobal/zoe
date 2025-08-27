@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
@@ -22,42 +24,72 @@ class PollDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider(pollId));
     final poll = ref.watch(pollProvider(pollId));
-    if (poll == null) {
-      return Center(child: Text(L10n.of(context).pollNotFound));
-    }
+
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [ContentMenuButton(parentId: pollId)]),
+      child: poll != null
+          ? _buildDataPollWidget(context, ref, poll, isEditing)
+          : _buildEmptyPollWidget(context),
+    );
+  }
+
+  Widget _buildEmptyPollWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).pollNotFound,
+          icon: Icons.poll_outlined,
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  _buildBody(context, ref, poll, isEditing),
-                  buildQuillEditorPositionedToolbar(
-                    context,
-                    ref,
-                    isEditing: isEditing,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, poll),
       ),
     );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context, bool isEditing, PollModel poll) {
+  Widget _buildDataPollWidget(
+    BuildContext context,
+    WidgetRef ref,
+    PollModel poll,
+    bool isEditing,
+  ) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: pollId)]),
+      ),
+      body: MaxWidthWidget(
+        child: Stack(
+          children: [
+            _buildBody(context, ref, poll, isEditing),
+            buildQuillEditorPositionedToolbar(
+              context,
+              ref,
+              isEditing: isEditing,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: _buildFloatingActionButton(
+        context,
+        isEditing,
+        poll,
+      ),
+    );
+  }
+
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    bool isEditing,
+    PollModel poll,
+  ) {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: pollId, sheetId: poll.sheetId),
+      onPressed: () => showAddContentBottomSheet(
+        context,
+        parentId: pollId,
+        sheetId: poll.sheetId,
+      ),
     );
   }
 

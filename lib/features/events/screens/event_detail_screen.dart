@@ -5,6 +5,7 @@ import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -26,47 +27,75 @@ class EventDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final event = ref.watch(eventProvider(eventId));
-    if (event == null) {
-      return Center(child: Text(L10n.of(context).eventNotFound));
-    }
     final isEditing = ref.watch(isEditValueProvider(eventId));
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [ContentMenuButton(parentId: eventId)]),
+      child: event != null
+          ? _buildDataEventWidget(context, ref, event, isEditing)
+          : _buildEmptyEventWidget(context),
+    );
+  }
+
+  Widget _buildEmptyEventWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).eventNotFound,
+          icon: Icons.event_outlined,
         ),
-        body: MaxWidthWidget(
-          child: Column(
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    _buildBody(context, ref, event, isEditing),
-                    buildQuillEditorPositionedToolbar(
-                      context,
-                      ref,
-                      isEditing: isEditing,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, event),
       ),
     );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context, bool isEditing, EventModel event) {
+  Widget _buildDataEventWidget(
+    BuildContext context,
+    WidgetRef ref,
+    EventModel event,
+    bool isEditing,
+  ) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: eventId)]),
+      ),
+      body: MaxWidthWidget(
+        child: Stack(
+          children: [
+            _buildBody(context, ref, event, isEditing),
+            buildQuillEditorPositionedToolbar(
+              context,
+              ref,
+              isEditing: isEditing,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: _buildFloatingActionButton(
+        context,
+        isEditing,
+        event,
+      ),
+    );
+  }
+
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    bool isEditing,
+    EventModel event,
+  ) {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: eventId, sheetId: event.sheetId),
+      onPressed: () => showAddContentBottomSheet(
+        context,
+        parentId: eventId,
+        sheetId: event.sheetId,
+      ),
     );
   }
+
   /// Builds the main body
   Widget _buildBody(
     BuildContext context,
@@ -126,7 +155,8 @@ class EventDetailScreen extends ConsumerWidget {
           isEditing: isEditing,
           description: event.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'event-description-$eventId', // Add unique editor ID
+          editorId: 'event-description-$eventId',
+          // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => ref
                 .read(eventListProvider.notifier)

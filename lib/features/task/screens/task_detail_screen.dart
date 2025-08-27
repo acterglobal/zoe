@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -25,44 +27,75 @@ class TaskDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final task = ref.watch(taskProvider(taskId));
-    if (task == null) return Center(child: Text(L10n.of(context).taskNotFound));
     final isEditing = ref.watch(isEditValueProvider(taskId));
     return NotebookPaperBackgroundWidget(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(actions: [ContentMenuButton(parentId: taskId)]),
+      child: task != null
+          ? _buildDataTaskWidget(context, ref, task, isEditing)
+          : _buildEmptyTaskWidget(context),
+    );
+  }
+
+  Widget _buildEmptyTaskWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).taskNotFound,
+          icon: Icons.task_alt_outlined,
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  _buildBody(context, ref, task, isEditing),
-                  buildQuillEditorPositionedToolbar(
-                    context,
-                    ref,
-                    isEditing: isEditing,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, task),
       ),
     );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context, bool isEditing, TaskModel task) {
+  Widget _buildDataTaskWidget(
+    BuildContext context,
+    WidgetRef ref,
+    TaskModel task,
+    bool isEditing,
+  ) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: taskId)]),
+      ),
+      body: MaxWidthWidget(
+        child: Stack(
+          children: [
+            _buildBody(context, ref, task, isEditing),
+            buildQuillEditorPositionedToolbar(
+              context,
+              ref,
+              isEditing: isEditing,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: _buildFloatingActionButton(
+        context,
+        isEditing,
+        task,
+      ),
+    );
+  }
+
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    bool isEditing,
+    TaskModel task,
+  ) {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: taskId, sheetId: task.sheetId),
+      onPressed: () => showAddContentBottomSheet(
+        context,
+        parentId: taskId,
+        sheetId: task.sheetId,
+      ),
     );
   }
-  
+
   /// Builds the main body
   Widget _buildBody(
     BuildContext context,
@@ -128,7 +161,8 @@ class TaskDetailScreen extends ConsumerWidget {
           isEditing: isEditing,
           description: task.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'task-description-$taskId', // Add unique editor ID
+          editorId: 'task-description-$taskId',
+          // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => ref
                 .read(taskListProvider.notifier)
