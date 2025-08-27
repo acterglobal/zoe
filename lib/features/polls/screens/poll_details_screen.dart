@@ -58,13 +58,19 @@ class PollDetailsScreen extends ConsumerWidget {
         title: ZoeAppBar(actions: [ContentMenuButton(parentId: pollId)]),
       ),
       body: MaxWidthWidget(
-        child: Stack(
+        child: Column(
           children: [
-            _buildBody(context, ref, poll, isEditing),
-            buildQuillEditorPositionedToolbar(
-              context,
-              ref,
-              isEditing: isEditing,
+            Expanded(
+              child: Stack(
+                children: [
+                  _buildBody(context, ref, poll, isEditing),
+                  buildQuillEditorPositionedToolbar(
+                    context,
+                    ref,
+                    isEditing: isEditing,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
