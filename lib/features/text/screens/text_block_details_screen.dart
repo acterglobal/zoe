@@ -30,32 +30,7 @@ class TextBlockDetailsScreen extends ConsumerWidget {
 
     return NotebookPaperBackgroundWidget(
       child: textBlock != null
-          ? Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                title: ZoeAppBar(
-                  actions: [ContentMenuButton(parentId: textBlockId)],
-                ),
-              ),
-              body: MaxWidthWidget(
-                child: Stack(
-                  children: [
-                    _buildBody(context, ref, textBlock, isEditing),
-                    buildQuillEditorPositionedToolbar(
-                      context,
-                      ref,
-                      isEditing: isEditing,
-                    ),
-                  ],
-                ),
-              ),
-              floatingActionButton: _buildFloatingActionButton(
-                context,
-                isEditing,
-                textBlock,
-              ),
-            )
+          ? _buildDataTextBlockWidget(context, ref, textBlock, isEditing)
           : _buildEmptyTextBlockWidget(context),
     );
   }
@@ -69,6 +44,38 @@ class TextBlockDetailsScreen extends ConsumerWidget {
           message: L10n.of(context).textBlockNotFound,
           icon: Icons.text_snippet_outlined,
         ),
+      ),
+    );
+  }
+
+  Widget _buildDataTextBlockWidget(
+    BuildContext context,
+    WidgetRef ref,
+    TextModel textBlock,
+    bool isEditing,
+  ) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: textBlockId)]),
+      ),
+      body: MaxWidthWidget(
+        child: Stack(
+          children: [
+            _buildBody(context, ref, textBlock, isEditing),
+            buildQuillEditorPositionedToolbar(
+              context,
+              ref,
+              isEditing: isEditing,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: _buildFloatingActionButton(
+        context,
+        isEditing,
+        textBlock,
       ),
     );
   }

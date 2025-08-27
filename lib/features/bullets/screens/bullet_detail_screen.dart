@@ -27,26 +27,9 @@ class BulletDetailScreen extends ConsumerWidget {
     final bullet = ref.watch(bulletProvider(bulletId));
 
     return NotebookPaperBackgroundWidget(
-      child: bullet != null ? Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(
-            actions: [
-              ContentMenuButton(parentId: bulletId),
-            ],
-          ),
-        ),
-        body: MaxWidthWidget(
-          child: Stack(
-            children: [
-              _buildBody(context, ref, bullet, isEditing),
-              buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
-            ],
-          ),
-        ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, bullet),
-      ): _buildEmptyBulletWidget(context),
+      child: bullet != null
+          ? _buildDataBulletWidget(context, ref, bullet, isEditing)
+          : _buildEmptyBulletWidget(context),
     );
   }
 
@@ -63,11 +46,51 @@ class BulletDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context, bool isEditing, BulletModel bullet) {
+  Widget _buildDataBulletWidget(
+    BuildContext context,
+    WidgetRef ref,
+    BulletModel bullet,
+    bool isEditing,
+  ) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: bulletId)]),
+      ),
+      body: MaxWidthWidget(
+        child: Stack(
+          children: [
+            _buildBody(context, ref, bullet, isEditing),
+            buildQuillEditorPositionedToolbar(
+              context,
+              ref,
+              isEditing: isEditing,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: _buildFloatingActionButton(
+        context,
+        isEditing,
+        bullet,
+      ),
+    );
+  }
+
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    bool isEditing,
+    BulletModel bullet,
+  ) {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: bulletId, sheetId: bullet.sheetId),
+      onPressed: () => showAddContentBottomSheet(
+        context,
+        parentId: bulletId,
+        sheetId: bullet.sheetId,
+      ),
     );
   }
 
@@ -128,7 +151,8 @@ class BulletDetailScreen extends ConsumerWidget {
           isEditing: isEditing,
           description: bullet.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'bullet-description-$bulletId', // Add unique editor ID
+          editorId: 'bullet-description-$bulletId',
+          // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => ref
                 .read(bulletListProvider.notifier)

@@ -29,30 +29,9 @@ class TaskDetailScreen extends ConsumerWidget {
     final task = ref.watch(taskProvider(taskId));
     final isEditing = ref.watch(isEditValueProvider(taskId));
     return NotebookPaperBackgroundWidget(
-      child: task != null ? Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(
-            actions: [
-              ContentMenuButton(parentId: taskId),
-            ],
-          ),
-        ),
-        body: MaxWidthWidget(
-          child: Stack(
-            children: [
-              _buildBody(context, ref, task, isEditing),
-              buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
-            ],
-          ),
-        ),
-        floatingActionButton: _buildFloatingActionButton(
-          context,
-          isEditing,
-          task,
-        ),
-      ): _buildEmptyTaskWidget(context),
+      child: task != null
+          ? _buildDataTaskWidget(context, ref, task, isEditing)
+          : _buildEmptyTaskWidget(context),
     );
   }
 
@@ -65,6 +44,38 @@ class TaskDetailScreen extends ConsumerWidget {
           message: L10n.of(context).taskNotFound,
           icon: Icons.task_alt_outlined,
         ),
+      ),
+    );
+  }
+
+  Widget _buildDataTaskWidget(
+    BuildContext context,
+    WidgetRef ref,
+    TaskModel task,
+    bool isEditing,
+  ) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: taskId)]),
+      ),
+      body: MaxWidthWidget(
+        child: Stack(
+          children: [
+            _buildBody(context, ref, task, isEditing),
+            buildQuillEditorPositionedToolbar(
+              context,
+              ref,
+              isEditing: isEditing,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: _buildFloatingActionButton(
+        context,
+        isEditing,
+        task,
       ),
     );
   }

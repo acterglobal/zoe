@@ -28,7 +28,25 @@ class ListDetailsScreen extends ConsumerWidget {
     final list = ref.watch(listItemProvider(listId));
 
     return NotebookPaperBackgroundWidget(
-      child: list != null ? Scaffold(
+      child: list != null ? _buildDataListWidget(context, ref, list, isEditing) : _buildEmptyListWidget(context),
+    );
+  }
+
+  Widget _buildEmptyListWidget(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
+      body: Center(
+        child: EmptyStateWidget(
+          message: L10n.of(context).listNotFound,
+          icon: Icons.list_outlined,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataListWidget(BuildContext context, WidgetRef ref, ListModel list, bool isEditing) {
+    return Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -47,21 +65,7 @@ class ListDetailsScreen extends ConsumerWidget {
           ),
         ),
         floatingActionButton: _buildFloatingActionButton(context, isEditing, list),
-      ): _buildEmptyListWidget(context),
-    );
-  }
-
-  Widget _buildEmptyListWidget(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(automaticallyImplyLeading: false, title: ZoeAppBar()),
-      body: Center(
-        child: EmptyStateWidget(
-          message: L10n.of(context).listNotFound,
-          icon: Icons.list_outlined,
-        ),
-      ),
-    );
+      );
   }
 
   Widget _buildFloatingActionButton(BuildContext context, bool isEditing, ListModel list) {

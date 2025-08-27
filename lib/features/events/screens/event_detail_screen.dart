@@ -30,32 +30,7 @@ class EventDetailScreen extends ConsumerWidget {
     final isEditing = ref.watch(isEditValueProvider(eventId));
     return NotebookPaperBackgroundWidget(
       child: event != null
-          ? Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                title: ZoeAppBar(
-                  actions: [ContentMenuButton(parentId: eventId)],
-                ),
-              ),
-              body: MaxWidthWidget(
-                child: Stack(
-                  children: [
-                    _buildBody(context, ref, event, isEditing),
-                    buildQuillEditorPositionedToolbar(
-                      context,
-                      ref,
-                      isEditing: isEditing,
-                    ),
-                  ],
-                ),
-              ),
-              floatingActionButton: _buildFloatingActionButton(
-                context,
-                isEditing,
-                event,
-              ),
-            )
+          ? _buildDataEventWidget(context, ref, event, isEditing)
           : _buildEmptyEventWidget(context),
     );
   }
@@ -69,6 +44,38 @@ class EventDetailScreen extends ConsumerWidget {
           message: L10n.of(context).eventNotFound,
           icon: Icons.event_outlined,
         ),
+      ),
+    );
+  }
+
+  Widget _buildDataEventWidget(
+    BuildContext context,
+    WidgetRef ref,
+    EventModel event,
+    bool isEditing,
+  ) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: eventId)]),
+      ),
+      body: MaxWidthWidget(
+        child: Stack(
+          children: [
+            _buildBody(context, ref, event, isEditing),
+            buildQuillEditorPositionedToolbar(
+              context,
+              ref,
+              isEditing: isEditing,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: _buildFloatingActionButton(
+        context,
+        isEditing,
+        event,
       ),
     );
   }
