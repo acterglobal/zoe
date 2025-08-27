@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:zoe/features/whatsapp/widgets/group_link_widget.dart';
 import 'package:zoe/features/whatsapp/widgets/group_permission_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
@@ -20,10 +19,7 @@ class WhatsAppGroupConnectScreen extends ConsumerWidget {
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: ZoeAppBar(
-        title: L10n.of(context).connectWithWhatsAppGroup,
-        onBackPressed: () => context.pop(),
-      ),
+      title: ZoeAppBar(title: L10n.of(context).connectWithWhatsAppGroup),
     );
   }
 

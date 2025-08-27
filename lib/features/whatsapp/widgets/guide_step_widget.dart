@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/styled_content_container_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -94,40 +95,11 @@ class GuideStepWidget extends StatelessWidget {
         width: double.infinity,
         height: imageHeight,
         fit: BoxFit.cover,
-        errorBuilder: (context, _, _) => _buildStepImageError(context),
-      ),
-    );
-  }
-
-  Widget _buildStepImageError(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return SizedBox(
-      width: double.infinity,
-      height: imageHeight,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            StyledContentContainer(
-              size: 64,
-              primaryColor: colorScheme.primary.withValues(alpha: 0.5),
-              secondaryColor: colorScheme.secondary.withValues(alpha: 0.5),
-              child: Icon(
-                Icons.image_not_supported_outlined,
-                color: colorScheme.onSurface.withValues(alpha: 0.5),
-                size: 32,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              L10n.of(context).imageNotFound,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: colorScheme.onSurface.withValues(alpha: 0.5),
-              ),
-            ),
-          ],
+        errorBuilder: (context, _, _) => EmptyStateWidget(
+          message: L10n.of(context).failedToLoadImage,
+          icon: Icons.image_not_supported_outlined,
+          height: imageHeight,
+          width: double.infinity,
         ),
       ),
     );

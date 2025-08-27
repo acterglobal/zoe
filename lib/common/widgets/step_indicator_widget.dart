@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoe/common/widgets/glassy_container_widget.dart';
 
 class StepIndicatorWidget extends StatelessWidget {
   final int currentStep;
@@ -24,31 +25,15 @@ class StepIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Container(
+    return GlassyContainer(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.1)),
-        boxShadow: [
-          BoxShadow(
-            color: colorScheme.shadow.withValues(alpha: 0.05),
-            blurRadius: 12,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
       child: Row(children: _buildStepIndicators(context)),
     );
   }
 
   /// Builds the list of step indicator widgets
   List<Widget> _buildStepIndicators(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final primary = primaryColor ?? colorScheme.primary;
     final secondary = secondaryColor ?? colorScheme.secondary;
     final inactive =

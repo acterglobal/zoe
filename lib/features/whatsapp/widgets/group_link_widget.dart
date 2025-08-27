@@ -139,8 +139,7 @@ class _GroupLinkWidgetState extends ConsumerState<GroupLinkWidget> {
   }
 
   Widget _buildGroupTextField() {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     final borderRadius = BorderRadius.circular(12);
 
