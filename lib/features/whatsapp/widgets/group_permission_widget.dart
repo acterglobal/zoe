@@ -48,20 +48,14 @@ class GroupPermissionWidget extends ConsumerWidget {
             stepNumber: 1,
             title: L10n.of(context).navigateToGroupPermissions,
             description: L10n.of(context).navigateToGroupPermissionsDescription,
-            imagePath: ImageUtils.getImagePath(
-              context: context,
-              isGroupPermission: true,
-            ),
+            imagePath: ImageUtils.getGroupPermissionImagePath(context),
           ),
           const SizedBox(height: 24),
           PermissionStepWidget(
             stepNumber: 2,
             title: L10n.of(context).enableInviteViaOption,
             description: L10n.of(context).enableInviteViaOptionDescription,
-            imagePath: ImageUtils.getImagePath(
-              context: context,
-              isInviteLink: true,
-            ),
+            imagePath: ImageUtils.getInviteLinkImagePath(context),
           ),
           const SizedBox(height: 24),
           ImportantNoteWidget(

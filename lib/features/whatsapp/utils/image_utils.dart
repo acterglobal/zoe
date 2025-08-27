@@ -20,28 +20,23 @@ class ImageUtils {
   static const String inviteLinkIosLight =
       '$_basePath/invite_link_ios_light.png';
 
-  static String getImagePath({
-    required BuildContext context,
-    bool isGroupPermission = false,
-    bool isInviteLink = false,
-  }) {
-    if (!isGroupPermission && !isInviteLink) return '';
+  static String getGroupPermissionImagePath(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final isIOS = Platform.isIOS || Platform.isMacOS;
     if (isDarkMode) {
-      if (isIOS) {
-        return isGroupPermission ? permissonIosDark : inviteLinkIosDark;
-      } else {
-        return isGroupPermission ? permissonAndroidDark : inviteLinkAndroidDark;
-      }
+      return isIOS ? permissonIosDark : permissonAndroidDark;
     } else {
-      if (isIOS) {
-        return isGroupPermission ? permissonIosLight : inviteLinkIosLight;
-      } else {
-        return isGroupPermission
-            ? permissonAndroidLight
-            : inviteLinkAndroidLight;
-      }
+      return isIOS ? permissonIosLight : permissonAndroidLight;
+    }
+  }
+
+  static String getInviteLinkImagePath(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isIOS = Platform.isIOS || Platform.isMacOS;
+    if (isDarkMode) {
+      return isIOS ? inviteLinkIosDark : inviteLinkAndroidDark;
+    } else {
+      return isIOS ? inviteLinkIosLight : inviteLinkAndroidLight;
     }
   }
 }
