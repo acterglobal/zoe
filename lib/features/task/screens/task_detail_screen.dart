@@ -61,13 +61,19 @@ class TaskDetailScreen extends ConsumerWidget {
         title: ZoeAppBar(actions: [ContentMenuButton(parentId: taskId)]),
       ),
       body: MaxWidthWidget(
-        child: Stack(
+        child: Column(
           children: [
-            _buildBody(context, ref, task, isEditing),
-            buildQuillEditorPositionedToolbar(
-              context,
-              ref,
-              isEditing: isEditing,
+            Expanded(
+              child: Stack(
+                children: [
+                  _buildBody(context, ref, task, isEditing),
+                  buildQuillEditorPositionedToolbar(
+                    context,
+                    ref,
+                    isEditing: isEditing,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
