@@ -40,13 +40,7 @@ class EventDetailScreen extends ConsumerWidget {
           ),
         ),
         body: MaxWidthWidget(
-          child: Column(
-            children: [
-              Expanded(
-                child: _buildStateWidget(context, ref, event, isEditing),
-              ),
-            ],
-          ),
+          child: _buildStateWidget(context, ref, event, isEditing),
         ),
         floatingActionButton: event != null
             ? _buildFloatingActionButton(context, isEditing, event)

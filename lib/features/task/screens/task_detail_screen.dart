@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
@@ -38,8 +39,8 @@ class TaskDetailScreen extends ConsumerWidget {
             ],
           ),
         ),
-        body: Column(
-          children: [Expanded(child: _buildStateWidget(context, ref, task, isEditing))],
+        body: MaxWidthWidget(
+          child: _buildStateWidget(context, ref, task, isEditing),
         ),
         floatingActionButton: task != null
             ? _buildFloatingActionButton(
