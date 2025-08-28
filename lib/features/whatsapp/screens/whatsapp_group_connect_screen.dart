@@ -29,10 +29,14 @@ class WhatsAppGroupConnectScreen extends ConsumerWidget {
     return Center(
       child: MaxWidthWidget(
         padding: const EdgeInsets.all(20),
-        child: state.currentStep == 1
-            ? const GroupLinkWidget()
-            : GroupPermissionWidget(sheetId: sheetId),
+        child: _buildStepWidget(state.currentStep),
       ),
     );
   }
+
+  Widget _buildStepWidget(int currentStep) => switch (currentStep) {
+    1 => const GroupLinkWidget(),
+    2 => const GroupPermissionWidget(sheetId: ''),
+    _ => const SizedBox.shrink(),
+  };
 }
