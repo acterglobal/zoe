@@ -43,7 +43,7 @@ class ZoeSearchBarWidget extends StatelessWidget {
           _buildTextField(context),
           ValueListenableBuilder<TextEditingValue>(
             valueListenable: controller,
-            builder: (_, value, __) {
+            builder: (context, value, child) {
               if (value.text.isEmpty) return const SizedBox();
               return _buildClearButton(context);
             },

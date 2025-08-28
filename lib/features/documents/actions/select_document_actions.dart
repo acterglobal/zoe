@@ -21,8 +21,10 @@ void selectDocumentSource(
   showDocumentSelectionBottomSheet(
     context,
     onTapCamera: () => handleCameraSelection(context, ref, listId, sheetId),
-    onTapGallery: () => handlePhotoGallerySelection(context, ref, listId, sheetId),
-    onTapFileChooser: () => handleFileChooserSelection(context, ref, listId, sheetId),
+    onTapGallery: () =>
+        handlePhotoGallerySelection(context, ref, listId, sheetId),
+    onTapFileChooser: () =>
+        handleFileChooserSelection(context, ref, listId, sheetId),
   );
 }
 
@@ -126,7 +128,28 @@ Color getFileTypeColor(String filePath) {
     'jpg' || 'jpeg' || 'png' || 'gif' || 'webp' => Colors.purple,
     'mp3' || 'wav' => Colors.teal,
     'mp4' || 'avi' || 'mov' => Colors.indigo,
-    'txt' || 'md' || 'json' || 'xml' || 'html' || 'css' || 'js' || 'dart' || 'py' || 'java' || 'cpp' || 'c' || 'cs' || 'php' || 'rb' || 'go' || 'rs' || 'swift' || 'kt' || 'sql' || 'yaml' || 'yml' => Colors.amber,
+    'txt' ||
+    'md' ||
+    'json' ||
+    'xml' ||
+    'html' ||
+    'css' ||
+    'js' ||
+    'dart' ||
+    'py' ||
+    'java' ||
+    'cpp' ||
+    'c' ||
+    'cs' ||
+    'php' ||
+    'rb' ||
+    'go' ||
+    'rs' ||
+    'swift' ||
+    'kt' ||
+    'sql' ||
+    'yaml' ||
+    'yml' => Colors.amber,
     _ => Colors.blueGrey,
   };
 }
@@ -141,7 +164,28 @@ IconData getFileTypeIcon(String filePath) {
     'jpg' || 'jpeg' || 'png' || 'gif' || 'webp' => Icons.image,
     'mp3' || 'wav' => Icons.audiotrack,
     'mp4' || 'avi' || 'mov' => Icons.video_file,
-    'txt' || 'md' || 'json' || 'xml' || 'html' || 'css' || 'js' || 'dart' || 'py' || 'java' || 'cpp' || 'c' || 'cs' || 'php' || 'rb' || 'go' || 'rs' || 'swift' || 'kt' || 'sql' || 'yaml' || 'yml' => Icons.text_fields,
+    'txt' ||
+    'md' ||
+    'json' ||
+    'xml' ||
+    'html' ||
+    'css' ||
+    'js' ||
+    'dart' ||
+    'py' ||
+    'java' ||
+    'cpp' ||
+    'c' ||
+    'cs' ||
+    'php' ||
+    'rb' ||
+    'go' ||
+    'rs' ||
+    'swift' ||
+    'kt' ||
+    'sql' ||
+    'yaml' ||
+    'yml' => Icons.text_fields,
     _ => Icons.insert_drive_file,
   };
 }
@@ -162,9 +206,11 @@ Future<void> shareDocument(BuildContext context, DocumentModel document) async {
   try {
     final file = File(document.filePath);
     if (file.existsSync()) {
-      await Share.shareXFiles([
-        XFile(document.filePath),
-      ], text: '${L10n.of(context).checkOutThis} $fileType: ${document.title}');
+      final params = ShareParams(
+        files: [XFile(document.filePath)],
+        fileNameOverrides: [document.title],
+      );
+      SharePlus.instance.share(params);
     }
   } catch (e) {
     if (context.mounted) {

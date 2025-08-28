@@ -12,7 +12,7 @@ final appVersionProvider = Provider<String>((ref) {
   return packageInfoAsync.when(
     data: (packageInfo) => packageInfo.version,
     loading: () => 'Loading...',
-    error: (_, __) => 'Unknown',
+    error: (error, stackTrace) => 'Unknown',
   );
 });
 
@@ -22,7 +22,7 @@ final appNameProvider = Provider<String>((ref) {
   return packageInfoAsync.when(
     data: (packageInfo) => packageInfo.appName,
     loading: () => 'Loading...',
-    error: (_, __) => 'Unknown',
+    error: (error, stackTrace) => 'Unknown',
   );
 });
 
@@ -32,7 +32,7 @@ final buildNumberProvider = Provider<String>((ref) {
   return packageInfoAsync.when(
     data: (packageInfo) => packageInfo.buildNumber,
     loading: () => 'Loading...',
-    error: (_, __) => 'Unknown',
+    error: (error, stackTrace) => 'Unknown',
   );
 });
 
@@ -42,6 +42,6 @@ final packageNameProvider = Provider<String>((ref) {
   return packageInfoAsync.when(
     data: (packageInfo) => packageInfo.packageName,
     loading: () => 'Loading...',
-    error: (_, __) => 'Unknown',
+    error: (error, stackTrace) => 'Unknown',
   );
 });
