@@ -39,27 +39,33 @@ class StepIndicatorWidget extends StatelessWidget {
     final inactive =
         inactiveColor ?? colorScheme.outline.withValues(alpha: 0.2);
 
-    return List.generate(totalSteps * 2 - 1, (index) {
-      if (index.isEven) {
-        // Step indicator
-        final stepNumber = (index ~/ 2) + 1;
-        final isActive = stepNumber <= currentStep;
-        return Expanded(
+    final List<Widget> indicators = [];
+
+    for (int i = 1; i <= totalSteps; i++) {
+      final isActive = i <= currentStep;
+
+      // Add step indicator
+      indicators.add(
+        Expanded(
           child: Container(
             height: height,
             decoration: BoxDecoration(
               gradient: isActive
                   ? LinearGradient(colors: [primary, secondary])
                   : null,
-              color: !isActive ? inactive : null,
+              color: isActive ? null : inactive,
               borderRadius: BorderRadius.circular(borderRadius),
             ),
           ),
-        );
-      } else {
-        // Spacing between steps
-        return SizedBox(width: spacing);
+        ),
+      );
+
+      // Add spacing between steps (except after the last step)
+      if (i < totalSteps) {
+        indicators.add(SizedBox(width: spacing));
       }
-    });
+    }
+
+    return indicators;
   }
 }
