@@ -6,7 +6,6 @@ import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/utils/content_utils.dart';
 import 'package:zoe/features/content/widgets/add_content_widget.dart';
-import 'package:zoe/features/documents/widgets/document_list_widget.dart';
 import 'package:zoe/features/documents/widgets/document_widget.dart'
     show DocumentWidget;
 import 'package:zoe/features/events/widgets/event_widget.dart';
@@ -36,9 +35,6 @@ class ContentWidget extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (contentList.any((content) => content.type == ContentType.document))
-          DocumentListWidget(parentId: parentId, isEditing: isEditing)
-        else
           // Use ReorderableListView when editing, regular ListView when not
           isEditing
               ? ReorderableListView.builder(
