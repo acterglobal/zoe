@@ -6,7 +6,7 @@ import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/utils/content_utils.dart';
 import 'package:zoe/features/content/widgets/add_content_widget.dart';
-import 'package:zoe/features/documents/widgets/document_widget.dart';
+import 'package:zoe/features/documents/widgets/document_widget.dart' show DocumentWidget;
 import 'package:zoe/features/events/widgets/event_widget.dart';
 import 'package:zoe/features/link/widgets/link_widget.dart';
 import 'package:zoe/features/list/widgets/list_widget.dart';
@@ -30,59 +30,78 @@ class ContentWidget extends ConsumerWidget {
     final contentList = ref.watch(contentListByParentIdProvider(parentId));
     final isEditing = ref.watch(isEditValueProvider(parentId));
 
+    // Separate documents from other content
+    final documents = contentList.where((content) => content.type == ContentType.document).toList();
+    final otherContent = contentList.where((content) => content.type != ContentType.document).toList();
+
     /// Build the content list
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Use ReorderableListView when editing, regular ListView when not
-        isEditing
-            ? ReorderableListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: contentList.length,
-                buildDefaultDragHandles:
-                    false, // This removes the default trailing drag handles
-                onReorder: (oldIndex, newIndex) {
-                  _handleReorder(ref, contentList, oldIndex, newIndex);
-                },
-                itemBuilder: (context, index) {
-                  final content = contentList[index];
-                  final contentId = content.id;
-
-                  return _buildContentItem(
-                    context,
-                    content,
-                    contentId,
-                    isEditing,
-                    index,
-                  );
-                },
-              )
-            : ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: contentList.length,
-                itemBuilder: (context, index) {
-                  final content = contentList[index];
-                  final contentId = content.id;
-
-                  return _buildContentItem(
-                    context,
-                    content,
-                    contentId,
-                    isEditing,
-                    index,
-                  );
-                },
+        // Documents content type
+        if (documents.isNotEmpty) ...[
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: documents.map(
+              (doc) => _buildContentItem(
+                context,
+                doc,
+                doc.id,
+                isEditing,
+                contentList.indexOf(doc),
               ),
+            ).toList(),
+          ),
+          const SizedBox(height: 16),
+        ],
+
+        // Other content type
+        if (otherContent.isNotEmpty)
+          isEditing
+              ? ReorderableListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: otherContent.length,
+                  buildDefaultDragHandles: false,
+                  onReorder: (oldIndex, newIndex) {
+                    _handleReorder(ref, otherContent, oldIndex, newIndex);
+                  },
+                  itemBuilder: (context, index) {
+                    final content = otherContent[index];
+                    return _buildContentItem(
+                      context,
+                      content,
+                      content.id,
+                      isEditing,
+                      index,
+                    );
+                  },
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: otherContent.length,
+                  itemBuilder: (context, index) {
+                    final content = otherContent[index];
+                    return _buildContentItem(
+                      context,
+                      content,
+                      content.id,
+                      isEditing,
+                      index,
+                    );
+                  },
+                ),
+
         AddContentWidget(
           isEditing: isEditing,
-          onTapText: () =>
-              addNewTextContent(ref: ref, parentId: parentId, sheetId: sheetId),
+          onTapText: () => addNewTextContent(ref: ref, parentId: parentId, sheetId: sheetId),
           onTapEvent: () => addNewEventContent(
             ref: ref,
             parentId: parentId,
-            sheetId: sheetId,            
+            sheetId: sheetId,
           ),
           onTapBulletedList: () => addNewBulletedListContent(
             ref: ref,
@@ -94,15 +113,13 @@ class ContentWidget extends ConsumerWidget {
             parentId: parentId,
             sheetId: sheetId,
           ),
-          onTapLink: () =>
-              addNewLinkContent(ref: ref, parentId: parentId, sheetId: sheetId),
+          onTapLink: () => addNewLinkContent(ref: ref, parentId: parentId, sheetId: sheetId),
           onTapDocument: () => addNewDocumentContent(
             ref: ref,
             parentId: parentId,
             sheetId: sheetId,
           ),
-          onTapPoll: () =>
-              addNewPollContent(ref: ref, parentId: parentId, sheetId: sheetId),
+          onTapPoll: () => addNewPollContent(ref: ref, parentId: parentId, sheetId: sheetId),
         ),
         const SizedBox(height: 200),
       ],
@@ -121,25 +138,24 @@ class ContentWidget extends ConsumerWidget {
     Widget contentWidget = switch (content.type) {
       ContentType.text => TextWidget(textId: contentId, isEditing: isEditing),
       ContentType.event => EventWidget(
-        eventsId: contentId,
-        isEditing: isEditing,
-      ),
+          eventsId: contentId,
+          isEditing: isEditing,
+        ),
       ContentType.list => ListWidget(listId: contentId, isEditing: isEditing),
       ContentType.task => TaskWidget(taskId: contentId, isEditing: isEditing),
       ContentType.bullet => BulletItemWidget(
-        bulletId: contentId,
-        isEditing: isEditing,
-      ),
+          bulletId: contentId,
+          isEditing: isEditing,
+        ),
       ContentType.link => LinkWidget(linkId: contentId, isEditing: isEditing),
       ContentType.document => DocumentWidget(
-        documentId: contentId,
-        isEditing: isEditing,
-      ),
+          documentId: contentId,
+          isEditing: isEditing,
+        ),
       ContentType.poll => PollWidget(pollId: contentId, isEditing: isEditing),
     };
 
-    // For ReorderableListView, we need to wrap with drag handle when editing
-    if (isEditing) {
+    if (isEditing && content.type != ContentType.document) {
       return Container(
         key: key,
         child: Row(
@@ -159,9 +175,7 @@ class ContentWidget extends ConsumerWidget {
                   child: Icon(
                     Icons.drag_indicator,
                     size: 20,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.5),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
               ),
