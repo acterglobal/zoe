@@ -21,6 +21,7 @@ import 'package:zoe/l10n/generated/l10n.dart';
 
 class ListDetailsScreen extends ConsumerWidget {
   final String listId;
+
   const ListDetailsScreen({super.key, required this.listId});
 
   @override
@@ -29,7 +30,9 @@ class ListDetailsScreen extends ConsumerWidget {
     final list = ref.watch(listItemProvider(listId));
 
     return NotebookPaperBackgroundWidget(
-      child: list != null ? _buildDataListWidget(context, ref, list, isEditing) : _buildEmptyListWidget(context),
+      child: list != null
+          ? _buildDataListWidget(context, ref, list, isEditing)
+          : _buildEmptyListWidget(context),
     );
   }
 
@@ -46,37 +49,60 @@ class ListDetailsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildDataListWidget(BuildContext context, WidgetRef ref, ListModel list, bool isEditing) {
+  Widget _buildDataListWidget(
+    BuildContext context,
+    WidgetRef ref,
+    ListModel list,
+    bool isEditing,
+  ) {
     return Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(
-            actions: [
-              ContentMenuButton(parentId: listId),
-            ],
-          ),
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: listId)]),
+      ),
+      body: MaxWidthWidget(
+        child: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  _buildBody(context, ref, list, isEditing),
+                  buildQuillEditorPositionedToolbar(
+                    context,
+                    ref,
+                    isEditing: isEditing,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        body: MaxWidthWidget(
-          child: Stack(
-            children: [
-              _buildBody(context, ref, list, isEditing),
-              buildQuillEditorPositionedToolbar(context, ref, isEditing: isEditing),
-            ],
-          ),
-        ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing, list),
-      );
+      ),
+      floatingActionButton: _buildFloatingActionButton(
+        context,
+        isEditing,
+        list,
+      ),
+    );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context, bool isEditing, ListModel list) {
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    bool isEditing,
+    ListModel list,
+  ) {
     if (!isEditing) return const SizedBox.shrink();
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: listId, sheetId: list.sheetId),
+      onPressed: () => showAddContentBottomSheet(
+        context,
+        parentId: listId,
+        sheetId: list.sheetId,
+      ),
     );
   }
-  
+
   /// Builds the main body
   Widget _buildBody(
     BuildContext context,
@@ -118,7 +144,9 @@ class ListDetailsScreen extends ConsumerWidget {
                 context,
                 ref,
                 onEmojiSelected: (emoji) {
-                  ref.read(listsrovider.notifier).updateListEmoji(listId, emoji);
+                  ref
+                      .read(listsrovider.notifier)
+                      .updateListEmoji(listId, emoji);
                 },
               ),
             ),
@@ -147,7 +175,8 @@ class ListDetailsScreen extends ConsumerWidget {
           isEditing: isEditing,
           description: list.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'list-description-$listId', // Add unique editor ID
+          editorId: 'list-description-$listId',
+          // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => ref
                 .read(listsrovider.notifier)
@@ -157,4 +186,4 @@ class ListDetailsScreen extends ConsumerWidget {
       ],
     );
   }
-} 
+}
