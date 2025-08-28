@@ -7,6 +7,8 @@ import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/utils/content_utils.dart';
 import 'package:zoe/features/content/widgets/add_content_widget.dart';
 import 'package:zoe/features/documents/widgets/document_list_widget.dart';
+import 'package:zoe/features/documents/widgets/document_widget.dart'
+    show DocumentWidget;
 import 'package:zoe/features/events/widgets/event_widget.dart';
 import 'package:zoe/features/link/widgets/link_widget.dart';
 import 'package:zoe/features/list/widgets/list_widget.dart';
@@ -32,49 +34,53 @@ class ContentWidget extends ConsumerWidget {
 
     /// Build the content list
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Use ReorderableListView when editing, regular ListView when not
-        isEditing
-            ? ReorderableListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: contentList.length,
-                buildDefaultDragHandles:
-                    false, // This removes the default trailing drag handles
-                onReorder: (oldIndex, newIndex) {
-                  _handleReorder(ref, contentList, oldIndex, newIndex);
-                },
-                itemBuilder: (context, index) {
-                  final content = contentList[index];
-                  final contentId = content.id;
+        if (contentList.any((content) => content.type == ContentType.document))
+          DocumentListWidget(parentId: parentId, isEditing: isEditing)
+        else
+          // Use ReorderableListView when editing, regular ListView when not
+          isEditing
+              ? ReorderableListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: contentList.length,
+                  buildDefaultDragHandles:
+                      false, // This removes the default trailing drag handles
+                  onReorder: (oldIndex, newIndex) {
+                    _handleReorder(ref, contentList, oldIndex, newIndex);
+                  },
+                  itemBuilder: (context, index) {
+                    final content = contentList[index];
+                    final contentId = content.id;
 
-                  return _buildContentItem(
-                    context,
-                    content,
-                    contentId,
-                    isEditing,
-                    index,
-                  );
-                },
-              )
-            : ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: contentList.length,
-                itemBuilder: (context, index) {
-                  final content = contentList[index];
-                  final contentId = content.id;
+                    return _buildContentItem(
+                      context,
+                      content,
+                      contentId,
+                      isEditing,
+                      index,
+                    );
+                  },
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: contentList.length,
+                  itemBuilder: (context, index) {
+                    final content = contentList[index];
+                    final contentId = content.id;
 
-                  return _buildContentItem(
-                    context,
-                    content,
-                    contentId,
-                    isEditing,
-                    index,
-                  );
-                },
-              ),
+                    return _buildContentItem(
+                      context,
+                      content,
+                      contentId,
+                      isEditing,
+                      index,
+                    );
+                  },
+                ),
         AddContentWidget(
           isEditing: isEditing,
           onTapText: () =>
@@ -82,7 +88,7 @@ class ContentWidget extends ConsumerWidget {
           onTapEvent: () => addNewEventContent(
             ref: ref,
             parentId: parentId,
-            sheetId: sheetId,            
+            sheetId: sheetId,
           ),
           onTapBulletedList: () => addNewBulletedListContent(
             ref: ref,
@@ -131,8 +137,8 @@ class ContentWidget extends ConsumerWidget {
         isEditing: isEditing,
       ),
       ContentType.link => LinkWidget(linkId: contentId, isEditing: isEditing),
-      ContentType.document => DocumentListWidget(
-        parentId: parentId,
+      ContentType.document => DocumentWidget(
+        documentId: contentId,
         isEditing: isEditing,
       ),
       ContentType.poll => PollWidget(pollId: contentId, isEditing: isEditing),
