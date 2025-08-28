@@ -67,6 +67,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
       ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: ZoeIconButtonWidget(
+            icon: Icons.search_outlined,
+            size: 22,
+            padding: 8,
+            onTap: () {
+              context.push(AppRoutes.quickSearch.route);
+            },
+          ),
+        ),
+      ],
     );
   }
 

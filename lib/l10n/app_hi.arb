@@ -358,5 +358,9 @@
     "searchInText": "टेक्स्ट में खोजें...",
     "@searchInText": {},
     "unknownDocument": "अजगर फाइल",
-    "@unknownDocument": {}
+    "@unknownDocument": {},
+    "all": "सभी",
+    "@all": {},
+    "viewAll": "सभी देखें",
+    "@viewAll": {}
 }

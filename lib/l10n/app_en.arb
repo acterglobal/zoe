@@ -396,6 +396,10 @@
     "searchInText": "Search in text...",
     "@searchInText": {},
     "unknownDocument": "Unknown Document",
-    "@unknownDocument": {}
+    "@unknownDocument": {},
+    "all": "All",
+    "@all": {},
+    "viewAll": "View All",
+    "@viewAll": {}
 
 }
