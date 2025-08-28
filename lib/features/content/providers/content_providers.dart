@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/content/models/content_model.dart';
+import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
@@ -18,6 +19,7 @@ final contentListProvider = Provider<List<ContentModel>>((ref) {
   final tasks = ref.watch(taskListProvider);
   final links = ref.watch(linkListProvider);
   final polls = ref.watch(pollListProvider);
+  final documents = ref.watch(documentListProvider);
 
   final allContent = [
     ...texts,
@@ -27,6 +29,7 @@ final contentListProvider = Provider<List<ContentModel>>((ref) {
     ...tasks,
     ...links,
     ...polls,
+    ...documents,
   ];
   // Sort by parentId first, then by orderIndex within parent, then by createdAt as fallback
   allContent.sort((a, b) {
