@@ -75,7 +75,7 @@ class ContentMenuButton extends ConsumerWidget {
           action: ContentMenuAction.connect,
           icon: Icons.link_rounded,
           title: L10n.of(context).connect,
-          subtitle: L10n.of(context).connectWithOtherContent,
+          subtitle: L10n.of(context).connectWithWhatsAppGroup,
         ),
       MenuItemDataModel(
         action: ContentMenuAction.share,

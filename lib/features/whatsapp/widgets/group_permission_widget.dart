@@ -46,7 +46,7 @@ class GroupPermissionWidget extends ConsumerWidget {
           const SizedBox(height: 20),
           GuideStepWidget(
             stepNumber: 1,
-            title: L10n.of(context).navigateToGroupPermissions,
+            title: L10n.of(context).groupPermissions,
             description: L10n.of(context).navigateToGroupPermissionsDescription,
             imagePath: ImageUtils.getGroupPermissionImagePath(context),
           ),

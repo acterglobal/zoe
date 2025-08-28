@@ -69,7 +69,7 @@ class _GroupLinkWidgetState extends ConsumerState<GroupLinkWidget> {
           const SizedBox(height: 20),
           GuideStepWidget(
             stepNumber: 1,
-            title: L10n.of(context).navigateToMembersSection,
+            title: L10n.of(context).groupMemberSection,
             description: L10n.of(context).navigateToMembersSectionDescription,
             imagePath: ImageUtils.getInviteMemberImagePath(context),
           ),
