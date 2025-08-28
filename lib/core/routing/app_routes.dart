@@ -12,7 +12,6 @@ enum AppRoutes {
   linksList('/links-list'),
   documentsList('/documents-list'),
   documentPreview('/document/:documentId'),
-  documentDetail('/document/:documentId'),
   pollsList('/polls-list'),
   pollDetails('/poll/:pollId'),
   pollResults('/poll-results/:pollId'),

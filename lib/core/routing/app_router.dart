@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zoe/common/screens/page_not_found_screen.dart';
 import 'package:zoe/features/bullets/screens/bullet_detail_screen.dart';
-import 'package:zoe/features/documents/screens/document_detail_screen.dart';
 import 'package:zoe/features/documents/screens/documents_list_screen.dart';
 import 'package:zoe/features/events/screens/event_detail_screen.dart';
 import 'package:zoe/features/events/screens/events_list_screen.dart';
@@ -148,16 +147,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final documentId = state.pathParameters['documentId'] ?? Uuid().v4();
           return DocumentPreviewScreen(documentId: documentId);
-        },
-      ),
-
-      // Document detail route
-      GoRoute(
-        path: AppRoutes.documentDetail.route,
-        name: AppRoutes.documentDetail.name,
-        builder: (context, state) {
-          final documentId = state.pathParameters['documentId'] ?? Uuid().v4();
-          return DocumentDetailScreen(documentId: documentId);
         },
       ),
 
