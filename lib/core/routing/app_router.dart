@@ -21,6 +21,7 @@ import 'package:zoe/features/task/screens/task_detail_screen.dart';
 import 'package:zoe/features/task/screens/tasks_list_screen.dart';
 import 'package:zoe/features/text/screens/text_block_details_screen.dart';
 import 'package:zoe/features/welcome/screens/welcome_screen.dart';
+import 'package:zoe/features/whatsapp/screens/whatsapp_group_connect_screen.dart';
 import 'package:zoe/features/documents/screens/document_preview_screen.dart';
 import 'app_routes.dart';
 
@@ -192,6 +193,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.settingLanguage.route,
         name: AppRoutes.settingLanguage.name,
         builder: (context, state) => const LanguageSelectionScreen(),
+      ),
+
+      // WhatsApp group connect route
+      GoRoute(
+        path: AppRoutes.whatsappGroupConnect.route,
+        name: AppRoutes.whatsappGroupConnect.name,
+        builder: (context, state) {
+          final sheetId = state.pathParameters['sheetId'] ?? Uuid().v4();
+          return WhatsAppGroupConnectScreen(sheetId: sheetId);
+        },
       ),
     ],
     errorBuilder: (context, state) => const PageNotFoundScreen(),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoe/common/models/menu_item_data_model.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/quill_editor/actions/quill_actions.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/sheet/actions/delete_sheet.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -57,7 +59,7 @@ class ContentMenuButton extends ConsumerWidget {
     bool isEditing,
   ) {
     final items = <MenuItemDataModel>[];
-    
+
     // Add other menu items
     items.addAll([
       MenuItemDataModel(
@@ -69,12 +71,12 @@ class ContentMenuButton extends ConsumerWidget {
             : L10n.of(context).editThisContent,
       ),
       if (showConnectOption)
-      MenuItemDataModel(
-        action: ContentMenuAction.connect,
-        icon: Icons.link_rounded,
-        title: L10n.of(context).connect,
-        subtitle: L10n.of(context).connectWithOtherContent,
-      ),
+        MenuItemDataModel(
+          action: ContentMenuAction.connect,
+          icon: Icons.link_rounded,
+          title: L10n.of(context).connect,
+          subtitle: L10n.of(context).connectWithWhatsAppGroup,
+        ),
       MenuItemDataModel(
         action: ContentMenuAction.share,
         icon: Icons.share_rounded,
@@ -89,7 +91,7 @@ class ContentMenuButton extends ConsumerWidget {
         isDestructive: true,
       ),
     ]);
-    
+
     return items;
   }
 
@@ -101,11 +103,7 @@ class ContentMenuButton extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         children: [
-          Icon(
-            item.icon,
-            size: 20,
-            color: color,
-          ),
+          Icon(item.icon, size: 20, color: color),
           const SizedBox(width: 16),
           _buildMenuTitleSubtitle(context, item),
         ],
@@ -147,8 +145,13 @@ class ContentMenuButton extends ConsumerWidget {
     WidgetRef ref,
     ContentMenuAction action,
   ) => switch (action) {
-    ContentMenuAction.connect => CommonUtils.showSnackBar(context, L10n.of(context).comingSoon),
-    ContentMenuAction.share => CommonUtils.showSnackBar(context, L10n.of(context).comingSoon),
+    ContentMenuAction.connect => context.push(
+      AppRoutes.whatsappGroupConnect.route.replaceAll(':sheetId', parentId),
+    ),
+    ContentMenuAction.share => CommonUtils.showSnackBar(
+      context,
+      L10n.of(context).comingSoon,
+    ),
     ContentMenuAction.edit => () {
       clearActiveEditorState(ref);
       final current = ref.read(isEditValueProvider(parentId));
