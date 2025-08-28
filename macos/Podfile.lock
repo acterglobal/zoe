@@ -83,21 +83,21 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/video_player_avfoundation/darwin
 
 SPEC CHECKSUMS:
-  audioplayers_darwin: 4027b33a8f471d996c13f71cb77f0b1583b5d923
-  device_info_plus: 1b14eed9bf95428983aed283a8d51cce3d8c4215
-  emoji_picker_flutter: 846d4afb3368bc864a3884f02654961198bd72da
-  file_picker: e716a70a9fe5fd9e09ebc922d7541464289443af
-  file_selector_macos: cc3858c981fe6889f364731200d6232dac1d812d
+  audioplayers_darwin: 4f9ca89d92d3d21cec7ec580e78ca888e5fb68bd
+  device_info_plus: 4fb280989f669696856f8b129e4a5e3cd6c48f76
+  emoji_picker_flutter: 51ca408e289d84d1e460016b2a28721ec754fcf7
+  file_picker: 7584aae6fa07a041af2b36a2655122d42f578c1a
+  file_selector_macos: 6280b52b459ae6c590af5d78fc35c7267a3c4b31
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  package_info_plus: 12f1c5c2cfe8727ca46cbd0b26677728972d9a5b
-  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
-  quill_native_bridge_macos: 3a5f378bc757eb92825193853020b759b56cbb2c
-  rust_lib_zoe: 7375e43760f78cdaab82f9c90b2f4816c8710504
-  share_plus: 1fa619de8392a4398bfaf176d441853922614e89
-  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
-  syncfusion_pdfviewer_macos: caeb5113e428fcad0cddcb054f5745b565c08fd7
-  url_launcher_macos: c82c93949963e55b228a30115bd219499a6fe404
-  video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
+  package_info_plus: f0052d280d17aa382b932f399edf32507174e870
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  quill_native_bridge_macos: 2b005cb56902bb740e0cd9620aa399dfac6b4882
+  rust_lib_zoe: 49ab93568bd7b61d8107c91b867515694294583c
+  share_plus: 510bf0af1a42cd602274b4629920c9649c52f4cc
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+  syncfusion_pdfviewer_macos: b3b110c68039178ca4105dd03ef38761eca3b36b
+  url_launcher_macos: 0fba8ddabfc33ce0a9afe7c5fef5aab3d8d2d673
+  video_player_avfoundation: 2cef49524dd1f16c5300b9cd6efd9611ce03639b
 
 PODFILE CHECKSUM: 54d867c82ac51cbd61b565781b9fada492027009
 
