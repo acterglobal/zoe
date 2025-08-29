@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class QuickSearchTabSectionHeaderWidget extends StatelessWidget {
@@ -20,17 +21,14 @@ class QuickSearchTabSectionHeaderWidget extends StatelessWidget {
     final theme = Theme.of(context);
     return Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: color.withValues(alpha: 0.12),
-            ),
-            child: Icon(
-              Icons.article_rounded,
-              color: color,
-              size: 20,
-            ),
+          StyledIconContainer(
+            icon: icon,
+            iconSize: 15,
+            primaryColor: color,
+            shadowOpacity: 0.1,
+            borderOpacity: 0.1,
+            size: 30,
+            borderRadius: BorderRadius.circular(30),
           ),
           const SizedBox(width: 12),
           Text(
