@@ -82,7 +82,7 @@ Widget _buildTabItem({
       ),
       child: Text(
         text,
-        style: TextStyle(
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
           color: isSelected
               ? AppColors.primaryColor
               : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
