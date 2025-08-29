@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -106,5 +107,10 @@ class CommonUtils {
       return 'https://$url';
     }
     return url;
+  }
+
+  static void shareText(String text, {String? subject}) {
+    final params = ShareParams(text: text, subject: subject);
+    SharePlus.instance.share(params);
   }
 }

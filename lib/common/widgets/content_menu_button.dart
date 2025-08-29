@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/models/menu_item_data_model.dart';
-import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/quill_editor/actions/quill_actions.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
+import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/sheet/actions/delete_sheet.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -33,14 +33,12 @@ class ContentMenuButton extends ConsumerWidget {
       elevation: 10,
       shadowColor: colorScheme.primary.withValues(alpha: 0.6),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      itemBuilder: (context) => items
-          .map(
-            (item) => PopupMenuItem<ContentMenuAction>(
-              value: item.action,
-              child: _buildMenuItem(context, item),
-            ),
-          )
-          .toList(),
+      itemBuilder: (context) => items.map((item) {
+        return PopupMenuItem<ContentMenuAction>(
+          value: item.action,
+          child: _buildMenuItem(context, item),
+        );
+      }).toList(),
       child: StyledIconContainer(
         icon: Icons.more_vert_rounded,
         size: 40,
@@ -148,9 +146,10 @@ class ContentMenuButton extends ConsumerWidget {
     ContentMenuAction.connect => context.push(
       AppRoutes.whatsappGroupConnect.route.replaceAll(':sheetId', parentId),
     ),
-    ContentMenuAction.share => CommonUtils.showSnackBar(
-      context,
-      L10n.of(context).comingSoon,
+    ContentMenuAction.share => showShareItemsBottomSheet(
+      context: context,
+      parentId: parentId,
+      isSheet: showConnectOption,
     ),
     ContentMenuAction.edit => () {
       clearActiveEditorState(ref);

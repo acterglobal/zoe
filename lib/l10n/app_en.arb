@@ -438,5 +438,21 @@
     "copyGroupLink": "Copy group link",
     "@copyGroupLink": {},
     "copyGroupLinkDescription": "Tap on 'Copy link' option.",
-    "@copyGroupLinkDescription": {}
+    "@copyGroupLinkDescription": {},
+    "shareSheet": "Share Sheet",
+    "@shareSheet": {},
+    "shareText": "Share Text",
+    "@shareText": {},
+    "shareEvent": "Share Event",
+    "@shareEvent": {},
+    "shareTaskList": "Share Task List",
+    "@shareTaskList": {},
+    "shareBulletList": "Share Bullet List",
+    "@shareBulletList": {},
+    "shareTask": "Share Task",
+    "@shareTask": {},
+    "shareBullet": "Share Bullet",
+    "@shareBullet": {},
+    "sharePoll": "Share Poll",
+    "@sharePoll": {}
 }
