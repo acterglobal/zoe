@@ -9,6 +9,7 @@ import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/documents/actions/select_document_actions.dart';
+import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/documents/widgets/document_list_widget.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';
@@ -17,6 +18,8 @@ import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/features/link/widgets/link_list_widget.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_list_widget.dart';
 import 'package:zoe/features/list/models/list_model.dart';
@@ -113,7 +116,7 @@ class ListWidget extends ConsumerWidget {
         isEditing: isEditing,
       ),
       ContentType.task => TaskListWidget(
-        parentId: listId,
+        tasksProvider: taskByParentProvider(listId),
         isEditing: isEditing,
       ),
       ContentType.text => TextListWidget(
@@ -121,15 +124,19 @@ class ListWidget extends ConsumerWidget {
         isEditing: isEditing,
       ),
       ContentType.event => EventListWidget(
-        parentId: listId,
+        eventsProvider: eventByParentProvider(listId),
         isEditing: isEditing,
       ),
       ContentType.link => LinkListWidget(
-        parentId: listId,
+        linksProvider: linkByParentProvider(listId),
         isEditing: isEditing,
       ),
       ContentType.document => DocumentListWidget(
-        parentId: listId,
+        documentsProvider: documentListByParentProvider(listId),
+        isEditing: isEditing,
+      ),
+      ContentType.poll => PollListWidget(
+        pollsProvider: pollListByParentProvider(listId),
         isEditing: isEditing,
       ),
       _ => const SizedBox.shrink(),

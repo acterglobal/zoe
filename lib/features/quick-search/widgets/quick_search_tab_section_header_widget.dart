@@ -27,7 +27,7 @@ class QuickSearchTabSectionHeaderWidget extends StatelessWidget {
               color: color.withValues(alpha: 0.12),
             ),
             child: Icon(
-              Icons.article_rounded,
+              icon,
               color: color,
               size: 20,
             ),

@@ -2,25 +2,29 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
+import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/events/widgets/event_widget.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class EventListWidget extends ConsumerWidget {
-  final String parentId;
+  final ProviderBase<List<EventModel>> eventsProvider;
   final bool isEditing;
   final int? maxItems;
 
   const EventListWidget({
     super.key,
-    required this.parentId,
+    required this.eventsProvider,
     required this.isEditing,
     this.maxItems,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final events = ref.watch(eventByParentProvider(parentId));
-    if (events.isEmpty) return const SizedBox.shrink();
+    final events = ref.watch(eventsProvider);
+    if (events.isEmpty) {
+      return EmptyStateWidget(message: L10n.of(context).noEventsFound);
+    }
 
     final itemCount = maxItems != null
         ? min(maxItems!, events.length)
@@ -28,19 +32,16 @@ class EventListWidget extends ConsumerWidget {
 
     return ListView.builder(
       shrinkWrap: true,
-      padding: EdgeInsets.zero,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
       itemBuilder: (context, index) {
         final event = events[index];
-        return Padding(
-          padding: const EdgeInsets.only(left: 24),
-          child: EventWidget(
+        return EventWidget(
             key: ValueKey(event.id),
             eventsId: event.id,
             isEditing: isEditing,
-          ),
-        );
+          );
       },
     );
   }

@@ -8,8 +8,18 @@ import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_glassy_tab_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
+import 'package:zoe/features/documents/providers/document_providers.dart';
+import 'package:zoe/features/documents/widgets/document_list_widget.dart';
+import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/widgets/event_list_widget.dart';
+import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/link/widgets/link_list_widget.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
 import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
+import 'package:zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/features/task/widgets/task_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class QuickSearchScreen extends ConsumerStatefulWidget {
@@ -99,8 +109,8 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
       onTabChanged: (index) {
         selectedTabIndex.value = index;
       },
-      height: 45,
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+      height: 42,
+      margin: const EdgeInsets.symmetric(vertical: 4),
       borderRadius: 20,
     );
   }
@@ -123,6 +133,102 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                 ),
                 const SizedBox(height: 16),
                 SheetListWidget(maxItems: 5, shrinkWrap: true),
+                const SizedBox(height: 8),
+              ],
+            ),
+          if (selectedTabIndex.value == 0 || selectedTabIndex.value == 2)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                QuickSearchTabSectionHeaderWidget(
+                  title: L10n.of(context).events,
+                  icon: Icons.event_rounded,
+                  onTap: () => context.push(AppRoutes.eventsList.route),
+                  color: AppColors.secondaryColor,
+                ),
+                const SizedBox(height: 8),
+                EventListWidget(
+                  eventsProvider: eventListSearchProvider,
+                  isEditing: false,
+                  maxItems: 5,
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
+          if (selectedTabIndex.value == 0 || selectedTabIndex.value == 3)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                QuickSearchTabSectionHeaderWidget(
+                  title: L10n.of(context).tasks,
+                  icon: Icons.task_alt_rounded,
+                  onTap: () => context.push(AppRoutes.tasksList.route),
+                  color: AppColors.successColor,
+                ),
+                const SizedBox(height: 8),
+                TaskListWidget(
+                  tasksProvider: taskListSearchProvider,
+                  isEditing: false,
+                  maxItems: 5,
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
+          if (selectedTabIndex.value == 0 || selectedTabIndex.value == 4)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                QuickSearchTabSectionHeaderWidget(
+                  title: L10n.of(context).links,
+                  icon: Icons.link_rounded,
+                  onTap: () => context.push(AppRoutes.linksList.route),
+                  color: Colors.blueAccent,
+                ),
+                const SizedBox(height: 16),
+                LinkListWidget(
+                  linksProvider: linkListSearchProvider,
+                  isEditing: false,
+                  maxItems: 5,
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
+
+            if (selectedTabIndex.value == 0 || selectedTabIndex.value == 5)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  QuickSearchTabSectionHeaderWidget(
+                    title: L10n.of(context).documents,
+                    icon: Icons.insert_drive_file_rounded,
+                    onTap: () => context.push(AppRoutes.documentsList.route),
+                    color: AppColors.brightOrangeColor,
+                  ),
+                  const SizedBox(height: 16),
+                  DocumentListWidget(
+                    documentsProvider: documentListSearchProvider,
+                    isEditing: false,
+                    maxItems: 5,
+                  ),
+                   const SizedBox(height: 8),
+                ],
+              ),
+          if (selectedTabIndex.value == 0 || selectedTabIndex.value == 6)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                QuickSearchTabSectionHeaderWidget(
+                  title: L10n.of(context).polls,
+                  icon: Icons.poll_rounded,
+                  onTap: () => context.push(AppRoutes.pollsList.route),
+                  color: AppColors.brightMagentaColor,
+                ),
+                const SizedBox(height: 8),
+                PollListWidget(
+                  pollsProvider: pollListSearchProvider,
+                  isEditing: false,
+                  maxItems: 5,
+                ),
                 const SizedBox(height: 16),
               ],
             ),

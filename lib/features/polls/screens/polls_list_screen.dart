@@ -54,10 +54,16 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
       automaticallyImplyLeading: false,
       title: ZoeAppBar(title: L10n.of(context).polls),
       bottom: ZoeGlassyTabWidget(
-        tabTexts: [PollStatus.draft.name, PollStatus.active.name, PollStatus.completed.name],
-          selectedIndex: _tabController.index,
-          onTabChanged: (index) => _tabController.animateTo(index),
-        ),
+        tabTexts: [
+          PollStatus.draft.name,
+          PollStatus.active.name,
+          PollStatus.completed.name,
+        ],
+        selectedIndex: _tabController.index,
+        onTabChanged: (index) => _tabController.animateTo(index),
+        height: 42,
+        margin: const EdgeInsets.all(0),
+      ),
     );
   }
 
@@ -82,7 +88,11 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [_buildNotActivePollsTab(), _buildActivePollsTab(), _buildCompletedPollsTab()],
+              children: [
+                _buildNotActivePollsTab(),
+                _buildActivePollsTab(),
+                _buildCompletedPollsTab(),
+              ],
             ),
           ),
         ],
