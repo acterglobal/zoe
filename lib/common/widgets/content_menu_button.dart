@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/models/menu_item_data_model.dart';
-import 'package:zoe/common/widgets/quill_editor/actions/quill_actions.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
@@ -60,14 +59,6 @@ class ContentMenuButton extends ConsumerWidget {
 
     // Add other menu items
     items.addAll([
-      MenuItemDataModel(
-        action: ContentMenuAction.edit,
-        icon: isEditing ? Icons.save_rounded : Icons.edit_rounded,
-        title: isEditing ? L10n.of(context).save : L10n.of(context).edit,
-        subtitle: isEditing
-            ? L10n.of(context).saveChanges
-            : L10n.of(context).editThisContent,
-      ),
       if (showConnectOption)
         MenuItemDataModel(
           action: ContentMenuAction.connect,
@@ -151,11 +142,6 @@ class ContentMenuButton extends ConsumerWidget {
       parentId: parentId,
       isSheet: showConnectOption,
     ),
-    ContentMenuAction.edit => () {
-      clearActiveEditorState(ref);
-      final current = ref.read(isEditValueProvider(parentId));
-      ref.read(isEditValueProvider(parentId).notifier).state = !current;
-    }(),
     ContentMenuAction.delete => showDeleteSheetConfirmation(
       context,
       ref,
