@@ -1,4 +1,5 @@
 import 'package:zoe/features/content/models/content_model.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 
 class DocumentModel extends ContentModel {
   final String filePath;
@@ -9,6 +10,7 @@ class DocumentModel extends ContentModel {
     required super.parentId,
     required super.sheetId,
     required super.title,
+    super.description,
     super.createdBy,
     super.createdAt,
     super.updatedAt,
@@ -28,6 +30,7 @@ class DocumentModel extends ContentModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? orderIndex,
+    Description? description,
 
     /// DocumentModel properties
     String? filePath,
@@ -42,6 +45,7 @@ class DocumentModel extends ContentModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
       orderIndex: orderIndex ?? this.orderIndex,
+      description: description ?? this.description,
 
       /// DocumentModel properties
       filePath: filePath ?? this.filePath,

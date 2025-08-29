@@ -18,7 +18,8 @@ enum AppRoutes {
   textBlockDetails('/text-block/:textBlockId'),
   quickSearch('/quick-search'),
   settings('/settings'),
-  settingLanguage('/settings/language');
+  settingLanguage('/settings/language'),
+  whatsappGroupConnect('/whatsapp-group-connect/:sheetId');
 
   final String route;
   const AppRoutes(this.route);
