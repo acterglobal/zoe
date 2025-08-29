@@ -19,7 +19,10 @@ class AppIconWidget extends StatelessWidget {
         Colors.transparent,
       ],
       duration: const Duration(seconds: 2),
-      child: Image.asset('assets/icon/app_icon.png', width: size, height: size),
+      child: ClipRRect(
+        borderRadius: borderRadius,
+        child: Image.asset('assets/icon/app_icon.png', width: size, height: size),
+      ),
     );
   }
 }
