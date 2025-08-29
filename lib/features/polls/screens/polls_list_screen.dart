@@ -62,7 +62,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
         selectedIndex: _tabController.index,
         onTabChanged: (index) => _tabController.animateTo(index),
         height: 42,
-        margin: const EdgeInsets.all(0),
+        margin: const EdgeInsets.symmetric(horizontal: 16),
       ),
     );
   }

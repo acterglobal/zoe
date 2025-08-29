@@ -3,7 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 
-class ZoeGlassyTabWidget extends StatelessWidget implements PreferredSizeWidget {
+class ZoeGlassyTabWidget extends StatelessWidget
+    implements PreferredSizeWidget {
   final List<String> tabTexts;
   final int selectedIndex;
   final Function(int) onTabChanged;
@@ -31,6 +32,7 @@ class ZoeGlassyTabWidget extends StatelessWidget implements PreferredSizeWidget 
     return PreferredSize(
       preferredSize: Size.fromHeight(height ?? 60),
       child: Container(
+        alignment: Alignment.center,
         margin: margin,
         child: GlassyContainer(
           borderRadius: BorderRadius.circular(borderRadius ?? 25),
@@ -39,22 +41,25 @@ class ZoeGlassyTabWidget extends StatelessWidget implements PreferredSizeWidget 
             height: height ?? 60,
             child: ScrollConfiguration(
               behavior: ScrollConfiguration.of(context).copyWith(
-                dragDevices: {
-                  PointerDeviceKind.touch,
-                  PointerDeviceKind.mouse,
-                },
+                dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
               ),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 physics: const ClampingScrollPhysics(),
                 child: IntrinsicHeight(
                   child: Row(
-                    children: tabTexts.asMap().entries.map((entry) => _buildCustomTab(
-                      context: context,
-                      text: entry.value,
-                      isSelected: selectedIndex == entry.key,
-                      onTap: () => onTabChanged(entry.key),
-                    )).toList(),
+                    children: tabTexts
+                        .asMap()
+                        .entries
+                        .map(
+                          (entry) => _buildCustomTab(
+                            context: context,
+                            text: entry.value,
+                            isSelected: selectedIndex == entry.key,
+                            onTap: () => onTabChanged(entry.key),
+                          ),
+                        )
+                        .toList(),
                   ),
                 ),
               ),
@@ -93,7 +98,9 @@ class ZoeGlassyTabWidget extends StatelessWidget implements PreferredSizeWidget 
           style: TextStyle(
             color: isSelected
                 ? AppColors.primaryColor
-                : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                : Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.6),
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
             fontSize: 12,
           ),
