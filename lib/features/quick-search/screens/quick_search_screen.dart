@@ -109,7 +109,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
       onTabChanged: (index) {
         selectedTabIndex.value = index;
       },
-      height: 42,
+      height: 45,
       margin: const EdgeInsets.symmetric(vertical: 4),
       borderRadius: 20,
     );
@@ -194,25 +194,25 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
               ],
             ),
 
-            if (selectedTabIndex.value == 0 || selectedTabIndex.value == 5)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  QuickSearchTabSectionHeaderWidget(
-                    title: L10n.of(context).documents,
-                    icon: Icons.insert_drive_file_rounded,
-                    onTap: () => context.push(AppRoutes.documentsList.route),
-                    color: AppColors.brightOrangeColor,
-                  ),
-                  const SizedBox(height: 16),
-                  DocumentListWidget(
-                    documentsProvider: documentListSearchProvider,
-                    isEditing: false,
-                    maxItems: 5,
-                  ),
-                   const SizedBox(height: 8),
-                ],
-              ),
+          if (selectedTabIndex.value == 0 || selectedTabIndex.value == 5)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                QuickSearchTabSectionHeaderWidget(
+                  title: L10n.of(context).documents,
+                  icon: Icons.insert_drive_file_rounded,
+                  onTap: () => context.push(AppRoutes.documentsList.route),
+                  color: AppColors.brightOrangeColor,
+                ),
+                const SizedBox(height: 16),
+                DocumentListWidget(
+                  documentsProvider: documentListSearchProvider,
+                  isEditing: false,
+                  maxItems: 5,
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
           if (selectedTabIndex.value == 0 || selectedTabIndex.value == 6)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

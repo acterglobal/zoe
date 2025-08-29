@@ -29,83 +29,67 @@ class ZoeGlassyTabWidget extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(height ?? 60),
-      child: Container(
-        alignment: Alignment.center,
+    return GlassyContainer(
+        borderRadius: BorderRadius.circular(borderRadius ?? 25),
+        padding: EdgeInsets.symmetric(horizontal: 3,vertical: 3),
+        borderOpacity: borderOpacity ?? 0.1,
+        height: height ?? 60,
         margin: margin,
-        child: GlassyContainer(
-          borderRadius: BorderRadius.circular(borderRadius ?? 25),
-          borderOpacity: borderOpacity ?? 0.1,
-          child: SizedBox(
-            height: height ?? 60,
-            child: ScrollConfiguration(
-              behavior: ScrollConfiguration.of(context).copyWith(
-                dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
-              ),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                physics: const ClampingScrollPhysics(),
-                child: IntrinsicHeight(
-                  child: Row(
-                    children: tabTexts
-                        .asMap()
-                        .entries
-                        .map(
-                          (entry) => _buildCustomTab(
-                            context: context,
-                            text: entry.value,
-                            isSelected: selectedIndex == entry.key,
-                            onTap: () => onTabChanged(entry.key),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ),
-            ),
+        child: ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(
+            dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
           ),
-        ),
+          child: _buildTabList(context),
       ),
     );
   }
 
-  Widget _buildCustomTab({
-    required BuildContext context,
-    required String text,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primaryColor.withValues(alpha: 0.2)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          border: isSelected
-              ? Border.all(color: AppColors.primaryColor, width: 1.5)
-              : null,
-        ),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            color: isSelected
-                ? AppColors.primaryColor
-                : Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.6),
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-            fontSize: 12,
-          ),
-        ),
+  Widget _buildTabList(BuildContext context) {
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: tabTexts.length,
+      itemBuilder: (context, index) => _buildTabItem(
+        context: context,
+        text: tabTexts[index],
+        isSelected: selectedIndex == index,
+        onTap: () => onTabChanged(index),
       ),
     );
   }
+}
+
+Widget _buildTabItem({
+  required BuildContext context,
+  required String text,
+  required bool isSelected,
+  required VoidCallback onTap,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: isSelected
+            ? AppColors.primaryColor.withValues(alpha: 0.2)
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+        border: isSelected
+            ? Border.all(color: AppColors.primaryColor, width: 1.5)
+            : null,
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: isSelected
+              ? AppColors.primaryColor
+              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+          fontSize: 12,
+        ),
+      ),
+    ),
+  );
 }

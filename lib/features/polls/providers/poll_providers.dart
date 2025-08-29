@@ -44,9 +44,6 @@ final pollListByParentProvider = Provider.family<List<PollModel>, String>((ref, 
   return pollList.where((p) => p.parentId == parentId).toList();
 });
 
-
-
-
 // Provider for members who have voted
 final pollVotedMembersProvider = Provider.family<List<UserModel>, String>((ref, pollId) {
   final poll = ref.watch(pollProvider(pollId));
