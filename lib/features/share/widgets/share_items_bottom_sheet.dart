@@ -69,30 +69,22 @@ class ShareItemsBottomSheet extends ConsumerWidget {
   String _getShareTitle(BuildContext context, WidgetRef ref) {
     if (isSheet) return L10n.of(context).shareSheet;
     final content = ref.watch(contentProvider(parentId));
-    switch (content?.type) {
-      case ContentType.text:
-        return L10n.of(context).shareText;
-      case ContentType.event:
-        return L10n.of(context).shareEvent;
-      case ContentType.list:
+    return switch (content?.type) {
+      ContentType.text => L10n.of(context).shareText,
+      ContentType.event => L10n.of(context).shareEvent,
+      ContentType.list => () {
         final listModel = ref.watch(listItemProvider(parentId));
-        switch (listModel?.listType) {
-          case ContentType.task:
-            return L10n.of(context).shareTaskList;
-          case ContentType.bullet:
-            return L10n.of(context).shareBulletList;
-          default:
-            return L10n.of(context).share;
-        }
-      case ContentType.task:
-        return L10n.of(context).shareTask;
-      case ContentType.bullet:
-        return L10n.of(context).shareBullet;
-      case ContentType.poll:
-        return L10n.of(context).sharePoll;
-      default:
-        return L10n.of(context).share;
-    }
+        return switch (listModel?.listType) {
+          ContentType.task => L10n.of(context).shareTaskList,
+          ContentType.bullet => L10n.of(context).shareBulletList,
+          _ => L10n.of(context).share,
+        };
+      }(),
+      ContentType.task => L10n.of(context).shareTask,
+      ContentType.bullet => L10n.of(context).shareBullet,
+      ContentType.poll => L10n.of(context).sharePoll,
+      _ => L10n.of(context).share,
+    };
   }
 
   String _getContentShareMessage(WidgetRef ref) {
