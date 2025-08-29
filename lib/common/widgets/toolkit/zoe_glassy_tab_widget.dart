@@ -21,10 +21,10 @@ class ZoeGlassyTabWidget extends StatelessWidget
     required this.tabTexts,
     required this.selectedIndex,
     required this.onTabChanged,
-    this.height = 60,
+    this.height,
     this.margin = const EdgeInsets.symmetric(vertical: 4),
-    this.borderRadius = 25,
-    this.borderOpacity = 0.1,
+    this.borderRadius,
+    this.borderOpacity,
   });
 
   @override
