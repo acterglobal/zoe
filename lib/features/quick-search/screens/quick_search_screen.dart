@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_glassy_tab_widget.dart';
@@ -16,7 +17,9 @@ import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/features/link/widgets/link_list_widget.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
+import 'package:zoe/features/quick-search/models/quick_search_filters.dart';
 import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_list_widget.dart';
@@ -31,8 +34,8 @@ class QuickSearchScreen extends ConsumerStatefulWidget {
 
 class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
   final TextEditingController searchController = TextEditingController();
-
-  ValueNotifier<int> selectedTabIndex = ValueNotifier<int>(0);
+  ValueNotifier<QuickSearchFilters> quickSearchFilters =
+      ValueNotifier<QuickSearchFilters>(QuickSearchFilters.all);
 
   @override
   void initState() {
@@ -74,15 +77,14 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
             ),
             const SizedBox(height: 10),
             ValueListenableBuilder(
-              valueListenable: selectedTabIndex,
-              builder: (context, selectedIndex, child) => _buildFilterTabs(),
+              valueListenable: quickSearchFilters,
+              builder: (context, filter, child) => _buildFilterTabs(),
             ),
             const SizedBox(height: 16),
             Expanded(
               child: ValueListenableBuilder(
-                valueListenable: selectedTabIndex,
-                builder: (context, selectedIndex, child) =>
-                    _buildSearchSections(),
+                valueListenable: quickSearchFilters,
+                builder: (context, filter, child) => _buildSearchSections(),
               ),
             ),
           ],
@@ -105,9 +107,9 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
 
     return ZoeGlassyTabWidget(
       tabTexts: tabTexts,
-      selectedIndex: selectedTabIndex.value,
+      selectedIndex: QuickSearchFilters.values.indexOf(quickSearchFilters.value),
       onTabChanged: (index) {
-        selectedTabIndex.value = index;
+        quickSearchFilters.value = QuickSearchFilters.values[index];
       },
       height: 45,
       margin: const EdgeInsets.symmetric(vertical: 4),
@@ -116,12 +118,35 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
   }
 
   Widget _buildSearchSections() {
+    if (quickSearchFilters.value == QuickSearchFilters.all) {
+      final sheets = ref.watch(sheetListSearchProvider);
+      final events = ref.watch(eventListSearchProvider);
+      final tasks = ref.watch(taskListSearchProvider);
+      final links = ref.watch(linkListSearchProvider);
+      final documents = ref.watch(documentListSearchProvider);
+      final polls = ref.watch(pollListSearchProvider);
+
+      if (sheets.isEmpty &&
+          events.isEmpty && 
+          tasks.isEmpty && 
+          links.isEmpty && 
+          documents.isEmpty && 
+          polls.isEmpty) {
+        return Center(
+          child: EmptyStateWidget(
+            message: L10n.of(context).noResultsFound,
+            icon: Icons.search_off_rounded,
+          ),
+        );
+      }
+    }
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Show sheets for "All" (0) or "Spaces" (1) tabs
-          if (selectedTabIndex.value == 0 || selectedTabIndex.value == 1)
+          if (quickSearchFilters.value == QuickSearchFilters.all ||
+              quickSearchFilters.value == QuickSearchFilters.sheets)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -132,11 +157,15 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                   color: AppColors.primaryColor,
                 ),
                 const SizedBox(height: 16),
-                SheetListWidget(maxItems: 5, shrinkWrap: true),
+                SheetListWidget(
+                  maxItems: 5,
+                  shrinkWrap: true,
+                ),
                 const SizedBox(height: 8),
               ],
             ),
-          if (selectedTabIndex.value == 0 || selectedTabIndex.value == 2)
+          if (quickSearchFilters.value == QuickSearchFilters.all ||
+              quickSearchFilters.value == QuickSearchFilters.events)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -155,7 +184,8 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                 const SizedBox(height: 16),
               ],
             ),
-          if (selectedTabIndex.value == 0 || selectedTabIndex.value == 3)
+          if (quickSearchFilters.value == QuickSearchFilters.all ||
+              quickSearchFilters.value == QuickSearchFilters.tasks)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -174,7 +204,8 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                 const SizedBox(height: 8),
               ],
             ),
-          if (selectedTabIndex.value == 0 || selectedTabIndex.value == 4)
+          if (quickSearchFilters.value == QuickSearchFilters.all ||
+              quickSearchFilters.value == QuickSearchFilters.links)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -193,8 +224,8 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                 const SizedBox(height: 8),
               ],
             ),
-
-          if (selectedTabIndex.value == 0 || selectedTabIndex.value == 5)
+          if (quickSearchFilters.value == QuickSearchFilters.all ||
+              quickSearchFilters.value == QuickSearchFilters.documents)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -213,7 +244,8 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                 const SizedBox(height: 8),
               ],
             ),
-          if (selectedTabIndex.value == 0 || selectedTabIndex.value == 6)
+          if (quickSearchFilters.value == QuickSearchFilters.all ||
+              quickSearchFilters.value == QuickSearchFilters.polls)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

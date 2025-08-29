@@ -1,1 +1,0 @@
-enum QuickSearchFilters { all, spaces, events, tasks, links, documents, polls }

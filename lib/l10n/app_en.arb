@@ -458,6 +458,8 @@
     "all": "All",
     "@all": {},
     "viewAll": "View All",
-    "@viewAll": {}
+    "@viewAll": {},
+    "noResultsFound": "No Results Found",
+    "@noResultsFound": {}
 
 }

@@ -1,0 +1,1 @@
+enum QuickSearchFilters { all, sheets, events, tasks, links, documents, polls }
