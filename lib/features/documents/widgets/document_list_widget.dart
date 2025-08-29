@@ -25,29 +25,24 @@ class DocumentListWidget extends ConsumerWidget {
     }
 
     final hasMoreItems = maxItems != null && documents.length > maxItems!;
-    final displayDocuments = hasMoreItems 
-        ? documents.take(maxItems!) 
+    final displayDocuments = hasMoreItems
+        ? documents.take(maxItems!)
         : documents;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: displayDocuments
-                .map(
-                  (doc) => DocumentWidget(
-                    documentId: doc.id,
-                    isEditing: isEditing,
-                    isVertical: maxItems != null ? true : false,
-                  ),
-                )
-                .toList(),
-          ),
-        ],
+      child: Wrap(
+        spacing: 10,
+        runSpacing: 10,
+        children: displayDocuments
+            .map(
+              (doc) => DocumentWidget(
+                documentId: doc.id,
+                isEditing: isEditing,
+                isVertical: maxItems != null ? true : false,
+              ),
+            )
+            .toList(),
       ),
     );
   }

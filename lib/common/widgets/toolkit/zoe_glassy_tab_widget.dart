@@ -66,6 +66,7 @@ Widget _buildTabItem({
   required bool isSelected,
   required VoidCallback onTap,
 }) {
+  final theme = Theme.of(context);
   return GestureDetector(
     onTap: onTap,
     child: Container(
@@ -82,10 +83,10 @@ Widget _buildTabItem({
       ),
       child: Text(
         text,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        style: theme.textTheme.bodyMedium?.copyWith(
           color: isSelected
               ? AppColors.primaryColor
-              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+              : theme.colorScheme.onSurface.withValues(alpha: 0.6),
           fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
           fontSize: 12,
         ),
