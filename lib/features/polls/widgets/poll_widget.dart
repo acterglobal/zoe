@@ -14,6 +14,7 @@ import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
+import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 
 class PollWidget extends ConsumerWidget {
   final String pollId;
@@ -58,7 +59,9 @@ class PollWidget extends ConsumerWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        context.push(AppRoutes.pollDetails.route.replaceAll(':pollId', pollId));
+        if (context.findAncestorWidgetOfExactType<PollDetailsScreen>() == null) {
+          context.push(AppRoutes.pollDetails.route.replaceAll(':pollId', pollId));
+        }
       },
       child: Row(
       children: [
@@ -81,7 +84,9 @@ class PollWidget extends ConsumerWidget {
                   .updatePollQuestion(pollId, value);
             },
             onTapText: () {
-              context.push(AppRoutes.pollDetails.route.replaceAll(':pollId', pollId));
+              if (context.findAncestorWidgetOfExactType<PollDetailsScreen>() == null) {
+                context.push(AppRoutes.pollDetails.route.replaceAll(':pollId', pollId));
+              }
             },
           ),
         ),
