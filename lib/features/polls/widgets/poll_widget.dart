@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -11,6 +12,7 @@ import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
+
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
@@ -19,8 +21,9 @@ import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 class PollWidget extends ConsumerWidget {
   final String pollId;
   final bool isEditing;
+  final bool showSheetName;
 
-  const PollWidget({super.key, required this.pollId, required this.isEditing});
+  const PollWidget({super.key, required this.pollId, required this.isEditing, this.showSheetName = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,9 +41,19 @@ class PollWidget extends ConsumerWidget {
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 8),
         _buildPollQuestion(context, ref, poll),
+        const SizedBox(height: 2),
+        if (showSheetName) ...[
+          Row(
+            children: [
+              const SizedBox(width: 30),
+              DisplaySheetNameWidget(sheetId: poll.sheetId),
+            ],
+          ),
+        ],
         const SizedBox(height: 16),
         _buildPollOptionsList(context, ref, poll),
         const SizedBox(height: 12),
@@ -64,43 +77,45 @@ class PollWidget extends ConsumerWidget {
         }
       },
       child: Row(
-      children: [
-        Icon(
-          Icons.poll_outlined,
-          size: 20,
-          color: AppColors.brightMagentaColor.withValues(alpha: 0.8),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: ZoeInlineTextEditWidget(
-            hintText: L10n.of(context).pollTitle,
-            text: poll.question,
-            isEditing: PollUtils.isDraft(poll) && isEditing,
-            textInputAction: TextInputAction.next,
-            textStyle: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
-            onTextChanged: (value) {
-              ref
-                  .read(pollListProvider.notifier)
-                  .updatePollQuestion(pollId, value);
-            },
-            onTapText: () {
-              if (context.findAncestorWidgetOfExactType<PollDetailsScreen>() == null) {
-                context.push(AppRoutes.pollDetails.route.replaceAll(':pollId', pollId));
-              }
-            },
+        children: [
+          Icon(
+            Icons.poll_outlined,
+            size: 20,
+            color: AppColors.brightMagentaColor.withValues(alpha: 0.8),
           ),
-        ),
-        if (isEditing)
-          GestureDetector(
-            onTap: () {
-              ref.read(pollListProvider.notifier).deletePoll(pollId);
-            },
-            child: Icon(
-              Icons.delete,
-              size: 16,
-              color: theme.colorScheme.error,
+          const SizedBox(width: 12),
+          Expanded(
+            child: ZoeInlineTextEditWidget(
+              hintText: L10n.of(context).pollTitle,
+              text: poll.question,
+              isEditing: PollUtils.isDraft(poll) && isEditing,
+              textInputAction: TextInputAction.next,
+              textStyle: theme.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+              onTextChanged: (value) {
+                ref
+                    .read(pollListProvider.notifier)
+                    .updatePollQuestion(pollId, value);
+              },
+              onTapText: () {
+                context.push(
+                  AppRoutes.pollDetails.route.replaceAll(':pollId', pollId),
+                );
+              },
             ),
           ),
+          if (isEditing)
+            GestureDetector(
+              onTap: () {
+                ref.read(pollListProvider.notifier).deletePoll(pollId);
+              },
+              child: Icon(
+                Icons.delete,
+                size: 16,
+                color: theme.colorScheme.error,
+              ),
+            ),
         ],
       ),
     );
@@ -127,7 +142,6 @@ class PollWidget extends ConsumerWidget {
     PollOption option,
     int optionIndex,
   ) {
-   
     final isVoted = PollUtils.isUserVoted(poll, option, ref);
     final color = PollUtils.getColorFromOptionId(option.id, poll);
     final theme = Theme.of(context);
@@ -157,10 +171,10 @@ class PollWidget extends ConsumerWidget {
             margin: const EdgeInsets.only(bottom: 8),
             clipBehavior: Clip.none,
             decoration: BoxDecoration(
-              color:  theme.colorScheme.surface.withValues(alpha: 0.7),
+              color: theme.colorScheme.surface.withValues(alpha: 0.7),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color:  color.withValues(alpha: 0.1),
+                color: color.withValues(alpha: 0.1),
                 width: isVoted ? 1 : 0.5,
               ),
             ),
@@ -301,7 +315,8 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
   ) {
-    if (PollUtils.isActive(poll) || (PollUtils.isDraft(poll) && isEditing)) return const SizedBox.shrink();
+    if (PollUtils.isActive(poll) || (PollUtils.isDraft(poll) && isEditing))
+      return const SizedBox.shrink();
     final theme = Theme.of(context);
     return GlassyContainer(
       padding: const EdgeInsets.all(8),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
+import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
@@ -25,6 +26,7 @@ class SheetDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider(sheetId));
+    
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -33,6 +35,8 @@ class SheetDetailScreen extends ConsumerWidget {
           title: ZoeAppBar(
             title: L10n.of(context).sheet,
             actions: [
+              EditViewToggleButton(parentId: sheetId),
+              const SizedBox(width: 10),
               ContentMenuButton(
                 parentId: sheetId,
                 showConnectOption: true,
@@ -78,7 +82,7 @@ class SheetDetailScreen extends ConsumerWidget {
         children: [
           _buildSheetHeader(context, ref, isEditing),
           const SizedBox(height: 16),
-          ContentWidget(parentId: sheetId, sheetId: sheetId),
+          ContentWidget(parentId: sheetId, sheetId: sheetId, showSheetName: false),
         ],
       ),
     );

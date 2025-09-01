@@ -6,7 +6,8 @@ import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/utils/content_utils.dart';
 import 'package:zoe/features/content/widgets/add_content_widget.dart';
-import 'package:zoe/features/documents/widgets/document_widget.dart' show DocumentWidget;
+import 'package:zoe/features/documents/widgets/document_widget.dart'
+    show DocumentWidget;
 import 'package:zoe/features/events/widgets/event_widget.dart';
 import 'package:zoe/features/link/widgets/link_widget.dart';
 import 'package:zoe/features/list/widgets/list_widget.dart';
@@ -17,11 +18,13 @@ import 'package:zoe/features/text/widgets/text_widget.dart';
 class ContentWidget extends ConsumerWidget {
   final String parentId;
   final String sheetId;
+  final bool showSheetName;
 
   const ContentWidget({
     super.key,
     required this.parentId,
     required this.sheetId,
+    this.showSheetName = true,
   });
 
   @override
@@ -31,8 +34,12 @@ class ContentWidget extends ConsumerWidget {
     final isEditing = ref.watch(isEditValueProvider(parentId));
 
     // Separate documents from other content
-    final documents = contentList.where((content) => content.type == ContentType.document).toList();
-    final otherContent = contentList.where((content) => content.type != ContentType.document).toList();
+    final documents = contentList
+        .where((content) => content.type == ContentType.document)
+        .toList();
+    final otherContent = contentList
+        .where((content) => content.type != ContentType.document)
+        .toList();
 
     /// Build the content list
     return Column(
@@ -43,15 +50,17 @@ class ContentWidget extends ConsumerWidget {
           Wrap(
             spacing: 10,
             runSpacing: 10,
-            children: documents.map(
-              (doc) => _buildContentItem(
-                context,
-                doc,
-                doc.id,
-                isEditing,
-                contentList.indexOf(doc),
-              ),
-            ).toList(),
+            children: documents
+                .map(
+                  (doc) => _buildContentItem(
+                    context,
+                    doc,
+                    doc.id,
+                    isEditing,
+                    contentList.indexOf(doc),
+                  ),
+                )
+                .toList(),
           ),
           const SizedBox(height: 16),
         ],
@@ -97,7 +106,8 @@ class ContentWidget extends ConsumerWidget {
 
         AddContentWidget(
           isEditing: isEditing,
-          onTapText: () => addNewTextContent(ref: ref, parentId: parentId, sheetId: sheetId),
+          onTapText: () =>
+              addNewTextContent(ref: ref, parentId: parentId, sheetId: sheetId),
           onTapEvent: () => addNewEventContent(
             ref: ref,
             parentId: parentId,
@@ -113,13 +123,15 @@ class ContentWidget extends ConsumerWidget {
             parentId: parentId,
             sheetId: sheetId,
           ),
-          onTapLink: () => addNewLinkContent(ref: ref, parentId: parentId, sheetId: sheetId),
+          onTapLink: () =>
+              addNewLinkContent(ref: ref, parentId: parentId, sheetId: sheetId),
           onTapDocument: () => addNewDocumentContent(
             ref: ref,
             parentId: parentId,
             sheetId: sheetId,
           ),
-          onTapPoll: () => addNewPollContent(ref: ref, parentId: parentId, sheetId: sheetId),
+          onTapPoll: () =>
+              addNewPollContent(ref: ref, parentId: parentId, sheetId: sheetId),
         ),
         const SizedBox(height: 200),
       ],
@@ -138,21 +150,35 @@ class ContentWidget extends ConsumerWidget {
     Widget contentWidget = switch (content.type) {
       ContentType.text => TextWidget(textId: contentId, isEditing: isEditing),
       ContentType.event => EventWidget(
-          eventsId: contentId,
-          isEditing: isEditing,
-        ),
+        eventsId: contentId,
+        isEditing: isEditing,
+        showSheetName: showSheetName,
+      ),
       ContentType.list => ListWidget(listId: contentId, isEditing: isEditing),
-      ContentType.task => TaskWidget(taskId: contentId, isEditing: isEditing),
+      ContentType.task => TaskWidget(
+        taskId: contentId,
+        isEditing: isEditing,
+        showSheetName: showSheetName,
+      ),
       ContentType.bullet => BulletItemWidget(
-          bulletId: contentId,
-          isEditing: isEditing,
-        ),
-      ContentType.link => LinkWidget(linkId: contentId, isEditing: isEditing),
+        bulletId: contentId,
+        isEditing: isEditing,
+      ),
+      ContentType.link => LinkWidget(
+        linkId: contentId,
+        isEditing: isEditing,
+        showSheetName: showSheetName,
+      ),
       ContentType.document => DocumentWidget(
-          documentId: contentId,
-          isEditing: isEditing,
-        ),
-      ContentType.poll => PollWidget(pollId: contentId, isEditing: isEditing),
+        documentId: contentId,
+        isEditing: isEditing,
+        showSheetName: showSheetName,
+      ),
+      ContentType.poll => PollWidget(
+        pollId: contentId,
+        isEditing: isEditing,
+        showSheetName: showSheetName,
+      ),
     };
 
     if (isEditing && content.type != ContentType.document) {
@@ -175,7 +201,9 @@ class ContentWidget extends ConsumerWidget {
                   child: Icon(
                     Icons.drag_indicator,
                     size: 20,
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
               ),
