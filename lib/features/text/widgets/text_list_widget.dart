@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/features/text/providers/text_providers.dart';
+import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/widgets/text_widget.dart';
 
 class TextListWidget extends ConsumerWidget {
-  final String parentId;
+  final ProviderBase<List<TextModel>> textsProvider;
   final bool isEditing;
 
   const TextListWidget({
     super.key,
-    required this.parentId,
+    required this.textsProvider,
     required this.isEditing,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final texts = ref.watch(textByParentProvider(parentId));
+    final texts = ref.watch(textsProvider);
     if (texts.isEmpty) return const SizedBox.shrink();
 
     return ListView.builder(

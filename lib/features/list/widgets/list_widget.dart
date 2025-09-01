@@ -120,7 +120,7 @@ class ListWidget extends ConsumerWidget {
         isEditing: isEditing,
       ),
       ContentType.text => TextListWidget(
-        parentId: listId,
+        textsProvider: textByParentProvider(listId),
         isEditing: isEditing,
       ),
       ContentType.event => EventListWidget(
