@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
+import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -35,6 +36,7 @@ class TaskWidget extends ConsumerWidget {
     bool shouldFocus,
   ) {
     final color = Theme.of(context).colorScheme.surface;
+    final shouldShowSheetName = ref.watch(showSheetNameProvider);
     return InkWell(
       onTap: () => context.push(
         AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
@@ -45,25 +47,30 @@ class TaskWidget extends ConsumerWidget {
       hoverColor: color,
       focusColor: color,
       child: Row(
-          children: [
-            TaskCheckboxWidget(task: task),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTaskItemTitle(context, ref, task, shouldFocus),
-                  const SizedBox(height: 4),
-                  if (!task.isCompleted) ...[
-                    const SizedBox(height: 4),
+        children: [
+          TaskCheckboxWidget(task: task),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTaskItemTitle(context, ref, task, shouldFocus),
+                const SizedBox(height: 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (shouldShowSheetName)...[
+                      DisplaySheetNameWidget(sheetId: task.sheetId),
+                    ],
                     _buildTaskItemDueDate(context, ref, task),
                   ],
-                ],
-              ),
+                ),
+              ],
             ),
-            const SizedBox(width: 6),
-            if (isEditing) _buildTaskItemActions(context, ref),
-          ],
+          ),
+          const SizedBox(width: 6),
+          if (isEditing) _buildTaskItemActions(context, ref),
+        ],
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
@@ -33,6 +34,7 @@ class LinkWidget extends ConsumerWidget {
     WidgetRef ref,
     LinkModel linkContent,
   ) {
+    final shouldShowSheetName = ref.watch(showSheetNameProvider);
     return Row(
       children: [
         _buildLinkContentEmoji(context, ref, linkContent.emoji),
@@ -63,6 +65,10 @@ class LinkWidget extends ConsumerWidget {
               ),
               const SizedBox(height: 6),
               _buildUrl(context, ref, linkContent.url, isEditing),
+              const SizedBox(height: 6),
+              if (shouldShowSheetName) ...[
+                DisplaySheetNameWidget(sheetId: linkContent.sheetId),
+              ],
             ],
           ),
         ),

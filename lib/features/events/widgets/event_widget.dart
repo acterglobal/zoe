@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -48,6 +49,7 @@ class EventWidget extends ConsumerWidget {
     EventModel event,
     bool isEditing,
   ) {
+    final shouldShowSheetName = ref.watch(showSheetNameProvider);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -71,7 +73,15 @@ class EventWidget extends ConsumerWidget {
                   if (isEditing) _buildEventActions(context, ref, event),
                 ],
               ),
-              _buildEventDates(context, ref, event),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                if (shouldShowSheetName)...[
+                  DisplaySheetNameWidget(sheetId: event.sheetId),
+                ],
+                _buildEventDates(context, ref, event),
+              ],),
+              
             ],
           ),
         ),
