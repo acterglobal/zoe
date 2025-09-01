@@ -358,5 +358,7 @@
     "searchInText": "टेक्स्ट में खोजें...",
     "@searchInText": {},
     "unknownDocument": "अजगर फाइल",
-    "@unknownDocument": {}
+    "@unknownDocument": {},
+    "scanQr": "QR स्कैन करें",
+    "@scanQr": {}
 }

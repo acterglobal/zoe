@@ -358,6 +358,7 @@
     "searchInText": "ટેક્સ્ટમાં શોધો...",
     "@searchInText": {},
     "unknownDocument": "અજ્ઞાત ફાઇલ",
-    "@unknownDocument": {}
-
+    "@unknownDocument": {},
+    "scanQr": "QR સ્કેન કરો",
+    "@scanQr": {}
 }

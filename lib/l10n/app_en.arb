@@ -454,5 +454,7 @@
     "shareBullet": "Share Bullet",
     "@shareBullet": {},
     "sharePoll": "Share Poll",
-    "@sharePoll": {}
+    "@sharePoll": {},
+    "scanQr": "Scan QR",
+    "@scanQr": {}
 }
