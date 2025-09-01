@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
-import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_glassy_tab_widget.dart';
@@ -19,7 +18,6 @@ import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
 import 'package:zoe/features/quick-search/models/quick_search_filters.dart';
 import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
-import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_list_widget.dart';
@@ -118,28 +116,6 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
   }
 
   Widget _buildSearchSections() {
-    if (quickSearchFilters.value == QuickSearchFilters.all) {
-      final sheets = ref.watch(sheetListSearchProvider);
-      final events = ref.watch(eventListSearchProvider);
-      final tasks = ref.watch(taskListSearchProvider);
-      final links = ref.watch(linkListSearchProvider);
-      final documents = ref.watch(documentListSearchProvider);
-      final polls = ref.watch(pollListSearchProvider);
-
-      if (sheets.isEmpty &&
-          events.isEmpty && 
-          tasks.isEmpty && 
-          links.isEmpty && 
-          documents.isEmpty && 
-          polls.isEmpty) {
-        return Center(
-          child: EmptyStateWidget(
-            message: L10n.of(context).noResultsFound,
-            icon: Icons.search_off_rounded,
-          ),
-        );
-      }
-    }
 
     return SingleChildScrollView(
       child: Column(

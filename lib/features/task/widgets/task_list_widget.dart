@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -53,20 +55,18 @@ class TaskListWidget extends ConsumerWidget {
                       key: Key(task.id),
                       taskId: task.id,
                       isEditing: false,
-                      showSheetName: false,
                     ),
                   ),
                 )
               : Padding(
-            padding: const EdgeInsets.only(left: 16, bottom: 8),
-            child: TaskWidget(
-              key: ValueKey(task.id),
-              taskId: task.id,
-              isEditing: isEditing,
-              showSheetName: false,
-            ),
-          ),
-
+                  padding: const EdgeInsets.only(left: 16, bottom: 8),
+                  child: TaskWidget(
+                    key: ValueKey(task.id),
+                    taskId: task.id,
+                    isEditing: isEditing,
+                    showSheetName: false,
+                  ),
+                ),
         );
       },
     );

@@ -23,7 +23,12 @@ class PollWidget extends ConsumerWidget {
   final bool isEditing;
   final bool showSheetName;
 
-  const PollWidget({super.key, required this.pollId, required this.isEditing, this.showSheetName = true});
+  const PollWidget({
+    super.key,
+    required this.pollId,
+    required this.isEditing,
+    this.showSheetName = true,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -72,8 +77,11 @@ class PollWidget extends ConsumerWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        if (context.findAncestorWidgetOfExactType<PollDetailsScreen>() == null) {
-          context.push(AppRoutes.pollDetails.route.replaceAll(':pollId', pollId));
+        if (context.findAncestorWidgetOfExactType<PollDetailsScreen>() ==
+            null) {
+          context.push(
+            AppRoutes.pollDetails.route.replaceAll(':pollId', pollId),
+          );
         }
       },
       child: Row(
