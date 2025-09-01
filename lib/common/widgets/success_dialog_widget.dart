@@ -175,21 +175,14 @@ class _SuccessDialogWidgetState extends State<SuccessDialogWidget>
   Widget _buildAnimatedTitle() {
     final theme = Theme.of(context);
 
-    return FadeTransition(
-      opacity: _contentAnimation,
-      child: SlideTransition(
-        position: Tween<Offset>(
-          begin: const Offset(0, 0.3),
-          end: Offset.zero,
-        ).animate(_contentAnimation),
-        child: Text(
-          widget.title,
-          style: theme.textTheme.headlineMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface,
-          ),
-          textAlign: TextAlign.center,
+    return _buildAnimatedTransition(
+      child: Text(
+        widget.title,
+        style: theme.textTheme.headlineMedium?.copyWith(
+          fontWeight: FontWeight.bold,
+          color: theme.colorScheme.onSurface,
         ),
+        textAlign: TextAlign.center,
       ),
     );
   }
@@ -198,21 +191,14 @@ class _SuccessDialogWidgetState extends State<SuccessDialogWidget>
   Widget _buildAnimatedMessage() {
     final theme = Theme.of(context);
 
-    return FadeTransition(
-      opacity: _contentAnimation,
-      child: SlideTransition(
-        position: Tween<Offset>(
-          begin: const Offset(0, 0.3),
-          end: Offset.zero,
-        ).animate(_contentAnimation),
-        child: Text(
-          widget.message,
-          style: theme.textTheme.bodyLarge?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-            height: 1.5,
-          ),
-          textAlign: TextAlign.center,
+    return _buildAnimatedTransition(
+      child: Text(
+        widget.message,
+        style: theme.textTheme.bodyLarge?.copyWith(
+          color: theme.colorScheme.onSurfaceVariant,
+          height: 1.5,
         ),
+        textAlign: TextAlign.center,
       ),
     );
   }
@@ -221,6 +207,22 @@ class _SuccessDialogWidgetState extends State<SuccessDialogWidget>
   Widget _buildAnimatedButton() {
     final l10n = L10n.of(context);
 
+    return _buildAnimatedTransition(
+      child: ZoePrimaryButton(
+        text: widget.buttonText ?? l10n.done,
+        icon: Icons.done_rounded,
+        onPressed: () {
+          // Always close the dialog first
+          context.pop();
+          // Then execute custom callback if provided
+          widget.onButtonPressed?.call();
+        },
+      ),
+    );
+  }
+
+  /// Animated transition widget
+  Widget _buildAnimatedTransition({required Widget child}) {
     return FadeTransition(
       opacity: _contentAnimation,
       child: SlideTransition(
@@ -228,16 +230,7 @@ class _SuccessDialogWidgetState extends State<SuccessDialogWidget>
           begin: const Offset(0, 0.3),
           end: Offset.zero,
         ).animate(_contentAnimation),
-        child: ZoePrimaryButton(
-          text: widget.buttonText ?? l10n.done,
-          icon: Icons.done_rounded,
-          onPressed: () {
-            // Always close the dialog first
-            context.pop();
-            // Then execute custom callback if provided
-            widget.onButtonPressed?.call();
-          },
-        ),
+        child: child,
       ),
     );
   }
