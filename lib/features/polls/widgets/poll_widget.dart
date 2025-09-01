@@ -12,6 +12,7 @@ import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';

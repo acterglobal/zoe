@@ -13,7 +13,6 @@ import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
-import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/widgets/user_list_widget.dart';

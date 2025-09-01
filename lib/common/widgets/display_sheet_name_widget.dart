@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 
-final showSheetNameProvider = Provider<bool>((ref) => true);
-
 class DisplaySheetNameWidget extends ConsumerWidget {
   final String sheetId;
 
