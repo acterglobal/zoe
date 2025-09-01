@@ -29,5 +29,3 @@ final listOfUsersBySheetIdProvider = Provider.family<List<String>, String>((
   final sheetList = ref.watch(sheetListProvider);
   return sheetList.where((s) => s.id == sheetId).firstOrNull?.users ?? [];
 });
-
-final showSheetNameProvider = Provider<bool>((ref) => true);

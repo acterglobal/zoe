@@ -7,7 +7,6 @@ import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
-import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/utils/task_utils.dart';
@@ -17,8 +16,14 @@ import 'package:zoe/l10n/generated/l10n.dart';
 class TaskWidget extends ConsumerWidget {
   final String taskId;
   final bool isEditing;
+  final bool showSheetName;
 
-  const TaskWidget({super.key, required this.taskId, required this.isEditing});
+  const TaskWidget({
+    super.key,
+    required this.taskId,
+    required this.isEditing,
+    this.showSheetName = true,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,7 +42,6 @@ class TaskWidget extends ConsumerWidget {
     bool shouldFocus,
   ) {
     final color = Theme.of(context).colorScheme.surface;
-    final shouldShowSheetName = ref.watch(showSheetNameProvider);
     return InkWell(
       onTap: () => context.push(
         AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
@@ -60,7 +64,7 @@ class TaskWidget extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if (shouldShowSheetName)...[
+                    if (showSheetName) ...[
                       DisplaySheetNameWidget(sheetId: task.sheetId),
                     ],
                     _buildTaskItemDueDate(context, ref, task),

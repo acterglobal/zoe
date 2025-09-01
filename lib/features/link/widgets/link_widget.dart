@@ -8,14 +8,15 @@ import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
-import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class LinkWidget extends ConsumerWidget {
   final String linkId;
   final bool isEditing;
+  final bool showSheetName;
 
-  const LinkWidget({super.key, required this.linkId, required this.isEditing});
+  const LinkWidget({super.key, required this.linkId, required this.isEditing, this.showSheetName = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +36,6 @@ class LinkWidget extends ConsumerWidget {
     WidgetRef ref,
     LinkModel linkContent,
   ) {
-    final shouldShowSheetName = ref.watch(showSheetNameProvider);
     return Row(
       children: [
         _buildLinkContentEmoji(context, ref, linkContent.emoji),
@@ -67,7 +67,7 @@ class LinkWidget extends ConsumerWidget {
               const SizedBox(height: 6),
               _buildUrl(context, ref, linkContent.url, isEditing),
               const SizedBox(height: 6),
-              if (shouldShowSheetName) ...[
+              if (showSheetName) ...[
                 DisplaySheetNameWidget(sheetId: linkContent.sheetId),
               ],
             ],

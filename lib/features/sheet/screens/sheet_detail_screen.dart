@@ -82,12 +82,7 @@ class SheetDetailScreen extends ConsumerWidget {
         children: [
           _buildSheetHeader(context, ref, isEditing),
           const SizedBox(height: 16),
-          ProviderScope(
-            overrides: [
-              showSheetNameProvider.overrideWithValue(false),
-            ],
-            child: ContentWidget(parentId: sheetId, sheetId: sheetId),
-          ),
+          ContentWidget(parentId: sheetId, sheetId: sheetId, showSheetName: false),
         ],
       ),
     );

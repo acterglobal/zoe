@@ -14,12 +14,14 @@ class DocumentWidget extends ConsumerWidget {
   final String documentId;
   final bool isEditing;
   final bool isVertical;
+  final bool showSheetName;
 
   const DocumentWidget({
     super.key,
     required this.documentId,
     required this.isEditing,
     this.isVertical = false,
+    this.showSheetName = true,
   });
 
   @override
@@ -71,7 +73,9 @@ class DocumentWidget extends ConsumerWidget {
         subtitle: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            DisplaySheetNameWidget(sheetId: document.sheetId),
+            if (showSheetName) ...[
+              DisplaySheetNameWidget(sheetId: document.sheetId),
+            ],
             const SizedBox(width: 4),
             Text(
               '${getFileSize(document.filePath)}  •  ${getFileType(document.filePath).toUpperCase()}',

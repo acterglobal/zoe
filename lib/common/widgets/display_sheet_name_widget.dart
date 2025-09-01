@@ -16,7 +16,7 @@ class DisplaySheetNameWidget extends ConsumerWidget {
     return Flexible(
       child: Text(
         '${sheet.emoji} ${sheet.title}',
-        style: theme.textTheme.bodySmall 
+        style: theme.textTheme.bodySmall,
       ),
     );
   }

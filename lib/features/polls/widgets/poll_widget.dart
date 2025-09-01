@@ -12,7 +12,7 @@ import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
-import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
@@ -20,8 +20,9 @@ import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
 class PollWidget extends ConsumerWidget {
   final String pollId;
   final bool isEditing;
+  final bool showSheetName;
 
-  const PollWidget({super.key, required this.pollId, required this.isEditing});
+  const PollWidget({super.key, required this.pollId, required this.isEditing, this.showSheetName = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,7 +38,6 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
   ) {
-    final shouldShowSheetName = ref.watch(showSheetNameProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -45,7 +45,7 @@ class PollWidget extends ConsumerWidget {
         const SizedBox(height: 8),
         _buildPollQuestion(context, ref, poll),
         const SizedBox(height: 2),
-        if (shouldShowSheetName) ...[
+        if (showSheetName) ...[
           Row(
             children: [
               const SizedBox(width: 30),

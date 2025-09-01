@@ -9,19 +9,21 @@ import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';
 import 'package:zoe/features/events/utils/event_utils.dart';
 import 'package:zoe/features/events/widgets/event_date_widget.dart';
-import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class EventWidget extends ConsumerWidget {
   final String eventsId;
   final bool isEditing;
   final EdgeInsetsGeometry? margin;
+  final bool showSheetName;
 
   const EventWidget({
     super.key,
     required this.eventsId,
     required this.isEditing,
     this.margin,
+    this.showSheetName = true,
   });
 
   @override
@@ -50,7 +52,6 @@ class EventWidget extends ConsumerWidget {
     EventModel event,
     bool isEditing,
   ) {
-    final shouldShowSheetName = ref.watch(showSheetNameProvider);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -77,7 +78,7 @@ class EventWidget extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                if (shouldShowSheetName)...[
+                if (showSheetName)...[
                   DisplaySheetNameWidget(sheetId: event.sheetId),
                 ],
                 _buildEventDates(context, ref, event),
