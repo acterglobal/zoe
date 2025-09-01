@@ -37,6 +37,7 @@ class TaskListWidget extends ConsumerWidget {
               key: ValueKey(task.id),
               taskId: task.id,
               isEditing: isEditing,
+              showSheetName: false,
             ),
           ),
         );

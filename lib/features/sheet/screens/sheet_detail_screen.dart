@@ -26,6 +26,7 @@ class SheetDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(isEditValueProvider(sheetId));
+    
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -81,7 +82,7 @@ class SheetDetailScreen extends ConsumerWidget {
         children: [
           _buildSheetHeader(context, ref, isEditing),
           const SizedBox(height: 16),
-          ContentWidget(parentId: sheetId, sheetId: sheetId),
+          ContentWidget(parentId: sheetId, sheetId: sheetId, showSheetName: false),
         ],
       ),
     );
