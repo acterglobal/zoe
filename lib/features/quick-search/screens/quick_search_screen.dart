@@ -134,7 +134,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                 ),
                 const SizedBox(height: 16),
                 SheetListWidget(
-                  maxItems: 5,
+                  maxItems: 3,
                   shrinkWrap: true,
                 ),
                 const SizedBox(height: 8),
@@ -155,7 +155,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                 EventListWidget(
                   eventsProvider: eventListSearchProvider,
                   isEditing: false,
-                  maxItems: 5,
+                  maxItems: 3,
                 ),
                 const SizedBox(height: 16),
               ],
@@ -175,7 +175,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                 TaskListWidget(
                   tasksProvider: taskListSearchProvider,
                   isEditing: false,
-                  maxItems: 5,
+                  maxItems: 3,
                 ),
                 const SizedBox(height: 8),
               ],
@@ -195,7 +195,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                 LinkListWidget(
                   linksProvider: linkListSearchProvider,
                   isEditing: false,
-                  maxItems: 5,
+                  maxItems: 3,
                 ),
                 const SizedBox(height: 8),
               ],
@@ -215,7 +215,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                 DocumentListWidget(
                   documentsProvider: documentListSearchProvider,
                   isEditing: false,
-                  maxItems: 5,
+                  maxItems: 3,
                 ),
                 const SizedBox(height: 8),
               ],
@@ -235,7 +235,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                 PollListWidget(
                   pollsProvider: pollListSearchProvider,
                   isEditing: false,
-                  maxItems: 5,
+                  maxItems: 3,
                 ),
                 const SizedBox(height: 16),
               ],

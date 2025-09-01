@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 
 class ZoeGlassyTabWidget extends StatelessWidget
@@ -74,18 +73,18 @@ Widget _buildTabItem({
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: isSelected
-            ? AppColors.primaryColor.withValues(alpha: 0.2)
+            ? theme.colorScheme.primary.withValues(alpha: 0.2)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(20),
         border: isSelected
-            ? Border.all(color: AppColors.primaryColor, width: 1.5)
+            ? Border.all(color: theme.colorScheme.primary, width: 1.5)
             : null,
       ),
       child: Text(
         text,
         style: theme.textTheme.bodyMedium?.copyWith(
           color: isSelected
-              ? AppColors.primaryColor
+              ? theme.colorScheme.primary
               : theme.colorScheme.onSurface.withValues(alpha: 0.6),
           fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
           fontSize: 12,

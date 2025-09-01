@@ -24,8 +24,7 @@ class DocumentListWidget extends ConsumerWidget {
       return EmptyStateWidget(message: L10n.of(context).noDocumentsFound);
     }
 
-    final hasMoreItems = maxItems != null && documents.length > maxItems!;
-    final displayDocuments = hasMoreItems
+    final documentsToShow = maxItems != null && documents.length > maxItems!
         ? documents.take(maxItems!)
         : documents;
 
@@ -34,7 +33,7 @@ class DocumentListWidget extends ConsumerWidget {
       child: Wrap(
         spacing: 10,
         runSpacing: 10,
-        children: displayDocuments
+        children: documentsToShow
             .map(
               (doc) => DocumentWidget(
                 documentId: doc.id,

@@ -77,8 +77,7 @@ class PollWidget extends ConsumerWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        if (context.findAncestorWidgetOfExactType<PollDetailsScreen>() ==
-            null) {
+        if (CommonUtils.findAncestorWidgetOfExactType<PollDetailsScreen>(context) == null) {
           context.push(
             AppRoutes.pollDetails.route.replaceAll(':pollId', pollId),
           );
@@ -107,9 +106,11 @@ class PollWidget extends ConsumerWidget {
                     .updatePollQuestion(pollId, value);
               },
               onTapText: () {
-                context.push(
-                  AppRoutes.pollDetails.route.replaceAll(':pollId', pollId),
-                );
+                if (CommonUtils.findAncestorWidgetOfExactType<PollDetailsScreen>(context) == null) {
+                  context.push(
+                    AppRoutes.pollDetails.route.replaceAll(':pollId', pollId),
+                  );
+                }
               },
             ),
           ),
