@@ -1,8 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/widgets/link_widget.dart';
+import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class LinkListWidget extends ConsumerWidget {
   final ProviderBase<List<LinkModel>> linksProvider;
@@ -11,6 +15,7 @@ class LinkListWidget extends ConsumerWidget {
   final bool shrinkWrap;
   final bool showCardView;
   final Widget emptyState;
+  final bool showSectionHeader;
 
   const LinkListWidget({
     super.key,
@@ -20,7 +25,7 @@ class LinkListWidget extends ConsumerWidget {
     this.shrinkWrap = true,
     this.showCardView = true,
     this.emptyState = const SizedBox.shrink(),
-
+    this.showSectionHeader = false,
   });
 
   @override
@@ -29,6 +34,21 @@ class LinkListWidget extends ConsumerWidget {
     if (links.isEmpty) {
       return emptyState;
     }
+
+    if (showSectionHeader) {
+      return Column(
+        children: [
+          _buildSectionHeader(context),
+          const SizedBox(height: 16),
+          _buildLinkList(context, ref, links),
+        ],
+      );
+    }
+
+    return _buildLinkList(context, ref, links);
+  }
+
+  Widget _buildLinkList(BuildContext context, WidgetRef ref, List<LinkModel> links) {
 
     final itemCount = maxItems != null
         ? min(maxItems!, links.length)
@@ -58,6 +78,15 @@ class LinkListWidget extends ConsumerWidget {
                 isEditing: isEditing,
               );
       },
+    );
+  }
+
+  Widget _buildSectionHeader(BuildContext context) {
+    return QuickSearchTabSectionHeaderWidget(
+      title: L10n.of(context).links,
+      icon: Icons.link_rounded,
+      onTap: () => context.push(AppRoutes.linksList.route),
+      color: Colors.blueAccent,
     );
   }
 }

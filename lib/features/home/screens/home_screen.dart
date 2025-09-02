@@ -61,6 +61,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       leadingWidth: 100,
+      actionsPadding: const EdgeInsets.only(right: 16),
       leading: Builder(
         builder: (context) => Center(
           child: Row(

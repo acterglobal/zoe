@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_glassy_tab_widget.dart';
-import 'package:zoe/core/routing/app_routes.dart';
-import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/documents/widgets/document_list_widget.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';
@@ -17,7 +14,6 @@ import 'package:zoe/features/link/widgets/link_list_widget.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
 import 'package:zoe/features/quick-search/models/quick_search_filters.dart';
-import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_list_widget.dart';
@@ -105,7 +101,9 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
 
     return ZoeGlassyTabWidget(
       tabTexts: tabTexts,
-      selectedIndex: QuickSearchFilters.values.indexOf(quickSearchFilters.value),
+      selectedIndex: QuickSearchFilters.values.indexOf(
+        quickSearchFilters.value,
+      ),
       onTabChanged: (index) {
         quickSearchFilters.value = QuickSearchFilters.values[index];
       },
@@ -116,131 +114,68 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
   }
 
   Widget _buildSearchSections() {
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (quickSearchFilters.value == QuickSearchFilters.all ||
               quickSearchFilters.value == QuickSearchFilters.sheets)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                QuickSearchTabSectionHeaderWidget(
-                  title: L10n.of(context).sheets,
-                  icon: Icons.article_rounded,
-                  onTap: () => context.push(AppRoutes.sheetsList.route),
-                  color: AppColors.primaryColor,
-                ),
-                const SizedBox(height: 16),
-                SheetListWidget(
-                  maxItems: 3,
-                  shrinkWrap: true,
-                ),
-                const SizedBox(height: 8),
-              ],
+            SheetListWidget(
+              maxItems: 3,
+              shrinkWrap: true,
+              showSectionHeader: true,
             ),
           if (quickSearchFilters.value == QuickSearchFilters.all ||
               quickSearchFilters.value == QuickSearchFilters.events)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                QuickSearchTabSectionHeaderWidget(
-                  title: L10n.of(context).events,
-                  icon: Icons.event_rounded,
-                  onTap: () => context.push(AppRoutes.eventsList.route),
-                  color: AppColors.secondaryColor,
-                ),
-                const SizedBox(height: 8),
-                EventListWidget(
-                  eventsProvider: eventListSearchProvider,
-                  isEditing: false,
-                  maxItems: 3,
-                ),
-                const SizedBox(height: 16),
-              ],
+            EventListWidget(
+              eventsProvider: eventListSearchProvider,
+              isEditing: false,
+              maxItems: 3,
+              showSectionHeader: true,
             ),
+
           if (quickSearchFilters.value == QuickSearchFilters.all ||
-              quickSearchFilters.value == QuickSearchFilters.tasks)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                QuickSearchTabSectionHeaderWidget(
-                  title: L10n.of(context).tasks,
-                  icon: Icons.task_alt_rounded,
-                  onTap: () => context.push(AppRoutes.tasksList.route),
-                  color: AppColors.successColor,
-                ),
-                const SizedBox(height: 8),
-                TaskListWidget(
-                  tasksProvider: taskListSearchProvider,
-                  isEditing: false,
-                  maxItems: 3,
-                ),
-                const SizedBox(height: 8),
-              ],
+              quickSearchFilters.value == QuickSearchFilters.tasks) ...[
+            const SizedBox(height: 16),
+            TaskListWidget(
+              tasksProvider: taskListSearchProvider,
+              isEditing: false,
+              maxItems: 3,
+              showSectionHeader: true,
             ),
+          ],
           if (quickSearchFilters.value == QuickSearchFilters.all ||
-              quickSearchFilters.value == QuickSearchFilters.links)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                QuickSearchTabSectionHeaderWidget(
-                  title: L10n.of(context).links,
-                  icon: Icons.link_rounded,
-                  onTap: () => context.push(AppRoutes.linksList.route),
-                  color: Colors.blueAccent,
-                ),
-                const SizedBox(height: 16),
-                LinkListWidget(
-                  linksProvider: linkListSearchProvider,
-                  isEditing: false,
-                  maxItems: 3,
-                ),
-                const SizedBox(height: 8),
-              ],
+              quickSearchFilters.value == QuickSearchFilters.links) ...[
+            const SizedBox(height: 16),
+            LinkListWidget(
+              linksProvider: linkListSearchProvider,
+              isEditing: false,
+              maxItems: 3,
+              showSectionHeader: true,
             ),
+          ],
+
           if (quickSearchFilters.value == QuickSearchFilters.all ||
-              quickSearchFilters.value == QuickSearchFilters.documents)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                QuickSearchTabSectionHeaderWidget(
-                  title: L10n.of(context).documents,
-                  icon: Icons.insert_drive_file_rounded,
-                  onTap: () => context.push(AppRoutes.documentsList.route),
-                  color: AppColors.brightOrangeColor,
-                ),
-                const SizedBox(height: 16),
-                DocumentListWidget(
-                  documentsProvider: documentListSearchProvider,
-                  isEditing: false,
-                  maxItems: 3,
-                  isVertical: true,
-                ),
-                const SizedBox(height: 8),
-              ],
+              quickSearchFilters.value == QuickSearchFilters.documents) ...[
+            const SizedBox(height: 10),
+            DocumentListWidget(
+              documentsProvider: documentListSearchProvider,
+              isEditing: false,
+              maxItems: 3,
+              isVertical: true,
+              showSectionHeader: true,
             ),
+          ],
           if (quickSearchFilters.value == QuickSearchFilters.all ||
-              quickSearchFilters.value == QuickSearchFilters.polls)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                QuickSearchTabSectionHeaderWidget(
-                  title: L10n.of(context).polls,
-                  icon: Icons.poll_rounded,
-                  onTap: () => context.push(AppRoutes.pollsList.route),
-                  color: AppColors.brightMagentaColor,
-                ),
-                const SizedBox(height: 8),
-                PollListWidget(
-                  pollsProvider: pollListSearchProvider,
-                  isEditing: false,
-                  maxItems: 3,
-                ),
-                const SizedBox(height: 16),
-              ],
+              quickSearchFilters.value == QuickSearchFilters.polls) ...[
+            const SizedBox(height: 16),
+            PollListWidget(
+              pollsProvider: pollListSearchProvider,
+              isEditing: false,
+              maxItems: 3,
+              showSectionHeader: true,
             ),
+          ],
         ],
       ),
     );

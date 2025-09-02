@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
+import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/widgets/task_item_widget.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class TaskListWidget extends ConsumerWidget {
   final ProviderBase<List<TaskModel>> tasksProvider;
@@ -14,6 +17,7 @@ class TaskListWidget extends ConsumerWidget {
   final bool shrinkWrap;
   final bool showCardView;
   final Widget emptyState;
+  final bool showSectionHeader;
 
   const TaskListWidget({
     super.key,
@@ -23,6 +27,7 @@ class TaskListWidget extends ConsumerWidget {
     this.shrinkWrap = true,
     this.showCardView = true,
     this.emptyState = const SizedBox.shrink(),
+    this.showSectionHeader = false,
   });
 
   @override
@@ -32,13 +37,27 @@ class TaskListWidget extends ConsumerWidget {
       return emptyState;
     }
 
+    if (showSectionHeader) {
+      return Column(
+        children: [
+          _buildSectionHeader(context),
+          const SizedBox(height: 16),
+          _buildTaskList(context, ref, tasks),
+        ],
+      );
+    }
+
+    return _buildTaskList(context, ref, tasks);
+  }
+
+  Widget _buildTaskList(BuildContext context, WidgetRef ref, List<TaskModel> tasks) {
+  
     final itemCount = maxItems != null
         ? min(maxItems!, tasks.length)
         : tasks.length;
 
     return ListView.builder(
       shrinkWrap: shrinkWrap,
-      padding: const EdgeInsets.symmetric(vertical: 10),
       physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
       itemCount: itemCount,
       itemBuilder: (context, index) {
@@ -49,7 +68,6 @@ class TaskListWidget extends ConsumerWidget {
           ),
           child: showCardView
               ? Card(
-                  margin: const EdgeInsets.only(bottom: 10),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
@@ -73,6 +91,15 @@ class TaskListWidget extends ConsumerWidget {
                 ),
         );
       },
+    );
+  }
+
+  Widget _buildSectionHeader(BuildContext context) {
+    return QuickSearchTabSectionHeaderWidget(
+      title: L10n.of(context).tasks,
+      icon: Icons.task_alt_rounded,
+      onTap: () => context.push(AppRoutes.tasksList.route),
+      color: AppColors.successColor,
     );
   }
 }

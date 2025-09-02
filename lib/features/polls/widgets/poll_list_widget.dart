@@ -1,10 +1,15 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/widgets/poll_widget.dart';
+import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
   
 class PollListWidget extends ConsumerWidget {
   final ProviderBase<List<PollModel>> pollsProvider;
@@ -13,6 +18,7 @@ class PollListWidget extends ConsumerWidget {
   final bool shrinkWrap;
   final bool showCardView;
   final Widget emptyState;
+  final bool showSectionHeader;
 
   const PollListWidget({
     super.key,
@@ -22,6 +28,7 @@ class PollListWidget extends ConsumerWidget {
     this.shrinkWrap = true,
     this.showCardView = true,
     this.emptyState = const SizedBox.shrink(),
+    this.showSectionHeader = false,
   });
 
   @override
@@ -42,6 +49,21 @@ class PollListWidget extends ConsumerWidget {
     if (polls.isEmpty) {
       return emptyState;
     }
+
+    if (showSectionHeader) {
+      return Column(
+        children: [
+          _buildSectionHeader(context),
+          const SizedBox(height: 16),
+          _buildPollList(context, ref, polls),
+        ],
+      );
+    }
+
+    return _buildPollList(context, ref, polls);
+  }
+
+  Widget _buildPollList(BuildContext context, WidgetRef ref, List<PollModel> polls) {
 
     final itemCount = maxItems != null
         ? min(maxItems!, polls.length)
@@ -70,6 +92,15 @@ class PollListWidget extends ConsumerWidget {
               )
             : PollWidget(pollId: poll.id, isEditing: isEditing);
       },
+    );
+  }
+
+  Widget _buildSectionHeader(BuildContext context) {
+    return QuickSearchTabSectionHeaderWidget(
+      title: L10n.of(context).polls,
+      icon: Icons.poll_rounded,
+      onTap: () => context.push(AppRoutes.pollsList.route),
+      color: AppColors.brightMagentaColor,
     );
   }
 }
