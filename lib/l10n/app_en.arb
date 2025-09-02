@@ -456,5 +456,11 @@
     "sharePoll": "Share Poll",
     "@sharePoll": {},
     "scanQr": "Scan QR",
-    "@scanQr": {}
+    "@scanQr": {},
+    "done": "Done",
+    "@done": {},
+    "successfullyConnected": "Successfully Connected!",
+    "@successfullyConnected": {},
+    "whatsappGroupConnectedMessage": "Your sheet has been successfully connected to the WhatsApp group. You can now share content directly from your sheet.",
+    "@whatsappGroupConnectedMessage": {}
 }

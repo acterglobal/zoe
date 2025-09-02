@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/file_utils.dart';
+import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/features/documents/actions/select_document_actions.dart';
@@ -13,12 +14,14 @@ class DocumentWidget extends ConsumerWidget {
   final String documentId;
   final bool isEditing;
   final bool isVertical;
+  final bool showSheetName;
 
   const DocumentWidget({
     super.key,
     required this.documentId,
     required this.isEditing,
     this.isVertical = false,
+    this.showSheetName = true,
   });
 
   @override
@@ -41,7 +44,12 @@ class DocumentWidget extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 8),
       borderRadius: BorderRadius.circular(12),
       onTap: () {
-        context.push(AppRoutes.documentPreview.route.replaceAll(':documentId', document.id));
+        context.push(
+          AppRoutes.documentPreview.route.replaceAll(
+            ':documentId',
+            document.id,
+          ),
+        );
       },
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
@@ -62,13 +70,22 @@ class DocumentWidget extends ConsumerWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        subtitle: Text(
-          '${getFileSize(document.filePath)}  •  ${getFileType(document.filePath).toUpperCase()}',
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (showSheetName) ...[
+              DisplaySheetNameWidget(sheetId: document.sheetId),
+            ],
+            const SizedBox(width: 4),
+            Text(
+              '${getFileSize(document.filePath)}  •  ${getFileType(document.filePath).toUpperCase()}',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ),
     );
@@ -80,40 +97,45 @@ class DocumentWidget extends ConsumerWidget {
     DocumentModel document,
   ) {
     return GlassyContainer(
-        onTap: () {
-          context.push(AppRoutes.documentPreview.route.replaceAll(':documentId', document.id));
-        },
-        width: 80,
-        height: 100,
-        margin: const EdgeInsets.only(bottom: 16),
-        borderRadius: BorderRadius.circular(12),
-        borderOpacity: 0.05,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildDocumentIcon(document),
-                    const SizedBox(height: 6),
-                    _buildDocumentFileName(context, document),
-                    const SizedBox(height: 3),
-                    _buildDocumentFileTypeBadge(context, document),
-                  ],
-                ),
+      onTap: () {
+        context.push(
+          AppRoutes.documentPreview.route.replaceAll(
+            ':documentId',
+            document.id,
+          ),
+        );
+      },
+      width: 80,
+      height: 100,
+      margin: const EdgeInsets.only(bottom: 16),
+      borderRadius: BorderRadius.circular(12),
+      borderOpacity: 0.05,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildDocumentIcon(document),
+                  const SizedBox(height: 6),
+                  _buildDocumentFileName(context, document),
+                  const SizedBox(height: 3),
+                  _buildDocumentFileTypeBadge(context, document),
+                ],
               ),
             ),
-            if (isEditing)
-              Positioned(
-                top: -5,
-                right: -5,
-                child: _buildDeleteButton(ref, context, document),
-              ),
-          ],
-        ),
+          ),
+          if (isEditing)
+            Positioned(
+              top: -5,
+              right: -5,
+              child: _buildDeleteButton(ref, context, document),
+            ),
+        ],
+      ),
     );
   }
 

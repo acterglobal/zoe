@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/step_indicator_widget.dart';
+import 'package:zoe/common/widgets/success_dialog_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_secondary_button.dart';
 import 'package:zoe/features/whatsapp/providers/whatsapp_group_connect_provider.dart';
@@ -98,15 +98,36 @@ class GroupPermissionWidget extends ConsumerWidget {
 
   Future<void> _connectToGroup(BuildContext context, WidgetRef ref) async {
     final state = ref.read(whatsappGroupConnectProvider);
+    final l10n = L10n.of(context);
+
     ref.read(whatsappGroupConnectProvider.notifier).setConnecting(true);
     try {
+      // Simulate connection process
+      await Future.delayed(const Duration(seconds: 1));
+
+      if (!context.mounted) return;
+      // First pop to close the current screen
       context.pop();
-      CommonUtils.showSnackBar(
-        context,
-        "SheetId: $sheetId connected to WhatsApp group link: ${state.groupLink}",
-      );
+      
       ref.read(whatsappGroupConnectProvider.notifier).setConnecting(false);
+
+      // Show success dialog with safer navigation handling
+      await showSuccessDialog(
+        context: context,
+        title: l10n.successfullyConnected,
+        message: l10n.whatsappGroupConnectedMessage,
+        buttonText: l10n.done,
+        customIcon: Icons.link_rounded,
+        onButtonPressed: () {
+          // Additional actions after success can be added here
+          debugPrint(
+            "WhatsApp group connected successfully - SheetId: $sheetId, GroupLink: ${state.groupLink}",
+          );
+        },
+      );
     } catch (e) {
+      if (!context.mounted) return;
+      ref.read(whatsappGroupConnectProvider.notifier).setConnecting(false);
       debugPrint("Error connecting to group: $e");
     }
   }
