@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
-import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_glassy_tab_widget.dart';
-import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
-import 'package:zoe/features/polls/widgets/poll_widget.dart';
+import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class PollsListScreen extends ConsumerStatefulWidget {
@@ -103,66 +100,21 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
   Widget _buildNotActivePollsTab() {
     return MaxWidthWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: _buildPollList(context, ref, notActivePollListProvider, false),
+      child: PollListWidget(pollsProvider: notActivePollListProvider, isEditing: false, shrinkWrap: false),
     );
   }
 
   Widget _buildActivePollsTab() {
     return MaxWidthWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: _buildPollList(context, ref, activePollListProvider, true),
+      child: PollListWidget(pollsProvider: activePollListProvider, isEditing: false, shrinkWrap: false),
     );
   }
 
   Widget _buildCompletedPollsTab() {
     return MaxWidthWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: _buildPollList(context, ref, completedPollListProvider, false),
-    );
-  }
-
-  Widget _buildPollList(
-    BuildContext context,
-    WidgetRef ref,
-    Provider<List<PollModel>> pollProvider,
-    bool isStartedTab,
-  ) {
-    final allPolls = ref.watch(pollProvider);
-    final searchValue = ref.watch(searchValueProvider);
-
-    // Filter polls based on search value
-    final polls = searchValue.isEmpty
-        ? allPolls
-        : allPolls
-              .where(
-                (poll) => poll.question.toLowerCase().contains(
-                  searchValue.toLowerCase(),
-                ),
-              )
-              .toList();
-
-    if (polls.isEmpty) {
-      return EmptyStateWidget(message: L10n.of(context).noPollsFound);
-    }
-
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: polls.length,
-      padding: const EdgeInsets.only(bottom: 30),
-      itemBuilder: (context, index) {
-        final poll = polls[index];
-        return _buildPollItem(context, poll);
-      },
-    );
-  }
-
-  Widget _buildPollItem(BuildContext context, PollModel poll) {
-    return GlassyContainer(
-      borderRadius: BorderRadius.circular(12),
-      borderOpacity: 0.05,
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      child: PollWidget(key: Key(poll.id), pollId: poll.id, isEditing: false),
+      child: PollListWidget(pollsProvider: completedPollListProvider, isEditing: false, shrinkWrap: false),
     );
   }
 }

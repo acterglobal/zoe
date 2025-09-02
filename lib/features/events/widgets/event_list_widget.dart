@@ -11,12 +11,14 @@ class EventListWidget extends ConsumerWidget {
   final ProviderBase<List<EventModel>> eventsProvider;
   final bool isEditing;
   final int? maxItems;
+  final bool shrinkWrap;
 
   const EventListWidget({
     super.key,
     required this.eventsProvider,
     required this.isEditing,
     this.maxItems,
+    this.shrinkWrap = true,
   });
 
   @override
@@ -31,8 +33,8 @@ class EventListWidget extends ConsumerWidget {
         : events.length;
 
     return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: shrinkWrap,
+      physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
       itemCount: itemCount,
       itemBuilder: (context, index) {
         final event = events[index];

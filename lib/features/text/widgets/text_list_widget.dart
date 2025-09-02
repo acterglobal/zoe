@@ -6,11 +6,13 @@ import 'package:zoe/features/text/widgets/text_widget.dart';
 class TextListWidget extends ConsumerWidget {
   final ProviderBase<List<TextModel>> textsProvider;
   final bool isEditing;
+  final bool shrinkWrap;
 
   const TextListWidget({
     super.key,
     required this.textsProvider,
     required this.isEditing,
+    this.shrinkWrap = true,
   });
 
   @override
@@ -19,9 +21,9 @@ class TextListWidget extends ConsumerWidget {
     if (texts.isEmpty) return const SizedBox.shrink();
 
     return ListView.builder(
-      shrinkWrap: true,
+      shrinkWrap: shrinkWrap,
       padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
       itemCount: texts.length,
       itemBuilder: (context, index) {
         final text = texts[index];

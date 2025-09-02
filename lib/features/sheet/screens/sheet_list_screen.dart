@@ -56,7 +56,7 @@ class _SheetListScreenState extends ConsumerState<SheetListScreen> {
                   ref.read(searchValueProvider.notifier).state = value,
             ),
             const SizedBox(height: 10),
-            Expanded(child: SheetListWidget()),
+            Expanded(child: SheetListWidget(shrinkWrap: false)),
           ],
         ),
       ),

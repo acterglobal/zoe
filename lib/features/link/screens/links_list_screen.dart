@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
-import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
-import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
-import 'package:zoe/features/link/widgets/link_widget.dart';
+import 'package:zoe/features/link/widgets/link_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class LinksListScreen extends ConsumerStatefulWidget {
@@ -59,39 +57,8 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                   ref.read(searchValueProvider.notifier).state = value,
             ),
             const SizedBox(height: 10),
-            Expanded(child: _buildLinkList(context, ref)),
+            Expanded(child: LinkListWidget(linksProvider: linkListSearchProvider, isEditing: false, shrinkWrap: false)),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLinkList(BuildContext context, WidgetRef ref) {
-    final links = ref.watch(linkListSearchProvider);
-    if (links.isEmpty) {
-      return EmptyStateWidget(message: L10n.of(context).noLinksFound);
-    }
-
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: links.length,
-      padding: const EdgeInsets.only(bottom: 30),
-      itemBuilder: (context, index) {
-        final link = links[index];
-        return _buildLinkItem(context, link);
-      },
-    );
-  }
-
-  Widget _buildLinkItem(BuildContext context, LinkModel link) {
-    return Card(
-      margin: const EdgeInsets.only(top: 4, bottom: 4),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-        child: LinkWidget(
-          key: Key(link.id),
-          linkId: link.id,
-          isEditing: false,
         ),
       ),
     );

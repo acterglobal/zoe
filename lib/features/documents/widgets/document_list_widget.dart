@@ -9,12 +9,14 @@ class DocumentListWidget extends ConsumerWidget {
   final ProviderBase<List<DocumentModel>> documentsProvider;
   final bool isEditing;
   final int? maxItems;
+  final bool isVertical;
 
   const DocumentListWidget({
     super.key,
     required this.documentsProvider,
     required this.isEditing,
     this.maxItems,
+    this.isVertical = false,
   });
 
   @override
@@ -36,7 +38,7 @@ class DocumentListWidget extends ConsumerWidget {
               (doc) => DocumentWidget(
                 documentId: doc.id,
                 isEditing: isEditing,
-                isVertical: maxItems != null ? true : false,
+                isVertical: isVertical,
               ),
             )
             .toList(),

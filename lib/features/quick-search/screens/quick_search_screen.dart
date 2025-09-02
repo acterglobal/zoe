@@ -216,6 +216,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
                   documentsProvider: documentListSearchProvider,
                   isEditing: false,
                   maxItems: 3,
+                  isVertical: true,
                 ),
                 const SizedBox(height: 8),
               ],

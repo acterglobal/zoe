@@ -13,12 +13,14 @@ class TaskListWidget extends ConsumerWidget {
   final ProviderBase<List<TaskModel>> tasksProvider;
   final bool isEditing;
   final int? maxItems;
+  final bool shrinkWrap;
 
   const TaskListWidget({
     super.key,
     required this.tasksProvider,
     required this.isEditing,
     this.maxItems,
+    this.shrinkWrap = true,
   });
 
   @override
@@ -33,9 +35,9 @@ class TaskListWidget extends ConsumerWidget {
         : tasks.length;
 
     return ListView.builder(
-      shrinkWrap: true,
+      shrinkWrap: shrinkWrap,
       padding: const EdgeInsets.symmetric(vertical: 10),
-      physics: const NeverScrollableScrollPhysics(),
+      physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
       itemCount: itemCount,
       itemBuilder: (context, index) {
         final task = tasks[index];

@@ -10,12 +10,14 @@ class LinkListWidget extends ConsumerWidget {
   final ProviderBase<List<LinkModel>> linksProvider;
   final bool isEditing;
   final int? maxItems;
+  final bool shrinkWrap;
 
   const LinkListWidget({
     super.key,
     required this.linksProvider,
     required this.isEditing,
     this.maxItems,
+    this.shrinkWrap = true,
   });
 
   @override
@@ -30,8 +32,8 @@ class LinkListWidget extends ConsumerWidget {
         : links.length;
 
     return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: shrinkWrap,
+      physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
       itemCount: itemCount,
       itemBuilder: (context, index) {
         final link = links[index];
