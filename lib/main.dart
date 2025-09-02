@@ -6,15 +6,15 @@ import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/features/settings/providers/local_provider.dart';
 import 'package:zoe/features/settings/providers/theme_provider.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
+import 'package:zoe_native/zoe_native.dart';
 import 'core/routing/app_router.dart';
-import 'core/rust/frb_generated.dart';
 import 'core/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await RustLib.init();
   await PreferencesService().init();
-  
+
   runApp(const ProviderScope(child: MyApp()));
 }
 

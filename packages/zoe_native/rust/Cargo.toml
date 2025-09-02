@@ -1,0 +1,19 @@
+[package]
+name = "zoe_native"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+flutter_rust_bridge = "=2.11.1"
+
+[dependencies.zoe-client]
+# path = "../../../../zoe-relay/crates/client"
+features = ["frb-api"]
+git = "https://github.com/acterglobal/zoe-relay.git"
+branch = "main"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
