@@ -24,7 +24,6 @@ class DocumentListWidget extends ConsumerWidget {
     this.isVertical = false,
     this.emptyState = const SizedBox.shrink(),
     this.showSectionHeader = false,
-
   });
 
   @override
@@ -39,7 +38,7 @@ class DocumentListWidget extends ConsumerWidget {
         children: [
           _buildSectionHeader(context),
           const SizedBox(height: 16),
-          _buildDocumentList(context, ref, documents  ),
+          _buildDocumentList(context, ref, documents),
         ],
       );
     }
@@ -47,24 +46,45 @@ class DocumentListWidget extends ConsumerWidget {
     return _buildDocumentList(context, ref, documents);
   }
 
-  Widget _buildDocumentList(BuildContext context, WidgetRef ref, List<DocumentModel> documents) {
-
+  Widget _buildDocumentList(
+    BuildContext context,
+    WidgetRef ref,
+    List<DocumentModel> documents,
+  ) {
     final documentsToShow = maxItems != null && documents.length > maxItems!
         ? documents.take(maxItems!)
         : documents;
 
+    if (isVertical) {
+      return SingleChildScrollView(
+        child: Wrap(
+          spacing: 10,
+          runSpacing: 5,
+          children: documentsToShow
+              .map(
+                (doc) => DocumentWidget(
+                  documentId: doc.id,
+                  isEditing: isEditing,
+                  isVertical: isVertical,
+                ),
+              )
+              .toList(),
+        ),
+      );
+    }
+
     return Wrap(
-        spacing: 10,
-        runSpacing: 5,
-        children: documentsToShow
-            .map(
-              (doc) => DocumentWidget(
-                documentId: doc.id,
-                isEditing: isEditing,
-                isVertical: isVertical,
-              ),
-            )
-            .toList(),
+      spacing: 10,
+      runSpacing: 5,
+      children: documentsToShow
+          .map(
+            (doc) => DocumentWidget(
+              documentId: doc.id,
+              isEditing: isEditing,
+              isVertical: isVertical,
+            ),
+          )
+          .toList(),
     );
   }
 
