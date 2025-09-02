@@ -55,7 +55,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         floatingActionButton: _buildFloatingActionButton(),
         body: _buildBody(),
       ),
-    );merged
+    );
   }
 
   AppBar _buildAppBar(BuildContext context) {
