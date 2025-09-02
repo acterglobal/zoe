@@ -117,4 +117,10 @@ class CommonUtils {
   static T? findAncestorWidgetOfExactType<T extends Widget>(BuildContext context) {
     return context.findAncestorWidgetOfExactType<T>();
   }
+
+  /// Returns true if the keyboard is visible, false otherwise
+  static bool isKeyboardOpen(BuildContext context) {
+    final viewInsets = MediaQuery.of(context).viewInsets;
+    return viewInsets.bottom > 0;
+  }
 }

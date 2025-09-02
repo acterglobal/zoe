@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
@@ -60,7 +61,7 @@ class SheetDetailScreen extends ConsumerWidget {
             ),
           ],
         ),
-        floatingActionButton: _buildFloatingActionButton(context, isEditing),
+        floatingActionButton: CommonUtils.isKeyboardOpen(context) ? null : _buildFloatingActionButton(context, isEditing),
       ),
     );
   }
