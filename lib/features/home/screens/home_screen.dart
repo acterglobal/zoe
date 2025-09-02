@@ -74,15 +74,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
       ),
-      actions: [_buildQrScanButton()],
+      actions: [if (Platform.isAndroid || Platform.isIOS) _buildQrScanButton()],
     );
   }
 
   Widget _buildQrScanButton() {
-    if (!Platform.isAndroid && !Platform.isIOS) {
-      return const SizedBox.shrink();
-    }
-
     return Row(
       children: [
         ZoeIconButtonWidget(

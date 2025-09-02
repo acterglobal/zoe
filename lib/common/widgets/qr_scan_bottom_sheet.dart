@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -59,15 +58,20 @@ class _QrScanBottomSheetState extends State<QrScanBottomSheet> {
         ),
         MaxWidthWidget(
           padding: const EdgeInsets.all(16),
-          child: GlassyContainer(
+          child: SizedBox(
             height: height,
             width: width,
-            borderRadius: borderRadius,
             child: ClipRRect(
               borderRadius: borderRadius,
               child: MobileScanner(
                 controller: controller,
                 onDetect: widget.onDetect,
+                placeholderBuilder: (context) => Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
+                    strokeWidth: 2,
+                  ),
+                ),
               ),
             ),
           ),
