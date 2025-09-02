@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/animated_background_widget.dart';
 import 'package:zoe/common/widgets/drawer/hamburger_drawer_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
+import 'package:zoe/common/widgets/qr_scan_bottom_sheet.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
@@ -56,17 +60,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
+      leadingWidth: 100,
       leading: Builder(
-        builder: (context) => Padding(
-          padding: const EdgeInsets.all(8),
-          child: ZoeIconButtonWidget(
-            icon: Icons.menu_rounded,
-            size: 22,
-            padding: 0,
-            onTap: () => Scaffold.of(context).openDrawer(),
+        builder: (context) => Center(
+          child: Row(
+            children: [
+              const SizedBox(width: 16),
+              ZoeIconButtonWidget(
+                icon: Icons.menu_rounded,
+                onTap: () => Scaffold.of(context).openDrawer(),
+              ),
+            ],
           ),
         ),
       ),
+      actions: [if (Platform.isAndroid || Platform.isIOS) _buildQrScanButton()],
+    );
+  }
+
+  Widget _buildQrScanButton() {
+    return Row(
+      children: [
+        ZoeIconButtonWidget(
+          icon: Icons.qr_code_rounded,
+          onTap: () => showQrScanBottomSheet(
+            context: context,
+            onDetect: (barcodes) {
+              final rawValue = barcodes.barcodes.first.rawValue;
+              if (rawValue == null) return;
+              CommonUtils.showSnackBar(context, rawValue);
+              context.pop();
+            },
+          ),
+        ),
+        const SizedBox(width: 16),
+      ],
     );
   }
 

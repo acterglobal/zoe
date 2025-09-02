@@ -359,6 +359,8 @@
     "@searchInText": {},
     "unknownDocument": "अजगर फाइल",
     "@unknownDocument": {},
+    "scanQr": "QR स्कैन करें",
+    "@scanQr": {},
     "done": "पूर्ण",
     "@done": {},
     "successfullyConnected": "सफलतापूर्वक कनेक्ट हो गया!",

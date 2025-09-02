@@ -455,6 +455,8 @@
     "@shareBullet": {},
     "sharePoll": "Share Poll",
     "@sharePoll": {},
+    "scanQr": "Scan QR",
+    "@scanQr": {},
     "done": "Done",
     "@done": {},
     "successfullyConnected": "Successfully Connected!",
