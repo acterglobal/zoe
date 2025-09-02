@@ -113,4 +113,8 @@ class CommonUtils {
     final params = ShareParams(text: text, subject: subject);
     SharePlus.instance.share(params);
   }
+
+  static T? findAncestorWidgetOfExactType<T extends Widget>(BuildContext context) {
+    return context.findAncestorWidgetOfExactType<T>();
+  }
 }

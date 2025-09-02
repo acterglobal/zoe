@@ -13,6 +13,7 @@ import 'package:zoe/features/list/screens/list_details_screen.dart';
 import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 import 'package:zoe/features/polls/screens/poll_results_screen.dart';
 import 'package:zoe/features/polls/screens/polls_list_screen.dart';
+import 'package:zoe/features/quick-search/screens/quick_search_screen.dart';
 import 'package:zoe/features/settings/screens/settings_screen.dart';
 import 'package:zoe/features/settings/screens/language_selection_screen.dart';
 import 'package:zoe/features/sheet/screens/sheet_detail_screen.dart';
@@ -186,6 +187,13 @@ final routerProvider = Provider<GoRouter>((ref) {
               state.pathParameters['textBlockId'] ?? Uuid().v4();
           return TextBlockDetailsScreen(textBlockId: textBlockId);
         },
+      ),
+
+      // Quick search route
+      GoRoute(
+        path: AppRoutes.quickSearch.route,
+        name: AppRoutes.quickSearch.name,
+        builder: (context, state) => const QuickSearchScreen(),
       ),
 
       // Language selection route

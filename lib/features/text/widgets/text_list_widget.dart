@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/features/text/providers/text_providers.dart';
+import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/widgets/text_widget.dart';
 
 class TextListWidget extends ConsumerWidget {
-  final String parentId;
+  final ProviderBase<List<TextModel>> textsProvider;
   final bool isEditing;
+  final bool shrinkWrap;
+  final Widget emptyState;
 
   const TextListWidget({
     super.key,
-    required this.parentId,
+    required this.textsProvider,
     required this.isEditing,
+    this.shrinkWrap = true,
+    this.emptyState = const SizedBox.shrink(),
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final texts = ref.watch(textByParentProvider(parentId));
-    if (texts.isEmpty) return const SizedBox.shrink();
+    final texts = ref.watch(textsProvider);
+    if (texts.isEmpty) return emptyState;
 
     return ListView.builder(
-      shrinkWrap: true,
+      shrinkWrap: shrinkWrap,
       padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
       itemCount: texts.length,
       itemBuilder: (context, index) {
         final text = texts[index];

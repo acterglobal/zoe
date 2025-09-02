@@ -5,9 +5,8 @@ import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
-import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
-import 'package:zoe/features/task/widgets/task_item_widget.dart';
+import 'package:zoe/features/task/widgets/task_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class TasksListScreen extends ConsumerStatefulWidget {
@@ -59,36 +58,16 @@ class _TasksListScreenState extends ConsumerState<TasksListScreen> {
                   ref.read(searchValueProvider.notifier).state = value,
             ),
             const SizedBox(height: 10),
-            Expanded(child: _buildTaskList(context, ref)),
+            Expanded(
+              child: TaskListWidget(
+                tasksProvider: taskListSearchProvider,
+                isEditing: false,
+                shrinkWrap: false,
+                emptyState: EmptyStateWidget(message: L10n.of(context).noTasksFound),
+              ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildTaskList(BuildContext context, WidgetRef ref) {
-    final tasks = ref.watch(taskListSearchProvider);
-    if (tasks.isEmpty) {
-      return EmptyStateWidget(message: L10n.of(context).noTasksFound);
-    }
-
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: tasks.length,
-      padding: const EdgeInsets.only(bottom: 30),
-      itemBuilder: (context, index) {
-        final task = tasks[index];
-        return _buildTaskItem(context, task);
-      },
-    );
-  }
-
-  Widget _buildTaskItem(BuildContext context, TaskModel task) {
-    return Card(
-      margin: const EdgeInsets.only(top: 4, bottom: 4),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        child: TaskWidget(key: Key(task.id), taskId: task.id, isEditing: false),
       ),
     );
   }

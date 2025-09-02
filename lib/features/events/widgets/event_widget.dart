@@ -37,7 +37,7 @@ class EventWidget extends ConsumerWidget {
       ),
       child: Card(
         margin:
-            margin ?? const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+            margin ?? const EdgeInsets.symmetric(vertical: 5),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: _buildEventContent(context, ref, event, isEditing),

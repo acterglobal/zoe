@@ -16,6 +16,7 @@ enum AppRoutes {
   pollDetails('/poll/:pollId'),
   pollResults('/poll-results/:pollId'),
   textBlockDetails('/text-block/:textBlockId'),
+  quickSearch('/quick-search'),
   settings('/settings'),
   settingLanguage('/settings/language'),
   whatsappGroupConnect('/whatsapp-group-connect/:sheetId');

@@ -6,7 +6,7 @@ import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
-import 'package:zoe/features/documents/widgets/document_widget.dart';
+import 'package:zoe/features/documents/widgets/document_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class DocumentsListScreen extends ConsumerStatefulWidget {
@@ -59,31 +59,17 @@ class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen> {
                   ref.read(searchValueProvider.notifier).state = value,
             ),
             const SizedBox(height: 10),
-            Expanded(child: _buildDocumentList(context, ref)),
+            Expanded(
+              child: DocumentListWidget(
+                documentsProvider: documentListSearchProvider,
+                isEditing: false,
+                isVertical: true,
+                emptyState: EmptyStateWidget(message: L10n.of(context).noDocumentsFound),
+              ),
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildDocumentList(BuildContext context, WidgetRef ref) {
-    final documents = ref.watch(documentListSearchProvider);
-    if (documents.isEmpty) {
-      return EmptyStateWidget(message: L10n.of(context).noDocumentsFound);
-    }
-
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: documents.length,
-      padding: const EdgeInsets.only(bottom: 30),
-      itemBuilder: (context, index) {
-        final document = documents[index];
-        return DocumentWidget(
-          documentId: document.id,
-          isEditing: false,
-          isVertical: true,
-        );
-      },
     );
   }
 }

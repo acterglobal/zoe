@@ -16,13 +16,19 @@ import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
+import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 
 class PollWidget extends ConsumerWidget {
   final String pollId;
   final bool isEditing;
   final bool showSheetName;
 
-  const PollWidget({super.key, required this.pollId, required this.isEditing, this.showSheetName = true});
+  const PollWidget({
+    super.key,
+    required this.pollId,
+    required this.isEditing,
+    this.showSheetName = true,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -71,7 +77,11 @@ class PollWidget extends ConsumerWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        context.push(AppRoutes.pollDetails.route.replaceAll(':pollId', pollId));
+        if (CommonUtils.findAncestorWidgetOfExactType<PollDetailsScreen>(context) == null) {
+          context.push(
+            AppRoutes.pollDetails.route.replaceAll(':pollId', pollId),
+          );
+        }
       },
       child: Row(
         children: [
@@ -96,9 +106,11 @@ class PollWidget extends ConsumerWidget {
                     .updatePollQuestion(pollId, value);
               },
               onTapText: () {
-                context.push(
-                  AppRoutes.pollDetails.route.replaceAll(':pollId', pollId),
-                );
+                if (CommonUtils.findAncestorWidgetOfExactType<PollDetailsScreen>(context) == null) {
+                  context.push(
+                    AppRoutes.pollDetails.route.replaceAll(':pollId', pollId),
+                  );
+                }
               },
             ),
           ),

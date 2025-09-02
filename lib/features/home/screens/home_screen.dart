@@ -61,6 +61,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       leadingWidth: 100,
+      actionsPadding: const EdgeInsets.only(right: 16),
       leading: Builder(
         builder: (context) => Center(
           child: Row(
@@ -74,7 +75,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
       ),
-      actions: [if (Platform.isAndroid || Platform.isIOS) _buildQrScanButton()],
+      actions: [
+        if (Platform.isAndroid || Platform.isIOS) _buildQrScanButton(),
+        _buildSearchButton(),
+      ],
+    );
+  }
+
+  Widget _buildSearchButton() {
+    return ZoeIconButtonWidget(
+      icon: Icons.search_outlined,
+      onTap: () {
+        context.push(AppRoutes.quickSearch.route);
+      },
     );
   }
 
@@ -93,7 +106,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             },
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 8),
       ],
     );
   }

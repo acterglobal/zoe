@@ -1,34 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/features/documents/providers/document_providers.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
+import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/widgets/document_widget.dart';
+import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class DocumentListWidget extends ConsumerWidget {
-  final String parentId;
+  final ProviderBase<List<DocumentModel>> documentsProvider;
   final bool isEditing;
+  final int? maxItems;
+  final bool isVertical;
+  final Widget emptyState;
+  final bool showSectionHeader;
 
   const DocumentListWidget({
     super.key,
-    required this.parentId,
+    required this.documentsProvider,
     required this.isEditing,
+    this.maxItems,
+    this.isVertical = false,
+    this.emptyState = const SizedBox.shrink(),
+    this.showSectionHeader = false,
+
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final documents = ref.watch(documentListByParentProvider(parentId));
-    if (documents.isEmpty) return const SizedBox.shrink();
+    final documents = ref.watch(documentsProvider);
+    if (documents.isEmpty) {
+      return emptyState;
+    }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: Wrap(
+    if (showSectionHeader) {
+      return Column(
+        children: [
+          _buildSectionHeader(context),
+          const SizedBox(height: 16),
+          _buildDocumentList(context, ref, documents  ),
+        ],
+      );
+    }
+
+    return _buildDocumentList(context, ref, documents);
+  }
+
+  Widget _buildDocumentList(BuildContext context, WidgetRef ref, List<DocumentModel> documents) {
+
+    final documentsToShow = maxItems != null && documents.length > maxItems!
+        ? documents.take(maxItems!)
+        : documents;
+
+    return Wrap(
         spacing: 10,
-        runSpacing: 10,
-        children: documents
+        runSpacing: 5,
+        children: documentsToShow
             .map(
-              (doc) => DocumentWidget(documentId: doc.id, isEditing: isEditing),
+              (doc) => DocumentWidget(
+                documentId: doc.id,
+                isEditing: isEditing,
+                isVertical: isVertical,
+              ),
             )
             .toList(),
-      ),
+    );
+  }
+
+  Widget _buildSectionHeader(BuildContext context) {
+    return QuickSearchTabSectionHeaderWidget(
+      title: L10n.of(context).documents,
+      icon: Icons.insert_drive_file_rounded,
+      onTap: () => context.push(AppRoutes.documentsList.route),
+      color: AppColors.brightOrangeColor,
     );
   }
 }
