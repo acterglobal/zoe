@@ -87,7 +87,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             context: context,
             onDetect: (barcodes) {
               final rawValue = barcodes.barcodes.first.rawValue;
-              debugPrint('RawValue: $rawValue');
               if (rawValue == null) return;
               CommonUtils.showSnackBar(context, rawValue);
               context.pop();
