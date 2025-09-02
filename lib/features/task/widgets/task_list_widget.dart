@@ -14,6 +14,7 @@ class TaskListWidget extends ConsumerWidget {
   final bool isEditing;
   final int? maxItems;
   final bool shrinkWrap;
+  final bool showCardView;
 
   const TaskListWidget({
     super.key,
@@ -21,6 +22,7 @@ class TaskListWidget extends ConsumerWidget {
     required this.isEditing,
     this.maxItems,
     this.shrinkWrap = true,
+    this.showCardView = true,
   });
 
   @override
@@ -45,7 +47,7 @@ class TaskListWidget extends ConsumerWidget {
           onTap: () => context.push(
             AppRoutes.taskDetail.route.replaceAll(':taskId', task.id),
           ),
-          child: maxItems != null
+          child: showCardView
               ? Card(
                   margin: const EdgeInsets.only(bottom: 10),
                   child: Padding(
@@ -56,7 +58,7 @@ class TaskListWidget extends ConsumerWidget {
                     child: TaskWidget(
                       key: Key(task.id),
                       taskId: task.id,
-                      isEditing: false,
+                      isEditing: isEditing,
                     ),
                   ),
                 )

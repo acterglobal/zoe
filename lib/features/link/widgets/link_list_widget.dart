@@ -11,6 +11,7 @@ class LinkListWidget extends ConsumerWidget {
   final bool isEditing;
   final int? maxItems;
   final bool shrinkWrap;
+  final bool showCardView;
 
   const LinkListWidget({
     super.key,
@@ -18,6 +19,7 @@ class LinkListWidget extends ConsumerWidget {
     required this.isEditing,
     this.maxItems,
     this.shrinkWrap = true,
+    this.showCardView = true,
   });
 
   @override
@@ -37,7 +39,7 @@ class LinkListWidget extends ConsumerWidget {
       itemCount: itemCount,
       itemBuilder: (context, index) {
         final link = links[index];
-        return maxItems != null
+        return showCardView
             ? Card(
                 margin: const EdgeInsets.only(bottom: 10),
                 child: Padding(

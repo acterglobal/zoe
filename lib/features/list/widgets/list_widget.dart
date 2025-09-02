@@ -118,6 +118,7 @@ class ListWidget extends ConsumerWidget {
       ContentType.task => TaskListWidget(
         tasksProvider: taskByParentProvider(listId),
         isEditing: isEditing,
+        showCardView: false,
       ),
       ContentType.text => TextListWidget(
         textsProvider: textByParentProvider(listId),
@@ -130,6 +131,7 @@ class ListWidget extends ConsumerWidget {
       ContentType.link => LinkListWidget(
         linksProvider: linkByParentProvider(listId),
         isEditing: isEditing,
+        showCardView: false,
       ),
       ContentType.document => DocumentListWidget(
         documentsProvider: documentListByParentProvider(listId),
@@ -138,6 +140,7 @@ class ListWidget extends ConsumerWidget {
       ContentType.poll => PollListWidget(
         pollsProvider: pollListByParentProvider(listId),
         isEditing: isEditing,
+        showCardView: false,
       ),
       _ => const SizedBox.shrink(),
     };

@@ -13,6 +13,7 @@ class PollListWidget extends ConsumerWidget {
   final bool isEditing;
   final int? maxItems;
   final bool shrinkWrap;
+  final bool showCardView;
 
   const PollListWidget({
     super.key,
@@ -20,6 +21,7 @@ class PollListWidget extends ConsumerWidget {
     required this.isEditing,
     this.maxItems,
     this.shrinkWrap = true,
+    this.showCardView = true,
   });
 
   @override
@@ -39,7 +41,7 @@ class PollListWidget extends ConsumerWidget {
       itemCount: itemCount,
       itemBuilder: (context, index) {
         final poll = polls[index];
-        return maxItems != null
+        return showCardView
             ? GlassyContainer(
                 borderRadius: BorderRadius.circular(12),
                 borderOpacity: 0.05,
