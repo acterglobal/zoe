@@ -362,6 +362,13 @@
     "all": "બધા",
     "@all": {},
     "viewAll": "બધા જુઓ",
-    "@viewAll": {}
-
+    "@viewAll": {},
+    "scanQr": "QR સ્કેન કરો",
+    "@scanQr": {},
+    "done": "પૂર્ણ",
+    "@done": {},
+    "successfullyConnected": "સફળતાપૂર્વક કનેક્ટ થયું!",
+    "@successfullyConnected": {},
+    "whatsappGroupConnectedMessage": "તમારી શીટ સફળતાપૂર્વક WhatsApp ગ્રુપ સાથે કનેક્ટ થઈ ગઈ છે. હવે તમે તમારી શીટમાંથી સીધી સામગ્રી શેર કરી શકો છો.",
+    "@whatsappGroupConnectedMessage": {}
 }

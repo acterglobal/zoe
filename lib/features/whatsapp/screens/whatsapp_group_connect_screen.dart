@@ -36,7 +36,7 @@ class WhatsAppGroupConnectScreen extends ConsumerWidget {
 
   Widget _buildStepWidget(int currentStep) => switch (currentStep) {
     1 => const GroupLinkWidget(),
-    2 => const GroupPermissionWidget(sheetId: ''),
+    2 => GroupPermissionWidget(sheetId: sheetId),
     _ => const SizedBox.shrink(),
   };
 }
