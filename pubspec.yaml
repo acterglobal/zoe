@@ -87,9 +87,6 @@ dependencies:
   # Audio player
   audioplayers: ^6.5.0
 
-  # PDF viewer
-  syncfusion_flutter_pdfviewer: ^30.2.6
-
 # Added cause; without this, it gives a 'Terminating app due to uncaught exception 'NSInvalidArgumentException'' error on macOS.
 dependency_overrides:
   flutter_quill:
