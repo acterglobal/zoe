@@ -34,7 +34,7 @@ class TaskListWidget extends ConsumerWidget {
 
     return ListView.builder(
       shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
       itemBuilder: (context, index) {

@@ -32,7 +32,6 @@ class EventListWidget extends ConsumerWidget {
 
     return ListView.builder(
       shrinkWrap: true,
-      padding: EdgeInsets.symmetric(horizontal: 10),
       physics: NeverScrollableScrollPhysics(),
       itemCount: itemCount,
       itemBuilder: (context, index) {

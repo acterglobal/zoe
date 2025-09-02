@@ -28,11 +28,9 @@ class DocumentListWidget extends ConsumerWidget {
         ? documents.take(maxItems!)
         : documents;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Wrap(
+    return Wrap(
         spacing: 10,
-        runSpacing: 10,
+        runSpacing: 5,
         children: documentsToShow
             .map(
               (doc) => DocumentWidget(
@@ -42,7 +40,6 @@ class DocumentListWidget extends ConsumerWidget {
               ),
             )
             .toList(),
-      ),
     );
   }
 }

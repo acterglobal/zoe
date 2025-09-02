@@ -32,7 +32,7 @@ class PollListWidget extends ConsumerWidget {
 
     return ListView.builder(
       shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 5),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
       itemBuilder: (context, index) {
         final poll = polls[index];
