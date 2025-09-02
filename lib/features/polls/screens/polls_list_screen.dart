@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_glassy_tab_widget.dart';
@@ -100,21 +101,36 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
   Widget _buildNotActivePollsTab() {
     return MaxWidthWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: PollListWidget(pollsProvider: notActivePollListProvider, isEditing: false, shrinkWrap: false),
+      child: PollListWidget(
+        pollsProvider: notActivePollListProvider,
+        isEditing: false,
+        shrinkWrap: false,
+        emptyState: EmptyStateWidget(message: L10n.of(context).noPollsFound),
+      ),
     );
   }
 
   Widget _buildActivePollsTab() {
     return MaxWidthWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: PollListWidget(pollsProvider: activePollListProvider, isEditing: false, shrinkWrap: false),
+      child: PollListWidget(
+        pollsProvider: activePollListProvider,
+        isEditing: false,
+        shrinkWrap: false,
+        emptyState: EmptyStateWidget(message: L10n.of(context).noPollsFound),
+      ),
     );
   }
 
   Widget _buildCompletedPollsTab() {
     return MaxWidthWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: PollListWidget(pollsProvider: completedPollListProvider, isEditing: false, shrinkWrap: false),
+      child: PollListWidget(
+        pollsProvider: completedPollListProvider,
+        isEditing: false,
+        shrinkWrap: false,
+        emptyState: EmptyStateWidget(message: L10n.of(context).noPollsFound),
+      ),
     );
   }
 }

@@ -1,10 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/widgets/link_widget.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
 
 class LinkListWidget extends ConsumerWidget {
   final ProviderBase<List<LinkModel>> linksProvider;
@@ -12,6 +10,7 @@ class LinkListWidget extends ConsumerWidget {
   final int? maxItems;
   final bool shrinkWrap;
   final bool showCardView;
+  final Widget emptyState;
 
   const LinkListWidget({
     super.key,
@@ -20,13 +19,15 @@ class LinkListWidget extends ConsumerWidget {
     this.maxItems,
     this.shrinkWrap = true,
     this.showCardView = true,
+    this.emptyState = const SizedBox.shrink(),
+
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final links = ref.watch(linksProvider);
     if (links.isEmpty) {
-      return EmptyStateWidget(message: L10n.of(context).noLinksFound);
+      return emptyState;
     }
 
     final itemCount = maxItems != null

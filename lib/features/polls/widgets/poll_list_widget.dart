@@ -1,19 +1,18 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
-import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/widgets/poll_widget.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
-
+  
 class PollListWidget extends ConsumerWidget {
   final ProviderBase<List<PollModel>> pollsProvider;
   final bool isEditing;
   final int? maxItems;
   final bool shrinkWrap;
   final bool showCardView;
+  final Widget emptyState;
 
   const PollListWidget({
     super.key,
@@ -22,13 +21,26 @@ class PollListWidget extends ConsumerWidget {
     this.maxItems,
     this.shrinkWrap = true,
     this.showCardView = true,
+    this.emptyState = const SizedBox.shrink(),
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final polls = ref.watch(pollsProvider);
+    final allPolls = ref.watch(pollsProvider);
+    final searchValue = ref.watch(searchValueProvider);
+
+    final polls = searchValue.isEmpty
+        ? allPolls
+        : allPolls
+              .where(
+                (poll) => poll.question.toLowerCase().contains(
+                  searchValue.toLowerCase(),
+                ),
+              )
+              .toList();
+
     if (polls.isEmpty) {
-      return EmptyStateWidget(message: L10n.of(context).noPollsFound);
+      return emptyState;
     }
 
     final itemCount = maxItems != null

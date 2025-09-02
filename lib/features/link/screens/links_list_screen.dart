@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
@@ -57,7 +58,14 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                   ref.read(searchValueProvider.notifier).state = value,
             ),
             const SizedBox(height: 10),
-            Expanded(child: LinkListWidget(linksProvider: linkListSearchProvider, isEditing: false, shrinkWrap: false)),
+            Expanded(
+              child: LinkListWidget(
+                linksProvider: linkListSearchProvider,
+                isEditing: false,
+                shrinkWrap: false,
+                emptyState: EmptyStateWidget(message: L10n.of(context).noLinksFound),
+              ),
+            ),
           ],
         ),
       ),

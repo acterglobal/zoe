@@ -7,18 +7,20 @@ class TextListWidget extends ConsumerWidget {
   final ProviderBase<List<TextModel>> textsProvider;
   final bool isEditing;
   final bool shrinkWrap;
+  final Widget emptyState;
 
   const TextListWidget({
     super.key,
     required this.textsProvider,
     required this.isEditing,
     this.shrinkWrap = true,
+    this.emptyState = const SizedBox.shrink(),
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final texts = ref.watch(textsProvider);
-    if (texts.isEmpty) return const SizedBox.shrink();
+    if (texts.isEmpty) return emptyState;
 
     return ListView.builder(
       shrinkWrap: shrinkWrap,

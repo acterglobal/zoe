@@ -3,11 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/widgets/task_item_widget.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
 
 class TaskListWidget extends ConsumerWidget {
   final ProviderBase<List<TaskModel>> tasksProvider;
@@ -15,6 +13,7 @@ class TaskListWidget extends ConsumerWidget {
   final int? maxItems;
   final bool shrinkWrap;
   final bool showCardView;
+  final Widget emptyState;
 
   const TaskListWidget({
     super.key,
@@ -23,13 +22,14 @@ class TaskListWidget extends ConsumerWidget {
     this.maxItems,
     this.shrinkWrap = true,
     this.showCardView = true,
+    this.emptyState = const SizedBox.shrink(),
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tasks = ref.watch(tasksProvider);
     if (tasks.isEmpty) {
-      return EmptyStateWidget(message: L10n.of(context).noTasksFound);
+      return emptyState;
     }
 
     final itemCount = maxItems != null
