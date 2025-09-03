@@ -9,7 +9,12 @@ import 'dart:convert';
 import 'frb_generated.dart';
 import 'frb_generated.io.dart'
     if (dart.library.js_interop) 'frb_generated.web.dart';
+import 'lib.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'third_party/zoe_client/client.dart';
+import 'third_party/zoe_client/frb_api.dart';
+import 'third_party/zoe_client/util.dart';
+import 'third_party/zoe_wire_protocol/keys.dart';
 
 /// Main entrypoint of the Rust API
 class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
@@ -66,7 +71,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => -1918914929;
+  int get rustContentHash => -929701453;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -77,9 +82,255 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
+  Future<Client> zoeClientClientClientBuilderBuild({
+    required ClientBuilder that,
+  });
+
+  Future<void> zoeClientClientClientBuilderClientSecret({
+    required ClientBuilder that,
+    required ClientSecret secret,
+  });
+
+  Future<void> zoeClientClientClientBuilderDbStorageDir({
+    required ClientBuilder that,
+    required String path,
+  });
+
+  Future<ClientBuilder> zoeClientClientClientBuilderDefault();
+
+  Future<void> zoeClientClientClientBuilderEncryptionKey({
+    required ClientBuilder that,
+    required U8Array32 key,
+  });
+
+  Future<void> zoeClientClientClientBuilderMediaStorageDir({
+    required ClientBuilder that,
+    required String mediaStorageDir,
+  });
+
+  Future<void> zoeClientClientClientBuilderServerInfo({
+    required ClientBuilder that,
+    required VerifyingKey serverPublicKey,
+    required SocketAddr serverAddr,
+  });
+
+  Future<ClientSecret> zoeClientClientClientSecretFromHex({
+    required String hex,
+  });
+
+  Future<String> zoeClientClientClientSecretToHex({required ClientSecret that});
+
+  Future<ClientBuilder> zoeClientClientClientBuilder();
+
+  Future<String> zoeClientClientClientClientSecretHex({required Client that});
+
+  Future<void> zoeClientClientClientClose({required Client that});
+
+  Future<bool> zoeClientClientClientHasFile({
+    required Client that,
+    required FileRef storedInfo,
+  });
+
+  Future<String> zoeClientClientClientIdHex({required Client that});
+
+  Future<void> zoeClientClientClientRetrieveFile({
+    required Client that,
+    required FileRef fileRef,
+    required PathBuf outputPath,
+  });
+
+  Future<Uint8List> zoeClientClientClientRetrieveFileBytes({
+    required Client that,
+    required FileRef fileRef,
+  });
+
+  Future<FileRef> zoeClientClientClientStoreData({
+    required Client that,
+    required List<int> data,
+    required String referenceName,
+    String? contentType,
+  });
+
+  Future<FileRef> zoeClientClientClientStoreFile({
+    required Client that,
+    required PathBuf filePath,
+  });
+
+  Future<Algorithm> zoeWireProtocolKeysKeyPairAlgorithm({
+    required KeyPair that,
+  });
+
+  Future<KeyPair> zoeWireProtocolKeysKeyPairFromPem({
+    required String pemString,
+  });
+
+  Future<void> zoeWireProtocolKeysKeyPairId({required KeyPair that});
+
+  Future<VerifyingKey> zoeWireProtocolKeysKeyPairPublicKey({
+    required KeyPair that,
+  });
+
+  Future<Signature> zoeWireProtocolKeysKeyPairSign({
+    required KeyPair that,
+    required List<int> message,
+  });
+
+  Future<String> zoeWireProtocolKeysKeyPairToPem({required KeyPair that});
+
+  Future<Uint8List> zoeWireProtocolKeysSignatureEncode({
+    required Signature that,
+  });
+
+  Future<void> zoeWireProtocolKeysSignatureId({required Signature that});
+
+  Future<Signature> zoeWireProtocolKeysSigningKeySign({
+    required SigningKey that,
+    required List<int> message,
+  });
+
+  Future<Algorithm> zoeWireProtocolKeysVerifyingKeyAlgorithm({
+    required VerifyingKey that,
+  });
+
+  Future<Uint8List> zoeWireProtocolKeysVerifyingKeyEncode({
+    required VerifyingKey that,
+  });
+
+  Future<VerifyingKey> zoeWireProtocolKeysVerifyingKeyFromHex({
+    required String hex,
+  });
+
+  Future<void> zoeWireProtocolKeysVerifyingKeyId({required VerifyingKey that});
+
+  Future<Uint8List> zoeWireProtocolKeysVerifyingKeyToBytes({
+    required VerifyingKey that,
+  });
+
+  Future<void> zoeWireProtocolKeysVerifyingKeyVerify({
+    required VerifyingKey that,
+    required List<int> message,
+    required Signature signature,
+  });
+
+  Future<String> zoeClientFrbApiCreateSigningKeyRandom();
+
+  Future<SocketAddr> zoeClientFrbApiCreateSocketAddr({
+    required String ip,
+    required int port,
+  });
+
+  Future<void> zoeClientFrbApiFrbInit();
+
   String crateApiSimpleGreet({required String name});
 
   Future<void> crateApiSimpleInitApp();
+
+  Future<SocketAddr> zoeClientUtilResolveToSocketAddr({required String s});
+
+  Future<String> zoeClientFrbApiSigningKeyFromHex({required String hex});
+
+  Future<String> zoeClientFrbApiSigningKeyToVerifyingKey({
+    required String signingKeyHex,
+  });
+
+  Future<String> zoeClientFrbApiSocketAddrIp({required SocketAddr addr});
+
+  Future<int> zoeClientFrbApiSocketAddrPort({required SocketAddr addr});
+
+  Future<String> zoeClientFrbApiSocketAddrToString({required SocketAddr addr});
+
+  Future<VerifyingKey> zoeClientFrbApiVerifyingKeyFromHex({
+    required String hex,
+  });
+
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Client;
+
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Client;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ClientPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ClientBuilder;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ClientBuilder;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_ClientBuilderPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ClientSecret;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ClientSecret;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ClientSecretPtr;
+
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_FileRef;
+
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_FileRef;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_FileRefPtr;
+
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_KeyPair;
+
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_KeyPair;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_KeyPairPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_KeyPairError;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_KeyPairError;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_KeyPairErrorPtr;
+
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_PathBuf;
+
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_PathBuf;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_PathBufPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_Signature;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_Signature;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_SignaturePtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_SigningKey;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_SigningKey;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_SigningKeyPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_SocketAddr;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_SocketAddr;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_SocketAddrPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_VerifyError;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_VerifyError;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_VerifyErrorPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_VerifyingKey;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_VerifyingKey;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_VerifyingKeyPtr;
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -91,13 +342,1291 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
+  Future<Client> zoeClientClientClientBuilderBuild({
+    required ClientBuilder that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 1,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientBuilderBuildConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientBuilderBuildConstMeta =>
+      const TaskConstMeta(debugName: "ClientBuilder_build", argNames: ["that"]);
+
+  @override
+  Future<void> zoeClientClientClientBuilderClientSecret({
+    required ClientBuilder that,
+    required ClientSecret secret,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+            secret,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 2,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientBuilderClientSecretConstMeta,
+        argValues: [that, secret],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientBuilderClientSecretConstMeta =>
+      const TaskConstMeta(
+        debugName: "ClientBuilder_client_secret",
+        argNames: ["that", "secret"],
+      );
+
+  @override
+  Future<void> zoeClientClientClientBuilderDbStorageDir({
+    required ClientBuilder that,
+    required String path,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+            that,
+            serializer,
+          );
+          sse_encode_String(path, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 3,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientBuilderDbStorageDirConstMeta,
+        argValues: [that, path],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientBuilderDbStorageDirConstMeta =>
+      const TaskConstMeta(
+        debugName: "ClientBuilder_db_storage_dir",
+        argNames: ["that", "path"],
+      );
+
+  @override
+  Future<ClientBuilder> zoeClientClientClientBuilderDefault() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 4,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientBuilderDefaultConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientBuilderDefaultConstMeta =>
+      const TaskConstMeta(debugName: "ClientBuilder_default", argNames: []);
+
+  @override
+  Future<void> zoeClientClientClientBuilderEncryptionKey({
+    required ClientBuilder that,
+    required U8Array32 key,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+            that,
+            serializer,
+          );
+          sse_encode_u_8_array_32(key, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 5,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientBuilderEncryptionKeyConstMeta,
+        argValues: [that, key],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientBuilderEncryptionKeyConstMeta =>
+      const TaskConstMeta(
+        debugName: "ClientBuilder_encryption_key",
+        argNames: ["that", "key"],
+      );
+
+  @override
+  Future<void> zoeClientClientClientBuilderMediaStorageDir({
+    required ClientBuilder that,
+    required String mediaStorageDir,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+            that,
+            serializer,
+          );
+          sse_encode_String(mediaStorageDir, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 6,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientBuilderMediaStorageDirConstMeta,
+        argValues: [that, mediaStorageDir],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientBuilderMediaStorageDirConstMeta =>
+      const TaskConstMeta(
+        debugName: "ClientBuilder_media_storage_dir",
+        argNames: ["that", "mediaStorageDir"],
+      );
+
+  @override
+  Future<void> zoeClientClientClientBuilderServerInfo({
+    required ClientBuilder that,
+    required VerifyingKey serverPublicKey,
+    required SocketAddr serverAddr,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            serverPublicKey,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+            serverAddr,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 7,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientBuilderServerInfoConstMeta,
+        argValues: [that, serverPublicKey, serverAddr],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientBuilderServerInfoConstMeta =>
+      const TaskConstMeta(
+        debugName: "ClientBuilder_server_info",
+        argNames: ["that", "serverPublicKey", "serverAddr"],
+      );
+
+  @override
+  Future<ClientSecret> zoeClientClientClientSecretFromHex({
+    required String hex,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(hex, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 8,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientSecretFromHexConstMeta,
+        argValues: [hex],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientSecretFromHexConstMeta =>
+      const TaskConstMeta(
+        debugName: "ClientSecret_from_hex",
+        argNames: ["hex"],
+      );
+
+  @override
+  Future<String> zoeClientClientClientSecretToHex({
+    required ClientSecret that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 9,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientSecretToHexConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientSecretToHexConstMeta =>
+      const TaskConstMeta(debugName: "ClientSecret_to_hex", argNames: ["that"]);
+
+  @override
+  Future<ClientBuilder> zoeClientClientClientBuilder() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 10,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientBuilderConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientBuilderConstMeta =>
+      const TaskConstMeta(debugName: "Client_builder", argNames: []);
+
+  @override
+  Future<String> zoeClientClientClientClientSecretHex({required Client that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 11,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientClientSecretHexConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientClientSecretHexConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_client_secret_hex",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<void> zoeClientClientClientClose({required Client that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 12,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientCloseConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientCloseConstMeta =>
+      const TaskConstMeta(debugName: "Client_close", argNames: ["that"]);
+
+  @override
+  Future<bool> zoeClientClientClientHasFile({
+    required Client that,
+    required FileRef storedInfo,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+            storedInfo,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 13,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientHasFileConstMeta,
+        argValues: [that, storedInfo],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientHasFileConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_has_file",
+        argNames: ["that", "storedInfo"],
+      );
+
+  @override
+  Future<String> zoeClientClientClientIdHex({required Client that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 14,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientIdHexConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientIdHexConstMeta =>
+      const TaskConstMeta(debugName: "Client_id_hex", argNames: ["that"]);
+
+  @override
+  Future<void> zoeClientClientClientRetrieveFile({
+    required Client that,
+    required FileRef fileRef,
+    required PathBuf outputPath,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+            fileRef,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
+            outputPath,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 15,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientRetrieveFileConstMeta,
+        argValues: [that, fileRef, outputPath],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientRetrieveFileConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_retrieve_file",
+        argNames: ["that", "fileRef", "outputPath"],
+      );
+
+  @override
+  Future<Uint8List> zoeClientClientClientRetrieveFileBytes({
+    required Client that,
+    required FileRef fileRef,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+            fileRef,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 16,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_list_prim_u_8_strict,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientRetrieveFileBytesConstMeta,
+        argValues: [that, fileRef],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientRetrieveFileBytesConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_retrieve_file_bytes",
+        argNames: ["that", "fileRef"],
+      );
+
+  @override
+  Future<FileRef> zoeClientClientClientStoreData({
+    required Client that,
+    required List<int> data,
+    required String referenceName,
+    String? contentType,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          sse_encode_list_prim_u_8_loose(data, serializer);
+          sse_encode_String(referenceName, serializer);
+          sse_encode_opt_String(contentType, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 17,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientStoreDataConstMeta,
+        argValues: [that, data, referenceName, contentType],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientStoreDataConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_store_data",
+        argNames: ["that", "data", "referenceName", "contentType"],
+      );
+
+  @override
+  Future<FileRef> zoeClientClientClientStoreFile({
+    required Client that,
+    required PathBuf filePath,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
+            filePath,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 18,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientStoreFileConstMeta,
+        argValues: [that, filePath],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientStoreFileConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_store_file",
+        argNames: ["that", "filePath"],
+      );
+
+  @override
+  Future<Algorithm> zoeWireProtocolKeysKeyPairAlgorithm({
+    required KeyPair that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 19,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_algorithm,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeWireProtocolKeysKeyPairAlgorithmConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysKeyPairAlgorithmConstMeta =>
+      const TaskConstMeta(debugName: "KeyPair_algorithm", argNames: ["that"]);
+
+  @override
+  Future<KeyPair> zoeWireProtocolKeysKeyPairFromPem({
+    required String pemString,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(pemString, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 20,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair,
+          decodeErrorData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPairError,
+        ),
+        constMeta: kZoeWireProtocolKeysKeyPairFromPemConstMeta,
+        argValues: [pemString],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysKeyPairFromPemConstMeta =>
+      const TaskConstMeta(
+        debugName: "KeyPair_from_pem",
+        argNames: ["pemString"],
+      );
+
+  @override
+  Future<void> zoeWireProtocolKeysKeyPairId({required KeyPair that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 21,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeWireProtocolKeysKeyPairIdConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysKeyPairIdConstMeta =>
+      const TaskConstMeta(debugName: "KeyPair_id", argNames: ["that"]);
+
+  @override
+  Future<VerifyingKey> zoeWireProtocolKeysKeyPairPublicKey({
+    required KeyPair that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 22,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeWireProtocolKeysKeyPairPublicKeyConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysKeyPairPublicKeyConstMeta =>
+      const TaskConstMeta(debugName: "KeyPair_public_key", argNames: ["that"]);
+
+  @override
+  Future<Signature> zoeWireProtocolKeysKeyPairSign({
+    required KeyPair that,
+    required List<int> message,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+            that,
+            serializer,
+          );
+          sse_encode_list_prim_u_8_loose(message, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 23,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeWireProtocolKeysKeyPairSignConstMeta,
+        argValues: [that, message],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysKeyPairSignConstMeta =>
+      const TaskConstMeta(
+        debugName: "KeyPair_sign",
+        argNames: ["that", "message"],
+      );
+
+  @override
+  Future<String> zoeWireProtocolKeysKeyPairToPem({required KeyPair that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 24,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPairError,
+        ),
+        constMeta: kZoeWireProtocolKeysKeyPairToPemConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysKeyPairToPemConstMeta =>
+      const TaskConstMeta(debugName: "KeyPair_to_pem", argNames: ["that"]);
+
+  @override
+  Future<Uint8List> zoeWireProtocolKeysSignatureEncode({
+    required Signature that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 25,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_list_prim_u_8_strict,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeWireProtocolKeysSignatureEncodeConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysSignatureEncodeConstMeta =>
+      const TaskConstMeta(debugName: "Signature_encode", argNames: ["that"]);
+
+  @override
+  Future<void> zoeWireProtocolKeysSignatureId({required Signature that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 26,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeWireProtocolKeysSignatureIdConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysSignatureIdConstMeta =>
+      const TaskConstMeta(debugName: "Signature_id", argNames: ["that"]);
+
+  @override
+  Future<Signature> zoeWireProtocolKeysSigningKeySign({
+    required SigningKey that,
+    required List<int> message,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey(
+            that,
+            serializer,
+          );
+          sse_encode_list_prim_u_8_loose(message, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 27,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeWireProtocolKeysSigningKeySignConstMeta,
+        argValues: [that, message],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysSigningKeySignConstMeta =>
+      const TaskConstMeta(
+        debugName: "SigningKey_sign",
+        argNames: ["that", "message"],
+      );
+
+  @override
+  Future<Algorithm> zoeWireProtocolKeysVerifyingKeyAlgorithm({
+    required VerifyingKey that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 28,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_algorithm,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeWireProtocolKeysVerifyingKeyAlgorithmConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysVerifyingKeyAlgorithmConstMeta =>
+      const TaskConstMeta(
+        debugName: "VerifyingKey_algorithm",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<Uint8List> zoeWireProtocolKeysVerifyingKeyEncode({
+    required VerifyingKey that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 29,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_list_prim_u_8_strict,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeWireProtocolKeysVerifyingKeyEncodeConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysVerifyingKeyEncodeConstMeta =>
+      const TaskConstMeta(debugName: "VerifyingKey_encode", argNames: ["that"]);
+
+  @override
+  Future<VerifyingKey> zoeWireProtocolKeysVerifyingKeyFromHex({
+    required String hex,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(hex, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 30,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kZoeWireProtocolKeysVerifyingKeyFromHexConstMeta,
+        argValues: [hex],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysVerifyingKeyFromHexConstMeta =>
+      const TaskConstMeta(
+        debugName: "VerifyingKey_from_hex",
+        argNames: ["hex"],
+      );
+
+  @override
+  Future<void> zoeWireProtocolKeysVerifyingKeyId({required VerifyingKey that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 31,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeWireProtocolKeysVerifyingKeyIdConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysVerifyingKeyIdConstMeta =>
+      const TaskConstMeta(debugName: "VerifyingKey_id", argNames: ["that"]);
+
+  @override
+  Future<Uint8List> zoeWireProtocolKeysVerifyingKeyToBytes({
+    required VerifyingKey that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 32,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_list_prim_u_8_strict,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeWireProtocolKeysVerifyingKeyToBytesConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysVerifyingKeyToBytesConstMeta =>
+      const TaskConstMeta(
+        debugName: "VerifyingKey_to_bytes",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<void> zoeWireProtocolKeysVerifyingKeyVerify({
+    required VerifyingKey that,
+    required List<int> message,
+    required Signature signature,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            that,
+            serializer,
+          );
+          sse_encode_list_prim_u_8_loose(message, serializer);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+            signature,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 33,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError,
+        ),
+        constMeta: kZoeWireProtocolKeysVerifyingKeyVerifyConstMeta,
+        argValues: [that, message, signature],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysVerifyingKeyVerifyConstMeta =>
+      const TaskConstMeta(
+        debugName: "VerifyingKey_verify",
+        argNames: ["that", "message", "signature"],
+      );
+
+  @override
+  Future<String> zoeClientFrbApiCreateSigningKeyRandom() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 34,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientFrbApiCreateSigningKeyRandomConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientFrbApiCreateSigningKeyRandomConstMeta =>
+      const TaskConstMeta(debugName: "create_signing_key_random", argNames: []);
+
+  @override
+  Future<SocketAddr> zoeClientFrbApiCreateSocketAddr({
+    required String ip,
+    required int port,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(ip, serializer);
+          sse_encode_u_16(port, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 35,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kZoeClientFrbApiCreateSocketAddrConstMeta,
+        argValues: [ip, port],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientFrbApiCreateSocketAddrConstMeta =>
+      const TaskConstMeta(
+        debugName: "create_socket_addr",
+        argNames: ["ip", "port"],
+      );
+
+  @override
+  Future<void> zoeClientFrbApiFrbInit() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 36,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientFrbApiFrbInitConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientFrbApiFrbInitConstMeta =>
+      const TaskConstMeta(debugName: "frb_init", argNames: []);
+
+  @override
   String crateApiSimpleGreet({required String name}) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(name, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 37)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -122,7 +1651,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 2,
+            funcId: 38,
             port: port_,
           );
         },
@@ -140,10 +1669,653 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleInitAppConstMeta =>
       const TaskConstMeta(debugName: "init_app", argNames: []);
 
+  @override
+  Future<SocketAddr> zoeClientUtilResolveToSocketAddr({required String s}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(s, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 39,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kZoeClientUtilResolveToSocketAddrConstMeta,
+        argValues: [s],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientUtilResolveToSocketAddrConstMeta =>
+      const TaskConstMeta(debugName: "resolve_to_socket_addr", argNames: ["s"]);
+
+  @override
+  Future<String> zoeClientFrbApiSigningKeyFromHex({required String hex}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(hex, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 40,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kZoeClientFrbApiSigningKeyFromHexConstMeta,
+        argValues: [hex],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientFrbApiSigningKeyFromHexConstMeta =>
+      const TaskConstMeta(debugName: "signing_key_from_hex", argNames: ["hex"]);
+
+  @override
+  Future<String> zoeClientFrbApiSigningKeyToVerifyingKey({
+    required String signingKeyHex,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(signingKeyHex, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 41,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kZoeClientFrbApiSigningKeyToVerifyingKeyConstMeta,
+        argValues: [signingKeyHex],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientFrbApiSigningKeyToVerifyingKeyConstMeta =>
+      const TaskConstMeta(
+        debugName: "signing_key_to_verifying_key",
+        argNames: ["signingKeyHex"],
+      );
+
+  @override
+  Future<String> zoeClientFrbApiSocketAddrIp({required SocketAddr addr}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+            addr,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 42,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientFrbApiSocketAddrIpConstMeta,
+        argValues: [addr],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientFrbApiSocketAddrIpConstMeta =>
+      const TaskConstMeta(debugName: "socket_addr_ip", argNames: ["addr"]);
+
+  @override
+  Future<int> zoeClientFrbApiSocketAddrPort({required SocketAddr addr}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+            addr,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 43,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_16,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientFrbApiSocketAddrPortConstMeta,
+        argValues: [addr],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientFrbApiSocketAddrPortConstMeta =>
+      const TaskConstMeta(debugName: "socket_addr_port", argNames: ["addr"]);
+
+  @override
+  Future<String> zoeClientFrbApiSocketAddrToString({required SocketAddr addr}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+            addr,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 44,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientFrbApiSocketAddrToStringConstMeta,
+        argValues: [addr],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientFrbApiSocketAddrToStringConstMeta =>
+      const TaskConstMeta(
+        debugName: "socket_addr_to_string",
+        argNames: ["addr"],
+      );
+
+  @override
+  Future<VerifyingKey> zoeClientFrbApiVerifyingKeyFromHex({
+    required String hex,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(hex, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 45,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kZoeClientFrbApiVerifyingKeyFromHexConstMeta,
+        argValues: [hex],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientFrbApiVerifyingKeyFromHexConstMeta =>
+      const TaskConstMeta(
+        debugName: "verifying_key_from_hex",
+        argNames: ["hex"],
+      );
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_Client => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_Client => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ClientBuilder => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ClientBuilder => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ClientSecret => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ClientSecret => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_FileRef => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_FileRef => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_KeyPair => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_KeyPair => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_KeyPairError => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPairError;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_KeyPairError => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPairError;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_PathBuf => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_PathBuf => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_Signature => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_Signature => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_SigningKey => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_SigningKey => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_SocketAddr => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_SocketAddr => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_VerifyError => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_VerifyError => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_VerifyingKey => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_VerifyingKey => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey;
+
+  @protected
+  AnyhowException dco_decode_AnyhowException(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return AnyhowException(raw as String);
+  }
+
+  @protected
+  Client
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ClientImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  ClientBuilder
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ClientBuilderImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  ClientSecret
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ClientSecretImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  FileRef
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return FileRefImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  KeyPair
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return KeyPairImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  KeyPairError
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPairError(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return KeyPairErrorImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  PathBuf
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return PathBufImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Signature
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SignatureImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  SigningKey
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SigningKeyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  SocketAddr
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SocketAddrImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  VerifyError
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return VerifyErrorImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  VerifyingKey
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return VerifyingKeyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  ClientBuilder
+  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ClientBuilderImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Client
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ClientImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  ClientSecret
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ClientSecretImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  FileRef
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return FileRefImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  KeyPair
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return KeyPairImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Signature
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SignatureImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  SigningKey
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SigningKeyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  SocketAddr
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SocketAddrImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  VerifyingKey
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return VerifyingKeyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Client
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ClientImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  ClientBuilder
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ClientBuilderImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  ClientSecret
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ClientSecretImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  FileRef
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return FileRefImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  KeyPair
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return KeyPairImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  KeyPairError
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPairError(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return KeyPairErrorImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  PathBuf
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return PathBufImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Signature
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SignatureImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  SigningKey
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SigningKeyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  SocketAddr
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SocketAddrImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  VerifyError
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return VerifyErrorImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  VerifyingKey
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return VerifyingKeyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
   @protected
   String dco_decode_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as String;
+  }
+
+  @protected
+  Algorithm dco_decode_algorithm(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Algorithm.values[raw as int];
+  }
+
+  @protected
+  bool dco_decode_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as bool;
+  }
+
+  @protected
+  int dco_decode_i_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
+  List<int> dco_decode_list_prim_u_8_loose(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as List<int>;
   }
 
   @protected
@@ -153,15 +2325,442 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  String? dco_decode_opt_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_String(raw);
+  }
+
+  @protected
+  int dco_decode_u_16(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
   int dco_decode_u_8(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
   }
 
   @protected
+  U8Array32 dco_decode_u_8_array_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return U8Array32(dco_decode_list_prim_u_8_strict(raw));
+  }
+
+  @protected
   void dco_decode_unit(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return;
+  }
+
+  @protected
+  BigInt dco_decode_usize(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dcoDecodeU64(raw);
+  }
+
+  @protected
+  AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_String(deserializer);
+    return AnyhowException(inner);
+  }
+
+  @protected
+  Client
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ClientImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  ClientBuilder
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ClientBuilderImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  ClientSecret
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ClientSecretImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  FileRef
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return FileRefImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  KeyPair
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return KeyPairImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  KeyPairError
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPairError(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return KeyPairErrorImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  PathBuf
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return PathBufImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Signature
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SignatureImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  SigningKey
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SigningKeyImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  SocketAddr
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SocketAddrImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  VerifyError
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return VerifyErrorImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  VerifyingKey
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return VerifyingKeyImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  ClientBuilder
+  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ClientBuilderImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Client
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ClientImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  ClientSecret
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ClientSecretImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  FileRef
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return FileRefImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  KeyPair
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return KeyPairImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Signature
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SignatureImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  SigningKey
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SigningKeyImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  SocketAddr
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SocketAddrImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  VerifyingKey
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return VerifyingKeyImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Client
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ClientImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  ClientBuilder
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ClientBuilderImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  ClientSecret
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ClientSecretImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  FileRef
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return FileRefImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  KeyPair
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return KeyPairImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  KeyPairError
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPairError(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return KeyPairErrorImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  PathBuf
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return PathBufImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Signature
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SignatureImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  SigningKey
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SigningKeyImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  SocketAddr
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SocketAddrImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  VerifyError
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return VerifyErrorImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  VerifyingKey
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return VerifyingKeyImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
   }
 
   @protected
@@ -172,27 +2771,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer) {
+  Algorithm sse_decode_algorithm(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var len_ = sse_decode_i_32(deserializer);
-    return deserializer.buffer.getUint8List(len_);
-  }
-
-  @protected
-  int sse_decode_u_8(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getUint8();
-  }
-
-  @protected
-  void sse_decode_unit(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-  }
-
-  @protected
-  int sse_decode_i_32(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getInt32();
+    var inner = sse_decode_i_32(deserializer);
+    return Algorithm.values[inner];
   }
 
   @protected
@@ -202,9 +2784,538 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int sse_decode_i_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getInt32();
+  }
+
+  @protected
+  List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var len_ = sse_decode_i_32(deserializer);
+    return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var len_ = sse_decode_i_32(deserializer);
+    return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_String(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  int sse_decode_u_16(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint16();
+  }
+
+  @protected
+  int sse_decode_u_8(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint8();
+  }
+
+  @protected
+  U8Array32 sse_decode_u_8_array_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_prim_u_8_strict(deserializer);
+    return U8Array32(inner);
+  }
+
+  @protected
+  void sse_decode_unit(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+  }
+
+  @protected
+  BigInt sse_decode_usize(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getBigUint64();
+  }
+
+  @protected
+  void sse_encode_AnyhowException(
+    AnyhowException self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.message, serializer);
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+    Client self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ClientImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+    ClientBuilder self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ClientBuilderImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+    ClientSecret self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ClientSecretImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+    FileRef self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as FileRefImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+    KeyPair self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as KeyPairImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPairError(
+    KeyPairError self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as KeyPairErrorImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
+    PathBuf self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as PathBufImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+    Signature self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SignatureImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey(
+    SigningKey self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SigningKeyImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+    SocketAddr self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SocketAddrImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
+    VerifyError self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as VerifyErrorImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+    VerifyingKey self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as VerifyingKeyImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+    ClientBuilder self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ClientBuilderImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+    Client self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ClientImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+    ClientSecret self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ClientSecretImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+    FileRef self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as FileRefImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+    KeyPair self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as KeyPairImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+    Signature self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SignatureImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey(
+    SigningKey self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SigningKeyImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+    SocketAddr self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SocketAddrImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+    VerifyingKey self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as VerifyingKeyImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+    Client self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ClientImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+    ClientBuilder self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ClientBuilderImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+    ClientSecret self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ClientSecretImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+    FileRef self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as FileRefImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
+    KeyPair self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as KeyPairImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPairError(
+    KeyPairError self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as KeyPairErrorImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
+    PathBuf self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as PathBufImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSignature(
+    Signature self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SignatureImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSigningKey(
+    SigningKey self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SigningKeyImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr(
+    SocketAddr self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SocketAddrImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
+    VerifyError self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as VerifyErrorImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+    VerifyingKey self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as VerifyingKeyImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
   void sse_encode_String(String self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
+  }
+
+  @protected
+  void sse_encode_algorithm(Algorithm self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint8(self ? 1 : 0);
+  }
+
+  @protected
+  void sse_encode_i_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putInt32(self);
+  }
+
+  @protected
+  void sse_encode_list_prim_u_8_loose(
+    List<int> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    serializer.buffer.putUint8List(
+      self is Uint8List ? self : Uint8List.fromList(self),
+    );
   }
 
   @protected
@@ -218,9 +3329,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_String(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_u_16(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint16(self);
+  }
+
+  @protected
   void sse_encode_u_8(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self);
+  }
+
+  @protected
+  void sse_encode_u_8_array_32(U8Array32 self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_prim_u_8_strict(self.inner, serializer);
   }
 
   @protected
@@ -229,14 +3362,542 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_i_32(int self, SseSerializer serializer) {
+  void sse_encode_usize(BigInt self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putInt32(self);
+    serializer.buffer.putBigUint64(self);
   }
+}
 
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putUint8(self ? 1 : 0);
-  }
+@sealed
+class ClientBuilderImpl extends RustOpaque implements ClientBuilder {
+  // Not to be used by end users
+  ClientBuilderImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  ClientBuilderImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_ClientBuilder,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ClientBuilder,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ClientBuilderPtr,
+  );
+
+  Future<Client> build() =>
+      RustLib.instance.api.zoeClientClientClientBuilderBuild(that: this);
+
+  Future<void> clientSecret({required ClientSecret secret}) => RustLib
+      .instance
+      .api
+      .zoeClientClientClientBuilderClientSecret(that: this, secret: secret);
+
+  /// Set the storage database path (convenience method)
+  Future<void> dbStorageDir({required String path}) => RustLib.instance.api
+      .zoeClientClientClientBuilderDbStorageDir(that: this, path: path);
+
+  /// Set the encryption key for storage
+  Future<void> encryptionKey({required U8Array32 key}) => RustLib.instance.api
+      .zoeClientClientClientBuilderEncryptionKey(that: this, key: key);
+
+  Future<void> mediaStorageDir({required String mediaStorageDir}) =>
+      RustLib.instance.api.zoeClientClientClientBuilderMediaStorageDir(
+        that: this,
+        mediaStorageDir: mediaStorageDir,
+      );
+
+  Future<void> serverInfo({
+    required VerifyingKey serverPublicKey,
+    required SocketAddr serverAddr,
+  }) => RustLib.instance.api.zoeClientClientClientBuilderServerInfo(
+    that: this,
+    serverPublicKey: serverPublicKey,
+    serverAddr: serverAddr,
+  );
+}
+
+@sealed
+class ClientImpl extends RustOpaque implements Client {
+  // Not to be used by end users
+  ClientImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  ClientImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_Client,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_Client,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ClientPtr,
+  );
+
+  Future<String> clientSecretHex() =>
+      RustLib.instance.api.zoeClientClientClientClientSecretHex(that: this);
+
+  Future<void> close() =>
+      RustLib.instance.api.zoeClientClientClientClose(that: this);
+
+  /// Check if a file exists in storage
+  ///
+  /// # Arguments
+  ///
+  /// * `stored_info` - Metadata from when the file was stored
+  ///
+  /// # Returns
+  ///
+  /// `true` if the file exists in storage, `false` otherwise
+  Future<bool> hasFile({required FileRef storedInfo}) => RustLib.instance.api
+      .zoeClientClientClientHasFile(that: this, storedInfo: storedInfo);
+
+  Future<String> idHex() =>
+      RustLib.instance.api.zoeClientClientClientIdHex(that: this);
+
+  /// Retrieve a file from storage and save it to disk
+  ///
+  /// This method:
+  /// 1. Retrieves the encrypted data from blob storage using the FileRef
+  /// 2. Decrypts the content
+  /// 3. Writes the decrypted content to the specified path
+  ///
+  /// # Arguments
+  ///
+  /// * `file_ref` - Metadata for the file to retrieve
+  /// * `output_path` - Path where the decrypted file should be saved
+  ///
+  /// # Errors
+  ///
+  /// Returns an error if:
+  /// - The file cannot be found in storage
+  /// - Decryption fails
+  /// - Writing to disk fails
+  Future<void> retrieveFile({
+    required FileRef fileRef,
+    required PathBuf outputPath,
+  }) => RustLib.instance.api.zoeClientClientClientRetrieveFile(
+    that: this,
+    fileRef: fileRef,
+    outputPath: outputPath,
+  );
+
+  /// Retrieve a file from storage as bytes
+  ///
+  /// This method:
+  /// 1. Retrieves the encrypted data from blob storage using the FileRef
+  /// 2. Decrypts the content
+  /// 3. Returns the decrypted content as bytes
+  ///
+  /// # Arguments
+  ///
+  /// * `file_ref` - Metadata for the file to retrieve
+  ///
+  /// # Returns
+  ///
+  /// The decrypted file content as `Vec<u8>`
+  ///
+  /// # Errors
+  ///
+  /// Returns an error if:
+  /// - The file cannot be found in storage
+  /// - Decryption fails
+  Future<Uint8List> retrieveFileBytes({required FileRef fileRef}) => RustLib
+      .instance
+      .api
+      .zoeClientClientClientRetrieveFileBytes(that: this, fileRef: fileRef);
+
+  /// Store raw data (not from a file) with encryption and blob storage
+  ///
+  /// This method allows storing arbitrary data without reading from disk.
+  ///
+  /// # Arguments
+  ///
+  /// * `data` - The raw data to store
+  /// * `reference_name` - A reference name for the data (used in metadata)
+  /// * `content_type` - Optional content type for metadata
+  ///
+  /// # Returns
+  ///
+  /// `FileRef` containing the blob hash, encryption info, and metadata
+  Future<FileRef> storeData({
+    required List<int> data,
+    required String referenceName,
+    String? contentType,
+  }) => RustLib.instance.api.zoeClientClientClientStoreData(
+    that: this,
+    data: data,
+    referenceName: referenceName,
+    contentType: contentType,
+  );
+
+  /// Store a file by reading from disk, encrypting, and storing in blob storage
+  ///
+  /// This method:
+  /// 1. Reads the file from the provided path
+  /// 2. Encrypts the content using convergent encryption
+  /// 3. Stores the encrypted data in the blob store
+  /// 4. Returns metadata needed to retrieve the file later
+  ///
+  /// # Arguments
+  ///
+  /// * `file_path` - Path to the file to store
+  ///
+  /// # Returns
+  ///
+  /// A `FileRef` containing the metadata needed to retrieve the file
+  ///
+  /// # Errors
+  ///
+  /// Returns an error if:
+  /// - The file cannot be read
+  /// - Encryption fails
+  /// - Blob storage operation fails
+  Future<FileRef> storeFile({required PathBuf filePath}) => RustLib.instance.api
+      .zoeClientClientClientStoreFile(that: this, filePath: filePath);
+}
+
+@sealed
+class ClientSecretImpl extends RustOpaque implements ClientSecret {
+  // Not to be used by end users
+  ClientSecretImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  ClientSecretImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_ClientSecret,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ClientSecret,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ClientSecretPtr,
+  );
+
+  Future<String> toHex() =>
+      RustLib.instance.api.zoeClientClientClientSecretToHex(that: this);
+}
+
+@sealed
+class FileRefImpl extends RustOpaque implements FileRef {
+  // Not to be used by end users
+  FileRefImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  FileRefImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_FileRef,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_FileRef,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_FileRefPtr,
+  );
+}
+
+@sealed
+class KeyPairErrorImpl extends RustOpaque implements KeyPairError {
+  // Not to be used by end users
+  KeyPairErrorImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  KeyPairErrorImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_KeyPairError,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_KeyPairError,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_KeyPairErrorPtr,
+  );
+}
+
+@sealed
+class KeyPairImpl extends RustOpaque implements KeyPair {
+  // Not to be used by end users
+  KeyPairImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  KeyPairImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_KeyPair,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_KeyPair,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_KeyPairPtr,
+  );
+
+  /// Get the algorithm for this key type
+  Future<Algorithm> algorithm() =>
+      RustLib.instance.api.zoeWireProtocolKeysKeyPairAlgorithm(that: this);
+
+  Future<void> id() =>
+      RustLib.instance.api.zoeWireProtocolKeysKeyPairId(that: this);
+
+  Future<VerifyingKey> publicKey() =>
+      RustLib.instance.api.zoeWireProtocolKeysKeyPairPublicKey(that: this);
+
+  Future<Signature> sign({required List<int> message}) => RustLib.instance.api
+      .zoeWireProtocolKeysKeyPairSign(that: this, message: message);
+
+  /// Encode the KeyPair to a PEM string suitable for environment variables or file storage.
+  ///
+  /// This method creates PEM blocks containing:
+  /// - For Ed25519: Only the private key (public key can be derived)
+  /// - For ML-DSA: Both private and public keys in separate PEM blocks (hash is derived from public key)
+  ///
+  /// All PEM blocks are prefixed with "ZOE" to identify them as Zoe-specific formats.
+  ///
+  /// # Returns
+  ///
+  /// A PEM-formatted string containing the key data.
+  ///
+  /// # Examples
+  ///
+  /// ```rust
+  /// use zoe_wire_protocol::KeyPair;
+  /// use rand::rngs::OsRng;
+  ///
+  /// let keypair = KeyPair::generate_ed25519(&mut OsRng);
+  /// let pem_string = keypair.to_pem().unwrap();
+  ///
+  /// // Store in environment variable or file
+  /// std::env::set_var("MY_PRIVATE_KEY", &pem_string);
+  /// ```
+  Future<String> toPem() =>
+      RustLib.instance.api.zoeWireProtocolKeysKeyPairToPem(that: this);
+}
+
+@sealed
+class PathBufImpl extends RustOpaque implements PathBuf {
+  // Not to be used by end users
+  PathBufImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  PathBufImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_PathBuf,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_PathBuf,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_PathBufPtr,
+  );
+}
+
+@sealed
+class SignatureImpl extends RustOpaque implements Signature {
+  // Not to be used by end users
+  SignatureImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  SignatureImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_Signature,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_Signature,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_SignaturePtr,
+  );
+
+  /// Encode the Signature to bytes for serialization
+  Future<Uint8List> encode() =>
+      RustLib.instance.api.zoeWireProtocolKeysSignatureEncode(that: this);
+
+  Future<void> id() =>
+      RustLib.instance.api.zoeWireProtocolKeysSignatureId(that: this);
+}
+
+@sealed
+class SigningKeyImpl extends RustOpaque implements SigningKey {
+  // Not to be used by end users
+  SigningKeyImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  SigningKeyImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_SigningKey,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_SigningKey,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_SigningKeyPtr,
+  );
+
+  /// Sign a message with this signing key
+  Future<Signature> sign({required List<int> message}) => RustLib.instance.api
+      .zoeWireProtocolKeysSigningKeySign(that: this, message: message);
+}
+
+@sealed
+class SocketAddrImpl extends RustOpaque implements SocketAddr {
+  // Not to be used by end users
+  SocketAddrImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  SocketAddrImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_SocketAddr,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_SocketAddr,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_SocketAddrPtr,
+  );
+}
+
+@sealed
+class VerifyErrorImpl extends RustOpaque implements VerifyError {
+  // Not to be used by end users
+  VerifyErrorImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  VerifyErrorImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_VerifyError,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_VerifyError,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_VerifyErrorPtr,
+  );
+}
+
+@sealed
+class VerifyingKeyImpl extends RustOpaque implements VerifyingKey {
+  // Not to be used by end users
+  VerifyingKeyImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  VerifyingKeyImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_VerifyingKey,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_VerifyingKey,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_VerifyingKeyPtr,
+  );
+
+  /// Get the algorithm for this key type
+  ///
+  /// flutter_rust_bridge:opaque
+  Future<Algorithm> algorithm() =>
+      RustLib.instance.api.zoeWireProtocolKeysVerifyingKeyAlgorithm(that: this);
+
+  /// Encode the VerifyingKey to bytes for serialization.
+  ///
+  /// This method serializes the key using postcard format for efficient storage
+  /// and transmission. The resulting bytes can be deserialized back to a
+  /// `VerifyingKey` using `postcard::from_bytes()`.
+  ///
+  /// # Returns
+  ///
+  /// A `Vec<u8>` containing the serialized key data.
+  ///
+  /// # Examples
+  ///
+  /// ```rust
+  /// use zoe_wire_protocol::{KeyPair, VerifyingKey};
+  /// use rand::rngs::OsRng;
+  ///
+  /// let keypair = KeyPair::generate_ed25519(&mut OsRng);
+  /// let verifying_key = keypair.public_key();
+  ///
+  /// // Serialize the key
+  /// let key_bytes = verifying_key.encode();
+  ///
+  /// // Deserialize it back
+  /// let restored_key: VerifyingKey = postcard::from_bytes(&key_bytes).unwrap();
+  /// assert_eq!(&verifying_key, &restored_key);
+  /// ```
+  /// flutter_rust_bridge:opaque
+  Future<Uint8List> encode() =>
+      RustLib.instance.api.zoeWireProtocolKeysVerifyingKeyEncode(that: this);
+
+  /// flutter_rust_bridge:opaque
+  Future<void> id() =>
+      RustLib.instance.api.zoeWireProtocolKeysVerifyingKeyId(that: this);
+
+  /// flutter_rust_bridge:opaque
+  Future<Uint8List> toBytes() =>
+      RustLib.instance.api.zoeWireProtocolKeysVerifyingKeyToBytes(that: this);
+
+  /// Verify a signature against a message using the appropriate algorithm.
+  ///
+  /// This method automatically matches the signature type with the key type
+  /// and returns `Ok(false)` if they don't match (rather than an error).
+  ///
+  /// # Arguments
+  ///
+  /// * `message` - The message bytes that were signed
+  /// * `signature` - The signature to verify
+  ///
+  /// # Returns
+  ///
+  /// * `Ok(true)` - Signature is valid for this key and message
+  /// * `Ok(false)` - Signature is invalid or key/signature types don't match
+  /// * `Err(_)` - Verification error (malformed signature, etc.)
+  ///
+  /// # Examples
+  ///
+  /// ```rust
+  /// use zoe_wire_protocol::{KeyPair, VerifyingKey, SigningKey};
+  /// use rand::rngs::OsRng;
+  ///
+  /// # fn example() -> Result<(), Box<dyn std::error::Error>> {
+  /// let keypair = KeyPair::generate_ed25519(&mut OsRng);
+  /// let message = b"Hello, world!";
+  /// let signature = keypair.sign(message);
+  /// let verifying_key = keypair.public_key();
+  ///
+  /// let is_valid = verifying_key.verify(message, &signature)?;
+  /// assert!(is_valid);
+  /// # Ok(())
+  /// # }
+  /// ```
+  /// flutter_rust_bridge:opaque
+  Future<void> verify({
+    required List<int> message,
+    required Signature signature,
+  }) => RustLib.instance.api.zoeWireProtocolKeysVerifyingKeyVerify(
+    that: this,
+    message: message,
+    signature: signature,
+  );
 }

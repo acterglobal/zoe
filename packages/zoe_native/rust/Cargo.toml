@@ -15,5 +15,10 @@ features = ["frb-api"]
 git = "https://github.com/acterglobal/zoe-relay.git"
 branch = "main"
 
+[dependencies.zoe-wire-protocol]
+# path = "../../../../zoe-relay/crates/wire-protocol"
+git = "https://github.com/acterglobal/zoe-relay.git"
+branch = "main"
+
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }

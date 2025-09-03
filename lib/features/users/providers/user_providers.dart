@@ -3,15 +3,15 @@ import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_notifiers.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe_native/providers.dart';
 
 final isUserLoggedInProvider = FutureProvider<bool>((ref) async {
-  final userId = await PreferencesService().getLoginUserId();
-  return userId != null && userId.isNotEmpty;
+  final userId = await ref.watch(userIdProvider.future);
+  return userId.isNotEmpty;
 });
 
 final loggedInUserProvider = FutureProvider<String?>((ref) async {
-  final userId = await PreferencesService().getLoginUserId();
-  return userId;
+  await ref.watch(userIdProvider.future);
 });
 
 final userListProvider = StateNotifierProvider<UserNotifier, List<UserModel>>(
@@ -36,11 +36,8 @@ final getUserByIdProvider = Provider.family<UserModel?, String>((ref, userId) {
 });
 
 final currentUserProvider = FutureProvider<UserModel?>((ref) async {
-  final userId = await PreferencesService().getLoginUserId();
-  if (userId == null || userId.isEmpty) return null;
-
-  final userList = ref.watch(userListProvider);
-  return userList.where((u) => u.id == userId).firstOrNull;
+  final userId = await ref.watch(userIdProvider.future);
+  return UserModel(id: userId, name: userId.substring(0, 8));
 });
 
 // Provider that returns user IDs from a list of UserModel objects
@@ -53,14 +50,14 @@ final userIdsFromUserModelsProvider =
 final userDisplayNameProvider = Provider.family<String, String>((ref, userId) {
   final currentUserId = ref.watch(loggedInUserProvider).valueOrNull ?? '';
   final user = ref.watch(getUserByIdProvider(userId));
-  
+
   if (currentUserId == userId) {
     return 'You';
   }
-  
+
   if (user != null && user.name.isNotEmpty) {
     return user.name;
   }
-  
+
   return userId;
 });

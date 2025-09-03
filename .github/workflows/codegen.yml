@@ -3,19 +3,20 @@ name: Code Generation
 on:
   push:
     paths:
-      - 'rust/src/**'
-      - 'flutter_rust_bridge.yaml'
-      - 'rust/Cargo.toml'
+      - 'packages/zoe_native/rust/src/**'
+      - 'packages/zoe_native/flutter_rust_bridge.yaml'
+      - 'packages/zoe_native/rust/Cargo.toml'
   pull_request:
     paths:
-      - 'rust/src/**'
-      - 'flutter_rust_bridge.yaml'
-      - 'rust/Cargo.toml'
+      - 'packages/zoe_native/rust/src/**'
+      - 'packages/zoe_native/flutter_rust_bridge.yaml'
+      - 'packages/zoe_native/rust/Cargo.toml'
   workflow_dispatch:
 
 env:
   FLUTTER_VERSION: '3.35.2'
   RUST_VERSION: '1.85.0'
+  FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: '2.11.1'
 
 jobs:
   # Validate flutter_rust_bridge code generation
@@ -43,12 +44,13 @@ jobs:
           cache: true
 
       - name: Install flutter_rust_bridge_codegen
-        run: cargo install flutter_rust_bridge_codegen --version 2.11.1
+        run: cargo install flutter_rust_bridge_codegen --version ${{ env.FLUTTER_RUST_BRIDGE_CODEGEN_VERSION }}
 
       - name: Install dependencies
         run: flutter pub get
 
       - name: Generate bindings
+        working-directory: packages/zoe_native
         run: flutter_rust_bridge_codegen generate
 
       - name: Check if generated files are up to date
@@ -59,12 +61,12 @@ jobs:
           fi
 
       - name: Verify Rust compilation
-        run: |
-          cd rust
-          cargo check
+        working-directory: packages/zoe_native/rust
+        run: cargo check --all
 
       - name: Verify Flutter compilation
-        run: flutter analyze lib/core/rust/
+        working-directory: packages/zoe_native/
+        run: flutter analyze lib
 
   # Test cross-platform compatibility
   test-codegen-platforms:

@@ -1,3 +1,0 @@
-rust_input: crate::api,zoe-client::client,zoe-client::frb_api
-rust_root: packages/zoe_native/rust/
-dart_output: packages/zoe_native/lib/src/rust
