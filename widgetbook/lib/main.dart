@@ -46,13 +46,9 @@ class WidgetbookApp extends StatelessWidget {
         ),
         // Text scale for accessibility testing
         TextScaleAddon(
-          scales: [
-            0.75, // Small
-            1.0,  // Normal
-            1.25, // Medium
-            1.5,  // Large
-            2.0,  // Extra Large
-          ],
+          initialScale: 1.0,
+          min: 0.75,
+          max: 2.0,
         ),
         // Localization for language testing
         LocalizationAddon(

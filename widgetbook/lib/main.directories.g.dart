@@ -27,14 +27,24 @@ import 'package:widgetbook_workspace/features/home/use_cases/use_cases.dart'
     as _widgetbook_workspace_features_home_use_cases_use_cases;
 import 'package:widgetbook_workspace/features/link/use_cases/link_use_cases.dart'
     as _widgetbook_workspace_features_link_use_cases_link_use_cases;
+import 'package:widgetbook_workspace/features/list/use_cases/list_use_cases.dart'
+    as _widgetbook_workspace_features_list_use_cases_list_use_cases;
 import 'package:widgetbook_workspace/features/polls/use_cases/poll_use_cases.dart'
     as _widgetbook_workspace_features_polls_use_cases_poll_use_cases;
+import 'package:widgetbook_workspace/features/settings/use_cases/language_use_cases.dart'
+    as _widgetbook_workspace_features_settings_use_cases_language_use_cases;
 import 'package:widgetbook_workspace/features/settings/use_cases/settings_use_cases.dart'
     as _widgetbook_workspace_features_settings_use_cases_settings_use_cases;
 import 'package:widgetbook_workspace/features/sheets/sheet_widgets.dart'
     as _widgetbook_workspace_features_sheets_sheet_widgets;
+import 'package:widgetbook_workspace/features/sheets/use_cases/sheet_use_cases.dart'
+    as _widgetbook_workspace_features_sheets_use_cases_sheet_use_cases;
 import 'package:widgetbook_workspace/features/tasks/use_cases/task_use_cases.dart'
     as _widgetbook_workspace_features_tasks_use_cases_task_use_cases;
+import 'package:widgetbook_workspace/features/text/use_cases/text_use_cases.dart'
+    as _widgetbook_workspace_features_text_use_cases_text_use_cases;
+import 'package:widgetbook_workspace/features/whatsapp/use_cases/whatsapp_use_cases.dart'
+    as _widgetbook_workspace_features_whatsapp_use_cases_whatsapp_use_cases;
 
 final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookFolder(
@@ -495,6 +505,25 @@ final directories = <_widgetbook.WidgetbookNode>[
         ],
       ),
       _widgetbook.WidgetbookFolder(
+        name: 'list',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'screens',
+            children: [
+              _widgetbook.WidgetbookLeafComponent(
+                name: 'ListDetailsScreen',
+                useCase: _widgetbook.WidgetbookUseCase(
+                  name: 'List Details Screen',
+                  builder:
+                      _widgetbook_workspace_features_list_use_cases_list_use_cases
+                          .buildListDetailsScreenUseCase,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
         name: 'polls',
         children: [
           _widgetbook.WidgetbookFolder(
@@ -582,6 +611,15 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'screens',
             children: [
+              _widgetbook.WidgetbookLeafComponent(
+                name: 'LanguageSelectionScreen',
+                useCase: _widgetbook.WidgetbookUseCase(
+                  name: 'Language Selection Screen',
+                  builder:
+                      _widgetbook_workspace_features_settings_use_cases_language_use_cases
+                          .buildLanguageSelectionScreenUseCase,
+                ),
+              ),
               _widgetbook.WidgetbookComponent(
                 name: 'SettingsScreen',
                 useCases: [
@@ -617,6 +655,15 @@ final directories = <_widgetbook.WidgetbookNode>[
                       .buildSheetDetailScreenUseCase,
                 ),
               ),
+              _widgetbook.WidgetbookLeafComponent(
+                name: 'SheetListScreen',
+                useCase: _widgetbook.WidgetbookUseCase(
+                  name: 'Sheet List Screen',
+                  builder:
+                      _widgetbook_workspace_features_sheets_use_cases_sheet_use_cases
+                          .buildSheetListScreenUseCase,
+                ),
+              ),
             ],
           ),
           _widgetbook.WidgetbookFolder(
@@ -637,14 +684,22 @@ final directories = <_widgetbook.WidgetbookNode>[
                   ),
                 ],
               ),
-              _widgetbook.WidgetbookLeafComponent(
+              _widgetbook.WidgetbookComponent(
                 name: 'SheetListWidget',
-                useCase: _widgetbook.WidgetbookUseCase(
-                  name: 'Sheet List',
-                  builder:
-                      _widgetbook_workspace_features_home_use_cases_use_cases
-                          .buildSheetListUseCase,
-                ),
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Sheet List',
+                    builder:
+                        _widgetbook_workspace_features_home_use_cases_use_cases
+                            .buildSheetListUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Sheet List Widget',
+                    builder:
+                        _widgetbook_workspace_features_sheets_use_cases_sheet_use_cases
+                            .buildSheetListWidgetUseCase,
+                  ),
+                ],
               ),
             ],
           ),
@@ -702,6 +757,25 @@ final directories = <_widgetbook.WidgetbookNode>[
         ],
       ),
       _widgetbook.WidgetbookFolder(
+        name: 'text',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'screens',
+            children: [
+              _widgetbook.WidgetbookLeafComponent(
+                name: 'TextBlockDetailsScreen',
+                useCase: _widgetbook.WidgetbookUseCase(
+                  name: 'Text Block Details Screen',
+                  builder:
+                      _widgetbook_workspace_features_text_use_cases_text_use_cases
+                          .buildTextBlockDetailsScreenUseCase,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
         name: 'users',
         children: [
           _widgetbook.WidgetbookFolder(
@@ -726,6 +800,38 @@ final directories = <_widgetbook.WidgetbookNode>[
             ],
           ),
         ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'whatsapp',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'screens',
+            children: [
+              _widgetbook.WidgetbookLeafComponent(
+                name: 'WhatsAppGroupConnectScreen',
+                useCase: _widgetbook.WidgetbookUseCase(
+                  name: 'WhatsApp Group Connect Screen',
+                  builder:
+                      _widgetbook_workspace_features_whatsapp_use_cases_whatsapp_use_cases
+                          .buildWhatsAppGroupConnectScreenUseCase,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  ),
+  _widgetbook.WidgetbookFolder(
+    name: 'widgets',
+    children: [
+      _widgetbook.WidgetbookLeafComponent(
+        name: 'Widget',
+        useCase: _widgetbook.WidgetbookUseCase(
+          name: 'Text Block List',
+          builder: _widgetbook_workspace_features_text_use_cases_text_use_cases
+              .buildTextBlockListUseCase,
+        ),
       ),
     ],
   ),

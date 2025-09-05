@@ -29,7 +29,6 @@ Widget buildSheetDetailScreenUseCase(BuildContext context) {
   return ZoePreview(child: SheetDetailScreen(sheetId: sheetId));
 }
 
-
 // Quick Search
 @widgetbook.UseCase(
   name: 'Quick Search Tab Section Header Widget',
