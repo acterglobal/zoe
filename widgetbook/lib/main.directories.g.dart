@@ -15,12 +15,20 @@ import 'package:widgetbook_workspace/common/widgets/glassy_container_widget.dart
     as _widgetbook_workspace_common_widgets_glassy_container_widget;
 import 'package:widgetbook_workspace/common/widgets/toolkit/zoe_toolkit_widgets.dart'
     as _widgetbook_workspace_common_widgets_toolkit_zoe_toolkit_widgets;
+import 'package:widgetbook_workspace/features/documents/use_cases/document_use_cases.dart'
+    as _widgetbook_workspace_features_documents_use_cases_document_use_cases;
+import 'package:widgetbook_workspace/features/events/use_cases/event_use_cases.dart'
+    as _widgetbook_workspace_features_events_use_cases_event_use_cases;
 import 'package:widgetbook_workspace/features/home/home_screen.dart'
     as _widgetbook_workspace_features_home_home_screen;
 import 'package:widgetbook_workspace/features/home/use_cases.dart'
     as _widgetbook_workspace_features_home_use_cases;
+import 'package:widgetbook_workspace/features/polls/use_cases/poll_use_cases.dart'
+    as _widgetbook_workspace_features_polls_use_cases_poll_use_cases;
 import 'package:widgetbook_workspace/features/sheets/sheet_widgets.dart'
     as _widgetbook_workspace_features_sheets_sheet_widgets;
+import 'package:widgetbook_workspace/features/tasks/use_cases/task_use_cases.dart'
+    as _widgetbook_workspace_features_tasks_use_cases_task_use_cases;
 
 final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookFolder(
@@ -261,16 +269,18 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'DocumentPreviewScreen',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Document Detail Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildDocumentPreviewScreenUseCase,
+                  builder:
+                      _widgetbook_workspace_features_documents_use_cases_document_use_cases
+                          .buildDocumentPreviewScreenUseCase,
                 ),
               ),
               _widgetbook.WidgetbookLeafComponent(
                 name: 'DocumentsListScreen',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Documents List Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildDocumentsListScreenUseCase,
+                  builder:
+                      _widgetbook_workspace_features_documents_use_cases_document_use_cases
+                          .buildDocumentsListScreenUseCase,
                 ),
               ),
             ],
@@ -282,32 +292,36 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'DocumentActionButtons',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Document Action Button Widget',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildDocumentActionButtonWidgetUseCase,
+                  builder:
+                      _widgetbook_workspace_features_documents_use_cases_document_use_cases
+                          .buildDocumentActionButtonWidgetUseCase,
                 ),
               ),
               _widgetbook.WidgetbookLeafComponent(
                 name: 'DocumentListWidget',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Document List Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildDocumentListScreenUseCase,
+                  builder:
+                      _widgetbook_workspace_features_documents_use_cases_document_use_cases
+                          .buildDocumentListScreenUseCase,
                 ),
               ),
               _widgetbook.WidgetbookLeafComponent(
                 name: 'DocumentWidget',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Document Widget',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildDocumentWidgetUseCase,
+                  builder:
+                      _widgetbook_workspace_features_documents_use_cases_document_use_cases
+                          .buildDocumentWidgetUseCase,
                 ),
               ),
               _widgetbook.WidgetbookLeafComponent(
                 name: 'UnsupportedPreviewWidget',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Unsupported Preview Widget',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildUnsupportedPreviewWidgetUseCase,
+                  builder:
+                      _widgetbook_workspace_features_documents_use_cases_document_use_cases
+                          .buildUnsupportedPreviewWidgetUseCase,
                 ),
               ),
             ],
@@ -324,16 +338,18 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'EventDetailScreen',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Event Detail Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildEventDetailScreenUseCase,
+                  builder:
+                      _widgetbook_workspace_features_events_use_cases_event_use_cases
+                          .buildEventDetailScreenUseCase,
                 ),
               ),
               _widgetbook.WidgetbookLeafComponent(
                 name: 'EventsListScreen',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Event List Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildEventsListScreenUseCase,
+                  builder:
+                      _widgetbook_workspace_features_events_use_cases_event_use_cases
+                          .buildEventsListScreenUseCase,
                 ),
               ),
             ],
@@ -345,16 +361,18 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'EventListWidget',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Event List Widget',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildEventListWidgetUseCase,
+                  builder:
+                      _widgetbook_workspace_features_events_use_cases_event_use_cases
+                          .buildEventListWidgetUseCase,
                 ),
               ),
               _widgetbook.WidgetbookLeafComponent(
                 name: 'EventWidget',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Event Widget',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildEventWidgetUseCase,
+                  builder:
+                      _widgetbook_workspace_features_events_use_cases_event_use_cases
+                          .buildEventWidgetUseCase,
                 ),
               ),
             ],
@@ -472,16 +490,18 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'PollDetailsScreen',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Poll Detail Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildPollDetailScreenUseCase,
+                  builder:
+                      _widgetbook_workspace_features_polls_use_cases_poll_use_cases
+                          .buildPollDetailScreenUseCase,
                 ),
               ),
               _widgetbook.WidgetbookLeafComponent(
                 name: 'PollsListScreen',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Polls List Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildPollsListScreenUseCase,
+                  builder:
+                      _widgetbook_workspace_features_polls_use_cases_poll_use_cases
+                          .buildPollsListScreenUseCase,
                 ),
               ),
             ],
@@ -493,16 +513,18 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'PollListWidget',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Poll List Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildPollListScreenUseCase,
+                  builder:
+                      _widgetbook_workspace_features_polls_use_cases_poll_use_cases
+                          .buildPollListScreenUseCase,
                 ),
               ),
               _widgetbook.WidgetbookLeafComponent(
                 name: 'PollWidget',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Poll Widget',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildPollWidgetUseCase,
+                  builder:
+                      _widgetbook_workspace_features_polls_use_cases_poll_use_cases
+                          .buildPollWidgetUseCase,
                 ),
               ),
             ],
@@ -614,16 +636,18 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'TaskDetailScreen',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Task Detail Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildTaskDetailScreenUseCase,
+                  builder:
+                      _widgetbook_workspace_features_tasks_use_cases_task_use_cases
+                          .buildTaskDetailScreenUseCase,
                 ),
               ),
               _widgetbook.WidgetbookLeafComponent(
                 name: 'TasksListScreen',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Tasks List Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildSheetWidgetUseCase,
+                  builder:
+                      _widgetbook_workspace_features_tasks_use_cases_task_use_cases
+                          .buildTasksListScreenUseCase,
                 ),
               ),
             ],
@@ -635,16 +659,18 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'TaskListWidget',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Task List Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildTaskListScreenUseCase,
+                  builder:
+                      _widgetbook_workspace_features_tasks_use_cases_task_use_cases
+                          .buildTaskListScreenUseCase,
                 ),
               ),
               _widgetbook.WidgetbookLeafComponent(
                 name: 'TaskWidget',
                 useCase: _widgetbook.WidgetbookUseCase(
                   name: 'Task Widget',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildTaskWidgetUseCase,
+                  builder:
+                      _widgetbook_workspace_features_tasks_use_cases_task_use_cases
+                          .buildTaskWidgetUseCase,
                 ),
               ),
             ],
@@ -657,6 +683,14 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'widgets',
             children: [
+              _widgetbook.WidgetbookLeafComponent(
+                name: 'UserListWidget',
+                useCase: _widgetbook.WidgetbookUseCase(
+                  name: 'User List Widget',
+                  builder: _widgetbook_workspace_features_home_home_screen
+                      .buildUserListWidgetUseCase,
+                ),
+              ),
               _widgetbook.WidgetbookLeafComponent(
                 name: 'UserWidget',
                 useCase: _widgetbook.WidgetbookUseCase(
