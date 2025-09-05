@@ -25,6 +25,8 @@ import 'package:widgetbook_workspace/features/home/use_cases.dart'
     as _widgetbook_workspace_features_home_use_cases;
 import 'package:widgetbook_workspace/features/polls/use_cases/poll_use_cases.dart'
     as _widgetbook_workspace_features_polls_use_cases_poll_use_cases;
+import 'package:widgetbook_workspace/features/settings/use_cases/settings_use_cases.dart'
+    as _widgetbook_workspace_features_settings_use_cases_settings_use_cases;
 import 'package:widgetbook_workspace/features/sheets/sheet_widgets.dart'
     as _widgetbook_workspace_features_sheets_sheet_widgets;
 import 'package:widgetbook_workspace/features/tasks/use_cases/task_use_cases.dart'
@@ -568,13 +570,22 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'screens',
             children: [
-              _widgetbook.WidgetbookLeafComponent(
+              _widgetbook.WidgetbookComponent(
                 name: 'SettingsScreen',
-                useCase: _widgetbook.WidgetbookUseCase(
-                  name: 'Settings Screen',
-                  builder: _widgetbook_workspace_features_home_home_screen
-                      .buildSettingsScreenUseCase,
-                ),
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Settings Screen',
+                    builder:
+                        _widgetbook_workspace_features_settings_use_cases_settings_use_cases
+                            .buildSettingsScreenUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Theme Dialog',
+                    builder:
+                        _widgetbook_workspace_features_settings_use_cases_settings_use_cases
+                            .buildThemeDialogUseCase,
+                  ),
+                ],
               ),
             ],
           ),

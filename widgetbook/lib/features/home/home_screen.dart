@@ -12,44 +12,18 @@ import 'package:zoe/features/link/widgets/link_list_widget.dart';
 import 'package:zoe/features/link/widgets/link_widget.dart';
 import 'package:zoe/features/quick-search/screens/quick_search_screen.dart';
 import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
-import 'package:zoe/features/settings/models/theme.dart';
-import 'package:zoe/features/settings/providers/theme_provider.dart';
-import 'package:zoe/features/settings/screens/settings_screen.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/widgets/user_list_widget.dart';
-import '../settings/mock_theme_providers.dart';
 import 'package:zoe/features/sheet/screens/sheet_detail_screen.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/widgets/user_widget.dart';
+
 
 @widgetbook.UseCase(name: 'Zoe Home Screen', type: HomeScreen)
 Widget buildZoeHomeScreenUseCase(BuildContext context) {
   return ZoePreview(child: HomeScreen());
 }
 
-@widgetbook.UseCase(name: 'Settings Screen', type: SettingsScreen)
-Widget buildSettingsScreenUseCase(BuildContext context) {
-  final selectedTheme = context.knobs.object.dropdown(
-    label: 'Current Theme',
-    options: AppThemeMode.values,
-    initialOption: AppThemeMode.light,
-    labelBuilder: (theme) => theme.name,
-  );
-
-  return Consumer(
-    builder: (context, ref, _) {
-      return ProviderScope(
-        overrides: [
-          // Override theme provider with mock provider
-          themeProvider.overrideWith(
-            (ref) => MockThemeNotifier(ref)..setTheme(selectedTheme),
-          ),
-        ],
-        child: ZoePreview(child: SettingsScreen()),
-      );
-    },
-  );
-}
 
 @widgetbook.UseCase(name: 'Sheet Detail Screen', type: SheetDetailScreen)
 Widget buildSheetDetailScreenUseCase(BuildContext context) {

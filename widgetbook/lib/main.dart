@@ -24,7 +24,7 @@ class WidgetbookApp extends StatelessWidget {
       appBuilder: (context, child) => ProviderScope(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: AppTheme.darkTheme,
+          theme: AppTheme.lightTheme,
           localizationsDelegates: const [
             ...L10n.localizationsDelegates,
             GlobalMaterialLocalizations.delegate,
