@@ -3,13 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 import 'package:widgetbook_workspace/features/home/zoe_preview_widget.dart';
-import 'package:zoe/features/bullets/screens/bullet_detail_screen.dart';
-import 'package:zoe/features/bullets/widgets/bullet_list_widget.dart';
 import 'package:zoe/features/home/screens/home_screen.dart';
-import 'package:zoe/features/link/providers/link_providers.dart';
-import 'package:zoe/features/link/screens/links_list_screen.dart';
-import 'package:zoe/features/link/widgets/link_list_widget.dart';
-import 'package:zoe/features/link/widgets/link_widget.dart';
 import 'package:zoe/features/quick-search/screens/quick_search_screen.dart';
 import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
@@ -35,53 +29,6 @@ Widget buildSheetDetailScreenUseCase(BuildContext context) {
   return ZoePreview(child: SheetDetailScreen(sheetId: sheetId));
 }
 
-// Bullet
-@widgetbook.UseCase(name: 'Bullet List Screen', type: BulletListWidget)
-Widget buildBulletListScreenUseCase(BuildContext context) {
-  final parentId = context.knobs.string(
-    label: 'Parent ID',
-    initialValue: 'list-bulleted-trip-1',
-  );
-
-  return ZoePreview(
-    child: BulletListWidget(parentId: parentId, isEditing: false),
-  );
-}
-
-@widgetbook.UseCase(name: 'Bullet Detail Screen', type: BulletDetailScreen)
-Widget buildBulletDetailScreenUseCase(BuildContext context) {
-  final bulletId = context.knobs.string(
-    label: 'Bullet ID',
-    initialValue: 'bullet-trip-destinations-1',
-  );
-
-  return ZoePreview(child: BulletDetailScreen(bulletId: bulletId));
-}
-
-// Link
-@widgetbook.UseCase(name: 'Link List Screen', type: LinkListWidget)
-Widget buildLinkListScreenUseCase(BuildContext context) {
-  return ZoePreview(
-    child: LinkListWidget(
-      linksProvider: linkListProvider,
-      isEditing: false,
-      shrinkWrap: true,
-      maxItems: 3,
-    ),
-  );
-}
-
-@widgetbook.UseCase(name: 'Link Widget', type: LinkWidget)
-Widget buildLinkWidgetUseCase(BuildContext context) {
-  final linkId = context.knobs.string(label: 'Link ID', initialValue: 'link-1');
-
-  return ZoePreview(child: LinkWidget(linkId: linkId, isEditing: false));
-}
-
-@widgetbook.UseCase(name: 'Links List Screen', type: LinksListScreen)
-Widget buildLinksListScreenUseCase(BuildContext context) {
-  return ZoePreview(child: LinksListScreen());
-}
 
 // Quick Search
 @widgetbook.UseCase(

@@ -37,14 +37,33 @@ class WidgetbookApp extends StatelessWidget {
       ),
 
       addons: [
+        // Theme addon for testing light/dark themes
         MaterialThemeAddon(
           themes: [
             WidgetbookTheme(name: 'Light', data: AppTheme.lightTheme),
             WidgetbookTheme(name: 'Dark', data: AppTheme.darkTheme),
-            WidgetbookTheme(name: 'Zoe Dark', data: AppTheme.darkTheme),
           ],
         ),
-        ViewportAddon(Viewports.all),
+        // Text scale for accessibility testing
+        TextScaleAddon(
+          scales: [
+            0.75, // Small
+            1.0,  // Normal
+            1.25, // Medium
+            1.5,  // Large
+            2.0,  // Extra Large
+          ],
+        ),
+        // Localization for language testing
+        LocalizationAddon(
+          locales: L10n.supportedLocales,
+          localizationsDelegates: [
+            L10n.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+        ),
       ],
     );
   }

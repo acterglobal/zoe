@@ -109,7 +109,6 @@ Widget buildThemeDialogUseCase(BuildContext context) {
     ),
   );
 }
-
 @widgetbook.UseCase(name: 'Settings Screen', type: SettingsScreen)
 Widget buildSettingsScreenUseCase(BuildContext context) {
   final selectedTheme = context.knobs.object.dropdown(
@@ -145,3 +144,4 @@ Widget buildSettingsScreenUseCase(BuildContext context) {
     },
   );
 }
+
