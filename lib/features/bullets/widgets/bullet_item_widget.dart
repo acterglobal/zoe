@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -45,16 +45,11 @@ class BulletItemWidget extends ConsumerWidget {
         _buildBulletItemIcon(context),
         const SizedBox(width: 10),
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildBulletItemTitle(context, ref, bulletItem, autoFocus),
-                  _buildCreatedByAvatar(context, ref, bulletItem),
-                ],
-              ),
+              _buildBulletItemTitle(context, ref, bulletItem, autoFocus),
+              _buildCreatedByAvatarWidget(context, ref, bulletItem),
             ],
           ),
         ),
@@ -80,33 +75,35 @@ class BulletItemWidget extends ConsumerWidget {
     BulletModel bulletItem,
     bool autoFocus,
   ) {
-    return Flexible(child: ZoeInlineTextEditWidget(
-      hintText: L10n.of(context).bulletItem,
-      isEditing: isEditing,
-      text: bulletItem.title,
-      textStyle: Theme.of(context).textTheme.bodyMedium,
-      textInputAction: TextInputAction.next,
-      autoFocus: autoFocus,
-      onTextChanged: (value) {
-        ref
-            .read(bulletListProvider.notifier)
-            .updateBulletTitle(bulletId, value);
-      },
-      onEnterPressed: () {
-        ref
-            .read(bulletListProvider.notifier)
-            .addBullet(
-              parentId: bulletItem.parentId,
-              sheetId: bulletItem.sheetId,
-              orderIndex: bulletItem.orderIndex + 1,
-            );
-      },
-      onBackspaceEmptyText: () =>
-          ref.read(bulletListProvider.notifier).deleteBullet(bulletId),
-      onTapText: () => context.push(
-        AppRoutes.bulletDetail.route.replaceAll(':bulletId', bulletId),
+    return Flexible(
+      child: ZoeInlineTextEditWidget(
+        hintText: L10n.of(context).bulletItem,
+        isEditing: isEditing,
+        text: bulletItem.title,
+        textStyle: Theme.of(context).textTheme.bodyMedium,
+        textInputAction: TextInputAction.next,
+        autoFocus: autoFocus,
+        onTextChanged: (value) {
+          ref
+              .read(bulletListProvider.notifier)
+              .updateBulletTitle(bulletId, value);
+        },
+        onEnterPressed: () {
+          ref
+              .read(bulletListProvider.notifier)
+              .addBullet(
+                parentId: bulletItem.parentId,
+                sheetId: bulletItem.sheetId,
+                orderIndex: bulletItem.orderIndex + 1,
+              );
+        },
+        onBackspaceEmptyText: () =>
+            ref.read(bulletListProvider.notifier).deleteBullet(bulletId),
+        onTapText: () => context.push(
+          AppRoutes.bulletDetail.route.replaceAll(':bulletId', bulletId),
+        ),
       ),
-    ));
+    );
   }
 
   // Builds the bullet item actions
@@ -139,7 +136,7 @@ class BulletItemWidget extends ConsumerWidget {
   }
 
   // Builds the created by user avatar
-  Widget _buildCreatedByAvatar(
+  Widget _buildCreatedByAvatarWidget(
     BuildContext context,
     WidgetRef ref,
     BulletModel bulletItem,
@@ -149,9 +146,7 @@ class BulletItemWidget extends ConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.only(left: 8),
-      child: ZoeUserAvatarWidget(
-        user: user,
-      ),
+      child: ZoeUserAvatarWidget(user: user),
     );
   }
 }

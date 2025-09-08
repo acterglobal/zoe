@@ -11,11 +11,13 @@ import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_chip_widget.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class BulletDetailScreen extends ConsumerWidget {
@@ -58,7 +60,8 @@ class BulletDetailScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: ZoeAppBar(actions: [
+        title: ZoeAppBar(
+          actions: [
             EditViewToggleButton(parentId: bulletId),
             const SizedBox(width: 10),
             ContentMenuButton(parentId: bulletId),
@@ -83,11 +86,9 @@ class BulletDetailScreen extends ConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: CommonUtils.isKeyboardOpen(context) ? null : _buildFloatingActionButton(
-        context,
-        isEditing,
-        bullet,
-      ),
+      floatingActionButton: CommonUtils.isKeyboardOpen(context)
+          ? null
+          : _buildFloatingActionButton(context, isEditing, bullet),
     );
   }
 
@@ -171,6 +172,41 @@ class BulletDetailScreen extends ConsumerWidget {
                 .read(bulletListProvider.notifier)
                 .updateBulletDescription(bulletId, description),
           ),
+        ),
+        const SizedBox(height: 16),
+        _buildCreatedByAvatarWidget(context, ref, bullet),
+      ],
+    );
+  }
+
+  /// Builds the created by user avatar
+  Widget _buildCreatedByAvatarWidget(
+    BuildContext context,
+    WidgetRef ref,
+    BulletModel bullet,
+  ) {
+    final user = ref.watch(getUserByIdProvider(bullet.createdBy));
+    if (user == null) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildCreatedByHeader(context, ref),
+        const SizedBox(height: 10),
+        ZoeUserAvatarChipWidget(user: user),
+      ],
+    );
+  }
+
+   Widget _buildCreatedByHeader(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    return Row(
+      children: [
+        Icon(Icons.person_rounded, size: 20),
+        const SizedBox(width: 8),
+        Text(
+          L10n.of(context).addedBy,
+          style: theme.textTheme.titleMedium
         ),
       ],
     );

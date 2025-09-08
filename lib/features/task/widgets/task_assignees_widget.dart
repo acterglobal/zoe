@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/utils/common_utils.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_chip_widget.dart';
 import 'package:zoe/features/task/actions/add_assignee_action.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
@@ -94,46 +93,12 @@ class TaskAssigneesWidget extends ConsumerWidget {
     final user = ref.watch(getUserByIdProvider(userId));
     if (user == null) return const SizedBox.shrink();
 
-    final theme = Theme.of(context);
-    final randomColor = CommonUtils().getRandomColorFromName(user.name);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
-      decoration: BoxDecoration(
-        color: randomColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: randomColor.withValues(alpha: 0.3), width: 1),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ZoeUserAvatarWidget(user: user),
-          const SizedBox(width: 8),
-          Text(
-            user.name,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: randomColor,
-              fontSize: 12,
-            ),
-          ),
-          if (isEditing) ...[
-            const SizedBox(width: 4),
-            IconButton(
-              visualDensity: VisualDensity.compact,
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-              onPressed: () => ref
-                  .read(taskListProvider.notifier)
-                  .removeAssignee(ref, task, userId),
-              icon: Icon(
-                Icons.close_rounded,
-                size: 14,
-                color: theme.colorScheme.error,
-              ),
-            ),
-          ],
-        ],
-      ),
+    return ZoeUserAvatarChipWidget(
+      user: user,
+      showRemoveButton: isEditing,
+      onRemove: isEditing ? () => ref
+          .read(taskListProvider.notifier)
+          .removeAssignee(ref, task, userId) : null,
     );
   }
 }
