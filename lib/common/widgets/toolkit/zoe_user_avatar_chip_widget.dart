@@ -5,14 +5,12 @@ import 'package:zoe/features/users/models/user_model.dart';
 
 class ZoeUserAvatarChipWidget extends StatelessWidget {
   final UserModel user;
-  final bool showName;
   final bool showRemoveButton;
   final VoidCallback? onRemove;
 
   const ZoeUserAvatarChipWidget({
     super.key,
     required this.user,
-    this.showName = true,
     this.showRemoveButton = false,
     this.onRemove,
   });
@@ -33,16 +31,14 @@ class ZoeUserAvatarChipWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ZoeUserAvatarWidget(user: user),
-          if (showName) ...[
-            const SizedBox(width: 8),
-            Text(
-              user.name,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: randomColor,
-                fontSize: 12,
-              ),
+          const SizedBox(width: 8),
+          Text(
+            user.name,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: randomColor,
+              fontSize: 12,
             ),
-          ],
+          ),
           if (showRemoveButton && onRemove != null) ...[
             const SizedBox(width: 4),
             IconButton(
