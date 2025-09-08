@@ -468,5 +468,7 @@
     "successfullyConnected": "Successfully Connected!",
     "@successfullyConnected": {},
     "whatsappGroupConnectedMessage": "Your sheet has been successfully connected to the WhatsApp group. You can now share content directly from your sheet.",
-    "@whatsappGroupConnectedMessage": {}
+    "@whatsappGroupConnectedMessage": {},
+    "activePolls": "Active Polls",
+    "@activePolls": {}
 }

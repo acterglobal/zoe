@@ -6,6 +6,9 @@ import 'package:zoe/features/events/widgets/event_widget.dart';
 import 'package:zoe/features/home/widgets/section_header/section_header_widget.dart';
 import 'package:zoe/features/home/widgets/today_focus/todays_item_widget.dart';
 import 'package:zoe/features/events/models/events_model.dart';
+import 'package:zoe/features/polls/models/poll_model.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/features/polls/widgets/poll_widget.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_item_widget.dart';
@@ -18,8 +21,9 @@ class TodaysFocusWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final todaysEvents = ref.watch(todaysEventsProvider);
     final todaysTasks = ref.watch(todaysTasksProvider);
+    final activePolls = ref.watch(activePollListProvider);
 
-    if (todaysEvents.isEmpty && todaysTasks.isEmpty) {
+    if (todaysEvents.isEmpty && todaysTasks.isEmpty && activePolls.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -37,8 +41,26 @@ class TodaysFocusWidget extends ConsumerWidget {
         ],
         if (todaysTasks.isNotEmpty) ...[
           _buildTaskSection(context, todaysTasks),
+          const SizedBox(height: 16),
+        ],
+        if (activePolls.isNotEmpty) ...[
+          _buildPollSection(context, activePolls),
+          const SizedBox(height: 16),
         ],
       ],
+    );
+  }
+
+  Widget _buildSectionContainer(BuildContext context, Widget child) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(top: 3, bottom: 3),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: theme.colorScheme.surface.withValues(alpha: 0.8),
+      ),
+      child: child,
     );
   }
 
@@ -67,25 +89,39 @@ class TodaysFocusWidget extends ConsumerWidget {
       icon: Icons.task_alt_rounded,
       color: AppColors.successColor,
       count: tasks.length,
-      children: tasks.map((task) => _buildTaskItem(context, task)).toList(),
+      children: tasks
+          .map(
+            (task) => _buildSectionContainer(
+              context,
+              TaskWidget(
+                key: ValueKey(task.id),
+                taskId: task.id,
+                isEditing: false,
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 
-  Widget _buildTaskItem(BuildContext context, TaskModel task) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.only(top: 3, bottom: 3),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: theme.colorScheme.surface.withValues(alpha: 0.8),
-      ),
-      child: TaskWidget(
-        key: ValueKey(task.id),
-        taskId: task.id,
-        isEditing: false,
-      ),
+  Widget _buildPollSection(BuildContext context, List<PollModel> polls) {
+    return TodaysItemWidget(
+      title: L10n.of(context).activePolls,
+      icon: Icons.poll_rounded,
+      color: AppColors.brightMagentaColor,
+      count: polls.length,
+      children: polls
+          .map(
+            (poll) => _buildSectionContainer(
+              context,
+              PollWidget(
+                key: ValueKey(poll.id),
+                pollId: poll.id,
+                isEditing: false,
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 }
