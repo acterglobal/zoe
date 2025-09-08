@@ -13,7 +13,6 @@ import 'package:zoe/features/task/utils/task_utils.dart';
 import 'package:zoe/features/task/widgets/task_checkbox_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_stacked_avatars_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class TaskWidget extends ConsumerWidget {
@@ -153,9 +152,10 @@ class TaskWidget extends ConsumerWidget {
   ) {
     
     final users = [
-      for (final userId in task.assignedUsers) 
-        ref.watch(getUserByIdProvider(userId))
-    ].whereType<UserModel>().toList();
+      for (final userId in task.assignedUsers)
+        if (ref.watch(getUserByIdProvider(userId)) != null)
+          ref.watch(getUserByIdProvider(userId))!
+    ];
 
     return Padding(
       padding: const EdgeInsets.only(right: 8),

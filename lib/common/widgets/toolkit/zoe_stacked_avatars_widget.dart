@@ -56,7 +56,7 @@ class ZoeStackedAvatarsWidget extends StatelessWidget {
                   child: Text(
                     '+$remainingCount',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                     ),
                   ),
                 ),
