@@ -230,4 +230,179 @@ final bulletList = [
     ),
     createdBy: 'user_1',
   ),
+
+  // Mobile App Development Bullets
+  BulletModel(
+    id: 'bullet-app-1',
+    sheetId: 'sheet-2',
+    parentId: 'list-bulleted-app-1',
+    title: 'Core Features',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'User authentication, profile management, real-time data sync, offline support, push notifications',
+      htmlText:
+          '<p>User authentication, profile management, real-time data sync, offline support, push notifications</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-app-2',
+    sheetId: 'sheet-2',
+    parentId: 'list-bulleted-app-1',
+    title: 'Technical Stack',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Flutter for cross-platform development, Firebase for backend services, Material Design 3 for UI components',
+      htmlText:
+          '<p>Flutter for cross-platform development, Firebase for backend services, Material Design 3 for UI components</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-app-3',
+    sheetId: 'sheet-2',
+    parentId: 'list-bulleted-app-1',
+    title: 'Development Workflow',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Git-flow branching strategy, CI/CD pipeline with GitHub Actions, automated testing with Flutter test framework',
+      htmlText:
+          '<p>Git-flow branching strategy, CI/CD pipeline with GitHub Actions, automated testing with Flutter test framework</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+
+  // Community Garden Bullets
+  BulletModel(
+    id: 'bullet-garden-1',
+    sheetId: 'sheet-3',
+    parentId: 'list-bulleted-garden-1',
+    title: 'Garden Layout',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Six raised beds (4x8 ft each), central pathway, composting area, tool shed, water source nearby',
+      htmlText:
+          '<p>Six raised beds (4x8 ft each), central pathway, composting area, tool shed, water source nearby</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-garden-2',
+    sheetId: 'sheet-3',
+    parentId: 'list-bulleted-garden-1',
+    title: 'Seasonal Plants',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Spring: tomatoes, peppers, herbs; Summer: squash, cucumbers; Fall: leafy greens, root vegetables',
+      htmlText:
+          '<p>Spring: tomatoes, peppers, herbs; Summer: squash, cucumbers; Fall: leafy greens, root vegetables</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-garden-3',
+    sheetId: 'sheet-3',
+    parentId: 'list-bulleted-garden-1',
+    title: 'Maintenance Schedule',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Daily watering, weekly weeding, monthly composting, seasonal planting and harvesting',
+      htmlText:
+          '<p>Daily watering, weekly weeding, monthly composting, seasonal planting and harvesting</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+   // Wedding Planning Bullets
+  BulletModel(
+    id: 'bullet-wedding-1',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-wedding-1',
+    title: 'Venue Requirements',
+    orderIndex: 1,
+    description: (
+      plainText:
+          '• Capacity for 150 guests\n• Indoor and outdoor spaces\n• In-house catering available\n• Parking for 100 cars\n• Wheelchair accessible\n• Sound system included',
+      htmlText:
+          '<ul><li>Capacity for 150 guests</li><li>Indoor and outdoor spaces</li><li>In-house catering available</li><li>Parking for 100 cars</li><li>Wheelchair accessible</li><li>Sound system included</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-wedding-2',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-wedding-1',
+    title: 'Wedding Party',
+    orderIndex: 2,
+    description: (
+      plainText:
+          '• Maid of Honor: Sarah\n• Best Man: John\n• Bridesmaids (4): Emma, Lisa, Kate, Amy\n• Groomsmen (4): Mike, Tom, Dave, Chris\n• Flower Girl: Lucy\n• Ring Bearer: Max',
+      htmlText:
+          '<ul><li>Maid of Honor: Sarah</li><li>Best Man: John</li><li>Bridesmaids (4): Emma, Lisa, Kate, Amy</li><li>Groomsmen (4): Mike, Tom, Dave, Chris</li><li>Flower Girl: Lucy</li><li>Ring Bearer: Max</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-wedding-3',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-wedding-1',
+    title: 'Color Scheme',
+    orderIndex: 3,
+    description: (
+      plainText:
+          '• Primary: Dusty Rose\n• Secondary: Navy Blue\n• Accent: Gold\n• Bridesmaids dresses: Dusty Rose\n• Groomsmen suits: Navy Blue\n• Flowers: Mix of dusty rose and white',
+      htmlText:
+          '<ul><li>Primary: Dusty Rose</li><li>Secondary: Navy Blue</li><li>Accent: Gold</li><li>Bridesmaids dresses: Dusty Rose</li><li>Groomsmen suits: Navy Blue</li><li>Flowers: Mix of dusty rose and white</li></ul>',
+    ),
+    createdBy: 'user_2',
+  ),
+
+  // Fitness Journey Bullets
+  BulletModel(
+    id: 'bullet-fitness-1',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-fitness-1',
+    title: '3-Month Goals',
+    orderIndex: 1,
+    description: (
+      plainText:
+          '• Lose 10 pounds of body fat\n• Increase bench press by 20 pounds\n• Run 5k under 25 minutes\n• Complete 10 consecutive pull-ups\n• Maintain consistent meal prep\n• Attend 3 workout sessions per week',
+      htmlText:
+          '<ul><li>Lose 10 pounds of body fat</li><li>Increase bench press by 20 pounds</li><li>Run 5k under 25 minutes</li><li>Complete 10 consecutive pull-ups</li><li>Maintain consistent meal prep</li><li>Attend 3 workout sessions per week</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-fitness-2',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-fitness-1',
+    title: 'Equipment Needed',
+    orderIndex: 2,
+    description: (
+      plainText:
+          '• Running shoes\n• Resistance bands\n• Yoga mat\n• Weight lifting gloves\n• Water bottle\n• Heart rate monitor\n• Foam roller',
+      htmlText:
+          '<ul><li>Running shoes</li><li>Resistance bands</li><li>Yoga mat</li><li>Weight lifting gloves</li><li>Water bottle</li><li>Heart rate monitor</li><li>Foam roller</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-fitness-3',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-fitness-1',
+    title: 'Supplement Plan',
+    orderIndex: 3,
+    description: (
+      plainText:
+          '• Pre-workout: 30 mins before training\n• Protein shake: Post-workout\n• BCAAs: During workout\n• Multivitamin: Morning\n• Fish oil: With breakfast\n• Magnesium: Evening',
+      htmlText:
+          '<ul><li>Pre-workout: 30 mins before training</li><li>Protein shake: Post-workout</li><li>BCAAs: During workout</li><li>Multivitamin: Morning</li><li>Fish oil: With breakfast</li><li>Magnesium: Evening</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
 ];

@@ -1,6 +1,7 @@
 import 'package:zoe/features/task/models/task_model.dart';
 
 final tasks = [
+  // Getting Started Guide Tasks
   TaskModel(
     id: 'task-1',
     sheetId: 'sheet-1',
@@ -153,5 +154,182 @@ final tasks = [
     dueDate: DateTime.now().add(const Duration(days: 1)),
     createdBy: 'user_1',
     assignedUsers: ['user_1', 'user_2', 'user_3'],
+  ),
+  
+   // Mobile App Development Tasks
+  TaskModel(
+    id: 'task-app-1',
+    sheetId: 'sheet-2',
+    parentId: 'list-tasks-app-1',
+    title: 'Implement User Authentication',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Set up OAuth2 authentication flow with social login options. Include email verification and password reset functionality.',
+      htmlText:
+          '<p>Set up OAuth2 authentication flow with social login options. Include email verification and password reset functionality.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_2'],
+  ),
+  TaskModel(
+    id: 'task-app-2',
+    sheetId: 'sheet-2',
+    parentId: 'list-tasks-app-1',
+    title: 'Design System Implementation',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Create reusable UI components following our design system. Include theme support, accessibility features, and responsive layouts.',
+      htmlText:
+          '<p>Create reusable UI components following our design system. Include theme support, accessibility features, and responsive layouts.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 5)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_3'],
+  ),
+
+  // Community Garden Tasks
+  TaskModel(
+    id: 'task-garden-1',
+    sheetId: 'sheet-3',
+    parentId: 'list-tasks-garden-1',
+    title: 'Prepare Garden Beds',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Clear weeds, add compost, and prepare soil in all garden beds. Mark out planting areas and install irrigation system.',
+      htmlText:
+          '<p>Clear weeds, add compost, and prepare soil in all garden beds. Mark out planting areas and install irrigation system.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_2', 'user_3'],
+  ),
+  TaskModel(
+    id: 'task-garden-2',
+    sheetId: 'sheet-3',
+    parentId: 'list-tasks-garden-1',
+    title: 'Order Seeds and Supplies',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Purchase seasonal vegetable seeds, organic fertilizer, and gardening tools. Check inventory and restock as needed.',
+      htmlText:
+          '<p>Purchase seasonal vegetable seeds, organic fertilizer, and gardening tools. Check inventory and restock as needed.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2'],
+  ),
+   // Wedding Planning Tasks
+  TaskModel(
+    id: 'task-wedding-1',
+    sheetId: 'sheet-4',
+    parentId: 'list-tasks-wedding-1',
+    title: 'Book Wedding Venue',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Research and visit potential venues, compare prices, check availability for our preferred dates, and review contract terms before making final decision.',
+      htmlText:
+          '<p>Research and visit potential venues, compare prices, check availability for our preferred dates, and review contract terms before making final decision.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 30)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_2'],
+  ),
+  TaskModel(
+    id: 'task-wedding-2',
+    sheetId: 'sheet-4',
+    parentId: 'list-tasks-wedding-1',
+    title: 'Create Guest List',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Compile names and addresses of all potential guests, categorize by must-invite and maybe-invite, and determine plus-one policies.',
+      htmlText:
+          '<p>Compile names and addresses of all potential guests, categorize by must-invite and maybe-invite, and determine plus-one policies.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 14)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_2', 'user_3'],
+  ),
+  TaskModel(
+    id: 'task-wedding-3',
+    sheetId: 'sheet-4',
+    parentId: 'list-tasks-wedding-2',
+    title: 'Schedule Catering Tastings',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Contact potential caterers, schedule tasting sessions, compare menu options and pricing, consider dietary restrictions.',
+      htmlText:
+          '<p>Contact potential caterers, schedule tasting sessions, compare menu options and pricing, consider dietary restrictions.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 45)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_1', 'user_2'],
+  ),
+
+  // Fitness Journey Tasks
+  TaskModel(
+    id: 'task-fitness-1',
+    sheetId: 'sheet-5',
+    parentId: 'list-tasks-fitness-1',
+    title: 'Complete Upper Body Workout',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Today\'s Focus:\n- 4 sets of bench press\n- 3 sets of shoulder press\n- 3 sets of pull-ups\n- 3 sets of tricep dips\nTarget: Progressive overload from last session',
+      htmlText:
+          '<p>Today\'s Focus:</p><ul><li>4 sets of bench press</li><li>3 sets of shoulder press</li><li>3 sets of pull-ups</li><li>3 sets of tricep dips</li></ul><p>Target: Progressive overload from last session</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1'],
+  ),
+  TaskModel(
+    id: 'task-fitness-2',
+    sheetId: 'sheet-5',
+    parentId: 'list-tasks-fitness-1',
+    title: 'Meal Prep for the Week',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Prepare:\n- Grilled chicken breasts\n- Roasted vegetables\n- Brown rice\n- Protein smoothie packs\nDivide into 5 portions for the week',
+      htmlText:
+          '<p>Prepare:</p><ul><li>Grilled chicken breasts</li><li>Roasted vegetables</li><li>Brown rice</li><li>Protein smoothie packs</li></ul><p>Divide into 5 portions for the week</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1'],
+  ),
+  TaskModel(
+    id: 'task-fitness-3',
+    sheetId: 'sheet-5',
+    parentId: 'list-tasks-fitness-2',
+    title: 'Track Body Measurements',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Monthly measurements:\n- Weight\n- Body fat percentage\n- Chest, waist, hips\n- Arms and legs\nTake progress photos from front, side, and back',
+      htmlText:
+          '<p>Monthly measurements:</p><ul><li>Weight</li><li>Body fat percentage</li><li>Chest, waist, hips</li><li>Arms and legs</li></ul><p>Take progress photos from front, side, and back</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 7)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1'],
   ),
 ];
