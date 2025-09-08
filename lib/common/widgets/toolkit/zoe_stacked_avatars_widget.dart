@@ -4,14 +4,14 @@ import 'package:zoe/features/users/models/user_model.dart';
 
 class ZoeStackedAvatarsWidget extends StatelessWidget {
   final List<UserModel> users;
-  final int maxDisplayed;
+  final int maxUsers;
   final double spacing;
   final double avatarSize;
 
   const ZoeStackedAvatarsWidget({
     super.key,
     required this.users,
-    this.maxDisplayed = 5,
+    this.maxUsers = 5,
     this.spacing = -6,
     this.avatarSize = 20,
   });
@@ -21,8 +21,8 @@ class ZoeStackedAvatarsWidget extends StatelessWidget {
     if (users.isEmpty) return const SizedBox.shrink();
     final theme = Theme.of(context);
 
-    final displayCount = users.length > maxDisplayed ? maxDisplayed -1 : users.length;
-    final remainingCount = users.length > maxDisplayed ? users.length - (maxDisplayed - 1) : 0;
+    final displayCount = users.length > maxUsers ? maxUsers -1 : users.length;
+    final remainingCount = users.length > maxUsers ? users.length - (maxUsers - 1) : 0;
 
     final totalWidth = displayCount * (avatarSize + spacing) + (remainingCount > 0 ? avatarSize : 0);
     
