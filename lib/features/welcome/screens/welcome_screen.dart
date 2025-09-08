@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/animated_background_widget.dart';
 import 'package:zoe/common/widgets/app_icon_widget.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -20,10 +21,11 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
     return Scaffold(
       body: AnimatedBackgroundWidget(
         child: SafeArea(
-          child: Container(
-            constraints: BoxConstraints(maxWidth: 600),
+          child: Center(
+          child: MaxWidthWidget(
             padding: const EdgeInsets.all(24),
-            child: _buildWelcomeBodyUI(),
+              child: _buildWelcomeBodyUI(),
+            ),
           ),
         ),
       ),
