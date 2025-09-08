@@ -153,7 +153,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           icon: Icons.description,
         ),
         const SizedBox(height: 16),
-        SheetListWidget(shrinkWrap: true, maxItems: 3),
+        SheetListWidget(sheetsProvider: sheetListProvider, shrinkWrap: true, maxItems: 3),
         const SizedBox(height: 100), // Space for FAB
       ],
     );

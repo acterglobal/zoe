@@ -14,6 +14,7 @@ import 'package:zoe/features/link/widgets/link_list_widget.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
 import 'package:zoe/features/quick-search/models/quick_search_filters.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_list_widget.dart';
@@ -121,6 +122,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
           if (quickSearchFilters.value == QuickSearchFilters.all ||
               quickSearchFilters.value == QuickSearchFilters.sheets)
             SheetListWidget(
+              sheetsProvider: sheetListSearchProvider,
               maxItems: 3,
               shrinkWrap: true,
               showSectionHeader: true,
@@ -133,7 +135,6 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
               maxItems: 3,
               showSectionHeader: true,
             ),
-
           if (quickSearchFilters.value == QuickSearchFilters.all ||
               quickSearchFilters.value == QuickSearchFilters.tasks) ...[
             const SizedBox(height: 16),
