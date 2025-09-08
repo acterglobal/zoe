@@ -22,7 +22,7 @@ class ZoeUserAvatarWidget extends StatelessWidget {
           user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
           style: TextStyle(
             color: randomColor,
-            fontSize: 12,
+            fontSize: 10,
             fontWeight: FontWeight.bold,
           ),
         ),

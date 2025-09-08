@@ -215,7 +215,7 @@ class ContentWidget extends ConsumerWidget {
       );
     }
 
-    return Container(key: key, child: contentWidget);
+    return Container(margin: EdgeInsets.only(bottom: 10), key: key, child: contentWidget);
   }
 
   void _handleReorder(

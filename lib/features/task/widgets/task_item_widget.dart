@@ -11,6 +11,9 @@ import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/utils/task_utils.dart';
 import 'package:zoe/features/task/widgets/task_checkbox_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_stacked_avatars_widget.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class TaskWidget extends ConsumerWidget {
@@ -59,7 +62,14 @@ class TaskWidget extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildTaskItemTitle(context, ref, task, shouldFocus),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildTaskItemTitle(context, ref, task, shouldFocus),
+                    if (task.assignedUsers.isNotEmpty)
+                      _buildAssignedUsersStackWidget(context, ref, task),
+                  ],
+                ),
                 const SizedBox(height: 4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,31 +97,33 @@ class TaskWidget extends ConsumerWidget {
     TaskModel task,
     bool shouldFocus,
   ) {
-    return ZoeInlineTextEditWidget(
-      hintText: L10n.of(context).taskItem,
-      text: task.title,
-      isEditing: isEditing,
-      autoFocus: shouldFocus,
-      textInputAction: TextInputAction.next,
-      textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-        decoration: task.isCompleted
-            ? TextDecoration.lineThrough
-            : TextDecoration.none,
-      ),
-      onTextChanged: (value) {
-        ref.read(taskListProvider.notifier).updateTaskTitle(taskId, value);
-      },
-      onEnterPressed: () => ref
-          .read(taskListProvider.notifier)
-          .addTask(
-            parentId: task.parentId,
-            sheetId: task.sheetId,
-            orderIndex: task.orderIndex + 1,
-          ),
-      onBackspaceEmptyText: () =>
-          ref.read(taskListProvider.notifier).deleteTask(taskId),
-      onTapText: () => context.push(
-        AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
+    return Flexible(
+      child: ZoeInlineTextEditWidget(
+        hintText: L10n.of(context).taskItem,
+        text: task.title,
+        isEditing: isEditing,
+        autoFocus: shouldFocus,
+        textInputAction: TextInputAction.next,
+        textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          decoration: task.isCompleted
+              ? TextDecoration.lineThrough
+              : TextDecoration.none,
+        ),
+        onTextChanged: (value) {
+          ref.read(taskListProvider.notifier).updateTaskTitle(taskId, value);
+        },
+        onEnterPressed: () => ref
+            .read(taskListProvider.notifier)
+            .addTask(
+              parentId: task.parentId,
+              sheetId: task.sheetId,
+              orderIndex: task.orderIndex + 1,
+            ),
+        onBackspaceEmptyText: () =>
+            ref.read(taskListProvider.notifier).deleteTask(taskId),
+        onTapText: () => context.push(
+          AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
+        ),
       ),
     );
   }
@@ -133,7 +145,24 @@ class TaskWidget extends ConsumerWidget {
     );
   }
 
-  // Builds the task item actions
+  // Builds assigned users view
+  Widget _buildAssignedUsersStackWidget(
+    BuildContext context,
+    WidgetRef ref,
+    TaskModel task,
+  ) {
+    
+    final users = [
+      for (final userId in task.assignedUsers) 
+        ref.watch(getUserByIdProvider(userId))
+    ].whereType<UserModel>().toList();
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: ZoeStackedAvatarsWidget(users: users),
+    );
+  }
+
   Widget _buildTaskItemActions(BuildContext context, WidgetRef ref) {
     return Row(
       children: [

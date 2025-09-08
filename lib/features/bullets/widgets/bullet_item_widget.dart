@@ -6,6 +6,8 @@ import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class BulletItemWidget extends ConsumerWidget {
@@ -43,7 +45,18 @@ class BulletItemWidget extends ConsumerWidget {
         _buildBulletItemIcon(context),
         const SizedBox(width: 10),
         Expanded(
-          child: _buildBulletItemTitle(context, ref, bulletItem, autoFocus),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildBulletItemTitle(context, ref, bulletItem, autoFocus),
+                  _buildCreatedByAvatar(context, ref, bulletItem),
+                ],
+              ),
+            ],
+          ),
         ),
         const SizedBox(width: 6),
         if (isEditing) _buildBulletItemActions(context, ref),
@@ -67,7 +80,7 @@ class BulletItemWidget extends ConsumerWidget {
     BulletModel bulletItem,
     bool autoFocus,
   ) {
-    return ZoeInlineTextEditWidget(
+    return Flexible(child: ZoeInlineTextEditWidget(
       hintText: L10n.of(context).bulletItem,
       isEditing: isEditing,
       text: bulletItem.title,
@@ -93,7 +106,7 @@ class BulletItemWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.bulletDetail.route.replaceAll(':bulletId', bulletId),
       ),
-    );
+    ));
   }
 
   // Builds the bullet item actions
@@ -122,6 +135,23 @@ class BulletItemWidget extends ConsumerWidget {
           },
         ),
       ],
+    );
+  }
+
+  // Builds the created by user avatar
+  Widget _buildCreatedByAvatar(
+    BuildContext context,
+    WidgetRef ref,
+    BulletModel bulletItem,
+  ) {
+    final user = ref.watch(getUserByIdProvider(bulletItem.createdBy));
+    if (user == null) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: ZoeUserAvatarWidget(
+        user: user,
+      ),
     );
   }
 }
