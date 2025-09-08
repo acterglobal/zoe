@@ -69,7 +69,7 @@ final documentList = [
     sheetId: 'sheet-3',
     filePath: 'path/to/composting_guide.pdf',
   ),
-  
+
   // Wedding Planning Documents
   DocumentModel(
     id: 'document-wedding-1',
@@ -129,4 +129,35 @@ final documentList = [
     sheetId: 'sheet-5',
     filePath: 'path/to/exercise_guides.pdf',
   ),
+
+   // Home Renovation Documents
+  DocumentModel(
+    id: 'document-renovation-1',
+    title: 'Kitchen Design Plans',
+    parentId: 'list-document-renovation-1',
+    sheetId: 'sheet-6',
+    filePath: 'path/to/kitchen_plans.pdf',
+  ),
+  DocumentModel(
+    id: 'document-renovation-2',
+    title: 'Contractor Quotes',
+    parentId: 'list-document-renovation-1',
+    sheetId: 'sheet-6',
+    filePath: 'path/to/contractor_quotes.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-renovation-3',
+    title: 'Building Permits',
+    parentId: 'list-document-renovation-1',
+    sheetId: 'sheet-6',
+    filePath: 'path/to/permits.pdf',
+  ),
+  DocumentModel(
+    id: 'document-renovation-4',
+    title: 'Material Specifications',
+    parentId: 'list-document-renovation-1',
+    sheetId: 'sheet-6',
+    filePath: 'path/to/materials.docx',
+  ),
+
 ];

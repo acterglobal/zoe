@@ -127,7 +127,7 @@ final textList = [
     createdBy: 'user_2',
   ),
 
-   // Wedding Planning Texts
+  // Wedding Planning Texts
   TextModel(
     sheetId: 'sheet-4',
     parentId: 'sheet-4',
@@ -187,6 +187,38 @@ final textList = [
           'Daily Nutrition Goals:\n\n🍗 Protein (30%)\n• Lean meats\n• Fish\n• Eggs\n• Plant-based proteins\n\n🥑 Healthy Fats (25%)\n• Avocados\n• Nuts and seeds\n• Olive oil\n• Fatty fish\n\n🍚 Complex Carbs (45%)\n• Whole grains\n• Sweet potatoes\n• Quinoa\n• Oats\n\n💧 Hydration\n• 2-3 liters of water daily\n• Herbal teas\n• Electrolytes post-workout',
       htmlText:
           '<p><strong>Daily Nutrition Goals:</strong></p><br><p><strong>🍗 Protein (30%)</strong></p><ul><li>Lean meats</li><li>Fish</li><li>Eggs</li><li>Plant-based proteins</li></ul><br><p><strong>🥑 Healthy Fats (25%)</strong></p><ul><li>Avocados</li><li>Nuts and seeds</li><li>Olive oil</li><li>Fatty fish</li></ul><br><p><strong>🍚 Complex Carbs (45%)</strong></p><ul><li>Whole grains</li><li>Sweet potatoes</li><li>Quinoa</li><li>Oats</li></ul><br><p><strong>💧 Hydration</strong></p><ul><li>2-3 liters of water daily</li><li>Herbal teas</li><li>Electrolytes post-workout</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
+
+   // Home Renovation Texts
+  TextModel(
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    id: 'text-renovation-1',
+    title: 'Project Overview',
+    emoji: '📋',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Scope of Work:\n\n🏠 Main Areas:\n• Kitchen remodel\n• Master bathroom update\n• Living room refresh\n• New flooring throughout\n\n⚡ Infrastructure Updates:\n• Electrical system upgrade\n• Plumbing improvements\n• HVAC maintenance\n\n🎨 Aesthetic Changes:\n• New paint throughout\n• Updated lighting fixtures\n• Modern hardware and fixtures',
+      htmlText:
+          '<p><strong>Scope of Work:</strong></p><br><p><strong>🏠 Main Areas:</strong></p><ul><li>Kitchen remodel</li><li>Master bathroom update</li><li>Living room refresh</li><li>New flooring throughout</li></ul><br><p><strong>⚡ Infrastructure Updates:</strong></p><ul><li>Electrical system upgrade</li><li>Plumbing improvements</li><li>HVAC maintenance</li></ul><br><p><strong>🎨 Aesthetic Changes:</strong></p><ul><li>New paint throughout</li><li>Updated lighting fixtures</li><li>Modern hardware and fixtures</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
+  TextModel(
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    id: 'text-renovation-2',
+    title: 'Budget Breakdown',
+    emoji: '💰',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Total Budget: \$50,000\n\n🏗️ Major Renovations (60%):\n• Kitchen: \$20,000\n• Bathroom: \$8,000\n• Flooring: \$2,000\n\n🔧 Infrastructure (25%):\n• Electrical: \$5,000\n• Plumbing: \$4,000\n• HVAC: \$3,500\n\n✨ Finishing Touches (15%):\n• Paint: \$2,000\n• Fixtures: \$3,000\n• Hardware: \$2,500',
+      htmlText:
+          '<p><strong>Total Budget: \$50,000</strong></p><br><p><strong>🏗️ Major Renovations (60%):</strong></p><ul><li>Kitchen: \$20,000</li><li>Bathroom: \$8,000</li><li>Flooring: \$2,000</li></ul><br><p><strong>🔧 Infrastructure (25%):</strong></p><ul><li>Electrical: \$5,000</li><li>Plumbing: \$4,000</li><li>HVAC: \$3,500</li></ul><br><p><strong>✨ Finishing Touches (15%):</strong></p><ul><li>Paint: \$2,000</li><li>Fixtures: \$3,000</li><li>Hardware: \$2,500</li></ul>',
     ),
     createdBy: 'user_1',
   ),

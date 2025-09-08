@@ -1,6 +1,7 @@
 import 'package:zoe/features/events/models/events_model.dart';
 
 final eventList = [
+  
   // Getting Started Guide Events
   EventModel(
     sheetId: 'sheet-1',
@@ -130,7 +131,8 @@ final eventList = [
       'user_2': RsvpStatus.yes,
     },
   ),
-   // Wedding Planning Events
+
+  // Wedding Planning Events
   EventModel(
     sheetId: 'sheet-4',
     parentId: 'sheet-4',
@@ -253,4 +255,68 @@ final eventList = [
       'user_1': RsvpStatus.yes,
     },
   ),
+
+ // Home Renovation Events
+  EventModel(
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    id: 'event-renovation-1',
+    title: 'Kitchen Design Consultation',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Meeting with kitchen designer to finalize layout, materials, and appliance selections.',
+      htmlText:
+          '<p>Meeting with kitchen designer to finalize layout, materials, and appliance selections.</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(days: 5)),
+    endDate: DateTime.now().add(const Duration(days: 5, hours: 2)),
+    createdBy: 'user_1',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+    },
+  ),
+  EventModel(
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    id: 'event-renovation-2',
+    title: 'Contractor Interview - ABC Construction',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Initial meeting with contractor to discuss project scope, timeline, and get detailed quote.',
+      htmlText:
+          '<p>Initial meeting with contractor to discuss project scope, timeline, and get detailed quote.</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(days: 7)),
+    endDate: DateTime.now().add(const Duration(days: 7, hours: 1)),
+    createdBy: 'user_1',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.maybe,
+    },
+  ),
+  EventModel(
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    id: 'event-renovation-3',
+    title: 'Pre-Construction Meeting',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Final planning meeting with chosen contractor. Review timeline, permits, and logistics.',
+      htmlText:
+          '<p>Final planning meeting with chosen contractor. Review timeline, permits, and logistics.</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(days: 14)),
+    endDate: DateTime.now().add(const Duration(days: 14, hours: 2)),
+    createdBy: 'user_2',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+    },
+  ),
+
 ];

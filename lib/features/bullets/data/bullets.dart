@@ -318,7 +318,96 @@ final bulletList = [
     ),
     createdBy: 'user_3',
   ),
-   // Wedding Planning Bullets
+
+  // Fitness Journey Bullets
+  BulletModel(
+    id: 'bullet-fitness-1',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-fitness-1',
+    title: '3-Month Goals',
+    orderIndex: 1,
+    description: (
+      plainText:
+          '• Lose 10 pounds of body fat\n• Increase bench press by 20 pounds\n• Run 5k under 25 minutes\n• Complete 10 consecutive pull-ups\n• Maintain consistent meal prep\n• Attend 3 workout sessions per week',
+      htmlText:
+          '<ul><li>Lose 10 pounds of body fat</li><li>Increase bench press by 20 pounds</li><li>Run 5k under 25 minutes</li><li>Complete 10 consecutive pull-ups</li><li>Maintain consistent meal prep</li><li>Attend 3 workout sessions per week</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-fitness-2',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-fitness-1',
+    title: 'Equipment Needed',
+    orderIndex: 2,
+    description: (
+      plainText:
+          '• Running shoes\n• Resistance bands\n• Yoga mat\n• Weight lifting gloves\n• Water bottle\n• Heart rate monitor\n• Foam roller',
+      htmlText:
+          '<ul><li>Running shoes</li><li>Resistance bands</li><li>Yoga mat</li><li>Weight lifting gloves</li><li>Water bottle</li><li>Heart rate monitor</li><li>Foam roller</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-fitness-3',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-fitness-1',
+    title: 'Supplement Plan',
+    orderIndex: 3,
+    description: (
+      plainText:
+          '• Pre-workout: 30 mins before training\n• Protein shake: Post-workout\n• BCAAs: During workout\n• Multivitamin: Morning\n• Fish oil: With breakfast\n• Magnesium: Evening',
+      htmlText:
+          '<ul><li>Pre-workout: 30 mins before training</li><li>Protein shake: Post-workout</li><li>BCAAs: During workout</li><li>Multivitamin: Morning</li><li>Fish oil: With breakfast</li><li>Magnesium: Evening</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
+
+  // Home Renovation Bullets
+  BulletModel(
+    id: 'bullet-renovation-1',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-renovation-1',
+    title: 'Kitchen Design Elements',
+    orderIndex: 1,
+    description: (
+      plainText:
+          '• Modern white shaker cabinets\n• Quartz countertops in "Calacatta Gold"\n• Stainless steel appliances\n• Large center island with seating\n• Under-cabinet lighting\n• Subway tile backsplash',
+      htmlText:
+          '<ul><li>Modern white shaker cabinets</li><li>Quartz countertops in "Calacatta Gold"</li><li>Stainless steel appliances</li><li>Large center island with seating</li><li>Under-cabinet lighting</li><li>Subway tile backsplash</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-renovation-2',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-renovation-1',
+    title: 'Bathroom Features',
+    orderIndex: 2,
+    description: (
+      plainText:
+          '• Double vanity with marble top\n• Walk-in shower with glass door\n• Heated floor tiles\n• Modern fixtures in brushed nickel\n• Built-in storage cabinet\n• LED mirror with anti-fog',
+      htmlText:
+          '<ul><li>Double vanity with marble top</li><li>Walk-in shower with glass door</li><li>Heated floor tiles</li><li>Modern fixtures in brushed nickel</li><li>Built-in storage cabinet</li><li>LED mirror with anti-fog</li></ul>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-renovation-3',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-renovation-1',
+    title: 'Infrastructure Updates',
+    orderIndex: 3,
+    description: (
+      plainText:
+          '• New 200-amp electrical panel\n• Updated copper plumbing\n• HVAC system replacement\n• Added insulation in walls\n• Smart home wiring\n• Whole-house surge protection',
+      htmlText:
+          '<ul><li>New 200-amp electrical panel</li><li>Updated copper plumbing</li><li>HVAC system replacement</li><li>Added insulation in walls</li><li>Smart home wiring</li><li>Whole-house surge protection</li></ul>',
+    ),
+    createdBy: 'user_2',
+  ),
+
+  // Wedding Planning Bullets
   BulletModel(
     id: 'bullet-wedding-1',
     sheetId: 'sheet-4',

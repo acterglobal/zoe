@@ -180,6 +180,81 @@ final polls = [
     createdBy: 'user_2',
   ),
   
+  // Home Renovation Polls
+  PollModel(
+    id: 'poll-renovation-1',
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    orderIndex: 1,
+    question: 'Which kitchen cabinet style do you prefer?',
+    startDate: DateTime.now(),
+    endDate: DateTime.now().add(const Duration(days: 7)),
+    options: [
+      PollOption(
+        id: 'option-renovation-1-1',
+        title: 'Modern White Shaker',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+        ],
+      ),
+      PollOption(
+        id: 'option-renovation-1-2',
+        title: 'Classic Dark Wood',
+        votes: [
+          Vote(userId: 'user_3'),
+        ],
+      ),
+      PollOption(
+        id: 'option-renovation-1-3',
+        title: 'Contemporary High Gloss',
+        votes: [],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_1',
+  ),
+  PollModel(
+    id: 'poll-renovation-2',
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    orderIndex: 2,
+    question: 'Which appliance features are most important?',
+    startDate: DateTime.now(),
+    endDate: DateTime.now().add(const Duration(days: 5)),
+    options: [
+      PollOption(
+        id: 'option-renovation-2-1',
+        title: 'Energy Efficiency',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+        ],
+      ),
+      PollOption(
+        id: 'option-renovation-2-2',
+        title: 'Smart Home Integration',
+        votes: [
+          Vote(userId: 'user_3'),
+        ],
+      ),
+      PollOption(
+        id: 'option-renovation-2-3',
+        title: 'Quiet Operation',
+        votes: [
+          Vote(userId: 'user_1'),
+        ],
+      ),
+      PollOption(
+        id: 'option-renovation-2-4',
+        title: 'Large Capacity',
+        votes: [],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_2',
+  ),
+
   // Wedding Planning Polls
   PollModel(
     id: 'poll-wedding-1',

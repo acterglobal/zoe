@@ -1,6 +1,7 @@
 import 'package:zoe/features/task/models/task_model.dart';
 
 final tasks = [
+  
   // Getting Started Guide Tasks
   TaskModel(
     id: 'task-1',
@@ -227,7 +228,8 @@ final tasks = [
     createdBy: 'user_2',
     assignedUsers: ['user_2'],
   ),
-   // Wedding Planning Tasks
+
+  // Wedding Planning Tasks
   TaskModel(
     id: 'task-wedding-1',
     sheetId: 'sheet-4',
@@ -331,5 +333,58 @@ final tasks = [
     dueDate: DateTime.now().add(const Duration(days: 7)),
     createdBy: 'user_1',
     assignedUsers: ['user_1'],
+  ),
+
+   // Home Renovation Tasks
+  TaskModel(
+    id: 'task-renovation-1',
+    sheetId: 'sheet-6',
+    parentId: 'list-tasks-renovation-1',
+    title: 'Finalize Kitchen Design',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create detailed kitchen layout with measurements, select cabinet style, countertop material, and appliance specifications.',
+      htmlText:
+          '<p>Create detailed kitchen layout with measurements, select cabinet style, countertop material, and appliance specifications.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 14)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_2'],
+  ),
+  TaskModel(
+    id: 'task-renovation-2',
+    sheetId: 'sheet-6',
+    parentId: 'list-tasks-renovation-1',
+    title: 'Get Contractor Quotes',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Contact and schedule meetings with at least three licensed contractors. Get detailed quotes for all renovation work.',
+      htmlText:
+          '<p>Contact and schedule meetings with at least three licensed contractors. Get detailed quotes for all renovation work.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 21)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_2', 'user_3'],
+  ),
+  TaskModel(
+    id: 'task-renovation-3',
+    sheetId: 'sheet-6',
+    parentId: 'list-tasks-renovation-2',
+    title: 'Schedule Inspections',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Book appointments for electrical, plumbing, and structural inspections. Ensure all necessary permits are obtained.',
+      htmlText:
+          '<p>Book appointments for electrical, plumbing, and structural inspections. Ensure all necessary permits are obtained.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 7)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2'],
   ),
 ];

@@ -96,7 +96,7 @@ final linkList = [
     orderIndex: 3,
     createdBy: 'user_3',
   ),
-  
+
   // Wedding Planning Links
   LinkModel(
     sheetId: 'sheet-4',
@@ -177,6 +177,48 @@ final linkList = [
     title: 'Supplement Guide',
     url: 'https://supplementguide.com',
     emoji: '💊',
+    orderIndex: 4,
+    createdBy: 'user_1',
+  ),
+
+  // Home Renovation Links
+  LinkModel(
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    id: 'link-renovation-1',
+    title: 'Kitchen Design Inspiration',
+    url: 'https://houzz.com/kitchens',
+    emoji: '🏠',
+    orderIndex: 1,
+    createdBy: 'user_1',
+  ),
+  LinkModel(
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    id: 'link-renovation-2',
+    title: 'Appliance Reviews',
+    url: 'https://consumerreports.org/appliances',
+    emoji: '🔧',
+    orderIndex: 2,
+    createdBy: 'user_1',
+  ),
+  LinkModel(
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    id: 'link-renovation-3',
+    title: 'Contractor Reviews',
+    url: 'https://homeadvisor.com/contractors',
+    emoji: '👷',
+    orderIndex: 3,
+    createdBy: 'user_2',
+  ),
+  LinkModel(
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    id: 'link-renovation-4',
+    title: 'Building Permit Guide',
+    url: 'https://city.gov/permits',
+    emoji: '📋',
     orderIndex: 4,
     createdBy: 'user_1',
   ),

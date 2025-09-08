@@ -72,4 +72,18 @@ final sheetList = [
     createdBy: 'user_1',
     users: ['user_1', 'user_2', 'user_3'],
   ),
+  SheetModel(
+    id: 'sheet-6',
+    title: 'Home Renovation',
+    emoji: '🏠',
+    color: const Color(0xFFEF4444), // Red
+    description: (
+      plainText:
+          'Track our home renovation project from planning to completion. Manage contractors, budget, timeline, and design choices. Perfect for keeping all renovation details organized and ensuring the project stays on track.',
+      htmlText:
+          '<p>Track our home renovation project from planning to completion. Manage contractors, budget, timeline, and design choices. Perfect for keeping all renovation details organized and ensuring the project stays on track.</p>',
+    ),
+    createdBy: 'user_1',
+    users: ['user_1', 'user_2', 'user_3'],
+  ),
 ];
