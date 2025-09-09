@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
-import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
+import 'package:zoe/common/widgets/zoe_sheet_floating_actoin_button.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
-import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
@@ -58,13 +55,7 @@ class PollDetailsScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: ZoeAppBar(
-          actions: [
-            EditViewToggleButton(parentId: pollId),
-            const SizedBox(width: 10),
-            ContentMenuButton(parentId: pollId),
-          ],
-        ),
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: pollId)]),
       ),
       body: MaxWidthWidget(
         child: Column(
@@ -84,22 +75,7 @@ class PollDetailsScreen extends ConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: CommonUtils.isKeyboardOpen(context)
-          ? null
-          : _buildFloatingActionButton(context, isEditing, poll),
-    );
-  }
-
-  Widget _buildFloatingActionButton(
-    BuildContext context,
-    bool isEditing,
-    PollModel poll,
-  ) {
-    if (!isEditing) return const SizedBox.shrink();
-    return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(
-        context,
+      floatingActionButton: ZoeSheetFloatingActionButton(
         parentId: pollId,
         sheetId: poll.sheetId,
       ),
@@ -119,7 +95,11 @@ class PollDetailsScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
-          PollWidget(pollId: pollId),
+          GestureDetector(
+            onLongPress: () =>
+                ref.read(editContentIdProvider.notifier).state = pollId,
+            child: PollWidget(pollId: pollId),
+          ),
           const SizedBox(height: 16),
           ContentWidget(parentId: pollId, sheetId: poll.sheetId),
         ],

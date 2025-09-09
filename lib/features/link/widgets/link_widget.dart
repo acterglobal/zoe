@@ -29,9 +29,13 @@ class LinkWidget extends ConsumerWidget {
     if (linkContent == null) return const SizedBox.shrink();
 
     /// Builds the link content widget
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: _buildLinkContent(context, ref, linkContent),
+    return GestureDetector(
+      onLongPress: () =>
+          ref.read(editContentIdProvider.notifier).state = linkId,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: _buildLinkContent(context, ref, linkContent),
+      ),
     );
   }
 

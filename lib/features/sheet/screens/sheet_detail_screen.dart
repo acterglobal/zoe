@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
-import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
+import 'package:zoe/common/widgets/zoe_sheet_floating_actoin_button.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
-import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
@@ -37,12 +34,7 @@ class SheetDetailScreen extends ConsumerWidget {
           title: ZoeAppBar(
             title: L10n.of(context).sheet,
             actions: [
-              EditViewToggleButton(parentId: sheetId),
-              const SizedBox(width: 10),
-              ContentMenuButton(
-                parentId: sheetId,
-                showConnectOption: true,
-              ),
+              ContentMenuButton(parentId: sheetId, showConnectOption: true),
             ],
           ),
         ),
@@ -62,30 +54,10 @@ class SheetDetailScreen extends ConsumerWidget {
             ),
           ],
         ),
-        floatingActionButton: CommonUtils.isKeyboardOpen(context)
-            ? null
-            : _buildFloatingActionButton(context, ref, isEditing),
-      ),
-    );
-  }
-
-  Widget _buildFloatingActionButton(
-    BuildContext context,
-    WidgetRef ref,
-    bool isEditing,
-  ) {
-    if (isEditing) {
-      return ZoeFloatingActionButton(
-        icon: Icons.save_rounded,
-        onPressed: () => ref.read(editContentIdProvider.notifier).state = null,
-      );
-    }
-    return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(
-        context,
-        parentId: sheetId,
-        sheetId: sheetId,
+        floatingActionButton: ZoeSheetFloatingActionButton(
+          parentId: sheetId,
+          sheetId: sheetId,
+        ),
       ),
     );
   }
@@ -118,61 +90,66 @@ class SheetDetailScreen extends ConsumerWidget {
     final sheet = ref.watch(sheetProvider(sheetId));
     if (sheet == null) return const SizedBox.shrink();
     final usersInSheet = ref.watch(listOfUsersBySheetIdProvider(sheetId));
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            EmojiWidget(
-              isEditing: isEditing,
-              emoji: sheet.emoji,
-              size: 32,
-              onTap: (emoji) {
-                showCustomEmojiPicker(
-                  context,
-                  ref,
-                  onEmojiSelected: (emoji) {
-                    updateSheetEmoji(ref, sheetId, emoji);
-                  },
-                );
-              },
-            ),
-            const SizedBox(width: 4),
-            Expanded(
-              child: ZoeInlineTextEditWidget(
-                hintText: L10n.of(context).title,
+
+    return GestureDetector(
+      onLongPress: () =>
+          ref.read(editContentIdProvider.notifier).state = sheetId,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              EmojiWidget(
                 isEditing: isEditing,
-                text: sheet.title,
-                textStyle: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  height: 1.2,
-                ),
-                onTextChanged: (value) => Future.microtask(
-                  () => updateSheetTitle(ref, sheetId, value),
+                emoji: sheet.emoji,
+                size: 32,
+                onTap: (emoji) {
+                  showCustomEmojiPicker(
+                    context,
+                    ref,
+                    onEmojiSelected: (emoji) {
+                      updateSheetEmoji(ref, sheetId, emoji);
+                    },
+                  );
+                },
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: ZoeInlineTextEditWidget(
+                  hintText: L10n.of(context).title,
+                  isEditing: isEditing,
+                  text: sheet.title,
+                  textStyle: TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
+                    height: 1.2,
+                  ),
+                  onTextChanged: (value) => Future.microtask(
+                    () => updateSheetTitle(ref, sheetId, value),
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        if (usersInSheet.isNotEmpty) ...[
-          _buildUsersCountWidget(context, usersInSheet, ref),
-          const SizedBox(height: 8),
-        ],
-        ZoeHtmlTextEditWidget(
-          hintText: L10n.of(context).addADescription,
-          isEditing: isEditing,
-          description: sheet.description,
-          textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'sheet-description-$sheetId', // Add unique editor ID
-          onContentChanged: (description) => Future.microtask(
-            () => updateSheetDescription(ref, sheetId, description),
+            ],
           ),
-        ),
-      ],
+          const SizedBox(height: 16),
+          if (usersInSheet.isNotEmpty) ...[
+            _buildUsersCountWidget(context, usersInSheet, ref),
+            const SizedBox(height: 8),
+          ],
+          ZoeHtmlTextEditWidget(
+            hintText: L10n.of(context).addADescription,
+            isEditing: isEditing,
+            description: sheet.description,
+            textStyle: Theme.of(context).textTheme.bodyLarge,
+            editorId: 'sheet-description-$sheetId', // Add unique editor ID
+            onContentChanged: (description) => Future.microtask(
+              () => updateSheetDescription(ref, sheetId, description),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

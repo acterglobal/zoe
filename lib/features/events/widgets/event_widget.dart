@@ -36,6 +36,8 @@ class EventWidget extends ConsumerWidget {
       onTap: () => context.push(
         AppRoutes.eventDetail.route.replaceAll(':eventId', eventsId),
       ),
+      onLongPress: () =>
+          ref.read(editContentIdProvider.notifier).state = eventsId,
       child: Card(
         margin: margin ?? const EdgeInsets.symmetric(vertical: 5),
         child: Padding(

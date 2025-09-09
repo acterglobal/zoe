@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
-import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
-
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/common/widgets/zoe_sheet_floating_actoin_button.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
-import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';
@@ -61,12 +57,7 @@ class EventDetailScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: ZoeAppBar(actions: [
-            EditViewToggleButton(parentId: eventId),
-            const SizedBox(width: 10),
-            ContentMenuButton(parentId: eventId),
-          ],
-        ),
+        title: ZoeAppBar(actions: [ContentMenuButton(parentId: eventId)]),
       ),
       body: MaxWidthWidget(
         child: Column(
@@ -86,24 +77,7 @@ class EventDetailScreen extends ConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: CommonUtils.isKeyboardOpen(context) ? null : _buildFloatingActionButton(
-        context,
-        isEditing,
-        event,
-      ),
-    );
-  }
-
-  Widget _buildFloatingActionButton(
-    BuildContext context,
-    bool isEditing,
-    EventModel event,
-  ) {
-    if (!isEditing) return const SizedBox.shrink();
-    return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(
-        context,
+      floatingActionButton: ZoeSheetFloatingActionButton(
         parentId: eventId,
         sheetId: event.sheetId,
       ),
@@ -139,47 +113,51 @@ class EventDetailScreen extends ConsumerWidget {
     EventModel event,
     bool isEditing,
   ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ZoeInlineTextEditWidget(
-                hintText: L10n.of(context).title,
-                isEditing: isEditing,
-                text: event.title,
-                textStyle: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  height: 1.2,
+    return GestureDetector(
+      onLongPress: () =>
+          ref.read(editContentIdProvider.notifier).state = eventId,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: ZoeInlineTextEditWidget(
+                  hintText: L10n.of(context).title,
+                  isEditing: isEditing,
+                  text: event.title,
+                  textStyle: TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
+                    height: 1.2,
+                  ),
+                  onTextChanged: (value) => ref
+                      .read(eventListProvider.notifier)
+                      .updateEventTitle(eventId, value),
                 ),
-                onTextChanged: (value) => ref
-                    .read(eventListProvider.notifier)
-                    .updateEventTitle(eventId, value),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        ZoeHtmlTextEditWidget(
-          hintText: L10n.of(context).addADescription,
-          isEditing: isEditing,
-          description: event.description,
-          textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'event-description-$eventId',
-          // Add unique editor ID
-          onContentChanged: (description) => Future.microtask(
-            () => ref
-                .read(eventListProvider.notifier)
-                .updateEventDescription(eventId, description),
+            ],
           ),
-        ),
-        const SizedBox(height: 16),
-        EventDetailsAdditionalFields(event: event, isEditing: isEditing),
-      ],
+          const SizedBox(height: 16),
+          ZoeHtmlTextEditWidget(
+            hintText: L10n.of(context).addADescription,
+            isEditing: isEditing,
+            description: event.description,
+            textStyle: Theme.of(context).textTheme.bodyLarge,
+            editorId: 'event-description-$eventId',
+            // Add unique editor ID
+            onContentChanged: (description) => Future.microtask(
+              () => ref
+                  .read(eventListProvider.notifier)
+                  .updateEventDescription(eventId, description),
+            ),
+          ),
+          const SizedBox(height: 16),
+          EventDetailsAdditionalFields(event: event, isEditing: isEditing),
+        ],
+      ),
     );
   }
 }

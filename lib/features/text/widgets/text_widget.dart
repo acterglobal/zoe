@@ -25,9 +25,13 @@ class TextWidget extends ConsumerWidget {
     if (textContent == null) return const SizedBox.shrink();
 
     /// Builds the text content widget
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: _buildTextContent(context, ref, textContent),
+    return GestureDetector(
+      onLongPress: () =>
+          ref.read(editContentIdProvider.notifier).state = textId,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: _buildTextContent(context, ref, textContent),
+      ),
     );
   }
 
@@ -48,7 +52,12 @@ class TextWidget extends ConsumerWidget {
           children: [
             _buildTextContentEmoji(context, ref, textContent.emoji, isEditing),
             Expanded(
-              child: _buildTextContentTitle(context, ref, textContent.title, isEditing),
+              child: _buildTextContentTitle(
+                context,
+                ref,
+                textContent.title,
+                isEditing,
+              ),
             ),
             const SizedBox(width: 6),
             if (isEditing)
