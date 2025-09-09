@@ -22,7 +22,7 @@ final polls = [
       PollOption(id: 'option-1-4', title: 'Link and resource sharing'),
     ],
     isMultipleChoice: false,
-    createdBy: 'user_1',
+    createdBy: 'user_2',
   ),
   PollModel(
     id: 'poll-2',

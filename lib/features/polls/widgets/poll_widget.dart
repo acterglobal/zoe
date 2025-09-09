@@ -163,9 +163,16 @@ class PollWidget extends ConsumerWidget {
             if (PollUtils.isActive(poll)) {
               final currentUserId = ref.read(loggedInUserProvider).value;
               if (currentUserId != null) {
+                // Get current state before voting
+                final currentState = ref.read(currentUserActivePollListProvider);
+                
+                // Perform the vote
                 ref
                     .read(pollListProvider.notifier)
                     .voteOnPoll(pollId, option.id, currentUserId);
+                    
+                // Maintain the state
+                ref.read(currentUserActivePollListProvider.notifier).state = currentState;
               }
             }
             if (PollUtils.isDraft(poll)) {
