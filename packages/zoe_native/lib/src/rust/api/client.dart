@@ -7,11 +7,5 @@ import '../frb_generated.dart';
 import '../third_party/zoe_client/client.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-abstract class ClientExt {
-  /// Create a stream of overall connection status for Flutter Rust Bridge
-  ///
-  /// This is a Flutter Rust Bridge compatible version that uses StreamSink instead of
-  /// returning a Stream directly. It spawns a background task that monitors relay
-  /// status changes and sends updates to the provided sink.
-  Stream<OverallConnectionStatus> overallStatusStreamFrb();
-}
+Stream<OverallConnectionStatus> overallStatusStream({required Client client}) =>
+    RustLib.instance.api.crateApiClientOverallStatusStream(client: client);

@@ -174,6 +174,7 @@ Future<ClientBuilder> _defaultClientBuilder({
     serverPublicKey: await VerifyingKey.fromHex(hex: serverKey),
     serverAddr: await resolveToSocketAddr(s: serverAddr),
   );
+  // builder.autoconnect(autoconnect: true);
   return builder;
 }
 

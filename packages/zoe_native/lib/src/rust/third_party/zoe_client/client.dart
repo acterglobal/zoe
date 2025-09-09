@@ -3,7 +3,6 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
-import '../../api/client.dart';
 import '../../frb_generated.dart';
 import '../../lib.dart';
 import '../zoe_wire_protocol/keys.dart';
@@ -14,7 +13,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Client>>
-abstract class Client implements RustOpaqueInterface, ClientExt {
+abstract class Client implements RustOpaqueInterface {
   /// Add a relay server to the client
   ///
   /// This will attempt to connect to all addresses in the RelayAddress in random order
@@ -58,14 +57,6 @@ abstract class Client implements RustOpaqueInterface, ClientExt {
   /// a bit more expensive to compute. For live updates it is recommended to use `overall_status_stream`
   /// instead.
   Future<OverallConnectionStatus> overallStatus();
-
-  /// Create a stream of overall connection status for Flutter Rust Bridge
-  ///
-  /// This is a Flutter Rust Bridge compatible version that uses StreamSink instead of
-  /// returning a Stream directly. It spawns a background task that monitors relay
-  /// status changes and sends updates to the provided sink.
-  @override
-  Stream<OverallConnectionStatus> overallStatusStreamFrb();
 
   /// Attempt to reconnect to all failed relays
   Future<BigInt> reconnectFailedRelays();

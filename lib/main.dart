@@ -13,6 +13,9 @@ import 'core/theme/app_theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await RustLib.init();
+  initStorage(
+    appleKeychainAppGroupName: 'global.acter.zoe',
+  ); // FIXME: needs to be changed to env vars from built
   await PreferencesService().init();
 
   runApp(const ProviderScope(child: MyApp()));

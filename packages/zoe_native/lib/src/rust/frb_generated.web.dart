@@ -432,9 +432,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
-  ClientExt dco_decode_TraitDef_ClientExt(dynamic raw);
-
-  @protected
   Algorithm dco_decode_algorithm(dynamic raw);
 
   @protected
