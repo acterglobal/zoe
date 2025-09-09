@@ -3,6 +3,7 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'api/client.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -422,7 +423,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  RustStreamSink<OverallConnectionStatus>
+  dco_decode_StreamSink_overall_connection_status_Sse(dynamic raw);
+
+  @protected
   String dco_decode_String(dynamic raw);
+
+  @protected
+  ClientExt dco_decode_TraitDef_ClientExt(dynamic raw);
 
   @protected
   Algorithm dco_decode_algorithm(dynamic raw);
@@ -790,6 +798,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   VerifyingKeyError
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  RustStreamSink<OverallConnectionStatus>
+  sse_decode_StreamSink_overall_connection_status_Sse(
     SseDeserializer deserializer,
   );
 
@@ -1220,6 +1234,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError(
     VerifyingKeyError self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_StreamSink_overall_connection_status_Sse(
+    RustStreamSink<OverallConnectionStatus> self,
     SseSerializer serializer,
   );
 

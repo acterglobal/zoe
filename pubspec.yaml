@@ -39,7 +39,7 @@ dependencies:
   flutter_rust_bridge: 2.11.1
   
   # State management
-  flutter_riverpod: ^2.6.1
+  flutter_riverpod: ^3.0.0-dev.17
   
   # Routing
   go_router: ^16.2.0

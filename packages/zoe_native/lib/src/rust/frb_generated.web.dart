@@ -6,6 +6,7 @@
 // Static analysis wrongly picks the IO variant, thus ignore this
 // ignore_for_file: argument_type_not_assignable
 
+import 'api/client.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -424,7 +425,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  RustStreamSink<OverallConnectionStatus>
+  dco_decode_StreamSink_overall_connection_status_Sse(dynamic raw);
+
+  @protected
   String dco_decode_String(dynamic raw);
+
+  @protected
+  ClientExt dco_decode_TraitDef_ClientExt(dynamic raw);
 
   @protected
   Algorithm dco_decode_algorithm(dynamic raw);
@@ -792,6 +800,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   VerifyingKeyError
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  RustStreamSink<OverallConnectionStatus>
+  sse_decode_StreamSink_overall_connection_status_Sse(
     SseDeserializer deserializer,
   );
 
@@ -1222,6 +1236,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError(
     VerifyingKeyError self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_StreamSink_overall_connection_status_Sse(
+    RustStreamSink<OverallConnectionStatus> self,
     SseSerializer serializer,
   );
 
