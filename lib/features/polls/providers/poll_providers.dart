@@ -58,7 +58,7 @@ final pollVotedMembersProvider = Provider.family<List<UserModel>, String>((ref, 
   }).toList();
 });
 
-final currentUserActivePollListProvider = StateProvider<List<PollModel>>((ref) {
+final activePollsWithPendingResponseProvider = StateProvider<List<PollModel>>((ref) {
   final pollList = ref.watch(pollListProvider);
   final currentUserAsync = ref.watch(currentUserProvider);
   

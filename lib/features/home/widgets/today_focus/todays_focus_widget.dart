@@ -21,9 +21,9 @@ class TodaysFocusWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final todaysEvents = ref.watch(todaysEventsProvider);
     final todaysTasks = ref.watch(todaysTasksProvider);
-    final currentUserActivePolls = ref.watch(currentUserActivePollListProvider);
+    final activePollsWithPendingResponse = ref.watch(activePollsWithPendingResponseProvider);
 
-    if (todaysEvents.isEmpty && todaysTasks.isEmpty && currentUserActivePolls.isEmpty) {
+    if (todaysEvents.isEmpty && todaysTasks.isEmpty && activePollsWithPendingResponse.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -43,8 +43,8 @@ class TodaysFocusWidget extends ConsumerWidget {
           _buildTaskSection(context, todaysTasks),
           const SizedBox(height: 16),
         ],
-        if (currentUserActivePolls.isNotEmpty) ...[
-          _buildPollSection(context, currentUserActivePolls),
+        if (activePollsWithPendingResponse.isNotEmpty) ...[
+          _buildPollSection(context, activePollsWithPendingResponse),
           const SizedBox(height: 16),
         ],
       ],
