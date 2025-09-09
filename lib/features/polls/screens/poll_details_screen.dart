@@ -24,7 +24,8 @@ class PollDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider(pollId));
+    final editContentId = ref.watch(editContentIdProvider);
+    final isEditing = editContentId == pollId;
     final poll = ref.watch(pollProvider(pollId));
 
     return NotebookPaperBackgroundWidget(

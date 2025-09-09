@@ -10,14 +10,17 @@ class EditViewToggleButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider(parentId));
+    final editContentId = ref.watch(editContentIdProvider);
+    final isEditing = editContentId == parentId;
     final theme = Theme.of(context);
 
     return GestureDetector(
       onTap: () {
         // Close keyboard and clear quill toolbar state
         clearActiveEditorState(ref);
-        ref.read(isEditValueProvider(parentId).notifier).state = !isEditing;
+        ref.read(editContentIdProvider.notifier).state = isEditing
+            ? null
+            : parentId;
       },
       child: StyledIconContainer(
         icon: isEditing ? Icons.save_rounded : Icons.edit_rounded,

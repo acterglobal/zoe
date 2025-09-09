@@ -31,7 +31,8 @@ class ContentWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     /// Watch the content list provider
     final contentList = ref.watch(contentListByParentIdProvider(parentId));
-    final isEditing = ref.watch(isEditValueProvider(parentId));
+    final editContentId = ref.watch(editContentIdProvider);
+    final isEditing = editContentId == parentId;
 
     // Separate documents from other content
     final documents = contentList

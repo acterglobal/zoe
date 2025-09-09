@@ -29,7 +29,8 @@ class TaskDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final task = ref.watch(taskProvider(taskId));
-    final isEditing = ref.watch(isEditValueProvider(taskId));
+    final editContentId = ref.watch(editContentIdProvider);
+    final isEditing = editContentId == taskId;
     return NotebookPaperBackgroundWidget(
       child: task != null
           ? _buildDataTaskWidget(context, ref, task, isEditing)

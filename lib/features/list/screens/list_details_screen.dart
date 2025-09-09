@@ -27,7 +27,8 @@ class ListDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider(listId));
+    final editContentId = ref.watch(editContentIdProvider);
+    final isEditing = editContentId == listId;
     final list = ref.watch(listItemProvider(listId));
 
     return NotebookPaperBackgroundWidget(

@@ -29,7 +29,8 @@ class EventDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final event = ref.watch(eventProvider(eventId));
-    final isEditing = ref.watch(isEditValueProvider(eventId));
+    final editContentId = ref.watch(editContentIdProvider);
+    final isEditing = editContentId == eventId;
     return NotebookPaperBackgroundWidget(
       child: event != null
           ? _buildDataEventWidget(context, ref, event, isEditing)

@@ -26,7 +26,8 @@ class SheetDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider(sheetId));
+    final editContentId = ref.watch(editContentIdProvider);
+    final isEditing = editContentId == sheetId;
     
     return NotebookPaperBackgroundWidget(
       child: Scaffold(

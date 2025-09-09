@@ -27,7 +27,8 @@ class TextBlockDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider(textBlockId));
+    final editContentId = ref.watch(editContentIdProvider);
+    final isEditing = editContentId == textBlockId;
     final textBlock = ref.watch(textProvider(textBlockId));
 
     return NotebookPaperBackgroundWidget(

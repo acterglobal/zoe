@@ -25,7 +25,8 @@ class BulletDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider(bulletId));
+    final editContentId = ref.watch(editContentIdProvider);
+    final isEditing = editContentId == bulletId;
     final bullet = ref.watch(bulletProvider(bulletId));
 
     return NotebookPaperBackgroundWidget(

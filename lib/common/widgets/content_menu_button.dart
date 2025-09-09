@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:zoe/common/models/menu_item_data_model.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
-import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/sheet/actions/delete_sheet.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -21,10 +20,8 @@ class ContentMenuButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider(parentId));
     final colorScheme = Theme.of(context).colorScheme;
-
-    final items = _buildMenuItems(context, isEditing);
+    final items = _buildMenuItems(context);
 
     return PopupMenuButton<ContentMenuAction>(
       onSelected: (action) => _handleMenuSelection(context, ref, action),
@@ -51,10 +48,7 @@ class ContentMenuButton extends ConsumerWidget {
     );
   }
 
-  List<MenuItemDataModel> _buildMenuItems(
-    BuildContext context,
-    bool isEditing,
-  ) {
+  List<MenuItemDataModel> _buildMenuItems(BuildContext context) {
     final items = <MenuItemDataModel>[];
 
     // Add other menu items
