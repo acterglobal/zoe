@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
+import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -15,7 +16,6 @@ class PdfPreviewWidget extends ConsumerStatefulWidget {
 }
 
 class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
-  bool isLoading = true;
   String errorMessage = '';
 
   @override
@@ -30,51 +30,7 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _buildPdfToolbar(context),
-        Expanded(child: _buildPdfContainer(context)),
-      ],
-    );
-  }
-
-  Widget _buildPdfToolbar(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return GlassyContainer(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      borderRadius: BorderRadius.circular(16),
-      child: Row(
-        children: [
-          Icon(
-            Icons.picture_as_pdf_rounded,
-            color: theme.colorScheme.primary,
-            size: 24,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildToolbarButton(
-    BuildContext context,
-    IconData icon,
-    VoidCallback onPressed,
-  ) {
-    return GlassyContainer(
-      onTap: onPressed,
-      width: 40,
-      height: 40,
-      borderRadius: BorderRadius.circular(12),
-      borderOpacity: 0.1,
-      shadowOpacity: 0.05,
-      child: Icon(
-        icon,
-        size: 20,
-        color: Theme.of(context).colorScheme.onSurfaceVariant,
-      ),
-    );
+    return Center(child: _buildPdfContainer(context));
   }
 
   Widget _buildPdfContainer(BuildContext context) {
@@ -88,41 +44,7 @@ class _PdfPreviewWidgetState extends ConsumerState<PdfPreviewWidget> {
       );
     }
 
-    return GlassyContainer(
-      borderRadius: BorderRadius.circular(20),
-      padding: const EdgeInsets.all(8),
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Stack(children: [if (isLoading) _buildLoadingOverlay(context)]),
-      ),
-    );
-  }
-
-  Widget _buildLoadingOverlay(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      color: theme.colorScheme.surface.withValues(alpha: 0.9),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                theme.colorScheme.primary,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              L10n.of(context).loadingPDF,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return StyledIconContainer(icon: Icons.picture_as_pdf, size: 100);
   }
 
   Widget _buildErrorContainer(
