@@ -174,6 +174,6 @@ class BulletItemWidget extends ConsumerWidget {
     final user = ref.watch(getUserByIdProvider(bulletItem.createdBy));
     if (user == null) return const SizedBox.shrink();
 
-    return Padding(padding: const EdgeInsets.only(left: 16), child: ZoeUserViewWithAvatar(user: user),);
+    return Padding(padding: const EdgeInsets.only(left: 16), child: ZoeUserNameViewWithAvatar(user: user),);
   }
 }

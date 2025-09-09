@@ -4,10 +4,10 @@ import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 
-class ZoeUserViewWithAvatar extends StatelessWidget {
+class ZoeUserNameViewWithAvatar extends StatelessWidget {
   final UserModel user;
 
-  const ZoeUserViewWithAvatar({super.key, required this.user});
+  const ZoeUserNameViewWithAvatar({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {

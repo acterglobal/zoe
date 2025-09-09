@@ -215,7 +215,7 @@ class TaskWidget extends ConsumerWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ...users.take(2).map((user) => ZoeUserViewWithAvatar(user: user)),
+              ...users.take(2).map((user) => ZoeUserNameViewWithAvatar(user: user)),
             ],
           ),
         ),
