@@ -370,5 +370,11 @@
     "successfullyConnected": "सफलतापूर्वक कनेक्ट हो गया!",
     "@successfullyConnected": {},
     "whatsappGroupConnectedMessage": "आपकी शीट सफलतापूर्वक WhatsApp ग्रुप से कनेक्ट हो गई है। अब आप अपनी शीट से सीधे सामग्री साझा कर सकते हैं।",
-    "@whatsappGroupConnectedMessage": {}
+    "@whatsappGroupConnectedMessage": {},
+    "profile": "प्रोफ़ाइल",
+    "@profile": {},
+    "userNotFound": "उपयोगकर्ता नहीं मिला",
+    "@userNotFound": {},
+    "scanToConnect": "कनेक्ट करने के लिए स्कैन करें",
+    "@scanToConnect": {}
 }

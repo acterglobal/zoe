@@ -5,12 +5,14 @@ import 'package:zoe/common/providers/package_info_provider.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/settings/actions/change_theme.dart';
 import 'package:zoe/features/settings/models/language_model.dart';
 import 'package:zoe/features/settings/providers/local_provider.dart';
 import 'package:zoe/features/settings/providers/theme_provider.dart';
 import 'package:zoe/features/settings/widgets/setting_card_widget.dart';
 import 'package:zoe/features/settings/widgets/setting_item_widget.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -44,6 +46,10 @@ class SettingsScreen extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
+        //Profile Section
+        _buildProfileSection(context, ref),
+        const SizedBox(height: 20),
+
         // Appearance Section
         _buildAppearanceSection(context, ref),
         const SizedBox(height: 20),
@@ -59,6 +65,26 @@ class SettingsScreen extends ConsumerWidget {
         // About Section
         _buildAboutSection(context, ref),
         const SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Widget _buildProfileSection(BuildContext context, WidgetRef ref) {
+    final l10n = L10n.of(context);
+    final user = ref.watch(currentUserProvider);
+    final userName = user.value?.name ?? l10n.guest;
+    return SettingCardWidget(
+      title: l10n.profile,
+      children: [
+        SettingItemWidget(
+          title: userName.split(' ').first,
+          subtitle: userName,
+          icon: Icons.person_rounded,
+          iconColor: AppColors.brightMagentaColor,
+          onTap: () {
+            context.push(AppRoutes.settingsProfile.route);
+          },
+        ),
       ],
     );
   }
