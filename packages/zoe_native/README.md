@@ -29,6 +29,11 @@ This plugin integrates with:
 
 ### Updating Rust Dependencies
 
+tl;dr command:
+```
+flutter_rust_bridge_codegen generate && cargo test && flutter test
+```
+
 To update Rust dependencies, run:
 
 ```bash
