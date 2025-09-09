@@ -143,7 +143,7 @@ Future<void> main() async {
 
     // Create a ProviderContainer for this test.
     // DO NOT share ProviderContainers between tests.
-    final container = ProviderContainer.test();
+    final container = ProviderContainer();
     final cl = await container.read(clientProvider.future);
 
     // Verify the mocks were called as expected
@@ -177,6 +177,9 @@ Future<void> main() async {
     verify(() => builder.build()).called(1);
 
     expect(cl, equals(client));
+
+    // Clean up the container
+    container.dispose();
   });
 
   test('can mock Rust calls for new client generation', () async {
@@ -231,12 +234,15 @@ Future<void> main() async {
     ).thenAnswer((_) async => 'new_generated_secret_hex');
 
     // Create a ProviderContainer for this test.
-    final container = ProviderContainer.test();
+    final container = ProviderContainer();
     final cl = await container.read(clientProvider.future);
 
     // Since there's caching in loadOrGenerateClient(), this test may reuse the client from the first test
     // The important thing is that the provider works and returns a client
     expect(cl, isNotNull);
     expect(cl, isA<Client>());
+
+    // Clean up the container
+    container.dispose();
   });
 }
