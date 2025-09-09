@@ -12,9 +12,11 @@ import 'frb_generated.io.dart'
 import 'lib.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'third_party/zoe_client/client.dart';
+import 'third_party/zoe_client/client/api/file_storage.dart';
 import 'third_party/zoe_client/frb_api.dart';
 import 'third_party/zoe_client/util.dart';
 import 'third_party/zoe_wire_protocol/keys.dart';
+import 'third_party/zoe_wire_protocol/primitives.dart';
 
 /// Main entrypoint of the Rust API
 class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
@@ -71,7 +73,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => -929701453;
+  int get rustContentHash => -640084549;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -82,6 +84,11 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
+  Future<void> zoeClientClientClientBuilderAutoconnect({
+    required ClientBuilder that,
+    required bool autoconnect,
+  });
+
   Future<Client> zoeClientClientClientBuilderBuild({
     required ClientBuilder that,
   });
@@ -114,17 +121,39 @@ abstract class RustLibApi extends BaseApi {
     required SocketAddr serverAddr,
   });
 
+  Future<void> zoeClientClientClientBuilderServers({
+    required ClientBuilder that,
+    required List<RelayAddress> servers,
+  });
+
   Future<ClientSecret> zoeClientClientClientSecretFromHex({
     required String hex,
   });
 
+  Future<void> zoeClientClientClientSecretServers({required ClientSecret that});
+
   Future<String> zoeClientClientClientSecretToHex({required ClientSecret that});
 
+  Future<void> zoeClientClientClientAddRelay({
+    required Client that,
+    required RelayAddress address,
+  });
+
   Future<ClientBuilder> zoeClientClientClientBuilder();
+
+  Future<ClientSecret> zoeClientClientClientClientSecret({
+    required Client that,
+  });
 
   Future<String> zoeClientClientClientClientSecretHex({required Client that});
 
   Future<void> zoeClientClientClientClose({required Client that});
+
+  Future<List<RelayConnectionInfo>> zoeClientClientClientGetRelayStatus({
+    required Client that,
+  });
+
+  Future<bool> zoeClientClientClientHasConnectedRelays({required Client that});
 
   Future<bool> zoeClientClientClientHasFile({
     required Client that,
@@ -132,6 +161,19 @@ abstract class RustLibApi extends BaseApi {
   });
 
   Future<String> zoeClientClientClientIdHex({required Client that});
+
+  Future<OverallConnectionStatus> zoeClientClientClientOverallStatus({
+    required Client that,
+  });
+
+  Future<BigInt> zoeClientClientClientReconnectFailedRelays({
+    required Client that,
+  });
+
+  Future<bool> zoeClientClientClientRemoveRelay({
+    required Client that,
+    required VerifyingKey serverPublicKey,
+  });
 
   Future<void> zoeClientClientClientRetrieveFile({
     required Client that,
@@ -164,7 +206,7 @@ abstract class RustLibApi extends BaseApi {
     required String pemString,
   });
 
-  Future<void> zoeWireProtocolKeysKeyPairId({required KeyPair that});
+  Future<KeyId> zoeWireProtocolKeysKeyPairId({required KeyPair that});
 
   Future<VerifyingKey> zoeWireProtocolKeysKeyPairPublicKey({
     required KeyPair that,
@@ -177,11 +219,75 @@ abstract class RustLibApi extends BaseApi {
 
   Future<String> zoeWireProtocolKeysKeyPairToPem({required KeyPair that});
 
+  RelayInfo zoeClientClientRelayConnectionInfoAutoAccessorGetInfo({
+    required RelayConnectionInfo that,
+  });
+
+  RelayConnectionStatus
+  zoeClientClientRelayConnectionInfoAutoAccessorGetStatus({
+    required RelayConnectionInfo that,
+  });
+
+  void zoeClientClientRelayConnectionInfoAutoAccessorSetInfo({
+    required RelayConnectionInfo that,
+    required RelayInfo info,
+  });
+
+  void zoeClientClientRelayConnectionInfoAutoAccessorSetStatus({
+    required RelayConnectionInfo that,
+    required RelayConnectionStatus status,
+  });
+
+  RelayAddress zoeClientClientRelayInfoAutoAccessorGetRelayAddress({
+    required RelayInfo that,
+  });
+
+  KeyId zoeClientClientRelayInfoAutoAccessorGetRelayId({
+    required RelayInfo that,
+  });
+
+  void zoeClientClientRelayInfoAutoAccessorSetRelayAddress({
+    required RelayInfo that,
+    required RelayAddress relayAddress,
+  });
+
+  void zoeClientClientRelayInfoAutoAccessorSetRelayId({
+    required RelayInfo that,
+    required KeyId relayId,
+  });
+
+  RelayAddress zoeClientClientRelayStatusUpdateAutoAccessorGetRelayAddress({
+    required RelayStatusUpdate that,
+  });
+
+  KeyId zoeClientClientRelayStatusUpdateAutoAccessorGetRelayId({
+    required RelayStatusUpdate that,
+  });
+
+  RelayConnectionStatus zoeClientClientRelayStatusUpdateAutoAccessorGetStatus({
+    required RelayStatusUpdate that,
+  });
+
+  void zoeClientClientRelayStatusUpdateAutoAccessorSetRelayAddress({
+    required RelayStatusUpdate that,
+    required RelayAddress relayAddress,
+  });
+
+  void zoeClientClientRelayStatusUpdateAutoAccessorSetRelayId({
+    required RelayStatusUpdate that,
+    required KeyId relayId,
+  });
+
+  void zoeClientClientRelayStatusUpdateAutoAccessorSetStatus({
+    required RelayStatusUpdate that,
+    required RelayConnectionStatus status,
+  });
+
   Future<Uint8List> zoeWireProtocolKeysSignatureEncode({
     required Signature that,
   });
 
-  Future<void> zoeWireProtocolKeysSignatureId({required Signature that});
+  Future<KeyId> zoeWireProtocolKeysSignatureId({required Signature that});
 
   Future<Signature> zoeWireProtocolKeysSigningKeySign({
     required SigningKey that,
@@ -200,9 +306,17 @@ abstract class RustLibApi extends BaseApi {
     required String hex,
   });
 
-  Future<void> zoeWireProtocolKeysVerifyingKeyId({required VerifyingKey that});
+  Future<VerifyingKey> zoeWireProtocolKeysVerifyingKeyFromPem({
+    required String pemString,
+  });
+
+  Future<KeyId> zoeWireProtocolKeysVerifyingKeyId({required VerifyingKey that});
 
   Future<Uint8List> zoeWireProtocolKeysVerifyingKeyToBytes({
+    required VerifyingKey that,
+  });
+
+  Future<String> zoeWireProtocolKeysVerifyingKeyToPem({
     required VerifyingKey that,
   });
 
@@ -272,6 +386,12 @@ abstract class RustLibApi extends BaseApi {
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_FileRefPtr;
 
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_KeyId;
+
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_KeyId;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_KeyIdPtr;
+
   RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_KeyPair;
 
   RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_KeyPair;
@@ -291,6 +411,49 @@ abstract class RustLibApi extends BaseApi {
   RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_PathBuf;
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_PathBufPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayAddress;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayAddress;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_RelayAddressPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayConnectionInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayConnectionInfo;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_RelayConnectionInfoPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayConnectionStatus;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayConnectionStatus;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_RelayConnectionStatusPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayInfo;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_RelayInfoPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayStatusUpdate;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayStatusUpdate;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_RelayStatusUpdatePtr;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_Signature;
@@ -331,6 +494,15 @@ abstract class RustLibApi extends BaseApi {
   get rust_arc_decrement_strong_count_VerifyingKey;
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_VerifyingKeyPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_VerifyingKeyError;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_VerifyingKeyError;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_VerifyingKeyErrorPtr;
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -340,6 +512,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     required super.generalizedFrbRustBinding,
     required super.portManager,
   });
+
+  @override
+  Future<void> zoeClientClientClientBuilderAutoconnect({
+    required ClientBuilder that,
+    required bool autoconnect,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+            that,
+            serializer,
+          );
+          sse_encode_bool(autoconnect, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 1,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientBuilderAutoconnectConstMeta,
+        argValues: [that, autoconnect],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientBuilderAutoconnectConstMeta =>
+      const TaskConstMeta(
+        debugName: "ClientBuilder_autoconnect",
+        argNames: ["that", "autoconnect"],
+      );
 
   @override
   Future<Client> zoeClientClientClientBuilderBuild({
@@ -356,7 +566,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 1,
+            funcId: 2,
             port: port_,
           );
         },
@@ -395,7 +605,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 2,
+            funcId: 3,
             port: port_,
           );
         },
@@ -433,7 +643,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 3,
+            funcId: 4,
             port: port_,
           );
         },
@@ -463,7 +673,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 4,
+            funcId: 5,
             port: port_,
           );
         },
@@ -499,7 +709,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 5,
+            funcId: 6,
             port: port_,
           );
         },
@@ -537,7 +747,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 6,
+            funcId: 7,
             port: port_,
           );
         },
@@ -583,7 +793,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 7,
+            funcId: 8,
             port: port_,
           );
         },
@@ -605,6 +815,47 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<void> zoeClientClientClientBuilderServers({
+    required ClientBuilder that,
+    required List<RelayAddress> servers,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
+            that,
+            serializer,
+          );
+          sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+            servers,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 9,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientBuilderServersConstMeta,
+        argValues: [that, servers],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientBuilderServersConstMeta =>
+      const TaskConstMeta(
+        debugName: "ClientBuilder_servers",
+        argNames: ["that", "servers"],
+      );
+
+  @override
   Future<ClientSecret> zoeClientClientClientSecretFromHex({
     required String hex,
   }) {
@@ -616,7 +867,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 8,
+            funcId: 10,
             port: port_,
           );
         },
@@ -639,6 +890,42 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<void> zoeClientClientClientSecretServers({
+    required ClientSecret that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 11,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientSecretServersConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientSecretServersConstMeta =>
+      const TaskConstMeta(
+        debugName: "ClientSecret_servers",
+        argNames: ["that"],
+      );
+
+  @override
   Future<String> zoeClientClientClientSecretToHex({
     required ClientSecret that,
   }) {
@@ -653,7 +940,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 9,
+            funcId: 12,
             port: port_,
           );
         },
@@ -672,6 +959,47 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "ClientSecret_to_hex", argNames: ["that"]);
 
   @override
+  Future<void> zoeClientClientClientAddRelay({
+    required Client that,
+    required RelayAddress address,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+            address,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 13,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientAddRelayConstMeta,
+        argValues: [that, address],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientAddRelayConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_add_relay",
+        argNames: ["that", "address"],
+      );
+
+  @override
   Future<ClientBuilder> zoeClientClientClientBuilder() {
     return handler.executeNormal(
       NormalTask(
@@ -680,7 +1008,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 10,
+            funcId: 14,
             port: port_,
           );
         },
@@ -700,6 +1028,43 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "Client_builder", argNames: []);
 
   @override
+  Future<ClientSecret> zoeClientClientClientClientSecret({
+    required Client that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 15,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientClientSecretConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientClientSecretConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_client_secret",
+        argNames: ["that"],
+      );
+
+  @override
   Future<String> zoeClientClientClientClientSecretHex({required Client that}) {
     return handler.executeNormal(
       NormalTask(
@@ -712,7 +1077,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 11,
+            funcId: 16,
             port: port_,
           );
         },
@@ -746,7 +1111,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 12,
+            funcId: 17,
             port: port_,
           );
         },
@@ -763,6 +1128,77 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   TaskConstMeta get kZoeClientClientClientCloseConstMeta =>
       const TaskConstMeta(debugName: "Client_close", argNames: ["that"]);
+
+  @override
+  Future<List<RelayConnectionInfo>> zoeClientClientClientGetRelayStatus({
+    required Client that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 18,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientGetRelayStatusConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientGetRelayStatusConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_get_relay_status",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<bool> zoeClientClientClientHasConnectedRelays({required Client that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 19,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientHasConnectedRelaysConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientHasConnectedRelaysConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_has_connected_relays",
+        argNames: ["that"],
+      );
 
   @override
   Future<bool> zoeClientClientClientHasFile({
@@ -784,7 +1220,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 13,
+            funcId: 20,
             port: port_,
           );
         },
@@ -818,7 +1254,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 14,
+            funcId: 21,
             port: port_,
           );
         },
@@ -835,6 +1271,119 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   TaskConstMeta get kZoeClientClientClientIdHexConstMeta =>
       const TaskConstMeta(debugName: "Client_id_hex", argNames: ["that"]);
+
+  @override
+  Future<OverallConnectionStatus> zoeClientClientClientOverallStatus({
+    required Client that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 22,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_overall_connection_status,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientOverallStatusConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientOverallStatusConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_overall_status",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<BigInt> zoeClientClientClientReconnectFailedRelays({
+    required Client that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 23,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_usize,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientReconnectFailedRelaysConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientReconnectFailedRelaysConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_reconnect_failed_relays",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<bool> zoeClientClientClientRemoveRelay({
+    required Client that,
+    required VerifyingKey serverPublicKey,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            serverPublicKey,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 24,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientRemoveRelayConstMeta,
+        argValues: [that, serverPublicKey],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientRemoveRelayConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_remove_relay",
+        argNames: ["that", "serverPublicKey"],
+      );
 
   @override
   Future<void> zoeClientClientClientRetrieveFile({
@@ -861,7 +1410,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 15,
+            funcId: 25,
             port: port_,
           );
         },
@@ -902,7 +1451,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 16,
+            funcId: 26,
             port: port_,
           );
         },
@@ -944,7 +1493,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 17,
+            funcId: 27,
             port: port_,
           );
         },
@@ -986,7 +1535,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 18,
+            funcId: 28,
             port: port_,
           );
         },
@@ -1023,7 +1572,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 19,
+            funcId: 29,
             port: port_,
           );
         },
@@ -1053,7 +1602,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 20,
+            funcId: 30,
             port: port_,
           );
         },
@@ -1077,7 +1626,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> zoeWireProtocolKeysKeyPairId({required KeyPair that}) {
+  Future<KeyId> zoeWireProtocolKeysKeyPairId({required KeyPair that}) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -1089,12 +1638,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 21,
+            funcId: 31,
             port: port_,
           );
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId,
           decodeErrorData: null,
         ),
         constMeta: kZoeWireProtocolKeysKeyPairIdConstMeta,
@@ -1122,7 +1672,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 22,
+            funcId: 32,
             port: port_,
           );
         },
@@ -1158,7 +1708,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 23,
+            funcId: 33,
             port: port_,
           );
         },
@@ -1193,7 +1743,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 24,
+            funcId: 34,
             port: port_,
           );
         },
@@ -1213,6 +1763,507 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "KeyPair_to_pem", argNames: ["that"]);
 
   @override
+  RelayInfo zoeClientClientRelayConnectionInfoAutoAccessorGetInfo({
+    required RelayConnectionInfo that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 35)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayConnectionInfoAutoAccessorGetInfoConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayConnectionInfoAutoAccessorGetInfoConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayConnectionInfo_auto_accessor_get_info",
+        argNames: ["that"],
+      );
+
+  @override
+  RelayConnectionStatus
+  zoeClientClientRelayConnectionInfoAutoAccessorGetStatus({
+    required RelayConnectionInfo that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 36)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayConnectionInfoAutoAccessorGetStatusConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayConnectionInfoAutoAccessorGetStatusConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayConnectionInfo_auto_accessor_get_status",
+        argNames: ["that"],
+      );
+
+  @override
+  void zoeClientClientRelayConnectionInfoAutoAccessorSetInfo({
+    required RelayConnectionInfo that,
+    required RelayInfo info,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+            info,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 37)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayConnectionInfoAutoAccessorSetInfoConstMeta,
+        argValues: [that, info],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayConnectionInfoAutoAccessorSetInfoConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayConnectionInfo_auto_accessor_set_info",
+        argNames: ["that", "info"],
+      );
+
+  @override
+  void zoeClientClientRelayConnectionInfoAutoAccessorSetStatus({
+    required RelayConnectionInfo that,
+    required RelayConnectionStatus status,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus(
+            status,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 38)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayConnectionInfoAutoAccessorSetStatusConstMeta,
+        argValues: [that, status],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayConnectionInfoAutoAccessorSetStatusConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayConnectionInfo_auto_accessor_set_status",
+        argNames: ["that", "status"],
+      );
+
+  @override
+  RelayAddress zoeClientClientRelayInfoAutoAccessorGetRelayAddress({
+    required RelayInfo that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 39)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayInfoAutoAccessorGetRelayAddressConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayInfoAutoAccessorGetRelayAddressConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayInfo_auto_accessor_get_relay_address",
+        argNames: ["that"],
+      );
+
+  @override
+  KeyId zoeClientClientRelayInfoAutoAccessorGetRelayId({
+    required RelayInfo that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 40)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientRelayInfoAutoAccessorGetRelayIdConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientRelayInfoAutoAccessorGetRelayIdConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayInfo_auto_accessor_get_relay_id",
+        argNames: ["that"],
+      );
+
+  @override
+  void zoeClientClientRelayInfoAutoAccessorSetRelayAddress({
+    required RelayInfo that,
+    required RelayAddress relayAddress,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+            relayAddress,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 41)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayInfoAutoAccessorSetRelayAddressConstMeta,
+        argValues: [that, relayAddress],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayInfoAutoAccessorSetRelayAddressConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayInfo_auto_accessor_set_relay_address",
+        argNames: ["that", "relayAddress"],
+      );
+
+  @override
+  void zoeClientClientRelayInfoAutoAccessorSetRelayId({
+    required RelayInfo that,
+    required KeyId relayId,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId(
+            relayId,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 42)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientRelayInfoAutoAccessorSetRelayIdConstMeta,
+        argValues: [that, relayId],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientRelayInfoAutoAccessorSetRelayIdConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayInfo_auto_accessor_set_relay_id",
+        argNames: ["that", "relayId"],
+      );
+
+  @override
+  RelayAddress zoeClientClientRelayStatusUpdateAutoAccessorGetRelayAddress({
+    required RelayStatusUpdate that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 43)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayStatusUpdateAutoAccessorGetRelayAddressConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayStatusUpdateAutoAccessorGetRelayAddressConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayStatusUpdate_auto_accessor_get_relay_address",
+        argNames: ["that"],
+      );
+
+  @override
+  KeyId zoeClientClientRelayStatusUpdateAutoAccessorGetRelayId({
+    required RelayStatusUpdate that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 44)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayStatusUpdateAutoAccessorGetRelayIdConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayStatusUpdateAutoAccessorGetRelayIdConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayStatusUpdate_auto_accessor_get_relay_id",
+        argNames: ["that"],
+      );
+
+  @override
+  RelayConnectionStatus zoeClientClientRelayStatusUpdateAutoAccessorGetStatus({
+    required RelayStatusUpdate that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 45)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayStatusUpdateAutoAccessorGetStatusConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayStatusUpdateAutoAccessorGetStatusConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayStatusUpdate_auto_accessor_get_status",
+        argNames: ["that"],
+      );
+
+  @override
+  void zoeClientClientRelayStatusUpdateAutoAccessorSetRelayAddress({
+    required RelayStatusUpdate that,
+    required RelayAddress relayAddress,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+            relayAddress,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 46)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayStatusUpdateAutoAccessorSetRelayAddressConstMeta,
+        argValues: [that, relayAddress],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayStatusUpdateAutoAccessorSetRelayAddressConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayStatusUpdate_auto_accessor_set_relay_address",
+        argNames: ["that", "relayAddress"],
+      );
+
+  @override
+  void zoeClientClientRelayStatusUpdateAutoAccessorSetRelayId({
+    required RelayStatusUpdate that,
+    required KeyId relayId,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId(
+            relayId,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 47)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayStatusUpdateAutoAccessorSetRelayIdConstMeta,
+        argValues: [that, relayId],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayStatusUpdateAutoAccessorSetRelayIdConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayStatusUpdate_auto_accessor_set_relay_id",
+        argNames: ["that", "relayId"],
+      );
+
+  @override
+  void zoeClientClientRelayStatusUpdateAutoAccessorSetStatus({
+    required RelayStatusUpdate that,
+    required RelayConnectionStatus status,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus(
+            status,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 48)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeClientClientRelayStatusUpdateAutoAccessorSetStatusConstMeta,
+        argValues: [that, status],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeClientClientRelayStatusUpdateAutoAccessorSetStatusConstMeta =>
+      const TaskConstMeta(
+        debugName: "RelayStatusUpdate_auto_accessor_set_status",
+        argNames: ["that", "status"],
+      );
+
+  @override
   Future<Uint8List> zoeWireProtocolKeysSignatureEncode({
     required Signature that,
   }) {
@@ -1227,7 +2278,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 25,
+            funcId: 49,
             port: port_,
           );
         },
@@ -1246,7 +2297,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "Signature_encode", argNames: ["that"]);
 
   @override
-  Future<void> zoeWireProtocolKeysSignatureId({required Signature that}) {
+  Future<KeyId> zoeWireProtocolKeysSignatureId({required Signature that}) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -1258,12 +2309,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 26,
+            funcId: 50,
             port: port_,
           );
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId,
           decodeErrorData: null,
         ),
         constMeta: kZoeWireProtocolKeysSignatureIdConstMeta,
@@ -1293,7 +2345,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 27,
+            funcId: 51,
             port: port_,
           );
         },
@@ -1330,7 +2382,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 28,
+            funcId: 52,
             port: port_,
           );
         },
@@ -1366,7 +2418,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 29,
+            funcId: 53,
             port: port_,
           );
         },
@@ -1396,7 +2448,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 30,
+            funcId: 54,
             port: port_,
           );
         },
@@ -1419,7 +2471,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> zoeWireProtocolKeysVerifyingKeyId({required VerifyingKey that}) {
+  Future<VerifyingKey> zoeWireProtocolKeysVerifyingKeyFromPem({
+    required String pemString,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(pemString, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 55,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey,
+          decodeErrorData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError,
+        ),
+        constMeta: kZoeWireProtocolKeysVerifyingKeyFromPemConstMeta,
+        argValues: [pemString],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysVerifyingKeyFromPemConstMeta =>
+      const TaskConstMeta(
+        debugName: "VerifyingKey_from_pem",
+        argNames: ["pemString"],
+      );
+
+  @override
+  Future<KeyId> zoeWireProtocolKeysVerifyingKeyId({
+    required VerifyingKey that,
+  }) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -1431,12 +2520,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 31,
+            funcId: 56,
             port: port_,
           );
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_unit,
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId,
           decodeErrorData: null,
         ),
         constMeta: kZoeWireProtocolKeysVerifyingKeyIdConstMeta,
@@ -1464,7 +2554,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 32,
+            funcId: 57,
             port: port_,
           );
         },
@@ -1484,6 +2574,40 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         debugName: "VerifyingKey_to_bytes",
         argNames: ["that"],
       );
+
+  @override
+  Future<String> zoeWireProtocolKeysVerifyingKeyToPem({
+    required VerifyingKey that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 58,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError,
+        ),
+        constMeta: kZoeWireProtocolKeysVerifyingKeyToPemConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeWireProtocolKeysVerifyingKeyToPemConstMeta =>
+      const TaskConstMeta(debugName: "VerifyingKey_to_pem", argNames: ["that"]);
 
   @override
   Future<void> zoeWireProtocolKeysVerifyingKeyVerify({
@@ -1507,7 +2631,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 33,
+            funcId: 59,
             port: port_,
           );
         },
@@ -1538,7 +2662,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 34,
+            funcId: 60,
             port: port_,
           );
         },
@@ -1570,7 +2694,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 35,
+            funcId: 61,
             port: port_,
           );
         },
@@ -1601,7 +2725,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 36,
+            funcId: 62,
             port: port_,
           );
         },
@@ -1626,7 +2750,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(name, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 37)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 63)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -1651,7 +2775,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 38,
+            funcId: 64,
             port: port_,
           );
         },
@@ -1679,7 +2803,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 39,
+            funcId: 65,
             port: port_,
           );
         },
@@ -1708,7 +2832,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 40,
+            funcId: 66,
             port: port_,
           );
         },
@@ -1738,7 +2862,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 41,
+            funcId: 67,
             port: port_,
           );
         },
@@ -1772,7 +2896,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 42,
+            funcId: 68,
             port: port_,
           );
         },
@@ -1803,7 +2927,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 43,
+            funcId: 69,
             port: port_,
           );
         },
@@ -1834,7 +2958,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 44,
+            funcId: 70,
             port: port_,
           );
         },
@@ -1867,7 +2991,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 45,
+            funcId: 71,
             port: port_,
           );
         },
@@ -1922,6 +3046,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef;
 
   RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_KeyId => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_KeyId => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId;
+
+  RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_KeyPair => wire
       .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair;
 
@@ -1944,6 +3076,46 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RustArcDecrementStrongCountFnType
   get rust_arc_decrement_strong_count_PathBuf => wire
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayAddress => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayAddress => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayConnectionInfo => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayConnectionInfo => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayConnectionStatus => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayConnectionStatus => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayInfo => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayInfo => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayStatusUpdate => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayStatusUpdate => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_Signature => wire
@@ -1984,6 +3156,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RustArcDecrementStrongCountFnType
   get rust_arc_decrement_strong_count_VerifyingKey => wire
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_VerifyingKeyError => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_VerifyingKeyError => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError;
 
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw) {
@@ -2028,6 +3208,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  KeyId
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return KeyIdImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   KeyPair
   dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
     dynamic raw,
@@ -2052,6 +3241,51 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return PathBufImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayAddress
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayAddressImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayConnectionInfo
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayConnectionInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayConnectionStatus
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayConnectionStatusImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayInfo
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayStatusUpdate
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayStatusUpdateImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -2100,12 +3334,48 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  VerifyingKeyError
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return VerifyingKeyErrorImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   ClientBuilder
   dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return ClientBuilderImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayConnectionInfo
+  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayConnectionInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayInfo
+  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayStatusUpdate
+  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayStatusUpdateImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -2142,6 +3412,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return KeyPairImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayConnectionInfo
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayConnectionInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayInfo
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayStatusUpdate
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayStatusUpdateImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -2217,6 +3514,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  KeyId
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return KeyIdImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   KeyPair
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
     dynamic raw,
@@ -2241,6 +3547,51 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return PathBufImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayAddress
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayAddressImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayConnectionInfo
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayConnectionInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayConnectionStatus
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayConnectionStatusImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayInfo
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayStatusUpdate
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayStatusUpdateImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -2289,6 +3640,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  VerifyingKeyError
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return VerifyingKeyErrorImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   String dco_decode_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as String;
@@ -2313,6 +3673,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<RelayAddress>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress,
+        )
+        .toList();
+  }
+
+  @protected
+  List<RelayConnectionInfo>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo,
+        )
+        .toList();
+  }
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as List<int>;
@@ -2328,6 +3714,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   String? dco_decode_opt_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_String(raw);
+  }
+
+  @protected
+  OverallConnectionStatus dco_decode_overall_connection_status(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return OverallConnectionStatus(
+      isConnected: dco_decode_bool(arr[0]),
+      connectedCount: dco_decode_usize(arr[1]),
+      totalCount: dco_decode_usize(arr[2]),
+    );
   }
 
   @protected
@@ -2416,6 +3815,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  KeyId
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return KeyIdImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   KeyPair
   sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
     SseDeserializer deserializer,
@@ -2446,6 +3857,66 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return PathBufImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayAddress
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayAddressImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayConnectionInfo
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayConnectionInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayConnectionStatus
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayConnectionStatusImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayInfo
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayStatusUpdate
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayStatusUpdateImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -2512,12 +3983,60 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  VerifyingKeyError
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return VerifyingKeyErrorImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   ClientBuilder
   sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return ClientBuilderImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayConnectionInfo
+  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayConnectionInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayInfo
+  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayStatusUpdate
+  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayStatusUpdateImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -2566,6 +4085,42 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return KeyPairImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayConnectionInfo
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayConnectionInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayInfo
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayStatusUpdate
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayStatusUpdateImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -2668,6 +4223,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  KeyId
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return KeyIdImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   KeyPair
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
     SseDeserializer deserializer,
@@ -2698,6 +4265,66 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return PathBufImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayAddress
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayAddressImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayConnectionInfo
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayConnectionInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayConnectionStatus
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayConnectionStatusImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayInfo
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayStatusUpdate
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayStatusUpdateImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -2764,6 +4391,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  VerifyingKeyError
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return VerifyingKeyErrorImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   String sse_decode_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_prim_u_8_strict(deserializer);
@@ -2790,6 +4429,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<RelayAddress>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <RelayAddress>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+          deserializer,
+        ),
+      );
+    }
+    return ans_;
+  }
+
+  @protected
+  List<RelayConnectionInfo>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <RelayConnectionInfo>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+          deserializer,
+        ),
+      );
+    }
+    return ans_;
+  }
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
@@ -2812,6 +4489,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     } else {
       return null;
     }
+  }
+
+  @protected
+  OverallConnectionStatus sse_decode_overall_connection_status(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_isConnected = sse_decode_bool(deserializer);
+    var var_connectedCount = sse_decode_usize(deserializer);
+    var var_totalCount = sse_decode_usize(deserializer);
+    return OverallConnectionStatus(
+      isConnected: var_isConnected,
+      connectedCount: var_connectedCount,
+      totalCount: var_totalCount,
+    );
   }
 
   @protected
@@ -2907,6 +4599,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId(
+    KeyId self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as KeyIdImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
     KeyPair self,
     SseSerializer serializer,
@@ -2940,6 +4645,71 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as PathBufImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+    RelayAddress self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayAddressImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    RelayConnectionInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayConnectionInfoImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus(
+    RelayConnectionStatus self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayConnectionStatusImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    RelayInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayInfoImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    RelayStatusUpdate self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayStatusUpdateImpl).frbInternalSseEncode(move: true),
       serializer,
     );
   }
@@ -3011,6 +4781,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError(
+    VerifyingKeyError self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as VerifyingKeyErrorImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientBuilder(
     ClientBuilder self,
     SseSerializer serializer,
@@ -3018,6 +4801,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as ClientBuilderImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    RelayConnectionInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayConnectionInfoImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    RelayInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayInfoImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    RelayStatusUpdate self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayStatusUpdateImpl).frbInternalSseEncode(move: false),
       serializer,
     );
   }
@@ -3070,6 +4892,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as KeyPairImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    RelayConnectionInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayConnectionInfoImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    RelayInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayInfoImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    RelayStatusUpdate self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayStatusUpdateImpl).frbInternalSseEncode(move: false),
       serializer,
     );
   }
@@ -3180,6 +5041,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyId(
+    KeyId self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as KeyIdImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
     KeyPair self,
     SseSerializer serializer,
@@ -3213,6 +5087,71 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as PathBufImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+    RelayAddress self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayAddressImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    RelayConnectionInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayConnectionInfoImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus(
+    RelayConnectionStatus self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayConnectionStatusImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayInfo(
+    RelayInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayInfoImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayStatusUpdate(
+    RelayStatusUpdate self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayStatusUpdateImpl).frbInternalSseEncode(move: null),
       serializer,
     );
   }
@@ -3283,6 +5222,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKeyError(
+    VerifyingKeyError self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as VerifyingKeyErrorImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
   void sse_encode_String(String self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
@@ -3304,6 +5256,38 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
+  }
+
+  @protected
+  void
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+    List<RelayAddress> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress(
+        item,
+        serializer,
+      );
+    }
+  }
+
+  @protected
+  void
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+    List<RelayConnectionInfo> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
+        item,
+        serializer,
+      );
+    }
   }
 
   @protected
@@ -3336,6 +5320,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (self != null) {
       sse_encode_String(self, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_overall_connection_status(
+    OverallConnectionStatus self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_bool(self.isConnected, serializer);
+    sse_encode_usize(self.connectedCount, serializer);
+    sse_encode_usize(self.totalCount, serializer);
   }
 
   @protected
@@ -3387,6 +5382,18 @@ class ClientBuilderImpl extends RustOpaque implements ClientBuilder {
         RustLib.instance.api.rust_arc_decrement_strong_count_ClientBuilderPtr,
   );
 
+  /// Enable or disable automatic connection to server during build
+  ///
+  /// When autoconnect is true (default for backward compatibility), the client
+  /// will require server information and connect immediately during build().
+  /// When autoconnect is false, the client starts in offline mode and can
+  /// connect to relays later using add_relay().
+  Future<void> autoconnect({required bool autoconnect}) =>
+      RustLib.instance.api.zoeClientClientClientBuilderAutoconnect(
+        that: this,
+        autoconnect: autoconnect,
+      );
+
   Future<Client> build() =>
       RustLib.instance.api.zoeClientClientClientBuilderBuild(that: this);
 
@@ -3417,6 +5424,11 @@ class ClientBuilderImpl extends RustOpaque implements ClientBuilder {
     serverPublicKey: serverPublicKey,
     serverAddr: serverAddr,
   );
+
+  Future<void> servers({required List<RelayAddress> servers}) => RustLib
+      .instance
+      .api
+      .zoeClientClientClientBuilderServers(that: this, servers: servers);
 }
 
 @sealed
@@ -3438,11 +5450,31 @@ class ClientImpl extends RustOpaque implements Client {
         RustLib.instance.api.rust_arc_decrement_strong_count_ClientPtr,
   );
 
+  /// Add a relay server to the client
+  ///
+  /// This will attempt to connect to all addresses in the RelayAddress in random order
+  /// with a 10-second timeout per attempt. Only adds the relay to local state if a
+  /// connection succeeds.
+  Future<void> addRelay({required RelayAddress address}) => RustLib.instance.api
+      .zoeClientClientClientAddRelay(that: this, address: address);
+
+  /// Get the current client secret
+  Future<ClientSecret> clientSecret() =>
+      RustLib.instance.api.zoeClientClientClientClientSecret(that: this);
+
   Future<String> clientSecretHex() =>
       RustLib.instance.api.zoeClientClientClientClientSecretHex(that: this);
 
   Future<void> close() =>
       RustLib.instance.api.zoeClientClientClientClose(that: this);
+
+  /// Get list of all configured relays with their connection status
+  Future<List<RelayConnectionInfo>> getRelayStatus() =>
+      RustLib.instance.api.zoeClientClientClientGetRelayStatus(that: this);
+
+  /// Check if any relays are currently connected
+  Future<bool> hasConnectedRelays() =>
+      RustLib.instance.api.zoeClientClientClientHasConnectedRelays(that: this);
 
   /// Check if a file exists in storage
   ///
@@ -3458,6 +5490,25 @@ class ClientImpl extends RustOpaque implements Client {
 
   Future<String> idHex() =>
       RustLib.instance.api.zoeClientClientClientIdHex(that: this);
+
+  /// Calculate the current overall connection status
+  ///
+  /// This is computed from the current relay states, ensuring it's always accurate but makes it
+  /// a bit more expensive to compute. For live updates it is recommended to use `overall_status_stream`
+  /// instead.
+  Future<OverallConnectionStatus> overallStatus() =>
+      RustLib.instance.api.zoeClientClientClientOverallStatus(that: this);
+
+  /// Attempt to reconnect to all failed relays
+  Future<BigInt> reconnectFailedRelays() => RustLib.instance.api
+      .zoeClientClientClientReconnectFailedRelays(that: this);
+
+  /// Remove a relay connection (offline mode only)
+  Future<bool> removeRelay({required VerifyingKey serverPublicKey}) =>
+      RustLib.instance.api.zoeClientClientClientRemoveRelay(
+        that: this,
+        serverPublicKey: serverPublicKey,
+      );
 
   /// Retrieve a file from storage and save it to disk
   ///
@@ -3580,6 +5631,10 @@ class ClientSecretImpl extends RustOpaque implements ClientSecret {
         RustLib.instance.api.rust_arc_decrement_strong_count_ClientSecretPtr,
   );
 
+  /// Get the list of configured servers
+  Future<void> servers() =>
+      RustLib.instance.api.zoeClientClientClientSecretServers(that: this);
+
   Future<String> toHex() =>
       RustLib.instance.api.zoeClientClientClientSecretToHex(that: this);
 }
@@ -3601,6 +5656,26 @@ class FileRefImpl extends RustOpaque implements FileRef {
         RustLib.instance.api.rust_arc_decrement_strong_count_FileRef,
     rustArcDecrementStrongCountPtr:
         RustLib.instance.api.rust_arc_decrement_strong_count_FileRefPtr,
+  );
+}
+
+@sealed
+class KeyIdImpl extends RustOpaque implements KeyId {
+  // Not to be used by end users
+  KeyIdImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  KeyIdImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_KeyId,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_KeyId,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_KeyIdPtr,
   );
 }
 
@@ -3647,7 +5722,7 @@ class KeyPairImpl extends RustOpaque implements KeyPair {
   Future<Algorithm> algorithm() =>
       RustLib.instance.api.zoeWireProtocolKeysKeyPairAlgorithm(that: this);
 
-  Future<void> id() =>
+  Future<KeyId> id() =>
       RustLib.instance.api.zoeWireProtocolKeysKeyPairId(that: this);
 
   Future<VerifyingKey> publicKey() =>
@@ -3705,6 +5780,191 @@ class PathBufImpl extends RustOpaque implements PathBuf {
 }
 
 @sealed
+class RelayAddressImpl extends RustOpaque implements RelayAddress {
+  // Not to be used by end users
+  RelayAddressImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  RelayAddressImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_RelayAddress,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_RelayAddress,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_RelayAddressPtr,
+  );
+}
+
+@sealed
+class RelayConnectionInfoImpl extends RustOpaque
+    implements RelayConnectionInfo {
+  // Not to be used by end users
+  RelayConnectionInfoImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  RelayConnectionInfoImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_increment_strong_count_RelayConnectionInfo,
+    rustArcDecrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_RelayConnectionInfo,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_RelayConnectionInfoPtr,
+  );
+
+  RelayInfo get info => RustLib.instance.api
+      .zoeClientClientRelayConnectionInfoAutoAccessorGetInfo(that: this);
+
+  RelayConnectionStatus get status => RustLib.instance.api
+      .zoeClientClientRelayConnectionInfoAutoAccessorGetStatus(that: this);
+
+  set info(RelayInfo info) => RustLib.instance.api
+      .zoeClientClientRelayConnectionInfoAutoAccessorSetInfo(
+        that: this,
+        info: info,
+      );
+
+  set status(RelayConnectionStatus status) => RustLib.instance.api
+      .zoeClientClientRelayConnectionInfoAutoAccessorSetStatus(
+        that: this,
+        status: status,
+      );
+}
+
+@sealed
+class RelayConnectionStatusImpl extends RustOpaque
+    implements RelayConnectionStatus {
+  // Not to be used by end users
+  RelayConnectionStatusImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  RelayConnectionStatusImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_increment_strong_count_RelayConnectionStatus,
+    rustArcDecrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_RelayConnectionStatus,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_RelayConnectionStatusPtr,
+  );
+}
+
+@sealed
+class RelayInfoImpl extends RustOpaque implements RelayInfo {
+  // Not to be used by end users
+  RelayInfoImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  RelayInfoImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_RelayInfo,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_RelayInfo,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_RelayInfoPtr,
+  );
+
+  RelayAddress get relayAddress => RustLib.instance.api
+      .zoeClientClientRelayInfoAutoAccessorGetRelayAddress(that: this);
+
+  KeyId get relayId => RustLib.instance.api
+      .zoeClientClientRelayInfoAutoAccessorGetRelayId(that: this);
+
+  set relayAddress(RelayAddress relayAddress) =>
+      RustLib.instance.api.zoeClientClientRelayInfoAutoAccessorSetRelayAddress(
+        that: this,
+        relayAddress: relayAddress,
+      );
+
+  set relayId(KeyId relayId) =>
+      RustLib.instance.api.zoeClientClientRelayInfoAutoAccessorSetRelayId(
+        that: this,
+        relayId: relayId,
+      );
+}
+
+@sealed
+class RelayStatusUpdateImpl extends RustOpaque implements RelayStatusUpdate {
+  // Not to be used by end users
+  RelayStatusUpdateImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  RelayStatusUpdateImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_RelayStatusUpdate,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_RelayStatusUpdate,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_RelayStatusUpdatePtr,
+  );
+
+  RelayAddress get relayAddress => RustLib.instance.api
+      .zoeClientClientRelayStatusUpdateAutoAccessorGetRelayAddress(that: this);
+
+  KeyId get relayId => RustLib.instance.api
+      .zoeClientClientRelayStatusUpdateAutoAccessorGetRelayId(that: this);
+
+  RelayConnectionStatus get status => RustLib.instance.api
+      .zoeClientClientRelayStatusUpdateAutoAccessorGetStatus(that: this);
+
+  set relayAddress(RelayAddress relayAddress) => RustLib.instance.api
+      .zoeClientClientRelayStatusUpdateAutoAccessorSetRelayAddress(
+        that: this,
+        relayAddress: relayAddress,
+      );
+
+  set relayId(KeyId relayId) => RustLib.instance.api
+      .zoeClientClientRelayStatusUpdateAutoAccessorSetRelayId(
+        that: this,
+        relayId: relayId,
+      );
+
+  set status(RelayConnectionStatus status) => RustLib.instance.api
+      .zoeClientClientRelayStatusUpdateAutoAccessorSetStatus(
+        that: this,
+        status: status,
+      );
+}
+
+@sealed
 class SignatureImpl extends RustOpaque implements Signature {
   // Not to be used by end users
   SignatureImpl.frbInternalDcoDecode(List<dynamic> wire)
@@ -3727,7 +5987,7 @@ class SignatureImpl extends RustOpaque implements Signature {
   Future<Uint8List> encode() =>
       RustLib.instance.api.zoeWireProtocolKeysSignatureEncode(that: this);
 
-  Future<void> id() =>
+  Future<KeyId> id() =>
       RustLib.instance.api.zoeWireProtocolKeysSignatureId(that: this);
 }
 
@@ -3796,6 +6056,30 @@ class VerifyErrorImpl extends RustOpaque implements VerifyError {
 }
 
 @sealed
+class VerifyingKeyErrorImpl extends RustOpaque implements VerifyingKeyError {
+  // Not to be used by end users
+  VerifyingKeyErrorImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  VerifyingKeyErrorImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_VerifyingKeyError,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_VerifyingKeyError,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_VerifyingKeyErrorPtr,
+  );
+}
+
+@sealed
 class VerifyingKeyImpl extends RustOpaque implements VerifyingKey {
   // Not to be used by end users
   VerifyingKeyImpl.frbInternalDcoDecode(List<dynamic> wire)
@@ -3851,12 +6135,37 @@ class VerifyingKeyImpl extends RustOpaque implements VerifyingKey {
       RustLib.instance.api.zoeWireProtocolKeysVerifyingKeyEncode(that: this);
 
   /// flutter_rust_bridge:opaque
-  Future<void> id() =>
+  Future<KeyId> id() =>
       RustLib.instance.api.zoeWireProtocolKeysVerifyingKeyId(that: this);
 
   /// flutter_rust_bridge:opaque
   Future<Uint8List> toBytes() =>
       RustLib.instance.api.zoeWireProtocolKeysVerifyingKeyToBytes(that: this);
+
+  /// Export the VerifyingKey to PEM format.
+  ///
+  /// This method serializes the key using postcard format and then encodes it
+  /// as a PEM block with the label "ZOE PUBLIC KEY". This provides a standardized
+  /// text format that's compatible with many cryptographic tools and libraries.
+  ///
+  /// # Returns
+  ///
+  /// A `Result<String, VerifyingKeyError>` containing the PEM-encoded key or an error.
+  ///
+  /// # Examples
+  ///
+  /// ```rust
+  /// use zoe_wire_protocol::{KeyPair, VerifyingKey};
+  /// use rand::rngs::OsRng;
+  ///
+  /// let keypair = KeyPair::generate_ed25519(&mut OsRng);
+  /// let verifying_key = keypair.public_key();
+  /// let pem_string = verifying_key.to_pem().unwrap();
+  /// println!("Public key PEM:\n{}", pem_string);
+  /// ```
+  /// flutter_rust_bridge:opaque
+  Future<String> toPem() =>
+      RustLib.instance.api.zoeWireProtocolKeysVerifyingKeyToPem(that: this);
 
   /// Verify a signature against a message using the appropriate algorithm.
   ///

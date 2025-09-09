@@ -6,20 +6,37 @@
 import '../../frb_generated.dart';
 import '../../lib.dart';
 import '../zoe_wire_protocol/keys.dart';
+import '../zoe_wire_protocol/primitives.dart';
+import 'client/api/file_storage.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`
-// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `blob_client`, `db_storage_dir_pathbuf`, `inner_keypair`, `media_storage_dir_pathbuf`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Client>>
 abstract class Client implements RustOpaqueInterface {
+  /// Add a relay server to the client
+  ///
+  /// This will attempt to connect to all addresses in the RelayAddress in random order
+  /// with a 10-second timeout per attempt. Only adds the relay to local state if a
+  /// connection succeeds.
+  Future<void> addRelay({required RelayAddress address});
+
   /// Create a new ClientBuilder for constructing a Client
   static Future<ClientBuilder> builder() =>
       RustLib.instance.api.zoeClientClientClientBuilder();
 
+  /// Get the current client secret
+  Future<ClientSecret> clientSecret();
+
   Future<String> clientSecretHex();
 
   Future<void> close();
+
+  /// Get list of all configured relays with their connection status
+  Future<List<RelayConnectionInfo>> getRelayStatus();
+
+  /// Check if any relays are currently connected
+  Future<bool> hasConnectedRelays();
 
   /// Check if a file exists in storage
   ///
@@ -33,6 +50,19 @@ abstract class Client implements RustOpaqueInterface {
   Future<bool> hasFile({required FileRef storedInfo});
 
   Future<String> idHex();
+
+  /// Calculate the current overall connection status
+  ///
+  /// This is computed from the current relay states, ensuring it's always accurate but makes it
+  /// a bit more expensive to compute. For live updates it is recommended to use `overall_status_stream`
+  /// instead.
+  Future<OverallConnectionStatus> overallStatus();
+
+  /// Attempt to reconnect to all failed relays
+  Future<BigInt> reconnectFailedRelays();
+
+  /// Remove a relay connection (offline mode only)
+  Future<bool> removeRelay({required VerifyingKey serverPublicKey});
 
   /// Retrieve a file from storage and save it to disk
   ///
@@ -125,6 +155,14 @@ abstract class Client implements RustOpaqueInterface {
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ClientBuilder>>
 abstract class ClientBuilder implements RustOpaqueInterface {
+  /// Enable or disable automatic connection to server during build
+  ///
+  /// When autoconnect is true (default for backward compatibility), the client
+  /// will require server information and connect immediately during build().
+  /// When autoconnect is false, the client starts in offline mode and can
+  /// connect to relays later using add_relay().
+  Future<void> autoconnect({required bool autoconnect});
+
   Future<Client> build();
 
   Future<void> clientSecret({required ClientSecret secret});
@@ -144,6 +182,8 @@ abstract class ClientBuilder implements RustOpaqueInterface {
     required VerifyingKey serverPublicKey,
     required SocketAddr serverAddr,
   });
+
+  Future<void> servers({required List<RelayAddress> servers});
 }
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ClientSecret>>
@@ -151,11 +191,79 @@ abstract class ClientSecret implements RustOpaqueInterface {
   static Future<ClientSecret> fromHex({required String hex}) =>
       RustLib.instance.api.zoeClientClientClientSecretFromHex(hex: hex);
 
+  /// Get the list of configured servers
+  Future<void> servers();
+
   Future<String> toHex();
 }
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<FileRef>>
-abstract class FileRef implements RustOpaqueInterface {}
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<RelayConnectionInfo>>
+abstract class RelayConnectionInfo implements RustOpaqueInterface {
+  RelayInfo get info;
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<PathBuf>>
-abstract class PathBuf implements RustOpaqueInterface {}
+  RelayConnectionStatus get status;
+
+  set info(RelayInfo info);
+
+  set status(RelayConnectionStatus status);
+}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<RelayConnectionStatus>>
+abstract class RelayConnectionStatus implements RustOpaqueInterface {}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<RelayInfo>>
+abstract class RelayInfo implements RustOpaqueInterface {
+  RelayAddress get relayAddress;
+
+  KeyId get relayId;
+
+  set relayAddress(RelayAddress relayAddress);
+
+  set relayId(KeyId relayId);
+}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<RelayStatusUpdate>>
+abstract class RelayStatusUpdate implements RustOpaqueInterface {
+  RelayAddress get relayAddress;
+
+  KeyId get relayId;
+
+  RelayConnectionStatus get status;
+
+  set relayAddress(RelayAddress relayAddress);
+
+  set relayId(KeyId relayId);
+
+  set status(RelayConnectionStatus status);
+}
+
+/// Overall connection status for the client
+class OverallConnectionStatus {
+  /// True if connected to at least one relay
+  final bool isConnected;
+
+  /// Number of connected relays
+  final BigInt connectedCount;
+
+  /// Total number of configured relays
+  final BigInt totalCount;
+
+  const OverallConnectionStatus({
+    required this.isConnected,
+    required this.connectedCount,
+    required this.totalCount,
+  });
+
+  @override
+  int get hashCode =>
+      isConnected.hashCode ^ connectedCount.hashCode ^ totalCount.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OverallConnectionStatus &&
+          runtimeType == other.runtimeType &&
+          isConnected == other.isConnected &&
+          connectedCount == other.connectedCount &&
+          totalCount == other.totalCount;
+}

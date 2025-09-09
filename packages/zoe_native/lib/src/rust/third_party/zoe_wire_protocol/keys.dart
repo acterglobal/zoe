@@ -5,9 +5,10 @@
 
 import '../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'primitives.dart';
 
 // These functions are ignored because they have generic arguments: `generate_ed25519`, `generate_for_algorithm`, `generate_ml_dsa44`, `generate_ml_dsa65`, `generate_ml_dsa87`, `generate`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `cmp`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `hash`, `partial_cmp`, `partial_cmp`, `source`, `try_from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `cmp`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `hash`, `partial_cmp`, `partial_cmp`, `source`, `try_from`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<KeyPair>>
 abstract class KeyPair implements RustOpaqueInterface {
@@ -45,7 +46,7 @@ abstract class KeyPair implements RustOpaqueInterface {
       .api
       .zoeWireProtocolKeysKeyPairFromPem(pemString: pemString);
 
-  Future<void> id();
+  Future<KeyId> id();
 
   Future<VerifyingKey> publicKey();
 
@@ -86,7 +87,7 @@ abstract class Signature implements RustOpaqueInterface {
   /// Encode the Signature to bytes for serialization
   Future<Uint8List> encode();
 
-  Future<void> id();
+  Future<KeyId> id();
 }
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SigningKey>>
@@ -138,11 +139,67 @@ abstract class VerifyingKey implements RustOpaqueInterface {
   static Future<VerifyingKey> fromHex({required String hex}) =>
       RustLib.instance.api.zoeWireProtocolKeysVerifyingKeyFromHex(hex: hex);
 
+  /// Import a VerifyingKey from PEM format.
+  ///
+  /// This method parses a PEM-encoded string and deserializes it back to a
+  /// `VerifyingKey`. The PEM block should have the label "ZOE PUBLIC KEY".
+  ///
+  /// # Arguments
+  ///
+  /// * `pem_string` - A string containing the PEM-encoded public key
+  ///
+  /// # Returns
+  ///
+  /// A `Result<VerifyingKey, VerifyingKeyError>` containing the decoded key or an error.
+  ///
+  /// # Examples
+  ///
+  /// ```rust
+  /// use zoe_wire_protocol::{KeyPair, VerifyingKey};
+  /// use rand::rngs::OsRng;
+  ///
+  /// let original_keypair = KeyPair::generate_ed25519(&mut OsRng);
+  /// let original_key = original_keypair.public_key();
+  /// let pem_string = original_key.to_pem().unwrap();
+  ///
+  /// let restored_key = VerifyingKey::from_pem(&pem_string).unwrap();
+  /// assert_eq!(original_key.encode(), restored_key.encode());
+  /// ```
   /// flutter_rust_bridge:opaque
-  Future<void> id();
+  static Future<VerifyingKey> fromPem({required String pemString}) => RustLib
+      .instance
+      .api
+      .zoeWireProtocolKeysVerifyingKeyFromPem(pemString: pemString);
+
+  /// flutter_rust_bridge:opaque
+  Future<KeyId> id();
 
   /// flutter_rust_bridge:opaque
   Future<Uint8List> toBytes();
+
+  /// Export the VerifyingKey to PEM format.
+  ///
+  /// This method serializes the key using postcard format and then encodes it
+  /// as a PEM block with the label "ZOE PUBLIC KEY". This provides a standardized
+  /// text format that's compatible with many cryptographic tools and libraries.
+  ///
+  /// # Returns
+  ///
+  /// A `Result<String, VerifyingKeyError>` containing the PEM-encoded key or an error.
+  ///
+  /// # Examples
+  ///
+  /// ```rust
+  /// use zoe_wire_protocol::{KeyPair, VerifyingKey};
+  /// use rand::rngs::OsRng;
+  ///
+  /// let keypair = KeyPair::generate_ed25519(&mut OsRng);
+  /// let verifying_key = keypair.public_key();
+  /// let pem_string = verifying_key.to_pem().unwrap();
+  /// println!("Public key PEM:\n{}", pem_string);
+  /// ```
+  /// flutter_rust_bridge:opaque
+  Future<String> toPem();
 
   /// Verify a signature against a message using the appropriate algorithm.
   ///
@@ -183,6 +240,9 @@ abstract class VerifyingKey implements RustOpaqueInterface {
     required Signature signature,
   });
 }
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<VerifyingKeyError>>
+abstract class VerifyingKeyError implements RustOpaqueInterface {}
 
 /// Cryptographic algorithm identifier
 enum Algorithm {

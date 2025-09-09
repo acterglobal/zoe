@@ -1,92 +1,102 @@
 # zoe_native
 
-A new Flutter FFI plugin project.
+A Flutter plugin built with flutter_rust_bridge that provides native Rust functionality for the Zoe application.
 
-## Getting Started
+## Overview
 
-This project is a starting point for a Flutter
-[FFI plugin](https://flutter.dev/to/ffi-package),
-a specialized package that includes native code directly invoked with Dart FFI.
+This project uses [flutter_rust_bridge](https://cjycode.com/flutter_rust_bridge/) to seamlessly integrate Rust code with Flutter, providing high-performance native functionality while maintaining type safety and ease of use.
 
-## Project structure
+## Project Structure
 
-This template uses the following structure:
+* `rust/`: Contains the Rust source code
+  * `rust/src/api/`: API definitions exposed to Flutter
+  * `rust/src/lib.rs`: Main Rust library entry point
+  * `rust/Cargo.toml`: Rust lib dependencies and configuration
+* `lib/`: Contains the Dart code that interfaces with the Rust code
+  * `lib/src/rust/`: Auto-generated Dart bindings (do not edit manually)
+  * `lib/providers.dart` / `lib/src/providers`: the dart riverpod providers for the API 
+* `flutter_rust_bridge.yaml`: Configuration for code generation
+* `Cargo.toml`: Rust workspace dependencies and configuration
+* Platform folders (`android/`, `ios/`, `linux/`, `macos/`, `windows/`): Platform-specific build configurations
 
-* `src`: Contains the native source code, and a CmakeFile.txt file for building
-  that source code into a dynamic library.
+## Dependencies
 
-* `lib`: Contains the Dart code that defines the API of the plugin, and which
-  calls into the native code using `dart:ffi`.
+This plugin integrates with:
+- `zoe-client`: Client library from the zoe-relay project
+- `zoe-wire-protocol`: Wire protocol definitions from the zoe-relay project
 
-* platform folders (`android`, `ios`, `windows`, etc.): Contains the build files
-  for building and bundling the native code library with the platform application.
+## Development Workflow
 
-## Building and bundling native code
+### Updating Rust Dependencies
 
-The `pubspec.yaml` specifies FFI plugins as follows:
+To update Rust dependencies, run:
 
-```yaml
-  plugin:
-    platforms:
-      some_platform:
-        ffiPlugin: true
+```bash
+cargo update
 ```
 
-This configuration invokes the native build for the various target platforms
-and bundles the binaries in Flutter applications using these FFI plugins.
+### Generating Bindings
 
-This can be combined with dartPluginClass, such as when FFI is used for the
-implementation of one platform in a federated plugin:
+After making changes to the Rust API, regenerate the Flutter bindings:
 
-```yaml
-  plugin:
-    implements: some_other_plugin
-    platforms:
-      some_platform:
-        dartPluginClass: SomeClass
-        ffiPlugin: true
+```bash
+flutter_rust_bridge_codegen generate
 ```
 
-A plugin can have both FFI and method channels:
+### Building the Plugin
+
+The plugin uses FFI and will automatically build the native code when you build your Flutter app. The `pubspec.yaml` is configured with:
 
 ```yaml
-  plugin:
-    platforms:
-      some_platform:
-        pluginClass: SomeName
-        ffiPlugin: true
+plugin:
+  platforms:
+    android:
+      ffiPlugin: true
+    ios:
+      ffiPlugin: true
+    linux:
+      ffiPlugin: true
+    macos:
+      ffiPlugin: true
+    windows:
+      ffiPlugin: true
 ```
 
-The native build systems that are invoked by FFI (and method channel) plugins are:
+### Development Tips
 
-* For Android: Gradle, which invokes the Android NDK for native builds.
-  * See the documentation in android/build.gradle.
-* For iOS and MacOS: Xcode, via CocoaPods.
-  * See the documentation in ios/zoe_native.podspec.
-  * See the documentation in macos/zoe_native.podspec.
-* For Linux and Windows: CMake.
-  * See the documentation in linux/CMakeLists.txt.
-  * See the documentation in windows/CMakeLists.txt.
+1. **Making API Changes**: 
+   - Modify Rust code in `rust/src/api/`
+   - Run `flutter_rust_bridge_codegen generate` to update Dart bindings
+   - The generated code will be in `lib/src/rust/`
 
-## Binding to native code
+2. **Testing Changes**:
+   - Use `cargo test` in the `rust/` directory for Rust unit tests
+   - Use `flutter test` for Dart/Flutter tests
 
-To use the native code, bindings in Dart are needed.
-To avoid writing these by hand, they are generated from the header file
-(`src/zoe_native.h`) by `package:ffigen`.
-Regenerate the bindings by running `dart run ffigen --config ffigen.yaml`.
+3. **Debugging**:
+   - Rust panics will be caught and converted to Dart exceptions
+   - Use standard Rust debugging tools for the native code
+   - Use Flutter debugging tools for the Dart side
 
-## Invoking native code
+## Configuration
 
-Very short-running native functions can be directly invoked from any isolate.
-For example, see `sum` in `lib/zoe_native.dart`.
+The `flutter_rust_bridge.yaml` file configures:
+- `rust_input`: Which Rust modules to expose
+- `dart_output`: Where to generate Dart bindings
+- `rust_preamble`: Common imports for generated code
 
-Longer-running functions should be invoked on a helper isolate to avoid
-dropping frames in Flutter applications.
-For example, see `sumAsync` in `lib/zoe_native.dart`.
+## Platform Support
 
-## Flutter help
+This plugin supports all major platforms:
+- Android (via NDK)
+- iOS (via Xcode/CocoaPods)
+- Linux (via CMake)
+- macOS (via Xcode/CocoaPods)  
+- Windows (via CMake)
 
-For help getting started with Flutter, view our
-[online documentation](https://docs.flutter.dev), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## More Information
+
+For more details about flutter_rust_bridge, visit:
+- [Official Documentation](https://cjycode.com/flutter_rust_bridge/)
+- [GitHub Repository](https://github.com/fzyzcjy/flutter_rust_bridge)
 
