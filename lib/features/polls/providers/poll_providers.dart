@@ -59,14 +59,13 @@ final pollVotedMembersProvider = Provider.family<List<UserModel>, String>((ref, 
 });
 
 final activePollsWithPendingResponseProvider = StateProvider<List<PollModel>>((ref) {
-  final pollList = ref.watch(pollListProvider);
+  final activePollList = ref.watch(activePollListProvider);
   final currentUserAsync = ref.watch(currentUserProvider);
   
   if (currentUserAsync.value == null) return [];
   final currentUserId = currentUserAsync.value!.id;
   
-  return pollList.where((poll) {
-    if (!PollUtils.isActive(poll)) return false;
+  return activePollList.where((poll) {
     
     // Check if user hasn't voted in any option
     final hasVoted = poll.options.any(
