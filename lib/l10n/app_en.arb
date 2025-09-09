@@ -469,6 +469,12 @@
     "@successfullyConnected": {},
     "whatsappGroupConnectedMessage": "Your sheet has been successfully connected to the WhatsApp group. You can now share content directly from your sheet.",
     "@whatsappGroupConnectedMessage": {},
+    "cannotFindLink": "Can't find the group link?",
+    "@cannotFindLink": {},
+    "cannotFindLinkDescription": "Enable 'Invite via link or QR code' from group permission settings. Click here for more information.",
+    "@cannotFindLinkDescription": {},
+    "activePolls": "Active Polls",
+    "@activePolls": {},
     "addedBy": "Added by :",
     "@createdBy": {}
 }

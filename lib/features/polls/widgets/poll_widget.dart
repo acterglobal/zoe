@@ -77,7 +77,10 @@ class PollWidget extends ConsumerWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        if (CommonUtils.findAncestorWidgetOfExactType<PollDetailsScreen>(context) == null) {
+        if (CommonUtils.findAncestorWidgetOfExactType<PollDetailsScreen>(
+              context,
+            ) ==
+            null) {
           context.push(
             AppRoutes.pollDetails.route.replaceAll(':pollId', pollId),
           );
@@ -106,7 +109,10 @@ class PollWidget extends ConsumerWidget {
                     .updatePollQuestion(pollId, value);
               },
               onTapText: () {
-                if (CommonUtils.findAncestorWidgetOfExactType<PollDetailsScreen>(context) == null) {
+                if (CommonUtils.findAncestorWidgetOfExactType<
+                      PollDetailsScreen
+                    >(context) ==
+                    null) {
                   context.push(
                     AppRoutes.pollDetails.route.replaceAll(':pollId', pollId),
                   );
@@ -163,9 +169,15 @@ class PollWidget extends ConsumerWidget {
             if (PollUtils.isActive(poll)) {
               final currentUserId = ref.read(loggedInUserProvider).value;
               if (currentUserId != null) {
+                // Get current state before voting
+                final currentStateOfActivePollsWithPendingResponse = ref.read(activePollsWithPendingResponseProvider);
+                
                 ref
                     .read(pollListProvider.notifier)
                     .voteOnPoll(pollId, option.id, currentUserId);
+                    
+                // added cause need to remain the state same for home screen poll list to show current user voted poll
+                ref.read(activePollsWithPendingResponseProvider.notifier).state = currentStateOfActivePollsWithPendingResponse;
               }
             }
             if (PollUtils.isDraft(poll)) {
@@ -324,8 +336,9 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
   ) {
-    if (PollUtils.isActive(poll) || (PollUtils.isDraft(poll) && isEditing))
+    if (PollUtils.isActive(poll) || (PollUtils.isDraft(poll) && isEditing)) {
       return const SizedBox.shrink();
+    }
     final theme = Theme.of(context);
     return GlassyContainer(
       padding: const EdgeInsets.all(8),

@@ -58,5 +58,21 @@ final pollVotedMembersProvider = Provider.family<List<UserModel>, String>((ref, 
   }).toList();
 });
 
-
+final activePollsWithPendingResponseProvider = StateProvider<List<PollModel>>((ref) {
+  final activePollList = ref.watch(activePollListProvider);
+  final currentUserAsync = ref.watch(currentUserProvider);
+  
+  if (currentUserAsync.value == null) return [];
+  final currentUserId = currentUserAsync.value!.id;
+  
+  return activePollList.where((poll) {
+    
+    // Check if user hasn't voted in any option
+    final hasVoted = poll.options.any(
+      (option) => option.votes.any((vote) => vote.userId == currentUserId)
+    );
+  
+    return !hasVoted;
+  }).toList();
+});
 
