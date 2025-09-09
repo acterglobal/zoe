@@ -370,5 +370,14 @@
     "successfullyConnected": "સફળતાપૂર્વક કનેક્ટ થયું!",
     "@successfullyConnected": {},
     "whatsappGroupConnectedMessage": "તમારી શીટ સફળતાપૂર્વક WhatsApp ગ્રુપ સાથે કનેક્ટ થઈ ગઈ છે. હવે તમે તમારી શીટમાંથી સીધી સામગ્રી શેર કરી શકો છો.",
-    "@whatsappGroupConnectedMessage": {}
+    "@whatsappGroupConnectedMessage": {},   
+    "cannotFindLink": "ગ્રુપ લિંક શોધી શકાતી નથી?",
+    "@cannotFindLink": {},
+    "cannotFindLinkDescription": "ગ્રુપ પરમાણુઓ સેટિંગ્સમાં 'લિંક અથવા QR કોડ દ્વારા આમંત્રણ સક્રિય કરો' સક્રિય કરો. વધુ જાણવા માટે અહીં ક્લિક કરો.",
+    "@cannotFindLinkDescription": {},
+    "activePolls": "સક્રિય પોલ્સ",
+    "@activePolls": {},
+    "addedBy": "ઉમેરવામાં આવ્યું છે :",
+    "@createdBy": {}
+
 }

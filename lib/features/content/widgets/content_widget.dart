@@ -159,10 +159,12 @@ class ContentWidget extends ConsumerWidget {
         taskId: contentId,
         isEditing: isEditing,
         showSheetName: showSheetName,
+        showUserName: true,
       ),
       ContentType.bullet => BulletItemWidget(
         bulletId: contentId,
         isEditing: isEditing,
+        showUserName: true,
       ),
       ContentType.link => LinkWidget(
         linkId: contentId,
@@ -215,7 +217,11 @@ class ContentWidget extends ConsumerWidget {
       );
     }
 
-    return Container(margin: EdgeInsets.only(bottom: 10), key: key, child: contentWidget);
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      key: key,
+      child: contentWidget,
+    );
   }
 
   void _handleReorder(

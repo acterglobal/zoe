@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_view_with_avatar.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
@@ -13,11 +14,13 @@ import 'package:zoe/l10n/generated/l10n.dart';
 class BulletItemWidget extends ConsumerWidget {
   final String bulletId;
   final bool isEditing;
+  final bool showUserName;
 
   const BulletItemWidget({
     super.key,
     required this.bulletId,
     required this.isEditing,
+    this.showUserName = false,
   });
 
   @override
@@ -40,21 +43,33 @@ class BulletItemWidget extends ConsumerWidget {
     BulletModel bulletItem,
     bool autoFocus,
   ) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildBulletItemIcon(context),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildBulletItemTitle(context, ref, bulletItem, autoFocus),
-              _buildCreatedByAvatarWidget(context, ref, bulletItem),
-            ],
-          ),
+        Row(
+          children: [
+            _buildBulletItemIcon(context),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildBulletItemTitle(context, ref, bulletItem, autoFocus),
+                  !showUserName
+                      ? _buildCreatedByAvatarWidget(context, ref, bulletItem)
+                      : const SizedBox.shrink(),
+                ],
+              ),
+            ),
+
+            const SizedBox(width: 6),
+            if (isEditing) _buildBulletItemActions(context, ref),
+          ],
         ),
-        const SizedBox(width: 6),
-        if (isEditing) _buildBulletItemActions(context, ref),
+        if (showUserName) ...[
+          const SizedBox(height: 6),
+          _buildUserViewWithAvatarWidget(context, ref, bulletItem),
+        ],
       ],
     );
   }
@@ -148,5 +163,17 @@ class BulletItemWidget extends ConsumerWidget {
       padding: const EdgeInsets.only(left: 8),
       child: ZoeUserAvatarWidget(user: user),
     );
+  }
+
+  // Builds the created by user avatar chip
+  Widget _buildUserViewWithAvatarWidget(
+    BuildContext context,
+    WidgetRef ref,
+    BulletModel bulletItem,
+  ) {
+    final user = ref.watch(getUserByIdProvider(bulletItem.createdBy));
+    if (user == null) return const SizedBox.shrink();
+
+    return Padding(padding: const EdgeInsets.only(left: 16), child: ZoeUserViewWithAvatar(user: user),);
   }
 }

@@ -5,6 +5,7 @@ import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_view_with_avatar.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/task/models/task_model.dart';
@@ -19,12 +20,14 @@ class TaskWidget extends ConsumerWidget {
   final String taskId;
   final bool isEditing;
   final bool showSheetName;
+  final bool showUserName;
 
   const TaskWidget({
     super.key,
     required this.taskId,
     required this.isEditing,
     this.showSheetName = true,
+    this.showUserName = false,
   });
 
   @override
@@ -53,37 +56,47 @@ class TaskWidget extends ConsumerWidget {
       highlightColor: color,
       hoverColor: color,
       focusColor: color,
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TaskCheckboxWidget(task: task),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TaskCheckboxWidget(task: task),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildTaskItemTitle(context, ref, task, shouldFocus),
-                    if (task.assignedUsers.isNotEmpty)
-                      _buildAssignedUsersStackWidget(context, ref, task),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (showSheetName) ...[
-                      DisplaySheetNameWidget(sheetId: task.sheetId),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildTaskItemTitle(context, ref, task, shouldFocus),
+                        if (task.assignedUsers.isNotEmpty && !showUserName)
+                          _buildAssignedUsersStackWidget(context, ref, task),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (showSheetName) ...[
+                          DisplaySheetNameWidget(sheetId: task.sheetId),
+                        ],
+                        _buildTaskItemDueDate(context, ref, task),
+                      ],
+                    ),
+                    if (showUserName) ...[
+                      const SizedBox(height: 4),
+                      _buildTaskAssigneesViewWithAvatarWidget(context, ref, task),
                     ],
-                    _buildTaskItemDueDate(context, ref, task),
                   ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 6),
+              if (isEditing) _buildTaskItemActions(context, ref),
+            ],
           ),
-          const SizedBox(width: 6),
-          if (isEditing) _buildTaskItemActions(context, ref),
         ],
       ),
     );
@@ -150,11 +163,10 @@ class TaskWidget extends ConsumerWidget {
     WidgetRef ref,
     TaskModel task,
   ) {
-    
     final users = [
       for (final userId in task.assignedUsers)
         if (ref.watch(getUserByIdProvider(userId)) != null)
-          ref.watch(getUserByIdProvider(userId))!
+          ref.watch(getUserByIdProvider(userId))!,
     ];
 
     return Padding(
@@ -187,6 +199,42 @@ class TaskWidget extends ConsumerWidget {
             ref.read(taskListProvider.notifier).deleteTask(taskId);
           },
         ),
+      ],
+    );
+  }
+
+  Widget _buildTaskAssigneesViewWithAvatarWidget(
+    BuildContext context,
+    WidgetRef ref,
+    TaskModel task,
+  ) {
+    final users = [
+      for (final userId in task.assignedUsers)
+        if (ref.watch(getUserByIdProvider(userId)) != null)
+          ref.watch(getUserByIdProvider(userId))!,
+    ];
+
+    if (users.isEmpty) return const SizedBox.shrink();
+    return Row(
+      children: [
+        Expanded(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ...users.take(2).map((user) => ZoeUserViewWithAvatar(user: user)),
+            ],
+          ),
+        ),
+        if (users.length > 2) ...[
+          const SizedBox(width: 8),
+          Text(
+            L10n.of(context).viewAll,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              decoration: TextDecoration.underline,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ],
     );
   }
