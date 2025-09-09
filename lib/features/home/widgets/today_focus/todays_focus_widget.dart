@@ -78,7 +78,6 @@ class TodaysFocusWidget extends ConsumerWidget {
     return EventWidget(
       key: ValueKey(event.id),
       eventsId: event.id,
-      isEditing: false,
       margin: const EdgeInsets.only(top: 3, bottom: 3),
     );
   }
@@ -117,7 +116,6 @@ class TodaysFocusWidget extends ConsumerWidget {
               PollWidget(
                 key: ValueKey(poll.id),
                 pollId: poll.id,
-                isEditing: false,
               ),
             ),
           )

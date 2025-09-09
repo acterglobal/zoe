@@ -34,7 +34,6 @@ class TextListWidget extends ConsumerWidget {
           child: TextWidget(
             key: ValueKey(text.id),
             textId: text.id,
-            isEditing: isEditing,
           ),
         );
       },

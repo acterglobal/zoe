@@ -27,8 +27,8 @@ class SheetDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final editContentId = ref.watch(editContentIdProvider);
-    final isEditing = editContentId == sheetId;
-    
+    final isEditing = editContentId != null || editContentId == sheetId;
+
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -62,16 +62,31 @@ class SheetDetailScreen extends ConsumerWidget {
             ),
           ],
         ),
-        floatingActionButton: CommonUtils.isKeyboardOpen(context) ? null : _buildFloatingActionButton(context, isEditing),
+        floatingActionButton: CommonUtils.isKeyboardOpen(context)
+            ? null
+            : _buildFloatingActionButton(context, ref, isEditing),
       ),
     );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context, bool isEditing) {
-    if (!isEditing) return const SizedBox.shrink();
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    WidgetRef ref,
+    bool isEditing,
+  ) {
+    if (isEditing) {
+      return ZoeFloatingActionButton(
+        icon: Icons.save_rounded,
+        onPressed: () => ref.read(editContentIdProvider.notifier).state = null,
+      );
+    }
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: sheetId, sheetId: sheetId),
+      onPressed: () => showAddContentBottomSheet(
+        context,
+        parentId: sheetId,
+        sheetId: sheetId,
+      ),
     );
   }
 
@@ -84,7 +99,11 @@ class SheetDetailScreen extends ConsumerWidget {
         children: [
           _buildSheetHeader(context, ref, isEditing),
           const SizedBox(height: 16),
-          ContentWidget(parentId: sheetId, sheetId: sheetId, showSheetName: false),
+          ContentWidget(
+            parentId: sheetId,
+            sheetId: sheetId,
+            showSheetName: false,
+          ),
         ],
       ),
     );

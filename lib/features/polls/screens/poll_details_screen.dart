@@ -58,7 +58,8 @@ class PollDetailsScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: ZoeAppBar(actions: [
+        title: ZoeAppBar(
+          actions: [
             EditViewToggleButton(parentId: pollId),
             const SizedBox(width: 10),
             ContentMenuButton(parentId: pollId),
@@ -83,11 +84,9 @@ class PollDetailsScreen extends ConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: CommonUtils.isKeyboardOpen(context) ? null : _buildFloatingActionButton(
-        context,
-        isEditing,
-        poll,
-      ),
+      floatingActionButton: CommonUtils.isKeyboardOpen(context)
+          ? null
+          : _buildFloatingActionButton(context, isEditing, poll),
     );
   }
 
@@ -120,7 +119,7 @@ class PollDetailsScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
-          PollWidget(pollId: pollId, isEditing: isEditing),
+          PollWidget(pollId: pollId),
           const SizedBox(height: 16),
           ContentWidget(parentId: pollId, sheetId: poll.sheetId),
         ],

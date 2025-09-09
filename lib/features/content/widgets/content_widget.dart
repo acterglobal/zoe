@@ -149,13 +149,12 @@ class ContentWidget extends ConsumerWidget {
     final key = ValueKey('${content.type.name}-$contentId');
 
     Widget contentWidget = switch (content.type) {
-      ContentType.text => TextWidget(textId: contentId, isEditing: isEditing),
+      ContentType.text => TextWidget(textId: contentId),
       ContentType.event => EventWidget(
         eventsId: contentId,
-        isEditing: isEditing,
         showSheetName: showSheetName,
       ),
-      ContentType.list => ListWidget(listId: contentId, isEditing: isEditing),
+      ContentType.list => ListWidget(listId: contentId),
       ContentType.task => TaskWidget(
         taskId: contentId,
         isEditing: isEditing,
@@ -167,7 +166,6 @@ class ContentWidget extends ConsumerWidget {
       ),
       ContentType.link => LinkWidget(
         linkId: contentId,
-        isEditing: isEditing,
         showSheetName: showSheetName,
       ),
       ContentType.document => DocumentWidget(
@@ -177,7 +175,6 @@ class ContentWidget extends ConsumerWidget {
       ),
       ContentType.poll => PollWidget(
         pollId: contentId,
-        isEditing: isEditing,
         showSheetName: showSheetName,
       ),
     };

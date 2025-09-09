@@ -5,6 +5,7 @@ import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';
 import 'package:zoe/features/events/utils/event_utils.dart';
@@ -14,14 +15,12 @@ import 'package:zoe/l10n/generated/l10n.dart';
 
 class EventWidget extends ConsumerWidget {
   final String eventsId;
-  final bool isEditing;
   final EdgeInsetsGeometry? margin;
   final bool showSheetName;
 
   const EventWidget({
     super.key,
     required this.eventsId,
-    required this.isEditing,
     this.margin,
     this.showSheetName = true,
   });
@@ -30,14 +29,15 @@ class EventWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final event = ref.watch(eventProvider(eventsId));
     if (event == null) return const SizedBox.shrink();
+    final editContentId = ref.watch(editContentIdProvider);
+    final isEditing = editContentId == eventsId;
 
     return GestureDetector(
       onTap: () => context.push(
         AppRoutes.eventDetail.route.replaceAll(':eventId', eventsId),
       ),
       child: Card(
-        margin:
-            margin ?? const EdgeInsets.symmetric(vertical: 5),
+        margin: margin ?? const EdgeInsets.symmetric(vertical: 5),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: _buildEventContent(context, ref, event, isEditing),
@@ -78,12 +78,12 @@ class EventWidget extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                if (showSheetName)...[
-                  DisplaySheetNameWidget(sheetId: event.sheetId),
+                  if (showSheetName) ...[
+                    DisplaySheetNameWidget(sheetId: event.sheetId),
+                  ],
+                  _buildEventDates(context, ref, event),
                 ],
-                _buildEventDates(context, ref, event),
-              ],),
-              
+              ),
             ],
           ),
         ),

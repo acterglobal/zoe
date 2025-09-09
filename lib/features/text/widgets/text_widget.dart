@@ -7,6 +7,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
@@ -14,9 +15,8 @@ import 'package:zoe/l10n/generated/l10n.dart';
 
 class TextWidget extends ConsumerWidget {
   final String textId;
-  final bool isEditing;
 
-  const TextWidget({super.key, required this.textId, required this.isEditing});
+  const TextWidget({super.key, required this.textId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,6 +36,9 @@ class TextWidget extends ConsumerWidget {
     WidgetRef ref,
     TextModel textContent,
   ) {
+    final editContentId = ref.watch(editContentIdProvider);
+    final isEditing = editContentId == textId;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -43,9 +46,9 @@ class TextWidget extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildTextContentEmoji(context, ref, textContent.emoji),
+            _buildTextContentEmoji(context, ref, textContent.emoji, isEditing),
             Expanded(
-              child: _buildTextContentTitle(context, ref, textContent.title),
+              child: _buildTextContentTitle(context, ref, textContent.title, isEditing),
             ),
             const SizedBox(width: 6),
             if (isEditing)
@@ -73,6 +76,7 @@ class TextWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     String? emoji,
+    bool isEditing,
   ) {
     return EmojiWidget(
       isEditing: isEditing,
@@ -92,6 +96,7 @@ class TextWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     String title,
+    bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).textContentTitle,
