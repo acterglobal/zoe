@@ -13,7 +13,9 @@ import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/utils/task_utils.dart';
 import 'package:zoe/features/task/widgets/task_checkbox_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_stacked_avatars_widget.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/features/users/widgets/user_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class TaskWidget extends ConsumerWidget {
@@ -46,59 +48,48 @@ class TaskWidget extends ConsumerWidget {
     TaskModel task,
     bool shouldFocus,
   ) {
-    final color = Theme.of(context).colorScheme.surface;
-    return InkWell(
-      onTap: () => context.push(
-        AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
-      ),
-      borderRadius: BorderRadius.circular(8),
-      splashColor: color,
-      highlightColor: color,
-      hoverColor: color,
-      focusColor: color,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TaskCheckboxWidget(task: task),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildTaskItemTitle(context, ref, task, shouldFocus),
-                        if (task.assignedUsers.isNotEmpty && !showUserName)
-                          _buildAssignedUsersStackWidget(context, ref, task),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        if (showSheetName) ...[
-                          DisplaySheetNameWidget(sheetId: task.sheetId),
-                        ],
-                        _buildTaskItemDueDate(context, ref, task),
-                      ],
-                    ),
-                    if (showUserName) ...[
-                      const SizedBox(height: 4),
-                      _buildTaskAssigneesViewWithAvatarWidget(context, ref, task),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TaskCheckboxWidget(task: task),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildTaskItemTitle(context, ref, task, shouldFocus),
+                      if (task.assignedUsers.isNotEmpty && !showUserName)
+                        _buildAssignedUsersStackWidget(context, ref, task),
                     ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (showSheetName) ...[
+                        DisplaySheetNameWidget(sheetId: task.sheetId),
+                      ],
+                      _buildTaskItemDueDate(context, ref, task),
+                    ],
+                  ),
+                  if (showUserName) ...[
+                    const SizedBox(height: 4),
+                    _buildTaskAssigneesViewWithAvatarWidget(context, ref, task),
                   ],
-                ),
+                ],
               ),
-              const SizedBox(width: 6),
-              if (isEditing) _buildTaskItemActions(context, ref),
-            ],
-          ),
-        ],
-      ),
+            ),
+            const SizedBox(width: 6),
+            if (isEditing) _buildTaskItemActions(context, ref),
+          ],
+        ),
+      ],
     );
   }
 
@@ -169,9 +160,12 @@ class TaskWidget extends ConsumerWidget {
           ref.watch(getUserByIdProvider(userId))!,
     ];
 
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: ZoeStackedAvatarsWidget(users: users),
+    return GestureDetector(
+      onTap: () => _buildTaskAssigneesBottomSheet(context, ref, users),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: ZoeStackedAvatarsWidget(users: users),
+      ),
     );
   }
 
@@ -227,15 +221,32 @@ class TaskWidget extends ConsumerWidget {
         ),
         if (users.length > 2) ...[
           const SizedBox(width: 8),
-          Text(
-            L10n.of(context).viewAll,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              decoration: TextDecoration.underline,
+          GestureDetector(
+            onTap: () => _buildTaskAssigneesBottomSheet(context, ref, users),
+            child: Text(
+              'view +${users.length - 2}',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                decoration: TextDecoration.underline,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
-            overflow: TextOverflow.ellipsis,
           ),
         ],
       ],
+    );
+  }
+
+  void _buildTaskAssigneesBottomSheet(
+    BuildContext context,
+    WidgetRef ref,
+    List<UserModel> users,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => UserListWidget(
+        userIdList: Provider((ref) => users.map((user) => user.id).toList()),
+        title: L10n.of(context).assignees,
+      ),
     );
   }
 }
