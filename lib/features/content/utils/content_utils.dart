@@ -1,9 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/core/preference_service/preferences_service.dart';
+import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';
@@ -113,6 +117,7 @@ void addNewTextContent({
     orderIndex: orderIndex,
   );
   ref.read(textListProvider.notifier).addText(textContentModel);
+  ref.read(editContentIdProvider.notifier).state = textContentModel.id;
 }
 
 void addNewEventContent({
@@ -136,6 +141,7 @@ void addNewEventContent({
     orderIndex: orderIndex,
   );
   ref.read(eventListProvider.notifier).addEvent(eventContentModel);
+  ref.read(editContentIdProvider.notifier).state = eventContentModel.id;
 }
 
 void addNewBulletedListContent({
@@ -162,6 +168,7 @@ void addNewBulletedListContent({
   ref
       .read(bulletListProvider.notifier)
       .addBullet(parentId: bulletedListContentModel.id, sheetId: sheetId);
+  ref.read(editContentIdProvider.notifier).state = bulletedListContentModel.id;
 }
 
 void addNewTaskListContent({
@@ -188,6 +195,7 @@ void addNewTaskListContent({
   ref
       .read(taskListProvider.notifier)
       .addTask(parentId: toDoListContentModel.id, sheetId: sheetId);
+  ref.read(editContentIdProvider.notifier).state = toDoListContentModel.id;
 }
 
 void addNewLinkContent({
@@ -209,6 +217,7 @@ void addNewLinkContent({
     orderIndex: orderIndex,
   );
   ref.read(linkListProvider.notifier).addLink(linkContentModel);
+  ref.read(editContentIdProvider.notifier).state = linkContentModel.id;
 }
 
 void addNewDocumentContent({
@@ -230,25 +239,35 @@ void addNewDocumentContent({
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(documentListContentModel);
+  ref.read(editContentIdProvider.notifier).state = documentListContentModel.id;
 }
 
-void addNewPollContent({
+Future<void> addNewPollContent({
   required WidgetRef ref,
   required String parentId,
   required String sheetId,
   bool addAtTop = false,
-}) {
+}) async {
   final orderIndex = _getNewOrderIndex(
     ref: ref,
     parentId: parentId,
     addAtTop: addAtTop,
   );
-  ref
-      .read(pollListProvider.notifier)
-      .addPoll(
-        parentId: parentId,
-        sheetId: sheetId,
-        orderIndex: orderIndex,
-        question: '',
-      );
+  final createdBy = await PreferencesService().getLoginUserId();
+
+  // Create the new poll
+  final pollContentModel = PollModel(
+    parentId: parentId,
+    question: '',
+    sheetId: sheetId,
+    orderIndex: orderIndex,
+    options: [
+      PollOption(id: CommonUtils.generateRandomId(), title: ''),
+      PollOption(id: CommonUtils.generateRandomId(), title: ''),
+    ],
+    isMultipleChoice: false,
+    createdBy: createdBy,
+  );
+  ref.read(pollListProvider.notifier).addPoll(pollContentModel);
+  ref.read(editContentIdProvider.notifier).state = pollContentModel.id;
 }

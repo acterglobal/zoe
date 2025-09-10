@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/common_utils.dart';
-import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/features/polls/data/polls.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 
@@ -9,37 +8,8 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
 
   PollNotifier(this.ref) : super(polls);
 
-  Future<void> addPoll({
-    required String question,
-    required String parentId,
-    required String sheetId,
-    List<PollOption> options = const [],
-    bool isMultipleChoice = false,
-    DateTime? startDate,
-    DateTime? endDate,
-    int? orderIndex,
-  }) async {
-    final createdBy = await PreferencesService().getLoginUserId();
-
-    // Create the new poll
-    final newPoll = PollModel(
-      parentId: parentId,
-      question: question,
-      sheetId: sheetId,
-      orderIndex: orderIndex,
-      startDate: startDate,
-      endDate: endDate,
-      options: options.isEmpty
-          ? [
-              PollOption(id: CommonUtils.generateRandomId(), title: ''),
-              PollOption(id: CommonUtils.generateRandomId(), title: ''),
-            ]
-          : options,
-      isMultipleChoice: isMultipleChoice,
-      createdBy: createdBy,
-    );
-
-    state = [...state, newPoll];
+  void addPoll(PollModel poll) {
+    state = [...state, poll];
   }
 
   void deletePoll(String pollId) {
@@ -122,7 +92,9 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
   PollModel _updatePollVotes(PollModel poll, String optionId, String userId) {
     // Check if user has already voted on this option
     final hasVotedOnOption = poll.options.any(
-      (option) => option.id == optionId && option.votes.any((vote) => vote.userId == userId),
+      (option) =>
+          option.id == optionId &&
+          option.votes.any((vote) => vote.userId == userId),
     );
 
     if (hasVotedOnOption) {
@@ -131,7 +103,9 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
         options: poll.options.map((option) {
           if (option.id == optionId) {
             return option.copyWith(
-              votes: option.votes.where((voter) => voter.userId != userId).toList(),
+              votes: option.votes
+                  .where((voter) => voter.userId != userId)
+                  .toList(),
             );
           }
           return option;
@@ -144,7 +118,9 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
         final updatedOptions = poll.options.map((option) {
           if (option.votes.any((vote) => vote.userId == userId)) {
             return option.copyWith(
-              votes: option.votes.where((vote) => vote.userId != userId).toList(),
+              votes: option.votes
+                  .where((vote) => vote.userId != userId)
+                  .toList(),
             );
           }
           return option;
@@ -154,7 +130,10 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
         final finalOptions = updatedOptions.map((option) {
           if (option.id == optionId) {
             return option.copyWith(
-              votes: [...option.votes, Vote(userId: userId)],
+              votes: [
+                ...option.votes,
+                Vote(userId: userId),
+              ],
             );
           }
           return option;
@@ -167,7 +146,10 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
           options: poll.options.map((option) {
             if (option.id == optionId) {
               return option.copyWith(
-                votes: [...option.votes, Vote(userId: userId)],
+                votes: [
+                  ...option.votes,
+                  Vote(userId: userId),
+                ],
               );
             }
             return option;
@@ -190,10 +172,7 @@ class PollNotifier extends StateNotifier<List<PollModel>> {
   void endPoll(String pollId) {
     state = [
       for (final poll in state)
-        if (poll.id == pollId)
-          poll.copyWith(endDate: DateTime.now())
-        else
-          poll,
+        if (poll.id == pollId) poll.copyWith(endDate: DateTime.now()) else poll,
     ];
   }
 

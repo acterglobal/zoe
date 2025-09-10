@@ -131,6 +131,7 @@ class PollWidget extends ConsumerWidget {
             GestureDetector(
               onTap: () {
                 ref.read(pollListProvider.notifier).deletePoll(pollId);
+                ref.read(editContentIdProvider.notifier).state = null;
               },
               child: Icon(
                 Icons.delete,

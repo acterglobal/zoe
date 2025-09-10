@@ -8,11 +8,13 @@ import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 class ZoeSheetFloatingActionButton extends ConsumerWidget {
   final String parentId;
   final String sheetId;
+  final bool isSheetDetailScreen;
 
   const ZoeSheetFloatingActionButton({
     super.key,
     required this.parentId,
     required this.sheetId,
+    this.isSheetDetailScreen = false,
   });
 
   @override
@@ -20,7 +22,9 @@ class ZoeSheetFloatingActionButton extends ConsumerWidget {
     if (CommonUtils.isKeyboardOpen(context)) return const SizedBox.shrink();
 
     final editContentId = ref.watch(editContentIdProvider);
-    final isEditing = editContentId != null || editContentId == parentId;
+    final isEditing = isSheetDetailScreen
+        ? editContentId != null
+        : editContentId == parentId;
 
     return ZoeFloatingActionButton(
       icon: isEditing ? Icons.save_rounded : Icons.add_rounded,

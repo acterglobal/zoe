@@ -145,8 +145,10 @@ class EventWidget extends ConsumerWidget {
         ),
         const SizedBox(width: 6),
         ZoeCloseButtonWidget(
-          onTap: () =>
-              ref.read(eventListProvider.notifier).deleteEvent(event.id),
+          onTap: () {
+            ref.read(eventListProvider.notifier).deleteEvent(event.id);
+            ref.read(editContentIdProvider.notifier).state = null;
+          },
         ),
       ],
     );

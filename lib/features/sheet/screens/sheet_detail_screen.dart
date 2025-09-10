@@ -24,7 +24,7 @@ class SheetDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final editContentId = ref.watch(editContentIdProvider);
-    final isEditing = editContentId != null || editContentId == sheetId;
+    final isEditing = editContentId == sheetId;
 
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
@@ -57,6 +57,7 @@ class SheetDetailScreen extends ConsumerWidget {
         floatingActionButton: ZoeSheetFloatingActionButton(
           parentId: sheetId,
           sheetId: sheetId,
+          isSheetDetailScreen: true,
         ),
       ),
     );

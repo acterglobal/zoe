@@ -62,8 +62,10 @@ class TextWidget extends ConsumerWidget {
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
-                onTap: () =>
-                    ref.read(textListProvider.notifier).deleteText(textId),
+                onTap: () {
+                  ref.read(textListProvider.notifier).deleteText(textId);
+                  ref.read(editContentIdProvider.notifier).state = null;
+                },
               ),
           ],
         ),

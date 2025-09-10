@@ -70,9 +70,10 @@ class LinkWidget extends ConsumerWidget {
                   const SizedBox(width: 6),
                   if (isEditing)
                     ZoeDeleteButtonWidget(
-                      onTap: () => ref
-                          .read(linkListProvider.notifier)
-                          .deleteLink(linkId),
+                      onTap: () {
+                        ref.read(linkListProvider.notifier).deleteLink(linkId);
+                        ref.read(editContentIdProvider.notifier).state = null;
+                      },
                     ),
                 ],
               ),
