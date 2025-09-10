@@ -1,7 +1,7 @@
 import 'package:zoe/features/users/models/user_model.dart';
 
 final userList = [
-  UserModel(id: 'user_1', name: 'John Doe', bio: 'I am a software engineer'),
+  UserModel(id: 'user_1', name: 'John Doe', bio: 'I am a software engineer', avatar: 'http://fifthsun.com/cdn/shop/files/19NNTD00461A-033-Link-Avatar-Color-148-147-swatch_800x.jpg?v=1713863654'),
   UserModel(id: 'user_2', name: 'Jane Smith'),
   UserModel(id: 'user_3', name: 'Michael Johnson'),
   UserModel(id: 'user_4', name: 'Sarah Williams'),

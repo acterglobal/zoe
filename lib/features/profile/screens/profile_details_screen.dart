@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
@@ -112,14 +111,12 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
     return MaxWidthWidget(
       isScrollable: true,
       padding: const EdgeInsets.all(20),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildAvatarUI(context, user),
-            const SizedBox(height: 32),
-            _buildPersonalInformationWidget(context),
-          ],
-        ),
+      child: Column(
+        children: [
+          _buildAvatarUI(context, user),
+          const SizedBox(height: 32),
+          _buildPersonalInformationWidget(context),
+        ],
       ),
     );
   }
@@ -129,12 +126,12 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        if (selectedImagePath != null)
-          _buildAvatarContainer(context, selectedImagePath!)
-        else if (user.avatar != null)
-          _buildAvatarContainer(context, user.avatar!)
-        else
-          ZoeUserAvatarWidget(user: user, size: 100, fontSize: 30),
+        ZoeUserAvatarWidget(
+          user: user,
+          size: 100,
+          fontSize: 30,
+          selectedImagePath: selectedImagePath,
+        ),
 
         if (isEditing)
           Positioned(
@@ -151,20 +148,6 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
             ),
           ),
       ],
-    );
-  }
-
-  Widget _buildAvatarContainer(BuildContext context, String avatar) {
-    return Container(
-      width: 100,
-      height: 100,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        image: DecorationImage(
-          image: FileImage(File(avatar)),
-          fit: BoxFit.cover,
-        ),
-      ),
     );
   }
 
