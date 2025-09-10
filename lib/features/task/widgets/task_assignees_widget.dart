@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_chip_widget.dart';
-import 'package:zoe/features/task/actions/add_assignee_action.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/features/task/widgets/task_assignee_header_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -22,32 +22,9 @@ class TaskAssigneesWidget extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildAssigneeHeader(context, ref),
+        TaskAssigneeHeaderWidget(isEditing: isEditing, task: task),
         const SizedBox(height: 12),
         _buildAssigneesList(context, ref),
-      ],
-    );
-  }
-
-  Widget _buildAssigneeHeader(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    return Row(
-      children: [
-        Icon(Icons.people_rounded, size: 20),
-        const SizedBox(width: 8),
-        Text(
-          L10n.of(context).assignees,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-        const Spacer(),
-        if (isEditing)
-          IconButton(
-            onPressed: () => assignTask(context, ref, task),
-            icon: Icon(Icons.add_circle_outline_rounded, size: 24),
-          ),
       ],
     );
   }

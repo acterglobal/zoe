@@ -14,12 +14,12 @@ class ZoeUserAvatarWidget extends StatelessWidget {
       width: 24,
       height: 24,
       decoration: BoxDecoration(
-        color: randomColor.withValues(alpha: 0.2),
+        color: randomColor.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
         child: Text(
-          user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
+          user.name.isNotEmpty ? user.name[0].toUpperCase() : '',
           style: TextStyle(
             color: randomColor,
             fontSize: 10,

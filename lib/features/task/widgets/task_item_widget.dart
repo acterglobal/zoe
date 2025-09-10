@@ -11,6 +11,7 @@ import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/utils/task_utils.dart';
+import 'package:zoe/features/task/widgets/task_assignee_header_widget.dart';
 import 'package:zoe/features/task/widgets/task_checkbox_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_stacked_avatars_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
@@ -79,8 +80,16 @@ class TaskWidget extends ConsumerWidget {
                     ],
                   ),
                   if (showUserName) ...[
+                    const SizedBox(height: 10),
+                    TaskAssigneeHeaderWidget(
+                      isEditing: false,
+                      task: task,
+                      iconSize: 12,
+                      textSize: 11,
+                    ),
                     const SizedBox(height: 4),
-                    _buildTaskAssigneesViewWithAvatarWidget(context, ref, task),
+                    _buildDisplayTaskAssigneesListWidget(context, ref, task),
+                    if (isEditing) const SizedBox(height: 10),
                   ],
                 ],
               ),
@@ -197,11 +206,12 @@ class TaskWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildTaskAssigneesViewWithAvatarWidget(
+  Widget _buildDisplayTaskAssigneesListWidget(
     BuildContext context,
     WidgetRef ref,
     TaskModel task,
   ) {
+    final theme = Theme.of(context);
     final users = [
       for (final userId in task.assignedUsers)
         if (ref.watch(getUserByIdProvider(userId)) != null)
@@ -209,29 +219,23 @@ class TaskWidget extends ConsumerWidget {
     ];
 
     if (users.isEmpty) return const SizedBox.shrink();
-    return Row(
+    return Wrap(
+      spacing: 1,
+      runSpacing: 4,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Expanded(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ...users.take(2).map((user) => ZoeUserNameViewWithAvatar(user: user)),
-            ],
-          ),
-        ),
-        if (users.length > 2) ...[
-          const SizedBox(width: 8),
+        ...users.take(2).map((user) => ZoeDisplayUserNameViewWidget(user: user)),
+        if (users.length > 2)
           GestureDetector(
             onTap: () => _buildTaskAssigneesBottomSheet(context, ref, users),
             child: Text(
               'view +${users.length - 2}',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                 decoration: TextDecoration.underline,
               ),
-              overflow: TextOverflow.ellipsis,
             ),
           ),
-        ],
       ],
     );
   }

@@ -218,7 +218,7 @@ class ContentWidget extends ConsumerWidget {
     }
 
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: 20),
       key: key,
       child: contentWidget,
     );

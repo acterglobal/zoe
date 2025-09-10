@@ -8,6 +8,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_user_view_with_avatar.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
+import 'package:zoe/features/bullets/widgets/bullet_created_by_header_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -68,7 +69,7 @@ class BulletItemWidget extends ConsumerWidget {
         ),
         if (showUserName) ...[
           const SizedBox(height: 6),
-          _buildUserViewWithAvatarWidget(context, ref, bulletItem),
+          _buildDisplayCreatedByUserViewWidget(context, ref, bulletItem),
         ],
       ],
     );
@@ -166,7 +167,7 @@ class BulletItemWidget extends ConsumerWidget {
   }
 
   // Builds the created by user avatar chip
-  Widget _buildUserViewWithAvatarWidget(
+  Widget _buildDisplayCreatedByUserViewWidget(
     BuildContext context,
     WidgetRef ref,
     BulletModel bulletItem,
@@ -174,6 +175,13 @@ class BulletItemWidget extends ConsumerWidget {
     final user = ref.watch(getUserByIdProvider(bulletItem.createdBy));
     if (user == null) return const SizedBox.shrink();
 
-    return Padding(padding: const EdgeInsets.only(left: 16), child: ZoeUserNameViewWithAvatar(user: user),);
+    return Padding(
+      padding: const EdgeInsets.only(left: 16),
+      child: Row(children: [
+        BulletCreatedByHeaderWidget(iconSize: 16, textSize: 12),
+        const SizedBox(width: 8),
+        ZoeDisplayUserNameViewWidget(user: user)
+      ]),
+    );
   }
 }
