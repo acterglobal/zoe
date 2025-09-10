@@ -5,7 +5,7 @@ import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_user_view_with_avatar.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_display_user_name_view_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';

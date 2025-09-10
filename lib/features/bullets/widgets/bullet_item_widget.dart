@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_user_view_with_avatar.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_display_user_name_view_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
@@ -168,7 +168,7 @@ class BulletItemWidget extends ConsumerWidget {
     );
   }
 
-  // Builds the created by user avatar chip
+  // Builds the created by user view
   Widget _buildDisplayCreatedByUserViewWidget(
     BuildContext context,
     WidgetRef ref,
