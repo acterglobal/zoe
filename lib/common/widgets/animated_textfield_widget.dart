@@ -10,6 +10,7 @@ class AnimatedTextField extends StatefulWidget {
   final bool readOnly;
   final bool autofocus;
   final TextInputType keyboardType;
+  final int? maxLines;
 
   const AnimatedTextField({
     super.key,
@@ -22,6 +23,7 @@ class AnimatedTextField extends StatefulWidget {
     this.readOnly = false,
     this.autofocus = true,
     this.keyboardType = TextInputType.text,
+    this.maxLines = 1,
   });
 
   @override
@@ -59,6 +61,7 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return AnimatedBuilder(
       animation: _shakeAnimation,
       builder: (context, child) {
@@ -74,16 +77,14 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.outline.withValues(alpha: 0.4),
+                  color: colorScheme.outline.withValues(alpha: 0.4),
                   width: 1,
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.outline.withValues(
+                  color: colorScheme.outline.withValues(
                     alpha: widget.enabled ? 0.3 : 0.15,
                   ),
                   width: 1,
@@ -92,39 +93,37 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.outline.withValues(alpha: 0.15),
+                  color: colorScheme.outline.withValues(alpha: 0.15),
                   width: 1,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: colorScheme.primary,
                   width: 1.5,
                 ),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.error,
+                  color: colorScheme.error,
                   width: 1,
                 ),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.error,
+                  color: colorScheme.error,
                   width: 1,
                 ),
               ),
               filled: true,
-              fillColor: Theme.of(context).colorScheme.surfaceContainerHighest
+              fillColor: colorScheme.surfaceContainerHighest
                   .withValues(alpha: widget.enabled ? 0.1 : 0.05),
-              contentPadding: const EdgeInsets.symmetric(
+              contentPadding: EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: 16,
+                vertical: widget.maxLines != null && widget.maxLines! > 1 ? 12 : 16,
               ),
               errorText: widget.errorText,
             ),
@@ -132,6 +131,7 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
             autofocus: widget.autofocus,
             enabled: widget.enabled,
             readOnly: widget.readOnly,
+            maxLines: widget.maxLines,
             onChanged: (value) {
               if (widget.errorText != null) {
                 widget.onErrorChanged(null);

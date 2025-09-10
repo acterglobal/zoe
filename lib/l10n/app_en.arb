@@ -494,5 +494,7 @@
     "userBio": "User Bio",
     "@userBio": {},
     "editProfile": "Edit Profile",
-    "@editProfile": {}
+    "@editProfile": {},
+    "personalInformation": "Personal Information",
+    "@personalInformation": {}
 }

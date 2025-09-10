@@ -390,5 +390,7 @@
     "userBio": "उपयोगकर्ता बायो",
     "@userBio": {},
     "editProfile": "प्रोफ़ाइल संपादित करें",
-    "@editProfile": {}
+    "@editProfile": {},
+    "personalInformation": "व्यक्तिगत जानकारी",
+    "@personalInformation": {}
 }
