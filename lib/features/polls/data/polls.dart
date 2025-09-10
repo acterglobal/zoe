@@ -8,21 +8,8 @@ final polls = [
     orderIndex: 1,
     question: 'What feature would you like to explore first?',
     startDate: DateTime.now().subtract(const Duration(days: 1)),
-    endDate: DateTime.now().subtract(
-      const Duration(days: 1),
-    ), // This poll is ended
     options: [
-      PollOption(
-        id: 'option-1-1',
-        title: 'Task management and to-do lists',
-        votes: [
-          Vote(
-            userId: 'user_1',
-            createdAt: DateTime.now().subtract(const Duration(days: 1)),
-            updatedAt: DateTime.now().subtract(const Duration(days: 1)),
-          ),
-        ],
-      ),
+      PollOption(id: 'option-1-1', title: 'Task management and to-do lists'),
       PollOption(
         id: 'option-1-2',
         title: 'Event planning and scheduling',
@@ -35,7 +22,7 @@ final polls = [
       PollOption(id: 'option-1-4', title: 'Link and resource sharing'),
     ],
     isMultipleChoice: false,
-    createdBy: 'user_1',
+    createdBy: 'user_2',
   ),
   PollModel(
     id: 'poll-2',
