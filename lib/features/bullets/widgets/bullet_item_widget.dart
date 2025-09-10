@@ -68,8 +68,10 @@ class BulletItemWidget extends ConsumerWidget {
           ],
         ),
         if (showUserName) ...[
-          const SizedBox(height: 6),
+          const SizedBox(height: 2),
           _buildDisplayCreatedByUserViewWidget(context, ref, bulletItem),
+          const SizedBox(height: 6),
+
         ],
       ],
     );
