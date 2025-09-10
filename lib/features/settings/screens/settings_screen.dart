@@ -77,7 +77,7 @@ class SettingsScreen extends ConsumerWidget {
       title: l10n.profile,
       children: [
         SettingItemWidget(
-          title: userName.split(' ').first,
+          title: userName,
           subtitle: user.value?.bio ?? '',
           icon: Icons.person_rounded,
           iconColor: AppColors.brightMagentaColor,

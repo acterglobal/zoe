@@ -388,5 +388,7 @@
     "userName": "વપરાશકર્તા નામ",
     "@userName": {},
     "userBio": "વપરાશકર્તા બાયો",
-    "@userBio": {}
+    "@userBio": {},
+    "editProfile": "પ્રોફાઇલ સંપાદિત કરો",
+    "@editProfile": {}
 }

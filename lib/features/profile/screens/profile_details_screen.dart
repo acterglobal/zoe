@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/animated_textfield_widget.dart';
-import 'package:zoe/common/widgets/edit_view_toggle_button.dart'
-    show EditViewToggleButton;
-
+import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart'
     show isEditValueProvider;
 import 'package:zoe/common/widgets/max_width_widget.dart';
@@ -15,6 +13,7 @@ import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/common/actions/select_files_actions.dart';
+import 'package:zoe/features/profile/actions/edit_profile_action.dart';
 import 'package:zoe/features/profile/widgets/profile_qr_code_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
@@ -29,7 +28,7 @@ class ProfileDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
-  final TextEditingController _urlController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   String? _errorText;
   String? _bioErrorText;
@@ -42,7 +41,7 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final user = ref.read(currentUserProvider).value;
       if (user != null) {
-        _urlController.text = user.name;
+        _nameController.text = user.name;
         _bioController.text = user.bio ?? '';
       }
     });
@@ -50,7 +49,7 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
 
   @override
   void dispose() {
-    _urlController.dispose();
+    _nameController.dispose();
     _bioController.dispose();
     super.dispose();
   }
@@ -67,7 +66,20 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
         isEditing = ref.watch(isEditValueProvider(user.id));
         return Scaffold(
           appBar: _buildAppbar(context, user),
-          body: _buildBody(context, user),
+          body: SafeArea(
+            child: Column(
+              children: [
+                Expanded(child: _buildBody(context, user)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  child: _buildNavigationButton(user),
+                ),
+              ],
+            ),
+          ),
         );
       },
       loading: () => const LoadingStateWidget(),
@@ -81,8 +93,6 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
       title: ZoeAppBar(
         title: L10n.of(context).profile,
         actions: [
-          EditViewToggleButton(parentId: user.id),
-          const SizedBox(width: 10),
           GestureDetector(
             onTap: () => showProfileQrCodeBottomSheet(context, user),
             child: StyledIconContainer(
@@ -101,10 +111,11 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
   }
 
   Widget _buildBody(BuildContext context, UserModel user) {
-    return Center(
-      child: MaxWidthWidget(
-        isScrollable: true,
-        padding: const EdgeInsets.all(16),
+    return MaxWidthWidget(
+      isScrollable: true,
+      padding: const EdgeInsets.all(20),
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
             _buildAvatarUI(context, user),
@@ -119,7 +130,7 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
   }
 
   void _validateName() {
-    final name = _urlController.text.trim();
+    final name = _nameController.text.trim();
     if (CommonUtils.isValidName(name)) {
       setState(() {
         _errorText = null;
@@ -141,7 +152,7 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
         ),
         const SizedBox(height: 8),
         AnimatedTextField(
-          controller: _urlController,
+          controller: _nameController,
           errorText: _errorText,
           hintText: L10n.of(context).pleaseEnterAValidName,
           onErrorChanged: (error) => setState(() => _errorText = error),
@@ -182,19 +193,12 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        selectedImagePath != null
-            ? Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: FileImage(File(selectedImagePath!)),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              )
-            : ZoeUserAvatarWidget(user: user, size: 100, fontSize: 30),
+        if (selectedImagePath != null)
+          _buildAvatarContainer(context, selectedImagePath!)
+        else if (user.avatar != null)
+          _buildAvatarContainer(context, user.avatar!)
+        else
+          ZoeUserAvatarWidget(user: user, size: 100, fontSize: 30),
 
         if (isEditing)
           Positioned(
@@ -212,6 +216,13 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
                     setState(() {
                       selectedImagePath = path;
                     });
+                    final updatedUser = user.copyWith(
+                      id: user.id,
+                      name: _nameController.text.trim(),
+                      bio: _bioController.text.trim(),
+                      avatar: path,
+                    );
+                    saveProfileAction(ref, updatedUser);
                   },
                 );
               },
@@ -226,6 +237,42 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
             ),
           ),
       ],
+    );
+  }
+
+  Widget _buildAvatarContainer(BuildContext context, String avatar) {
+    return Container(
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        image: DecorationImage(
+          image: FileImage(File(avatar)),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavigationButton(UserModel user) {
+    return ZoePrimaryButton(
+      icon: isEditing ? Icons.save_rounded : Icons.person_rounded,
+      text: isEditing
+          ? L10n.of(context).saveChanges
+          : L10n.of(context).editProfile,
+      onPressed: () {
+        if (isEditing) {
+          final updatedUser = user.copyWith(
+            id: user.id,
+            name: _nameController.text.trim(),
+            bio: _bioController.text.trim(),
+          );
+          saveProfileAction(ref, updatedUser);
+          editProfileValueAction(ref, updatedUser, isEditing);
+        } else {
+          editProfileValueAction(ref, user, isEditing);
+        }
+      },
     );
   }
 }

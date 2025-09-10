@@ -11,14 +11,14 @@ void showProfileQrCodeBottomSheet(BuildContext context, UserModel user) {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
-    builder: (context) => ProfileQrCodeWidget(userId: user.id),
+    builder: (context) => ProfileQrCodeWidget(user: user),
   );
 }
 
 class ProfileQrCodeWidget extends StatelessWidget {
-  final String userId;
+  final UserModel user;
 
-  const ProfileQrCodeWidget({super.key, required this.userId});
+  const ProfileQrCodeWidget({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class ProfileQrCodeWidget extends StatelessWidget {
           height: size,
           borderRadius: borderRadius,
           child: PrettyQrView.data(
-            data: userId,
+            data: user.name,
             decoration: PrettyQrDecoration(
               shape: PrettyQrSmoothSymbol(color: theme.colorScheme.onSurface),
               image: const PrettyQrDecorationImage(
