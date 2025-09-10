@@ -5,6 +5,7 @@
 
 import 'api/client.dart';
 import 'api/simple.dart';
+import 'api/system_test.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'third_party/zoe_client/client.dart';
 import 'third_party/zoe_client/client/api/file_storage.dart';
 import 'third_party/zoe_client/frb_api.dart';
+import 'third_party/zoe_client/system_check.dart';
 import 'third_party/zoe_client/util.dart';
 import 'third_party/zoe_wire_protocol/keys.dart';
 import 'third_party/zoe_wire_protocol/primitives.dart';
@@ -74,7 +76,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => 794315862;
+  int get rustContentHash => -1279430215;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -327,6 +329,11 @@ abstract class RustLibApi extends BaseApi {
     required Signature signature,
   });
 
+  Future<RelayAddress> zoeClientFrbApiCreateRelayAddressWithHostname({
+    required String serverKeyHex,
+    required String hostname,
+  });
+
   Future<String> zoeClientFrbApiCreateSigningKeyRandom();
 
   Future<SocketAddr> zoeClientFrbApiCreateSocketAddr({
@@ -344,7 +351,17 @@ abstract class RustLibApi extends BaseApi {
     required Client client,
   });
 
+  Future<bool> zoeClientFrbApiPrepareClientForSystemsTest({
+    required Client client,
+    required String serverAddress,
+    required String serverKeyHex,
+  });
+
   Future<SocketAddr> zoeClientUtilResolveToSocketAddr({required String s});
+
+  Stream<SystemCheckResults> crateApiSystemTestRunSystemTests({
+    required Client client,
+  });
 
   Future<String> zoeClientFrbApiSigningKeyFromHex({required String hex});
 
@@ -357,6 +374,55 @@ abstract class RustLibApi extends BaseApi {
   Future<int> zoeClientFrbApiSocketAddrPort({required SocketAddr addr});
 
   Future<String> zoeClientFrbApiSocketAddrToString({required SocketAddr addr});
+
+  Future<bool> crateApiSystemTestSystemCheckResultsCategoryHasFailures({
+    required SystemCheckResults results,
+    required TestCategory category,
+  });
+
+  Future<int> crateApiSystemTestSystemCheckResultsFailedCount({
+    required SystemCheckResults results,
+  });
+
+  Future<List<TestCategory>> crateApiSystemTestSystemCheckResultsGetCategories({
+    required SystemCheckResults results,
+  });
+
+  Future<List<TestInfo>>
+  crateApiSystemTestSystemCheckResultsGetTestsForCategory({
+    required SystemCheckResults results,
+    required TestCategory category,
+  });
+
+  Future<bool> crateApiSystemTestSystemCheckResultsIsSuccess({
+    required SystemCheckResults results,
+  });
+
+  Future<int> crateApiSystemTestSystemCheckResultsPassedCount({
+    required SystemCheckResults results,
+  });
+
+  Future<int> crateApiSystemTestSystemCheckResultsTotalCount({
+    required SystemCheckResults results,
+  });
+
+  Future<BigInt> crateApiSystemTestSystemCheckResultsTotalDurationMs({
+    required SystemCheckResults results,
+  });
+
+  Future<BigInt> crateApiSystemTestTestInfoDurationMs({required TestInfo test});
+
+  Future<List<String>> crateApiSystemTestTestInfoGetDetails({
+    required TestInfo test,
+  });
+
+  Future<String?> crateApiSystemTestTestInfoGetError({required TestInfo test});
+
+  Future<String> crateApiSystemTestTestInfoGetName({required TestInfo test});
+
+  Future<bool> crateApiSystemTestTestInfoIsFailed({required TestInfo test});
+
+  Future<bool> crateApiSystemTestTestInfoIsPassed({required TestInfo test});
 
   Future<VerifyingKey> zoeClientFrbApiVerifyingKeyFromHex({
     required String hex,
@@ -483,6 +549,23 @@ abstract class RustLibApi extends BaseApi {
   get rust_arc_decrement_strong_count_SocketAddr;
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_SocketAddrPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_SystemCheckResults;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_SystemCheckResults;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_SystemCheckResultsPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_TestInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_TestInfo;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_TestInfoPtr;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_VerifyError;
@@ -2659,6 +2742,42 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<RelayAddress> zoeClientFrbApiCreateRelayAddressWithHostname({
+    required String serverKeyHex,
+    required String hostname,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(serverKeyHex, serializer);
+          sse_encode_String(hostname, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 60,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayAddress,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kZoeClientFrbApiCreateRelayAddressWithHostnameConstMeta,
+        argValues: [serverKeyHex, hostname],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientFrbApiCreateRelayAddressWithHostnameConstMeta =>
+      const TaskConstMeta(
+        debugName: "create_relay_address_with_hostname",
+        argNames: ["serverKeyHex", "hostname"],
+      );
+
+  @override
   Future<String> zoeClientFrbApiCreateSigningKeyRandom() {
     return handler.executeNormal(
       NormalTask(
@@ -2667,7 +2786,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 60,
+            funcId: 61,
             port: port_,
           );
         },
@@ -2699,7 +2818,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 61,
+            funcId: 62,
             port: port_,
           );
         },
@@ -2730,7 +2849,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 62,
+            funcId: 63,
             port: port_,
           );
         },
@@ -2755,7 +2874,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(name, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 63)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 64)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -2780,7 +2899,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 64,
+            funcId: 65,
             port: port_,
           );
         },
@@ -2819,7 +2938,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             pdeCallFfi(
               generalizedFrbRustBinding,
               serializer,
-              funcId: 65,
+              funcId: 66,
               port: port_,
             );
           },
@@ -2843,6 +2962,46 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<bool> zoeClientFrbApiPrepareClientForSystemsTest({
+    required Client client,
+    required String serverAddress,
+    required String serverKeyHex,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            client,
+            serializer,
+          );
+          sse_encode_String(serverAddress, serializer);
+          sse_encode_String(serverKeyHex, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 67,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kZoeClientFrbApiPrepareClientForSystemsTestConstMeta,
+        argValues: [client, serverAddress, serverKeyHex],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientFrbApiPrepareClientForSystemsTestConstMeta =>
+      const TaskConstMeta(
+        debugName: "prepare_client_for_systems_test",
+        argNames: ["client", "serverAddress", "serverKeyHex"],
+      );
+
+  @override
   Future<SocketAddr> zoeClientUtilResolveToSocketAddr({required String s}) {
     return handler.executeNormal(
       NormalTask(
@@ -2852,7 +3011,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 66,
+            funcId: 68,
             port: port_,
           );
         },
@@ -2872,6 +3031,50 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "resolve_to_socket_addr", argNames: ["s"]);
 
   @override
+  Stream<SystemCheckResults> crateApiSystemTestRunSystemTests({
+    required Client client,
+  }) {
+    final sink = RustStreamSink<SystemCheckResults>();
+    unawaited(
+      handler.executeNormal(
+        NormalTask(
+          callFfi: (port_) {
+            final serializer = SseSerializer(generalizedFrbRustBinding);
+            sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+              client,
+              serializer,
+            );
+            sse_encode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults_Sse(
+              sink,
+              serializer,
+            );
+            pdeCallFfi(
+              generalizedFrbRustBinding,
+              serializer,
+              funcId: 69,
+              port: port_,
+            );
+          },
+          codec: SseCodec(
+            decodeSuccessData: sse_decode_unit,
+            decodeErrorData: null,
+          ),
+          constMeta: kCrateApiSystemTestRunSystemTestsConstMeta,
+          argValues: [client, sink],
+          apiImpl: this,
+        ),
+      ),
+    );
+    return sink.stream;
+  }
+
+  TaskConstMeta get kCrateApiSystemTestRunSystemTestsConstMeta =>
+      const TaskConstMeta(
+        debugName: "run_system_tests",
+        argNames: ["client", "sink"],
+      );
+
+  @override
   Future<String> zoeClientFrbApiSigningKeyFromHex({required String hex}) {
     return handler.executeNormal(
       NormalTask(
@@ -2881,7 +3084,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 67,
+            funcId: 70,
             port: port_,
           );
         },
@@ -2911,7 +3114,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 68,
+            funcId: 71,
             port: port_,
           );
         },
@@ -2945,7 +3148,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 69,
+            funcId: 72,
             port: port_,
           );
         },
@@ -2976,7 +3179,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 70,
+            funcId: 73,
             port: port_,
           );
         },
@@ -3007,7 +3210,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 71,
+            funcId: 74,
             port: port_,
           );
         },
@@ -3029,6 +3232,503 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<bool> crateApiSystemTestSystemCheckResultsCategoryHasFailures({
+    required SystemCheckResults results,
+    required TestCategory category,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+            results,
+            serializer,
+          );
+          sse_encode_test_category(category, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 75,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiSystemTestSystemCheckResultsCategoryHasFailuresConstMeta,
+        argValues: [results, category],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiSystemTestSystemCheckResultsCategoryHasFailuresConstMeta =>
+      const TaskConstMeta(
+        debugName: "system_check_results_category_has_failures",
+        argNames: ["results", "category"],
+      );
+
+  @override
+  Future<int> crateApiSystemTestSystemCheckResultsFailedCount({
+    required SystemCheckResults results,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+            results,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 76,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_32,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSystemTestSystemCheckResultsFailedCountConstMeta,
+        argValues: [results],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSystemTestSystemCheckResultsFailedCountConstMeta =>
+      const TaskConstMeta(
+        debugName: "system_check_results_failed_count",
+        argNames: ["results"],
+      );
+
+  @override
+  Future<List<TestCategory>> crateApiSystemTestSystemCheckResultsGetCategories({
+    required SystemCheckResults results,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+            results,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 77,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_list_test_category,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSystemTestSystemCheckResultsGetCategoriesConstMeta,
+        argValues: [results],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiSystemTestSystemCheckResultsGetCategoriesConstMeta =>
+      const TaskConstMeta(
+        debugName: "system_check_results_get_categories",
+        argNames: ["results"],
+      );
+
+  @override
+  Future<List<TestInfo>>
+  crateApiSystemTestSystemCheckResultsGetTestsForCategory({
+    required SystemCheckResults results,
+    required TestCategory category,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+            results,
+            serializer,
+          );
+          sse_encode_test_category(category, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 78,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiSystemTestSystemCheckResultsGetTestsForCategoryConstMeta,
+        argValues: [results, category],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiSystemTestSystemCheckResultsGetTestsForCategoryConstMeta =>
+      const TaskConstMeta(
+        debugName: "system_check_results_get_tests_for_category",
+        argNames: ["results", "category"],
+      );
+
+  @override
+  Future<bool> crateApiSystemTestSystemCheckResultsIsSuccess({
+    required SystemCheckResults results,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+            results,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 79,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSystemTestSystemCheckResultsIsSuccessConstMeta,
+        argValues: [results],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSystemTestSystemCheckResultsIsSuccessConstMeta =>
+      const TaskConstMeta(
+        debugName: "system_check_results_is_success",
+        argNames: ["results"],
+      );
+
+  @override
+  Future<int> crateApiSystemTestSystemCheckResultsPassedCount({
+    required SystemCheckResults results,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+            results,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 80,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_32,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSystemTestSystemCheckResultsPassedCountConstMeta,
+        argValues: [results],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSystemTestSystemCheckResultsPassedCountConstMeta =>
+      const TaskConstMeta(
+        debugName: "system_check_results_passed_count",
+        argNames: ["results"],
+      );
+
+  @override
+  Future<int> crateApiSystemTestSystemCheckResultsTotalCount({
+    required SystemCheckResults results,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+            results,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 81,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_32,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSystemTestSystemCheckResultsTotalCountConstMeta,
+        argValues: [results],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSystemTestSystemCheckResultsTotalCountConstMeta =>
+      const TaskConstMeta(
+        debugName: "system_check_results_total_count",
+        argNames: ["results"],
+      );
+
+  @override
+  Future<BigInt> crateApiSystemTestSystemCheckResultsTotalDurationMs({
+    required SystemCheckResults results,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+            results,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 82,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_64,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiSystemTestSystemCheckResultsTotalDurationMsConstMeta,
+        argValues: [results],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiSystemTestSystemCheckResultsTotalDurationMsConstMeta =>
+      const TaskConstMeta(
+        debugName: "system_check_results_total_duration_ms",
+        argNames: ["results"],
+      );
+
+  @override
+  Future<BigInt> crateApiSystemTestTestInfoDurationMs({
+    required TestInfo test,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+            test,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 83,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_64,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSystemTestTestInfoDurationMsConstMeta,
+        argValues: [test],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSystemTestTestInfoDurationMsConstMeta =>
+      const TaskConstMeta(
+        debugName: "test_info_duration_ms",
+        argNames: ["test"],
+      );
+
+  @override
+  Future<List<String>> crateApiSystemTestTestInfoGetDetails({
+    required TestInfo test,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+            test,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 84,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_list_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSystemTestTestInfoGetDetailsConstMeta,
+        argValues: [test],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSystemTestTestInfoGetDetailsConstMeta =>
+      const TaskConstMeta(
+        debugName: "test_info_get_details",
+        argNames: ["test"],
+      );
+
+  @override
+  Future<String?> crateApiSystemTestTestInfoGetError({required TestInfo test}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+            test,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 85,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSystemTestTestInfoGetErrorConstMeta,
+        argValues: [test],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSystemTestTestInfoGetErrorConstMeta =>
+      const TaskConstMeta(debugName: "test_info_get_error", argNames: ["test"]);
+
+  @override
+  Future<String> crateApiSystemTestTestInfoGetName({required TestInfo test}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+            test,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 86,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSystemTestTestInfoGetNameConstMeta,
+        argValues: [test],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSystemTestTestInfoGetNameConstMeta =>
+      const TaskConstMeta(debugName: "test_info_get_name", argNames: ["test"]);
+
+  @override
+  Future<bool> crateApiSystemTestTestInfoIsFailed({required TestInfo test}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+            test,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 87,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSystemTestTestInfoIsFailedConstMeta,
+        argValues: [test],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSystemTestTestInfoIsFailedConstMeta =>
+      const TaskConstMeta(debugName: "test_info_is_failed", argNames: ["test"]);
+
+  @override
+  Future<bool> crateApiSystemTestTestInfoIsPassed({required TestInfo test}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+            test,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 88,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSystemTestTestInfoIsPassedConstMeta,
+        argValues: [test],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSystemTestTestInfoIsPassedConstMeta =>
+      const TaskConstMeta(debugName: "test_info_is_passed", argNames: ["test"]);
+
+  @override
   Future<VerifyingKey> zoeClientFrbApiVerifyingKeyFromHex({
     required String hex,
   }) {
@@ -3040,7 +3740,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 72,
+            funcId: 89,
             port: port_,
           );
         },
@@ -3189,6 +3889,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RustArcDecrementStrongCountFnType
   get rust_arc_decrement_strong_count_SocketAddr => wire
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_SystemCheckResults => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_SystemCheckResults => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_TestInfo => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_TestInfo => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_VerifyError => wire
@@ -3365,6 +4081,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SystemCheckResults
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SystemCheckResultsImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  TestInfo
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return TestInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   VerifyError
   dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
     dynamic raw,
@@ -3515,6 +4249,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return SocketAddrImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  SystemCheckResults
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SystemCheckResultsImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  TestInfo
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return TestInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -3671,6 +4423,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SystemCheckResults
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SystemCheckResultsImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  TestInfo
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return TestInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   VerifyError
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
     dynamic raw,
@@ -3695,6 +4465,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return VerifyingKeyErrorImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RustStreamSink<SystemCheckResults>
+  dco_decode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults_Sse(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError();
   }
 
   @protected
@@ -3755,6 +4534,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<TestInfo>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo,
+        )
+        .toList();
+  }
+
+  @protected
+  List<String> dco_decode_list_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_String).toList();
+  }
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as List<int>;
@@ -3764,6 +4562,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
+  }
+
+  @protected
+  List<TestCategory> dco_decode_list_test_category(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_test_category).toList();
   }
 
   @protected
@@ -3786,9 +4590,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TestCategory dco_decode_test_category(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return TestCategory.values[raw as int];
+  }
+
+  @protected
   int dco_decode_u_16(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
+  }
+
+  @protected
+  int dco_decode_u_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
+  BigInt dco_decode_u_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dcoDecodeU64(raw);
   }
 
   @protected
@@ -4015,6 +4837,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SystemCheckResults
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SystemCheckResultsImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  TestInfo
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return TestInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   VerifyError
   sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
     SseDeserializer deserializer,
@@ -4213,6 +5059,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return SocketAddrImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  SystemCheckResults
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SystemCheckResultsImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  TestInfo
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return TestInfoImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -4423,6 +5293,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SystemCheckResults
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SystemCheckResultsImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  TestInfo
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return TestInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   VerifyError
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
     SseDeserializer deserializer,
@@ -4456,6 +5350,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
+  }
+
+  @protected
+  RustStreamSink<SystemCheckResults>
+  sse_decode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults_Sse(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    throw UnimplementedError('Unreachable ()');
   }
 
   @protected
@@ -4532,6 +5435,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<TestInfo>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <TestInfo>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+          deserializer,
+        ),
+      );
+    }
+    return ans_;
+  }
+
+  @protected
+  List<String> sse_decode_list_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <String>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_String(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
@@ -4543,6 +5477,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  List<TestCategory> sse_decode_list_test_category(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <TestCategory>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_test_category(deserializer));
+    }
+    return ans_;
   }
 
   @protected
@@ -4572,9 +5520,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TestCategory sse_decode_test_category(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return TestCategory.values[inner];
+  }
+
+  @protected
   int sse_decode_u_16(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint16();
+  }
+
+  @protected
+  int sse_decode_u_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint32();
+  }
+
+  @protected
+  BigInt sse_decode_u_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getBigUint64();
   }
 
   @protected
@@ -4820,6 +5787,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+    SystemCheckResults self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SystemCheckResultsImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    TestInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as TestInfoImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
     VerifyError self,
     SseSerializer serializer,
@@ -5035,6 +6028,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as SocketAddrImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+    SystemCheckResults self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SystemCheckResultsImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    TestInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as TestInfoImpl).frbInternalSseEncode(move: false),
       serializer,
     );
   }
@@ -5262,6 +6281,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults(
+    SystemCheckResults self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as SystemCheckResultsImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    TestInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as TestInfoImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyError(
     VerifyError self,
     SseSerializer serializer,
@@ -5295,6 +6340,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as VerifyingKeyErrorImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults_Sse(
+    RustStreamSink<SystemCheckResults> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(
+      self.setupAndSerialize(
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+      ),
       serializer,
     );
   }
@@ -5373,6 +6437,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+    List<TestInfo> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
+        item,
+        serializer,
+      );
+    }
+  }
+
+  @protected
+  void sse_encode_list_String(List<String> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_String(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_prim_u_8_loose(
     List<int> self,
     SseSerializer serializer,
@@ -5392,6 +6481,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     serializer.buffer.putUint8List(self);
+  }
+
+  @protected
+  void sse_encode_list_test_category(
+    List<TestCategory> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_test_category(item, serializer);
+    }
   }
 
   @protected
@@ -5416,9 +6517,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_test_category(TestCategory self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_u_16(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint16(self);
+  }
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint32(self);
+  }
+
+  @protected
+  void sse_encode_u_64(BigInt self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putBigUint64(self);
   }
 
   @protected
@@ -6114,6 +7233,50 @@ class SocketAddrImpl extends RustOpaque implements SocketAddr {
         RustLib.instance.api.rust_arc_decrement_strong_count_SocketAddr,
     rustArcDecrementStrongCountPtr:
         RustLib.instance.api.rust_arc_decrement_strong_count_SocketAddrPtr,
+  );
+}
+
+@sealed
+class SystemCheckResultsImpl extends RustOpaque implements SystemCheckResults {
+  // Not to be used by end users
+  SystemCheckResultsImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  SystemCheckResultsImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_SystemCheckResults,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_SystemCheckResults,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_SystemCheckResultsPtr,
+  );
+}
+
+@sealed
+class TestInfoImpl extends RustOpaque implements TestInfo {
+  // Not to be used by end users
+  TestInfoImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  TestInfoImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_TestInfo,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_TestInfo,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_TestInfoPtr,
   );
 }
 

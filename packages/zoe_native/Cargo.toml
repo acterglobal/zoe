@@ -7,18 +7,18 @@ members = ["rust"]
 flutter_rust_bridge = "=2.11.1"
 
 [workspace.dependencies.zoe-client]
-# path = "../../../zoe-relay/crates/client"
-git = "https://github.com/acterglobal/zoe-relay.git"
-branch = "main"
+path = "../../../zoe-relay/crates/client"
+# git = "https://github.com/acterglobal/zoe-relay.git"
+# branch = "main"
 features = ["frb-api"]
 
 [workspace.dependencies.zoe-wire-protocol]
-# path = "../../../zoe-relay/crates/wire-protocol"
-git = "https://github.com/acterglobal/zoe-relay.git"
-branch = "main"
+path = "../../../zoe-relay/crates/wire-protocol"
+# git = "https://github.com/acterglobal/zoe-relay.git"
+# branch = "main"
 
 [workspace.dependencies.zoe-app-primitives]
-# path = "../../../zoe-relay/crates/app-primitives"
-git = "https://github.com/acterglobal/zoe-relay.git"
-branch = "main"
+path = "../../../zoe-relay/crates/app-primitives"
+# git = "https://github.com/acterglobal/zoe-relay.git"
+# branch = "main"
 features = ["frb-api"]

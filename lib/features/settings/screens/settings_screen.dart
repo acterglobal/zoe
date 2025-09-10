@@ -12,6 +12,7 @@ import 'package:zoe/features/settings/providers/theme_provider.dart';
 import 'package:zoe/features/settings/widgets/setting_card_widget.dart';
 import 'package:zoe/features/settings/widgets/setting_item_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
+import 'package:flutter/foundation.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -154,6 +155,16 @@ class SettingsScreen extends ConsumerWidget {
           iconColor: const Color(0xFF84CC16), // Lime
           onTap: () {},
         ),
+        if (kDebugMode) ...[
+          const Divider(height: 1),
+          SettingItemWidget(
+            title: 'Developer Tools',
+            subtitle: 'System diagnostics and testing tools',
+            icon: Icons.developer_mode,
+            iconColor: const Color(0xFFFF6B35), // Orange
+            onTap: () => context.push(AppRoutes.developerTools.route),
+          ),
+        ],
       ],
     );
   }

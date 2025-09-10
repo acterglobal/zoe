@@ -27,12 +27,16 @@ class MockSocketAddr extends Mock {
   bool operator ==(Object other) => identical(this, other);
 }
 
+class MockRelayAddress extends Mock implements RelayAddress {}
+
 // Fake classes for fallback values
 class FakeVerifyingKey extends Fake implements VerifyingKey {}
 
 class FakeSocketAddr extends Fake implements SocketAddr {}
 
 class FakeClientSecret extends Fake implements ClientSecret {}
+
+class FakeRelayAddress extends Fake implements RelayAddress {}
 
 Future<void> main() async {
   // this ensures the dart types are fine and we can mock
@@ -71,6 +75,7 @@ Future<void> main() async {
     registerFallbackValue(FakeVerifyingKey());
     registerFallbackValue(FakeSocketAddr());
     registerFallbackValue(FakeClientSecret());
+    registerFallbackValue(FakeRelayAddress());
 
     RustLib.initMock(api: mockApi);
     initStorage(
@@ -115,6 +120,14 @@ Future<void> main() async {
       () => mockApi.zoeClientUtilResolveToSocketAddr(s: any(named: 's')),
     ).thenAnswer((_) async => FakeSocketAddr());
 
+    // Mock createRelayAddressWithHostname()
+    when(
+      () => mockApi.zoeClientFrbApiCreateRelayAddressWithHostname(
+        serverKeyHex: any(named: 'serverKeyHex'),
+        hostname: any(named: 'hostname'),
+      ),
+    ).thenAnswer((_) async => FakeRelayAddress());
+
     // Mock builder methods
     when(
       () => builder.dbStorageDir(path: any(named: 'path')),
@@ -132,6 +145,9 @@ Future<void> main() async {
     ).thenAnswer((_) async {});
     when(
       () => builder.clientSecret(secret: any(named: 'secret')),
+    ).thenAnswer((_) async {});
+    when(
+      () => builder.servers(servers: any(named: 'servers')),
     ).thenAnswer((_) async {});
     when(() => builder.build()).thenAnswer((_) async => client);
 
@@ -155,23 +171,13 @@ Future<void> main() async {
       ),
     ).called(1);
     verify(
-      () => mockApi.zoeWireProtocolKeysVerifyingKeyFromHex(
-        hex: any(named: 'hex'),
-      ),
-    ).called(1);
-    verify(
-      () => mockApi.zoeClientUtilResolveToSocketAddr(s: any(named: 's')),
-    ).called(1);
-    verify(
-      () => builder.serverInfo(
-        serverPublicKey: any(named: 'serverPublicKey'),
-        serverAddr: any(named: 'serverAddr'),
-      ),
-    ).called(1);
-    // Note: ClientSecret.fromHex and builder.clientSecret are only called when loading existing client
-    // Since we have a client secret in storage, these should be called
-    verify(
       () => mockApi.zoeClientClientClientSecretFromHex(hex: any(named: 'hex')),
+    ).called(1);
+    verify(
+      () => mockApi.zoeClientFrbApiCreateRelayAddressWithHostname(
+        serverKeyHex: any(named: 'serverKeyHex'),
+        hostname: any(named: 'hostname'),
+      ),
     ).called(1);
     verify(() => builder.clientSecret(secret: any(named: 'secret'))).called(1);
     verify(() => builder.build()).called(1);
@@ -211,6 +217,14 @@ Future<void> main() async {
       () => mockApi.zoeClientUtilResolveToSocketAddr(s: any(named: 's')),
     ).thenAnswer((_) async => FakeSocketAddr());
 
+    // Mock createRelayAddressWithHostname()
+    when(
+      () => mockApi.zoeClientFrbApiCreateRelayAddressWithHostname(
+        serverKeyHex: any(named: 'serverKeyHex'),
+        hostname: any(named: 'hostname'),
+      ),
+    ).thenAnswer((_) async => FakeRelayAddress());
+
     // Mock builder methods
     when(
       () => builder.dbStorageDir(path: any(named: 'path')),
@@ -225,6 +239,9 @@ Future<void> main() async {
         serverPublicKey: any(named: 'serverPublicKey'),
         serverAddr: any(named: 'serverAddr'),
       ),
+    ).thenAnswer((_) async {});
+    when(
+      () => builder.servers(servers: any(named: 'servers')),
     ).thenAnswer((_) async {});
     when(() => builder.build()).thenAnswer((_) async => client);
 

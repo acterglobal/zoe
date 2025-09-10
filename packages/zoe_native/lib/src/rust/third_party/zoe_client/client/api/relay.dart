@@ -4,9 +4,32 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../../../../frb_generated.dart';
+import '../../../../lib.dart';
+import '../../../zoe_wire_protocol/primitives.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions have error during generation (see debug logs or enable `stop_on_error: true` for more details): `overall_status_stream`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `fmt`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `subscribe_to_relay_status`
+// These functions have error during generation (see debug logs or enable `stop_on_error: true` for more details): `await_result`, `detach`, `overall_status_stream`
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner< Receiver < RelayStatusUpdate >>>
-abstract class ReceiverRelayStatusUpdate implements RustOpaqueInterface {}
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<RelayConnectionHandle>>
+abstract class RelayConnectionHandle implements RustOpaqueInterface {
+  RelayAddress get relayAddress;
+
+  KeyId get relayId;
+
+  set relayAddress(RelayAddress relayAddress);
+
+  set relayId(KeyId relayId);
+
+  /// Poll for the connection result (non-blocking)
+  ///
+  /// Returns:
+  /// - `Ok(Some(result))` if the connection attempt has completed
+  /// - `Ok(None)` if the connection is still in progress
+  /// - `Err(_)` if there was an error polling (shouldn't happen normally)
+  Future<Result?> tryResult();
+}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Result < () >>>
+abstract class Result implements RustOpaqueInterface {}

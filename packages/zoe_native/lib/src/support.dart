@@ -10,14 +10,18 @@ import 'package:logging/logging.dart';
 
 final _log = Logger('zoe_native::support');
 
+void _logListener(LogRecord record) {
+  print('${record.level.name}: ${record.time}: ${record.message}');
+}
+
 const rustLogKey = 'RUST_LOG';
 const proxyKey = 'HTTP_PROXY';
 const bool isDevBuild = !bool.fromEnvironment('dart.vm.product');
 
-// default development server
-const defaultServerAddr = 'a.dev.hellozoe.app:13918';
-const defaultServerKey =
-    '00201f12f22a1ed75a2e12462c8c106121db49a779d1bd2fb9c96a881835c068f09c';
+// default development server - exported for use in UI
+const String defaultServerAddr = 'a.dev.hellozoe.app:13918';
+const String defaultServerKey =
+    '00202ee21d8cc6e519ba164ca4d10c2bae101f83bfd46249f2b7bb86f9083d50ed76';
 
 FlutterSecureStorage? _globalStorage;
 String _globalSessionKey = 'clientSecret';
@@ -32,10 +36,10 @@ void initStorage({
   if (sessionKey != null) {
     _globalSessionKey = sessionKey;
   }
+  _log.onRecord.listen(_logListener);
 
   _globalStorage = FlutterSecureStorage(
     aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
       preferencesKeyPrefix: isDevBuild ? 'dev.flutter' : null,
     ),
     iOptions: IOSOptions(
@@ -170,10 +174,16 @@ Future<ClientBuilder> _defaultClientBuilder({
   serverAddr ??= defaultServerAddr;
   serverKey ??= defaultServerKey;
 
-  builder.serverInfo(
-    serverPublicKey: await VerifyingKey.fromHex(hex: serverKey),
-    serverAddr: await resolveToSocketAddr(s: serverAddr),
+  _log.info('serverAddr: $serverAddr');
+  _log.info('serverKey: $serverKey');
+
+  // Create RelayAddress that can handle hostnames
+  final relayAddress = await createRelayAddressWithHostname(
+    serverKeyHex: serverKey,
+    hostname: serverAddr,
   );
+
+  builder.servers(servers: [relayAddress]);
   // builder.autoconnect(autoconnect: true);
   return builder;
 }
@@ -182,7 +192,8 @@ Future<Client> _loadOrGenerateClient() async {
   final clientSecret = await _readClientSecret();
   final builder = await _defaultClientBuilder();
   if (clientSecret != null) {
-    builder.clientSecret(secret: await ClientSecret.fromHex(hex: clientSecret));
+    final secret = await ClientSecret.fromHex(hex: clientSecret);
+    builder.clientSecret(secret: secret);
     return await builder.build();
   }
   final client = await builder.build();
@@ -198,4 +209,19 @@ Future<Client> loadOrGenerateClient() async {
     _clientCompl = completer;
   }
   return _clientCompl!.future;
+}
+
+/// Resets the client by clearing stored secrets and forcing regeneration
+Future<void> resetClient() async {
+  _log.info('Resetting client - clearing stored secrets');
+
+  // Clear the stored client secret
+  if (_globalStorage != null) {
+    await _globalStorage!.delete(key: _globalSessionKey);
+  }
+
+  // Reset the client completer to force regeneration
+  _clientCompl = null;
+
+  _log.info('Client reset completed');
 }

@@ -6,6 +6,7 @@
 import '../../frb_generated.dart';
 import '../../lib.dart';
 import '../zoe_wire_protocol/keys.dart';
+import 'client.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 Future<SocketAddr> createSocketAddr({required String ip, required int port}) =>
@@ -35,3 +36,21 @@ Future<String> signingKeyToVerifyingKey({required String signingKeyHex}) =>
 
 Future<VerifyingKey> verifyingKeyFromHex({required String hex}) =>
     RustLib.instance.api.zoeClientFrbApiVerifyingKeyFromHex(hex: hex);
+
+Future<bool> prepareClientForSystemsTest({
+  required Client client,
+  required String serverAddress,
+  required String serverKeyHex,
+}) => RustLib.instance.api.zoeClientFrbApiPrepareClientForSystemsTest(
+  client: client,
+  serverAddress: serverAddress,
+  serverKeyHex: serverKeyHex,
+);
+
+Future<RelayAddress> createRelayAddressWithHostname({
+  required String serverKeyHex,
+  required String hostname,
+}) => RustLib.instance.api.zoeClientFrbApiCreateRelayAddressWithHostname(
+  serverKeyHex: serverKeyHex,
+  hostname: hostname,
+);

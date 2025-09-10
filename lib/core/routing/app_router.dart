@@ -16,6 +16,8 @@ import 'package:zoe/features/polls/screens/polls_list_screen.dart';
 import 'package:zoe/features/quick-search/screens/quick_search_screen.dart';
 import 'package:zoe/features/settings/screens/settings_screen.dart';
 import 'package:zoe/features/settings/screens/language_selection_screen.dart';
+import 'package:zoe/features/settings/screens/developer_tools_screen.dart';
+import 'package:zoe/features/settings/screens/systems_test_screen.dart';
 import 'package:zoe/features/sheet/screens/sheet_detail_screen.dart';
 import 'package:zoe/features/sheet/screens/sheet_list_screen.dart';
 import 'package:zoe/features/task/screens/task_detail_screen.dart';
@@ -201,6 +203,20 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.settingLanguage.route,
         name: AppRoutes.settingLanguage.name,
         builder: (context, state) => const LanguageSelectionScreen(),
+      ),
+
+      // Developer tools route
+      GoRoute(
+        path: AppRoutes.developerTools.route,
+        name: AppRoutes.developerTools.name,
+        builder: (context, state) => const DeveloperToolsScreen(),
+      ),
+
+      // Systems test route
+      GoRoute(
+        path: AppRoutes.systemsTest.route,
+        name: AppRoutes.systemsTest.name,
+        builder: (context, state) => const SystemsTestScreen(),
       ),
 
       // WhatsApp group connect route
