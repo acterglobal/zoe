@@ -149,6 +149,9 @@ Future<void> main() async {
     when(
       () => builder.servers(servers: any(named: 'servers')),
     ).thenAnswer((_) async {});
+    when(
+      () => builder.autoconnect(autoconnect: any(named: 'autoconnect')),
+    ).thenAnswer((_) async {});
     when(() => builder.build()).thenAnswer((_) async => client);
 
     // Mock client methods
@@ -242,6 +245,9 @@ Future<void> main() async {
     ).thenAnswer((_) async {});
     when(
       () => builder.servers(servers: any(named: 'servers')),
+    ).thenAnswer((_) async {});
+    when(
+      () => builder.autoconnect(autoconnect: any(named: 'autoconnect')),
     ).thenAnswer((_) async {});
     when(() => builder.build()).thenAnswer((_) async => client);
 

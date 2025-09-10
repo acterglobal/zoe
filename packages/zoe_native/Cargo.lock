@@ -1523,6 +1523,7 @@ dependencies = [
 [[package]]
 name = "forward-compatible-enum"
 version = "0.1.0"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#5778e9e45d6a21a27c33c1157df601719f8d8bcc"
 dependencies = [
  "postcard",
  "proc-macro2",
@@ -6788,6 +6789,7 @@ dependencies = [
 [[package]]
 name = "zoe-app-primitives"
 version = "0.1.0"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#5778e9e45d6a21a27c33c1157df601719f8d8bcc"
 dependencies = [
  "blake3",
  "flutter_rust_bridge",
@@ -6805,6 +6807,7 @@ dependencies = [
 [[package]]
 name = "zoe-blob-store"
 version = "0.1.0"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#5778e9e45d6a21a27c33c1157df601719f8d8bcc"
 dependencies = [
  "anyhow",
  "chrono",
@@ -6829,6 +6832,7 @@ dependencies = [
 [[package]]
 name = "zoe-client"
 version = "0.1.0"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#5778e9e45d6a21a27c33c1157df601719f8d8bcc"
 dependencies = [
  "anyhow",
  "async-once-cell",
@@ -6870,6 +6874,7 @@ dependencies = [
 [[package]]
 name = "zoe-client-storage"
 version = "0.1.0"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#5778e9e45d6a21a27c33c1157df601719f8d8bcc"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -6889,6 +6894,7 @@ dependencies = [
 [[package]]
 name = "zoe-encrypted-storage"
 version = "0.1.0"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#5778e9e45d6a21a27c33c1157df601719f8d8bcc"
 dependencies = [
  "aead",
  "aes-gcm",
@@ -6901,6 +6907,7 @@ dependencies = [
 [[package]]
 name = "zoe-state-machine"
 version = "0.1.0"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#5778e9e45d6a21a27c33c1157df601719f8d8bcc"
 dependencies = [
  "blake3",
  "ed25519-dalek",
@@ -6919,6 +6926,7 @@ dependencies = [
 [[package]]
 name = "zoe-wire-protocol"
 version = "0.1.0"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#5778e9e45d6a21a27c33c1157df601719f8d8bcc"
 dependencies = [
  "anyhow",
  "argon2",
