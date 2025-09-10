@@ -376,5 +376,13 @@
     "userNotFound": "उपयोगकर्ता नहीं मिला",
     "@userNotFound": {},
     "scanToConnect": "कनेक्ट करने के लिए स्कैन करें",
-    "@scanToConnect": {}
+    "@scanToConnect": {},   
+    "nameCannotBeEmpty": "नाम खाली नहीं हो सकता",
+    "@nameCannotBeEmpty": {},
+    "pleaseEnterAValidName": "कृपया एक सही नाम दर्ज करें",
+    "@pleaseEnterAValidName": {},
+    "bio": "बायो",
+    "@bio": {},
+    "writeSomethingAboutYourself": "आपके बारे में कुछ लिखें...",
+    "@writeSomethingAboutYourself": {}
 }

@@ -480,5 +480,13 @@
     "userNotFound": "User not found",
     "@userNotFound": {},
     "scanToConnect": "Scan to Connect",
-    "@scanToConnect": {}
+    "@scanToConnect": {},
+    "nameCannotBeEmpty": "Name cannot be empty",
+    "@nameCannotBeEmpty": {},
+    "pleaseEnterAValidName": "Please enter a valid name",
+    "@pleaseEnterAValidName": {},
+    "bio": "Bio",
+    "@bio": {},
+    "writeSomethingAboutYourself": "Write something about yourself...",
+    "@writeSomethingAboutYourself": {}
 }

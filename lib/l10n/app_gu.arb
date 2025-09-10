@@ -376,5 +376,13 @@
     "userNotFound": "વપરાશકર્તા મળ્યું નથી",
     "@userNotFound": {},
     "scanToConnect": "કનેક્ટ કરવા માટે સ્કેન કરો",
-    "@scanToConnect": {}
+    "@scanToConnect": {},
+    "nameCannotBeEmpty": "નામ ખાલી હોઈ શકતું નથી", 
+    "@nameCannotBeEmpty": {},
+    "pleaseEnterAValidName": "કૃપા કરીને સાચું નામ દાખલ કરો",
+    "@pleaseEnterAValidName": {},
+    "bio": "બાયો",
+    "@bio": {},
+    "writeSomethingAboutYourself": "તમારા વિશે કંઈક લખો...",
+    "@writeSomethingAboutYourself": {}
 }

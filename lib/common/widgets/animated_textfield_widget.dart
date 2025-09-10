@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
 
 class AnimatedTextField extends StatefulWidget {
   final TextEditingController controller;
   final String? errorText;
+  final String hintText;
   final Function(String?) onErrorChanged;
   final VoidCallback onSubmitted;
 
@@ -11,6 +11,7 @@ class AnimatedTextField extends StatefulWidget {
     super.key,
     required this.controller,
     this.errorText,
+    required this.hintText,
     required this.onErrorChanged,
     required this.onSubmitted,
   });
@@ -61,7 +62,7 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
           child: TextField(
             controller: widget.controller,
             decoration: InputDecoration(
-              hintText: L10n.of(context).pleaseEnterAValidURL,
+              hintText: widget.hintText,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(

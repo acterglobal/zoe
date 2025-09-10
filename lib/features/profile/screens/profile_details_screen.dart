@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/animated_textfield_widget.dart';
+import 'package:zoe/common/widgets/edit_view_toggle_button.dart'
+    show EditViewToggleButton;
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/error_state_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/loading_state_widget.dart';
@@ -11,11 +15,22 @@ import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-class ProfileDetailsScreen extends ConsumerWidget {
+class ProfileDetailsScreen extends ConsumerStatefulWidget {
   const ProfileDetailsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProfileDetailsScreen> createState() =>
+      _ProfileDetailsScreenState();
+}
+
+class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
+  final TextEditingController _urlController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
+  String? _errorText;
+  String? _bioErrorText;
+
+  @override
+  Widget build(BuildContext context) {
     final currentUserAsync = ref.watch(currentUserProvider);
     final l10n = L10n.of(context);
     return currentUserAsync.when(
@@ -39,11 +54,14 @@ class ProfileDetailsScreen extends ConsumerWidget {
       title: ZoeAppBar(
         title: L10n.of(context).profile,
         actions: [
+          EditViewToggleButton(parentId: user.id),
+          const SizedBox(width: 10),
           GestureDetector(
             onTap: () => showProfileQrCodeBottomSheet(context, user),
             child: StyledIconContainer(
               icon: Icons.qr_code_scanner,
               size: 40,
+              primaryColor: Theme.of(context).colorScheme.onSurface,
               iconSize: 20,
               backgroundOpacity: 0.08,
               borderOpacity: 0.15,
@@ -56,8 +74,6 @@ class ProfileDetailsScreen extends ConsumerWidget {
   }
 
   Widget _buildBody(BuildContext context, UserModel user) {
-    final textTheme = Theme.of(context).textTheme;
-
     return Center(
       child: MaxWidthWidget(
         isScrollable: true,
@@ -66,15 +82,45 @@ class ProfileDetailsScreen extends ConsumerWidget {
           children: [
             _buildAvatarUI(context, user),
             const SizedBox(height: 16),
-            Text(
-              user.name,
-              style: textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            _buildUserNameUI(context),
+            const SizedBox(height: 16),
+            _buildUserBioInputUI(context),
           ],
         ),
       ),
+    );
+  }
+
+  void _validateName() {
+    final name = _urlController.text.trim();
+    if (CommonUtils.isValidName(name)) {
+      setState(() {
+        _errorText = null;
+      });
+    } else {
+      setState(() {
+        _errorText = CommonUtils.getNameErrorMessage(context, name);
+      });
+    }
+  }
+
+  Widget _buildUserNameUI(BuildContext context) {
+    return AnimatedTextField(
+      controller: _urlController,
+      errorText: _errorText,
+      hintText: L10n.of(context).pleaseEnterAValidName,
+      onErrorChanged: (error) => setState(() => _errorText = error),
+      onSubmitted: _validateName,
+    );
+  }
+
+  Widget _buildUserBioInputUI(BuildContext context) {
+    return AnimatedTextField(
+      controller: _bioController,
+      errorText: _bioErrorText,
+      hintText: L10n.of(context).writeSomethingAboutYourself,
+      onErrorChanged: (error) => setState(() => _bioErrorText = error),
+      onSubmitted: (){},
     );
   }
 

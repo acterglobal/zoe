@@ -76,6 +76,7 @@ class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
           AnimatedTextField(
             controller: _urlController,
             errorText: _errorText,
+            hintText: L10n.of(context).pleaseEnterAValidURL,
             onErrorChanged: (error) => setState(() => _errorText = error),
             onSubmitted: _validateUrl,
           ),
