@@ -93,17 +93,15 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
       title: ZoeAppBar(
         title: L10n.of(context).profile,
         actions: [
-          GestureDetector(
+          StyledIconContainer(
+            icon: Icons.qr_code_scanner,
+            size: 40,
+            primaryColor: Theme.of(context).colorScheme.onSurface,
+            iconSize: 20,
+            backgroundOpacity: 0.08,
+            borderOpacity: 0.15,
+            shadowOpacity: 0.1,
             onTap: () => showProfileQrCodeBottomSheet(context, user),
-            child: StyledIconContainer(
-              icon: Icons.qr_code_scanner,
-              size: 40,
-              primaryColor: Theme.of(context).colorScheme.onSurface,
-              iconSize: 20,
-              backgroundOpacity: 0.08,
-              borderOpacity: 0.15,
-              shadowOpacity: 0.1,
-            ),
           ),
         ],
       ),
@@ -142,18 +140,14 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
           Positioned(
             right: -4,
             bottom: -4,
-            child: GestureDetector(
-              onTap: () {
-                onChangeAvatar(user);
-              },
-              child: StyledIconContainer(
-                icon: Icons.camera_alt,
-                size: 32,
-                iconSize: 16,
-                borderRadius: BorderRadius.circular(16),
-                primaryColor: colorScheme.onSurface,
-                secondaryColor: colorScheme.primary,
-              ),
+            child: StyledIconContainer(
+              icon: Icons.camera_alt,
+              size: 32,
+              iconSize: 16,
+              borderRadius: BorderRadius.circular(16),
+              primaryColor: colorScheme.onSurface,
+              secondaryColor: colorScheme.primary,
+              onTap: () => onChangeAvatar(user),
             ),
           ),
       ],
@@ -178,40 +172,34 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
     final theme = Theme.of(context);
     final color = AppColors.brightMagentaColor;
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              StyledIconContainer(
-                icon: Icons.edit_note_rounded,
-                size: 30,
-                iconSize: 20,
-                primaryColor: color,
-                backgroundOpacity: 0.1,
-                borderOpacity: 0.2,
-                shadowOpacity: 0.1,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                L10n.of(context).personalInformation,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: color,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          ProfileUserNameWidget(
-            isEditing: isEditing,
-            controller: _nameController,
-          ),
-          const SizedBox(height: 24),
-          ProfileUserBioWidget(
-            isEditing: isEditing,
-            controller: _bioController,
-          ),
-        ],
-      
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            StyledIconContainer(
+              icon: Icons.edit_note_rounded,
+              size: 30,
+              iconSize: 20,
+              primaryColor: color,
+              backgroundOpacity: 0.1,
+              borderOpacity: 0.2,
+              shadowOpacity: 0.1,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              L10n.of(context).personalInformation,
+              style: theme.textTheme.titleMedium?.copyWith(color: color),
+            ),
+          ],
+        ),
+        const SizedBox(height: 24),
+        ProfileUserNameWidget(
+          isEditing: isEditing,
+          controller: _nameController,
+        ),
+        const SizedBox(height: 24),
+        ProfileUserBioWidget(isEditing: isEditing, controller: _bioController),
+      ],
     );
   }
 
