@@ -6,6 +6,10 @@ class AnimatedTextField extends StatefulWidget {
   final String hintText;
   final Function(String?) onErrorChanged;
   final VoidCallback onSubmitted;
+  final bool enabled;
+  final bool readOnly;
+  final bool autofocus;
+  final TextInputType keyboardType;
 
   const AnimatedTextField({
     super.key,
@@ -14,6 +18,10 @@ class AnimatedTextField extends StatefulWidget {
     required this.hintText,
     required this.onErrorChanged,
     required this.onSubmitted,
+    this.enabled = true,
+    this.readOnly = false,
+    this.autofocus = true,
+    this.keyboardType = TextInputType.text,
   });
 
   @override
@@ -75,9 +83,18 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.outline.withValues(
+                    alpha: widget.enabled ? 0.3 : 0.15,
+                  ),
+                  width: 1,
+                ),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
                   color: Theme.of(
                     context,
-                  ).colorScheme.outline.withValues(alpha: 0.3),
+                  ).colorScheme.outline.withValues(alpha: 0.15),
                   width: 1,
                 ),
               ),
@@ -103,17 +120,18 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
                 ),
               ),
               filled: true,
-              fillColor: Theme.of(
-                context,
-              ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.1),
+              fillColor: Theme.of(context).colorScheme.surfaceContainerHighest
+                  .withValues(alpha: widget.enabled ? 0.1 : 0.05),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 16,
               ),
               errorText: widget.errorText,
             ),
-            keyboardType: TextInputType.url,
-            autofocus: true,
+            keyboardType: widget.keyboardType,
+            autofocus: widget.autofocus,
+            enabled: widget.enabled,
+            readOnly: widget.readOnly,
             onChanged: (value) {
               if (widget.errorText != null) {
                 widget.onErrorChanged(null);

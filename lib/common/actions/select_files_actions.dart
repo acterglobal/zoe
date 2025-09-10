@@ -10,37 +10,55 @@ import 'package:zoe/common/utils/file_utils.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/common/widgets/document_selection_bottom_sheet.dart';
+import 'package:zoe/features/profile/providers/profile_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-void selectDocumentSource(
+void selectFileSource(
   BuildContext context,
   WidgetRef ref,
   String listId,
-  String sheetId,
-) {
-  showDocumentSelectionBottomSheet(
+  String sheetId, {
+  bool isProfile = false,
+  Function(String)? onImageSelected,
+}) {
+  showFileSelectionBottomSheet(
     context,
-    onTapCamera: () => handleCameraSelection(context, ref, listId, sheetId),
-    onTapGallery: () =>
-        handlePhotoGallerySelection(context, ref, listId, sheetId),
-    onTapFileChooser: () =>
-        handleFileChooserSelection(context, ref, listId, sheetId),
+    onTapCamera: () async {
+      final image = await handleCameraSelection(context, ref, listId, sheetId, isProfile: isProfile);
+      if (image != null && onImageSelected != null) {
+        onImageSelected(image.path);
+      }
+    },
+    onTapGallery: () async {
+      final image = await handlePhotoGallerySelection(context, ref, listId, sheetId, isProfile: isProfile);
+      if (image != null && onImageSelected != null) {
+        onImageSelected(image.path);
+      }
+    },
+    onTapFileChooser: isProfile ? null : () {
+      handleFileChooserSelection(context, ref, listId, sheetId);
+    },
   );
 }
 
-Future<void> handleCameraSelection(
+Future<XFile?> handleCameraSelection(
   BuildContext context,
   WidgetRef ref,
   String listId,
-  String sheetId,
-) async {
+  String sheetId, {
+  bool isProfile = false,
+}) async {
   final imagePicker = ImagePicker();
   final image = await imagePicker.pickImage(
     source: ImageSource.camera,
     imageQuality: 80,
   );
 
-  if (image != null) {
+  if (image != null && isProfile) {
+    ref.read(profileAvatarNotifierProvider.notifier).setAvatarPath(listId, image.path);
+  }
+
+  if (image != null && !isProfile) {
     ref
         .read(documentListProvider.notifier)
         .addDocument(
@@ -57,17 +75,27 @@ Future<void> handleCameraSelection(
       );
     }
   }
+
+  return image;
 }
 
-Future<void> handlePhotoGallerySelection(
+Future<XFile?> handlePhotoGallerySelection(
   BuildContext context,
   WidgetRef ref,
   String listId,
-  String sheetId,
-) async {
+  String sheetId, {
+  bool isProfile = false,
+}) async {
   final imagePicker = ImagePicker();
-  final images = await imagePicker.pickMultiImage(imageQuality: 80);
+  if (isProfile) {
+    final image = await imagePicker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
+    return image;
+  }
 
+  final images = await imagePicker.pickMultiImage(imageQuality: 80);
   if (images.isNotEmpty) {
     for (final image in images) {
       ref
@@ -86,7 +114,9 @@ Future<void> handlePhotoGallerySelection(
         L10n.of(context).photosAddedSuccessfully(images.length),
       );
     }
+    return images.first;
   }
+  return null;
 }
 
 Future<void> handleFileChooserSelection(

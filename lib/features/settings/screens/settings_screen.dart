@@ -78,7 +78,7 @@ class SettingsScreen extends ConsumerWidget {
       children: [
         SettingItemWidget(
           title: userName.split(' ').first,
-          subtitle: userName,
+          subtitle: user.value?.bio ?? '',
           icon: Icons.person_rounded,
           iconColor: AppColors.brightMagentaColor,
           onTap: () {

@@ -1,7 +1,7 @@
 import 'package:zoe/features/users/models/user_model.dart';
 
 final userList = [
-  UserModel(id: 'user_1', name: 'John Doe'),
+  UserModel(id: 'user_1', name: 'John Doe', bio: 'I am a software engineer'),
   UserModel(id: 'user_2', name: 'Jane Smith'),
   UserModel(id: 'user_3', name: 'Michael Johnson'),
   UserModel(id: 'user_4', name: 'Sarah Williams'),

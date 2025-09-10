@@ -488,5 +488,9 @@
     "bio": "Bio",
     "@bio": {},
     "writeSomethingAboutYourself": "Write something about yourself...",
-    "@writeSomethingAboutYourself": {}
+    "@writeSomethingAboutYourself": {},
+    "userName": "User Name",
+    "@userName": {},
+    "userBio": "User Bio",
+    "@userBio": {}
 }

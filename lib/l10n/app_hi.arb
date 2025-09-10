@@ -384,5 +384,9 @@
     "bio": "बायो",
     "@bio": {},
     "writeSomethingAboutYourself": "आपके बारे में कुछ लिखें...",
-    "@writeSomethingAboutYourself": {}
+    "@writeSomethingAboutYourself": {},
+    "userName": "उपयोगकर्ता नाम",
+    "@userName": {},
+    "userBio": "उपयोगकर्ता बायो",
+    "@userBio": {}
 }
