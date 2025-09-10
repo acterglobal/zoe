@@ -184,7 +184,7 @@ Future<ClientBuilder> _defaultClientBuilder({
   );
 
   builder.servers(servers: [relayAddress]);
-  // builder.autoconnect(autoconnect: true);
+  builder.autoconnect(autoconnect: true);
   return builder;
 }
 
