@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
-import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_content_type_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_glassy_tab_widget.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
+import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
@@ -105,7 +107,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
         pollsProvider: notActivePollListProvider,
         isEditing: false,
         shrinkWrap: false,
-        emptyState: EmptyStateWidget(message: L10n.of(context).noPollsFound),
+        emptyState: EmptyContentTypeWidget(message: L10n.of(context).noPollsFound, color: AppColors.brightMagentaColor, contentType: ContentType.poll),
       ),
     );
   }
@@ -117,7 +119,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
         pollsProvider: activePollListProvider,
         isEditing: false,
         shrinkWrap: false,
-        emptyState: EmptyStateWidget(message: L10n.of(context).noPollsFound),
+        emptyState: EmptyContentTypeWidget(message: L10n.of(context).noPollsFound, color: AppColors.brightMagentaColor, contentType: ContentType.poll),
       ),
     );
   }
@@ -129,7 +131,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
         pollsProvider: completedPollListProvider,
         isEditing: false,
         shrinkWrap: false,
-        emptyState: EmptyStateWidget(message: L10n.of(context).noPollsFound),
+        emptyState: EmptyContentTypeWidget(message: L10n.of(context).noPollsFound, color: AppColors.brightMagentaColor, contentType: ContentType.poll),
       ),
     );
   }

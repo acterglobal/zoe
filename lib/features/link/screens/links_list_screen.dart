@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
-import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_content_type_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
+import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/features/link/widgets/link_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -63,7 +64,7 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                 linksProvider: linkListSearchProvider,
                 isEditing: false,
                 shrinkWrap: false,
-                emptyState: EmptyStateWidget(message: L10n.of(context).noLinksFound),
+                emptyState: EmptyContentTypeWidget(message: L10n.of(context).noLinksFound, color: Colors.blue, contentType: ContentType.link),
               ),
             ),
           ],
