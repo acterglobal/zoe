@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -11,7 +12,7 @@ import 'package:logging/logging.dart';
 final _log = Logger('zoe_native::support');
 
 void _logListener(LogRecord record) {
-  print('${record.level.name}: ${record.time}: ${record.message}');
+  debugPrint('${record.level.name}: ${record.time}: ${record.message}');
 }
 
 const rustLogKey = 'RUST_LOG';

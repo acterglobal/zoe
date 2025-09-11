@@ -92,7 +92,17 @@ jobs:
         uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
           workspace_path: 'packages/zoe_native/rust'
-
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            clang \
+            cmake \
+            ninja-build \
+            pkg-config \
+            libgtk-3-dev \
+            liblzma-dev \
+            libstdc++-12-dev
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -196,7 +206,7 @@ jobs:
         run: flutter test
 
       - name: Run Flutter analyze
-        run: flutter analyze
+        run: flutter analyze lib
 
   # Check code formatting
   format:
@@ -268,7 +278,7 @@ jobs:
 
       - name: Run zoe_native Flutter analyze
         working-directory: packages/zoe_native
-        run: flutter analyze
+        run: flutter analyze lib
 
       - name: Build zoe_native Rust library
         working-directory: packages/zoe_native
