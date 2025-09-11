@@ -10,7 +10,7 @@ import 'package:zoe/common/widgets/state_widgets/loading_state_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
-import 'package:zoe/common/actions/select_files_actions.dart';
+import 'package:zoe/features/profile/actions/select_profile_actions.dart';
 import 'package:zoe/features/profile/actions/edit_profile_action.dart';
 import 'package:zoe/features/profile/widgets/profile_qr_code_widget.dart';
 import 'package:zoe/features/profile/widgets/profile_user_bio_widget.dart';
@@ -209,12 +209,10 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
   }
 
   void onChangeAvatar(UserModel user) {
-    selectFileSource(
+    selectProfileFileSource(
       context,
+      user.id,
       ref,
-      user.id,
-      user.id,
-      isProfile: true,
       onImageSelected: (path) {
         setState(() {
           selectedImagePath = path;

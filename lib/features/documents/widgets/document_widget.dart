@@ -4,7 +4,7 @@ import 'package:zoe/common/utils/file_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
-import 'package:zoe/common/actions/select_files_actions.dart';
+import 'package:zoe/features/documents/actions/select_documents_actions.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:go_router/go_router.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
-import 'package:zoe/common/actions/select_files_actions.dart';
+import 'package:zoe/features/documents/actions/select_documents_actions.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
