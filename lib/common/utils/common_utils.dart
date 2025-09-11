@@ -38,14 +38,6 @@ class CommonUtils {
     return true;
   }
 
-  static String getNameErrorMessage(BuildContext context, String name) {
-    final l10n = L10n.of(context);
-    if (name.isEmpty) {
-      return l10n.nameCannotBeEmpty;
-    }
-    return l10n.pleaseEnterAValidName;
-  }
-
   static bool isValidUrl(String url) {
     if (url.isEmpty) return false;
 

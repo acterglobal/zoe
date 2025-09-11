@@ -187,11 +187,12 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
   }
 
   Widget _buildNavigationButton(UserModel user) {
+    final l10n = L10n.of(context);
     return ZoePrimaryButton(
       icon: isEditing ? Icons.save_rounded : Icons.person_rounded,
       text: isEditing
-          ? L10n.of(context).saveChanges
-          : L10n.of(context).editProfile,
+          ? l10n.saveChanges
+          : l10n.editProfile,
       onPressed: () {
         if (isEditing) {
           final updatedUser = user.copyWith(

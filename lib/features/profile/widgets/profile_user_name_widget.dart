@@ -72,7 +72,7 @@ class _ProfileUserNameWidgetState extends ConsumerState<ProfileUserNameWidget> {
       });
     } else {
       setState(() {
-        errorText = CommonUtils.getNameErrorMessage(context, name);
+        errorText = L10n.of(context).nameCannotBeEmpty;
       });
     }
   }
