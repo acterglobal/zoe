@@ -28,26 +28,13 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Setup Android NDK
-        uses: nttld/setup-ndk@v1
+      - name: Setup Rust for Android
+        uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          ndk-version: r25c
-          add-to-path: false
-
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: ${{ env.RUST_VERSION }}
-          targets: |
-            aarch64-linux-android
-            armv7-linux-androideabi
-            x86_64-linux-android
-            i686-linux-android
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: rust
+          targets: 'aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android'
+          rust_version: ${{ env.RUST_VERSION }}
+          workspace_path: 'packages/zoe_native/rust'
+          install_android_ndk: true
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -81,19 +68,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust for iOS
+        uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          toolchain: ${{ env.RUST_VERSION }}
-          targets: |
-            aarch64-apple-ios
-            x86_64-apple-ios
-            aarch64-apple-ios-sim
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: rust
+          targets: 'aarch64-apple-ios,x86_64-apple-ios,aarch64-apple-ios-sim'
+          rust_version: ${{ env.RUST_VERSION }}
+          workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -133,16 +113,12 @@ jobs:
             liblzma-dev \
             libstdc++-12-dev
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust for Linux
+        uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          toolchain: ${{ env.RUST_VERSION }}
-          targets: x86_64-unknown-linux-gnu
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: rust
+          targets: 'x86_64-unknown-linux-gnu'
+          rust_version: ${{ env.RUST_VERSION }}
+          workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -173,18 +149,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust for macOS
+        uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          toolchain: ${{ env.RUST_VERSION }}
-          targets: |
-            x86_64-apple-darwin
-            aarch64-apple-darwin
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: rust
+          targets: 'x86_64-apple-darwin,aarch64-apple-darwin'
+          rust_version: ${{ env.RUST_VERSION }}
+          workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -215,16 +185,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust for Windows
+        uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          toolchain: ${{ env.RUST_VERSION }}
-          targets: x86_64-pc-windows-msvc
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: rust
+          targets: 'x86_64-pc-windows-msvc'
+          rust_version: ${{ env.RUST_VERSION }}
+          workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -255,15 +221,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust for testing
+        uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          toolchain: ${{ env.RUST_VERSION }}
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: rust
+          targets: 'x86_64-unknown-linux-gnu'
+          rust_version: ${{ env.RUST_VERSION }}
+          workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -298,11 +261,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust for formatting
+        uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          toolchain: ${{ env.RUST_VERSION }}
-          components: rustfmt
+          targets: 'x86_64-unknown-linux-gnu'
+          rust_version: ${{ env.RUST_VERSION }}
+          workspace_path: 'packages/zoe_native/rust'
+          components: 'rustfmt'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -340,16 +305,12 @@ jobs:
             liblzma-dev \
             libstdc++-12-dev
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust for zoe_native
+        uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          toolchain: ${{ env.RUST_VERSION }}
-          targets: x86_64-unknown-linux-gnu
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: packages/zoe_native/rust
+          targets: 'x86_64-unknown-linux-gnu'
+          rust_version: ${{ env.RUST_VERSION }}
+          workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
