@@ -239,7 +239,7 @@
     "@addDocuments": {},
     "addItem": "Add item",
     "@addItem": {},
-    "noDocumentsFound": "No documents found",
+    "noDocumentsFound": "No documents found!",
     "@noDocumentsFound": {},
     "polls": "Polls",
     "@polls": {},

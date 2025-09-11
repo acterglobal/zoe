@@ -29,45 +29,26 @@ class EmptyStateLineWidget extends StatelessWidget {
     );
   }
 
+  /// Mapping between ContentType and their respective icons
+  static const Map<ContentType, IconData> _iconMap = {
+    ContentType.task: Icons.task_alt_outlined,
+    ContentType.event: Icons.event_rounded,
+    ContentType.document: Icons.insert_drive_file_rounded,
+    ContentType.link: Icons.link_rounded,
+    ContentType.poll: Icons.poll_rounded,
+  };
+
   Widget _buildIcon() {
-    switch (contentType) {
-      case ContentType.task:
-       return Icon(
-          Icons.task_alt_outlined,
-          size: EmptyContentTypeConstants.checkboxSize,
-          color: color.withValues(alpha: 0.2),
-        );
-      case ContentType.event:
-        return Icon(
-          Icons.event_rounded,
-          size: EmptyContentTypeConstants.checkboxSize,
-          color: color.withValues(alpha: 0.2),
-        );
-      case ContentType.document:
-        return Icon(
-          Icons.insert_drive_file_rounded,
-          size: EmptyContentTypeConstants.checkboxSize,
-          color: color.withValues(alpha: 0.2),
-        );
-      case ContentType.link:
-        return Icon(
-          Icons.link_rounded,
-          size: EmptyContentTypeConstants.checkboxSize,
-          color: color.withValues(alpha: 0.2),
-        );
-      case ContentType.poll:
-        return Icon(
-          Icons.poll_rounded,
-          size: EmptyContentTypeConstants.checkboxSize,
-          color: color.withValues(alpha: 0.2),
-        );
-      default:
-        return Icon(
-          Icons.article_rounded,
-          size: EmptyContentTypeConstants.checkboxSize,
-          color: color.withValues(alpha: 0.2),
-        );
-    }
+    final iconData = _iconMap[contentType] ?? Icons.article_rounded;
+    return _buildEmptyIcon(iconData);
+  }
+
+  Widget _buildEmptyIcon(IconData iconData) {
+    return Icon(
+      iconData,
+      size: EmptyContentTypeConstants.checkboxSize,
+      color: color.withValues(alpha: 0.2),
+    );
   }
 
   Widget _buildLine() {
