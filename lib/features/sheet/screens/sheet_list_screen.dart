@@ -62,7 +62,11 @@ class _SheetListScreenState extends ConsumerState<SheetListScreen> {
               child: SheetListWidget(
                 sheetsProvider: sheetListProvider,
                 shrinkWrap: false,
-                emptyState: EmptyStateWidget(message: L10n.of(context).noSheetsFound),
+                emptyState: EmptyStateWidget(
+                  message: L10n.of(context).noSheetsFound,
+                  icon: Icons.article_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
           ],
