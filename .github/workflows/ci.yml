@@ -9,7 +9,6 @@ on:
 
 env:
   FLUTTER_VERSION: '3.35.2'
-  RUST_VERSION: '1.89.0'
 
 jobs:
   # Test and build for Android
@@ -32,7 +31,6 @@ jobs:
         uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
           targets: 'aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android'
-          rust_version: ${{ env.RUST_VERSION }}
           workspace_path: 'packages/zoe_native/rust'
           install_android_ndk: true
 
@@ -45,11 +43,6 @@ jobs:
 
       - name: Install Flutter dependencies
         run: flutter pub get
-
-      - name: Install Rust dependencies
-        run: |
-          cd rust
-          cargo fetch
 
       - name: Setup Android environment
         run: |
@@ -72,7 +65,6 @@ jobs:
         uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
           targets: 'aarch64-apple-ios,x86_64-apple-ios,aarch64-apple-ios-sim'
-          rust_version: ${{ env.RUST_VERSION }}
           workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
@@ -85,11 +77,6 @@ jobs:
       - name: Install Flutter dependencies
         run: flutter pub get
 
-      - name: Install Rust dependencies
-        run: |
-          cd rust
-          cargo fetch
-
       - name: Build for iOS
         run: |
           flutter build ios --debug --no-codesign
@@ -101,23 +88,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Linux dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            clang \
-            cmake \
-            ninja-build \
-            pkg-config \
-            libgtk-3-dev \
-            liblzma-dev \
-            libstdc++-12-dev
-
       - name: Setup Rust for Linux
         uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          targets: 'x86_64-unknown-linux-gnu'
-          rust_version: ${{ env.RUST_VERSION }}
           workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
@@ -132,11 +105,6 @@ jobs:
 
       - name: Install Flutter dependencies
         run: flutter pub get
-
-      - name: Install Rust dependencies
-        run: |
-          cd rust
-          cargo fetch
 
       - name: Build for Linux
         run: |
@@ -153,7 +121,6 @@ jobs:
         uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
           targets: 'x86_64-apple-darwin,aarch64-apple-darwin'
-          rust_version: ${{ env.RUST_VERSION }}
           workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
@@ -168,11 +135,6 @@ jobs:
 
       - name: Install Flutter dependencies
         run: flutter pub get
-
-      - name: Install Rust dependencies
-        run: |
-          cd rust
-          cargo fetch
 
       - name: Build for macOS
         run: |
@@ -189,7 +151,6 @@ jobs:
         uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
           targets: 'x86_64-pc-windows-msvc'
-          rust_version: ${{ env.RUST_VERSION }}
           workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
@@ -205,11 +166,6 @@ jobs:
       - name: Install Flutter dependencies
         run: flutter pub get
 
-      - name: Install Rust dependencies
-        run: |
-          cd rust
-          cargo fetch
-
       - name: Build for Windows
         run: |
           flutter build windows --debug
@@ -224,8 +180,6 @@ jobs:
       - name: Setup Rust for testing
         uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          targets: 'x86_64-unknown-linux-gnu'
-          rust_version: ${{ env.RUST_VERSION }}
           workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
@@ -237,17 +191,7 @@ jobs:
 
       - name: Install Flutter dependencies
         run: flutter pub get
-
-      - name: Install Rust dependencies
-        run: |
-          cd rust
-          cargo fetch
-
-      - name: Run Rust tests
-        run: |
-          cd rust
-          cargo test
-
+      
       - name: Run Flutter tests
         run: flutter test
 
@@ -264,8 +208,6 @@ jobs:
       - name: Setup Rust for formatting
         uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          targets: 'x86_64-unknown-linux-gnu'
-          rust_version: ${{ env.RUST_VERSION }}
           workspace_path: 'packages/zoe_native/rust'
           components: 'rustfmt'
 
@@ -277,9 +219,8 @@ jobs:
           cache: true
 
       - name: Check Rust formatting
-        run: |
-          cd rust
-          cargo fmt --check
+        working-directory: packages/zoe_native
+        run: cargo fmt --check
 
       - name: Check Dart formatting
         run: dart format --set-exit-if-changed .
@@ -288,28 +229,15 @@ jobs:
   # This job tests the zoe_native plugin independently to ensure it builds,
   # passes all tests, and follows code quality standards
   zoe_native_plugin:
+    name: Test zoe_native plugin
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Install Linux dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            clang \
-            cmake \
-            ninja-build \
-            pkg-config \
-            libgtk-3-dev \
-            liblzma-dev \
-            libstdc++-12-dev
-
+        
       - name: Setup Rust for zoe_native
         uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          targets: 'x86_64-unknown-linux-gnu'
-          rust_version: ${{ env.RUST_VERSION }}
           workspace_path: 'packages/zoe_native/rust'
 
       - name: Setup Flutter
@@ -323,41 +251,33 @@ jobs:
         run: flutter config --enable-linux-desktop
 
       - name: Install zoe_native plugin dependencies
-        run: |
-          cd packages/zoe_native
-          flutter pub get
+        working-directory: packages/zoe_native
+        run: flutter pub get
 
       - name: Install Rust dependencies for zoe_native
-        run: |
-          cd packages/zoe_native/rust
-          cargo fetch
+        working-directory: packages/zoe_native
+        run: cargo fetch
 
       - name: Run zoe_native Rust tests
-        run: |
-          cd packages/zoe_native/rust
-          cargo test
+        working-directory: packages/zoe_native
+        run: cargo test
 
       - name: Run zoe_native Flutter tests
-        run: |
-          cd packages/zoe_native
-          flutter test
+        working-directory: packages/zoe_native
+        run: flutter test
 
       - name: Run zoe_native Flutter analyze
-        run: |
-          cd packages/zoe_native
-          flutter analyze
+        working-directory: packages/zoe_native
+        run: flutter analyze
 
       - name: Build zoe_native Rust library
-        run: |
-          cd packages/zoe_native/rust
-          cargo build
+        working-directory: packages/zoe_native
+        run: cargo build
 
       - name: Check zoe_native Rust formatting
-        run: |
-          cd packages/zoe_native/rust
-          cargo fmt --check
+        working-directory: packages/zoe_native
+        run: cargo fmt --check
 
       - name: Check zoe_native Dart formatting
-        run: |
-          cd packages/zoe_native
-          dart format --set-exit-if-changed .
+        working-directory: packages/zoe_native
+        run: dart format --set-exit-if-changed .

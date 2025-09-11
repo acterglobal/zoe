@@ -32,6 +32,7 @@ jobs:
           targets: 'x86_64-unknown-linux-gnu'
           rust_version: ${{ env.RUST_VERSION }}
           workspace_path: 'packages/zoe_native/rust'
+          components: 'rustfmt'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -58,7 +59,7 @@ jobs:
           fi
 
       - name: Verify Rust compilation
-        working-directory: packages/zoe_native/rust
+        working-directory: packages/zoe_native/
         run: cargo check --all
 
       - name: Verify Flutter compilation
@@ -89,19 +90,14 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Install flutter_rust_bridge_codegen
-        run: cargo install flutter_rust_bridge_codegen --version 2.11.1
-
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Test code generation
-        run: flutter_rust_bridge_codegen generate
-
-      - name: Test Rust build
+      - name: Rust tests
+        working-directory: packages/zoe_native
         run: |
-          cd rust
-          cargo build
+          cargo test
 
-      - name: Test Flutter analysis
-        run: flutter analyze lib/core/rust/
+      - name: Flutter tests
+        working-directory: packages/zoe_native
+        run: flutter test
