@@ -17,7 +17,7 @@ class EmptyStateLineWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
-        vertical: EmptyContentTypeConstants.taskLineSpacing,
+        vertical: EmptyContentTypeConstants.sheetLineSpacing,
       ),
       child: Row(
         children: [
@@ -73,7 +73,7 @@ class EmptyStateLineWidget extends StatelessWidget {
   Widget _buildLine() {
     return Expanded(
       child: Container(
-        height: EmptyContentTypeConstants.taskLineHeight,
+        height: EmptyContentTypeConstants.sheetLineHeight,
         decoration: BoxDecoration(
           color: color.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(5),

@@ -7,8 +7,8 @@ class EmptyContentTypeConstants {
   static const double sheetWidth = 200;
   static const double sheetHeight = 220;
   static const double headerHeight = 40;
-  static const double taskLineSpacing = 10;
-  static const double taskLineHeight = 10;
+  static const double sheetLineSpacing = 10;
+  static const double sheetLineHeight = 10;
   static const double checkboxSize = 16;
   static const double checkboxSpacing = 12;
   static const double characterSize = 120;
@@ -24,5 +24,5 @@ class EmptyContentTypeConstants {
   static const double handleRightPosition = -50;
   static const double handleRotation = -pi / 1.3;
   static const int animationDuration = 3000;
-  static const int taskLines = 4;
+  static const int totalSheetLines = 4;
 }

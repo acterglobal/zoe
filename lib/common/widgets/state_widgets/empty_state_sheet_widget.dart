@@ -47,10 +47,7 @@ class EmptyStateSheetWidget extends StatelessWidget {
         color: color.withValues(alpha: 0.05),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
         border: Border(
-          bottom: BorderSide(
-            color: color.withValues(alpha: 0.1),
-            width: 1,
-          ),
+          bottom: BorderSide(color: color.withValues(alpha: 0.1), width: 1),
         ),
       ),
     );
@@ -58,11 +55,8 @@ class EmptyStateSheetWidget extends StatelessWidget {
 
   List<Widget> _buildContentLines() {
     return List.generate(
-      EmptyContentTypeConstants.taskLines,
-      (index) => EmptyStateLineWidget(
-        color: color,
-        contentType: contentType,
-      ),
+      EmptyContentTypeConstants.totalSheetLines,
+      (index) => EmptyStateLineWidget(color: color, contentType: contentType),
     );
   }
 }
