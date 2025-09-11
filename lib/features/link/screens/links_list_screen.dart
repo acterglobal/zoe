@@ -63,11 +63,7 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                 linksProvider: linkListSearchProvider,
                 isEditing: false,
                 shrinkWrap: false,
-                emptyState: EmptyStateWidget(
-                  message: L10n.of(context).noLinksFound,
-                  icon: Icons.link_rounded,
-                  color: Colors.blueAccent,
-                ),
+                emptyState: EmptyStateWidget(message: L10n.of(context).noLinksFound),
               ),
             ),
           ],
