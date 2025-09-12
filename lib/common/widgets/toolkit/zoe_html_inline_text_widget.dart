@@ -205,9 +205,16 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
         ),
       );
     } else {
-      return Listener(
-        onPointerDown: (event) => widget.onTap?.call(),
-        child: _buildViewWidget(),
+      return Stack(
+        children: [
+          _buildViewWidget(),
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: widget.onTap,
+              excludeFromSemantics: true,
+            ),
+          ),
+        ],
       );
     }
   }
