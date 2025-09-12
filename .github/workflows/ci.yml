@@ -159,7 +159,12 @@ jobs:
 
       - name: Build for macOS
         run: |
-          flutter build -v macos --debug --no-codesign
+          flutter build -v macos --debug
+        env:
+          # Disable code signing for CI builds
+          CODE_SIGN_IDENTITY: ""
+          CODE_SIGNING_REQUIRED: "NO"
+          CODE_SIGNING_ALLOWED: "NO"
 
   # Test and build for Windows
   windows:
