@@ -58,7 +58,6 @@ class SheetDetailScreen extends ConsumerWidget {
         floatingActionButton: ZoeSheetFloatingActionButton(
           parentId: sheetId,
           sheetId: sheetId,
-          isSheetDetailScreen: true,
         ),
       ),
     );

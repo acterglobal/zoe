@@ -8,13 +8,11 @@ import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 class ZoeSheetFloatingActionButton extends ConsumerWidget {
   final String parentId;
   final String sheetId;
-  final bool isSheetDetailScreen;
 
   const ZoeSheetFloatingActionButton({
     super.key,
     required this.parentId,
     required this.sheetId,
-    this.isSheetDetailScreen = false,
   });
 
   @override
@@ -23,20 +21,15 @@ class ZoeSheetFloatingActionButton extends ConsumerWidget {
 
     bool isEditing = false;
     if (editContentId != null) {
-      if (isSheetDetailScreen) {
-        // For sheet detail screens, show save state for any content being edited
+      // For content detail screens, show save state only if:
+      // 1. The current content itself is being edited, OR
+      // 2. A child content (belonging to this parent) is being edited
+      if (editContentId == parentId) {
         isEditing = true;
       } else {
-        // For content detail screens, show save state only if:
-        // 1. The current content itself is being edited, OR
-        // 2. A child content (belonging to this parent) is being edited
-        if (editContentId == parentId) {
-          isEditing = true;
-        } else {
-          // Check if the edited content belongs to this parent
-          final editedContent = ref.watch(contentProvider(editContentId));
-          isEditing = editedContent?.parentId == parentId;
-        }
+        // Check if the edited content belongs to this parent
+        final editedContent = ref.watch(contentProvider(editContentId));
+        isEditing = editedContent?.parentId == parentId;
       }
     }
 
