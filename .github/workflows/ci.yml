@@ -84,6 +84,11 @@ jobs:
       - name: Build for iOS
         run: |
           flutter build -v ios --debug --no-codesign
+        env:
+          # Ensure iOS SDK paths are available for Rust compilation
+          DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+          # Set minimum iOS deployment target to avoid warnings
+          IPHONEOS_DEPLOYMENT_TARGET: "12.0"
 
   # Test and build for Linux
   linux:
@@ -106,7 +111,9 @@ jobs:
             pkg-config \
             libgtk-3-dev \
             liblzma-dev \
-            libstdc++-12-dev
+            libstdc++-12-dev \
+            libgstreamer1.0-dev \
+            libgstreamer-plugins-base1.0-dev
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -152,7 +159,7 @@ jobs:
 
       - name: Build for macOS
         run: |
-          flutter build -v macos --debug
+          flutter build -v macos --debug --no-codesign
 
   # Test and build for Windows
   windows:
@@ -166,6 +173,18 @@ jobs:
         with:
           targets: 'x86_64-pc-windows-msvc'
           workspace_path: 'packages/zoe_native/rust'
+
+      - name: Install Windows dependencies
+        run: |
+          # Install vcpkg
+          git clone https://github.com/Microsoft/vcpkg.git C:\vcpkg
+          C:\vcpkg\bootstrap-vcpkg.bat
+          # Install SQLCipher
+          C:\vcpkg\vcpkg.exe install sqlcipher:x64-windows
+          # Set environment variables for Rust to find SQLCipher
+          echo "VCPKG_ROOT=C:\vcpkg" >> $env:GITHUB_ENV
+          echo "SQLCIPHER_LIB_DIR=C:\vcpkg\installed\x64-windows\lib" >> $env:GITHUB_ENV
+          echo "SQLCIPHER_INCLUDE_DIR=C:\vcpkg\installed\x64-windows\include" >> $env:GITHUB_ENV
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -183,6 +202,10 @@ jobs:
       - name: Build for Windows
         run: |
           flutter build -v windows --debug
+        env:
+          VCPKG_ROOT: C:\vcpkg
+          SQLCIPHER_LIB_DIR: C:\vcpkg\installed\x64-windows\lib
+          SQLCIPHER_INCLUDE_DIR: C:\vcpkg\installed\x64-windows\include
 
   # Run tests
   test:
