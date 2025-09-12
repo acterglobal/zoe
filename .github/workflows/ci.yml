@@ -55,8 +55,8 @@ jobs:
 
       - name: Build for Android
         run: |
-          flutter build apk --debug
-          flutter build appbundle --debug
+          flutter build -v apk --debug
+          flutter build -v appbundle --debug
 
   # Test and build for iOS
   ios:
@@ -83,7 +83,7 @@ jobs:
 
       - name: Build for iOS
         run: |
-          flutter build ios --debug --no-codesign
+          flutter build -v ios --debug --no-codesign
 
   # Test and build for Linux
   linux:
@@ -122,7 +122,7 @@ jobs:
 
       - name: Build for Linux
         run: |
-          flutter build linux --debug
+          flutter build -v linux --debug
 
   # Test and build for macOS
   macos:
@@ -152,7 +152,7 @@ jobs:
 
       - name: Build for macOS
         run: |
-          flutter build macos --debug
+          flutter build -v macos --debug
 
   # Test and build for Windows
   windows:
@@ -182,7 +182,7 @@ jobs:
 
       - name: Build for Windows
         run: |
-          flutter build windows --debug
+          flutter build -v windows --debug
 
   # Run tests
   test:
