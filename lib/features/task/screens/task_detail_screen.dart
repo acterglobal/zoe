@@ -141,8 +141,11 @@ class TaskDetailScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(taskListProvider.notifier)
                     .updateTaskTitle(taskId, value),
-                onLongTapText: () =>
-                    showLongTapBottomSheet(context, contentId: taskId),
+                onLongTapText: () => showLongTapBottomSheet(
+                  context,
+                  contentId: taskId,
+                  isDetailScreen: true,
+                ),
               ),
             ),
           ],

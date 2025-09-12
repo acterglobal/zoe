@@ -23,11 +23,13 @@ import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 class PollWidget extends ConsumerWidget {
   final String pollId;
   final bool showSheetName;
+  final bool showOnHomeScreen;
 
   const PollWidget({
     super.key,
     required this.pollId,
     this.showSheetName = true,
+    this.showOnHomeScreen = false,
   });
 
   @override
@@ -122,8 +124,13 @@ class PollWidget extends ConsumerWidget {
                   );
                 }
               },
-              onLongTapText: () =>
-                  showLongTapBottomSheet(context, contentId: pollId),
+              onLongTapText: showOnHomeScreen
+                  ? null
+                  : () => showLongTapBottomSheet(
+                      context,
+                      contentId: pollId,
+                      isDetailScreen: showSheetName,
+                    ),
             ),
           ),
           if (isEditing)

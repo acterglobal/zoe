@@ -24,6 +24,7 @@ void showLongTapBottomSheet(
   BuildContext context, {
   String? contentId,
   String? sheetId,
+  bool isDetailScreen = false,
 }) {
   showModalBottomSheet(
     context: context,
@@ -32,16 +33,25 @@ void showLongTapBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
-    builder: (context) =>
-        LongTapBottomSheetWidget(contentId: contentId, sheetId: sheetId),
+    builder: (context) => LongTapBottomSheetWidget(
+      contentId: contentId,
+      sheetId: sheetId,
+      isDetailScreen: isDetailScreen,
+    ),
   );
 }
 
 class LongTapBottomSheetWidget extends ConsumerWidget {
   final String? contentId;
   final String? sheetId;
+  final bool isDetailScreen;
 
-  const LongTapBottomSheetWidget({super.key, this.contentId, this.sheetId});
+  const LongTapBottomSheetWidget({
+    super.key,
+    this.contentId,
+    this.sheetId,
+    this.isDetailScreen = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -86,7 +96,7 @@ class LongTapBottomSheetWidget extends ConsumerWidget {
       },
       onDelete: () {
         Navigator.of(context).pop();
-        _handleDeleteContent(ref, content);
+        _handleDeleteContent(context, ref, content);
       },
     );
   }
@@ -166,7 +176,9 @@ class LongTapBottomSheetWidget extends ConsumerWidget {
           OptionButtonWidget(
             icon: editIcon,
             title: editTitle,
-            subtitle: sheetId != null ? l10n.editSheetSubtitle : l10n.editContentSubtitle,
+            subtitle: sheetId != null
+                ? l10n.editSheetSubtitle
+                : l10n.editContentSubtitle,
             color: theme.colorScheme.primary,
             onTap: onEdit,
           ),
@@ -188,7 +200,9 @@ class LongTapBottomSheetWidget extends ConsumerWidget {
             title: sheetId != null
                 ? l10n.deleteSheetButton
                 : l10n.deleteContent,
-            subtitle: sheetId != null ? l10n.deleteSheetSubtitle : l10n.deleteContentSubtitle,
+            subtitle: sheetId != null
+                ? l10n.deleteSheetSubtitle
+                : l10n.deleteContentSubtitle,
             color: theme.colorScheme.error,
             onTap: onDelete,
           ),
@@ -309,7 +323,11 @@ class LongTapBottomSheetWidget extends ConsumerWidget {
   }
 
   /// Handle delete content action - delete from appropriate provider
-  void _handleDeleteContent(WidgetRef ref, ContentModel content) {
+  void _handleDeleteContent(
+    BuildContext context,
+    WidgetRef ref,
+    ContentModel content,
+  ) {
     switch (content.type) {
       case ContentType.text:
         ref.read(textListProvider.notifier).deleteText(content.id);
@@ -337,6 +355,7 @@ class LongTapBottomSheetWidget extends ConsumerWidget {
         break;
     }
 
+    if (isDetailScreen) Navigator.of(context).pop();
     // Clear edit mode if this content was being edited
     final editContentId = ref.read(editContentIdProvider);
     if (editContentId == content.id) {

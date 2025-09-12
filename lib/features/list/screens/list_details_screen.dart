@@ -148,8 +148,11 @@ class ListDetailsScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(listsrovider.notifier)
                     .updateListTitle(listId, value),
-                onLongTapText: () =>
-                    showLongTapBottomSheet(context, contentId: listId),
+                onLongTapText: () => showLongTapBottomSheet(
+                  context,
+                  contentId: listId,
+                  isDetailScreen: true,
+                ),
               ),
             ),
           ],

@@ -148,8 +148,11 @@ class TextBlockDetailsScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(textListProvider.notifier)
                     .updateTextTitle(textBlockId, value),
-                onLongTapText: () =>
-                    showLongTapBottomSheet(context, contentId: textBlockId),
+                onLongTapText: () => showLongTapBottomSheet(
+                  context,
+                  contentId: textBlockId,
+                  isDetailScreen: true,
+                ),
               ),
             ),
           ],

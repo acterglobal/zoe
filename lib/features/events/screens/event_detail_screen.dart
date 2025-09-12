@@ -134,8 +134,11 @@ class EventDetailScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(eventListProvider.notifier)
                     .updateEventTitle(eventId, value),
-                onLongTapText: () =>
-                    showLongTapBottomSheet(context, contentId: eventId),
+                onLongTapText: () => showLongTapBottomSheet(
+                  context,
+                  contentId: eventId,
+                  isDetailScreen: true,
+                ),
               ),
             ),
           ],
