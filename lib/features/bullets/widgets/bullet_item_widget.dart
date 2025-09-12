@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_chip_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_display_user_name_view_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
-import 'package:zoe/features/bullets/widgets/bullet_created_by_header_widget.dart';
+import 'package:zoe/features/bullets/widgets/bullet_added_by_header_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -57,7 +57,7 @@ class BulletItemWidget extends ConsumerWidget {
                 children: [
                   _buildBulletItemTitle(context, ref, bulletItem, autoFocus),
                   !showUserName
-                      ? _buildCreatedByAvatarWidget(context, ref, bulletItem)
+                      ? _buildAddedByAvatarWidget(context, ref, bulletItem)
                       : const SizedBox.shrink(),
                 ],
               ),
@@ -69,7 +69,7 @@ class BulletItemWidget extends ConsumerWidget {
         ),
         if (showUserName) ...[
           const SizedBox(height: 2),
-          _buildDisplayCreatedByUserViewWidget(context, ref, bulletItem),
+          _buildDisplayAddedByUserViewWidget(context, ref, bulletItem),
           const SizedBox(height: 6),
 
         ],
@@ -154,7 +154,7 @@ class BulletItemWidget extends ConsumerWidget {
   }
 
   // Builds the created by user avatar
-  Widget _buildCreatedByAvatarWidget(
+  Widget _buildAddedByAvatarWidget(
     BuildContext context,
     WidgetRef ref,
     BulletModel bulletItem,
@@ -169,7 +169,7 @@ class BulletItemWidget extends ConsumerWidget {
   }
 
   // Builds the created by user view
-  Widget _buildDisplayCreatedByUserViewWidget(
+  Widget _buildDisplayAddedByUserViewWidget(
     BuildContext context,
     WidgetRef ref,
     BulletModel bulletItem,
@@ -180,9 +180,9 @@ class BulletItemWidget extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: Row(children: [
-        BulletCreatedByHeaderWidget(iconSize: 16, textSize: 12),
+        BulletAddedByHeaderWidget(iconSize: 16, textSize: 12),
         const SizedBox(width: 8),
-        ZoeDisplayUserNameViewWidget(user: user)
+        ZoeUserAvatarChipWidget(user: user)
       ]),
     );
   }

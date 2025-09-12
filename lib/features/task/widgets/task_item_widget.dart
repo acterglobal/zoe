@@ -5,7 +5,7 @@ import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_display_user_name_view_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_chip_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
@@ -167,24 +167,23 @@ class TaskWidget extends ConsumerWidget {
     );
   }
 
-  // Builds assigned users view
+  /// Gets the valid users for the task
+  List<UserModel> _getValidUsers(WidgetRef ref, TaskModel task) {
+    return task.assignedUsers
+        .map((userId) => ref.watch(getUserByIdProvider(userId)))
+        .whereType<UserModel>()
+        .toList();
+  }
+
   Widget _buildAssignedUsersStackWidget(
     BuildContext context,
     WidgetRef ref,
     TaskModel task,
   ) {
-    final users = [
-      for (final userId in task.assignedUsers)
-        if (ref.watch(getUserByIdProvider(userId)) != null)
-          ref.watch(getUserByIdProvider(userId))!,
-    ];
-
+    final validUsers = _getValidUsers(ref, task);
     return GestureDetector(
-      onTap: () => _buildTaskAssigneesBottomSheet(context, ref, users),
-      child: Padding(
-        padding: const EdgeInsets.only(right: 8),
-        child: ZoeStackedAvatarsWidget(users: users),
-      ),
+      onTap: () => _buildTaskAssigneesBottomSheet(context, ref, validUsers),
+      child: ZoeStackedAvatarsWidget(users: validUsers),
     );
   }
 
@@ -222,26 +221,22 @@ class TaskWidget extends ConsumerWidget {
     TaskModel task,
   ) {
     final theme = Theme.of(context);
-    final users = [
-      for (final userId in task.assignedUsers)
-        if (ref.watch(getUserByIdProvider(userId)) != null)
-          ref.watch(getUserByIdProvider(userId))!,
-    ];
+    final validUsers = _getValidUsers(ref, task);
 
-    if (users.isEmpty) return const SizedBox.shrink();
+    if (validUsers.isEmpty) return const SizedBox.shrink();
     return Wrap(
       spacing: 1,
       runSpacing: 4,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        ...users
+        ...validUsers
             .take(2)
-            .map((user) => ZoeDisplayUserNameViewWidget(user: user)),
-        if (users.length > 2)
+            .map((user) => ZoeUserAvatarChipWidget(user: user)),
+        if (validUsers.length > 2)
           GestureDetector(
-            onTap: () => _buildTaskAssigneesBottomSheet(context, ref, users),
+            onTap: () => _buildTaskAssigneesBottomSheet(context, ref, validUsers),
             child: Text(
-              'view +${users.length - 2}',
+              'view +${validUsers.length - 2}',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                 decoration: TextDecoration.underline,

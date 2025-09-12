@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-class BulletCreatedByHeaderWidget extends StatelessWidget {
+class BulletAddedByHeaderWidget extends StatelessWidget {
   final double? iconSize;
   final double? textSize;
-  const BulletCreatedByHeaderWidget({super.key, this.iconSize = 20, this.textSize = 14});
+  const BulletAddedByHeaderWidget({super.key, this.iconSize = 20, this.textSize = 14});
 
   @override
   Widget build(BuildContext context) {
