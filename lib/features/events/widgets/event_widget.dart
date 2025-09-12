@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
+import 'package:zoe/common/widgets/long_tap_bottom_sheet.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -109,7 +110,7 @@ class EventWidget extends ConsumerWidget {
         AppRoutes.eventDetail.route.replaceAll(':eventId', eventsId),
       ),
       onLongTapText: () =>
-          ref.read(editContentIdProvider.notifier).state = eventsId,
+          showLongTapBottomSheet(context, contentId: eventsId),
     );
   }
 

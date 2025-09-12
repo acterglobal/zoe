@@ -11,6 +11,8 @@ void showDeleteSheetConfirmation(
 ) {
   final sheet = ref.read(sheetProvider(sheetId));
   if (sheet == null) return;
+  // Get the notifier before showing the bottom sheet to avoid ref disposal issues
+  final sheetListNotifier = ref.read(sheetListProvider.notifier);
 
   showModalBottomSheet(
     context: context,
@@ -20,7 +22,7 @@ void showDeleteSheetConfirmation(
       sheetTitle: sheet.title,
       sheetEmoji: sheet.emoji,
       onConfirm: () {
-        ref.read(sheetListProvider.notifier).deleteSheet(sheetId);
+        sheetListNotifier.deleteSheet(sheetId);
         Navigator.of(context).pop();
         Navigator.of(context).pop();
       },

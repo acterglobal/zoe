@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
+import 'package:zoe/common/widgets/long_tap_bottom_sheet.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -122,7 +123,7 @@ class ListWidget extends ConsumerWidget {
         AppRoutes.listDetail.route.replaceAll(':listId', listId),
       ),
       onLongTapText: () =>
-          ref.read(editContentIdProvider.notifier).state = listId,
+          showLongTapBottomSheet(context, contentId: listId),
     );
   }
 

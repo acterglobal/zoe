@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
+import 'package:zoe/common/widgets/long_tap_bottom_sheet.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
@@ -25,13 +26,9 @@ class TextWidget extends ConsumerWidget {
     if (textContent == null) return const SizedBox.shrink();
 
     /// Builds the text content widget
-    return GestureDetector(
-      onLongPress: () =>
-          ref.read(editContentIdProvider.notifier).state = textId,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: _buildTextContent(context, ref, textContent),
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: _buildTextContent(context, ref, textContent),
     );
   }
 
@@ -121,6 +118,7 @@ class TextWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.textBlockDetails.route.replaceAll(':textBlockId', textId),
       ),
+      onLongTapText: () => showLongTapBottomSheet(context, contentId: textId),
     );
   }
 

@@ -4,6 +4,7 @@ import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
+import 'package:zoe/common/widgets/long_tap_bottom_sheet.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
@@ -123,8 +124,7 @@ class LinkWidget extends ConsumerWidget {
       ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
       onTextChanged: (value) =>
           ref.read(linkListProvider.notifier).updateLinkTitle(linkId, value),
-      onLongTapText: () =>
-          ref.read(editContentIdProvider.notifier).state = linkId,
+      onLongTapText: () => showLongTapBottomSheet(context, contentId: linkId),
     );
   }
 

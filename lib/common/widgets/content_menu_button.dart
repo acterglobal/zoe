@@ -5,7 +5,6 @@ import 'package:zoe/common/models/menu_item_data_model.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
-import 'package:zoe/features/sheet/actions/delete_sheet.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class ContentMenuButton extends ConsumerWidget {
@@ -66,15 +65,7 @@ class ContentMenuButton extends ConsumerWidget {
         title: L10n.of(context).share,
         subtitle: L10n.of(context).shareThisContent,
       ),
-      MenuItemDataModel(
-        action: ContentMenuAction.delete,
-        icon: Icons.delete_rounded,
-        title: L10n.of(context).delete,
-        subtitle: L10n.of(context).deleteThisContent,
-        isDestructive: true,
-      ),
     ]);
-
     return items;
   }
 
@@ -135,11 +126,6 @@ class ContentMenuButton extends ConsumerWidget {
       context: context,
       parentId: parentId,
       isSheet: showConnectOption,
-    ),
-    ContentMenuAction.delete => showDeleteSheetConfirmation(
-      context,
-      ref,
-      parentId,
     ),
   };
 }

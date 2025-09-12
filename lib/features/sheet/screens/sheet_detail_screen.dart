@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
+import 'package:zoe/common/widgets/long_tap_bottom_sheet.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -128,7 +129,7 @@ class SheetDetailScreen extends ConsumerWidget {
                   () => updateSheetTitle(ref, sheetId, value),
                 ),
                 onLongTapText: () =>
-                    ref.read(editContentIdProvider.notifier).state = sheetId,
+                    showLongTapBottomSheet(context, sheetId: sheetId),
               ),
             ),
           ],

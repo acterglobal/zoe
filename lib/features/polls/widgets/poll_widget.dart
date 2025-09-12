@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
+import 'package:zoe/common/widgets/long_tap_bottom_sheet.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
@@ -122,7 +123,7 @@ class PollWidget extends ConsumerWidget {
                 }
               },
               onLongTapText: () =>
-                  ref.read(editContentIdProvider.notifier).state = pollId,
+                  showLongTapBottomSheet(context, contentId: pollId),
             ),
           ),
           if (isEditing)
