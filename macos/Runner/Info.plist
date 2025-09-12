@@ -36,5 +36,12 @@
     <string>Zoe needs access to your documents folder to allow you to add and manage document files.</string>
     <key>NSDesktopFolderUsageDescription</key>
     <string>Zoe needs access to your desktop folder to allow you to add and manage document files.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+    </dict>
 </dict>
 </plist>
