@@ -180,18 +180,6 @@ jobs:
           targets: 'x86_64-pc-windows-msvc'
           workspace_path: 'packages/zoe_native/rust'
 
-      - name: Install Windows dependencies
-        run: |
-          # Install vcpkg
-          git clone https://github.com/Microsoft/vcpkg.git C:\vcpkg
-          C:\vcpkg\bootstrap-vcpkg.bat
-          # Install SQLCipher
-          C:\vcpkg\vcpkg.exe install sqlcipher:x64-windows
-          # Set environment variables for Rust to find SQLCipher
-          echo "VCPKG_ROOT=C:\vcpkg" >> $env:GITHUB_ENV
-          echo "SQLCIPHER_LIB_DIR=C:\vcpkg\installed\x64-windows\lib" >> $env:GITHUB_ENV
-          echo "SQLCIPHER_INCLUDE_DIR=C:\vcpkg\installed\x64-windows\include" >> $env:GITHUB_ENV
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -208,10 +196,6 @@ jobs:
       - name: Build for Windows
         run: |
           flutter build -v windows --debug
-        env:
-          VCPKG_ROOT: C:\vcpkg
-          SQLCIPHER_LIB_DIR: C:\vcpkg\installed\x64-windows\lib
-          SQLCIPHER_INCLUDE_DIR: C:\vcpkg\installed\x64-windows\include
 
   # Run tests
   test:
