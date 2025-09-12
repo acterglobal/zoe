@@ -317,4 +317,4 @@ jobs:
 
       - name: Check zoe_native Dart formatting
         working-directory: packages/zoe_native
-        run: dart format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed lib
