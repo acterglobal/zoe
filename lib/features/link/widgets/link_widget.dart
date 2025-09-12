@@ -29,13 +29,9 @@ class LinkWidget extends ConsumerWidget {
     if (linkContent == null) return const SizedBox.shrink();
 
     /// Builds the link content widget
-    return GestureDetector(
-      onLongPress: () =>
-          ref.read(editContentIdProvider.notifier).state = linkId,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: _buildLinkContent(context, ref, linkContent),
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: _buildLinkContent(context, ref, linkContent),
     );
   }
 
@@ -127,6 +123,8 @@ class LinkWidget extends ConsumerWidget {
       ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
       onTextChanged: (value) =>
           ref.read(linkListProvider.notifier).updateLinkTitle(linkId, value),
+      onLongTapText: () =>
+          ref.read(editContentIdProvider.notifier).state = linkId,
     );
   }
 

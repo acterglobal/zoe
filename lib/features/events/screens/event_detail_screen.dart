@@ -113,51 +113,49 @@ class EventDetailScreen extends ConsumerWidget {
     EventModel event,
     bool isEditing,
   ) {
-    return GestureDetector(
-      onLongPress: () =>
-          ref.read(editContentIdProvider.notifier).state = eventId,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ZoeInlineTextEditWidget(
-                  hintText: L10n.of(context).title,
-                  isEditing: isEditing,
-                  text: event.title,
-                  textStyle: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurface,
-                    height: 1.2,
-                  ),
-                  onTextChanged: (value) => ref
-                      .read(eventListProvider.notifier)
-                      .updateEventTitle(eventId, value),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ZoeInlineTextEditWidget(
+                hintText: L10n.of(context).title,
+                isEditing: isEditing,
+                text: event.title,
+                textStyle: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  height: 1.2,
                 ),
+                onTextChanged: (value) => ref
+                    .read(eventListProvider.notifier)
+                    .updateEventTitle(eventId, value),
+                onLongTapText: () =>
+                    ref.read(editContentIdProvider.notifier).state = eventId,
               ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ZoeHtmlTextEditWidget(
-            hintText: L10n.of(context).addADescription,
-            isEditing: isEditing,
-            description: event.description,
-            textStyle: Theme.of(context).textTheme.bodyLarge,
-            editorId: 'event-description-$eventId',
-            // Add unique editor ID
-            onContentChanged: (description) => Future.microtask(
-              () => ref
-                  .read(eventListProvider.notifier)
-                  .updateEventDescription(eventId, description),
             ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        ZoeHtmlTextEditWidget(
+          hintText: L10n.of(context).addADescription,
+          isEditing: isEditing,
+          description: event.description,
+          textStyle: Theme.of(context).textTheme.bodyLarge,
+          editorId: 'event-description-$eventId',
+          // Add unique editor ID
+          onContentChanged: (description) => Future.microtask(
+            () => ref
+                .read(eventListProvider.notifier)
+                .updateEventDescription(eventId, description),
           ),
-          const SizedBox(height: 16),
-          EventDetailsAdditionalFields(event: event, isEditing: isEditing),
-        ],
-      ),
+        ),
+        const SizedBox(height: 16),
+        EventDetailsAdditionalFields(event: event, isEditing: isEditing),
+      ],
     );
   }
 }

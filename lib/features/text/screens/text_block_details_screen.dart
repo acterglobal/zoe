@@ -112,64 +112,63 @@ class TextBlockDetailsScreen extends ConsumerWidget {
     TextModel textBlock,
     bool isEditing,
   ) {
-    return GestureDetector(
-      onLongPress: () =>
-          ref.read(editContentIdProvider.notifier).state = textBlockId,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              EmojiWidget(
-                isEditing: isEditing,
-                size: 36,
-                emoji: textBlock.emoji ?? '𝑻',
-                onTap: (currentEmoji) => showCustomEmojiPicker(
-                  context,
-                  ref,
-                  onEmojiSelected: (emoji) {
-                    ref
-                        .read(textListProvider.notifier)
-                        .updateTextEmoji(textBlockId, emoji);
-                  },
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: ZoeInlineTextEditWidget(
-                  hintText: L10n.of(context).title,
-                  isEditing: isEditing,
-                  text: textBlock.title,
-                  textStyle: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurface,
-                    height: 1.2,
-                  ),
-                  onTextChanged: (value) => ref
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            EmojiWidget(
+              isEditing: isEditing,
+              size: 36,
+              emoji: textBlock.emoji ?? '𝑻',
+              onTap: (currentEmoji) => showCustomEmojiPicker(
+                context,
+                ref,
+                onEmojiSelected: (emoji) {
+                  ref
                       .read(textListProvider.notifier)
-                      .updateTextTitle(textBlockId, value),
-                ),
+                      .updateTextEmoji(textBlockId, emoji);
+                },
               ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ZoeHtmlTextEditWidget(
-            hintText: L10n.of(context).addADescription,
-            isEditing: isEditing,
-            description: textBlock.description,
-            textStyle: Theme.of(context).textTheme.bodyLarge,
-            editorId: 'text-block-description-$textBlockId',
-            // Add unique editor ID
-            onContentChanged: (description) => Future.microtask(
-              () => ref
-                  .read(textListProvider.notifier)
-                  .updateTextDescription(textBlockId, description),
             ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ZoeInlineTextEditWidget(
+                hintText: L10n.of(context).title,
+                isEditing: isEditing,
+                text: textBlock.title,
+                textStyle: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  height: 1.2,
+                ),
+                onTextChanged: (value) => ref
+                    .read(textListProvider.notifier)
+                    .updateTextTitle(textBlockId, value),
+                onLongTapText: () =>
+                    ref.read(editContentIdProvider.notifier).state =
+                        textBlockId,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        ZoeHtmlTextEditWidget(
+          hintText: L10n.of(context).addADescription,
+          isEditing: isEditing,
+          description: textBlock.description,
+          textStyle: Theme.of(context).textTheme.bodyLarge,
+          editorId: 'text-block-description-$textBlockId',
+          // Add unique editor ID
+          onContentChanged: (description) => Future.microtask(
+            () => ref
+                .read(textListProvider.notifier)
+                .updateTextDescription(textBlockId, description),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

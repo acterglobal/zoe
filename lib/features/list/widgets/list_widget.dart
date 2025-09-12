@@ -40,13 +40,9 @@ class ListWidget extends ConsumerWidget {
     final list = ref.watch(listItemProvider(listId));
     if (list == null) return const SizedBox.shrink();
 
-    return GestureDetector(
-      onLongPress: () =>
-          ref.read(editContentIdProvider.notifier).state = listId,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: _buildListContent(context, ref, list),
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: _buildListContent(context, ref, list),
     );
   }
 
@@ -125,6 +121,8 @@ class ListWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.listDetail.route.replaceAll(':listId', listId),
       ),
+      onLongTapText: () =>
+          ref.read(editContentIdProvider.notifier).state = listId,
     );
   }
 

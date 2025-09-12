@@ -112,61 +112,59 @@ class TaskDetailScreen extends ConsumerWidget {
     TaskModel task,
     bool isEditing,
   ) {
-    return GestureDetector(
-      onLongPress: () =>
-          ref.read(editContentIdProvider.notifier).state = taskId,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Transform.scale(
-                  scale: 1.5,
-                  child: TaskCheckboxWidget(task: task),
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Transform.scale(
+                scale: 1.5,
+                child: TaskCheckboxWidget(task: task),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: ZoeInlineTextEditWidget(
-                  hintText: L10n.of(context).title,
-                  isEditing: isEditing,
-                  text: task.title,
-                  textStyle: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurface,
-                    height: 1.2,
-                  ),
-                  onTextChanged: (value) => ref
-                      .read(taskListProvider.notifier)
-                      .updateTaskTitle(taskId, value),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ZoeHtmlTextEditWidget(
-            hintText: L10n.of(context).addADescription,
-            isEditing: isEditing,
-            description: task.description,
-            textStyle: Theme.of(context).textTheme.bodyLarge,
-            editorId: 'task-description-$taskId',
-            // Add unique editor ID
-            onContentChanged: (description) => Future.microtask(
-              () => ref
-                  .read(taskListProvider.notifier)
-                  .updateTaskDescription(taskId, description),
             ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: ZoeInlineTextEditWidget(
+                hintText: L10n.of(context).title,
+                isEditing: isEditing,
+                text: task.title,
+                textStyle: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  height: 1.2,
+                ),
+                onTextChanged: (value) => ref
+                    .read(taskListProvider.notifier)
+                    .updateTaskTitle(taskId, value),
+                onLongTapText: () =>
+                    ref.read(editContentIdProvider.notifier).state = taskId,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        ZoeHtmlTextEditWidget(
+          hintText: L10n.of(context).addADescription,
+          isEditing: isEditing,
+          description: task.description,
+          textStyle: Theme.of(context).textTheme.bodyLarge,
+          editorId: 'task-description-$taskId',
+          // Add unique editor ID
+          onContentChanged: (description) => Future.microtask(
+            () => ref
+                .read(taskListProvider.notifier)
+                .updateTaskDescription(taskId, description),
           ),
-          const SizedBox(height: 16),
-          TaskDetailsAdditionalFields(task: task, isEditing: isEditing),
-          const SizedBox(height: 16),
-          TaskAssigneesWidget(task: task, isEditing: isEditing),
-        ],
-      ),
+        ),
+        const SizedBox(height: 16),
+        TaskDetailsAdditionalFields(task: task, isEditing: isEditing),
+        const SizedBox(height: 16),
+        TaskAssigneesWidget(task: task, isEditing: isEditing),
+      ],
     );
   }
 }

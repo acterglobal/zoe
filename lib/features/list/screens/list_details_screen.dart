@@ -112,64 +112,62 @@ class ListDetailsScreen extends ConsumerWidget {
     ListModel list,
     bool isEditing,
   ) {
-    return GestureDetector(
-      onLongPress: () =>
-          ref.read(editContentIdProvider.notifier).state = listId,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              EmojiWidget(
-                isEditing: isEditing,
-                emoji: list.emoji ?? '🔸',
-                size: 36,
-                onTap: (currentEmoji) => showCustomEmojiPicker(
-                  context,
-                  ref,
-                  onEmojiSelected: (emoji) {
-                    ref
-                        .read(listsrovider.notifier)
-                        .updateListEmoji(listId, emoji);
-                  },
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: ZoeInlineTextEditWidget(
-                  hintText: L10n.of(context).title,
-                  isEditing: isEditing,
-                  text: list.title,
-                  textStyle: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurface,
-                    height: 1.2,
-                  ),
-                  onTextChanged: (value) => ref
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            EmojiWidget(
+              isEditing: isEditing,
+              emoji: list.emoji ?? '🔸',
+              size: 36,
+              onTap: (currentEmoji) => showCustomEmojiPicker(
+                context,
+                ref,
+                onEmojiSelected: (emoji) {
+                  ref
                       .read(listsrovider.notifier)
-                      .updateListTitle(listId, value),
-                ),
+                      .updateListEmoji(listId, emoji);
+                },
               ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ZoeHtmlTextEditWidget(
-            hintText: L10n.of(context).addADescription,
-            isEditing: isEditing,
-            description: list.description,
-            textStyle: Theme.of(context).textTheme.bodyLarge,
-            editorId: 'list-description-$listId',
-            // Add unique editor ID
-            onContentChanged: (description) => Future.microtask(
-              () => ref
-                  .read(listsrovider.notifier)
-                  .updateListDescription(listId, description),
             ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ZoeInlineTextEditWidget(
+                hintText: L10n.of(context).title,
+                isEditing: isEditing,
+                text: list.title,
+                textStyle: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  height: 1.2,
+                ),
+                onTextChanged: (value) => ref
+                    .read(listsrovider.notifier)
+                    .updateListTitle(listId, value),
+                onLongTapText: () =>
+                    ref.read(editContentIdProvider.notifier).state = listId,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        ZoeHtmlTextEditWidget(
+          hintText: L10n.of(context).addADescription,
+          isEditing: isEditing,
+          description: list.description,
+          textStyle: Theme.of(context).textTheme.bodyLarge,
+          editorId: 'list-description-$listId',
+          // Add unique editor ID
+          onContentChanged: (description) => Future.microtask(
+            () => ref
+                .read(listsrovider.notifier)
+                .updateListDescription(listId, description),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

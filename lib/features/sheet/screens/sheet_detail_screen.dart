@@ -92,65 +92,63 @@ class SheetDetailScreen extends ConsumerWidget {
     if (sheet == null) return const SizedBox.shrink();
     final usersInSheet = ref.watch(listOfUsersBySheetIdProvider(sheetId));
 
-    return GestureDetector(
-      onLongPress: () =>
-          ref.read(editContentIdProvider.notifier).state = sheetId,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              EmojiWidget(
-                isEditing: isEditing,
-                emoji: sheet.emoji,
-                size: 32,
-                onTap: (emoji) {
-                  showCustomEmojiPicker(
-                    context,
-                    ref,
-                    onEmojiSelected: (emoji) {
-                      updateSheetEmoji(ref, sheetId, emoji);
-                    },
-                  );
-                },
-              ),
-              const SizedBox(width: 4),
-              Expanded(
-                child: ZoeInlineTextEditWidget(
-                  hintText: L10n.of(context).title,
-                  isEditing: isEditing,
-                  text: sheet.title,
-                  textStyle: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurface,
-                    height: 1.2,
-                  ),
-                  onTextChanged: (value) => Future.microtask(
-                    () => updateSheetTitle(ref, sheetId, value),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          if (usersInSheet.isNotEmpty) ...[
-            _buildUsersCountWidget(context, usersInSheet, ref),
-            const SizedBox(height: 8),
-          ],
-          ZoeHtmlTextEditWidget(
-            hintText: L10n.of(context).addADescription,
-            isEditing: isEditing,
-            description: sheet.description,
-            textStyle: Theme.of(context).textTheme.bodyLarge,
-            editorId: 'sheet-description-$sheetId', // Add unique editor ID
-            onContentChanged: (description) => Future.microtask(
-              () => updateSheetDescription(ref, sheetId, description),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            EmojiWidget(
+              isEditing: isEditing,
+              emoji: sheet.emoji,
+              size: 32,
+              onTap: (emoji) {
+                showCustomEmojiPicker(
+                  context,
+                  ref,
+                  onEmojiSelected: (emoji) {
+                    updateSheetEmoji(ref, sheetId, emoji);
+                  },
+                );
+              },
             ),
-          ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: ZoeInlineTextEditWidget(
+                hintText: L10n.of(context).title,
+                isEditing: isEditing,
+                text: sheet.title,
+                textStyle: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  height: 1.2,
+                ),
+                onTextChanged: (value) => Future.microtask(
+                  () => updateSheetTitle(ref, sheetId, value),
+                ),
+                onLongTapText: () =>
+                    ref.read(editContentIdProvider.notifier).state = sheetId,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        if (usersInSheet.isNotEmpty) ...[
+          _buildUsersCountWidget(context, usersInSheet, ref),
+          const SizedBox(height: 8),
         ],
-      ),
+        ZoeHtmlTextEditWidget(
+          hintText: L10n.of(context).addADescription,
+          isEditing: isEditing,
+          description: sheet.description,
+          textStyle: Theme.of(context).textTheme.bodyLarge,
+          editorId: 'sheet-description-$sheetId', // Add unique editor ID
+          onContentChanged: (description) => Future.microtask(
+            () => updateSheetDescription(ref, sheetId, description),
+          ),
+        ),
+      ],
     );
   }
 

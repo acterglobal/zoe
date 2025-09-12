@@ -95,11 +95,7 @@ class PollDetailsScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
-          GestureDetector(
-            onLongPress: () =>
-                ref.read(editContentIdProvider.notifier).state = pollId,
-            child: PollWidget(pollId: pollId),
-          ),
+          PollWidget(pollId: pollId),
           const SizedBox(height: 16),
           ContentWidget(parentId: pollId, sheetId: poll.sheetId),
         ],

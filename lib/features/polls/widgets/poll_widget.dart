@@ -35,11 +35,7 @@ class PollWidget extends ConsumerWidget {
 
     if (poll == null) return const SizedBox.shrink();
 
-    return GestureDetector(
-      onLongPress: () =>
-          ref.read(editContentIdProvider.notifier).state = pollId,
-      child: _buildPollContent(context, ref, poll),
-    );
+    return _buildPollContent(context, ref, poll);
   }
 
   Widget _buildPollContent(
@@ -125,6 +121,8 @@ class PollWidget extends ConsumerWidget {
                   );
                 }
               },
+              onLongTapText: () =>
+                  ref.read(editContentIdProvider.notifier).state = pollId,
             ),
           ),
           if (isEditing)
