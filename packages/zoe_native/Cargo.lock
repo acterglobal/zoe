@@ -255,6 +255,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "async-broadcast"
+version = "0.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "435a87a52755b8f27fcf321ac4f04b2802e337c8c4872923137471ec39c37532"
+dependencies = [
+ "event-listener",
+ "event-listener-strategy",
+ "futures-core",
+ "pin-project-lite",
+]
+
+[[package]]
 name = "async-compat"
 version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -805,6 +817,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "concurrent-queue"
+version = "2.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4ca0197aee26d1ae37445ee532fefce43251d24cc7c166799f4d46817f1d3973"
+dependencies = [
+ "crossbeam-utils",
+]
+
+[[package]]
 name = "console_error_panic_hook"
 version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1350,6 +1371,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "event-listener"
+version = "5.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e13b66accf52311f30a0db42147dadea9850cb48cd070028831ae5f5d4b856ab"
+dependencies = [
+ "concurrent-queue",
+ "parking",
+ "pin-project-lite",
+]
+
+[[package]]
+name = "event-listener-strategy"
+version = "0.5.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8be9f3dfaaffdae2972880079a491a1a8bb7cbed0b8dd7a347f668b4150a3b93"
+dependencies = [
+ "event-listener",
+ "pin-project-lite",
+]
+
+[[package]]
 name = "extend"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1487,7 +1529,7 @@ dependencies = [
 [[package]]
 name = "forward-compatible-enum"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#4fe842879e6931f91eef482854e6123621b5e9d8"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#d1af59d064e9a8f73ab7870c3904e3fc9f90c630"
 dependencies = [
  "postcard",
  "proc-macro2",
@@ -2070,9 +2112,9 @@ dependencies = [
 
 [[package]]
 name = "iana-time-zone"
-version = "0.1.63"
+version = "0.1.64"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b0c919e5debc312ad217002b8048a17b7d83f80703865bbfcfebb0458b0b27d8"
+checksum = "33e57f83510bb73707521ebaffa789ec8caf86f9657cad665b092b581d40e9fb"
 dependencies = [
  "android_system_properties",
  "core-foundation-sys",
@@ -2080,7 +2122,7 @@ dependencies = [
  "js-sys",
  "log",
  "wasm-bindgen",
- "windows-core 0.61.2",
+ "windows-core 0.62.0",
 ]
 
 [[package]]
@@ -3356,39 +3398,37 @@ checksum = "d05e27ee213611ffe7d6348b942e8f942b37114c00cc03cec254295a4a17852e"
 
 [[package]]
 name = "opentelemetry"
-version = "0.26.0"
+version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "570074cc999d1a58184080966e5bd3bf3a9a4af650c3b05047c2621e7405cd17"
+checksum = "aaf416e4cb72756655126f7dd7bb0af49c674f4c1b9903e80c009e0c37e552e6"
 dependencies = [
  "futures-core",
  "futures-sink",
  "js-sys",
- "once_cell",
  "pin-project-lite",
- "thiserror 1.0.69",
+ "thiserror 2.0.16",
+ "tracing",
 ]
 
 [[package]]
 name = "opentelemetry-semantic-conventions"
-version = "0.16.0"
+version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1cefe0543875379e47eb5f1e68ff83f45cc41366a92dfd0d073d513bf68e9a05"
+checksum = "83d059a296a47436748557a353c5e6c5705b9470ef6c95cfc52c21a8814ddac2"
 
 [[package]]
 name = "opentelemetry_sdk"
-version = "0.26.0"
+version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d2c627d9f4c9cdc1f21a29ee4bfbd6028fcb8bcf2a857b43f3abdf72c9c862f3"
+checksum = "11f644aa9e5e31d11896e024305d7e3c98a88884d9f8919dbf37a9991bc47a4b"
 dependencies = [
- "async-trait",
  "futures-channel",
  "futures-executor",
  "futures-util",
- "once_cell",
  "opentelemetry",
  "percent-encoding",
- "rand 0.8.5",
- "thiserror 1.0.69",
+ "rand 0.9.2",
+ "thiserror 2.0.16",
 ]
 
 [[package]]
@@ -4279,9 +4319,9 @@ dependencies = [
 
 [[package]]
 name = "resolv-conf"
-version = "0.7.4"
+version = "0.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95325155c684b1c89f7765e30bc1c42e4a6da51ca513615660cb8a62ef9a88e3"
+checksum = "6b3789b30bd25ba102de4beabd95d21ac45b69b1be7d14522bab988c526d6799"
 
 [[package]]
 name = "ring"
@@ -4549,10 +4589,11 @@ checksum = "cd0b0ec5f1c1ca621c432a25813d8d60c88abe6d3e08a3eb9cf37d97a0fe3d73"
 
 [[package]]
 name = "serde"
-version = "1.0.219"
+version = "1.0.221"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5f0e2c6ed6606019b4e29e69dbaba95b11854410e5347d525002456dbbb786b6"
+checksum = "341877e04a22458705eb4e131a1508483c877dca2792b3781d4e5d8a6019ec43"
 dependencies = [
+ "serde_core",
  "serde_derive",
 ]
 
@@ -4566,10 +4607,19 @@ dependencies = [
 ]
 
 [[package]]
-name = "serde_derive"
-version = "1.0.219"
+name = "serde_core"
+version = "1.0.221"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5b0276cf7f2c73365f7157c8123c21cd9a50fbbd844757af28ca1f5925fc2a00"
+checksum = "0c459bc0a14c840cb403fc14b148620de1e0778c96ecd6e0c8c3cacb6d8d00fe"
+dependencies = [
+ "serde_derive",
+]
+
+[[package]]
+name = "serde_derive"
+version = "1.0.221"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d6185cf75117e20e62b1ff867b9518577271e58abe0037c40bb4794969355ab0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -4578,14 +4628,14 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.143"
+version = "1.0.144"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d401abef1d108fbd9cbaebc3e46611f4b1021f714a0597a71f41ee463f5f4a5a"
+checksum = "56177480b00303e689183f110b4e727bb4211d692c62d4fcd16d02be93077d40"
 dependencies = [
  "itoa",
  "memchr",
  "ryu",
- "serde",
+ "serde_core",
 ]
 
 [[package]]
@@ -4950,9 +5000,9 @@ checksum = "7b2093cf4c8eb1e67749a6762251bc9cd836b6fc171623bd0a9d324d37af2417"
 
 [[package]]
 name = "tarpc"
-version = "0.36.0"
+version = "0.37.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d6d259ae043d6480431fdef275cde94455179c9ab7dca1cf01a965902b5262dc"
+checksum = "e5cb86a4b5b941909e9896289c01b46ff0bec756b01f366b0d5490a5e8ed7871"
 dependencies = [
  "anyhow",
  "fnv",
@@ -5391,9 +5441,9 @@ dependencies = [
 
 [[package]]
 name = "tracing-opentelemetry"
-version = "0.27.0"
+version = "0.31.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc58af5d3f6c5811462cabb3289aec0093f7338e367e5a33d28c0433b3c7360b"
+checksum = "ddcf5959f39507d0d04d6413119c04f33b623f4f951ebcbdddddfad2d0623a9c"
 dependencies = [
  "js-sys",
  "once_cell",
@@ -6515,7 +6565,7 @@ dependencies = [
 [[package]]
 name = "zoe-app-primitives"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#4fe842879e6931f91eef482854e6123621b5e9d8"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#d1af59d064e9a8f73ab7870c3904e3fc9f90c630"
 dependencies = [
  "blake3",
  "flutter_rust_bridge",
@@ -6533,7 +6583,7 @@ dependencies = [
 [[package]]
 name = "zoe-blob-store"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#4fe842879e6931f91eef482854e6123621b5e9d8"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#d1af59d064e9a8f73ab7870c3904e3fc9f90c630"
 dependencies = [
  "anyhow",
  "chrono",
@@ -6557,9 +6607,10 @@ dependencies = [
 [[package]]
 name = "zoe-client"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#4fe842879e6931f91eef482854e6123621b5e9d8"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#d1af59d064e9a8f73ab7870c3904e3fc9f90c630"
 dependencies = [
  "anyhow",
+ "async-broadcast",
  "async-once-cell",
  "async-stream",
  "async-trait",
@@ -6599,7 +6650,7 @@ dependencies = [
 [[package]]
 name = "zoe-client-storage"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#4fe842879e6931f91eef482854e6123621b5e9d8"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#d1af59d064e9a8f73ab7870c3904e3fc9f90c630"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -6619,7 +6670,7 @@ dependencies = [
 [[package]]
 name = "zoe-encrypted-storage"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#4fe842879e6931f91eef482854e6123621b5e9d8"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#d1af59d064e9a8f73ab7870c3904e3fc9f90c630"
 dependencies = [
  "aead",
  "aes-gcm",
@@ -6632,7 +6683,7 @@ dependencies = [
 [[package]]
 name = "zoe-state-machine"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#4fe842879e6931f91eef482854e6123621b5e9d8"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#d1af59d064e9a8f73ab7870c3904e3fc9f90c630"
 dependencies = [
  "blake3",
  "ed25519-dalek",
@@ -6651,7 +6702,7 @@ dependencies = [
 [[package]]
 name = "zoe-wire-protocol"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#4fe842879e6931f91eef482854e6123621b5e9d8"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#d1af59d064e9a8f73ab7870c3904e3fc9f90c630"
 dependencies = [
  "anyhow",
  "argon2",
