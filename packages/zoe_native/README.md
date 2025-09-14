@@ -31,7 +31,7 @@ This plugin integrates with:
 
 tl;dr command:
 ```
-flutter_rust_bridge_codegen generate && cargo test && flutter test
+cargo update && flutter_rust_bridge_codegen generate && cargo test && flutter test
 ```
 
 To update Rust dependencies, run:

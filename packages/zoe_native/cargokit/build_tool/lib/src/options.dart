@@ -231,10 +231,19 @@ class CargokitCrateOptions {
 }
 
 class CargokitUserOptions {
-  // When Rustup is installed always build locally unless user opts into
-  // using precompiled binaries.
+  // Default behavior: Always use precompiled binaries when available.
+  // This provides the best user experience by avoiding the need to install Rust.
+  //
+  // To disable precompiled binaries and force local compilation:
+  // 1. Set environment variable: CARGOKIT_DISABLE_PRECOMPILED_BINARIES=1
+  // 2. Or create cargokit_options.yaml file in your project root with:
+  //    use_precompiled_binaries: false
   static bool defaultUsePrecompiledBinaries() {
-    return Rustup.executablePath() == null;
+    // Check environment variable first (useful for CI)
+    if (Platform.environment['CARGOKIT_DISABLE_PRECOMPILED_BINARIES'] == '1') {
+      return false;
+    }
+    return true;
   }
 
   CargokitUserOptions({

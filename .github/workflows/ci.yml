@@ -9,6 +9,8 @@ on:
 
 env:
   FLUTTER_VERSION: '3.35.2'
+  # Disable precompiled binaries in CI to ensure we test actual compilation
+  CARGOKIT_DISABLE_PRECOMPILED_BINARIES: '1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -158,14 +160,23 @@ jobs:
       - name: Install Flutter dependencies
         run: flutter pub get
 
+      - name: Create CI xcconfig to disable code signing
+        run: |
+          cat > macos/Runner/Configs/CI.xcconfig << EOF
+          #include "Debug.xcconfig"
+          CODE_SIGN_IDENTITY = 
+          CODE_SIGNING_REQUIRED = NO
+          CODE_SIGNING_ALLOWED = NO
+          DEVELOPMENT_TEAM = 
+          EOF
+
       - name: Build for macOS
         run: |
+          # Temporarily modify the project to use our CI config
+          sed -i.bak 's/Debug\.xcconfig/CI.xcconfig/g' macos/Runner.xcodeproj/project.pbxproj
           flutter build -v macos --debug
-        env:
-          # Disable code signing for CI builds
-          CODE_SIGNING_REQUIRED: "NO"
-          CODE_SIGNING_ALLOWED: "NO"
-          CODE_SIGN_IDENTITY: ""
+          # Restore the original project file
+          mv macos/Runner.xcodeproj/project.pbxproj.bak macos/Runner.xcodeproj/project.pbxproj
 
   # Test and build for Windows
   windows:

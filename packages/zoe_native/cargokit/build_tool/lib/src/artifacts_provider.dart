@@ -60,6 +60,8 @@ class ArtifactProvider {
     pendingTargets.removeWhere((element) => result.containsKey(element));
 
     if (pendingTargets.isEmpty) {
+      _log.info(
+          'Using precompiled binaries for all targets. To disable, create cargokit_options.yaml with use_precompiled_binaries: false');
       return result;
     }
 
@@ -99,7 +101,14 @@ class ArtifactProvider {
   Future<Map<Target, List<Artifact>>> _getPrecompiledArtifacts(
       List<Target> targets) async {
     if (userOptions.usePrecompiledBinaries == false) {
-      _log.info('Precompiled binaries are disabled');
+      final envDisabled =
+          Platform.environment['CARGOKIT_DISABLE_PRECOMPILED_BINARIES'] == '1';
+      if (envDisabled) {
+        _log.info(
+            'Precompiled binaries are disabled by environment variable CARGOKIT_DISABLE_PRECOMPILED_BINARIES=1');
+      } else {
+        _log.info('Precompiled binaries are disabled by user configuration');
+      }
       return {};
     }
     if (environment.crateOptions.precompiledBinaries == null) {

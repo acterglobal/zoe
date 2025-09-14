@@ -1,0 +1,74 @@
+name: Build Precompiled Binaries
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.35.2'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  precompile-binaries:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Rust
+        uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
+        with:
+          targets: 'aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android,aarch64-apple-ios,x86_64-apple-ios,aarch64-apple-ios-sim,x86_64-apple-darwin,aarch64-apple-darwin,x86_64-unknown-linux-gnu,aarch64-unknown-linux-gnu,x86_64-pc-windows-msvc,aarch64-pc-windows-msvc'
+          workspace_path: 'packages/zoe_native/rust'
+          install_android_ndk: true
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Setup Android environment
+        run: |
+          echo "ANDROID_NDK_HOME=$ANDROID_NDK_LATEST_HOME" >> $GITHUB_ENV
+          echo "ANDROID_NDK_ROOT=$ANDROID_NDK_LATEST_HOME" >> $GITHUB_ENV
+
+      - name: Install cross-compilation dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            gcc-aarch64-linux-gnu \
+            gcc-mingw-w64-x86-64 \
+            gcc-mingw-w64-i686
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Install cargokit build tool dependencies
+        working-directory: packages/zoe_native/cargokit/build_tool
+        run: dart pub get
+
+      - name: Run precompile binaries
+        working-directory: packages/zoe_native
+        run: |
+          dart cargokit/build_tool/bin/build_tool.dart precompile-binaries \
+            --private-key "${{ secrets.PREBUILTS_PRIVATE_KEY }}" \
+            --github-token "${{ secrets.GITHUB_TOKEN }}" \
+            --repository "acterglobal/zoe" \
+            --manifest-dir "rust" \
+            --android-sdk-location "$ANDROID_SDK_ROOT" \
+            --android-ndk-version "26.1.10909125"
