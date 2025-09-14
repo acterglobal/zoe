@@ -22,6 +22,9 @@ A new Flutter FFI plugin project.
   s.dependency 'FlutterMacOS'
 
   s.platform = :osx, '10.11'
+  
+  # Link required system frameworks
+  s.frameworks = 'SystemConfiguration'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
   s.swift_version = '5.0'
 
