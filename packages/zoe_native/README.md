@@ -83,12 +83,24 @@ plugin:
    - Use standard Rust debugging tools for the native code
    - Use Flutter debugging tools for the Dart side
 
-## Configuration
+## Using local config
 
-The `flutter_rust_bridge.yaml` file configures:
-- `rust_input`: Which Rust modules to expose
-- `dart_output`: Where to generate Dart bindings
-- `rust_preamble`: Common imports for generated code
+By default the plugin uses prebuilt binaries from github, to make it built locally you can either run it with `CARGOKIT_DISABLE_PRECOMPILED_BINARIES=1 flutter [...]`
+
+or you create a `cargokit_options.yaml` in the main package folder `packges/zoe_native` overriding the configuration as follows:
+
+```yaml
+# Enables verbose logging of Cargokit during build
+verbose_logging: true
+
+# Opts out of using precompiled binaries. If crate has configured
+# and deployed precompiled binaries, these will be by default used whenever Rustup
+# is not installed. With `use_precompiled_binaries` set to false, the build will
+# instead be aborted prompting user to install Rustup.
+use_precompiled_binaries: false
+```
+
+For more details [consult the cargokit documentation](https://github.com/irondash/cargokit/blob/main/docs/architecture.md#configuring-cargokit).
 
 ## Platform Support
 
