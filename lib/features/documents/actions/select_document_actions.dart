@@ -12,7 +12,7 @@ import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-void selectDocumentFileSource(
+void selectDocumentSource(
   BuildContext context,
   WidgetRef ref,
   String listId,

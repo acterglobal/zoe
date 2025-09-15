@@ -8,7 +8,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/content/models/content_model.dart';
-import 'package:zoe/features/documents/actions/select_documents_actions.dart';
+import 'package:zoe/features/documents/actions/select_document_actions.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/documents/widgets/document_list_widget.dart';
 import 'package:zoe/features/events/models/events_model.dart';
@@ -208,7 +208,7 @@ class ListWidget extends ConsumerWidget {
                   );
               break;
             case ContentType.document:
-              selectDocumentFileSource(context, ref, listId, sheetId);
+              selectDocumentSource(context, ref, listId, sheetId);
               break;
             default:
               break;
