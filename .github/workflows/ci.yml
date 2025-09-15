@@ -129,9 +129,6 @@ jobs:
 
       - uses: jlumbroso/free-disk-space@main
         name: Free Disk Space
-        with:
-          tool-cache: true
-          android: true
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
