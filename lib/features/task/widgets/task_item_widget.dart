@@ -168,7 +168,7 @@ class TaskWidget extends ConsumerWidget {
   }
 
   /// Gets the valid users for the task
-  List<UserModel> _getValidUsers(WidgetRef ref, TaskModel task) {
+  List<UserModel> _getAssignedUsers(WidgetRef ref, TaskModel task) {
     return task.assignedUsers
         .map((userId) => ref.watch(getUserByIdProvider(userId)))
         .whereType<UserModel>()
@@ -180,7 +180,7 @@ class TaskWidget extends ConsumerWidget {
     WidgetRef ref,
     TaskModel task,
   ) {
-    final validUsers = _getValidUsers(ref, task);
+    final validUsers = _getAssignedUsers(ref, task);
     return GestureDetector(
       onTap: () => _buildTaskAssigneesBottomSheet(context, ref, validUsers),
       child: ZoeStackedAvatarsWidget(users: validUsers),
@@ -221,22 +221,22 @@ class TaskWidget extends ConsumerWidget {
     TaskModel task,
   ) {
     final theme = Theme.of(context);
-    final validUsers = _getValidUsers(ref, task);
+    final assignedUsers = _getAssignedUsers(ref, task);
 
-    if (validUsers.isEmpty) return const SizedBox.shrink();
+    if (assignedUsers.isEmpty) return const SizedBox.shrink();
     return Wrap(
       spacing: 1,
       runSpacing: 4,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        ...validUsers
+        ...assignedUsers
             .take(2)
             .map((user) => ZoeUserAvatarWidget(user: user,showUserName: true,)),
-        if (validUsers.length > 2)
+        if (assignedUsers.length > 2)
           GestureDetector(
-            onTap: () => _buildTaskAssigneesBottomSheet(context, ref, validUsers),
+            onTap: () => _buildTaskAssigneesBottomSheet(context, ref, assignedUsers),
             child: Text(
-              'view +${validUsers.length - 2}',
+              'view +${assignedUsers.length - 2}',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                 decoration: TextDecoration.underline,
