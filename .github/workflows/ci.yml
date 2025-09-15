@@ -68,7 +68,6 @@ jobs:
       - name: Build for Android
         run: |
           flutter build -v apk --debug
-          flutter build -v appbundle --debug
 
   # Test and build for iOS
   ios:
