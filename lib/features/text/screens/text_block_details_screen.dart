@@ -151,7 +151,6 @@ class TextBlockDetailsScreen extends ConsumerWidget {
                 onLongTapText: () => showLongTapBottomSheet(
                   context,
                   contentId: textBlockId,
-                  isDetailScreen: true,
                 ),
               ),
             ),

@@ -137,7 +137,6 @@ class EventDetailScreen extends ConsumerWidget {
                 onLongTapText: () => showLongTapBottomSheet(
                   context,
                   contentId: eventId,
-                  isDetailScreen: true,
                 ),
               ),
             ),

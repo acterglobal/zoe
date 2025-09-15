@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/actions/common_actions.dart';
 import 'package:zoe/common/models/menu_item_data_model.dart';
+import 'package:zoe/common/utils/content_utils.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class ContentMenuButton extends ConsumerWidget {
   final String parentId;
-  final bool showConnectOption;
+  final bool isSheet;
 
   const ContentMenuButton({
     super.key,
     required this.parentId,
-    this.showConnectOption = false,
+    this.isSheet = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
-    final items = _buildMenuItems(context);
+    final items = _buildMenuItems(context, ref);
 
     return PopupMenuButton<ContentMenuAction>(
       onSelected: (action) => _handleMenuSelection(context, ref, action),
@@ -47,12 +50,35 @@ class ContentMenuButton extends ConsumerWidget {
     );
   }
 
-  List<MenuItemDataModel> _buildMenuItems(BuildContext context) {
+  List<MenuItemDataModel> _buildMenuItems(BuildContext context, WidgetRef ref) {
     final items = <MenuItemDataModel>[];
+
+    String editContentTitle = L10n.of(context).edit;
+    IconData editContentIcon = Icons.edit_rounded;
+    String editContentSubtitle = L10n.of(context).editThisContent;
+    if (isSheet) {
+      editContentTitle = L10n.of(context).editSheet;
+      editContentIcon = Icons.edit_rounded;
+      editContentSubtitle = L10n.of(context).editSheetSubtitle;
+    } else {
+      final content = ref.watch(contentProvider(parentId));
+      if (content != null) {
+        editContentTitle = ContentUtils.getEditContentTitle(
+          context: context,
+          type: content.type,
+          content: content,
+        );
+        editContentIcon = ContentUtils.getContentTypeIcon(
+          context: context,
+          type: content.type,
+          content: content,
+        );
+      }
+    }
 
     // Add other menu items
     items.addAll([
-      if (showConnectOption)
+      if (isSheet)
         MenuItemDataModel(
           action: ContentMenuAction.connect,
           icon: Icons.link_rounded,
@@ -60,10 +86,23 @@ class ContentMenuButton extends ConsumerWidget {
           subtitle: L10n.of(context).connectWithWhatsAppGroup,
         ),
       MenuItemDataModel(
+        action: ContentMenuAction.edit,
+        icon: editContentIcon,
+        title: editContentTitle,
+        subtitle: editContentSubtitle,
+      ),
+      MenuItemDataModel(
         action: ContentMenuAction.share,
         icon: Icons.share_rounded,
         title: L10n.of(context).share,
         subtitle: L10n.of(context).shareThisContent,
+      ),
+      MenuItemDataModel(
+        action: ContentMenuAction.delete,
+        icon: Icons.delete_rounded,
+        title: L10n.of(context).delete,
+        subtitle: L10n.of(context).deleteThisContent,
+        isDestructive: true,
       ),
     ]);
     return items;
@@ -122,10 +161,23 @@ class ContentMenuButton extends ConsumerWidget {
     ContentMenuAction.connect => context.push(
       AppRoutes.whatsappGroupConnect.route.replaceAll(':sheetId', parentId),
     ),
+    ContentMenuAction.edit =>
+      isSheet
+          ? editSheetAction(ref: ref, sheetId: parentId)
+          : editContentAction(ref: ref, contentId: parentId),
     ContentMenuAction.share => showShareItemsBottomSheet(
       context: context,
       parentId: parentId,
-      isSheet: showConnectOption,
+      isSheet: isSheet,
     ),
+    ContentMenuAction.delete => _handleDelete(context, ref, parentId),
   };
+
+  void _handleDelete(BuildContext context, WidgetRef ref, String parentId) {
+    if (isSheet) {
+      deleteSheetAction(context: context, ref: ref, sheetId: parentId);
+    } else {
+      deleteContentAction(context: context, ref: ref, contentId: parentId);
+    }
+  }
 }

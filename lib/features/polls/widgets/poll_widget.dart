@@ -129,7 +129,6 @@ class PollWidget extends ConsumerWidget {
                   : () => showLongTapBottomSheet(
                       context,
                       contentId: pollId,
-                      isDetailScreen: showSheetName,
                     ),
             ),
           ),

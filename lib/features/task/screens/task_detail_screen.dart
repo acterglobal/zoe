@@ -144,7 +144,6 @@ class TaskDetailScreen extends ConsumerWidget {
                 onLongTapText: () => showLongTapBottomSheet(
                   context,
                   contentId: taskId,
-                  isDetailScreen: true,
                 ),
               ),
             ),

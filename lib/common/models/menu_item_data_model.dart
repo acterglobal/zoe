@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ContentMenuAction { connect, share }
+enum ContentMenuAction { connect, edit, share, delete }
 
 class MenuItemDataModel {
   final ContentMenuAction action;
