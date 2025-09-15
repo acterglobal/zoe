@@ -74,7 +74,9 @@ class ContentMenuButton extends ConsumerWidget {
       MenuItemDataModel(
         action: ContentMenuAction.edit,
         icon: Icons.edit_rounded,
-        title: L10n.of(context).edit,
+        title: isSheetDetailScreen
+            ? L10n.of(context).editSheet
+            : L10n.of(context).edit,
         subtitle: L10n.of(context).editThisContent,
       ),
       MenuItemDataModel(
