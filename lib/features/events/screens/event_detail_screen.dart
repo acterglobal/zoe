@@ -143,8 +143,10 @@ class EventDetailScreen extends ConsumerWidget {
                       ref.read(editContentIdProvider.notifier).state = eventId,
                   onCopy: () =>
                       CommonUtils.copyToClipboard(event.title, context),
-                  onDelete: () =>
-                      ref.read(eventListProvider.notifier).deleteEvent(eventId),
+                  onDelete: () {
+                    ref.read(eventListProvider.notifier).deleteEvent(eventId);
+                    Navigator.of(context).pop();
+                  },
                 ),
               ),
             ),

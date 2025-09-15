@@ -122,7 +122,7 @@ class TextWidget extends ConsumerWidget {
       onLongTapText: () => showContextMenuBottomSheet(
         context,
         title: L10n.of(context).text,
-        subtitle: textId,
+        subtitle: title,
         onEdit: () => ref.read(editContentIdProvider.notifier).state = textId,
         onCopy: () => CommonUtils.copyToClipboard(title, context),
         onDelete: () => ref.read(textListProvider.notifier).deleteText(textId),

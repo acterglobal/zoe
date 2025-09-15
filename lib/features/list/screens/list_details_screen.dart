@@ -157,8 +157,10 @@ class ListDetailsScreen extends ConsumerWidget {
                       ref.read(editContentIdProvider.notifier).state = listId,
                   onCopy: () =>
                       CommonUtils.copyToClipboard(list.title, context),
-                  onDelete: () =>
-                      ref.read(listsrovider.notifier).deleteList(listId),
+                  onDelete: () {
+                    ref.read(listsrovider.notifier).deleteList(listId);
+                    Navigator.of(context).pop();
+                  },
                 ),
               ),
             ),

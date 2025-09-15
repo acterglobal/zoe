@@ -140,9 +140,12 @@ class BulletDetailScreen extends ConsumerWidget {
                       ref.read(editContentIdProvider.notifier).state = bulletId,
                   onCopy: () =>
                       CommonUtils.copyToClipboard(bullet.title, context),
-                  onDelete: () => ref
-                      .read(bulletListProvider.notifier)
-                      .deleteBullet(bulletId),
+                  onDelete: () {
+                    ref
+                        .read(bulletListProvider.notifier)
+                        .deleteBullet(bulletId);
+                    Navigator.of(context).pop();
+                  },
                 ),
               ),
             ),

@@ -157,9 +157,10 @@ class TextBlockDetailsScreen extends ConsumerWidget {
                       textBlockId,
                   onCopy: () =>
                       CommonUtils.copyToClipboard(textBlock.title, context),
-                  onDelete: () => ref
-                      .read(textListProvider.notifier)
-                      .deleteText(textBlockId),
+                  onDelete: () {
+                    ref.read(textListProvider.notifier).deleteText(textBlockId);
+                    Navigator.of(context).pop();
+                  },
                 ),
               ),
             ),

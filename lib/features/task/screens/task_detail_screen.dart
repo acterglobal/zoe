@@ -150,8 +150,10 @@ class TaskDetailScreen extends ConsumerWidget {
                       ref.read(editContentIdProvider.notifier).state = taskId,
                   onCopy: () =>
                       CommonUtils.copyToClipboard(task.title, context),
-                  onDelete: () =>
-                      ref.read(taskListProvider.notifier).deleteTask(taskId),
+                  onDelete: () {
+                    ref.read(taskListProvider.notifier).deleteTask(taskId);
+                    Navigator.of(context).pop();
+                  },
                 ),
               ),
             ),
