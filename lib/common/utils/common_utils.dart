@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -114,8 +115,16 @@ class CommonUtils {
     SharePlus.instance.share(params);
   }
 
-  static T? findAncestorWidgetOfExactType<T extends Widget>(BuildContext context) {
+  static T? findAncestorWidgetOfExactType<T extends Widget>(
+    BuildContext context,
+  ) {
     return context.findAncestorWidgetOfExactType<T>();
+  }
+
+  static Future<void> copyToClipboard(String text, BuildContext context) async {
+    await Clipboard.setData(ClipboardData(text: text));
+    if (!context.mounted) return;
+    showSnackBar(context, L10n.of(context).copiedToClipboard);
   }
 
   /// Returns true if the keyboard is visible, false otherwise

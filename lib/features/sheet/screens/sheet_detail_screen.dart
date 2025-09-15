@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
-import 'package:zoe/common/widgets/long_tap_bottom_sheet.dart';
+import 'package:zoe/common/widgets/context_menu/context_menu_bottom_sheet.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -12,6 +13,7 @@ import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_
 import 'package:zoe/common/widgets/zoe_sheet_floating_actoin_button.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
+import 'package:zoe/features/sheet/actions/delete_sheet.dart';
 import 'package:zoe/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/widgets/user_list_widget.dart';
@@ -34,9 +36,7 @@ class SheetDetailScreen extends ConsumerWidget {
           automaticallyImplyLeading: false,
           title: ZoeAppBar(
             title: L10n.of(context).sheet,
-            actions: [
-              ContentMenuButton(parentId: sheetId, isSheet: true),
-            ],
+            actions: [ContentMenuButton(parentId: sheetId, isSheet: true)],
           ),
         ),
         body: Column(
@@ -127,8 +127,17 @@ class SheetDetailScreen extends ConsumerWidget {
                 onTextChanged: (value) => Future.microtask(
                   () => updateSheetTitle(ref, sheetId, value),
                 ),
-                onLongTapText: () =>
-                    showLongTapBottomSheet(context, sheetId: sheetId),
+                onLongTapText: () => showContextMenuBottomSheet(
+                  context,
+                  title: L10n.of(context).sheet,
+                  subtitle: sheet.title,
+                  onEdit: () =>
+                      ref.read(editContentIdProvider.notifier).state = sheetId,
+                  onCopy: () =>
+                      CommonUtils.copyToClipboard(sheet.title, context),
+                  onDelete: () =>
+                      showDeleteSheetConfirmation(context, ref, sheetId),
+                ),
               ),
             ),
           ],

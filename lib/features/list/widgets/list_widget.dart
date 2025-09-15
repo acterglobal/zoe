@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
-import 'package:zoe/common/widgets/long_tap_bottom_sheet.dart';
+import 'package:zoe/common/widgets/context_menu/context_menu_bottom_sheet.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -122,8 +123,14 @@ class ListWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.listDetail.route.replaceAll(':listId', listId),
       ),
-      onLongTapText: () =>
-          showLongTapBottomSheet(context, contentId: listId),
+      onLongTapText: () => showContextMenuBottomSheet(
+        context,
+        title: L10n.of(context).list,
+        subtitle: list.title,
+        onEdit: () => ref.read(editContentIdProvider.notifier).state = listId,
+        onCopy: () => CommonUtils.copyToClipboard(list.title, context),
+        onDelete: () => ref.read(listsrovider.notifier).deleteList(listId),
+      ),
     );
   }
 

@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoe/common/actions/common_actions.dart';
 import 'package:zoe/common/models/menu_item_data_model.dart';
-import 'package:zoe/common/utils/content_utils.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/bullets/providers/bullet_providers.dart';
+import 'package:zoe/features/content/models/content_model.dart';
+import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/providers/content_providers.dart';
+import 'package:zoe/features/documents/providers/document_providers.dart';
+import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/list/providers/list_providers.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
+import 'package:zoe/features/sheet/actions/delete_sheet.dart';
+import 'package:zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class ContentMenuButton extends ConsumerWidget {
@@ -53,29 +62,6 @@ class ContentMenuButton extends ConsumerWidget {
   List<MenuItemDataModel> _buildMenuItems(BuildContext context, WidgetRef ref) {
     final items = <MenuItemDataModel>[];
 
-    String editContentTitle = L10n.of(context).edit;
-    IconData editContentIcon = Icons.edit_rounded;
-    String editContentSubtitle = L10n.of(context).editThisContent;
-    if (isSheet) {
-      editContentTitle = L10n.of(context).editSheet;
-      editContentIcon = Icons.edit_rounded;
-      editContentSubtitle = L10n.of(context).editSheetSubtitle;
-    } else {
-      final content = ref.watch(contentProvider(parentId));
-      if (content != null) {
-        editContentTitle = ContentUtils.getEditContentTitle(
-          context: context,
-          type: content.type,
-          content: content,
-        );
-        editContentIcon = ContentUtils.getContentTypeIcon(
-          context: context,
-          type: content.type,
-          content: content,
-        );
-      }
-    }
-
     // Add other menu items
     items.addAll([
       if (isSheet)
@@ -87,9 +73,9 @@ class ContentMenuButton extends ConsumerWidget {
         ),
       MenuItemDataModel(
         action: ContentMenuAction.edit,
-        icon: editContentIcon,
-        title: editContentTitle,
-        subtitle: editContentSubtitle,
+        icon: Icons.edit_rounded,
+        title: L10n.of(context).edit,
+        subtitle: L10n.of(context).editThisContent,
       ),
       MenuItemDataModel(
         action: ContentMenuAction.share,
@@ -162,9 +148,7 @@ class ContentMenuButton extends ConsumerWidget {
       AppRoutes.whatsappGroupConnect.route.replaceAll(':sheetId', parentId),
     ),
     ContentMenuAction.edit =>
-      isSheet
-          ? editSheetAction(ref: ref, sheetId: parentId)
-          : editContentAction(ref: ref, contentId: parentId),
+      ref.read(editContentIdProvider.notifier).state = parentId,
     ContentMenuAction.share => showShareItemsBottomSheet(
       context: context,
       parentId: parentId,
@@ -175,9 +159,44 @@ class ContentMenuButton extends ConsumerWidget {
 
   void _handleDelete(BuildContext context, WidgetRef ref, String parentId) {
     if (isSheet) {
-      deleteSheetAction(context: context, ref: ref, sheetId: parentId);
+      showDeleteSheetConfirmation(context, ref, parentId);
     } else {
-      deleteContentAction(context: context, ref: ref, contentId: parentId);
+      _handleDeleteContent(context, ref, parentId);
+    }
+  }
+
+  void _handleDeleteContent(
+    BuildContext context,
+    WidgetRef ref,
+    String parentId,
+  ) {
+    final content = ref.read(contentProvider(parentId));
+    if (content == null) return;
+    switch (content.type) {
+      case ContentType.text:
+        ref.read(textListProvider.notifier).deleteText(parentId);
+        break;
+      case ContentType.event:
+        ref.read(eventListProvider.notifier).deleteEvent(parentId);
+        break;
+      case ContentType.list:
+        ref.read(listsrovider.notifier).deleteList(parentId);
+        break;
+      case ContentType.task:
+        ref.read(taskListProvider.notifier).deleteTask(parentId);
+        break;
+      case ContentType.bullet:
+        ref.read(bulletListProvider.notifier).deleteBullet(parentId);
+        break;
+      case ContentType.link:
+        ref.read(linkListProvider.notifier).deleteLink(parentId);
+        break;
+      case ContentType.document:
+        ref.read(documentListProvider.notifier).deleteDocument(parentId);
+        break;
+      case ContentType.poll:
+        ref.read(pollListProvider.notifier).deletePoll(parentId);
+        break;
     }
   }
 }

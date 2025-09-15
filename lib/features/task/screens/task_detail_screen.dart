@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
-import 'package:zoe/common/widgets/long_tap_bottom_sheet.dart';
+import 'package:zoe/common/widgets/context_menu/context_menu_bottom_sheet.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
@@ -141,9 +142,16 @@ class TaskDetailScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(taskListProvider.notifier)
                     .updateTaskTitle(taskId, value),
-                onLongTapText: () => showLongTapBottomSheet(
+                onLongTapText: () => showContextMenuBottomSheet(
                   context,
-                  contentId: taskId,
+                  title: L10n.of(context).task,
+                  subtitle: task.title,
+                  onEdit: () =>
+                      ref.read(editContentIdProvider.notifier).state = taskId,
+                  onCopy: () =>
+                      CommonUtils.copyToClipboard(task.title, context),
+                  onDelete: () =>
+                      ref.read(taskListProvider.notifier).deleteTask(taskId),
                 ),
               ),
             ),

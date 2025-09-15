@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
-import 'package:zoe/common/widgets/long_tap_bottom_sheet.dart';
+import 'package:zoe/common/widgets/context_menu/context_menu_bottom_sheet.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
@@ -131,9 +132,17 @@ class BulletDetailScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(bulletListProvider.notifier)
                     .updateBulletTitle(bulletId, value),
-                onLongTapText: () => showLongTapBottomSheet(
+                onLongTapText: () => showContextMenuBottomSheet(
                   context,
-                  contentId: bulletId,
+                  title: L10n.of(context).bullet,
+                  subtitle: bullet.title,
+                  onEdit: () =>
+                      ref.read(editContentIdProvider.notifier).state = bulletId,
+                  onCopy: () =>
+                      CommonUtils.copyToClipboard(bullet.title, context),
+                  onDelete: () => ref
+                      .read(bulletListProvider.notifier)
+                      .deleteBullet(bulletId),
                 ),
               ),
             ),

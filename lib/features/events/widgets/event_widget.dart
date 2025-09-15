@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
-import 'package:zoe/common/widgets/long_tap_bottom_sheet.dart';
+import 'package:zoe/common/widgets/context_menu/context_menu_bottom_sheet.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -109,8 +110,15 @@ class EventWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.eventDetail.route.replaceAll(':eventId', eventsId),
       ),
-      onLongTapText: () =>
-          showLongTapBottomSheet(context, contentId: eventsId),
+      onLongTapText: () => showContextMenuBottomSheet(
+        context,
+        title: L10n.of(context).event,
+        subtitle: title,
+        onEdit: () => ref.read(editContentIdProvider.notifier).state = eventsId,
+        onCopy: () => CommonUtils.copyToClipboard(title, context),
+        onDelete: () =>
+            ref.read(eventListProvider.notifier).deleteEvent(eventsId),
+      ),
     );
   }
 

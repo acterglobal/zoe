@@ -5,17 +5,21 @@ import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 class OptionButtonWidget extends StatelessWidget {
   final IconData icon;
   final String title;
-  final String subtitle;
+  final TextStyle? titleStyle;
+  final String? subtitle;
+  final TextStyle? subtitleStyle;
   final Color color;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const OptionButtonWidget({
     super.key,
     required this.icon,
     required this.title,
-    required this.subtitle,
+    this.titleStyle,
+    this.subtitle,
+    this.subtitleStyle,
     required this.color,
-    required this.onTap,
+    this.onTap,
   });
 
   @override
@@ -33,7 +37,7 @@ class OptionButtonWidget extends StatelessWidget {
           children: [
             StyledIconContainer(
               icon: icon,
-              size: 52,
+              size: 50,
               primaryColor: color,
               borderRadius: BorderRadius.circular(24),
             ),
@@ -42,9 +46,14 @@ class OptionButtonWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: theme.textTheme.titleMedium),
-                  const SizedBox(height: 4),
-                  Text(subtitle, style: theme.textTheme.bodySmall),
+                  Text(title, style: titleStyle ?? theme.textTheme.titleMedium),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle!,
+                      style: subtitleStyle ?? theme.textTheme.bodySmall,
+                    ),
+                  ],
                 ],
               ),
             ),
