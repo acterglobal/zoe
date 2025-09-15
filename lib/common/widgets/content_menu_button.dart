@@ -156,24 +156,20 @@ class ContentMenuButton extends ConsumerWidget {
       parentId: parentId,
       isSheet: isSheetDetailScreen,
     ),
-    ContentMenuAction.delete => _handleDelete(context, ref, parentId),
+    ContentMenuAction.delete => _handleDelete(context, ref),
   };
 
-  void _handleDelete(BuildContext context, WidgetRef ref, String parentId) {
+  void _handleDelete(BuildContext context, WidgetRef ref) {
     if (isSheetDetailScreen) {
       showDeleteSheetConfirmation(context, ref, parentId);
     } else {
-      _handleDeleteContent(context, ref, parentId);
+      _handleDeleteContent(context, ref);
     }
   }
 
-  void _handleDeleteContent(
-    BuildContext context,
-    WidgetRef ref,
-    String parentId,
-  ) {
+  void _handleDeleteContent(BuildContext context, WidgetRef ref) {
     final content = ref.read(contentProvider(parentId));
-    if (content == null) return;
+    if (!context.mounted || content == null) return;
     switch (content.type) {
       case ContentType.text:
         ref.read(textListProvider.notifier).deleteText(parentId);
@@ -200,5 +196,7 @@ class ContentMenuButton extends ConsumerWidget {
         ref.read(pollListProvider.notifier).deletePoll(parentId);
         break;
     }
+    if (!context.mounted) return;
+    if (Navigator.canPop(context)) Navigator.pop(context);
   }
 }
