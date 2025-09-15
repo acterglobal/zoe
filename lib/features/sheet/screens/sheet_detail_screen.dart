@@ -36,7 +36,9 @@ class SheetDetailScreen extends ConsumerWidget {
           automaticallyImplyLeading: false,
           title: ZoeAppBar(
             title: L10n.of(context).sheet,
-            actions: [ContentMenuButton(parentId: sheetId, isSheet: true)],
+            actions: [
+              ContentMenuButton(parentId: sheetId, isSheetDetailScreen: true),
+            ],
           ),
         ),
         body: Column(

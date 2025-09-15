@@ -21,12 +21,12 @@ import 'package:zoe/l10n/generated/l10n.dart';
 
 class ContentMenuButton extends ConsumerWidget {
   final String parentId;
-  final bool isSheet;
+  final bool isSheetDetailScreen;
 
   const ContentMenuButton({
     super.key,
     required this.parentId,
-    this.isSheet = false,
+    this.isSheetDetailScreen = false,
   });
 
   @override
@@ -64,7 +64,7 @@ class ContentMenuButton extends ConsumerWidget {
 
     // Add other menu items
     items.addAll([
-      if (isSheet)
+      if (isSheetDetailScreen)
         MenuItemDataModel(
           action: ContentMenuAction.connect,
           icon: Icons.link_rounded,
@@ -152,13 +152,13 @@ class ContentMenuButton extends ConsumerWidget {
     ContentMenuAction.share => showShareItemsBottomSheet(
       context: context,
       parentId: parentId,
-      isSheet: isSheet,
+      isSheet: isSheetDetailScreen,
     ),
     ContentMenuAction.delete => _handleDelete(context, ref, parentId),
   };
 
   void _handleDelete(BuildContext context, WidgetRef ref, String parentId) {
-    if (isSheet) {
+    if (isSheetDetailScreen) {
       showDeleteSheetConfirmation(context, ref, parentId);
     } else {
       _handleDeleteContent(context, ref, parentId);
