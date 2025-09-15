@@ -126,6 +126,13 @@ jobs:
             libgstreamer1.0-dev \
             libgstreamer-plugins-base1.0-dev \
             libsecret-1-dev
+
+      - uses: jlumbroso/free-disk-space@main
+        name: Free Disk Space
+        with:
+          tool-cache: true
+          android: true
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -133,11 +140,6 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - uses: jlumbroso/free-disk-space@main
-        name: Free Disk Space
-        with:
-          tool-cache: true
-          android: true
 
       - name: Enable Linux desktop
         run: flutter config --enable-linux-desktop
