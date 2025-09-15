@@ -17,6 +17,7 @@ concurrency:
 jobs:
   precompile-binaries:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
@@ -29,7 +30,7 @@ jobs:
             build_args: '--android-sdk-location "$ANDROID_SDK_ROOT" --android-ndk-version "27.0.12077973" --android-min-sdk-version "21"'
           - os: macos-latest
             name: iOS
-            targets: 'aarch64-apple-ios,x86_64-apple-ios,aarch64-apple-ios-sim,'
+            targets: 'aarch64-apple-ios,x86_64-apple-ios,aarch64-apple-ios-sim'
           - os: macos-latest
             name: MacOS
             targets: 'x86_64-apple-darwin,aarch64-apple-darwin'
