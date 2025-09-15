@@ -72,11 +72,12 @@ jobs:
 
       - name: Run precompile binaries
         working-directory: packages/zoe_native
+        env:
+          PRIVATE_KEY: ${{ secrets.PREBUILTS_PRIVATE_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dart cargokit/build_tool/bin/build_tool.dart precompile-binaries \
-            --private-key "${{ secrets.PREBUILTS_PRIVATE_KEY }}" \
-            --github-token "${{ secrets.GITHUB_TOKEN }}" \
             --repository "acterglobal/zoe" \
             --manifest-dir "rust" \
             --android-sdk-location "$ANDROID_SDK_ROOT" \
-            --android-ndk-version "26.1.10909125"
+            --android-ndk-version "27.0.12077973"
