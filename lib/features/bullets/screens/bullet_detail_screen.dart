@@ -180,7 +180,7 @@ class BulletDetailScreen extends ConsumerWidget {
     );
   }
 
-  /// Builds the created by user avatar
+  /// Builds the added by user avatar
   Widget _buildAddedByAvatarWidget(
     BuildContext context,
     WidgetRef ref,
@@ -194,7 +194,7 @@ class BulletDetailScreen extends ConsumerWidget {
       children: [
         BulletAddedByHeaderWidget(),
         const SizedBox(height: 10),
-        ZoeUserAvatarWidget(user: user,showUserNameWithAvatar: true,),
+        ZoeUserAvatarWidget(user: user),
       ],
     );
   }

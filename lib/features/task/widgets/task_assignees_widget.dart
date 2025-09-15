@@ -73,11 +73,9 @@ class TaskAssigneesWidget extends ConsumerWidget {
     return ZoeUserAvatarWidget(
       user: user,
       showRemoveButton: isEditing,
-      showUserAvatar: true,
       onRemove: isEditing ? () => ref
           .read(taskListProvider.notifier)
           .removeAssignee(ref, task, userId) : null,
-      showUserNameWithAvatar: true,
     );
   }
 }

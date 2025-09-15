@@ -55,9 +55,8 @@ class BulletItemWidget extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildBulletItemTitle(context, ref, bulletItem, autoFocus),
-                  !showUserName
-                      ? _buildAddedByAvatarWidget(context, ref, bulletItem)
-                      : const SizedBox.shrink(),
+                  if(!showUserName)
+                    _buildAddedByAvatarWidget(context, ref, bulletItem)
                 ],
               ),
             ),
@@ -152,7 +151,7 @@ class BulletItemWidget extends ConsumerWidget {
     );
   }
 
-  // Builds the created by user avatar
+  // Builds the added by user avatar
   Widget _buildAddedByAvatarWidget(
     BuildContext context,
     WidgetRef ref,
@@ -163,11 +162,11 @@ class BulletItemWidget extends ConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.only(left: 8),
-      child: ZoeUserAvatarWidget(user: user),
+      child: ZoeUserAvatarWidget(user: user,showUserAvatar: true,),
     );
   }
 
-  // Builds the created by user view
+  // Builds the added by user view
   Widget _buildDisplayAddedByUserViewWidget(
     BuildContext context,
     WidgetRef ref,

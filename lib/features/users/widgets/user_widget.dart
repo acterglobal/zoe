@@ -33,7 +33,7 @@ class UserWidget extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ZoeUserAvatarWidget(user: user),
+            ZoeUserAvatarWidget(user: user,showUserAvatar: true,),
             const SizedBox(width: 8),
             Text(user.name, style: theme.textTheme.bodyMedium),
             const Spacer(),

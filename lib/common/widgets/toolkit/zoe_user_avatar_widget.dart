@@ -8,7 +8,6 @@ class ZoeUserAvatarWidget extends StatelessWidget {
   final VoidCallback? onRemove;
   final bool showUserAvatar;
   final bool showUserName;
-  final bool showUserNameWithAvatar;
 
   const ZoeUserAvatarWidget({
     super.key,
@@ -17,18 +16,17 @@ class ZoeUserAvatarWidget extends StatelessWidget {
     this.onRemove,
     this.showUserAvatar = false,
     this.showUserName = false,
-    this.showUserNameWithAvatar = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final randomColor = CommonUtils().getRandomColorFromName(user.name);
 
-    return showUserNameWithAvatar
-        ? _buildShowUserNameWithAvatarWidget(context, randomColor)
-        : showUserName
-            ? _buildShowUserNameWidget(context, randomColor)
-            : _buildShowUserAvatarWidget(context, randomColor);
+    return showUserName
+        ? _buildShowUserNameWidget(context, randomColor)
+        : showUserAvatar
+            ? _buildShowUserAvatarWidget(context, randomColor)
+            : _buildShowUserNameWithAvatarWidget(context, randomColor);
   }
 
   Widget _buildShowUserNameWithAvatarWidget(BuildContext context, Color randomColor) {
