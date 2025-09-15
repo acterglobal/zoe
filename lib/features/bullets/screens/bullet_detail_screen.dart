@@ -11,7 +11,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_chip_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/bullets/widgets/bullet_added_by_header_widget.dart';
@@ -194,7 +194,7 @@ class BulletDetailScreen extends ConsumerWidget {
       children: [
         BulletAddedByHeaderWidget(),
         const SizedBox(height: 10),
-        ZoeUserAvatarChipWidget(user: user),
+        ZoeUserAvatarWidget(user: user,showUserNameWithAvatar: true,),
       ],
     );
   }

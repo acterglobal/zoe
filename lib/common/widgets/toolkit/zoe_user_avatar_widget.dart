@@ -4,12 +4,99 @@ import 'package:zoe/features/users/models/user_model.dart';
 
 class ZoeUserAvatarWidget extends StatelessWidget {
   final UserModel user;
+  final bool showRemoveButton;
+  final VoidCallback? onRemove;
+  final bool showUserAvatar;
+  final bool showUserName;
+  final bool showUserNameWithAvatar;
 
-  const ZoeUserAvatarWidget({super.key, required this.user});
+  const ZoeUserAvatarWidget({
+    super.key,
+    required this.user,
+    this.showRemoveButton = false,
+    this.onRemove,
+    this.showUserAvatar = false,
+    this.showUserName = false,
+    this.showUserNameWithAvatar = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     final randomColor = CommonUtils().getRandomColorFromName(user.name);
+
+    return showUserNameWithAvatar
+        ? _buildUserChipWithAvatar(context, randomColor)
+        : showUserName
+            ? _buildUserChipWithoutAvatar(context, randomColor)
+            : _buildUserAvatar(context, randomColor);
+  }
+
+  Widget _buildUserChipWithAvatar(BuildContext context, Color randomColor) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+      decoration: BoxDecoration(
+        color: randomColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: randomColor.withValues(alpha: 0.3), width: 1),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildUserAvatar(context, randomColor),
+          const SizedBox(width: 8),
+          Text(
+            user.name,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: randomColor,
+              fontSize: 12,
+            ),
+          ),
+          if (showRemoveButton && onRemove != null) ...[
+            const SizedBox(width: 4),
+            IconButton(
+              visualDensity: VisualDensity.compact,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+              onPressed: onRemove,
+              icon: Icon(
+                Icons.close_rounded,
+                size: 14,
+                color: theme.colorScheme.error,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserChipWithoutAvatar(BuildContext context, Color randomColor) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+      margin: const EdgeInsets.only(right: 4),
+      decoration: BoxDecoration(
+        color: randomColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: randomColor.withValues(alpha: 0.3), width: 1),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            user.name,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: randomColor,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserAvatar(BuildContext context, Color randomColor) {
     return Container(
       width: 24,
       height: 24,
