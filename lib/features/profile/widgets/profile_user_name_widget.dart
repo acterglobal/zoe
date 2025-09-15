@@ -16,6 +16,28 @@ class _ProfileUserNameWidgetState extends State<ProfileUserNameWidget> {
   String? errorText;
 
   @override
+  void initState() {
+    super.initState();
+    // Listen to text changes
+    widget.controller.addListener(_validateName);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_validateName);
+    super.dispose();
+  }
+
+  void _validateName() {
+    final name = widget.controller.text.trim();
+    setState(() {
+      errorText = ValidationUtils.isValidName(name) 
+          ? null 
+          : L10n.of(context).nameCannotBeEmpty;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,18 +63,5 @@ class _ProfileUserNameWidgetState extends State<ProfileUserNameWidget> {
         ),
       ],
     );
-  }
-
-  void _validateName() {
-    final name = widget.controller.text.trim();
-    if (ValidationUtils.isValidName(name)) {
-      setState(() {
-        errorText = null;
-      });
-    } else {
-      setState(() {
-        errorText = L10n.of(context).nameCannotBeEmpty;
-      });
-    }
   }
 }

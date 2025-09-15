@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/utils/validation_utils.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/error_state_widget.dart';
@@ -159,9 +160,15 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
       icon: Icons.save_rounded,
       text: l10n.saveChanges,
       onPressed: () {
+        final name = _nameController.text.trim();
+        if (!ValidationUtils.isValidName(name)) {
+          // Force validation by updating the text
+          setState(() => _nameController.text = name);
+          return;
+        }
         final updatedUser = user.copyWith(
           id: user.id,
-          name: _nameController.text.trim(),
+          name: name,
           bio: _bioController.text.trim(),
         );
         ref.read(userListProvider.notifier).updateUser(user.id, updatedUser);
@@ -180,10 +187,7 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
           _selectedAvatarPath = path;
         });
 
-        final updatedUser = user.copyWith(
-          id: user.id,
-          avatar: path,
-        );
+        final updatedUser = user.copyWith(id: user.id, avatar: path);
         ref.read(userListProvider.notifier).updateUser(user.id, updatedUser);
       },
     );
