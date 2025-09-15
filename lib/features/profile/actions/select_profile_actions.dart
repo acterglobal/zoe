@@ -24,8 +24,6 @@ void selectProfileFileSource(
         onImageSelected(image.path);
       }
     },
-    // no file chooser for profile
-    onTapFileChooser: null,
   );
 }
 

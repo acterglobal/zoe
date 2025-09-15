@@ -50,7 +50,7 @@ class ProfileQrCodeWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         GlassyContainer(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(24),
           width: size,
           height: size,
           borderRadius: borderRadius,
@@ -58,9 +58,9 @@ class ProfileQrCodeWidget extends StatelessWidget {
             data: user.name,
             decoration: PrettyQrDecoration(
               shape: PrettyQrSmoothSymbol(color: theme.colorScheme.onSurface),
-              image: const PrettyQrDecorationImage(
-                image: AssetImage('assets/icon/app_icon.png'),
-                padding: EdgeInsets.all(24),
+              image: PrettyQrDecorationImage(
+                image: getAppIconImagePath(context),
+                padding: EdgeInsets.all(42),
               ),
             ),
           ),
@@ -68,5 +68,14 @@ class ProfileQrCodeWidget extends StatelessWidget {
         const SizedBox(height: 24),
       ],
     );
+  }
+
+  AssetImage getAppIconImagePath(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    if (isDarkMode) {
+      return AssetImage('assets/icon/app_icon_light.png');
+    } else {
+      return AssetImage('assets/icon/app_icon_dark.png');
+    }
   }
 }

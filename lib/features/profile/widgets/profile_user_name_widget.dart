@@ -1,38 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/utils/validation_utils.dart';
 import 'package:zoe/common/widgets/animated_textfield_widget.dart';
-import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-class ProfileUserNameWidget extends ConsumerStatefulWidget {
-  final bool isEditing;
+class ProfileUserNameWidget extends StatefulWidget {
   final TextEditingController controller;
 
-  const ProfileUserNameWidget({
-    super.key,
-    required this.isEditing,
-    required this.controller,
-  });
+  const ProfileUserNameWidget({super.key, required this.controller});
 
   @override
-  ConsumerState<ProfileUserNameWidget> createState() =>
-      _ProfileUserNameWidgetState();
+  State<ProfileUserNameWidget> createState() => _ProfileUserNameWidgetState();
 }
 
-class _ProfileUserNameWidgetState extends ConsumerState<ProfileUserNameWidget> {
+class _ProfileUserNameWidgetState extends State<ProfileUserNameWidget> {
   String? errorText;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final user = ref.read(currentUserProvider).value;
-      if (user != null) {
-        widget.controller.text = user.name;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +37,7 @@ class _ProfileUserNameWidgetState extends ConsumerState<ProfileUserNameWidget> {
           hintText: L10n.of(context).pleaseEnterAValidName,
           onErrorChanged: (error) => setState(() => errorText = error),
           onSubmitted: _validateName,
-          enabled: widget.isEditing,
-          readOnly: !widget.isEditing,
-          autofocus: widget.isEditing,
+          autofocus: false,
         ),
       ],
     );
@@ -66,7 +45,7 @@ class _ProfileUserNameWidgetState extends ConsumerState<ProfileUserNameWidget> {
 
   void _validateName() {
     final name = widget.controller.text.trim();
-    if (CommonUtils.isValidName(name)) {
+    if (ValidationUtils.isValidName(name)) {
       setState(() {
         errorText = null;
       });

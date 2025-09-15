@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
-import 'package:zoe/core/theme/colors/app_colors.dart';
-import 'package:zoe/features/content/providers/content_menu_providers.dart'
-    show isEditValueProvider;
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/error_state_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/loading_state_widget.dart';
@@ -11,7 +8,6 @@ import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/features/profile/actions/select_profile_actions.dart';
-import 'package:zoe/features/profile/actions/edit_profile_action.dart';
 import 'package:zoe/features/profile/widgets/profile_qr_code_widget.dart';
 import 'package:zoe/features/profile/widgets/profile_user_bio_widget.dart';
 import 'package:zoe/features/profile/widgets/profile_user_name_widget.dart';
@@ -31,17 +27,16 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
 
-  bool isEditing = false;
-  String? selectedImagePath;
+  String? _selectedAvatarPath;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final user = ref.read(currentUserProvider).value;
-      if (user != null) {
-        _nameController.text = user.name;
-        _bioController.text = user.bio ?? '';
+      final currentUser = ref.read(currentUserProvider).value;
+      if (currentUser != null) {
+        _nameController.text = currentUser.name;
+        _bioController.text = currentUser.bio ?? '';
       }
     });
   }
@@ -59,22 +54,19 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
     final l10n = L10n.of(context);
     return currentUserAsync.when(
       data: (user) {
-        if (user == null) {
-          return Center(child: Text(l10n.userNotFound));
-        }
-        isEditing = ref.watch(isEditValueProvider(user.id));
+        if (user == null) return Center(child: Text(l10n.userNotFound));
         return Scaffold(
-          appBar: _buildAppbar(context, user),
+          appBar: _buildAppBar(context, user),
           body: SafeArea(
             child: Column(
               children: [
-                Expanded(child: _buildBody(context, user)),
+                Expanded(child: _buildProfileContent(context, user)),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 10,
                   ),
-                  child: _buildNavigationButton(user),
+                  child: _buildActionButton(user),
                 ),
               ],
             ),
@@ -86,7 +78,7 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
     );
   }
 
-  AppBar _buildAppbar(BuildContext context, UserModel user) {
+  AppBar _buildAppBar(BuildContext context, UserModel user) {
     return AppBar(
       automaticallyImplyLeading: false,
       title: ZoeAppBar(
@@ -107,21 +99,21 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
     );
   }
 
-  Widget _buildBody(BuildContext context, UserModel user) {
+  Widget _buildProfileContent(BuildContext context, UserModel user) {
     return MaxWidthWidget(
       isScrollable: true,
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          _buildAvatarUI(context, user),
+          _buildAvatarSection(context, user),
           const SizedBox(height: 32),
-          _buildPersonalInformationWidget(context),
+          _buildProfileInfoSection(),
         ],
       ),
     );
   }
 
-  Widget _buildAvatarUI(BuildContext context, UserModel user) {
+  Widget _buildAvatarSection(BuildContext context, UserModel user) {
     final colorScheme = Theme.of(context).colorScheme;
     return Stack(
       clipBehavior: Clip.none,
@@ -130,101 +122,69 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
           user: user,
           size: 100,
           fontSize: 30,
-          selectedImagePath: selectedImagePath,
+          selectedImagePath: _selectedAvatarPath,
         ),
-
-        if (isEditing)
-          Positioned(
-            right: -4,
-            bottom: -4,
-            child: StyledIconContainer(
-              icon: Icons.camera_alt,
-              size: 32,
-              iconSize: 16,
-              borderRadius: BorderRadius.circular(16),
-              primaryColor: colorScheme.onSurface,
-              secondaryColor: colorScheme.primary,
-              onTap: () => onChangeAvatar(user),
-            ),
+        Positioned(
+          right: -4,
+          bottom: -4,
+          child: StyledIconContainer(
+            icon: Icons.camera_alt,
+            size: 32,
+            iconSize: 16,
+            borderRadius: BorderRadius.circular(16),
+            primaryColor: colorScheme.onSurface,
+            secondaryColor: colorScheme.primary,
+            onTap: () => _onAvatarChange(user),
           ),
+        ),
       ],
     );
   }
 
-  Widget _buildPersonalInformationWidget(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = AppColors.brightMagentaColor;
+  Widget _buildProfileInfoSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            StyledIconContainer(
-              icon: Icons.edit_note_rounded,
-              size: 30,
-              iconSize: 20,
-              primaryColor: color,
-              backgroundOpacity: 0.1,
-              borderOpacity: 0.2,
-              shadowOpacity: 0.1,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              L10n.of(context).personalInformation,
-              style: theme.textTheme.titleMedium?.copyWith(color: color),
-            ),
-          ],
-        ),
+        ProfileUserNameWidget(controller: _nameController),
         const SizedBox(height: 24),
-        ProfileUserNameWidget(
-          isEditing: isEditing,
-          controller: _nameController,
-        ),
-        const SizedBox(height: 24),
-        ProfileUserBioWidget(isEditing: isEditing, controller: _bioController),
+        ProfileUserBioWidget(controller: _bioController),
       ],
     );
   }
 
-  Widget _buildNavigationButton(UserModel user) {
+  Widget _buildActionButton(UserModel user) {
     final l10n = L10n.of(context);
+
     return ZoePrimaryButton(
-      icon: isEditing ? Icons.save_rounded : Icons.person_rounded,
-      text: isEditing
-          ? l10n.saveChanges
-          : l10n.editProfile,
+      icon: Icons.save_rounded,
+      text: l10n.saveChanges,
       onPressed: () {
-        if (isEditing) {
-          final updatedUser = user.copyWith(
-            id: user.id,
-            name: _nameController.text.trim(),
-            bio: _bioController.text.trim(),
-          );
-          saveProfileAction(ref, updatedUser);
-          editProfileValueAction(ref, updatedUser, isEditing);
-        } else {
-          editProfileValueAction(ref, user, isEditing);
-        }
+        final updatedUser = user.copyWith(
+          id: user.id,
+          name: _nameController.text.trim(),
+          bio: _bioController.text.trim(),
+        );
+        ref.read(userListProvider.notifier).updateUser(user.id, updatedUser);
+        Navigator.pop(context);
       },
     );
   }
 
-  void onChangeAvatar(UserModel user) {
+  void _onAvatarChange(UserModel user) {
     selectProfileFileSource(
       context,
       user.id,
       ref,
       onImageSelected: (path) {
         setState(() {
-          selectedImagePath = path;
+          _selectedAvatarPath = path;
         });
+
         final updatedUser = user.copyWith(
           id: user.id,
-          name: _nameController.text.trim(),
-          bio: _bioController.text.trim(),
           avatar: path,
         );
-        saveProfileAction(ref, updatedUser);
+        ref.read(userListProvider.notifier).updateUser(user.id, updatedUser);
       },
     );
   }

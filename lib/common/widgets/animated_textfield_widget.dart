@@ -84,9 +84,7 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: colorScheme.outline.withValues(
-                    alpha: widget.enabled ? 0.3 : 0.15,
-                  ),
+                  color: colorScheme.outline.withValues(alpha: 0.3),
                   width: 1,
                 ),
               ),
