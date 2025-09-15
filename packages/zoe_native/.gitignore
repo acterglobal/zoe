@@ -32,3 +32,4 @@ target/
 .flutter-plugins-dependencies
 /build/
 /coverage/
+cargokit_options.yaml
