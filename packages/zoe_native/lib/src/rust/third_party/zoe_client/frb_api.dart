@@ -5,6 +5,7 @@
 
 import '../../frb_generated.dart';
 import '../../lib.dart';
+import '../zoe_app_primitives/connection.dart';
 import '../zoe_wire_protocol/keys.dart';
 import 'client.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';

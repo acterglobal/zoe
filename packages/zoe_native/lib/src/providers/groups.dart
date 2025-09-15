@@ -1,8 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:zoe_native/providers.dart';
-import 'package:zoe_native/src/rust/third_party/zoe_state_machine/group.dart';
-import 'package:zoe_native/src/rust/third_party/zoe_state_machine/state.dart';
-import 'package:zoe_native/src/rust/third_party/zoe_wire_protocol/primitives.dart';
+import 'package:zoe_native/zoe_native.dart';
 
 final groupsProvider = FutureProvider<Map<MessageId, GroupSession>>((
   ref,

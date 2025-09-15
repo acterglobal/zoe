@@ -4,7 +4,8 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../../frb_generated.dart';
-import '../../lib.dart';
+import '../zoe_app_primitives/group/events/roles.dart';
+import '../zoe_app_primitives/group/states.dart';
 import '../zoe_wire_protocol/crypto.dart';
 import '../zoe_wire_protocol/keys.dart';
 import '../zoe_wire_protocol/primitives.dart';
@@ -57,6 +58,3 @@ abstract class GroupManager implements RustOpaqueInterface {
 abstract class GroupManagerBuilder implements RustOpaqueInterface {
   Future<GroupManager> build();
 }
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupRole>>
-abstract class GroupRole implements RustOpaqueInterface {}

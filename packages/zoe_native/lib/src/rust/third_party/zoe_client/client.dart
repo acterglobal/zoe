@@ -5,6 +5,8 @@
 
 import '../../frb_generated.dart';
 import '../../lib.dart';
+import '../zoe_app_primitives/connection.dart';
+import '../zoe_app_primitives/file.dart';
 import '../zoe_state_machine/group.dart';
 import '../zoe_wire_protocol/keys.dart';
 import '../zoe_wire_protocol/primitives.dart';

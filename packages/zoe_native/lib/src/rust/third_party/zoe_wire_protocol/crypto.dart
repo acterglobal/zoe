@@ -8,3 +8,82 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<EncryptionKey>>
 abstract class EncryptionKey implements RustOpaqueInterface {}
+
+class Argon2Params {
+  final int memory;
+  final int iterations;
+  final int parallelism;
+
+  const Argon2Params({
+    required this.memory,
+    required this.iterations,
+    required this.parallelism,
+  });
+
+  @override
+  int get hashCode =>
+      memory.hashCode ^ iterations.hashCode ^ parallelism.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Argon2Params &&
+          runtimeType == other.runtimeType &&
+          memory == other.memory &&
+          iterations == other.iterations &&
+          parallelism == other.parallelism;
+}
+
+/// Information about how a key was derived
+class KeyDerivationInfo {
+  /// Key derivation method used
+  final KeyDerivationMethod method;
+
+  /// Salt used for derivation
+  final Uint8List salt;
+
+  /// Argon2 parameters used
+  final Argon2Params argon2Params;
+
+  /// Context string used for derivation
+  final String context;
+
+  const KeyDerivationInfo({
+    required this.method,
+    required this.salt,
+    required this.argon2Params,
+    required this.context,
+  });
+
+  @override
+  int get hashCode =>
+      method.hashCode ^
+      salt.hashCode ^
+      argon2Params.hashCode ^
+      context.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is KeyDerivationInfo &&
+          runtimeType == other.runtimeType &&
+          method == other.method &&
+          salt == other.salt &&
+          argon2Params == other.argon2Params &&
+          context == other.context;
+}
+
+/// Key derivation methods supported by the system
+enum KeyDerivationMethod {
+  /// BIP39 mnemonic phrase with Argon2 key derivation
+  ///
+  /// This is the standard method for user-controlled key derivation using
+  /// a BIP39 mnemonic phrase combined with Argon2 for key stretching.
+  bip39Argon2,
+
+  /// Direct ChaCha20-Poly1305 key generation
+  ///
+  /// Used for fallback scenarios or when no mnemonic is provided.
+  /// Keys are generated directly without mnemonic derivation.
+  chaCha20Poly1305Keygen,
+}

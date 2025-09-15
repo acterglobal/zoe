@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'package:riverpod/riverpod.dart';
 import 'package:zoe_native/providers.dart';
-import 'package:zoe_native/src/rust/api/system_test.dart';
-import 'package:zoe_native/src/rust/third_party/zoe_client/frb_api.dart';
-import 'package:zoe_native/src/rust/third_party/zoe_client/system_check.dart';
-import 'package:zoe_native/src/support.dart';
+import 'package:zoe_native/zoe_native.dart';
 
 /// Enhanced systems test result with streaming updates
 class EnhancedSystemsTestResult {

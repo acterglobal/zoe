@@ -4,8 +4,6 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../../frb_generated.dart';
-import '../../lib.dart';
-import '../zoe_wire_protocol/crypto.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they have generic arguments: `encrypt_group_event_content`
@@ -14,16 +12,4 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 // These functions are ignored (category: IgnoreBecauseExplicitAttribute): `all_keys`, `decrypt_group_event`, `encrypt_group_event_content`, `new`, `rotate_key`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupSession>>
-abstract class GroupSession implements RustOpaqueInterface {
-  EncryptionKey get currentKey;
-
-  List<EncryptionKey> get previousKeys;
-
-  GroupState get state;
-
-  set currentKey(EncryptionKey currentKey);
-
-  set previousKeys(List<EncryptionKey> previousKeys);
-
-  set state(GroupState state);
-}
+abstract class GroupSession implements RustOpaqueInterface {}
