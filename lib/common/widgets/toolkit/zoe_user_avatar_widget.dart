@@ -25,13 +25,13 @@ class ZoeUserAvatarWidget extends StatelessWidget {
     final randomColor = CommonUtils().getRandomColorFromName(user.name);
 
     return showUserNameWithAvatar
-        ? _buildUserChipWithAvatar(context, randomColor)
+        ? _buildShowUserNameWithAvatarWidget(context, randomColor)
         : showUserName
-            ? _buildUserChipWithoutAvatar(context, randomColor)
-            : _buildUserAvatar(context, randomColor);
+            ? _buildShowUserNameWidget(context, randomColor)
+            : _buildShowUserAvatarWidget(context, randomColor);
   }
 
-  Widget _buildUserChipWithAvatar(BuildContext context, Color randomColor) {
+  Widget _buildShowUserNameWithAvatarWidget(BuildContext context, Color randomColor) {
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
@@ -43,7 +43,7 @@ class ZoeUserAvatarWidget extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildUserAvatar(context, randomColor),
+          _buildShowUserAvatarWidget(context, randomColor),
           const SizedBox(width: 8),
           Text(
             user.name,
@@ -71,7 +71,7 @@ class ZoeUserAvatarWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildUserChipWithoutAvatar(BuildContext context, Color randomColor) {
+  Widget _buildShowUserNameWidget(BuildContext context, Color randomColor) {
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
@@ -96,7 +96,7 @@ class ZoeUserAvatarWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildUserAvatar(BuildContext context, Color randomColor) {
+  Widget _buildShowUserAvatarWidget(BuildContext context, Color randomColor) {
     return Container(
       width: 24,
       height: 24,
