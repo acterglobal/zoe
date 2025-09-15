@@ -17,6 +17,7 @@ import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
+import 'package:zoe/features/list/utils/list_utils.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class ListDetailsScreen extends ConsumerWidget {
@@ -151,7 +152,7 @@ class ListDetailsScreen extends ConsumerWidget {
                     .updateListTitle(listId, value),
                 onLongTapText: () => showContextMenuBottomSheet(
                   context,
-                  title: L10n.of(context).list,
+                  title: ListUtils.getListType(context, list.listType),
                   subtitle: list.title,
                   onEdit: () =>
                       ref.read(editContentIdProvider.notifier).state = listId,

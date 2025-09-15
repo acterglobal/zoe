@@ -20,6 +20,7 @@ import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/features/link/widgets/link_list_widget.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
+import 'package:zoe/features/list/utils/list_utils.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
@@ -125,7 +126,7 @@ class ListWidget extends ConsumerWidget {
       ),
       onLongTapText: () => showContextMenuBottomSheet(
         context,
-        title: L10n.of(context).list,
+        title: ListUtils.getListType(context, list.listType),
         subtitle: list.title,
         onEdit: () => ref.read(editContentIdProvider.notifier).state = listId,
         onCopy: () => CommonUtils.copyToClipboard(list.title, context),
