@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zoe/common/widgets/document_selection_bottom_sheet.dart';
-import 'package:zoe/features/profile/providers/profile_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 
 void selectProfileFileSource(
   BuildContext context,
@@ -13,54 +13,35 @@ void selectProfileFileSource(
   showFileSelectionBottomSheet(
     context,
     onTapCamera: () async {
-      final image = await _handleProfileCameraSelection(context, ref, userId);
-      if (image != null && onImageSelected != null) {
-        onImageSelected(image.path);
+      final image = await _pickImage(ImageSource.camera);
+      if (image != null) {
+        _updateUserAvatar(ref, userId, image.path);
+        onImageSelected?.call(image.path);
       }
     },
     onTapGallery: () async {
-      final image = await _handleProfileGallerySelection(context, ref, userId);
-      if (image != null && onImageSelected != null) {
-        onImageSelected(image.path);
+      final image = await _pickImage(ImageSource.gallery);
+      if (image != null) {
+        _updateUserAvatar(ref, userId, image.path);
+        onImageSelected?.call(image.path);
       }
     },
   );
 }
 
-Future<XFile?> _handleProfileCameraSelection(
-  BuildContext context,
-  WidgetRef ref,
-  String userId,
-) async {
-  final picker = ImagePicker();
-  final image = await picker.pickImage(
-    source: ImageSource.camera,
+Future<XFile?> _pickImage(ImageSource source) async {
+  return ImagePicker().pickImage(
+    source: source,
     imageQuality: 80,
   );
-
-  if (image != null) {
-    ref
-        .read(profileAvatarNotifierProvider.notifier)
-        .setAvatarPath(userId, image.path);
-  }
-  return image;
 }
 
-Future<XFile?> _handleProfileGallerySelection(
-  BuildContext context,
-  WidgetRef ref,
-  String userId,
-) async {
-  final picker = ImagePicker();
-  final image = await picker.pickImage(
-    source: ImageSource.gallery,
-    imageQuality: 80,
-  );
-
-  if (image != null) {
-    ref
-        .read(profileAvatarNotifierProvider.notifier)
-        .setAvatarPath(userId, image.path);
+void _updateUserAvatar(WidgetRef ref, String userId, String imagePath) {
+  final currentUser = ref.read(currentUserProvider).value;
+  if (currentUser != null) {
+    final updatedUser = currentUser.copyWith(
+      avatar: imagePath,
+    );
+    ref.read(userListProvider.notifier).updateUser(userId, updatedUser);
   }
-  return image;
 }
