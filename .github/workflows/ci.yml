@@ -116,8 +116,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            clang \
-            clang++ \
             cmake \
             ninja-build \
             pkg-config \
@@ -127,6 +125,14 @@ jobs:
             libgstreamer1.0-dev \
             libgstreamer-plugins-base1.0-dev \
             libsecret-1-dev
+          
+          # Use the existing clang installation (Ubuntu runners have clang pre-installed)
+          # Verify clang and clang++ are available
+          which clang && clang --version
+          which clang++ && clang++ --version || {
+            echo "clang++ not found, creating symlink..."
+            sudo ln -sf /usr/bin/clang /usr/bin/clang++
+          }
           
           # Set C/C++ compiler environment variables for CMake
           echo "CC=clang" >> $GITHUB_ENV
