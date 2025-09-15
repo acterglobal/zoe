@@ -16,32 +16,58 @@ concurrency:
 
 jobs:
   precompile-binaries:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            name: Linux x64
+            targets: 'x86_64-unknown-linux-gnu,aarch64-unknown-linux-gnu'
+          - os: ubuntu-latest
+            name: Android
+            targets: 'aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android'
+            setup_android: true
+            build_args: '--android-sdk-location "$ANDROID_SDK_ROOT" --android-ndk-version "27.0.12077973" --android-min-sdk-version "21"'
+          - os: macos-latest
+            name: iOS
+            targets: 'aarch64-apple-ios,x86_64-apple-ios,aarch64-apple-ios-sim,'
+          - os: macos-latest
+            name: MacOS
+            targets: 'x86_64-apple-darwin,aarch64-apple-darwin'
+          - os: windows-latest
+            name: Windows
+            targets: 'x86_64-pc-windows-msvc,aarch64-pc-windows-msvc'
+
+    
+    runs-on: ${{ matrix.os }}
+    name: Prebuilts for ${{ matrix.name }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: jlumbroso/free-disk-space@main
-        name: Free Disk Space
+      - name: Free Disk Space (Ubuntu only)
+        if: matrix.setup_android
+        uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: true
           android: false
 
-      - name: Setup Java
+      - name: Setup Java (Android builds only)
+        if: matrix.setup_android
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
+      - name: Setup Android SDK (Android builds only)
+        if: matrix.setup_android
         uses: android-actions/setup-android@v3
 
       - name: Setup Rust
         uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          targets: 'aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android,aarch64-apple-ios,x86_64-apple-ios,aarch64-apple-ios-sim,x86_64-apple-darwin,aarch64-apple-darwin,x86_64-unknown-linux-gnu,aarch64-unknown-linux-gnu,x86_64-pc-windows-msvc,aarch64-pc-windows-msvc'
+          targets: ${{ matrix.targets }}
           workspace_path: 'packages/zoe_native/rust'
-          install_android_ndk: true
+          install_android_ndk: ${{ matrix.setup_android }}
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -50,12 +76,14 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Setup Android environment
+      - name: Setup Android environment (Android builds only)
+        if: matrix.setup_android
         run: |
           echo "ANDROID_NDK_HOME=$ANDROID_NDK_LATEST_HOME" >> $GITHUB_ENV
           echo "ANDROID_NDK_ROOT=$ANDROID_NDK_LATEST_HOME" >> $GITHUB_ENV
 
-      - name: Install cross-compilation dependencies
+      - name: Install cross-compilation dependencies (Ubuntu only)
+        if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -64,6 +92,7 @@ jobs:
             gcc-mingw-w64-i686
 
       - name: Install Flutter dependencies
+        working-directory: packages/zoe_native/
         run: flutter pub get
 
       - name: Install cargokit build tool dependencies
@@ -75,9 +104,10 @@ jobs:
         env:
           PRIVATE_KEY: ${{ secrets.PREBUILTS_PRIVATE_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
         run: |
           dart cargokit/build_tool/bin/build_tool.dart precompile-binaries \
             --repository "acterglobal/zoe" \
             --manifest-dir "rust" \
-            --android-sdk-location "$ANDROID_SDK_ROOT" \
-            --android-ndk-version "27.0.12077973"
+            --target ${{ matrix.targets }} \
+            ${{ matrix.build_args }}
