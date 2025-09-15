@@ -1,4 +1,4 @@
-rust_input: crate::api,zoe-client::client,zoe-client::frb_api,zoe-client::util,zoe-wire-protocol::keys,
+rust_input: crate::api,zoe-client::client,zoe-client::frb_api,zoe-client::util,zoe-wire-protocol::keys,zoe-state-machine
 rust_root: rust/
 dart_output: lib/src/rust
 enable_lifetime: true
@@ -7,4 +7,5 @@ rust_preamble: |
   use std::{path::PathBuf, net::SocketAddr, error::Error};
   use zoe_client::{FileRef};
   use zoe_wire_protocol::keys::{KeyPair, VerifyingKey, SigningKey, Signature};
-  use zoe_app_primitives::connection::RelayAddress;
+  use zoe_app_primitives::{connection::RelayAddress, roles::GroupRole, states::GroupState, CreateGroup};
+  use zoe_state_machine::{GroupManager, GroupDataUpdate, GroupSession, error::GroupResult};

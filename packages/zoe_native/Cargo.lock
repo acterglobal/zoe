@@ -823,7 +823,7 @@ dependencies = [
 [[package]]
 name = "core-models"
 version = "0.0.3"
-source = "git+https://github.com/cryspen/libcrux#4f028e00afff5fcb28310aef5b0c44d25f4f1ef8"
+source = "git+https://github.com/cryspen/libcrux#227a3bdaa5574e2d3963073cf26f64fc25d53761"
 dependencies = [
  "hax-lib",
  "pastey",
@@ -1443,7 +1443,7 @@ dependencies = [
 [[package]]
 name = "forward-compatible-enum"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#3da866c4e348f326c0680c2aeb675011a5885b50"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#08bab03aadd31db1c558a41e54eefd32c0329bd7"
 dependencies = [
  "postcard",
  "proc-macro2",
@@ -1646,7 +1646,7 @@ dependencies = [
  "js-sys",
  "libc",
  "r-efi",
- "wasi 0.14.5+wasi-0.2.4",
+ "wasi 0.14.6+wasi-0.2.4",
  "wasm-bindgen",
 ]
 
@@ -1996,9 +1996,9 @@ dependencies = [
 
 [[package]]
 name = "hyper-util"
-version = "0.1.16"
+version = "0.1.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8d9b05277c7e8da2c93a568989bb6207bef0112e8d17df7a6eda4a3cf143bc5e"
+checksum = "3c6995591a8f1380fcb4ba966a252a4b29188d51d2b89e3a252f5305be65aea8"
 dependencies = [
  "base64",
  "bytes",
@@ -2662,7 +2662,7 @@ dependencies = [
 [[package]]
 name = "libcrux-intrinsics"
 version = "0.0.3"
-source = "git+https://github.com/cryspen/libcrux#4f028e00afff5fcb28310aef5b0c44d25f4f1ef8"
+source = "git+https://github.com/cryspen/libcrux#227a3bdaa5574e2d3963073cf26f64fc25d53761"
 dependencies = [
  "core-models 0.0.3 (git+https://github.com/cryspen/libcrux)",
  "hax-lib",
@@ -2671,7 +2671,7 @@ dependencies = [
 [[package]]
 name = "libcrux-macros"
 version = "0.0.3"
-source = "git+https://github.com/cryspen/libcrux#4f028e00afff5fcb28310aef5b0c44d25f4f1ef8"
+source = "git+https://github.com/cryspen/libcrux#227a3bdaa5574e2d3963073cf26f64fc25d53761"
 dependencies = [
  "quote",
  "syn 2.0.106",
@@ -2680,7 +2680,7 @@ dependencies = [
 [[package]]
 name = "libcrux-ml-dsa"
 version = "0.0.3"
-source = "git+https://github.com/cryspen/libcrux#4f028e00afff5fcb28310aef5b0c44d25f4f1ef8"
+source = "git+https://github.com/cryspen/libcrux#227a3bdaa5574e2d3963073cf26f64fc25d53761"
 dependencies = [
  "core-models 0.0.3 (git+https://github.com/cryspen/libcrux)",
  "hax-lib",
@@ -2716,7 +2716,7 @@ dependencies = [
 [[package]]
 name = "libcrux-platform"
 version = "0.0.2"
-source = "git+https://github.com/cryspen/libcrux#4f028e00afff5fcb28310aef5b0c44d25f4f1ef8"
+source = "git+https://github.com/cryspen/libcrux#227a3bdaa5574e2d3963073cf26f64fc25d53761"
 dependencies = [
  "libc",
 ]
@@ -2733,7 +2733,7 @@ dependencies = [
 [[package]]
 name = "libcrux-secrets"
 version = "0.0.3"
-source = "git+https://github.com/cryspen/libcrux#4f028e00afff5fcb28310aef5b0c44d25f4f1ef8"
+source = "git+https://github.com/cryspen/libcrux#227a3bdaa5574e2d3963073cf26f64fc25d53761"
 dependencies = [
  "hax-lib",
 ]
@@ -2752,7 +2752,7 @@ dependencies = [
 [[package]]
 name = "libcrux-sha3"
 version = "0.0.3"
-source = "git+https://github.com/cryspen/libcrux#4f028e00afff5fcb28310aef5b0c44d25f4f1ef8"
+source = "git+https://github.com/cryspen/libcrux#227a3bdaa5574e2d3963073cf26f64fc25d53761"
 dependencies = [
  "hax-lib",
  "libcrux-intrinsics 0.0.3 (git+https://github.com/cryspen/libcrux)",
@@ -2763,7 +2763,7 @@ dependencies = [
 [[package]]
 name = "libcrux-traits"
 version = "0.0.3"
-source = "git+https://github.com/cryspen/libcrux#4f028e00afff5fcb28310aef5b0c44d25f4f1ef8"
+source = "git+https://github.com/cryspen/libcrux#227a3bdaa5574e2d3963073cf26f64fc25d53761"
 dependencies = [
  "libcrux-secrets 0.0.3 (git+https://github.com/cryspen/libcrux)",
  "rand 0.9.2",
@@ -2782,6 +2782,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2e99fb7a497b1e3339bc746195567ed8d3e24945ecd636e3619d20b9de9e9149"
 dependencies = [
  "cc",
+ "openssl-sys",
  "pkg-config",
  "vcpkg",
 ]
@@ -3274,6 +3275,28 @@ name = "openssl-probe"
 version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d05e27ee213611ffe7d6348b942e8f942b37114c00cc03cec254295a4a17852e"
+
+[[package]]
+name = "openssl-src"
+version = "300.5.2+3.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d270b79e2926f5150189d475bc7e9d2c69f9c4697b185fa917d5a32b792d21b4"
+dependencies = [
+ "cc",
+]
+
+[[package]]
+name = "openssl-sys"
+version = "0.9.109"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "90096e2e47630d78b7d1c20952dc621f957103f8bc2c8359ec81290d75238571"
+dependencies = [
+ "cc",
+ "libc",
+ "openssl-src",
+ "pkg-config",
+ "vcpkg",
+]
 
 [[package]]
 name = "opentelemetry"
@@ -4350,9 +4373,9 @@ checksum = "f87165f0995f63a9fbeea62b64d10b4d9d8e78ec6d7d51fb2125fda7bb36788f"
 
 [[package]]
 name = "rustls-webpki"
-version = "0.103.5"
+version = "0.103.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5a37813727b78798e53c2bec3f5e8fe12a6d6f8389bf9ca7802add4c9905ad8"
+checksum = "8572f3c2cb9934231157b45499fc41e1f58c589fdfb81a844ba873265e80f8eb"
 dependencies = [
  "ring",
  "rustls-pki-types",
@@ -4441,11 +4464,12 @@ checksum = "0f7d95a54511e0c7be3f51e8867aa8cf35148d7b9445d44de2f943e2b206e749"
 
 [[package]]
 name = "semver"
-version = "1.0.26"
+version = "1.0.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "56e6fa9c48d24d85fb3de5ad847117517440f6beceb7798af16b4a87d616b8d0"
+checksum = "d767eb0aabc880b29956c35734170f26ed551a859dbd361d140cdbeca61ab1e2"
 dependencies = [
  "serde",
+ "serde_core",
 ]
 
 [[package]]
@@ -4456,9 +4480,9 @@ checksum = "cd0b0ec5f1c1ca621c432a25813d8d60c88abe6d3e08a3eb9cf37d97a0fe3d73"
 
 [[package]]
 name = "serde"
-version = "1.0.221"
+version = "1.0.224"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "341877e04a22458705eb4e131a1508483c877dca2792b3781d4e5d8a6019ec43"
+checksum = "6aaeb1e94f53b16384af593c71e20b095e958dab1d26939c1b70645c5cfbcc0b"
 dependencies = [
  "serde_core",
  "serde_derive",
@@ -4466,27 +4490,28 @@ dependencies = [
 
 [[package]]
 name = "serde_bytes"
-version = "0.11.17"
+version = "0.11.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8437fd221bde2d4ca316d61b90e337e9e702b3820b87d63caa9ba6c02bd06d96"
+checksum = "a5d440709e79d88e51ac01c4b72fc6cb7314017bb7da9eeff678aa94c10e3ea8"
 dependencies = [
  "serde",
+ "serde_core",
 ]
 
 [[package]]
 name = "serde_core"
-version = "1.0.221"
+version = "1.0.224"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0c459bc0a14c840cb403fc14b148620de1e0778c96ecd6e0c8c3cacb6d8d00fe"
+checksum = "32f39390fa6346e24defbcdd3d9544ba8a19985d0af74df8501fbfe9a64341ab"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.221"
+version = "1.0.224"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d6185cf75117e20e62b1ff867b9518577271e58abe0037c40bb4794969355ab0"
+checksum = "87ff78ab5e8561c9a675bfc1785cb07ae721f0ee53329a595cefd8c04c2ac4e0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -4495,13 +4520,14 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.144"
+version = "1.0.145"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "56177480b00303e689183f110b4e727bb4211d692c62d4fcd16d02be93077d40"
+checksum = "402a6f66d8c709116cf22f558eab210f5a50187f702eb4d7e5ef38d9a7f1c79c"
 dependencies = [
  "itoa",
  "memchr",
  "ryu",
+ "serde",
  "serde_core",
 ]
 
@@ -5484,18 +5510,18 @@ checksum = "ccf3ec651a847eb01de73ccad15eb7d99f80485de043efb2f370cd654f4ea44b"
 
 [[package]]
 name = "wasi"
-version = "0.14.5+wasi-0.2.4"
+version = "0.14.6+wasi-0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a4494f6290a82f5fe584817a676a34b9d6763e8d9d18204009fb31dceca98fd4"
+checksum = "7f71243a3f320c00a8459e455c046ce571229c2f31fd11645d9dc095e3068ca0"
 dependencies = [
  "wasip2",
 ]
 
 [[package]]
 name = "wasip2"
-version = "1.0.0+wasi-0.2.4"
+version = "1.0.1+wasi-0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "03fa2761397e5bd52002cd7e73110c71af2109aca4e521a9f40473fe685b0a24"
+checksum = "0562428422c63773dad2c345a1882263bbf4d65cf3f42e90921f787ef5ad58e7"
 dependencies = [
  "wit-bindgen",
 ]
@@ -6196,9 +6222,9 @@ dependencies = [
 
 [[package]]
 name = "wit-bindgen"
-version = "0.45.1"
+version = "0.46.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5c573471f125075647d03df72e026074b7203790d41351cd6edc96f46bcccd36"
+checksum = "f17a85883d4e6d00e8a97c586de764dabcc06133f7f1d55dce5cdc070ad7fe59"
 
 [[package]]
 name = "wmi"
@@ -6432,7 +6458,7 @@ dependencies = [
 [[package]]
 name = "zoe-app-primitives"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#3da866c4e348f326c0680c2aeb675011a5885b50"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#08bab03aadd31db1c558a41e54eefd32c0329bd7"
 dependencies = [
  "blake3",
  "flutter_rust_bridge",
@@ -6450,7 +6476,7 @@ dependencies = [
 [[package]]
 name = "zoe-blob-store"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#3da866c4e348f326c0680c2aeb675011a5885b50"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#08bab03aadd31db1c558a41e54eefd32c0329bd7"
 dependencies = [
  "anyhow",
  "chrono",
@@ -6474,7 +6500,7 @@ dependencies = [
 [[package]]
 name = "zoe-client"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#3da866c4e348f326c0680c2aeb675011a5885b50"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#08bab03aadd31db1c558a41e54eefd32c0329bd7"
 dependencies = [
  "anyhow",
  "async-broadcast",
@@ -6517,7 +6543,7 @@ dependencies = [
 [[package]]
 name = "zoe-client-storage"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#3da866c4e348f326c0680c2aeb675011a5885b50"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#08bab03aadd31db1c558a41e54eefd32c0329bd7"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -6537,7 +6563,7 @@ dependencies = [
 [[package]]
 name = "zoe-encrypted-storage"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#3da866c4e348f326c0680c2aeb675011a5885b50"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#08bab03aadd31db1c558a41e54eefd32c0329bd7"
 dependencies = [
  "aead",
  "aes-gcm",
@@ -6550,10 +6576,12 @@ dependencies = [
 [[package]]
 name = "zoe-state-machine"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#3da866c4e348f326c0680c2aeb675011a5885b50"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#08bab03aadd31db1c558a41e54eefd32c0329bd7"
 dependencies = [
+ "async-broadcast",
  "blake3",
  "ed25519-dalek",
+ "flutter_rust_bridge",
  "libcrux-ml-dsa",
  "postcard",
  "rand 0.8.5",
@@ -6569,7 +6597,7 @@ dependencies = [
 [[package]]
 name = "zoe-wire-protocol"
 version = "0.1.0"
-source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#3da866c4e348f326c0680c2aeb675011a5885b50"
+source = "git+https://github.com/acterglobal/zoe-relay.git?branch=main#08bab03aadd31db1c558a41e54eefd32c0329bd7"
 dependencies = [
  "anyhow",
  "argon2",
@@ -6629,5 +6657,6 @@ dependencies = [
  "tokio",
  "zoe-app-primitives",
  "zoe-client",
+ "zoe-state-machine",
  "zoe-wire-protocol",
 ]

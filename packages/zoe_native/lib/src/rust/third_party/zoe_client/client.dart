@@ -5,8 +5,10 @@
 
 import '../../frb_generated.dart';
 import '../../lib.dart';
+import '../zoe_state_machine/group.dart';
 import '../zoe_wire_protocol/keys.dart';
 import '../zoe_wire_protocol/primitives.dart';
+import 'client/api.dart';
 import 'client/api/file_storage.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
@@ -34,6 +36,8 @@ abstract class Client implements RustOpaqueInterface {
 
   /// Get list of all configured relays with their connection status
   Future<List<RelayConnectionInfo>> getRelayStatus();
+
+  Future<GroupManager> groupManager();
 
   /// Check if any relays are currently connected
   Future<bool> hasConnectedRelays();
@@ -108,6 +112,17 @@ abstract class Client implements RustOpaqueInterface {
   /// - The file cannot be found in storage
   /// - Decryption fails
   Future<Uint8List> retrieveFileBytes({required FileRef fileRef});
+
+  /// Close the client and clean up all resources
+  /// Get access to the session manager for PQXDH operations
+  ///
+  /// This provides access to the underlying session manager which handles
+  /// PQXDH protocol handlers and state management.
+  ///
+  /// # Returns
+  ///
+  /// A reference to the `SessionManager`
+  Future<ArcZoeClientSessionManager> sessionManager();
 
   /// Store raw data (not from a file) with encryption and blob storage
   ///
