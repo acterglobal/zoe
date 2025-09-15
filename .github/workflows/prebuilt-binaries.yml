@@ -21,6 +21,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - uses: jlumbroso/free-disk-space@main
+        name: Free Disk Space
+        with:
+          tool-cache: true
+          android: false
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
