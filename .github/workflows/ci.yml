@@ -46,7 +46,7 @@ jobs:
       - name: Setup Rust for Android
         uses: acterglobal/zoe-relay/.github/actions/setup-rust-cross-platform@main
         with:
-          targets: 'aarch64-linux-android,armv7-linux-androideabi'
+          targets: aarch64-linux-android
           workspace_path: 'packages/zoe_native/rust'
           install_android_ndk: true
 
@@ -72,7 +72,7 @@ jobs:
           export CARGO_PROFILE_DEV_OPT_LEVEL=1
           
           # Build only for essential architectures to save time and space
-          flutter build -v apk --debug --target-platform android-arm64,android-arm
+          flutter build -v apk --debug --target-platform android-arm64
 
   # Test and build for iOS
   ios:
