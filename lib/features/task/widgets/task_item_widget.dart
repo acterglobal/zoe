@@ -60,8 +60,11 @@ class TaskWidget extends ConsumerWidget {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildTaskItemTitle(context, ref, task, shouldFocus),
+                  Expanded(
+                    child: _buildTaskItemTitle(context, ref, task, shouldFocus),
+                  ),
                   if (task.assignedUsers.isNotEmpty && !showUserName)
                     _buildAssignedUsersStackWidget(context, ref, task),
                 ],
@@ -104,33 +107,31 @@ class TaskWidget extends ConsumerWidget {
     TaskModel task,
     bool shouldFocus,
   ) {
-    return Flexible(
-      child: ZoeInlineTextEditWidget(
-        hintText: L10n.of(context).taskItem,
-        text: task.title,
-        isEditing: isEditing,
-        autoFocus: shouldFocus,
-        textInputAction: TextInputAction.next,
-        textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          decoration: task.isCompleted
-              ? TextDecoration.lineThrough
-              : TextDecoration.none,
-        ),
-        onTextChanged: (value) {
-          ref.read(taskListProvider.notifier).updateTaskTitle(taskId, value);
-        },
-        onEnterPressed: () => ref
-            .read(taskListProvider.notifier)
-            .addTask(
-              parentId: task.parentId,
-              sheetId: task.sheetId,
-              orderIndex: task.orderIndex + 1,
-            ),
-        onBackspaceEmptyText: () =>
-            ref.read(taskListProvider.notifier).deleteTask(taskId),
-        onTapText: () => context.push(
-          AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
-        ),
+    return ZoeInlineTextEditWidget(
+      hintText: L10n.of(context).taskItem,
+      text: task.title,
+      isEditing: isEditing,
+      autoFocus: shouldFocus,
+      textInputAction: TextInputAction.next,
+      textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        decoration: task.isCompleted
+            ? TextDecoration.lineThrough
+            : TextDecoration.none,
+      ),
+      onTextChanged: (value) {
+        ref.read(taskListProvider.notifier).updateTaskTitle(taskId, value);
+      },
+      onEnterPressed: () => ref
+          .read(taskListProvider.notifier)
+          .addTask(
+            parentId: task.parentId,
+            sheetId: task.sheetId,
+            orderIndex: task.orderIndex + 1,
+          ),
+      onBackspaceEmptyText: () =>
+          ref.read(taskListProvider.notifier).deleteTask(taskId),
+      onTapText: () => context.push(
+        AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
       ),
     );
   }
@@ -231,10 +232,11 @@ class TaskWidget extends ConsumerWidget {
       children: [
         ...assignedUsers
             .take(2)
-            .map((user) => ZoeUserAvatarWidget(user: user,showUserName: true,)),
+            .map((user) => ZoeUserAvatarWidget(user: user, showUserName: true)),
         if (assignedUsers.length > 2)
           GestureDetector(
-            onTap: () => _buildTaskAssigneesBottomSheet(context, ref, assignedUsers),
+            onTap: () =>
+                _buildTaskAssigneesBottomSheet(context, ref, assignedUsers),
             child: Text(
               'view +${assignedUsers.length - 2}',
               style: theme.textTheme.bodySmall?.copyWith(
