@@ -11,6 +11,10 @@ env:
   FLUTTER_VERSION: '3.35.2'
   # Disable precompiled binaries in CI to ensure we test actual compilation
   CARGOKIT_DISABLE_PRECOMPILED_BINARIES: '1'
+  # Optimize Rust builds for CI
+  CARGO_INCREMENTAL: '0'
+  CARGO_NET_RETRY: '10'
+  RUST_BACKTRACE: '1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -23,6 +27,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - uses: jlumbroso/free-disk-space@main
+        name: Free Disk Space
+        with:
+          tool-cache: true
+          android: false
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -123,6 +133,12 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
           cache: true
+
+      - uses: jlumbroso/free-disk-space@main
+        name: Free Disk Space
+        with:
+          tool-cache: true
+          android: true
 
       - name: Enable Linux desktop
         run: flutter config --enable-linux-desktop
