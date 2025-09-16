@@ -1,67 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:zoe/core/constants/empty_state_constants.dart';
+import 'dart:math' show pi;
 
 /// A widget that displays the animated search character
-class EmptyStateSearchFaceWidget extends StatelessWidget {
+class EmptyStateMagnifierWidget extends StatelessWidget {
   final Color color;
   final Animation<double> mouthAnimation;
 
-   const EmptyStateSearchFaceWidget({super.key, required this.color, required this.mouthAnimation});
+  const EmptyStateMagnifierWidget({
+    super.key,
+    required this.color,
+    required this.mouthAnimation,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Container(
-      width: EmptyContentTypeConstants.characterSize,
-      height: EmptyContentTypeConstants.characterSize,
+      width: 120,
+      height: 120,
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+        color: Theme.of(context).colorScheme.surface,
         shape: BoxShape.circle,
         border: Border.all(color: color.withValues(alpha: 0.2), width: 2),
       ),
       child: Stack(
         alignment: Alignment.center,
         clipBehavior: Clip.none,
-        children: [_buildFace(theme), _buildMagnifyingHandle(theme)],
+        children: [_buildFace(context), _buildMagnifyingHandle(context)],
       ),
     );
   }
 
-  Widget _buildFace(ThemeData theme) {
+  Widget _buildFace(BuildContext context) {
     return Container(
-      width: EmptyContentTypeConstants.faceSize,
-      height: EmptyContentTypeConstants.faceSize,
+      width: 80,
+      height: 80,
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.05),
         shape: BoxShape.circle,
       ),
-      child: Stack(children: [_buildEyes(theme), _buildMouth()]),
+      child: Stack(children: [_buildEyes(context), _buildMouth()]),
     );
   }
 
-  Widget _buildEyes(ThemeData theme) {
+  Widget _buildEyes(BuildContext context) {
     return Stack(
       children: [
-        Positioned(
-          top: EmptyContentTypeConstants.eyeTopPosition,
-          left: EmptyContentTypeConstants.eyeSidePosition,
-          child: _Eye(color: color),
-        ),
-        Positioned(
-          top: EmptyContentTypeConstants.eyeTopPosition,
-          right: EmptyContentTypeConstants.eyeSidePosition,
-          child: _Eye(color: color),
-        ),
+        Positioned(top: 25, left: 20, child: _Eye(color: color)),
+        Positioned(top: 25, right: 20, child: _Eye(color: color)),
       ],
     );
   }
 
   Widget _buildMouth() {
     return Positioned(
-      bottom: EmptyContentTypeConstants.mouthBottomPosition,
-      left: EmptyContentTypeConstants.eyeSidePosition,
-      right: EmptyContentTypeConstants.eyeSidePosition,
-      height: EmptyContentTypeConstants.mouthHeight,
+      bottom: 15,
+      left: 20,
+      right: 20,
+      height: 20,
       child: AnimatedBuilder(
         animation: mouthAnimation,
         builder: (context, child) => CustomPaint(
@@ -74,15 +69,15 @@ class EmptyStateSearchFaceWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildMagnifyingHandle(ThemeData theme) {
+  Widget _buildMagnifyingHandle(BuildContext context) {
     return Positioned(
-      bottom: EmptyContentTypeConstants.handleBottomPosition,
-      right: EmptyContentTypeConstants.handleRightPosition,
+      bottom: -8,
+      right: -50,
       child: Transform.rotate(
-        angle: EmptyContentTypeConstants.handleRotation,
+        angle: -pi / 1.3,
         child: Container(
-          width: EmptyContentTypeConstants.handleWidth,
-          height: EmptyContentTypeConstants.handleHeight,
+          width: 70,
+          height: 15,
           decoration: BoxDecoration(
             color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
@@ -103,8 +98,8 @@ class _Eye extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: EmptyContentTypeConstants.eyeSize,
-      height: EmptyContentTypeConstants.eyeSize,
+      width: 12,
+      height: 12,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         shape: BoxShape.circle,
