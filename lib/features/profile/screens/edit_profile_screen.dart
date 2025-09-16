@@ -16,15 +16,14 @@ import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-class ProfileDetailsScreen extends ConsumerStatefulWidget {
-  const ProfileDetailsScreen({super.key});
+class EditProfileScreen extends ConsumerStatefulWidget {
+  const EditProfileScreen({super.key});
 
   @override
-  ConsumerState<ProfileDetailsScreen> createState() =>
-      _ProfileDetailsScreenState();
+  ConsumerState<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
+class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
 
@@ -34,10 +33,10 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final currentUser = ref.read(currentUserProvider).value;
-      if (currentUser != null) {
-        _nameController.text = currentUser.name;
-        _bioController.text = currentUser.bio ?? '';
+      final user = ref.read(currentUserProvider).value;
+      if (user != null) {
+        _nameController.text = user.name;
+        _bioController.text = user.bio ?? '';
       }
     });
   }
@@ -51,11 +50,10 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentUserAsync = ref.watch(currentUserProvider);
-    final l10n = L10n.of(context);
-    return currentUserAsync.when(
+    final userAsync = ref.watch(currentUserProvider);
+    return userAsync.when(
       data: (user) {
-        if (user == null) return Center(child: Text(l10n.userNotFound));
+        if (user == null) return Center(child: Text(L10n.of(context).userNotFound));
         return Scaffold(
           appBar: _buildAppBar(context, user),
           body: SafeArea(

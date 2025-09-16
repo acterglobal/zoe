@@ -208,7 +208,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.settingsProfile.route,
         name: AppRoutes.settingsProfile.name,
-        builder: (context, state) => const ProfileDetailsScreen(),
+        builder: (context, state) => const EditProfileScreen(),
       ),
 
       // WhatsApp group connect route

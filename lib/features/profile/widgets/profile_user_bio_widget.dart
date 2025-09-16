@@ -13,7 +13,6 @@ class ProfileUserBioWidget extends StatefulWidget {
 }
 
 class _ProfileUserBioWidgetState extends State<ProfileUserBioWidget> {
-  String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +32,8 @@ class _ProfileUserBioWidgetState extends State<ProfileUserBioWidget> {
         const SizedBox(height: 8),
         AnimatedTextField(
           controller: widget.controller,
-          errorText: errorText,
           hintText: L10n.of(context).writeSomethingAboutYourself,
-          onErrorChanged: (error) => setState(() => errorText = error),
+          onErrorChanged: (error) => {},
           onSubmitted: () {},
           maxLines: 3,
           autofocus: false,
