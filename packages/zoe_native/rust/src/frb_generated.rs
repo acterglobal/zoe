@@ -44,7 +44,6 @@ use zoe_client::client::api::*;
 use zoe_client::client::*;
 use zoe_client::system_check::*;
 use zoe_state_machine::group::*;
-use zoe_state_machine::state::*;
 use zoe_wire_protocol::crypto::*;
 use zoe_wire_protocol::keys::*;
 use zoe_wire_protocol::primitives::*;
@@ -74,7 +73,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1274490351;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1946796101;
 
 // Section: executor
 
@@ -3040,6 +3039,69 @@ fn wire__zoe_state_machine__group__GroupManager_member_role_impl(
         },
     )
 }
+fn wire__zoe_app_primitives__group__states__GroupMembership_available_identities_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "GroupMembership_available_identities",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>,
+            >>::sse_decode(&mut deserializer);
+            let api__key = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<VerifyingKey>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| {
+                transform_result_sse::<_, ()>((move || {
+                    let mut api_that_guard = None;
+                    let mut api__key_guard = None;
+                    let decode_indices_ =
+                        flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                &api_that, 0, false,
+                            ),
+                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                &api__key, 1, false,
+                            ),
+                        ]);
+                    for i in decode_indices_ {
+                        match i {
+                            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                            1 => api__key_guard = Some(api__key.lockable_decode_sync_ref()),
+                            _ => unreachable!(),
+                        }
+                    }
+                    let api_that_guard = api_that_guard.unwrap();
+                    let api__key_guard = api__key_guard.unwrap();
+                    let output_ok = Result::<_, ()>::Ok(
+                        zoe_app_primitives::group::states::GroupMembership::available_identities(
+                            &*api_that_guard,
+                            &*api__key_guard,
+                        ),
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
 fn wire__zoe_app_primitives__group__states__GroupMembership_default_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -3074,35 +3136,7 @@ fn wire__zoe_app_primitives__group__states__GroupMembership_default_impl(
         },
     )
 }
-fn wire__zoe_app_primitives__group__states__GroupMembership_get_available_identities_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec,_,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "GroupMembership_get_available_identities", port: Some(port_), mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal }, move || { 
-            let message = unsafe { flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(ptr_, rust_vec_len_, data_len_) };
-            let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_that = <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>>>::sse_decode(&mut deserializer);
-let api__key = <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<VerifyingKey>>>::sse_decode(&mut deserializer);deserializer.end(); move |context|  {
-                    transform_result_sse::<_, ()>((move ||  {
-                        let mut api_that_guard = None;
-let mut api__key_guard = None;
-let decode_indices_ = flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api_that, 0, false), flutter_rust_bridge::for_generated::LockableOrderInfo::new(&api__key, 1, false)]);
-        for i in decode_indices_ {
-            match i {
-                0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
-1 => api__key_guard = Some(api__key.lockable_decode_sync_ref()),
-                _ => unreachable!(),
-            }
-        }
-        let api_that_guard = api_that_guard.unwrap();
-let api__key_guard = api__key_guard.unwrap();
- let output_ok = Result::<_,()>::Ok(zoe_app_primitives::group::states::GroupMembership::get_available_identities(&*api_that_guard, &*api__key_guard))?;   Ok(output_ok)
-                    })())
-                } })
-}
-fn wire__zoe_app_primitives__group__states__GroupMembership_get_display_name_impl(
+fn wire__zoe_app_primitives__group__states__GroupMembership_display_name_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -3110,7 +3144,7 @@ fn wire__zoe_app_primitives__group__states__GroupMembership_get_display_name_imp
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "GroupMembership_get_display_name",
+            debug_name: "GroupMembership_display_name",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -3168,7 +3202,7 @@ fn wire__zoe_app_primitives__group__states__GroupMembership_get_display_name_imp
                     let api_key_guard = api_key_guard.unwrap();
                     let api_identity_type_guard = api_identity_type_guard.unwrap();
                     let output_ok = Result::<_, ()>::Ok(
-                        zoe_app_primitives::group::states::GroupMembership::get_display_name(
+                        zoe_app_primitives::group::states::GroupMembership::display_name(
                             &*api_that_guard,
                             &*api_key_guard,
                             &*api_identity_type_guard,
@@ -3180,7 +3214,7 @@ fn wire__zoe_app_primitives__group__states__GroupMembership_get_display_name_imp
         },
     )
 }
-fn wire__zoe_app_primitives__group__states__GroupMembership_get_effective_role_impl(
+fn wire__zoe_app_primitives__group__states__GroupMembership_effective_role_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -3188,7 +3222,7 @@ fn wire__zoe_app_primitives__group__states__GroupMembership_get_effective_role_i
 ) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "GroupMembership_get_effective_role",
+            debug_name: "GroupMembership_effective_role",
             port: Some(port_),
             mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
         },
@@ -3233,156 +3267,10 @@ fn wire__zoe_app_primitives__group__states__GroupMembership_get_effective_role_i
                     let api_that_guard = api_that_guard.unwrap();
                     let api__key_guard = api__key_guard.unwrap();
                     let output_ok = Result::<_, ()>::Ok(
-                        zoe_app_primitives::group::states::GroupMembership::get_effective_role(
+                        zoe_app_primitives::group::states::GroupMembership::effective_role(
                             &*api_that_guard,
                             &*api__key_guard,
                             &api__acting_as_alias,
-                        ),
-                    )?;
-                    Ok(output_ok)
-                })())
-            }
-        },
-    )
-}
-fn wire__zoe_app_primitives__group__states__GroupMembership_get_role_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "GroupMembership_get_role",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let message = unsafe {
-                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-                    ptr_,
-                    rust_vec_len_,
-                    data_len_,
-                )
-            };
-            let mut deserializer =
-                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_that = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>,
-            >>::sse_decode(&mut deserializer);
-            let api_identity_ref = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<IdentityRef>,
-            >>::sse_decode(&mut deserializer);
-            deserializer.end();
-            move |context| {
-                transform_result_sse::<_, ()>((move || {
-                    let mut api_that_guard = None;
-                    let mut api_identity_ref_guard = None;
-                    let decode_indices_ =
-                        flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
-                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                &api_that, 0, false,
-                            ),
-                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                &api_identity_ref,
-                                1,
-                                false,
-                            ),
-                        ]);
-                    for i in decode_indices_ {
-                        match i {
-                            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
-                            1 => {
-                                api_identity_ref_guard =
-                                    Some(api_identity_ref.lockable_decode_sync_ref())
-                            }
-                            _ => unreachable!(),
-                        }
-                    }
-                    let api_that_guard = api_that_guard.unwrap();
-                    let api_identity_ref_guard = api_identity_ref_guard.unwrap();
-                    let output_ok = Result::<_, ()>::Ok(
-                        zoe_app_primitives::group::states::GroupMembership::get_role(
-                            &*api_that_guard,
-                            &*api_identity_ref_guard,
-                        ),
-                    )?;
-                    Ok(output_ok)
-                })())
-            }
-        },
-    )
-}
-fn wire__zoe_app_primitives__group__states__GroupMembership_has_identity_info_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "GroupMembership_has_identity_info",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let message = unsafe {
-                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-                    ptr_,
-                    rust_vec_len_,
-                    data_len_,
-                )
-            };
-            let mut deserializer =
-                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_that = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>,
-            >>::sse_decode(&mut deserializer);
-            let api__key = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<VerifyingKey>,
-            >>::sse_decode(&mut deserializer);
-            let api__identity_type = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<IdentityType>,
-            >>::sse_decode(&mut deserializer);
-            deserializer.end();
-            move |context| {
-                transform_result_sse::<_, ()>((move || {
-                    let mut api_that_guard = None;
-                    let mut api__key_guard = None;
-                    let mut api__identity_type_guard = None;
-                    let decode_indices_ =
-                        flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
-                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                &api_that, 0, false,
-                            ),
-                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                &api__key, 1, false,
-                            ),
-                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
-                                &api__identity_type,
-                                2,
-                                false,
-                            ),
-                        ]);
-                    for i in decode_indices_ {
-                        match i {
-                            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
-                            1 => api__key_guard = Some(api__key.lockable_decode_sync_ref()),
-                            2 => {
-                                api__identity_type_guard =
-                                    Some(api__identity_type.lockable_decode_sync_ref())
-                            }
-                            _ => unreachable!(),
-                        }
-                    }
-                    let api_that_guard = api_that_guard.unwrap();
-                    let api__key_guard = api__key_guard.unwrap();
-                    let api__identity_type_guard = api__identity_type_guard.unwrap();
-                    let output_ok = Result::<_, ()>::Ok(
-                        zoe_app_primitives::group::states::GroupMembership::has_identity_info(
-                            &*api_that_guard,
-                            &*api__key_guard,
-                            &*api__identity_type_guard,
                         ),
                     )?;
                     Ok(output_ok)
@@ -3496,6 +3384,74 @@ fn wire__zoe_app_primitives__group__states__GroupMembership_new_impl(
                 transform_result_sse::<_, ()>((move || {
                     let output_ok = Result::<_, ()>::Ok(
                         zoe_app_primitives::group::states::GroupMembership::new(),
+                    )?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__zoe_app_primitives__group__states__GroupMembership_role_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "GroupMembership_role",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>,
+            >>::sse_decode(&mut deserializer);
+            let api_identity_ref = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<IdentityRef>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| {
+                transform_result_sse::<_, ()>((move || {
+                    let mut api_that_guard = None;
+                    let mut api_identity_ref_guard = None;
+                    let decode_indices_ =
+                        flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                &api_that, 0, false,
+                            ),
+                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                &api_identity_ref,
+                                1,
+                                false,
+                            ),
+                        ]);
+                    for i in decode_indices_ {
+                        match i {
+                            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                            1 => {
+                                api_identity_ref_guard =
+                                    Some(api_identity_ref.lockable_decode_sync_ref())
+                            }
+                            _ => unreachable!(),
+                        }
+                    }
+                    let api_that_guard = api_that_guard.unwrap();
+                    let api_identity_ref_guard = api_identity_ref_guard.unwrap();
+                    let output_ok = Result::<_, ()>::Ok(
+                        zoe_app_primitives::group::states::GroupMembership::role(
+                            &*api_that_guard,
+                            &*api_identity_ref_guard,
+                        ),
                     )?;
                     Ok(output_ok)
                 })())
@@ -6170,7 +6126,7 @@ fn wire__zoe_app_primitives__group__events__roles__group_role_can_assign_role_im
             let api_that = <zoe_app_primitives::group::events::roles::GroupRole>::sse_decode(
                 &mut deserializer,
             );
-            let api_target_role = <zoe_app_primitives::group::events::roles::GroupRole>::sse_decode(
+            let api_tarrole = <zoe_app_primitives::group::events::roles::GroupRole>::sse_decode(
                 &mut deserializer,
             );
             deserializer.end();
@@ -6179,7 +6135,7 @@ fn wire__zoe_app_primitives__group__events__roles__group_role_can_assign_role_im
                     let output_ok = Result::<_, ()>::Ok(
                         zoe_app_primitives::group::events::roles::GroupRole::can_assign_role(
                             &api_that,
-                            &api_target_role,
+                            &api_tarrole,
                         ),
                     )?;
                     Ok(output_ok)
@@ -6335,6 +6291,70 @@ fn wire__zoe_app_primitives__group__events__settings__group_settings_new_impl(
                     )?;
                     Ok(output_ok)
                 })())
+            }
+        },
+    )
+}
+fn wire__crate__api__group__group_updates_stream_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "group_updates_stream",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_manager = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupManager>,
+            >>::sse_decode(&mut deserializer);
+            let api_sink = <StreamSink<
+                zoe_state_machine::group::GroupDataUpdate,
+                flutter_rust_bridge::for_generated::SseCodec,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ()>(
+                    (move || async move {
+                        let mut api_manager_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_manager,
+                                    0,
+                                    false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_manager_guard =
+                                        Some(api_manager.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_manager_guard = api_manager_guard.unwrap();
+                        let output_ok = Result::<_, ()>::Ok({
+                            crate::api::group::group_updates_stream(&*api_manager_guard, api_sink)
+                                .await;
+                        })?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
             }
         },
     )
@@ -7655,6 +7675,17 @@ const _: fn() = || {
         let _: bool = EncryptionSettings.key_rotation_enabled;
         let _: Option<u64> = EncryptionSettings.key_rotation_interval;
     }
+    match None::<zoe_state_machine::group::GroupDataUpdate>.unwrap() {
+        zoe_state_machine::group::GroupDataUpdate::GroupAdded(field0) => {
+            let _: zoe_state_machine::state::GroupSession = field0;
+        }
+        zoe_state_machine::group::GroupDataUpdate::GroupUpdated(field0) => {
+            let _: zoe_state_machine::state::GroupSession = field0;
+        }
+        zoe_state_machine::group::GroupDataUpdate::GroupRemoved(field0) => {
+            let _: zoe_state_machine::state::GroupSession = field0;
+        }
+    }
     {
         let GroupPermissions =
             None::<zoe_app_primitives::group::events::permissions::GroupPermissions>.unwrap();
@@ -7668,6 +7699,12 @@ const _: fn() = || {
             GroupPermissions.update_encryption;
     }
     {
+        let GroupSession = None::<zoe_state_machine::state::GroupSession>.unwrap();
+        let _: zoe_app_primitives::group::states::GroupState = GroupSession.state;
+        let _: EncryptionKey = GroupSession.current_key;
+        let _: Vec<EncryptionKey> = GroupSession.previous_keys;
+    }
+    {
         let GroupSettings =
             None::<zoe_app_primitives::group::events::settings::GroupSettings>.unwrap();
         let _: zoe_app_primitives::group::events::permissions::GroupPermissions =
@@ -7676,11 +7713,58 @@ const _: fn() = || {
             GroupSettings.encryption_settings;
     }
     {
+        let GroupState = None::<zoe_app_primitives::group::states::GroupState>.unwrap();
+        let _: MessageId = GroupState.group_id;
+        let _: String = GroupState.name;
+        let _: zoe_app_primitives::group::events::settings::GroupSettings = GroupState.settings;
+        let _: Vec<zoe_app_primitives::metadata::Metadata> = GroupState.metadata;
+        let _: BTreeMap<IdentityRef, GroupMember> = GroupState.members;
+        let _: GroupMembership = GroupState.membership;
+        let _: Vec<MessageId> = GroupState.event_history;
+        let _: u64 = GroupState.last_event_timestamp;
+        let _: u64 = GroupState.version;
+    }
+    {
         let KeyDerivationInfo = None::<zoe_wire_protocol::crypto::KeyDerivationInfo>.unwrap();
         let _: zoe_wire_protocol::crypto::KeyDerivationMethod = KeyDerivationInfo.method;
         let _: Vec<u8> = KeyDerivationInfo.salt;
         let _: zoe_wire_protocol::crypto::Argon2Params = KeyDerivationInfo.argon2_params;
         let _: String = KeyDerivationInfo.context;
+    }
+    match None::<zoe_app_primitives::metadata::Metadata>.unwrap() {
+        zoe_app_primitives::metadata::Metadata::Generic { key, value } => {
+            let _: String = key;
+            let _: String = value;
+        }
+        zoe_app_primitives::metadata::Metadata::Description(field0) => {
+            let _: String = field0;
+        }
+        zoe_app_primitives::metadata::Metadata::Avatar(field0) => {
+            let _: Image = field0;
+        }
+        zoe_app_primitives::metadata::Metadata::Background(field0) => {
+            let _: Image = field0;
+        }
+        zoe_app_primitives::metadata::Metadata::Website(field0) => {
+            let _: String = field0;
+        }
+        zoe_app_primitives::metadata::Metadata::Email(field0) => {
+            let _: String = field0;
+        }
+        zoe_app_primitives::metadata::Metadata::Phone(field0) => {
+            let _: String = field0;
+        }
+        zoe_app_primitives::metadata::Metadata::Address(field0) => {
+            let _: String = field0;
+        }
+        zoe_app_primitives::metadata::Metadata::Social { platform, handle } => {
+            let _: String = platform;
+            let _: String = handle;
+        }
+        zoe_app_primitives::metadata::Metadata::Unknown { discriminant, data } => {
+            let _: u32 = discriminant;
+            let _: Vec<u8> = data;
+        }
     }
     {
         let OverallConnectionStatus = None::<zoe_client::client::OverallConnectionStatus>.unwrap();
@@ -7701,6 +7785,9 @@ const _: fn() = || {
 
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<ZoeClientSessionManager>>
+);
+flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
+    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<BTreeMap<IdentityRef, GroupMember>>
 );
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<BTreeMap<String, String>>
@@ -7743,12 +7830,6 @@ flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
 );
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>
-);
-flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
-    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupSession>
-);
-flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
-    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupState>
 );
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<IdentityRef>
@@ -7847,6 +7928,18 @@ impl SseDecode for Arc<ZoeClientSessionManager> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <RustOpaqueMoi<
             flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<ZoeClientSessionManager>>,
+        >>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+    }
+}
+
+impl SseDecode for BTreeMap<IdentityRef, GroupMember> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <RustOpaqueMoi<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                BTreeMap<IdentityRef, GroupMember>,
+            >,
         >>::sse_decode(deserializer);
         return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
     }
@@ -7987,26 +8080,6 @@ impl SseDecode for GroupMembership {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <RustOpaqueMoi<
             flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>,
-        >>::sse_decode(deserializer);
-        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
-    }
-}
-
-impl SseDecode for GroupSession {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <RustOpaqueMoi<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupSession>,
-        >>::sse_decode(deserializer);
-        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
-    }
-}
-
-impl SseDecode for GroupState {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <RustOpaqueMoi<
-            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupState>,
         >>::sse_decode(deserializer);
         return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
     }
@@ -8272,18 +8345,24 @@ impl SseDecode for VerifyingKeyError {
     }
 }
 
-impl SseDecode for std::collections::HashMap<MessageId, GroupSession> {
+impl SseDecode for std::collections::HashMap<MessageId, zoe_state_machine::state::GroupSession> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <Vec<(MessageId, GroupSession)>>::sse_decode(deserializer);
+        let mut inner =
+            <Vec<(MessageId, zoe_state_machine::state::GroupSession)>>::sse_decode(deserializer);
         return inner.into_iter().collect();
     }
 }
 
-impl SseDecode for std::collections::HashMap<MessageId, GroupState> {
+impl SseDecode
+    for std::collections::HashMap<MessageId, zoe_app_primitives::group::states::GroupState>
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <Vec<(MessageId, GroupState)>>::sse_decode(deserializer);
+        let mut inner =
+            <Vec<(MessageId, zoe_app_primitives::group::states::GroupState)>>::sse_decode(
+                deserializer,
+            );
         return inner.into_iter().collect();
     }
 }
@@ -8291,6 +8370,18 @@ impl SseDecode for std::collections::HashMap<MessageId, GroupState> {
 impl SseDecode
     for RustOpaqueMoi<
         flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<ZoeClientSessionManager>>,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <usize>::sse_decode(deserializer);
+        return decode_rust_opaque_moi(inner);
+    }
+}
+
+impl SseDecode
+    for RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<BTreeMap<IdentityRef, GroupMember>>,
     >
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -8432,26 +8523,6 @@ impl SseDecode
 
 impl SseDecode
     for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>>
-{
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <usize>::sse_decode(deserializer);
-        return decode_rust_opaque_moi(inner);
-    }
-}
-
-impl SseDecode
-    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupSession>>
-{
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <usize>::sse_decode(deserializer);
-        return decode_rust_opaque_moi(inner);
-    }
-}
-
-impl SseDecode
-    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupState>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -8742,6 +8813,19 @@ impl SseDecode for StreamSink<SystemCheckResults, flutter_rust_bridge::for_gener
 
 impl SseDecode
     for StreamSink<
+        zoe_state_machine::group::GroupDataUpdate,
+        flutter_rust_bridge::for_generated::SseCodec,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <String>::sse_decode(deserializer);
+        return StreamSink::deserialize(inner);
+    }
+}
+
+impl SseDecode
+    for StreamSink<
         zoe_client::client::OverallConnectionStatus,
         flutter_rust_bridge::for_generated::SseCodec,
     >
@@ -8829,6 +8913,33 @@ impl SseDecode for zoe_app_primitives::group::events::permissions::GroupAction {
     }
 }
 
+impl SseDecode for zoe_state_machine::group::GroupDataUpdate {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_field0 =
+                    <zoe_state_machine::state::GroupSession>::sse_decode(deserializer);
+                return zoe_state_machine::group::GroupDataUpdate::GroupAdded(var_field0);
+            }
+            1 => {
+                let mut var_field0 =
+                    <zoe_state_machine::state::GroupSession>::sse_decode(deserializer);
+                return zoe_state_machine::group::GroupDataUpdate::GroupUpdated(var_field0);
+            }
+            2 => {
+                let mut var_field0 =
+                    <zoe_state_machine::state::GroupSession>::sse_decode(deserializer);
+                return zoe_state_machine::group::GroupDataUpdate::GroupRemoved(var_field0);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseDecode for zoe_app_primitives::group::events::permissions::GroupPermissions {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -8863,6 +8974,21 @@ impl SseDecode for zoe_app_primitives::group::events::roles::GroupRole {
     }
 }
 
+impl SseDecode for zoe_state_machine::state::GroupSession {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_state =
+            <zoe_app_primitives::group::states::GroupState>::sse_decode(deserializer);
+        let mut var_currentKey = <EncryptionKey>::sse_decode(deserializer);
+        let mut var_previousKeys = <Vec<EncryptionKey>>::sse_decode(deserializer);
+        return zoe_state_machine::state::GroupSession {
+            state: var_state,
+            current_key: var_currentKey,
+            previous_keys: var_previousKeys,
+        };
+    }
+}
+
 impl SseDecode for zoe_app_primitives::group::events::settings::GroupSettings {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -8877,6 +9003,34 @@ impl SseDecode for zoe_app_primitives::group::events::settings::GroupSettings {
         return zoe_app_primitives::group::events::settings::GroupSettings {
             permissions: var_permissions,
             encryption_settings: var_encryptionSettings,
+        };
+    }
+}
+
+impl SseDecode for zoe_app_primitives::group::states::GroupState {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_groupId = <MessageId>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_settings =
+            <zoe_app_primitives::group::events::settings::GroupSettings>::sse_decode(deserializer);
+        let mut var_metadata =
+            <Vec<zoe_app_primitives::metadata::Metadata>>::sse_decode(deserializer);
+        let mut var_members = <BTreeMap<IdentityRef, GroupMember>>::sse_decode(deserializer);
+        let mut var_membership = <GroupMembership>::sse_decode(deserializer);
+        let mut var_eventHistory = <Vec<MessageId>>::sse_decode(deserializer);
+        let mut var_lastEventTimestamp = <u64>::sse_decode(deserializer);
+        let mut var_version = <u64>::sse_decode(deserializer);
+        return zoe_app_primitives::group::states::GroupState {
+            group_id: var_groupId,
+            name: var_name,
+            settings: var_settings,
+            metadata: var_metadata,
+            members: var_members,
+            membership: var_membership,
+            event_history: var_eventHistory,
+            last_event_timestamp: var_lastEventTimestamp,
+            version: var_version,
         };
     }
 }
@@ -8918,6 +9072,18 @@ impl SseDecode for zoe_wire_protocol::crypto::KeyDerivationMethod {
     }
 }
 
+impl SseDecode for Vec<EncryptionKey> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<EncryptionKey>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<IdentityRef> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -8925,6 +9091,18 @@ impl SseDecode for Vec<IdentityRef> {
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
             ans_.push(<IdentityRef>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<MessageId> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<MessageId>::sse_decode(deserializer));
         }
         return ans_;
     }
@@ -8990,6 +9168,20 @@ impl SseDecode for Vec<String> {
     }
 }
 
+impl SseDecode for Vec<zoe_app_primitives::metadata::Metadata> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<zoe_app_primitives::metadata::Metadata>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -9002,25 +9194,31 @@ impl SseDecode for Vec<u8> {
     }
 }
 
-impl SseDecode for Vec<(MessageId, GroupSession)> {
+impl SseDecode for Vec<(MessageId, zoe_state_machine::state::GroupSession)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<(MessageId, GroupSession)>::sse_decode(deserializer));
+            ans_.push(
+                <(MessageId, zoe_state_machine::state::GroupSession)>::sse_decode(deserializer),
+            );
         }
         return ans_;
     }
 }
 
-impl SseDecode for Vec<(MessageId, GroupState)> {
+impl SseDecode for Vec<(MessageId, zoe_app_primitives::group::states::GroupState)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<(MessageId, GroupState)>::sse_decode(deserializer));
+            ans_.push(
+                <(MessageId, zoe_app_primitives::group::states::GroupState)>::sse_decode(
+                    deserializer,
+                ),
+            );
         }
         return ans_;
     }
@@ -9040,33 +9238,75 @@ impl SseDecode for Vec<zoe_client::system_check::TestCategory> {
     }
 }
 
+impl SseDecode for zoe_app_primitives::metadata::Metadata {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_key = <String>::sse_decode(deserializer);
+                let mut var_value = <String>::sse_decode(deserializer);
+                return zoe_app_primitives::metadata::Metadata::Generic {
+                    key: var_key,
+                    value: var_value,
+                };
+            }
+            1 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return zoe_app_primitives::metadata::Metadata::Description(var_field0);
+            }
+            2 => {
+                let mut var_field0 = <Image>::sse_decode(deserializer);
+                return zoe_app_primitives::metadata::Metadata::Avatar(var_field0);
+            }
+            3 => {
+                let mut var_field0 = <Image>::sse_decode(deserializer);
+                return zoe_app_primitives::metadata::Metadata::Background(var_field0);
+            }
+            4 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return zoe_app_primitives::metadata::Metadata::Website(var_field0);
+            }
+            5 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return zoe_app_primitives::metadata::Metadata::Email(var_field0);
+            }
+            6 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return zoe_app_primitives::metadata::Metadata::Phone(var_field0);
+            }
+            7 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return zoe_app_primitives::metadata::Metadata::Address(var_field0);
+            }
+            8 => {
+                let mut var_platform = <String>::sse_decode(deserializer);
+                let mut var_handle = <String>::sse_decode(deserializer);
+                return zoe_app_primitives::metadata::Metadata::Social {
+                    platform: var_platform,
+                    handle: var_handle,
+                };
+            }
+            9 => {
+                let mut var_discriminant = <u32>::sse_decode(deserializer);
+                let mut var_data = <Vec<u8>>::sse_decode(deserializer);
+                return zoe_app_primitives::metadata::Metadata::Unknown {
+                    discriminant: var_discriminant,
+                    data: var_data,
+                };
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseDecode for Option<String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<String>::sse_decode(deserializer));
-        } else {
-            return None;
-        }
-    }
-}
-
-impl SseDecode for Option<GroupSession> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<GroupSession>::sse_decode(deserializer));
-        } else {
-            return None;
-        }
-    }
-}
-
-impl SseDecode for Option<GroupState> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<GroupState>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -9113,6 +9353,32 @@ impl SseDecode for Option<zoe_app_primitives::group::events::roles::GroupRole> {
             return Some(
                 <zoe_app_primitives::group::events::roles::GroupRole>::sse_decode(deserializer),
             );
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<zoe_state_machine::state::GroupSession> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<zoe_state_machine::state::GroupSession>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<zoe_app_primitives::group::states::GroupState> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<zoe_app_primitives::group::states::GroupState>::sse_decode(
+                deserializer,
+            ));
         } else {
             return None;
         }
@@ -9198,20 +9464,21 @@ impl SseDecode for zoe_app_primitives::qr::QrOptions {
     }
 }
 
-impl SseDecode for (MessageId, GroupSession) {
+impl SseDecode for (MessageId, zoe_state_machine::state::GroupSession) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_field0 = <MessageId>::sse_decode(deserializer);
-        let mut var_field1 = <GroupSession>::sse_decode(deserializer);
+        let mut var_field1 = <zoe_state_machine::state::GroupSession>::sse_decode(deserializer);
         return (var_field0, var_field1);
     }
 }
 
-impl SseDecode for (MessageId, GroupState) {
+impl SseDecode for (MessageId, zoe_app_primitives::group::states::GroupState) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_field0 = <MessageId>::sse_decode(deserializer);
-        let mut var_field1 = <GroupState>::sse_decode(deserializer);
+        let mut var_field1 =
+            <zoe_app_primitives::group::states::GroupState>::sse_decode(deserializer);
         return (var_field0, var_field1);
     }
 }
@@ -9345,62 +9612,62 @@ fn pde_ffi_dispatcher_primary_impl(
 54 => wire__zoe_state_machine__group__GroupManager_group_state_impl(port, ptr, rust_vec_len, data_len),
 55 => wire__zoe_state_machine__group__GroupManager_is_member_impl(port, ptr, rust_vec_len, data_len),
 56 => wire__zoe_state_machine__group__GroupManager_member_role_impl(port, ptr, rust_vec_len, data_len),
-57 => wire__zoe_app_primitives__group__states__GroupMembership_default_impl(port, ptr, rust_vec_len, data_len),
-58 => wire__zoe_app_primitives__group__states__GroupMembership_get_available_identities_impl(port, ptr, rust_vec_len, data_len),
-59 => wire__zoe_app_primitives__group__states__GroupMembership_get_display_name_impl(port, ptr, rust_vec_len, data_len),
-60 => wire__zoe_app_primitives__group__states__GroupMembership_get_effective_role_impl(port, ptr, rust_vec_len, data_len),
-61 => wire__zoe_app_primitives__group__states__GroupMembership_get_role_impl(port, ptr, rust_vec_len, data_len),
-62 => wire__zoe_app_primitives__group__states__GroupMembership_has_identity_info_impl(port, ptr, rust_vec_len, data_len),
-63 => wire__zoe_app_primitives__group__states__GroupMembership_is_authorized_impl(port, ptr, rust_vec_len, data_len),
-64 => wire__zoe_app_primitives__group__states__GroupMembership_new_impl(port, ptr, rust_vec_len, data_len),
-65 => wire__zoe_app_primitives__identity__IdentityRef_controlling_key_impl(port, ptr, rust_vec_len, data_len),
-66 => wire__zoe_app_primitives__identity__IdentityRef_fallback_display_impl(port, ptr, rust_vec_len, data_len),
-67 => wire__zoe_app_primitives__identity__IdentityRef_is_controlled_by_impl(port, ptr, rust_vec_len, data_len),
-68 => wire__zoe_app_primitives__identity__IdentityRef_is_controlled_by_ml_dsa_impl(port, ptr, rust_vec_len, data_len),
-69 => wire__zoe_app_primitives__file__image__Image_aspect_ratio_impl(port, ptr, rust_vec_len, data_len),
-70 => wire__zoe_app_primitives__file__image__Image_generic_metadata_impl(port, ptr, rust_vec_len, data_len),
-71 => wire__zoe_app_primitives__file__image__Image_is_square_impl(port, ptr, rust_vec_len, data_len),
-72 => wire__zoe_app_primitives__file__image__Image_new_impl(port, ptr, rust_vec_len, data_len),
-73 => wire__zoe_wire_protocol__keys__KeyPair_algorithm_impl(port, ptr, rust_vec_len, data_len),
-74 => wire__zoe_wire_protocol__keys__KeyPair_from_pem_impl(port, ptr, rust_vec_len, data_len),
-75 => wire__zoe_wire_protocol__keys__KeyPair_id_impl(port, ptr, rust_vec_len, data_len),
-76 => wire__zoe_wire_protocol__keys__KeyPair_public_key_impl(port, ptr, rust_vec_len, data_len),
-77 => wire__zoe_wire_protocol__keys__KeyPair_sign_impl(port, ptr, rust_vec_len, data_len),
-78 => wire__zoe_wire_protocol__keys__KeyPair_to_pem_impl(port, ptr, rust_vec_len, data_len),
-79 => wire__zoe_app_primitives__connection__NetworkAddress_ipv4_impl(port, ptr, rust_vec_len, data_len),
-80 => wire__zoe_app_primitives__connection__NetworkAddress_ipv4_with_port_impl(port, ptr, rust_vec_len, data_len),
-81 => wire__zoe_app_primitives__connection__NetworkAddress_ipv6_impl(port, ptr, rust_vec_len, data_len),
-82 => wire__zoe_app_primitives__connection__NetworkAddress_ipv6_with_port_impl(port, ptr, rust_vec_len, data_len),
-83 => wire__zoe_app_primitives__connection__NetworkAddress_port_impl(port, ptr, rust_vec_len, data_len),
-84 => wire__zoe_app_primitives__connection__NetworkAddress_port_or_default_impl(port, ptr, rust_vec_len, data_len),
-85 => wire__zoe_app_primitives__connection__NetworkAddress_resolve_to_socket_addr_impl(port, ptr, rust_vec_len, data_len),
-100 => wire__zoe_wire_protocol__keys__Signature_encode_impl(port, ptr, rust_vec_len, data_len),
-101 => wire__zoe_wire_protocol__keys__Signature_id_impl(port, ptr, rust_vec_len, data_len),
-102 => wire__zoe_wire_protocol__keys__SigningKey_sign_impl(port, ptr, rust_vec_len, data_len),
-103 => wire__zoe_wire_protocol__keys__VerifyingKey_algorithm_impl(port, ptr, rust_vec_len, data_len),
-104 => wire__zoe_wire_protocol__keys__VerifyingKey_encode_impl(port, ptr, rust_vec_len, data_len),
-105 => wire__zoe_wire_protocol__keys__VerifyingKey_from_hex_impl(port, ptr, rust_vec_len, data_len),
-106 => wire__zoe_wire_protocol__keys__VerifyingKey_from_pem_impl(port, ptr, rust_vec_len, data_len),
-107 => wire__zoe_wire_protocol__keys__VerifyingKey_id_impl(port, ptr, rust_vec_len, data_len),
-108 => wire__zoe_wire_protocol__keys__VerifyingKey_to_bytes_impl(port, ptr, rust_vec_len, data_len),
-109 => wire__zoe_wire_protocol__keys__VerifyingKey_to_pem_impl(port, ptr, rust_vec_len, data_len),
-110 => wire__zoe_wire_protocol__keys__VerifyingKey_verify_impl(port, ptr, rust_vec_len, data_len),
-111 => wire__zoe_client__frb_api__create_relay_address_with_hostname_impl(port, ptr, rust_vec_len, data_len),
-112 => wire__zoe_client__frb_api__create_signing_key_random_impl(port, ptr, rust_vec_len, data_len),
-113 => wire__zoe_client__frb_api__create_socket_addr_impl(port, ptr, rust_vec_len, data_len),
-114 => wire__zoe_app_primitives__qr__display_qr_code_from_string_impl(port, ptr, rust_vec_len, data_len),
-115 => wire__zoe_app_primitives__group__events__settings__encryption_settings_default_impl(port, ptr, rust_vec_len, data_len),
-116 => wire__zoe_app_primitives__group__events__settings__encryption_settings_new_impl(port, ptr, rust_vec_len, data_len),
-117 => wire__zoe_client__frb_api__frb_init_impl(port, ptr, rust_vec_len, data_len),
-118 => wire__zoe_app_primitives__qr__generate_qr_string_from_text_impl(port, ptr, rust_vec_len, data_len),
-120 => wire__zoe_app_primitives__group__events__permissions__group_permissions_can_perform_action_impl(port, ptr, rust_vec_len, data_len),
-121 => wire__zoe_app_primitives__group__events__permissions__group_permissions_default_impl(port, ptr, rust_vec_len, data_len),
-122 => wire__zoe_app_primitives__group__events__permissions__group_permissions_new_impl(port, ptr, rust_vec_len, data_len),
-123 => wire__zoe_app_primitives__group__events__roles__group_role_can_assign_role_impl(port, ptr, rust_vec_len, data_len),
-124 => wire__zoe_app_primitives__group__events__roles__group_role_display_name_impl(port, ptr, rust_vec_len, data_len),
-125 => wire__zoe_app_primitives__group__events__roles__group_role_has_permission_impl(port, ptr, rust_vec_len, data_len),
-126 => wire__zoe_app_primitives__group__events__settings__group_settings_default_impl(port, ptr, rust_vec_len, data_len),
-127 => wire__zoe_app_primitives__group__events__settings__group_settings_new_impl(port, ptr, rust_vec_len, data_len),
+57 => wire__zoe_app_primitives__group__states__GroupMembership_available_identities_impl(port, ptr, rust_vec_len, data_len),
+58 => wire__zoe_app_primitives__group__states__GroupMembership_default_impl(port, ptr, rust_vec_len, data_len),
+59 => wire__zoe_app_primitives__group__states__GroupMembership_display_name_impl(port, ptr, rust_vec_len, data_len),
+60 => wire__zoe_app_primitives__group__states__GroupMembership_effective_role_impl(port, ptr, rust_vec_len, data_len),
+61 => wire__zoe_app_primitives__group__states__GroupMembership_is_authorized_impl(port, ptr, rust_vec_len, data_len),
+62 => wire__zoe_app_primitives__group__states__GroupMembership_new_impl(port, ptr, rust_vec_len, data_len),
+63 => wire__zoe_app_primitives__group__states__GroupMembership_role_impl(port, ptr, rust_vec_len, data_len),
+64 => wire__zoe_app_primitives__identity__IdentityRef_controlling_key_impl(port, ptr, rust_vec_len, data_len),
+65 => wire__zoe_app_primitives__identity__IdentityRef_fallback_display_impl(port, ptr, rust_vec_len, data_len),
+66 => wire__zoe_app_primitives__identity__IdentityRef_is_controlled_by_impl(port, ptr, rust_vec_len, data_len),
+67 => wire__zoe_app_primitives__identity__IdentityRef_is_controlled_by_ml_dsa_impl(port, ptr, rust_vec_len, data_len),
+68 => wire__zoe_app_primitives__file__image__Image_aspect_ratio_impl(port, ptr, rust_vec_len, data_len),
+69 => wire__zoe_app_primitives__file__image__Image_generic_metadata_impl(port, ptr, rust_vec_len, data_len),
+70 => wire__zoe_app_primitives__file__image__Image_is_square_impl(port, ptr, rust_vec_len, data_len),
+71 => wire__zoe_app_primitives__file__image__Image_new_impl(port, ptr, rust_vec_len, data_len),
+72 => wire__zoe_wire_protocol__keys__KeyPair_algorithm_impl(port, ptr, rust_vec_len, data_len),
+73 => wire__zoe_wire_protocol__keys__KeyPair_from_pem_impl(port, ptr, rust_vec_len, data_len),
+74 => wire__zoe_wire_protocol__keys__KeyPair_id_impl(port, ptr, rust_vec_len, data_len),
+75 => wire__zoe_wire_protocol__keys__KeyPair_public_key_impl(port, ptr, rust_vec_len, data_len),
+76 => wire__zoe_wire_protocol__keys__KeyPair_sign_impl(port, ptr, rust_vec_len, data_len),
+77 => wire__zoe_wire_protocol__keys__KeyPair_to_pem_impl(port, ptr, rust_vec_len, data_len),
+78 => wire__zoe_app_primitives__connection__NetworkAddress_ipv4_impl(port, ptr, rust_vec_len, data_len),
+79 => wire__zoe_app_primitives__connection__NetworkAddress_ipv4_with_port_impl(port, ptr, rust_vec_len, data_len),
+80 => wire__zoe_app_primitives__connection__NetworkAddress_ipv6_impl(port, ptr, rust_vec_len, data_len),
+81 => wire__zoe_app_primitives__connection__NetworkAddress_ipv6_with_port_impl(port, ptr, rust_vec_len, data_len),
+82 => wire__zoe_app_primitives__connection__NetworkAddress_port_impl(port, ptr, rust_vec_len, data_len),
+83 => wire__zoe_app_primitives__connection__NetworkAddress_port_or_default_impl(port, ptr, rust_vec_len, data_len),
+84 => wire__zoe_app_primitives__connection__NetworkAddress_resolve_to_socket_addr_impl(port, ptr, rust_vec_len, data_len),
+99 => wire__zoe_wire_protocol__keys__Signature_encode_impl(port, ptr, rust_vec_len, data_len),
+100 => wire__zoe_wire_protocol__keys__Signature_id_impl(port, ptr, rust_vec_len, data_len),
+101 => wire__zoe_wire_protocol__keys__SigningKey_sign_impl(port, ptr, rust_vec_len, data_len),
+102 => wire__zoe_wire_protocol__keys__VerifyingKey_algorithm_impl(port, ptr, rust_vec_len, data_len),
+103 => wire__zoe_wire_protocol__keys__VerifyingKey_encode_impl(port, ptr, rust_vec_len, data_len),
+104 => wire__zoe_wire_protocol__keys__VerifyingKey_from_hex_impl(port, ptr, rust_vec_len, data_len),
+105 => wire__zoe_wire_protocol__keys__VerifyingKey_from_pem_impl(port, ptr, rust_vec_len, data_len),
+106 => wire__zoe_wire_protocol__keys__VerifyingKey_id_impl(port, ptr, rust_vec_len, data_len),
+107 => wire__zoe_wire_protocol__keys__VerifyingKey_to_bytes_impl(port, ptr, rust_vec_len, data_len),
+108 => wire__zoe_wire_protocol__keys__VerifyingKey_to_pem_impl(port, ptr, rust_vec_len, data_len),
+109 => wire__zoe_wire_protocol__keys__VerifyingKey_verify_impl(port, ptr, rust_vec_len, data_len),
+110 => wire__zoe_client__frb_api__create_relay_address_with_hostname_impl(port, ptr, rust_vec_len, data_len),
+111 => wire__zoe_client__frb_api__create_signing_key_random_impl(port, ptr, rust_vec_len, data_len),
+112 => wire__zoe_client__frb_api__create_socket_addr_impl(port, ptr, rust_vec_len, data_len),
+113 => wire__zoe_app_primitives__qr__display_qr_code_from_string_impl(port, ptr, rust_vec_len, data_len),
+114 => wire__zoe_app_primitives__group__events__settings__encryption_settings_default_impl(port, ptr, rust_vec_len, data_len),
+115 => wire__zoe_app_primitives__group__events__settings__encryption_settings_new_impl(port, ptr, rust_vec_len, data_len),
+116 => wire__zoe_client__frb_api__frb_init_impl(port, ptr, rust_vec_len, data_len),
+117 => wire__zoe_app_primitives__qr__generate_qr_string_from_text_impl(port, ptr, rust_vec_len, data_len),
+119 => wire__zoe_app_primitives__group__events__permissions__group_permissions_can_perform_action_impl(port, ptr, rust_vec_len, data_len),
+120 => wire__zoe_app_primitives__group__events__permissions__group_permissions_default_impl(port, ptr, rust_vec_len, data_len),
+121 => wire__zoe_app_primitives__group__events__permissions__group_permissions_new_impl(port, ptr, rust_vec_len, data_len),
+122 => wire__zoe_app_primitives__group__events__roles__group_role_can_assign_role_impl(port, ptr, rust_vec_len, data_len),
+123 => wire__zoe_app_primitives__group__events__roles__group_role_display_name_impl(port, ptr, rust_vec_len, data_len),
+124 => wire__zoe_app_primitives__group__events__roles__group_role_has_permission_impl(port, ptr, rust_vec_len, data_len),
+125 => wire__zoe_app_primitives__group__events__settings__group_settings_default_impl(port, ptr, rust_vec_len, data_len),
+126 => wire__zoe_app_primitives__group__events__settings__group_settings_new_impl(port, ptr, rust_vec_len, data_len),
+127 => wire__crate__api__group__group_updates_stream_impl(port, ptr, rust_vec_len, data_len),
 128 => wire__crate__api__simple__init_app_impl(port, ptr, rust_vec_len, data_len),
 129 => wire__crate__api__client__overall_status_stream_impl(port, ptr, rust_vec_len, data_len),
 130 => wire__zoe_client__frb_api__prepare_client_for_systems_test_impl(port, ptr, rust_vec_len, data_len),
@@ -9439,77 +9706,77 @@ fn pde_ffi_dispatcher_sync_impl(
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        86 => wire__zoe_client__client__RelayConnectionInfo_auto_accessor_get_info_impl(
+        85 => wire__zoe_client__client__RelayConnectionInfo_auto_accessor_get_info_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        87 => wire__zoe_client__client__RelayConnectionInfo_auto_accessor_get_status_impl(
+        86 => wire__zoe_client__client__RelayConnectionInfo_auto_accessor_get_status_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        88 => wire__zoe_client__client__RelayConnectionInfo_auto_accessor_set_info_impl(
+        87 => wire__zoe_client__client__RelayConnectionInfo_auto_accessor_set_info_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        89 => wire__zoe_client__client__RelayConnectionInfo_auto_accessor_set_status_impl(
+        88 => wire__zoe_client__client__RelayConnectionInfo_auto_accessor_set_status_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        90 => wire__zoe_client__client__RelayInfo_auto_accessor_get_relay_address_impl(
+        89 => wire__zoe_client__client__RelayInfo_auto_accessor_get_relay_address_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        91 => wire__zoe_client__client__RelayInfo_auto_accessor_get_relay_id_impl(
+        90 => wire__zoe_client__client__RelayInfo_auto_accessor_get_relay_id_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        92 => wire__zoe_client__client__RelayInfo_auto_accessor_set_relay_address_impl(
+        91 => wire__zoe_client__client__RelayInfo_auto_accessor_set_relay_address_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        93 => wire__zoe_client__client__RelayInfo_auto_accessor_set_relay_id_impl(
+        92 => wire__zoe_client__client__RelayInfo_auto_accessor_set_relay_id_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        94 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_get_relay_address_impl(
+        93 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_get_relay_address_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        95 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_get_relay_id_impl(
+        94 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_get_relay_id_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        96 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_get_status_impl(
+        95 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_get_status_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        97 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_set_relay_address_impl(
+        96 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_set_relay_address_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        98 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_set_relay_id_impl(
+        97 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_set_relay_id_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        99 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_set_status_impl(
+        98 => wire__zoe_client__client__RelayStatusUpdate_auto_accessor_set_status_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        119 => wire__crate__api__simple__greet_impl(ptr, rust_vec_len, data_len),
+        118 => wire__crate__api__simple__greet_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -9532,6 +9799,26 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<Arc<ZoeClientSessionManager>>>
     for Arc<ZoeClientSessionManager>
 {
     fn into_into_dart(self) -> FrbWrapper<Arc<ZoeClientSessionManager>> {
+        self.into()
+    }
+}
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<BTreeMap<IdentityRef, GroupMember>> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<BTreeMap<IdentityRef, GroupMember>>
+{
+}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<BTreeMap<IdentityRef, GroupMember>>>
+    for BTreeMap<IdentityRef, GroupMember>
+{
+    fn into_into_dart(self) -> FrbWrapper<BTreeMap<IdentityRef, GroupMember>> {
         self.into()
     }
 }
@@ -9755,36 +10042,6 @@ impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<
 
 impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<GroupMembership>> for GroupMembership {
     fn into_into_dart(self) -> FrbWrapper<GroupMembership> {
-        self.into()
-    }
-}
-
-// Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<GroupSession> {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
-            .into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<GroupSession> {}
-
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<GroupSession>> for GroupSession {
-    fn into_into_dart(self) -> FrbWrapper<GroupSession> {
-        self.into()
-    }
-}
-
-// Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for FrbWrapper<GroupState> {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
-            .into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<GroupState> {}
-
-impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<GroupState>> for GroupState {
-    fn into_into_dart(self) -> FrbWrapper<GroupState> {
         self.into()
     }
 }
@@ -10300,6 +10557,36 @@ impl
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<zoe_state_machine::group::GroupDataUpdate> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            zoe_state_machine::group::GroupDataUpdate::GroupAdded(field0) => {
+                [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            zoe_state_machine::group::GroupDataUpdate::GroupUpdated(field0) => {
+                [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            zoe_state_machine::group::GroupDataUpdate::GroupRemoved(field0) => {
+                [2.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<zoe_state_machine::group::GroupDataUpdate>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<zoe_state_machine::group::GroupDataUpdate>>
+    for zoe_state_machine::group::GroupDataUpdate
+{
+    fn into_into_dart(self) -> FrbWrapper<zoe_state_machine::group::GroupDataUpdate> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart
     for FrbWrapper<zoe_app_primitives::group::events::permissions::GroupPermissions>
 {
@@ -10356,6 +10643,28 @@ impl
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<zoe_state_machine::state::GroupSession> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.state.into_into_dart().into_dart(),
+            self.0.current_key.into_into_dart().into_dart(),
+            self.0.previous_keys.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<zoe_state_machine::state::GroupSession>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<zoe_state_machine::state::GroupSession>>
+    for zoe_state_machine::state::GroupSession
+{
+    fn into_into_dart(self) -> FrbWrapper<zoe_state_machine::state::GroupSession> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart
     for FrbWrapper<zoe_app_primitives::group::events::settings::GroupSettings>
 {
@@ -10379,6 +10688,34 @@ impl
     fn into_into_dart(
         self,
     ) -> FrbWrapper<zoe_app_primitives::group::events::settings::GroupSettings> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<zoe_app_primitives::group::states::GroupState> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.group_id.into_into_dart().into_dart(),
+            self.0.name.into_into_dart().into_dart(),
+            self.0.settings.into_into_dart().into_dart(),
+            self.0.metadata.into_into_dart().into_dart(),
+            self.0.members.into_into_dart().into_dart(),
+            self.0.membership.into_into_dart().into_dart(),
+            self.0.event_history.into_into_dart().into_dart(),
+            self.0.last_event_timestamp.into_into_dart().into_dart(),
+            self.0.version.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<zoe_app_primitives::group::states::GroupState>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<zoe_app_primitives::group::states::GroupState>>
+    for zoe_app_primitives::group::states::GroupState
+{
+    fn into_into_dart(self) -> FrbWrapper<zoe_app_primitives::group::states::GroupState> {
         self.into()
     }
 }
@@ -10423,6 +10760,66 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<zoe_wire_protocol::crypto::Key
     for zoe_wire_protocol::crypto::KeyDerivationMethod
 {
     fn into_into_dart(self) -> FrbWrapper<zoe_wire_protocol::crypto::KeyDerivationMethod> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<zoe_app_primitives::metadata::Metadata> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            zoe_app_primitives::metadata::Metadata::Generic { key, value } => [
+                0.into_dart(),
+                key.into_into_dart().into_dart(),
+                value.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            zoe_app_primitives::metadata::Metadata::Description(field0) => {
+                [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            zoe_app_primitives::metadata::Metadata::Avatar(field0) => {
+                [2.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            zoe_app_primitives::metadata::Metadata::Background(field0) => {
+                [3.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            zoe_app_primitives::metadata::Metadata::Website(field0) => {
+                [4.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            zoe_app_primitives::metadata::Metadata::Email(field0) => {
+                [5.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            zoe_app_primitives::metadata::Metadata::Phone(field0) => {
+                [6.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            zoe_app_primitives::metadata::Metadata::Address(field0) => {
+                [7.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            zoe_app_primitives::metadata::Metadata::Social { platform, handle } => [
+                8.into_dart(),
+                platform.into_into_dart().into_dart(),
+                handle.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            zoe_app_primitives::metadata::Metadata::Unknown { discriminant, data } => [
+                9.into_dart(),
+                discriminant.into_into_dart().into_dart(),
+                data.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<zoe_app_primitives::metadata::Metadata>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<zoe_app_primitives::metadata::Metadata>>
+    for zoe_app_primitives::metadata::Metadata
+{
+    fn into_into_dart(self) -> FrbWrapper<zoe_app_primitives::metadata::Metadata> {
         self.into()
     }
 }
@@ -10549,6 +10946,20 @@ impl SseEncode for Arc<ZoeClientSessionManager> {
     }
 }
 
+impl SseEncode for BTreeMap<IdentityRef, GroupMember> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueMoi<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                BTreeMap<IdentityRef, GroupMember>,
+            >,
+        >>::sse_encode(
+            flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self),
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for BTreeMap<String, String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -10654,20 +11065,6 @@ impl SseEncode for GroupMembership {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
-    }
-}
-
-impl SseEncode for GroupSession {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupSession>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
-    }
-}
-
-impl SseEncode for GroupState {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupState>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
     }
 }
 
@@ -10864,23 +11261,44 @@ impl SseEncode for VerifyingKeyError {
     }
 }
 
-impl SseEncode for std::collections::HashMap<MessageId, GroupSession> {
+impl SseEncode for std::collections::HashMap<MessageId, zoe_state_machine::state::GroupSession> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Vec<(MessageId, GroupSession)>>::sse_encode(self.into_iter().collect(), serializer);
+        <Vec<(MessageId, zoe_state_machine::state::GroupSession)>>::sse_encode(
+            self.into_iter().collect(),
+            serializer,
+        );
     }
 }
 
-impl SseEncode for std::collections::HashMap<MessageId, GroupState> {
+impl SseEncode
+    for std::collections::HashMap<MessageId, zoe_app_primitives::group::states::GroupState>
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Vec<(MessageId, GroupState)>>::sse_encode(self.into_iter().collect(), serializer);
+        <Vec<(MessageId, zoe_app_primitives::group::states::GroupState)>>::sse_encode(
+            self.into_iter().collect(),
+            serializer,
+        );
     }
 }
 
 impl SseEncode
     for RustOpaqueMoi<
         flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<ZoeClientSessionManager>>,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        let (ptr, size) = self.sse_encode_raw();
+        <usize>::sse_encode(ptr, serializer);
+        <i32>::sse_encode(size, serializer);
+    }
+}
+
+impl SseEncode
+    for RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<BTreeMap<IdentityRef, GroupMember>>,
     >
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -11036,28 +11454,6 @@ impl SseEncode
 
 impl SseEncode
     for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>>
-{
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        let (ptr, size) = self.sse_encode_raw();
-        <usize>::sse_encode(ptr, serializer);
-        <i32>::sse_encode(size, serializer);
-    }
-}
-
-impl SseEncode
-    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupSession>>
-{
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        let (ptr, size) = self.sse_encode_raw();
-        <usize>::sse_encode(ptr, serializer);
-        <i32>::sse_encode(size, serializer);
-    }
-}
-
-impl SseEncode
-    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupState>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -11374,6 +11770,18 @@ impl SseEncode for StreamSink<SystemCheckResults, flutter_rust_bridge::for_gener
 
 impl SseEncode
     for StreamSink<
+        zoe_state_machine::group::GroupDataUpdate,
+        flutter_rust_bridge::for_generated::SseCodec,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        unimplemented!("")
+    }
+}
+
+impl SseEncode
+    for StreamSink<
         zoe_client::client::OverallConnectionStatus,
         flutter_rust_bridge::for_generated::SseCodec,
     >
@@ -11458,6 +11866,29 @@ impl SseEncode for zoe_app_primitives::group::events::permissions::GroupAction {
     }
 }
 
+impl SseEncode for zoe_state_machine::group::GroupDataUpdate {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            zoe_state_machine::group::GroupDataUpdate::GroupAdded(field0) => {
+                <i32>::sse_encode(0, serializer);
+                <zoe_state_machine::state::GroupSession>::sse_encode(field0, serializer);
+            }
+            zoe_state_machine::group::GroupDataUpdate::GroupUpdated(field0) => {
+                <i32>::sse_encode(1, serializer);
+                <zoe_state_machine::state::GroupSession>::sse_encode(field0, serializer);
+            }
+            zoe_state_machine::group::GroupDataUpdate::GroupRemoved(field0) => {
+                <i32>::sse_encode(2, serializer);
+                <zoe_state_machine::state::GroupSession>::sse_encode(field0, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseEncode for zoe_app_primitives::group::events::permissions::GroupPermissions {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -11498,6 +11929,15 @@ impl SseEncode for zoe_app_primitives::group::events::roles::GroupRole {
     }
 }
 
+impl SseEncode for zoe_state_machine::state::GroupSession {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <zoe_app_primitives::group::states::GroupState>::sse_encode(self.state, serializer);
+        <EncryptionKey>::sse_encode(self.current_key, serializer);
+        <Vec<EncryptionKey>>::sse_encode(self.previous_keys, serializer);
+    }
+}
+
 impl SseEncode for zoe_app_primitives::group::events::settings::GroupSettings {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -11509,6 +11949,24 @@ impl SseEncode for zoe_app_primitives::group::events::settings::GroupSettings {
             self.encryption_settings,
             serializer,
         );
+    }
+}
+
+impl SseEncode for zoe_app_primitives::group::states::GroupState {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <MessageId>::sse_encode(self.group_id, serializer);
+        <String>::sse_encode(self.name, serializer);
+        <zoe_app_primitives::group::events::settings::GroupSettings>::sse_encode(
+            self.settings,
+            serializer,
+        );
+        <Vec<zoe_app_primitives::metadata::Metadata>>::sse_encode(self.metadata, serializer);
+        <BTreeMap<IdentityRef, GroupMember>>::sse_encode(self.members, serializer);
+        <GroupMembership>::sse_encode(self.membership, serializer);
+        <Vec<MessageId>>::sse_encode(self.event_history, serializer);
+        <u64>::sse_encode(self.last_event_timestamp, serializer);
+        <u64>::sse_encode(self.version, serializer);
     }
 }
 
@@ -11545,12 +12003,32 @@ impl SseEncode for zoe_wire_protocol::crypto::KeyDerivationMethod {
     }
 }
 
+impl SseEncode for Vec<EncryptionKey> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <EncryptionKey>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<IdentityRef> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <IdentityRef>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<MessageId> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <MessageId>::sse_encode(item, serializer);
         }
     }
 }
@@ -11605,6 +12083,16 @@ impl SseEncode for Vec<String> {
     }
 }
 
+impl SseEncode for Vec<zoe_app_primitives::metadata::Metadata> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <zoe_app_primitives::metadata::Metadata>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -11615,22 +12103,24 @@ impl SseEncode for Vec<u8> {
     }
 }
 
-impl SseEncode for Vec<(MessageId, GroupSession)> {
+impl SseEncode for Vec<(MessageId, zoe_state_machine::state::GroupSession)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <(MessageId, GroupSession)>::sse_encode(item, serializer);
+            <(MessageId, zoe_state_machine::state::GroupSession)>::sse_encode(item, serializer);
         }
     }
 }
 
-impl SseEncode for Vec<(MessageId, GroupState)> {
+impl SseEncode for Vec<(MessageId, zoe_app_primitives::group::states::GroupState)> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <(MessageId, GroupState)>::sse_encode(item, serializer);
+            <(MessageId, zoe_app_primitives::group::states::GroupState)>::sse_encode(
+                item, serializer,
+            );
         }
     }
 }
@@ -11645,32 +12135,66 @@ impl SseEncode for Vec<zoe_client::system_check::TestCategory> {
     }
 }
 
+impl SseEncode for zoe_app_primitives::metadata::Metadata {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            zoe_app_primitives::metadata::Metadata::Generic { key, value } => {
+                <i32>::sse_encode(0, serializer);
+                <String>::sse_encode(key, serializer);
+                <String>::sse_encode(value, serializer);
+            }
+            zoe_app_primitives::metadata::Metadata::Description(field0) => {
+                <i32>::sse_encode(1, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            zoe_app_primitives::metadata::Metadata::Avatar(field0) => {
+                <i32>::sse_encode(2, serializer);
+                <Image>::sse_encode(field0, serializer);
+            }
+            zoe_app_primitives::metadata::Metadata::Background(field0) => {
+                <i32>::sse_encode(3, serializer);
+                <Image>::sse_encode(field0, serializer);
+            }
+            zoe_app_primitives::metadata::Metadata::Website(field0) => {
+                <i32>::sse_encode(4, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            zoe_app_primitives::metadata::Metadata::Email(field0) => {
+                <i32>::sse_encode(5, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            zoe_app_primitives::metadata::Metadata::Phone(field0) => {
+                <i32>::sse_encode(6, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            zoe_app_primitives::metadata::Metadata::Address(field0) => {
+                <i32>::sse_encode(7, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            zoe_app_primitives::metadata::Metadata::Social { platform, handle } => {
+                <i32>::sse_encode(8, serializer);
+                <String>::sse_encode(platform, serializer);
+                <String>::sse_encode(handle, serializer);
+            }
+            zoe_app_primitives::metadata::Metadata::Unknown { discriminant, data } => {
+                <i32>::sse_encode(9, serializer);
+                <u32>::sse_encode(discriminant, serializer);
+                <Vec<u8>>::sse_encode(data, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseEncode for Option<String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <String>::sse_encode(value, serializer);
-        }
-    }
-}
-
-impl SseEncode for Option<GroupSession> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <GroupSession>::sse_encode(value, serializer);
-        }
-    }
-}
-
-impl SseEncode for Option<GroupState> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <GroupState>::sse_encode(value, serializer);
         }
     }
 }
@@ -11711,6 +12235,26 @@ impl SseEncode for Option<zoe_app_primitives::group::events::roles::GroupRole> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <zoe_app_primitives::group::events::roles::GroupRole>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<zoe_state_machine::state::GroupSession> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <zoe_state_machine::state::GroupSession>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<zoe_app_primitives::group::states::GroupState> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <zoe_app_primitives::group::states::GroupState>::sse_encode(value, serializer);
         }
     }
 }
@@ -11782,19 +12326,19 @@ impl SseEncode for zoe_app_primitives::qr::QrOptions {
     }
 }
 
-impl SseEncode for (MessageId, GroupSession) {
+impl SseEncode for (MessageId, zoe_state_machine::state::GroupSession) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <MessageId>::sse_encode(self.0, serializer);
-        <GroupSession>::sse_encode(self.1, serializer);
+        <zoe_state_machine::state::GroupSession>::sse_encode(self.1, serializer);
     }
 }
 
-impl SseEncode for (MessageId, GroupState) {
+impl SseEncode for (MessageId, zoe_app_primitives::group::states::GroupState) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <MessageId>::sse_encode(self.0, serializer);
-        <GroupState>::sse_encode(self.1, serializer);
+        <zoe_app_primitives::group::states::GroupState>::sse_encode(self.1, serializer);
     }
 }
 
@@ -11903,7 +12447,6 @@ mod io {
     use zoe_client::client::*;
     use zoe_client::system_check::*;
     use zoe_state_machine::group::*;
-    use zoe_state_machine::state::*;
     use zoe_wire_protocol::crypto::*;
     use zoe_wire_protocol::keys::*;
     use zoe_wire_protocol::primitives::*;
@@ -11944,6 +12487,28 @@ mod io {
     ) {
         MoiArc::<
             flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<ZoeClientSessionManager>>,
+        >::decrement_strong_count(ptr as _);
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_zoe_native_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                BTreeMap<IdentityRef, GroupMember>,
+            >,
+        >::increment_strong_count(ptr as _);
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_zoe_native_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                BTreeMap<IdentityRef, GroupMember>,
+            >,
         >::decrement_strong_count(ptr as _);
     }
 
@@ -12141,34 +12706,6 @@ mod io {
         ptr: *const std::ffi::c_void,
     ) {
         MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>>::decrement_strong_count(ptr as _);
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_zoe_native_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupSession>>::increment_strong_count(ptr as _);
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_zoe_native_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupSession>>::decrement_strong_count(ptr as _);
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_zoe_native_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupState>>::increment_strong_count(ptr as _);
-    }
-
-    #[unsafe(no_mangle)]
-    pub extern "C" fn frbgen_zoe_native_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupState>>::decrement_strong_count(ptr as _);
     }
 
     #[unsafe(no_mangle)]
@@ -12584,7 +13121,6 @@ mod web {
     use zoe_client::client::*;
     use zoe_client::system_check::*;
     use zoe_state_machine::group::*;
-    use zoe_state_machine::state::*;
     use zoe_wire_protocol::crypto::*;
     use zoe_wire_protocol::keys::*;
     use zoe_wire_protocol::primitives::*;
@@ -12625,6 +13161,28 @@ mod web {
     ) {
         MoiArc::<
             flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<ZoeClientSessionManager>>,
+        >::decrement_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                BTreeMap<IdentityRef, GroupMember>,
+            >,
+        >::increment_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                BTreeMap<IdentityRef, GroupMember>,
+            >,
         >::decrement_strong_count(ptr as _);
     }
 
@@ -12822,34 +13380,6 @@ mod web {
         ptr: *const std::ffi::c_void,
     ) {
         MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupMembership>>::decrement_strong_count(ptr as _);
-    }
-
-    #[wasm_bindgen]
-    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupSession>>::increment_strong_count(ptr as _);
-    }
-
-    #[wasm_bindgen]
-    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupSession>>::decrement_strong_count(ptr as _);
-    }
-
-    #[wasm_bindgen]
-    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupState>>::increment_strong_count(ptr as _);
-    }
-
-    #[wasm_bindgen]
-    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-        ptr: *const std::ffi::c_void,
-    ) {
-        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupState>>::decrement_strong_count(ptr as _);
     }
 
     #[wasm_bindgen]

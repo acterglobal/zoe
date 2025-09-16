@@ -7,6 +7,7 @@
 // ignore_for_file: argument_type_not_assignable
 
 import 'api/client.dart';
+import 'api/group.dart';
 import 'api/simple.dart';
 import 'api/system_test.dart';
 import 'dart:async';
@@ -25,6 +26,7 @@ import 'third_party/zoe_app_primitives/group/events/roles.dart';
 import 'third_party/zoe_app_primitives/group/events/settings.dart';
 import 'third_party/zoe_app_primitives/group/states.dart';
 import 'third_party/zoe_app_primitives/identity.dart';
+import 'third_party/zoe_app_primitives/metadata.dart';
 import 'third_party/zoe_app_primitives/qr.dart';
 import 'third_party/zoe_app_primitives/relay.dart';
 import 'third_party/zoe_client/client.dart';
@@ -50,6 +52,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CrossPlatformFinalizerArg
   get rust_arc_decrement_strong_count_ArcZoeClientSessionManagerPtr => wire
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_BTreeMapIdentityRefGroupMemberPtr => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember;
 
   CrossPlatformFinalizerArg
   get rust_arc_decrement_strong_count_BTreeMapStringStringPtr => wire
@@ -106,14 +112,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CrossPlatformFinalizerArg
   get rust_arc_decrement_strong_count_GroupMembershipPtr => wire
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership;
-
-  CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_GroupSessionPtr => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession;
-
-  CrossPlatformFinalizerArg
-  get rust_arc_decrement_strong_count_GroupStatePtr => wire
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState;
 
   CrossPlatformFinalizerArg
   get rust_arc_decrement_strong_count_IdentityRefPtr => wire
@@ -231,6 +229,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  BTreeMapIdentityRefGroupMember
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    dynamic raw,
+  );
+
+  @protected
   BTreeMapStringString
   dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString(
     dynamic raw,
@@ -311,18 +315,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GroupMembership
   dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
-    dynamic raw,
-  );
-
-  @protected
-  GroupSession
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    dynamic raw,
-  );
-
-  @protected
-  GroupState
-  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
     dynamic raw,
   );
 
@@ -646,19 +638,25 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Map<MessageId, GroupSession>
-  dco_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession_None(
+  dco_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_session_None(
     dynamic raw,
   );
 
   @protected
   Map<MessageId, GroupState>
-  dco_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState_None(
+  dco_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_state_None(
     dynamic raw,
   );
 
   @protected
   ArcZoeClientSessionManager
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
+    dynamic raw,
+  );
+
+  @protected
+  BTreeMapIdentityRefGroupMember
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
     dynamic raw,
   );
 
@@ -743,18 +741,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GroupMembership
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
-    dynamic raw,
-  );
-
-  @protected
-  GroupSession
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    dynamic raw,
-  );
-
-  @protected
-  GroupState
-  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
     dynamic raw,
   );
 
@@ -933,6 +919,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  RustStreamSink<GroupDataUpdate> dco_decode_StreamSink_group_data_update_Sse(
+    dynamic raw,
+  );
+
+  @protected
   RustStreamSink<OverallConnectionStatus>
   dco_decode_StreamSink_overall_connection_status_Sse(dynamic raw);
 
@@ -947,18 +938,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool dco_decode_bool(dynamic raw);
-
-  @protected
-  GroupSession
-  dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    dynamic raw,
-  );
-
-  @protected
-  GroupState
-  dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-    dynamic raw,
-  );
 
   @protected
   RelayEndpoint
@@ -977,6 +956,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   GroupRole dco_decode_box_autoadd_group_role(dynamic raw);
+
+  @protected
+  GroupSession dco_decode_box_autoadd_group_session(dynamic raw);
+
+  @protected
+  GroupState dco_decode_box_autoadd_group_state(dynamic raw);
 
   @protected
   KeyDerivationInfo dco_decode_box_autoadd_key_derivation_info(dynamic raw);
@@ -1000,13 +985,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   GroupAction dco_decode_group_action(dynamic raw);
 
   @protected
+  GroupDataUpdate dco_decode_group_data_update(dynamic raw);
+
+  @protected
   GroupPermissions dco_decode_group_permissions(dynamic raw);
 
   @protected
   GroupRole dco_decode_group_role(dynamic raw);
 
   @protected
+  GroupSession dco_decode_group_session(dynamic raw);
+
+  @protected
   GroupSettings dco_decode_group_settings(dynamic raw);
+
+  @protected
+  GroupState dco_decode_group_state(dynamic raw);
 
   @protected
   int dco_decode_i_32(dynamic raw);
@@ -1018,8 +1012,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   KeyDerivationMethod dco_decode_key_derivation_method(dynamic raw);
 
   @protected
+  List<EncryptionKey>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    dynamic raw,
+  );
+
+  @protected
   List<IdentityRef>
   dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    dynamic raw,
+  );
+
+  @protected
+  List<MessageId>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
     dynamic raw,
   );
 
@@ -1051,6 +1057,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String> dco_decode_list_String(dynamic raw);
 
   @protected
+  List<Metadata> dco_decode_list_metadata(dynamic raw);
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw);
 
   @protected
@@ -1058,13 +1067,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<(MessageId, GroupSession)>
-  dco_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_session(
+  dco_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
     dynamic raw,
   );
 
   @protected
   List<(MessageId, GroupState)>
-  dco_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_state(
+  dco_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
     dynamic raw,
   );
 
@@ -1072,19 +1081,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<TestCategory> dco_decode_list_test_category(dynamic raw);
 
   @protected
+  Metadata dco_decode_metadata(dynamic raw);
+
+  @protected
   String? dco_decode_opt_String(dynamic raw);
-
-  @protected
-  GroupSession?
-  dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    dynamic raw,
-  );
-
-  @protected
-  GroupState?
-  dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-    dynamic raw,
-  );
 
   @protected
   RelayEndpoint?
@@ -1100,6 +1100,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   GroupRole? dco_decode_opt_box_autoadd_group_role(dynamic raw);
+
+  @protected
+  GroupSession? dco_decode_opt_box_autoadd_group_session(dynamic raw);
+
+  @protected
+  GroupState? dco_decode_opt_box_autoadd_group_state(dynamic raw);
 
   @protected
   KeyDerivationInfo? dco_decode_opt_box_autoadd_key_derivation_info(
@@ -1123,13 +1129,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   (MessageId, GroupSession)
-  dco_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_session(
+  dco_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
     dynamic raw,
   );
 
   @protected
   (MessageId, GroupState)
-  dco_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_state(
+  dco_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
     dynamic raw,
   );
 
@@ -1163,6 +1169,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   ArcZoeClientSessionManager
   sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  BTreeMapIdentityRefGroupMember
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
     SseDeserializer deserializer,
   );
 
@@ -1247,18 +1259,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GroupMembership
   sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
-    SseDeserializer deserializer,
-  );
-
-  @protected
-  GroupSession
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    SseDeserializer deserializer,
-  );
-
-  @protected
-  GroupState
-  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
     SseDeserializer deserializer,
   );
 
@@ -1582,19 +1582,25 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Map<MessageId, GroupSession>
-  sse_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession_None(
+  sse_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_session_None(
     SseDeserializer deserializer,
   );
 
   @protected
   Map<MessageId, GroupState>
-  sse_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState_None(
+  sse_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_state_None(
     SseDeserializer deserializer,
   );
 
   @protected
   ArcZoeClientSessionManager
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  BTreeMapIdentityRefGroupMember
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
     SseDeserializer deserializer,
   );
 
@@ -1679,18 +1685,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GroupMembership
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
-    SseDeserializer deserializer,
-  );
-
-  @protected
-  GroupSession
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    SseDeserializer deserializer,
-  );
-
-  @protected
-  GroupState
-  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
     SseDeserializer deserializer,
   );
 
@@ -1869,6 +1863,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  RustStreamSink<GroupDataUpdate> sse_decode_StreamSink_group_data_update_Sse(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   RustStreamSink<OverallConnectionStatus>
   sse_decode_StreamSink_overall_connection_status_Sse(
     SseDeserializer deserializer,
@@ -1885,18 +1884,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool sse_decode_bool(SseDeserializer deserializer);
-
-  @protected
-  GroupSession
-  sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    SseDeserializer deserializer,
-  );
-
-  @protected
-  GroupState
-  sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-    SseDeserializer deserializer,
-  );
 
   @protected
   RelayEndpoint
@@ -1917,6 +1904,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   GroupRole sse_decode_box_autoadd_group_role(SseDeserializer deserializer);
+
+  @protected
+  GroupSession sse_decode_box_autoadd_group_session(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  GroupState sse_decode_box_autoadd_group_state(SseDeserializer deserializer);
 
   @protected
   KeyDerivationInfo sse_decode_box_autoadd_key_derivation_info(
@@ -1944,13 +1939,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   GroupAction sse_decode_group_action(SseDeserializer deserializer);
 
   @protected
+  GroupDataUpdate sse_decode_group_data_update(SseDeserializer deserializer);
+
+  @protected
   GroupPermissions sse_decode_group_permissions(SseDeserializer deserializer);
 
   @protected
   GroupRole sse_decode_group_role(SseDeserializer deserializer);
 
   @protected
+  GroupSession sse_decode_group_session(SseDeserializer deserializer);
+
+  @protected
   GroupSettings sse_decode_group_settings(SseDeserializer deserializer);
+
+  @protected
+  GroupState sse_decode_group_state(SseDeserializer deserializer);
 
   @protected
   int sse_decode_i_32(SseDeserializer deserializer);
@@ -1966,8 +1970,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  List<EncryptionKey>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   List<IdentityRef>
   sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<MessageId>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
     SseDeserializer deserializer,
   );
 
@@ -1999,6 +2015,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String> sse_decode_list_String(SseDeserializer deserializer);
 
   @protected
+  List<Metadata> sse_decode_list_metadata(SseDeserializer deserializer);
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer);
 
   @protected
@@ -2006,13 +2025,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<(MessageId, GroupSession)>
-  sse_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_session(
+  sse_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
     SseDeserializer deserializer,
   );
 
   @protected
   List<(MessageId, GroupState)>
-  sse_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_state(
+  sse_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
     SseDeserializer deserializer,
   );
 
@@ -2022,19 +2041,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  Metadata sse_decode_metadata(SseDeserializer deserializer);
+
+  @protected
   String? sse_decode_opt_String(SseDeserializer deserializer);
-
-  @protected
-  GroupSession?
-  sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    SseDeserializer deserializer,
-  );
-
-  @protected
-  GroupState?
-  sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-    SseDeserializer deserializer,
-  );
 
   @protected
   RelayEndpoint?
@@ -2050,6 +2060,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   GroupRole? sse_decode_opt_box_autoadd_group_role(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  GroupSession? sse_decode_opt_box_autoadd_group_session(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  GroupState? sse_decode_opt_box_autoadd_group_state(
     SseDeserializer deserializer,
   );
 
@@ -2077,13 +2097,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   (MessageId, GroupSession)
-  sse_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_session(
+  sse_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
     SseDeserializer deserializer,
   );
 
   @protected
   (MessageId, GroupState)
-  sse_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_state(
+  sse_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
     SseDeserializer deserializer,
   );
 
@@ -2121,6 +2141,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
   sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
     ArcZoeClientSessionManager self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    BTreeMapIdentityRefGroupMember self,
     SseSerializer serializer,
   );
 
@@ -2219,20 +2246,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
   sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
     GroupMembership self,
-    SseSerializer serializer,
-  );
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    GroupSession self,
-    SseSerializer serializer,
-  );
-
-  @protected
-  void
-  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-    GroupState self,
     SseSerializer serializer,
   );
 
@@ -2609,14 +2622,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-  sse_encode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession_None(
+  sse_encode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_session_None(
     Map<MessageId, GroupSession> self,
     SseSerializer serializer,
   );
 
   @protected
   void
-  sse_encode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState_None(
+  sse_encode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_state_None(
     Map<MessageId, GroupState> self,
     SseSerializer serializer,
   );
@@ -2625,6 +2638,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
     ArcZoeClientSessionManager self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    BTreeMapIdentityRefGroupMember self,
     SseSerializer serializer,
   );
 
@@ -2723,20 +2743,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
     GroupMembership self,
-    SseSerializer serializer,
-  );
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    GroupSession self,
-    SseSerializer serializer,
-  );
-
-  @protected
-  void
-  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-    GroupState self,
     SseSerializer serializer,
   );
 
@@ -2944,6 +2950,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_StreamSink_group_data_update_Sse(
+    RustStreamSink<GroupDataUpdate> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_StreamSink_overall_connection_status_Sse(
     RustStreamSink<OverallConnectionStatus> self,
     SseSerializer serializer,
@@ -2960,20 +2972,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
-
-  @protected
-  void
-  sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    GroupSession self,
-    SseSerializer serializer,
-  );
-
-  @protected
-  void
-  sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-    GroupState self,
-    SseSerializer serializer,
-  );
 
   @protected
   void
@@ -2997,6 +2995,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_group_role(
     GroupRole self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_group_session(
+    GroupSession self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_group_state(
+    GroupState self,
     SseSerializer serializer,
   );
 
@@ -3031,6 +3041,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_group_action(GroupAction self, SseSerializer serializer);
 
   @protected
+  void sse_encode_group_data_update(
+    GroupDataUpdate self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_group_permissions(
     GroupPermissions self,
     SseSerializer serializer,
@@ -3040,7 +3056,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_group_role(GroupRole self, SseSerializer serializer);
 
   @protected
+  void sse_encode_group_session(GroupSession self, SseSerializer serializer);
+
+  @protected
   void sse_encode_group_settings(GroupSettings self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_group_state(GroupState self, SseSerializer serializer);
 
   @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
@@ -3059,8 +3081,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    List<EncryptionKey> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void
   sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
     List<IdentityRef> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    List<MessageId> self,
     SseSerializer serializer,
   );
 
@@ -3096,6 +3132,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_metadata(List<Metadata> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_prim_u_8_loose(List<int> self, SseSerializer serializer);
 
   @protected
@@ -3106,14 +3145,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-  sse_encode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_session(
+  sse_encode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
     List<(MessageId, GroupSession)> self,
     SseSerializer serializer,
   );
 
   @protected
   void
-  sse_encode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_state(
+  sse_encode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
     List<(MessageId, GroupState)> self,
     SseSerializer serializer,
   );
@@ -3125,21 +3164,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_metadata(Metadata self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer);
-
-  @protected
-  void
-  sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    GroupSession? self,
-    SseSerializer serializer,
-  );
-
-  @protected
-  void
-  sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-    GroupState? self,
-    SseSerializer serializer,
-  );
 
   @protected
   void
@@ -3157,6 +3185,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_group_role(
     GroupRole? self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_opt_box_autoadd_group_session(
+    GroupSession? self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_opt_box_autoadd_group_state(
+    GroupState? self,
     SseSerializer serializer,
   );
 
@@ -3186,14 +3226,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-  sse_encode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_session(
+  sse_encode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
     (MessageId, GroupSession) self,
     SseSerializer serializer,
   );
 
   @protected
   void
-  sse_encode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_group_state(
+  sse_encode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
     (MessageId, GroupState) self,
     SseSerializer serializer,
   );
@@ -3241,6 +3281,22 @@ class RustLibWire implements BaseWire {
     int ptr,
   ) => wasmModule
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
+        ptr,
+      );
+
+  void
+  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    int ptr,
+  ) => wasmModule
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+        ptr,
+      );
+
+  void
+  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    int ptr,
+  ) => wasmModule
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
         ptr,
       );
 
@@ -3465,38 +3521,6 @@ class RustLibWire implements BaseWire {
     int ptr,
   ) => wasmModule
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
-        ptr,
-      );
-
-  void
-  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    int ptr,
-  ) => wasmModule
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-        ptr,
-      );
-
-  void
-  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    int ptr,
-  ) => wasmModule
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-        ptr,
-      );
-
-  void
-  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-    int ptr,
-  ) => wasmModule
-      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-        ptr,
-      );
-
-  void
-  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-    int ptr,
-  ) => wasmModule
-      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
         ptr,
       );
 
@@ -3950,6 +3974,16 @@ extension type RustLibWasmModule._(JSObject _) implements JSObject {
   );
 
   external void
+  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    int ptr,
+  );
+
+  external void
+  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    int ptr,
+  );
+
+  external void
   rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString(
     int ptr,
   );
@@ -4086,26 +4120,6 @@ extension type RustLibWasmModule._(JSObject _) implements JSObject {
 
   external void
   rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
-    int ptr,
-  );
-
-  external void
-  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    int ptr,
-  );
-
-  external void
-  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupSession(
-    int ptr,
-  );
-
-  external void
-  rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
-    int ptr,
-  );
-
-  external void
-  rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupState(
     int ptr,
   );
 

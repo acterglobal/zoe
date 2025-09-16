@@ -37,12 +37,12 @@ enum GroupRole {
   /// Check if this role can assign the target role to another member
   ///
   /// Generally, you can only assign roles that are lower than your own.
-  Future<bool> canAssignRole({required GroupRole targetRole}) => RustLib
+  Future<bool> canAssignRole({required GroupRole tarrole}) => RustLib
       .instance
       .api
       .zoeAppPrimitivesGroupEventsRolesGroupRoleCanAssignRole(
         that: this,
-        targetRole: targetRole,
+        tarrole: tarrole,
       );
 
   /// Get a human-readable name for this role

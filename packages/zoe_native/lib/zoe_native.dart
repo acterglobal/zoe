@@ -33,6 +33,7 @@ export 'src/rust/third_party/zoe_wire_protocol/primitives.dart';
 
 export 'src/rust/api/simple.dart';
 export 'src/rust/api/client.dart';
+export 'src/rust/api/group.dart';
 export 'src/rust/api/system_test.dart';
 
 // extra integration code

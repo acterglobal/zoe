@@ -4,16 +4,23 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../../frb_generated.dart';
+import '../../lib.dart';
+import '../zoe_app_primitives/file/image.dart';
+import '../zoe_app_primitives/group/events/permissions.dart';
 import '../zoe_app_primitives/group/events/roles.dart';
+import '../zoe_app_primitives/group/events/settings.dart';
 import '../zoe_app_primitives/group/states.dart';
+import '../zoe_app_primitives/metadata.dart';
 import '../zoe_wire_protocol/crypto.dart';
 import '../zoe_wire_protocol/keys.dart';
 import '../zoe_wire_protocol/primitives.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 import 'state.dart';
+part 'group.freezed.dart';
 
 // These functions are ignored because they have generic arguments: `create_group_activity_event`, `create_group_update_event`, `create_leave_group_event`, `create_role_update_event`
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `CreateGroupResult`, `GroupDataUpdate`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `CreateGroupResult`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`
 // These functions are ignored (category: IgnoreBecauseExplicitAttribute): `add_group_session`, `builder`, `create_group_event_message`, `create_group_subscription_filter`, `create_group`, `create_key_from_mnemonic`, `process_group_event`, `recover_key_from_mnemonic`, `remove_group_session`, `rotate_group_key`, `subscribe_to_updates`, `user_groups`
 // These functions have error during generation (see debug logs or enable `stop_on_error: true` for more details): `with_sessions`
@@ -57,4 +64,16 @@ abstract class GroupManager implements RustOpaqueInterface {
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupManagerBuilder>>
 abstract class GroupManagerBuilder implements RustOpaqueInterface {
   Future<GroupManager> build();
+}
+
+@freezed
+sealed class GroupDataUpdate with _$GroupDataUpdate {
+  const GroupDataUpdate._();
+
+  const factory GroupDataUpdate.groupAdded(GroupSession field0) =
+      GroupDataUpdate_GroupAdded;
+  const factory GroupDataUpdate.groupUpdated(GroupSession field0) =
+      GroupDataUpdate_GroupUpdated;
+  const factory GroupDataUpdate.groupRemoved(GroupSession field0) =
+      GroupDataUpdate_GroupRemoved;
 }
