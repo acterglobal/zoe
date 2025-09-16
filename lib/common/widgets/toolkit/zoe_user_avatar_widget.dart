@@ -1,116 +1,94 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 
 class ZoeUserAvatarWidget extends StatelessWidget {
   final UserModel user;
-  final bool showRemoveButton;
-  final VoidCallback? onRemove;
-  final bool showUserAvatar;
-  final bool showUserName;
+  final double? size;
+  final double? fontSize;
+  final String? selectedImagePath;
 
   const ZoeUserAvatarWidget({
     super.key,
     required this.user,
-    this.showRemoveButton = false,
-    this.onRemove,
-    this.showUserAvatar = false,
-    this.showUserName = false,
+    this.size,
+    this.fontSize,
+    this.selectedImagePath,
   });
 
   @override
   Widget build(BuildContext context) {
     final randomColor = CommonUtils().getRandomColorFromName(user.name);
+    final imagePath = selectedImagePath ?? user.avatar;
 
-    return showUserName
-        ? _buildShowUserNameWidget(context, randomColor)
-        : showUserAvatar
-            ? _buildShowUserAvatarWidget(context, randomColor)
-            : _buildShowUserNameWithAvatarWidget(context, randomColor);
+    if (imagePath != null) {
+      return _buildImageAvatar(imagePath, context);
+    }
+
+    return _buildPlaceholderAvatar(randomColor);
   }
 
-  Widget _buildShowUserNameWithAvatarWidget(BuildContext context, Color randomColor) {
-    final theme = Theme.of(context);
+  Widget _buildImageAvatar(String path, BuildContext context) {
+    final randomColor = CommonUtils().getRandomColorFromName(user.name);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+      width: size ?? 100,
+      height: size ?? 100,
       decoration: BoxDecoration(
-        color: randomColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: randomColor.withValues(alpha: 0.3), width: 1),
+        shape: BoxShape.circle,
+        color: Theme.of(context).colorScheme.surface,
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildShowUserAvatarWidget(context, randomColor),
-          const SizedBox(width: 8),
-          Text(
-            user.name,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: randomColor,
-              fontSize: 12,
+      child: ClipOval(
+        child: path.startsWith('http')
+          ? Image.network(
+              path,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return _buildPlaceholderAvatar(
+                  randomColor,
+                  showError: true,
+                );
+              },
+            )
+          : Image.file(
+              File(path),
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return _buildPlaceholderAvatar(
+                  randomColor,
+                  showError: true,
+                );
+              },
             ),
-          ),
-          if (showRemoveButton && onRemove != null) ...[
-            const SizedBox(width: 4),
-            IconButton(
-              visualDensity: VisualDensity.compact,
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-              onPressed: onRemove,
-              icon: Icon(
-                Icons.close_rounded,
-                size: 14,
-                color: theme.colorScheme.error,
-              ),
-            ),
-          ],
-        ],
       ),
     );
   }
 
-  Widget _buildShowUserNameWidget(BuildContext context, Color randomColor) {
-    final theme = Theme.of(context);
+  Widget _buildPlaceholderAvatar(Color color, {bool showError = false}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      margin: const EdgeInsets.only(right: 4),
+      width: size ?? 24,
+      height: size ?? 24,
       decoration: BoxDecoration(
-        color: randomColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: randomColor.withValues(alpha: 0.3), width: 1),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            user.name,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: randomColor,
-              fontSize: 12,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildShowUserAvatarWidget(BuildContext context, Color randomColor) {
-    return Container(
-      width: 24,
-      height: 24,
-      decoration: BoxDecoration(
-        color: randomColor.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(12),
+        color: color.withValues(alpha: 0.2),
+        shape: BoxShape.circle,
+        border: Border.all(color: color, width: 0.3),
       ),
       child: Center(
-        child: Text(
-          user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
-          style: TextStyle(
-            color: randomColor,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: showError
+            ? Icon(
+                Icons.error_outline,
+                color: color,
+                size: (fontSize ?? 12) * 1.2,
+              )
+            : Text(
+                user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
+                style: TextStyle(
+                  color: color,
+                  fontSize: fontSize ?? 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }

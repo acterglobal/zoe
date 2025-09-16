@@ -1,15 +1,15 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/utils/file_utils.dart';
+import 'package:zoe/common/widgets/document_selection_bottom_sheet.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
-import 'package:zoe/common/widgets/document_selection_bottom_sheet.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 void selectDocumentSource(
@@ -18,24 +18,25 @@ void selectDocumentSource(
   String listId,
   String sheetId,
 ) {
-  showDocumentSelectionBottomSheet(
+  showFileSelectionBottomSheet(
     context,
-    onTapCamera: () => handleCameraSelection(context, ref, listId, sheetId),
+    onTapCamera: () =>
+        _handleDocumentCameraSelection(context, ref, listId, sheetId),
     onTapGallery: () =>
-        handlePhotoGallerySelection(context, ref, listId, sheetId),
+        _handleDocumentGallerySelection(context, ref, listId, sheetId),
     onTapFileChooser: () =>
-        handleFileChooserSelection(context, ref, listId, sheetId),
+        _handleDocumentFileChooserSelection(context, ref, listId, sheetId),
   );
 }
 
-Future<void> handleCameraSelection(
+Future<void> _handleDocumentCameraSelection(
   BuildContext context,
   WidgetRef ref,
   String listId,
   String sheetId,
 ) async {
-  final imagePicker = ImagePicker();
-  final image = await imagePicker.pickImage(
+  final picker = ImagePicker();
+  final image = await picker.pickImage(
     source: ImageSource.camera,
     imageQuality: 80,
   );
@@ -59,27 +60,26 @@ Future<void> handleCameraSelection(
   }
 }
 
-Future<void> handlePhotoGallerySelection(
+Future<void> _handleDocumentGallerySelection(
   BuildContext context,
   WidgetRef ref,
   String listId,
   String sheetId,
 ) async {
-  final imagePicker = ImagePicker();
-  final images = await imagePicker.pickMultiImage(imageQuality: 80);
+  final picker = ImagePicker();
+  final images = await picker.pickMultiImage(imageQuality: 80);
 
   if (images.isNotEmpty) {
-    for (final image in images) {
+    for (final img in images) {
       ref
           .read(documentListProvider.notifier)
           .addDocument(
             parentId: listId,
             sheetId: sheetId,
-            title: image.name,
-            filePath: image.path,
+            title: img.name,
+            filePath: img.path,
           );
     }
-
     if (context.mounted) {
       CommonUtils.showSnackBar(
         context,
@@ -89,7 +89,7 @@ Future<void> handlePhotoGallerySelection(
   }
 }
 
-Future<void> handleFileChooserSelection(
+Future<void> _handleDocumentFileChooserSelection(
   BuildContext context,
   WidgetRef ref,
   String listId,
@@ -108,7 +108,6 @@ Future<void> handleFileChooserSelection(
             filePath: file.path ?? '',
           );
     }
-
     if (context.mounted) {
       CommonUtils.showSnackBar(
         context,
@@ -202,7 +201,6 @@ Future<void> shareDocument(BuildContext context, DocumentModel document) async {
       : isTextDocument(document)
       ? 'text'
       : 'file';
-
   try {
     final file = File(document.filePath);
     if (file.existsSync()) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/utils/validation_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/styled_content_container_widget.dart';
@@ -189,7 +189,7 @@ class _WhatsAppGroupConnectScreenState
     if (value == null || value.isEmpty) {
       return L10n.of(context).whatsappGroupLinkRequired;
     }
-    if (!CommonUtils.isValidWhatsAppGroupLink(value)) {
+    if (!ValidationUtils.isValidWhatsAppGroupLink(value)) {
       return L10n.of(context).whatsappGroupLinkInvalid;
     }
     return null;

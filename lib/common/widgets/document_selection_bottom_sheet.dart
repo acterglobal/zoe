@@ -6,11 +6,11 @@ import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows a bottom sheet for selecting document source
-void showDocumentSelectionBottomSheet(
+void showFileSelectionBottomSheet(
   BuildContext context, {
   required VoidCallback onTapCamera,
   required VoidCallback onTapGallery,
-  required VoidCallback onTapFileChooser,
+  VoidCallback? onTapFileChooser,
 }) {
   showModalBottomSheet(
     context: context,
@@ -33,7 +33,7 @@ void showDocumentSelectionBottomSheet(
 class DocumentSelectionBottomSheetWidget extends StatelessWidget {
   final VoidCallback onTapCamera;
   final VoidCallback onTapGallery;
-  final VoidCallback onTapFileChooser;
+  final VoidCallback? onTapFileChooser;
 
   const DocumentSelectionBottomSheetWidget({
     super.key,
@@ -99,17 +99,18 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
             },
           ),
           const SizedBox(height: 16),
-          _buildOptionButton(
-            context,
-            icon: Icons.folder_open_rounded,
-            title: l10n.filePicker,
-            subtitle: l10n.browseFiles,
-            color: AppColors.secondaryColor,
-            onTap: () {
-              Navigator.of(context).pop();
-              onTapFileChooser();
-            },
-          ),
+          if (onTapFileChooser != null)
+            _buildOptionButton(
+              context,
+              icon: Icons.folder_open_rounded,
+              title: l10n.filePicker,
+              subtitle: l10n.browseFiles,
+              color: AppColors.secondaryColor,
+              onTap: () {
+                Navigator.of(context).pop();
+                onTapFileChooser!();
+              },
+            ),
           const SizedBox(height: 16),
         ],
       ),
