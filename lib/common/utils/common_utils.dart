@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zoe/common/utils/validation_utils.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class CommonUtils {
@@ -22,7 +23,7 @@ class CommonUtils {
     LaunchMode mode = LaunchMode.externalApplication,
   }) async {
     try {
-      if (!isValidUrl(url)) {
+      if (!ValidationUtils.isValidUrl(url)) {
         showSnackBar(context, L10n.of(context).couldNotOpenLink);
         return false;
       }
@@ -33,37 +34,11 @@ class CommonUtils {
     }
   }
 
-  static bool isValidUrl(String url) {
-    if (url.isEmpty) return false;
-
-    url = getUrlWithProtocol(url);
-
-    final urlRegex = RegExp(
-      r'((([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})|' // domain
-      r'localhost|' // localhost
-      r'(\d{1,3}\.){3}\d{1,3})' // OR ip (v4)
-      r'(:\d+)?' // optional port
-      r'(\/[^\s]*)?$', // optional path
-      caseSensitive: false,
-    );
-
-    if (urlRegex.hasMatch(url)) {
-      try {
-        final uri = Uri.parse(url);
-        return uri.hasScheme && uri.hasAuthority;
-      } catch (e) {
-        return false;
-      }
+  static String getUrlWithProtocol(String url) {
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return 'https://$url';
     }
-
-    return false;
-  }
-
-  static bool isValidWhatsAppGroupLink(String link) {
-    final whatsappGroupLinkPattern = RegExp(
-      r'^https?:\/\/chat\.whatsapp\.com\/([A-Za-z0-9]{22})(?:\/)?(?:\?[^\s#]*)?$',
-    );
-    return whatsappGroupLinkPattern.hasMatch(link);
+    return url;
   }
 
   Color getRandomColorFromName(String name) {
@@ -102,19 +77,14 @@ class CommonUtils {
     );
   }
 
-  static String getUrlWithProtocol(String url) {
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      return 'https://$url';
-    }
-    return url;
-  }
-
   static void shareText(String text, {String? subject}) {
     final params = ShareParams(text: text, subject: subject);
     SharePlus.instance.share(params);
   }
 
-  static T? findAncestorWidgetOfExactType<T extends Widget>(BuildContext context) {
+  static T? findAncestorWidgetOfExactType<T extends Widget>(
+    BuildContext context,
+  ) {
     return context.findAncestorWidgetOfExactType<T>();
   }
 
