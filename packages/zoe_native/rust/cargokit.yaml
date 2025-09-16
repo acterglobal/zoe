@@ -1,7 +1,15 @@
 # Cargokit configuration for precompiled binaries
 # Precompiled binaries are used by default to provide the best user experience.
 # To disable and force local compilation, create cargokit_options.yaml in your project root:
-# use_precompiled_binaries: false
+#   use_precompiled_binaries: false
+
+precompiled_binaries:
+  # URL prefix where precompiled binaries are hosted
+  url_prefix: "https://github.com/acterglobal/zoe/releases/download/"
+  
+  # Ed25519 public key for verifying binary signatures (hex encoded)
+  # This will be automatically set by the CI workflow
+  public_key: "cc42bfb25be01668294f0cf66866b55bd311f22eca6551d508d0c6adffcff84a"
 
 # Optional: Cargo build configuration
 cargo:
