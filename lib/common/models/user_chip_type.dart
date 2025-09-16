@@ -4,6 +4,4 @@ enum ZoeUserChipType {
   
   /// Shows user name with avatar in a chip
   userNameWithAvatarChip;
-
-  bool get showAvatar => this == ZoeUserChipType.userNameWithAvatarChip;
 }

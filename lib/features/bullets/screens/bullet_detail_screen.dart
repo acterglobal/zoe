@@ -176,12 +176,12 @@ class BulletDetailScreen extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 16),
-        _buildUserNameWithAvatarChipWidget(context, ref, bullet),
+        _buildUserDisplay(context, ref, bullet),
       ],
     );
   }
 
-  Widget _buildUserNameWithAvatarChipWidget(
+  Widget _buildUserDisplay(
     BuildContext context,
     WidgetRef ref,
     BulletModel bullet,

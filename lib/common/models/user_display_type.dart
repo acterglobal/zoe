@@ -16,7 +16,5 @@ enum ZoeUserDisplayType {
                        
   bool get showBelow => this == ZoeUserDisplayType.nameChipBelow || 
                        this == ZoeUserDisplayType.nameChipsWrap;
-                       
-  bool get isMultiUser => this == ZoeUserDisplayType.stackedAvatars || 
-                         this == ZoeUserDisplayType.nameChipsWrap;
+                      
 }
