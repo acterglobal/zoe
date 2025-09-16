@@ -58,15 +58,15 @@ class SheetDetailScreen extends ConsumerWidget {
         ),
         floatingActionButton: CommonUtils.isKeyboardOpen(context)
             ? null
-            : _buildFloatingActionButton(context, isEditing),
+            : _buildFloatingActionButton(context, ref),
       ),
     );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context, bool isEditing) {
-    if (!isEditing) return const SizedBox.shrink();
+  Widget _buildFloatingActionButton(BuildContext context, WidgetRef ref) {
+    final isEditing = ref.watch(editContentIdProvider) == sheetId;
     return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
+      icon: isEditing ? Icons.save_rounded : Icons.add_rounded,
       onPressed: () => showAddContentBottomSheet(
         context,
         parentId: sheetId,

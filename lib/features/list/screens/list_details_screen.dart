@@ -86,18 +86,18 @@ class ListDetailsScreen extends ConsumerWidget {
       ),
       floatingActionButton: CommonUtils.isKeyboardOpen(context)
           ? null
-          : _buildFloatingActionButton(context, isEditing, list),
+          : _buildFloatingActionButton(context, ref, list),
     );
   }
 
   Widget _buildFloatingActionButton(
     BuildContext context,
-    bool isEditing,
+    WidgetRef ref,
     ListModel list,
   ) {
-    if (!isEditing) return const SizedBox.shrink();
+    final isEditing = ref.watch(editContentIdProvider) == listId;
     return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
+      icon: isEditing ? Icons.save_rounded : Icons.add_rounded,
       onPressed: () => showAddContentBottomSheet(
         context,
         parentId: listId,

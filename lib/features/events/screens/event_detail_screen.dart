@@ -85,18 +85,18 @@ class EventDetailScreen extends ConsumerWidget {
       ),
       floatingActionButton: CommonUtils.isKeyboardOpen(context)
           ? null
-          : _buildFloatingActionButton(context, isEditing, event),
+          : _buildFloatingActionButton(context, ref, event),
     );
   }
 
   Widget _buildFloatingActionButton(
     BuildContext context,
-    bool isEditing,
+    WidgetRef ref,
     EventModel event,
   ) {
-    if (!isEditing) return const SizedBox.shrink();
+    final isEditing = ref.watch(editContentIdProvider) == eventId;
     return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
+      icon: isEditing ? Icons.save_rounded : Icons.add_rounded,
       onPressed: () => showAddContentBottomSheet(
         context,
         parentId: eventId,

@@ -86,18 +86,18 @@ class TextBlockDetailsScreen extends ConsumerWidget {
       ),
       floatingActionButton: CommonUtils.isKeyboardOpen(context)
           ? null
-          : _buildFloatingActionButton(context, isEditing, textBlock),
+          : _buildFloatingActionButton(context, ref, textBlock),
     );
   }
 
   Widget _buildFloatingActionButton(
     BuildContext context,
-    bool isEditing,
+    WidgetRef ref,
     TextModel textBlock,
   ) {
-    if (!isEditing) return const SizedBox.shrink();
+    final isEditing = ref.watch(editContentIdProvider) == textBlockId;
     return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
+      icon: isEditing ? Icons.save_rounded : Icons.add_rounded,
       onPressed: () => showAddContentBottomSheet(
         context,
         parentId: textBlockId,

@@ -84,18 +84,18 @@ class BulletDetailScreen extends ConsumerWidget {
       ),
       floatingActionButton: CommonUtils.isKeyboardOpen(context)
           ? null
-          : _buildFloatingActionButton(context, isEditing, bullet),
+          : _buildFloatingActionButton(context, ref, bullet),
     );
   }
 
   Widget _buildFloatingActionButton(
     BuildContext context,
-    bool isEditing,
+    WidgetRef ref,
     BulletModel bullet,
   ) {
-    if (!isEditing) return const SizedBox.shrink();
+    final isEditing = ref.watch(editContentIdProvider) == bulletId;
     return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
+      icon: isEditing ? Icons.save_rounded : Icons.add_rounded,
       onPressed: () => showAddContentBottomSheet(
         context,
         parentId: bulletId,

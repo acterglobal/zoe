@@ -83,18 +83,18 @@ class PollDetailsScreen extends ConsumerWidget {
       ),
       floatingActionButton: CommonUtils.isKeyboardOpen(context)
           ? null
-          : _buildFloatingActionButton(context, isEditing, poll),
+          : _buildFloatingActionButton(context, ref, poll),
     );
   }
 
   Widget _buildFloatingActionButton(
     BuildContext context,
-    bool isEditing,
+    WidgetRef ref,
     PollModel poll,
   ) {
-    if (!isEditing) return const SizedBox.shrink();
+    final isEditing = ref.watch(editContentIdProvider) == pollId;
     return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
+      icon: isEditing ? Icons.save_rounded : Icons.add_rounded,
       onPressed: () => showAddContentBottomSheet(
         context,
         parentId: pollId,
