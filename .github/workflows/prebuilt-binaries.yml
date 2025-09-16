@@ -3,8 +3,12 @@ name: Build Precompiled Binaries
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths:
+      - 'packages/zoe_native/rust/src/**'
+      - 'packages/zoe_native/flutter_rust_bridge.yaml'
+      - 'packages/zoe_native/rust/Cargo.toml'
+      - 'packages/zoe_native/Cargo.toml'
+      - 'packages/zoe_native/Cargo.lock'
   workflow_dispatch:
 
 env:
