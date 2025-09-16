@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
-import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-void showProfileQrCodeBottomSheet(BuildContext context, UserModel user) {
+void showProfileQrCodeBottomSheet(BuildContext context, String userName) {
   showModalBottomSheet(
     context: context,
     showDragHandle: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
-    builder: (context) => ProfileQrCodeWidget(user: user),
+    builder: (context) => ProfileQrCodeWidget(userName: userName),
   );
 }
 
 class ProfileQrCodeWidget extends StatelessWidget {
-  final UserModel user;
-
-  const ProfileQrCodeWidget({super.key, required this.user});
+  final String userName;
+  const ProfileQrCodeWidget({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +53,7 @@ class ProfileQrCodeWidget extends StatelessWidget {
           height: size,
           borderRadius: borderRadius,
           child: PrettyQrView.data(
-            data: user.name,
+            data: userName,
             decoration: PrettyQrDecoration(
               shape: PrettyQrSmoothSymbol(color: theme.colorScheme.onSurface),
               image: PrettyQrDecorationImage(

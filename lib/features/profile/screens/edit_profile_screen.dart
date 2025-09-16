@@ -91,7 +91,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             backgroundOpacity: 0.08,
             borderOpacity: 0.15,
             shadowOpacity: 0.1,
-            onTap: () => showProfileQrCodeBottomSheet(context, user),
+            onTap: () => showProfileQrCodeBottomSheet(context, user.name),
           ),
         ],
       ),
