@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/bullets/widgets/bullet_item_widget.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/content/providers/content_providers.dart';
-import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/utils/content_utils.dart';
 import 'package:zoe/features/content/widgets/add_content_widget.dart';
 import 'package:zoe/features/documents/widgets/document_widget.dart'
@@ -31,7 +31,7 @@ class ContentWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     /// Watch the content list provider
     final contentList = ref.watch(contentListByParentIdProvider(parentId));
-    final isEditing = ref.watch(isEditValueProvider(parentId));
+    final isEditing = ref.watch(editContentIdProvider) == parentId;
 
     // Separate documents from other content
     final documents = contentList

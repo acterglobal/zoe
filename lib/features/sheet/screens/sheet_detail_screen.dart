@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
-import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
@@ -11,7 +11,6 @@ import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dar
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
-import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/sheet/actions/sheet_data_updates.dart';
@@ -26,8 +25,8 @@ class SheetDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider(sheetId));
-    
+    final isEditing = ref.watch(editContentIdProvider) == sheetId;
+
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -36,12 +35,8 @@ class SheetDetailScreen extends ConsumerWidget {
           title: ZoeAppBar(
             title: L10n.of(context).sheet,
             actions: [
-              EditViewToggleButton(parentId: sheetId),
               const SizedBox(width: 10),
-              ContentMenuButton(
-                parentId: sheetId,
-                showConnectOption: true,
-              ),
+              ContentMenuButton(parentId: sheetId, showConnectOption: true),
             ],
           ),
         ),
@@ -61,16 +56,22 @@ class SheetDetailScreen extends ConsumerWidget {
             ),
           ],
         ),
-        floatingActionButton: CommonUtils.isKeyboardOpen(context) ? null : _buildFloatingActionButton(context, isEditing),
+        floatingActionButton: CommonUtils.isKeyboardOpen(context)
+            ? null
+            : _buildFloatingActionButton(context, ref),
       ),
     );
   }
 
-  Widget _buildFloatingActionButton(BuildContext context, bool isEditing) {
-    if (!isEditing) return const SizedBox.shrink();
+  Widget _buildFloatingActionButton(BuildContext context, WidgetRef ref) {
+    final isEditing = ref.watch(editContentIdProvider) == sheetId;
     return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(context, parentId: sheetId, sheetId: sheetId),
+      icon: isEditing ? Icons.save_rounded : Icons.add_rounded,
+      onPressed: () => showAddContentBottomSheet(
+        context,
+        parentId: sheetId,
+        sheetId: sheetId,
+      ),
     );
   }
 
@@ -83,7 +84,11 @@ class SheetDetailScreen extends ConsumerWidget {
         children: [
           _buildSheetHeader(context, ref, isEditing),
           const SizedBox(height: 16),
-          ContentWidget(parentId: sheetId, sheetId: sheetId, showSheetName: false),
+          ContentWidget(
+            parentId: sheetId,
+            sheetId: sheetId,
+            showSheetName: false,
+          ),
         ],
       ),
     );
