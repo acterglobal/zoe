@@ -31,6 +31,7 @@ class ZoeUserAvatarWidget extends StatelessWidget {
   }
 
   Widget _buildImageAvatar(String path, BuildContext context) {
+    final randomColor = CommonUtils().getRandomColorFromName(user.name);
     return Container(
       width: size ?? 100,
       height: size ?? 100,
@@ -45,7 +46,7 @@ class ZoeUserAvatarWidget extends StatelessWidget {
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return _buildPlaceholderAvatar(
-                  CommonUtils().getRandomColorFromName(user.name),
+                  randomColor,
                   showError: true,
                 );
               },
@@ -55,7 +56,7 @@ class ZoeUserAvatarWidget extends StatelessWidget {
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return _buildPlaceholderAvatar(
-                  CommonUtils().getRandomColorFromName(user.name),
+                  randomColor,
                   showError: true,
                 );
               },
