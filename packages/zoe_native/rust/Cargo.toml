@@ -1,0 +1,21 @@
+[package]
+name = "zoe_native"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+flutter_rust_bridge = { workspace = true }
+zoe-client = { workspace = true, features = ["frb-api"] }
+zoe-wire-protocol = { workspace = true }
+zoe-app-primitives = { workspace = true }
+extend = "1.2"
+async-trait = "0.1"
+futures = "0.3"
+tokio = "1.39.0"
+chrono = { version = "0.4", features = ["serde"] }
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
