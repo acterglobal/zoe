@@ -75,6 +75,7 @@ class TaskAssigneesWidget extends ConsumerWidget {
       onRemove: isEditing ? () => ref
           .read(taskListProvider.notifier)
           .removeAssignee(ref, task, userId) : null,
+          type: ZoeUserChipType.userNameWithAvatarChip,
     );
   }
 }

@@ -22,14 +22,14 @@ class TaskWidget extends ConsumerWidget {
   final String taskId;
   final bool isEditing;
   final bool showSheetName;
-  final bool showUserName;
+  final ZoeUserChipType userDisplayType;
 
   const TaskWidget({
     super.key,
     required this.taskId,
     required this.isEditing,
     this.showSheetName = true,
-    this.showUserName = false,
+    this.userDisplayType = ZoeUserChipType.userNameWithAvatarChip,
   });
 
   @override
@@ -62,7 +62,7 @@ class TaskWidget extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildTaskItemTitle(context, ref, task, shouldFocus),
-                  if (task.assignedUsers.isNotEmpty && !showUserName)
+                  if (task.assignedUsers.isNotEmpty && userDisplayType == ZoeUserChipType.userNameWithAvatarChip)
                     _buildAssignedUsersStackWidget(context, ref, task),
                 ],
               ),
@@ -76,7 +76,7 @@ class TaskWidget extends ConsumerWidget {
                   ],
                 ],
               ),
-              if (showUserName) ...[
+              if (userDisplayType == ZoeUserChipType.userNameChip) ...[
                 const SizedBox(height: 10),
                 TaskAssigneeHeaderWidget(
                   isEditing: false,
@@ -231,7 +231,7 @@ class TaskWidget extends ConsumerWidget {
       children: [
         ...assignedUsers
             .take(2)
-            .map((user) => ZoeUserChipWidget(user: user,type: ZoeUserChipType.userNameOnly,)),
+            .map((user) => ZoeUserChipWidget(user: user,type: ZoeUserChipType.userNameChip,)),
         if (assignedUsers.length > 2)
           GestureDetector(
             onTap: () => _buildTaskAssigneesBottomSheet(context, ref, assignedUsers),

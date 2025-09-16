@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_chip_widget.dart';
 import 'package:zoe/features/bullets/widgets/bullet_item_widget.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/content/providers/content_providers.dart';
@@ -159,12 +160,12 @@ class ContentWidget extends ConsumerWidget {
         taskId: contentId,
         isEditing: isEditing,
         showSheetName: showSheetName,
-        showUserName: true,
+        userDisplayType: ZoeUserChipType.userNameChip,
       ),
       ContentType.bullet => BulletItemWidget(
         bulletId: contentId,
         isEditing: isEditing,
-        showUserName: true,
+        userDisplayType: ZoeUserChipType.userNameChip,
       ),
       ContentType.link => LinkWidget(
         linkId: contentId,

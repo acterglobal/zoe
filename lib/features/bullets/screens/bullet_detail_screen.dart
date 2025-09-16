@@ -194,7 +194,7 @@ class BulletDetailScreen extends ConsumerWidget {
       children: [
         BulletAddedByHeaderWidget(),
         const SizedBox(height: 10),
-        ZoeUserChipWidget(user: user),
+        ZoeUserChipWidget(user: user,type: ZoeUserChipType.userNameWithAvatarChip,),
       ],
     );
   }

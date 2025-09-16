@@ -4,9 +4,8 @@ import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 
 enum ZoeUserChipType {
-    userNameOnly,
-    userAvatarOnly,
-    userNameWithAvatar,
+  userNameChip,
+  userNameWithAvatarChip,
 }
 
 class ZoeUserChipWidget extends StatelessWidget {
@@ -18,18 +17,17 @@ class ZoeUserChipWidget extends StatelessWidget {
     super.key,
     required this.user,
     this.onRemove,
-    this.type = ZoeUserChipType.userNameWithAvatar,
+    required this.type,
   });
 
   @override
   Widget build(BuildContext context) {
     final randomColor = CommonUtils().getRandomColorFromName(user.name);
 
-    return type == ZoeUserChipType.userNameOnly
-        ? _buildShowUserNameWidget(context, randomColor)
-        : type == ZoeUserChipType.userAvatarOnly
-            ? ZoeUserAvatarWidget(user: user)
-            : _buildShowUserNameWithAvatarWidget(context, randomColor);
+    return switch (type) {
+      ZoeUserChipType.userNameChip => _buildShowUserNameWidget(context, randomColor),
+      ZoeUserChipType.userNameWithAvatarChip => _buildShowUserNameWithAvatarWidget(context, randomColor),
+    };
   }
 
   Widget _buildShowUserNameWithAvatarWidget(BuildContext context, Color randomColor) {
@@ -97,4 +95,3 @@ class ZoeUserChipWidget extends StatelessWidget {
     );
   }
 }
-
