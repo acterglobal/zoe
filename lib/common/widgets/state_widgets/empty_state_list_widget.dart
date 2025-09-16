@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_custom_bg_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/empty_state_magnifier_widget.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 
@@ -74,87 +75,15 @@ class _EmptyContentTypeWidgetState extends State<EmptyStateListWidget>
           clipBehavior: Clip.none,
           alignment: Alignment.center,
           children: [
-            _buildSheet(context),
+            EmptyStateCustomBgWidget(
+              color: widget.color,
+              contentType: widget.contentType,
+            ),
             EmptyStateMagnifierWidget(
               color: widget.color,
               mouthAnimation: _mouthAnimation,
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSheet(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      width: 200,
-      height: 220,
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: widget.color.withValues(alpha: 0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [_buildSheetHeader(context), ..._buildContentLines()],
-      ),
-    );
-  }
-
-  Widget _buildSheetHeader(BuildContext context) {
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        color: widget.color.withValues(alpha: 0.05),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-        border: Border(
-          bottom: BorderSide(
-            color: widget.color.withValues(alpha: 0.1),
-            width: 1,
-          ),
-        ),
-      ),
-    );
-  }
-
-  List<Widget> _buildContentLines() {
-    return List.generate(
-      4,
-      (index) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: Row(
-          children: [_buildIcon(), const SizedBox(width: 12), _buildLine()],
-        ),
-      ),
-    );
-  }
-
-  static const Map<ContentType, IconData> _iconMap = {
-    ContentType.task: Icons.task_alt_outlined,
-    ContentType.event: Icons.event_rounded,
-    ContentType.document: Icons.insert_drive_file_rounded,
-    ContentType.link: Icons.link_rounded,
-    ContentType.poll: Icons.poll_rounded,
-  };
-
-  Widget _buildIcon() {
-    final iconData = _iconMap[widget.contentType] ?? Icons.article_rounded;
-    return Icon(iconData, size: 16, color: widget.color.withValues(alpha: 0.2));
-  }
-
-  Widget _buildLine() {
-    return Expanded(
-      child: Container(
-        height: 10,
-        decoration: BoxDecoration(
-          color: widget.color.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(5),
         ),
       ),
     );
