@@ -3,27 +3,23 @@ import 'package:zoe/common/widgets/state_widgets/empty_state_magnifier_widget.da
 import 'package:zoe/features/content/models/content_model.dart';
 
 /// A widget that displays an empty state with an animated character and optional content sheet
-class EmptyContentTypeWidget extends StatefulWidget {
+class EmptyStateListWidget extends StatefulWidget {
   final String message;
   final Color color;
   final ContentType? contentType;
-  final IconData? icon;
-  final VoidCallback? onTap;
 
-  const EmptyContentTypeWidget({
+  const EmptyStateListWidget({
     super.key,
     required this.message,
     required this.color,
     this.contentType,
-    this.icon,
-    this.onTap,
   });
 
   @override
-  State<EmptyContentTypeWidget> createState() => _EmptyContentTypeWidgetState();
+  State<EmptyStateListWidget> createState() => _EmptyContentTypeWidgetState();
 }
 
-class _EmptyContentTypeWidgetState extends State<EmptyContentTypeWidget>
+class _EmptyContentTypeWidgetState extends State<EmptyStateListWidget>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _mouthAnimation;
@@ -54,18 +50,15 @@ class _EmptyContentTypeWidgetState extends State<EmptyContentTypeWidget>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: SizedBox.expand(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildAnimatedArea(context),
-              const SizedBox(height: 24),
-              _buildMessage(context),
-            ],
-          ),
+    return SizedBox.expand(
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildAnimatedArea(context),
+            const SizedBox(height: 24),
+            _buildMessage(context),
+          ],
         ),
       ),
     );
@@ -134,16 +127,9 @@ class _EmptyContentTypeWidgetState extends State<EmptyContentTypeWidget>
     return List.generate(
       4,
       (index) => Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 10,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Row(
-          children: [
-            _buildIcon(),
-            const SizedBox(width: 12),
-            _buildLine(),
-          ],
+          children: [_buildIcon(), const SizedBox(width: 12), _buildLine()],
         ),
       ),
     );
@@ -158,13 +144,8 @@ class _EmptyContentTypeWidgetState extends State<EmptyContentTypeWidget>
   };
 
   Widget _buildIcon() {
-    final iconData =
-        widget.icon ?? _iconMap[widget.contentType] ?? Icons.article_rounded;
-    return Icon(
-      iconData,
-      size: 16,
-      color: widget.color.withValues(alpha: 0.2),
-    );
+    final iconData = _iconMap[widget.contentType] ?? Icons.article_rounded;
+    return Icon(iconData, size: 16, color: widget.color.withValues(alpha: 0.2));
   }
 
   Widget _buildLine() {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
-import 'package:zoe/common/widgets/state_widgets/empty_content_type_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_list_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
@@ -65,7 +65,7 @@ class _EventsListScreenState extends ConsumerState<EventsListScreen> {
                 eventsProvider: eventListSearchProvider,
                 isEditing: false,
                 shrinkWrap: false,
-                emptyState: EmptyContentTypeWidget(message: L10n.of(context).noEventsFound, color: AppColors.secondaryColor, contentType: ContentType.event),
+                emptyState: EmptyStateListWidget(message: L10n.of(context).noEventsFound, color: AppColors.secondaryColor, contentType: ContentType.event),
               ),
             ),
           ],
