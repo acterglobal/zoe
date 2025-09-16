@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:zoe/common/models/user_chip_type.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
-
-enum ZoeUserChipType {
-  userNameChip,
-  userNameWithAvatarChip,
-}
 
 class ZoeUserChipWidget extends StatelessWidget {
   final UserModel user;

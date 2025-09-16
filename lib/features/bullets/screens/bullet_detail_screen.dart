@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/models/user_chip_type.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
@@ -175,13 +176,12 @@ class BulletDetailScreen extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 16),
-        _buildAddedByAvatarWidget(context, ref, bullet),
+        _buildUserNameWithAvatarChipWidget(context, ref, bullet),
       ],
     );
   }
 
-  /// Builds the added by user avatar
-  Widget _buildAddedByAvatarWidget(
+  Widget _buildUserNameWithAvatarChipWidget(
     BuildContext context,
     WidgetRef ref,
     BulletModel bullet,
@@ -194,7 +194,10 @@ class BulletDetailScreen extends ConsumerWidget {
       children: [
         BulletAddedByHeaderWidget(),
         const SizedBox(height: 10),
-        ZoeUserChipWidget(user: user,type: ZoeUserChipType.userNameWithAvatarChip,),
+        ZoeUserChipWidget(
+          user: user,
+          type: ZoeUserChipType.userNameWithAvatarChip,
+        ),
       ],
     );
   }

@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 
+/// A widget that displays a user's avatar.
+/// If user has an avatar image, it shows that.
+/// Otherwise shows a circle with the first letter of user's name.
 class ZoeUserAvatarWidget extends StatelessWidget {
   final UserModel user;
   final double? size;
@@ -41,26 +44,26 @@ class ZoeUserAvatarWidget extends StatelessWidget {
       ),
       child: ClipOval(
         child: path.startsWith('http')
-          ? Image.network(
-              path,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return _buildPlaceholderAvatar(
-                  randomColor,
-                  showError: true,
-                );
-              },
-            )
-          : Image.file(
-              File(path),
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return _buildPlaceholderAvatar(
-                  randomColor,
-                  showError: true,
-                );
-              },
-            ),
+            ? Image.network(
+                path,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return _buildPlaceholderAvatar(
+                    randomColor,
+                    showError: true,
+                  );
+                },
+              )
+            : Image.file(
+                File(path),
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return _buildPlaceholderAvatar(
+                    randomColor,
+                    showError: true,
+                  );
+                },
+              ),
       ),
     );
   }

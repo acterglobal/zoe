@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/models/user_chip_type.dart';
+import 'package:zoe/common/models/user_display_type.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
@@ -22,14 +24,14 @@ class TaskWidget extends ConsumerWidget {
   final String taskId;
   final bool isEditing;
   final bool showSheetName;
-  final ZoeUserChipType userDisplayType;
+  final ZoeUserDisplayType userDisplayType;
 
   const TaskWidget({
     super.key,
     required this.taskId,
     required this.isEditing,
     this.showSheetName = true,
-    this.userDisplayType = ZoeUserChipType.userNameWithAvatarChip,
+    this.userDisplayType = ZoeUserDisplayType.stackedAvatars,
   });
 
   @override
@@ -56,14 +58,13 @@ class TaskWidget extends ConsumerWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildTaskItemTitle(context, ref, task, shouldFocus),
-                  if (task.assignedUsers.isNotEmpty && userDisplayType == ZoeUserChipType.userNameWithAvatarChip)
-                    _buildAssignedUsersStackWidget(context, ref, task),
+                  if (task.assignedUsers.isNotEmpty && userDisplayType.showInRow)
+                    _buildUserDisplay(context, ref, task),
                 ],
               ),
               const SizedBox(height: 4),
@@ -76,7 +77,7 @@ class TaskWidget extends ConsumerWidget {
                   ],
                 ],
               ),
-              if (userDisplayType == ZoeUserChipType.userNameChip) ...[
+              if (userDisplayType.showBelow && task.assignedUsers.isNotEmpty) ...[
                 const SizedBox(height: 10),
                 TaskAssigneeHeaderWidget(
                   isEditing: false,
@@ -85,7 +86,7 @@ class TaskWidget extends ConsumerWidget {
                   textSize: 11,
                 ),
                 const SizedBox(height: 4),
-                _buildDisplayTaskAssigneesListWidget(context, ref, task),
+                _buildUserDisplay(context, ref, task),
                 const SizedBox(height: 10),
               ],
             ],
@@ -97,7 +98,6 @@ class TaskWidget extends ConsumerWidget {
     );
   }
 
-  // Builds the task item title
   Widget _buildTaskItemTitle(
     BuildContext context,
     WidgetRef ref,
@@ -167,7 +167,6 @@ class TaskWidget extends ConsumerWidget {
     );
   }
 
-  /// Gets the valid users for the task
   List<UserModel> _getAssignedUsers(WidgetRef ref, TaskModel task) {
     return task.assignedUsers
         .map((userId) => ref.watch(getUserByIdProvider(userId)))
@@ -175,22 +174,61 @@ class TaskWidget extends ConsumerWidget {
         .toList();
   }
 
-  Widget _buildAssignedUsersStackWidget(
+  Widget _buildUserDisplay(
     BuildContext context,
     WidgetRef ref,
     TaskModel task,
   ) {
     final validUsers = _getAssignedUsers(ref, task);
-    return GestureDetector(
-      onTap: () => _buildTaskAssigneesBottomSheet(context, ref, validUsers),
-      child: ZoeStackedAvatarsWidget(users: validUsers),
-    );
+    if (validUsers.isEmpty) return const SizedBox.shrink();
+
+    return switch (userDisplayType) {
+      ZoeUserDisplayType.avatarOnly => ZoeUserChipWidget(
+          user: validUsers.first,
+          type: ZoeUserChipType.userNameWithAvatarChip,
+        ),
+      ZoeUserDisplayType.stackedAvatars => GestureDetector(
+          onTap: () => _buildTaskAssigneesBottomSheet(context, ref, validUsers),
+          child: ZoeStackedAvatarsWidget(users: validUsers),
+        ),
+      ZoeUserDisplayType.nameChipBelow => ZoeUserChipWidget(
+          user: validUsers.first,
+          type: ZoeUserChipType.userNameChip,
+        ),
+      ZoeUserDisplayType.nameChipsWrap => Wrap(
+          spacing: 1,
+          runSpacing: 4,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            ...validUsers.take(2).map(
+                  (user) => ZoeUserChipWidget(
+                    user: user,
+                    type: ZoeUserChipType.userNameChip,
+                  ),
+                ),
+            if (validUsers.length > 2)
+              GestureDetector(
+                onTap: () =>
+                    _buildTaskAssigneesBottomSheet(context, ref, validUsers),
+                child: Text(
+                  'view +${validUsers.length - 2}',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.4),
+                        decoration: TextDecoration.underline,
+                      ),
+                ),
+              ),
+          ],
+        ),
+    };
   }
 
   Widget _buildTaskItemActions(BuildContext context, WidgetRef ref) {
     return Row(
       children: [
-        // Edit list item
         GestureDetector(
           onTap: () => context.push(
             AppRoutes.taskDetail.route.replaceAll(':taskId', taskId),
@@ -198,51 +236,15 @@ class TaskWidget extends ConsumerWidget {
           child: Icon(
             Icons.edit,
             size: 16,
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: 0.4),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
           ),
         ),
         const SizedBox(width: 6),
-
-        // Delete list item
         ZoeCloseButtonWidget(
           onTap: () {
             ref.read(taskListProvider.notifier).deleteTask(taskId);
           },
         ),
-      ],
-    );
-  }
-
-  Widget _buildDisplayTaskAssigneesListWidget(
-    BuildContext context,
-    WidgetRef ref,
-    TaskModel task,
-  ) {
-    final theme = Theme.of(context);
-    final assignedUsers = _getAssignedUsers(ref, task);
-
-    if (assignedUsers.isEmpty) return const SizedBox.shrink();
-    return Wrap(
-      spacing: 1,
-      runSpacing: 4,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      children: [
-        ...assignedUsers
-            .take(2)
-            .map((user) => ZoeUserChipWidget(user: user,type: ZoeUserChipType.userNameChip,)),
-        if (assignedUsers.length > 2)
-          GestureDetector(
-            onTap: () => _buildTaskAssigneesBottomSheet(context, ref, assignedUsers),
-            child: Text(
-              'view +${assignedUsers.length - 2}',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
-                decoration: TextDecoration.underline,
-              ),
-            ),
-          ),
       ],
     );
   }

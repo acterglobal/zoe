@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/models/user_chip_type.dart';
+import 'package:zoe/common/models/user_display_type.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
@@ -15,13 +17,13 @@ import 'package:zoe/l10n/generated/l10n.dart';
 class BulletItemWidget extends ConsumerWidget {
   final String bulletId;
   final bool isEditing;
-  final ZoeUserChipType userDisplayType;
+  final ZoeUserDisplayType userDisplayType;
 
   const BulletItemWidget({
     super.key,
     required this.bulletId,
     required this.isEditing,
-    this.userDisplayType = ZoeUserChipType.userNameWithAvatarChip,
+    this.userDisplayType = ZoeUserDisplayType.avatarOnly,
   });
 
   @override
@@ -56,8 +58,8 @@ class BulletItemWidget extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildBulletItemTitle(context, ref, bulletItem, autoFocus),
-                  if (userDisplayType == ZoeUserChipType.userNameWithAvatarChip)
-                    _buildAddedByAvatarWidget(context, ref, bulletItem)
+                  if (userDisplayType.showInRow)
+                    _buildUserDisplay(context, ref, bulletItem),
                 ],
               ),
             ),
@@ -65,9 +67,9 @@ class BulletItemWidget extends ConsumerWidget {
             if (isEditing) _buildBulletItemActions(context, ref),
           ],
         ),
-        if (userDisplayType == ZoeUserChipType.userNameChip) ...[
+        if (userDisplayType.showBelow) ...[
           const SizedBox(height: 2),
-          _buildDisplayAddedByUserViewWidget(context, ref, bulletItem),
+          _buildUserDisplay(context, ref, bulletItem),
           const SizedBox(height: 6),
         ],
       ],
@@ -142,7 +144,7 @@ class BulletItemWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildAddedByAvatarWidget(
+  Widget _buildUserDisplay(
     BuildContext context,
     WidgetRef ref,
     BulletModel bulletItem,
@@ -150,32 +152,27 @@ class BulletItemWidget extends ConsumerWidget {
     final user = ref.watch(getUserByIdProvider(bulletItem.createdBy));
     if (user == null) return const SizedBox.shrink();
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 8),
-      child: ZoeUserAvatarWidget(user: user),
-    );
-  }
-
-  Widget _buildDisplayAddedByUserViewWidget(
-    BuildContext context,
-    WidgetRef ref,
-    BulletModel bulletItem,
-  ) {
-    final user = ref.watch(getUserByIdProvider(bulletItem.createdBy));
-    if (user == null) return const SizedBox.shrink();
-
-    return Padding(
-      padding: const EdgeInsets.only(left: 16),
-      child: Row(
-        children: [
-          BulletAddedByHeaderWidget(iconSize: 16, textSize: 12),
-          const SizedBox(width: 8),
-          ZoeUserChipWidget(
-            user: user,
-            type: ZoeUserChipType.userNameChip,
-          )
-        ],
-      ),
-    );
+    return switch (userDisplayType) {
+      ZoeUserDisplayType.avatarOnly => Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: ZoeUserAvatarWidget(user: user),
+        ),
+      ZoeUserDisplayType.nameChipBelow => Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Row(
+            children: [
+              BulletAddedByHeaderWidget(iconSize: 16, textSize: 12),
+              const SizedBox(width: 8),
+              ZoeUserChipWidget(
+                user: user,
+                type: ZoeUserChipType.userNameChip,
+              ),
+            ],
+          ),
+        ),
+      // Bullets don't support multiple users, so these cases are not needed
+      ZoeUserDisplayType.stackedAvatars || ZoeUserDisplayType.nameChipsWrap => 
+        const SizedBox.shrink(),
+    };
   }
 }
