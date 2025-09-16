@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_chip_widget.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_assignee_header_widget.dart';
@@ -70,9 +70,8 @@ class TaskAssigneesWidget extends ConsumerWidget {
     final user = ref.watch(getUserByIdProvider(userId));
     if (user == null) return const SizedBox.shrink();
 
-    return ZoeUserAvatarWidget(
+    return ZoeUserChipWidget(
       user: user,
-      showRemoveButton: isEditing,
       onRemove: isEditing ? () => ref
           .read(taskListProvider.notifier)
           .removeAssignee(ref, task, userId) : null,

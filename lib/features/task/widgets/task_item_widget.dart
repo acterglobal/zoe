@@ -5,7 +5,7 @@ import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_chip_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
@@ -231,7 +231,7 @@ class TaskWidget extends ConsumerWidget {
       children: [
         ...assignedUsers
             .take(2)
-            .map((user) => ZoeUserAvatarWidget(user: user,showUserName: true,)),
+            .map((user) => ZoeUserChipWidget(user: user,type: ZoeUserChipType.userNameOnly,)),
         if (assignedUsers.length > 2)
           GestureDetector(
             onTap: () => _buildTaskAssigneesBottomSheet(context, ref, assignedUsers),

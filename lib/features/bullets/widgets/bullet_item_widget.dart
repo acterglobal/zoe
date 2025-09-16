@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_chip_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
@@ -162,7 +162,7 @@ class BulletItemWidget extends ConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.only(left: 8),
-      child: ZoeUserAvatarWidget(user: user,showUserAvatar: true,),
+      child: ZoeUserChipWidget(user: user,type: ZoeUserChipType.userAvatarOnly,),
     );
   }
 
@@ -180,7 +180,7 @@ class BulletItemWidget extends ConsumerWidget {
       child: Row(children: [
         BulletAddedByHeaderWidget(iconSize: 16, textSize: 12),
         const SizedBox(width: 8),
-        ZoeUserAvatarWidget(user: user,showUserName: true,)
+        ZoeUserChipWidget(user: user,type: ZoeUserChipType.userNameOnly,)
       ]),
     );
   }

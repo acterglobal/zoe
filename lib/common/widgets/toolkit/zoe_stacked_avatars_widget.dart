@@ -42,7 +42,7 @@ class ZoeStackedAvatarsWidget extends StatelessWidget {
               child: SizedBox(
                 width: avatarSize,
                 height: avatarSize,
-                child: ZoeUserAvatarWidget(user: users[i],showUserAvatar: true,),
+                child: ZoeUserAvatarWidget(user: users[i]),
               ),
             ),
           // Display +X indicator if there are more users

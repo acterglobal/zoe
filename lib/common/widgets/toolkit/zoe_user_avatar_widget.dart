@@ -33,8 +33,8 @@ class ZoeUserAvatarWidget extends StatelessWidget {
   Widget _buildImageAvatar(String path, BuildContext context) {
     final randomColor = CommonUtils().getRandomColorFromName(user.name);
     return Container(
-      width: size ?? 100,
-      height: size ?? 100,
+      width: size ?? 24,
+      height: size ?? 24,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Theme.of(context).colorScheme.surface,
