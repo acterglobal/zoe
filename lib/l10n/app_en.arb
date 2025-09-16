@@ -496,5 +496,7 @@
     "editProfile": "Edit Profile",
     "@editProfile": {},
     "personalInformation": "Personal Information",
-    "@personalInformation": {}
+    "@personalInformation": {},
+    "addedBy": "Added by :",
+    "@createdBy": {}
 }

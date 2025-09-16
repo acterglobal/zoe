@@ -377,7 +377,7 @@
     "@userNotFound": {},
     "scanToConnect": "કનેક્ટ કરવા માટે સ્કેન કરો",
     "@scanToConnect": {},
-    "nameCannotBeEmpty": "નામ ખાલી હોઈ શકતું નથી", 
+    "nameCannotBeEmpty": "નામ ખાલી હોઈ શકતું નથી",
     "@nameCannotBeEmpty": {},
     "pleaseEnterAValidName": "કૃપા કરીને સાચું નામ દાખલ કરો",
     "@pleaseEnterAValidName": {},
@@ -392,5 +392,14 @@
     "editProfile": "પ્રોફાઇલ સંપાદિત કરો",
     "@editProfile": {},
     "personalInformation": "વ્યક્તિગત માહિતી",
-    "@personalInformation": {}
+    "@personalInformation": {},
+    "cannotFindLink": "ગ્રુપ લિંક શોધી શકાતી નથી?",
+    "@cannotFindLink": {},
+    "cannotFindLinkDescription": "ગ્રુપ પરમાણુઓ સેટિંગ્સમાં 'લિંક અથવા QR કોડ દ્વારા આમંત્રણ સક્રિય કરો' સક્રિય કરો. વધુ જાણવા માટે અહીં ક્લિક કરો.",
+    "@cannotFindLinkDescription": {},
+    "activePolls": "સક્રિય પોલ્સ",
+    "@activePolls": {},
+    "addedBy": "ઉમેરવામાં આવ્યું છે :",
+    "@createdBy": {}
+
 }

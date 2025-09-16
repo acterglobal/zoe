@@ -376,7 +376,7 @@
     "userNotFound": "उपयोगकर्ता नहीं मिला",
     "@userNotFound": {},
     "scanToConnect": "कनेक्ट करने के लिए स्कैन करें",
-    "@scanToConnect": {},   
+    "@scanToConnect": {},
     "nameCannotBeEmpty": "नाम खाली नहीं हो सकता",
     "@nameCannotBeEmpty": {},
     "pleaseEnterAValidName": "कृपया एक सही नाम दर्ज करें",
@@ -392,5 +392,13 @@
     "editProfile": "प्रोफ़ाइल संपादित करें",
     "@editProfile": {},
     "personalInformation": "व्यक्तिगत जानकारी",
-    "@personalInformation": {}
+    "@personalInformation": {},
+    "cannotFindLink": "लिंक नहीं मिला?",
+    "@cannotFindLink": {},
+    "cannotFindLinkDescription": "ग्रुप परमिटीज़ सेटिंग्स में 'लिंक या QR कोड द्वारा आमंत्रण सक्रिय करें' सक्रिय करें। अधिक जानकारी के लिए यहां क्लिक करें।",
+    "@cannotFindLinkDescription": {},
+    "activePolls": "सक्रिय पोल्स",
+    "@activePolls": {},
+    "addedBy": "जोड़ा गया है :",
+    "@createdBy": {}
 }
