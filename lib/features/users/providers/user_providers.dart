@@ -61,3 +61,7 @@ final userDisplayNameProvider = Provider.family<String, String>((ref, userId) {
 
   return userId;
 });
+
+final updateUserProvider = Provider.family<void, UserModel>((ref, user) {
+  ref.read(userListProvider.notifier).updateUser(user.id, user);
+});

@@ -10,6 +10,7 @@ class StyledIconContainer extends StatelessWidget {
   final double backgroundOpacity;
   final double borderOpacity;
   final double shadowOpacity;
+  final VoidCallback? onTap;
 
   const StyledIconContainer({
     super.key,
@@ -22,6 +23,7 @@ class StyledIconContainer extends StatelessWidget {
     this.backgroundOpacity = 0.12,
     this.borderOpacity = 0.2,
     this.shadowOpacity = 0.15,
+    this.onTap,
   });
 
   @override
@@ -34,43 +36,48 @@ class StyledIconContainer extends StatelessWidget {
     final effectiveBorderRadius =
         borderRadius ?? BorderRadius.circular(size * 0.28);
 
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        borderRadius: effectiveBorderRadius,
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            effectivePrimaryColor.withValues(alpha: backgroundOpacity),
-            effectivePrimaryColor.withValues(alpha: backgroundOpacity * 0.67),
-            effectiveSecondaryColor.withValues(alpha: backgroundOpacity * 0.5),
-          ],
-          stops: const [0.0, 0.6, 1.0],
-        ),
-        border: Border.all(
-          color: effectivePrimaryColor.withValues(alpha: borderOpacity),
-          width: 1.0,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: effectivePrimaryColor.withValues(alpha: shadowOpacity),
-            blurRadius: size * 0.125,
-            offset: Offset(0, size * 0.03),
-            spreadRadius: 0,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          borderRadius: effectiveBorderRadius,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              effectivePrimaryColor.withValues(alpha: backgroundOpacity),
+              effectivePrimaryColor.withValues(alpha: backgroundOpacity * 0.67),
+              effectiveSecondaryColor.withValues(
+                alpha: backgroundOpacity * 0.5,
+              ),
+            ],
+            stops: const [0.0, 0.6, 1.0],
           ),
-          BoxShadow(
-            color: effectivePrimaryColor.withValues(
-              alpha: shadowOpacity * 0.53,
+          border: Border.all(
+            color: effectivePrimaryColor.withValues(alpha: borderOpacity),
+            width: 1.0,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: effectivePrimaryColor.withValues(alpha: shadowOpacity),
+              blurRadius: size * 0.125,
+              offset: Offset(0, size * 0.03),
+              spreadRadius: 0,
             ),
-            blurRadius: size * 0.25,
-            offset: Offset(0, size * 0.06),
-            spreadRadius: size * 0.015,
-          ),
-        ],
+            BoxShadow(
+              color: effectivePrimaryColor.withValues(
+                alpha: shadowOpacity * 0.53,
+              ),
+              blurRadius: size * 0.25,
+              offset: Offset(0, size * 0.06),
+              spreadRadius: size * 0.015,
+            ),
+          ],
+        ),
+        child: Icon(icon, color: effectivePrimaryColor, size: iconSize),
       ),
-      child: Icon(icon, color: effectivePrimaryColor, size: iconSize),
     );
   }
 }
