@@ -205,8 +205,9 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
         ),
       );
     } else {
-      return Listener(
-        onPointerDown: (event) => widget.onTap?.call(),
+      return GestureDetector(
+        onTap: widget.onTap,
+        behavior: HitTestBehavior.opaque, // This ensures the gesture detector captures all touch events
         child: _buildViewWidget(),
       );
     }
@@ -226,18 +227,26 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
       final disabledFocusNode = FocusNode();
       disabledFocusNode.canRequestFocus = false;
 
-      return QuillEditor(
-        controller: _editorManager.controller,
-        scrollController: _editorManager.scrollController,
-        focusNode: disabledFocusNode,
-        config: QuillEditorConfig(
-          autoFocus: false,
-          expands: false,
-          embedBuilders: const [],
-          customStyles: _editorManager.getDefaultStyles(context),
-          onLaunchUrl: (url) async {
-            await CommonUtils.openUrl(url, context);
-          },
+      return GestureDetector(
+        onTap: widget.onTap,
+        // This allows the GestureDetector to capture taps while still letting scroll
+        behavior: HitTestBehavior.translucent,
+        // This prevents the QuillEditor from receiving any pointer events
+        child: AbsorbPointer(
+          child: QuillEditor(
+            controller: _editorManager.controller,
+            scrollController: _editorManager.scrollController,
+            focusNode: disabledFocusNode,
+            config: QuillEditorConfig(
+              autoFocus: false,
+              expands: false,
+              embedBuilders: const [],
+              customStyles: _editorManager.getDefaultStyles(context),
+              onLaunchUrl: (url) async {
+                await CommonUtils.openUrl(url, context);
+              },
+            ),
+          ),
         ),
       );
     } else if (hasPlainContent) {
