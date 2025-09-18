@@ -36,6 +36,8 @@ abstract class Client implements RustOpaqueInterface {
 
   Future<void> close();
 
+  Future<MessageId> createGroup({required CreateGroupBuilder createGroup});
+
   /// Get list of all configured relays with their connection status
   Future<List<RelayConnectionInfo>> getRelayStatus();
 

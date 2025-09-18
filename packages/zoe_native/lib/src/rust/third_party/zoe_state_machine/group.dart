@@ -19,11 +19,23 @@ import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 import 'state.dart';
 part 'group.freezed.dart';
 
-// These functions are ignored because they have generic arguments: `create_group_activity_event`, `create_group_update_event`, `create_leave_group_event`, `create_role_update_event`
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `CreateGroupResult`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`
-// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `add_group_session`, `builder`, `create_group_event_message`, `create_group_subscription_filter`, `create_group`, `create_key_from_mnemonic`, `process_group_event`, `recover_key_from_mnemonic`, `remove_group_session`, `rotate_group_key`, `subscribe_to_updates`, `user_groups`
-// These functions have error during generation (see debug logs or enable `stop_on_error: true` for more details): `with_sessions`
+// These functions are ignored because they have generic arguments: `create_group_activity_event`, `create_leave_group_event`, `create_role_update_event`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `CreateGroupResult`, `GroupManagerBuilder`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `add_group_session`, `build`, `builder`, `create_group_event_message`, `create_group_subscription_filter`, `create_group`, `create_key_from_mnemonic`, `process_group_event`, `recover_key_from_mnemonic`, `remove_group_session`, `rotate_group_key`, `subscribe_to_updates`, `user_groups`, `with_sessions`
+// These functions have error during generation (see debug logs or enable `stop_on_error: true` for more details): `description`, `group_settings`, `metadata`, `name`
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CreateGroupBuilder>>
+abstract class CreateGroupBuilder implements RustOpaqueInterface {
+  static Future<CreateGroupBuilder> default_() =>
+      RustLib.instance.api.zoeStateMachineGroupCreateGroupBuilderDefault();
+
+  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
+  static Future<CreateGroupBuilder> newInstance({required String title}) =>
+      RustLib.instance.api.zoeStateMachineGroupCreateGroupBuilderNew(
+        title: title,
+      );
+}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupManager>>
 abstract class GroupManager implements RustOpaqueInterface {
@@ -37,10 +49,8 @@ abstract class GroupManager implements RustOpaqueInterface {
       RustLib.instance.api.zoeStateMachineGroupGroupManagerDefault();
 
   /// Generate a new encryption key for a group (ChaCha20-Poly1305)
-  static Future<EncryptionKey> generateGroupKey({required BigInt timestamp}) =>
-      RustLib.instance.api.zoeStateMachineGroupGroupManagerGenerateGroupKey(
-        timestamp: timestamp,
-      );
+  static Future<EncryptionKey> generateGroupKey() =>
+      RustLib.instance.api.zoeStateMachineGroupGroupManagerGenerateGroupKey();
 
   /// Get a group session (state + encryption)
   Future<GroupSession?> groupSession({required MessageId groupId});
@@ -59,11 +69,6 @@ abstract class GroupManager implements RustOpaqueInterface {
     required MessageId groupId,
     required VerifyingKey user,
   });
-}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupManagerBuilder>>
-abstract class GroupManagerBuilder implements RustOpaqueInterface {
-  Future<GroupManager> build();
 }
 
 @freezed

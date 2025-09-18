@@ -4,26 +4,31 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../../../frb_generated.dart';
+import '../file/image.dart';
+import '../metadata.dart';
+import 'events/key_info.dart';
+import 'events/permissions.dart';
+import 'events/settings.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `GroupActivityEvent`, `GroupEvent`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `GroupActivityEvent`, `GroupEvent`, `GroupInfoUpdate`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `deserialize`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `serialize`
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CreateGroup>>
-abstract class CreateGroup implements RustOpaqueInterface {
-  /// Get a reference to the inner GroupInfo
-  Future<void> groupInfo();
-
-  /// Consume the CreateGroup and return the inner GroupInfo
-  Future<GroupInfo> intoGroupInfo();
-
-  // HINT: Make it `#[frb(sync)]` to let it become the default constructor of Dart class.
-  /// Create a new CreateGroup event
-  static Future<CreateGroup> newInstance({required GroupInfo groupInfo}) =>
-      RustLib.instance.api.zoeAppPrimitivesGroupEventsCreateGroupNew(
-        groupInfo: groupInfo,
-      );
-}
-
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GroupInfo>>
-abstract class GroupInfo implements RustOpaqueInterface {}
+abstract class GroupInfo implements RustOpaqueInterface {
+  GroupKeyInfo get keyInfo;
+
+  List<Metadata> get metadata;
+
+  String get name;
+
+  GroupSettings get settings;
+
+  set keyInfo(GroupKeyInfo keyInfo);
+
+  set metadata(List<Metadata> metadata);
+
+  set name(String name);
+
+  set settings(GroupSettings settings);
+}
