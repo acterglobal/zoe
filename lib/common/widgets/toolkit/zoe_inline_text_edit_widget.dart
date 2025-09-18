@@ -7,6 +7,7 @@ class ZoeInlineTextEditWidget extends StatefulWidget {
   final VoidCallback? onEnterPressed;
   final VoidCallback? onBackspaceEmptyText;
   final VoidCallback? onTapText;
+  final VoidCallback? onTapLongPressText;
   final TextInputAction? textInputAction;
   final bool isEditing;
   final TextStyle? textStyle;
@@ -20,6 +21,7 @@ class ZoeInlineTextEditWidget extends StatefulWidget {
     this.onEnterPressed,
     this.onBackspaceEmptyText,
     this.onTapText,
+    this.onTapLongPressText,
     this.textInputAction,
     this.isEditing = false,
     this.textStyle,
@@ -50,12 +52,12 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
   @override
   void didUpdateWidget(ZoeInlineTextEditWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
+
     // Update controller text when widget text changes
     if (widget.text != oldWidget.text) {
       controller.text = widget.text ?? '';
     }
-    
+
     // Request focus when autoFocus changes to true
     if (widget.autoFocus && !oldWidget.autoFocus && widget.isEditing) {
       textFieldFocusNode.requestFocus();
@@ -92,12 +94,20 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
             },
             onSubmitted: (value) => widget.onEnterPressed?.call(),
           )
-        : SelectableText(
-            controller.text.isEmpty ? (widget.hintText ?? '') : controller.text,
-            style: controller.text.isEmpty && widget.hintText != null
-                ? widget.textStyle?.copyWith(color: Theme.of(context).hintColor)
-                : widget.textStyle,
+        : GestureDetector(
             onTap: widget.onTapText,
+            onLongPress: widget.onTapLongPressText,
+            child: SelectableText(
+              controller.text.isEmpty
+                  ? (widget.hintText ?? '')
+                  : controller.text,
+              style: controller.text.isEmpty && widget.hintText != null
+                  ? widget.textStyle?.copyWith(
+                      color: Theme.of(context).hintColor,
+                    )
+                  : widget.textStyle,
+              onTap: widget.onTapText,
+            ),
           );
   }
 }

@@ -148,7 +148,7 @@ class ContentWidget extends ConsumerWidget {
     final key = ValueKey('${content.type.name}-$contentId');
 
     Widget contentWidget = switch (content.type) {
-      ContentType.text => TextWidget(textId: contentId, isEditing: isEditing),
+      ContentType.text => TextWidget(textId: contentId),
       ContentType.event => EventWidget(
         eventsId: contentId,
         isEditing: isEditing,

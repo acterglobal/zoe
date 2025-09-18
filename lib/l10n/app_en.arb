@@ -474,5 +474,7 @@
     "cannotFindLinkDescription": "Enable 'Invite via link or QR code' from group permission settings. Click here for more information.",
     "@cannotFindLinkDescription": {},
     "activePolls": "Active Polls",
-    "@activePolls": {}
+    "@activePolls": {},
+    "copiedToClipboard": "Copied to clipboard",
+    "textDeleted": "Text deleted"
 }

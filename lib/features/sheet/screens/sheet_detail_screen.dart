@@ -64,14 +64,16 @@ class SheetDetailScreen extends ConsumerWidget {
   }
 
   Widget _buildFloatingActionButton(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(editContentIdProvider) == sheetId;
+    final isEditing = ref.watch(editContentIdProvider) != null;
     return ZoeFloatingActionButton(
       icon: isEditing ? Icons.save_rounded : Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(
-        context,
-        parentId: sheetId,
-        sheetId: sheetId,
-      ),
+      onPressed: () => isEditing
+          ? ref.read(editContentIdProvider.notifier).state = null
+          : showAddContentBottomSheet(
+              context,
+              parentId: sheetId,
+              sheetId: sheetId,
+            ),
     );
   }
 
