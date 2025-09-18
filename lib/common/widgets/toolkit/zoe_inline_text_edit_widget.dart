@@ -97,7 +97,7 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
         : GestureDetector(
             onTap: widget.onTapText,
             onLongPress: widget.onTapLongPressText,
-            child: SelectableText(
+            child: Text(
               controller.text.isEmpty
                   ? (widget.hintText ?? '')
                   : controller.text,
@@ -106,7 +106,6 @@ class _ZoeInlineTextEditWidgetState extends State<ZoeInlineTextEditWidget> {
                       color: Theme.of(context).hintColor,
                     )
                   : widget.textStyle,
-              onTap: widget.onTapText,
             ),
           );
   }
