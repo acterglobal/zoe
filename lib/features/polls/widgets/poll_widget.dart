@@ -177,7 +177,7 @@ class PollWidget extends ConsumerWidget {
                     .voteOnPoll(pollId, option.id, currentUserId);
                     
                 // added cause need to remain the state same for home screen poll list to show current user voted poll
-                ref.read(activePollsWithPendingResponseProvider.notifier).state = currentStateOfActivePollsWithPendingResponse;
+                ref.read(activePollsWithPendingResponseProvider.notifier).update(currentStateOfActivePollsWithPendingResponse);
               }
             }
             if (PollUtils.isDraft(poll)) {

@@ -26,7 +26,7 @@ class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(searchValueProvider.notifier).state = '',
+      (_) => ref.read(searchValueProvider.notifier).update(''),
     );
   }
 
@@ -58,7 +58,7 @@ class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen> {
             ZoeSearchBarWidget(
               controller: searchController,
               onChanged: (value) =>
-                  ref.read(searchValueProvider.notifier).state = value,
+                  ref.read(searchValueProvider.notifier).update(value),
             ),
             const SizedBox(height: 10),
             Expanded(

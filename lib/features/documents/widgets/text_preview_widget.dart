@@ -29,7 +29,7 @@ class _TextPreviewWidgetState extends ConsumerState<TextPreviewWidget> {
 
     // reset search when widget initializes
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(searchValueProvider.notifier).state = '';
+      ref.read(searchValueProvider.notifier).update('');
     });
   }
 
@@ -54,7 +54,7 @@ class _TextPreviewWidgetState extends ConsumerState<TextPreviewWidget> {
         ZoeSearchBarWidget(
           controller: _searchController,
           onChanged: (value) =>
-              ref.read(searchValueProvider.notifier).state = value,
+              ref.read(searchValueProvider.notifier).update(value),
           hintText: L10n.of(context).searchInText,
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         ),

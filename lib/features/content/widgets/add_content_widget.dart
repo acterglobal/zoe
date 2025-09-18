@@ -98,15 +98,15 @@ class AddContentWidget extends ConsumerWidget {
               ),
             ),
           ],
+          ),
         ),
-      ),
     );
   }
 
   void _toggleMenu(WidgetRef ref) {
     HapticFeedback.mediumImpact();
-    ref.read(toggleContentMenuProvider.notifier).state = !ref.read(
+    ref.read(toggleContentMenuProvider.notifier).update(!ref.read(
       toggleContentMenuProvider,
-    );
+    ));
   }
 }

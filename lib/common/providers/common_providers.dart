@@ -1,4 +1,3 @@
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'common_providers.g.dart';
@@ -7,4 +6,6 @@ part 'common_providers.g.dart';
 class SearchValue extends _$SearchValue {
   @override
   String build() => '';
+
+  void update(String value) => state = value;
 }

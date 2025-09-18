@@ -17,7 +17,7 @@ class EditViewToggleButton extends ConsumerWidget {
       onTap: () {
         // Close keyboard and clear quill toolbar state
         clearActiveEditorState(ref);
-        ref.read(isEditValueProvider(parentId).notifier).state = !isEditing;
+        ref.read(isEditValueProvider(parentId).notifier).update(!isEditing);
       },
       child: StyledIconContainer(
         icon: isEditing ? Icons.save_rounded : Icons.edit_rounded,

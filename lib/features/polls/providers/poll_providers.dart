@@ -296,4 +296,6 @@ class ActivePollsWithPendingResponse extends _$ActivePollsWithPendingResponse {
       return !hasVoted;
     }).toList();
   }
+
+  void update(List<PollModel> value) => state = value;
 }

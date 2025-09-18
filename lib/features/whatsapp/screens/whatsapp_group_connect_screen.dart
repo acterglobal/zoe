@@ -254,7 +254,7 @@ class _WhatsAppGroupConnectScreenState
 
     final l10n = L10n.of(context);
 
-    ref.read(isConnectingProvider.notifier).state = true;
+    ref.read(isConnectingProvider.notifier).update(true);
     try {
       // Simulate connection process
       await Future.delayed(const Duration(seconds: 1));
@@ -263,7 +263,7 @@ class _WhatsAppGroupConnectScreenState
       // First pop to close the current screen
       context.pop();
 
-      ref.read(isConnectingProvider.notifier).state = false;
+      ref.read(isConnectingProvider.notifier).update(false);
 
       // Show success dialog with safer navigation handling
       await showSuccessDialog(
@@ -281,7 +281,7 @@ class _WhatsAppGroupConnectScreenState
       );
     } catch (e) {
       if (!context.mounted) return;
-      ref.read(isConnectingProvider.notifier).state = false;
+      ref.read(isConnectingProvider.notifier).update(false);
       debugPrint("Error connecting to group: $e");
     }
   }

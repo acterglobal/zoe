@@ -7,6 +7,8 @@ part 'content_menu_providers.g.dart';
 class ToggleContentMenu extends _$ToggleContentMenu {
   @override
   bool build() => false;
+
+  void update(bool value) => state = value;
 }
 
 /// Provider for tracking edit state for specific content by parentId
@@ -14,4 +16,6 @@ class ToggleContentMenu extends _$ToggleContentMenu {
 class IsEditValue extends _$IsEditValue {
   @override
   bool build(String parentId) => false;
+
+  void update(bool value) => state = value;
 }

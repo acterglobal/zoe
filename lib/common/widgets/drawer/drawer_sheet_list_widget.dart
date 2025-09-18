@@ -54,7 +54,7 @@ class DrawerSheetListWidget extends ConsumerWidget {
               if (context.canPop()) context.pop();
               final sheet = SheetModel();
               ref.read(sheetListProvider.notifier).addSheet(sheet);
-              ref.read(isEditValueProvider(sheet.id).notifier).state = true;
+              ref.read(isEditValueProvider(sheet.id).notifier).update(true);
               context.push(
                 AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id),
               );
