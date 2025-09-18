@@ -175,7 +175,6 @@ class ContentWidget extends ConsumerWidget {
       ),
       ContentType.poll => PollWidget(
         pollId: contentId,
-        isEditing: isEditing,
         showSheetName: showSheetName,
       ),
     };

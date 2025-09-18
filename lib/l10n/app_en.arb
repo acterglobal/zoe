@@ -480,5 +480,10 @@
     "linkDeleted": "Link deleted",
     "copyLinkContent": "Copy link content",
     "editThisLink": "Edit this link",
-    "deleteThisLink": "Delete this link"
+    "deleteThisLink": "Delete this link",
+    "pollDeleted": "Poll deleted",
+    "copyPollContent": "Copy poll content",
+    "shareThisPoll": "Share this poll",
+    "editThisPoll": "Edit this poll",
+    "deleteThisPoll": "Delete this poll"
 }

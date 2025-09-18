@@ -116,7 +116,7 @@ class PollDetailsScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
-          PollWidget(pollId: pollId, isEditing: isEditing),
+          PollWidget(pollId: pollId),
           const SizedBox(height: 16),
           ContentWidget(parentId: pollId, sheetId: poll.sheetId),
         ],
