@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -12,7 +13,7 @@ import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_heade
 import 'package:zoe/l10n/generated/l10n.dart';
   
 class PollListWidget extends ConsumerWidget {
-  final ProviderBase<List<PollModel>> pollsProvider;
+  final ProviderListenable<List<PollModel>> pollsProvider;
   final bool isEditing;
   final int? maxItems;
   final bool shrinkWrap;

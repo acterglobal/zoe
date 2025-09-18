@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
+import 'package:zoe/common/widgets/quill_editor/notifiers/quill_toolbar_notifier.dart';
 import 'package:zoe/common/widgets/add_link_bottom_sheet_widget.dart';
 
 /// Clear any active quill toolbar state

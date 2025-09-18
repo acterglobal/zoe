@@ -2,11 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
-import 'package:zoe/features/events/providers/events_proivder.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
@@ -63,7 +63,7 @@ void reorderContent(WidgetRef ref, String contentId, int newOrderIndex) {
       break;
     case ContentType.list:
       ref
-          .read(listsrovider.notifier)
+          .read(listsProvider.notifier)
           .updateListOrderIndex(contentId, newOrderIndex);
       break;
     case ContentType.task:
@@ -156,7 +156,7 @@ void addNewBulletedListContent({
     listType: ContentType.bullet,
     orderIndex: orderIndex,
   );
-  ref.read(listsrovider.notifier).addList(bulletedListContentModel);
+  ref.read(listsProvider.notifier).addList(bulletedListContentModel);
 
   // Add a default bullet item to the new list
   ref
@@ -182,7 +182,7 @@ void addNewTaskListContent({
     listType: ContentType.task,
     orderIndex: orderIndex,
   );
-  ref.read(listsrovider.notifier).addList(toDoListContentModel);
+  ref.read(listsProvider.notifier).addList(toDoListContentModel);
 
   // Add a default task item to the new list
   ref
@@ -229,7 +229,7 @@ void addNewDocumentContent({
     listType: ContentType.document,
     orderIndex: orderIndex,
   );
-  ref.read(listsrovider.notifier).addList(documentListContentModel);
+  ref.read(listsProvider.notifier).addList(documentListContentModel);
 }
 
 void addNewPollContent({

@@ -8,7 +8,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/settings/actions/change_theme.dart';
 import 'package:zoe/features/settings/models/language_model.dart';
-import 'package:zoe/features/settings/providers/local_provider.dart';
+import 'package:zoe/features/settings/providers/locale_provider.dart';
 import 'package:zoe/features/settings/providers/theme_provider.dart';
 import 'package:zoe/features/settings/widgets/setting_card_widget.dart';
 import 'package:zoe/features/settings/widgets/setting_item_widget.dart';
@@ -105,7 +105,7 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   Widget _buildLanguageSection(BuildContext context, WidgetRef ref) {
-    final currentLocale = ref.watch(localeProvider);
+    final currentLocale = ref.watch(appLocaleProvider);
     final currentLanguage = LanguageModel.fromCode(currentLocale);
 
     return SettingCardWidget(

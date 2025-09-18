@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
@@ -9,7 +10,7 @@ import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_heade
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class DocumentListWidget extends ConsumerWidget {
-  final ProviderBase<List<DocumentModel>> documentsProvider;
+  final ProviderListenable<List<DocumentModel>> documentsProvider;
   final bool isEditing;
   final int? maxItems;
   final bool isVertical;

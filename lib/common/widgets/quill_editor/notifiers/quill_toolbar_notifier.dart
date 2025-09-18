@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:async';
+
+part 'quill_toolbar_notifier.g.dart';
 
 typedef QuillToolbarState = ({
   QuillController? activeController,  
@@ -10,16 +12,18 @@ typedef QuillToolbarState = ({
   String? activeEditorId,           
 });
 
-class QuillToolbarNotifier extends StateNotifier<QuillToolbarState> {
+@riverpod
+class QuillToolbar extends _$QuillToolbar {
   Timer? _focusTimer;
   String? _lastActiveEditorId;
 
-  QuillToolbarNotifier() : super((
+  @override
+  QuillToolbarState build() => (
     activeController: null,
     activeFocusNode: null, 
     isToolbarVisible: false,
     activeEditorId: null,
-  ));
+  );
 
   /// Update the active editor and focus state
   void updateActiveEditor({
@@ -60,7 +64,7 @@ class QuillToolbarNotifier extends StateNotifier<QuillToolbarState> {
     if (state.activeEditorId == editorId) {
       _focusTimer?.cancel();
       _focusTimer = Timer(const Duration(milliseconds: 100), () {
-        if (mounted && state.activeEditorId == editorId) {
+        if (ref.mounted && state.activeEditorId == editorId) {
           state = (
             activeController: null,
             activeFocusNode: null,
@@ -72,7 +76,6 @@ class QuillToolbarNotifier extends StateNotifier<QuillToolbarState> {
       });
     }
   }
-
 
   void returnFocusToEditor() {
     state.activeFocusNode?.requestFocus();
@@ -86,10 +89,4 @@ class QuillToolbarNotifier extends StateNotifier<QuillToolbarState> {
       );
     }
   }
-
-  @override
-  void dispose() {
-    _focusTimer?.cancel();
-    super.dispose();
-  }
-} 
+}

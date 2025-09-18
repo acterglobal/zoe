@@ -151,7 +151,7 @@ class ListDetailsScreen extends ConsumerWidget {
                 ref,
                 onEmojiSelected: (emoji) {
                   ref
-                      .read(listsrovider.notifier)
+                      .read(listsProvider.notifier)
                       .updateListEmoji(listId, emoji);
                 },
               ),
@@ -169,7 +169,7 @@ class ListDetailsScreen extends ConsumerWidget {
                   height: 1.2,
                 ),
                 onTextChanged: (value) => ref
-                    .read(listsrovider.notifier)
+                    .read(listsProvider.notifier)
                     .updateListTitle(listId, value),
               ),
             ),
@@ -185,7 +185,7 @@ class ListDetailsScreen extends ConsumerWidget {
           // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => ref
-                .read(listsrovider.notifier)
+                .read(listsProvider.notifier)
                 .updateListDescription(listId, description),
           ),
         ),

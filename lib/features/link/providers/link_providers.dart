@@ -1,26 +1,73 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/features/link/data/link_list.dart';
 import 'package:zoe/features/link/models/link_model.dart';
-import 'package:zoe/features/link/providers/link_notifiers.dart';
 
-final linkListProvider = StateNotifierProvider<LinkNotifier, List<LinkModel>>(
-  (ref) => LinkNotifier(),
-);
+part 'link_providers.g.dart';
 
-final linkProvider = Provider.family<LinkModel?, String>((ref, linkId) {
+/// Main link list provider with all link management functionality
+@Riverpod(keepAlive: true)
+class LinkList extends _$LinkList {
+  @override
+  List<LinkModel> build() => linkList;
+
+  void addLink(LinkModel link) {
+    state = [...state, link];
+  }
+
+  void deleteLink(String linkId) {
+    state = state.where((l) => l.id != linkId).toList();
+  }
+
+  void updateLinkTitle(String linkId, String title) {
+    state = [
+      for (final link in state)
+        if (link.id == linkId) link.copyWith(title: title) else link,
+    ];
+  }
+
+  void updateLinkUrl(String linkId, String url) {
+    state = [
+      for (final link in state)
+        if (link.id == linkId)
+          link.copyWith(url: url)
+        else
+          link,
+    ];
+  }
+
+  void updateLinkEmoji(String linkId, String emoji) {
+    state = [
+      for (final link in state)
+        if (link.id == linkId) link.copyWith(emoji: emoji) else link,
+    ];
+  }
+
+  void updateLinkOrderIndex(String linkId, int orderIndex) {
+    state = [
+      for (final link in state)
+        if (link.id == linkId) link.copyWith(orderIndex: orderIndex) else link,
+    ];
+  }
+}
+
+/// Provider for a single link by ID
+@riverpod
+LinkModel? link(Ref ref, String linkId) {
   final linkList = ref.watch(linkListProvider);
   return linkList.where((l) => l.id == linkId).firstOrNull;
-});
+}
 
-final linkByParentProvider = Provider.family<List<LinkModel>, String>((
-  ref,
-  parentId,
-) {
+/// Provider for links filtered by parent ID
+@riverpod
+List<LinkModel> linkByParent(Ref ref, String parentId) {
   final linkList = ref.watch(linkListProvider);
   return linkList.where((l) => l.parentId == parentId).toList();
-});
+}
 
-final linkListSearchProvider = Provider<List<LinkModel>>((ref) {
+/// Provider for searching links
+@riverpod
+List<LinkModel> linkListSearch(Ref ref) {
   final linkList = ref.watch(linkListProvider);
   final searchValue = ref.watch(searchValueProvider);
   if (searchValue.isEmpty) return linkList;
@@ -28,4 +75,4 @@ final linkListSearchProvider = Provider<List<LinkModel>>((ref) {
       .where((l) => l.title.toLowerCase().contains(searchValue.toLowerCase()) ||
                     l.url.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
-});
+}

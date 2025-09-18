@@ -1,3 +1,10 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final searchValueProvider = StateProvider.autoDispose<String>((ref) => '');
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'common_providers.g.dart';
+
+@riverpod
+class SearchValue extends _$SearchValue {
+  @override
+  String build() => '';
+}

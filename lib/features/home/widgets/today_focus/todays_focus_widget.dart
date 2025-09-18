@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
-import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/events/widgets/event_widget.dart';
 import 'package:zoe/features/home/widgets/section_header/section_header_widget.dart';
 import 'package:zoe/features/home/widgets/today_focus/todays_item_widget.dart';

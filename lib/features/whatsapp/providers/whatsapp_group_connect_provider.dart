@@ -1,3 +1,11 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final isConnectingProvider = StateProvider<bool>((ref) => false);
+part 'whatsapp_group_connect_provider.g.dart';
+
+/// Provider for is connecting state
+@riverpod
+class IsConnecting extends _$IsConnecting {
+  @override
+  bool build() => false;
+}
+

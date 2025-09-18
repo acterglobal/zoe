@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/widgets/text_widget.dart';
 
 class TextListWidget extends ConsumerWidget {
-  final ProviderBase<List<TextModel>> textsProvider;
+  final ProviderListenable<List<TextModel>> textsProvider;
   final bool isEditing;
   final bool shrinkWrap;
   final Widget emptyState;

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zoe/core/constants/app_constants.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
-import 'package:zoe/features/settings/providers/local_provider.dart';
+import 'package:zoe/features/settings/providers/locale_provider.dart';
 import 'package:zoe/features/settings/providers/theme_provider.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'core/routing/app_router.dart';
@@ -25,7 +25,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
     final router = ref.watch(routerProvider);
-    final language = ref.watch(localeProvider);
+    final language = ref.watch(appLocaleProvider);
 
     return MaterialApp.router(
       title: AppConstants.appName,

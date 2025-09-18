@@ -1,5 +1,17 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final toogleContentMenuProvider = StateProvider<bool>((ref) => false);
+part 'content_menu_providers.g.dart';
 
-final isEditValueProvider = StateProvider.family<bool, String>((ref, parentId) => false);
+/// Provider for toggling content menu visibility
+@riverpod
+class ToggleContentMenu extends _$ToggleContentMenu {
+  @override
+  bool build() => false;
+}
+
+/// Provider for tracking edit state for specific content by parentId
+@riverpod
+class IsEditValue extends _$IsEditValue {
+  @override
+  bool build(String parentId) => false;
+}

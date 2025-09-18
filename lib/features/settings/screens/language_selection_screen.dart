@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/features/settings/models/language_model.dart';
-import 'package:zoe/features/settings/providers/local_provider.dart';
+import 'package:zoe/features/settings/providers/locale_provider.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class LanguageSelectionScreen extends ConsumerWidget {
@@ -40,12 +40,12 @@ class LanguageSelectionScreen extends ConsumerWidget {
     return Card(
       child: RadioListTile(
         value: language.languageCode,
-        groupValue: ref.watch(localeProvider),
+        groupValue: ref.watch(appLocaleProvider),
         title: Text(language.languageName),
         subtitle: Text(language.languageCode.toUpperCase()),
         onChanged: (val) async {
           if (val != null) {
-            final notifier = ref.read(localeProvider.notifier);
+            final notifier = ref.read(appLocaleProvider.notifier);
             await notifier.setLanguage(val);
           }
         },

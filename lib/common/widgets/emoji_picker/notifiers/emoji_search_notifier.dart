@@ -1,9 +1,14 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/widgets/emoji_picker/emoji_picker_config.dart';
 
-class EmojiSearchNotifier extends StateNotifier<EmojiSearchState> {
-  EmojiSearchNotifier() : super(const EmojiSearchState());
+part 'emoji_search_notifier.g.dart';
+
+/// Notifier for handling emoji search functionality
+@riverpod
+class EmojiSearch extends _$EmojiSearch {
+  @override
+  EmojiSearchState build() => const EmojiSearchState();
 
   /// Search for emojis based on query
   Future<void> searchEmoji(String query) async {
@@ -20,11 +25,12 @@ class EmojiSearchNotifier extends StateNotifier<EmojiSearchState> {
         defaultEmojiSet,
       );
       state = state.copyWith(searchResults: results);
-    } catch (e) {
+    } catch (_) {
       state = state.copyWith(searchResults: []);
     }
   }
 
+  /// Reset the emoji search state
   void resetEmojiSearch() {
     state = const EmojiSearchState();
   }
