@@ -48,8 +48,11 @@ class LinkListWidget extends ConsumerWidget {
     return _buildLinkList(context, ref, links);
   }
 
-  Widget _buildLinkList(BuildContext context, WidgetRef ref, List<LinkModel> links) {
-
+  Widget _buildLinkList(
+    BuildContext context,
+    WidgetRef ref,
+    List<LinkModel> links,
+  ) {
     final itemCount = maxItems != null
         ? min(maxItems!, links.length)
         : links.length;
@@ -64,19 +67,14 @@ class LinkListWidget extends ConsumerWidget {
             ? Card(
                 margin: const EdgeInsets.only(bottom: 10),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-                  child: LinkWidget(
-                    key: Key(link.id),
-                    linkId: link.id,
-                    isEditing: false,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 6,
                   ),
+                  child: LinkWidget(key: Key(link.id), linkId: link.id),
                 ),
               )
-            : LinkWidget(
-                key: ValueKey(link.id),
-                linkId: link.id,
-                isEditing: isEditing,
-              );
+            : LinkWidget(key: ValueKey(link.id), linkId: link.id);
       },
     );
   }

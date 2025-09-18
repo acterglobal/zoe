@@ -166,7 +166,6 @@ class ContentWidget extends ConsumerWidget {
       ),
       ContentType.link => LinkWidget(
         linkId: contentId,
-        isEditing: isEditing,
         showSheetName: showSheetName,
       ),
       ContentType.document => DocumentWidget(

@@ -476,5 +476,9 @@
     "activePolls": "Active Polls",
     "@activePolls": {},
     "copiedToClipboard": "Copied to clipboard",
-    "textDeleted": "Text deleted"
+    "textDeleted": "Text deleted",
+    "linkDeleted": "Link deleted",
+    "copyLinkContent": "Copy link content",
+    "editThisLink": "Edit this link",
+    "deleteThisLink": "Delete this link"
 }

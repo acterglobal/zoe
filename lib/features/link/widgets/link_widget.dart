@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
+import 'package:zoe/features/link/actions/link_actions.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 
@@ -13,10 +16,13 @@ import 'package:zoe/l10n/generated/l10n.dart';
 
 class LinkWidget extends ConsumerWidget {
   final String linkId;
-  final bool isEditing;
   final bool showSheetName;
 
-  const LinkWidget({super.key, required this.linkId, required this.isEditing, this.showSheetName = true});
+  const LinkWidget({
+    super.key,
+    required this.linkId,
+    this.showSheetName = true,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,10 +30,12 @@ class LinkWidget extends ConsumerWidget {
     final linkContent = ref.watch(linkProvider(linkId));
     if (linkContent == null) return const SizedBox.shrink();
 
+    final isEditing = ref.watch(editContentIdProvider) == linkId;
+
     /// Builds the link content widget
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: _buildLinkContent(context, ref, linkContent),
+      child: _buildLinkContent(context, ref, linkContent, isEditing),
     );
   }
 
@@ -35,10 +43,11 @@ class LinkWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     LinkModel linkContent,
+    bool isEditing,
   ) {
     return Row(
       children: [
-        _buildLinkContentEmoji(context, ref, linkContent.emoji),
+        _buildLinkContentEmoji(context, ref, linkContent.emoji, isEditing),
         const SizedBox(width: 6),
         Expanded(
           child: Column(
@@ -53,6 +62,7 @@ class LinkWidget extends ConsumerWidget {
                       context,
                       ref,
                       linkContent.title,
+                      isEditing,
                     ),
                   ),
                   const SizedBox(width: 6),
@@ -82,6 +92,7 @@ class LinkWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     String? emoji,
+    bool isEditing,
   ) {
     return EmojiWidget(
       isEditing: isEditing,
@@ -102,6 +113,7 @@ class LinkWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     String title,
+    bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).linkTitle,
@@ -112,6 +124,7 @@ class LinkWidget extends ConsumerWidget {
       ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
       onTextChanged: (value) =>
           ref.read(linkListProvider.notifier).updateLinkTitle(linkId, value),
+      onTapLongPressText: () => _showLinkMenu(context, ref, isEditing),
     );
   }
 
@@ -139,5 +152,26 @@ class LinkWidget extends ConsumerWidget {
           ref.read(linkListProvider.notifier).updateLinkUrl(linkId, value),
       onTapText: () => CommonUtils.openUrl(url, context),
     );
+  }
+
+  /// Shows the link menu popup using the generic component
+  void _showLinkMenu(BuildContext context, WidgetRef ref, bool isEditing) {
+    final menuItems = [
+      ZoeCommonMenuItems.copy(
+        onTapCopy: () => LinkActions.copyLink(context, ref, linkId),
+        subtitle: L10n.of(context).copyLinkContent,
+      ),
+      if (!isEditing)
+        ZoeCommonMenuItems.edit(
+          onTapEdit: () => LinkActions.editLink(ref, linkId),
+          subtitle: L10n.of(context).editThisLink,
+        ),
+      ZoeCommonMenuItems.delete(
+        onTapDelete: () => LinkActions.deleteLink(context, ref, linkId),
+        subtitle: L10n.of(context).deleteThisLink,
+      ),
+    ];
+
+    ZoePopupMenuWidget.show(context: context, items: menuItems);
   }
 }
