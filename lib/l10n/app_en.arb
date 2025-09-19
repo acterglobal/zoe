@@ -490,5 +490,10 @@
     "copyListContent": "Copy list content",
     "shareThisList": "Share this list",
     "editThisList": "Edit this list",
-    "deleteThisList": "Delete this list"
+    "deleteThisList": "Delete this list",
+    "eventDeleted": "Event deleted",
+    "copyEventContent": "Copy event content",
+    "shareThisEvent": "Share this event",
+    "editThisEvent": "Edit this event",
+    "deleteThisEvent": "Delete this event"
 }

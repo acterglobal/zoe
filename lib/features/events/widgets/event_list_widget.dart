@@ -25,7 +25,6 @@ class EventListWidget extends ConsumerWidget {
     this.shrinkWrap = true,
     this.emptyState = const SizedBox.shrink(),
     this.showSectionHeader = false,
-
   });
 
   @override
@@ -48,8 +47,11 @@ class EventListWidget extends ConsumerWidget {
     return _buildEventList(context, ref, events);
   }
 
-  Widget _buildEventList(BuildContext context, WidgetRef ref, List<EventModel> events) {
-
+  Widget _buildEventList(
+    BuildContext context,
+    WidgetRef ref,
+    List<EventModel> events,
+  ) {
     final itemCount = maxItems != null
         ? min(maxItems!, events.length)
         : events.length;
@@ -60,11 +62,7 @@ class EventListWidget extends ConsumerWidget {
       itemCount: itemCount,
       itemBuilder: (context, index) {
         final event = events[index];
-        return EventWidget(
-            key: ValueKey(event.id),
-            eventsId: event.id,
-            isEditing: isEditing,
-          );
+        return EventWidget(key: ValueKey(event.id), eventId: event.id);
       },
     );
   }

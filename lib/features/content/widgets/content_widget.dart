@@ -150,8 +150,7 @@ class ContentWidget extends ConsumerWidget {
     Widget contentWidget = switch (content.type) {
       ContentType.text => TextWidget(textId: contentId),
       ContentType.event => EventWidget(
-        eventsId: contentId,
-        isEditing: isEditing,
+        eventId: contentId,
         showSheetName: showSheetName,
       ),
       ContentType.list => ListWidget(listId: contentId),

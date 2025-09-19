@@ -81,8 +81,7 @@ class TodaysFocusWidget extends ConsumerWidget {
   Widget _buildEventItem(BuildContext context, EventModel event) {
     return EventWidget(
       key: ValueKey(event.id),
-      eventsId: event.id,
-      isEditing: false,
+      eventId: event.id,
       margin: const EdgeInsets.only(top: 3, bottom: 3),
     );
   }
