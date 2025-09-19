@@ -340,3 +340,32 @@ jobs:
       - name: Check zoe_native Dart formatting
         working-directory: packages/zoe_native
         run: dart format --set-exit-if-changed lib
+
+      # Integration Tests for zoe_native plugin
+      - name: Install Linux dependencies for integration tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            clang \
+            cmake \
+            ninja-build \
+            pkg-config \
+            libgtk-3-dev \
+            liblzma-dev \
+            libstdc++-12-dev \
+            libgstreamer1.0-dev \
+            libgstreamer-plugins-base1.0-dev \
+            libsecret-1-dev \
+            xvfb
+
+      - name: Setup virtual display for integration tests
+        run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          sleep 3  # Give Xvfb time to start
+
+      - name: Run zoe_native integration tests
+        working-directory: packages/zoe_native
+        run: ./run_integration_tests.sh linux
+        env:
+          DISPLAY: :99

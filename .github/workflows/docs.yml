@@ -1,0 +1,128 @@
+name: Documentation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.35.2'
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+  # Build documentation for zoe_native package
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install zoe_native dependencies
+        working-directory: packages/zoe_native
+        run: flutter pub get
+
+      - name: Generate Dart documentation
+        working-directory: packages/zoe_native
+        run: |
+          # Generate documentation with dart doc
+          dart doc --output doc/api
+          
+          # Verify documentation was generated
+          if [ ! -f "doc/api/index.html" ]; then
+            echo "Error: Documentation generation failed - index.html not found"
+            exit 1
+          fi
+          
+          echo "Documentation generated successfully"
+          ls -la doc/api/
+
+      - name: Upload documentation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: zoe-native-docs
+          path: packages/zoe_native/doc/api/
+          retention-days: 30
+
+  # Deploy to GitHub Pages (only on main branch)
+  deploy-docs:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build-docs
+    runs-on: ubuntu-latest
+    
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+
+    steps:
+      - name: Download documentation artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: zoe-native-docs
+          path: ./docs
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # Check documentation build on PRs (without deploying)
+  check-docs:
+    if: github.event_name == 'pull_request'
+    needs: build-docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download documentation artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: zoe-native-docs
+          path: ./docs
+
+      - name: Verify documentation structure
+        run: |
+          echo "Checking documentation structure..."
+          
+          # Check that key files exist
+          if [ ! -f "./docs/index.html" ]; then
+            echo "❌ Missing index.html"
+            exit 1
+          fi
+          
+          if [ ! -f "./docs/zoe_native/zoe_native-library.html" ]; then
+            echo "❌ Missing main library documentation"
+            exit 1
+          fi
+          
+          # Check for providers documentation
+          if [ ! -d "./docs/providers" ]; then
+            echo "❌ Missing providers documentation directory"
+            exit 1
+          fi
+          
+          echo "✅ Documentation structure looks good!"
+          echo "📊 Documentation stats:"
+          echo "  - Total HTML files: $(find ./docs -name "*.html" | wc -l)"
+          echo "  - Library files: $(find ./docs -name "*-library.html" | wc -l)"
+          echo "  - Class files: $(find ./docs -name "*-class.html" | wc -l)"
