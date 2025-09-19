@@ -150,20 +150,20 @@ class TextWidget extends ConsumerWidget {
     final menuItems = [
       ZoeCommonMenuItems.copy(
         onTapCopy: () => TextActions.copyText(context, ref, textId),
-        subtitle: 'Copy text content',
+        subtitle: L10n.of(context).copyTextContent,
       ),
       ZoeCommonMenuItems.share(
         onTapShare: () => TextActions.shareText(context, ref, textId),
-        subtitle: 'Share this text',
+        subtitle: L10n.of(context).shareThisText,
       ),
       if (!isEditing)
         ZoeCommonMenuItems.edit(
           onTapEdit: () => TextActions.editText(context, ref, textId),
-          subtitle: 'Edit this text',
+          subtitle: L10n.of(context).editThisText,
         ),
       ZoeCommonMenuItems.delete(
         onTapDelete: () => TextActions.deleteText(context, ref, textId),
-        subtitle: 'Delete this text',
+        subtitle: L10n.of(context).deleteThisText,
       ),
     ];
 
