@@ -7,7 +7,6 @@ import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widg
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/features/link/actions/link_actions.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
@@ -124,7 +123,12 @@ class LinkWidget extends ConsumerWidget {
       ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
       onTextChanged: (value) =>
           ref.read(linkListProvider.notifier).updateLinkTitle(linkId, value),
-      onTapLongPressText: () => _showLinkMenu(context, ref, isEditing),
+      onTapLongPressText: () => showLinkMenu(
+        context: context,
+        ref: ref,
+        isEditing: isEditing,
+        linkId: linkId,
+      ),
     );
   }
 
@@ -152,26 +156,5 @@ class LinkWidget extends ConsumerWidget {
           ref.read(linkListProvider.notifier).updateLinkUrl(linkId, value),
       onTapText: () => CommonUtils.openUrl(url, context),
     );
-  }
-
-  /// Shows the link menu popup using the generic component
-  void _showLinkMenu(BuildContext context, WidgetRef ref, bool isEditing) {
-    final menuItems = [
-      ZoeCommonMenuItems.copy(
-        onTapCopy: () => LinkActions.copyLink(context, ref, linkId),
-        subtitle: L10n.of(context).copyLinkContent,
-      ),
-      if (!isEditing)
-        ZoeCommonMenuItems.edit(
-          onTapEdit: () => LinkActions.editLink(ref, linkId),
-          subtitle: L10n.of(context).editThisLink,
-        ),
-      ZoeCommonMenuItems.delete(
-        onTapDelete: () => LinkActions.deleteLink(context, ref, linkId),
-        subtitle: L10n.of(context).deleteThisLink,
-      ),
-    ];
-
-    ZoePopupMenuWidget.show(context: context, items: menuItems);
   }
 }
