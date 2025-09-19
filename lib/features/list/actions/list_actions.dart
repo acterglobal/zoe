@@ -1,12 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
+
+/// Shows the list menu popup using the generic component
+void showListMenu({
+  required BuildContext context,
+  required WidgetRef ref,
+  required bool isEditing,
+  required String listId,
+  bool isDetailScreen = false,
+}) {
+  final menuItems = [
+    ZoeCommonMenuItems.copy(
+      onTapCopy: () => ListActions.copyList(context, ref, listId),
+      subtitle: L10n.of(context).copyListContent,
+    ),
+    ZoeCommonMenuItems.share(
+      onTapShare: () => ListActions.shareList(context, listId),
+      subtitle: L10n.of(context).shareThisList,
+    ),
+    if (!isEditing)
+      ZoeCommonMenuItems.edit(
+        onTapEdit: () => ListActions.editList(ref, listId),
+        subtitle: L10n.of(context).editThisList,
+      ),
+    ZoeCommonMenuItems.delete(
+      onTapDelete: () {
+        ListActions.deleteList(context, ref, listId);
+        if (context.mounted && context.canPop() && isDetailScreen) {
+          context.pop();
+        }
+      },
+      subtitle: L10n.of(context).deleteThisList,
+    ),
+  ];
+
+  ZoePopupMenuWidget.show(context: context, items: menuItems);
+}
 
 /// List-specific actions that can be performed on list content
 class ListActions {

@@ -5,7 +5,6 @@ import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/content/models/content_model.dart';
@@ -119,7 +118,12 @@ class ListWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.listDetail.route.replaceAll(':listId', listId),
       ),
-      onTapLongPressText: () => _showListMenu(context, ref, isEditing),
+      onTapLongPressText: () => showListMenu(
+        context: context,
+        ref: ref,
+        isEditing: isEditing,
+        listId: listId,
+      ),
     );
   }
 
@@ -256,30 +260,5 @@ class ListWidget extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  /// Shows the list menu popup using the generic component
-  void _showListMenu(BuildContext context, WidgetRef ref, bool isEditing) {
-    final menuItems = [
-      ZoeCommonMenuItems.copy(
-        onTapCopy: () => ListActions.copyList(context, ref, listId),
-        subtitle: L10n.of(context).copyListContent,
-      ),
-      ZoeCommonMenuItems.share(
-        onTapShare: () => ListActions.shareList(context, listId),
-        subtitle: L10n.of(context).shareThisList,
-      ),
-      if (!isEditing)
-        ZoeCommonMenuItems.edit(
-          onTapEdit: () => ListActions.editList(ref, listId),
-          subtitle: L10n.of(context).editThisList,
-        ),
-      ZoeCommonMenuItems.delete(
-        onTapDelete: () => ListActions.deleteList(context, ref, listId),
-        subtitle: L10n.of(context).deleteThisList,
-      ),
-    ];
-
-    ZoePopupMenuWidget.show(context: context, items: menuItems);
   }
 }

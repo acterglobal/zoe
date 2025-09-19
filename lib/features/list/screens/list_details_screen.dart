@@ -12,6 +12,7 @@ import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/features/list/actions/list_actions.dart';
 import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
@@ -151,6 +152,13 @@ class ListDetailsScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(listsrovider.notifier)
                     .updateListTitle(listId, value),
+                onTapLongPressText: () => showListMenu(
+                  context: context,
+                  ref: ref,
+                  isEditing: isEditing,
+                  listId: listId,
+                  isDetailScreen: true,
+                ),
               ),
             ),
           ],
