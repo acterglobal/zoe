@@ -499,5 +499,9 @@
     "copyEventContent": "Copy event content",
     "shareThisEvent": "Share this event",
     "editThisEvent": "Edit this event",
-    "deleteThisEvent": "Delete this event"
+    "deleteThisEvent": "Delete this event",
+    "copySheetContent": "Copy sheet content",
+    "shareThisSheet": "Share this sheet",
+    "editThisSheet": "Edit this sheet",
+    "deleteThisSheet": "Delete this sheet"
 }
