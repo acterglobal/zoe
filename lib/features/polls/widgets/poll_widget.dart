@@ -6,7 +6,6 @@ import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/polls/actions/poll_actions.dart';
@@ -15,7 +14,6 @@ import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
-
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
@@ -23,11 +21,13 @@ import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 
 class PollWidget extends ConsumerWidget {
   final String pollId;
+  final bool isDetailScreen;
   final bool showSheetName;
 
   const PollWidget({
     super.key,
     required this.pollId,
+    this.isDetailScreen = false,
     this.showSheetName = true,
   });
 
@@ -121,7 +121,13 @@ class PollWidget extends ConsumerWidget {
                   );
                 }
               },
-              onTapLongPressText: () => _showPollMenu(context, ref, isEditing),
+              onTapLongPressText: () => showPollMenu(
+                context: context,
+                ref: ref,
+                isEditing: isEditing,
+                pollId: pollId,
+                isDetailScreen: isDetailScreen,
+              ),
             ),
           ),
           if (isEditing)
@@ -435,30 +441,5 @@ class PollWidget extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  /// Shows the poll menu popup using the generic component
-  void _showPollMenu(BuildContext context, WidgetRef ref, bool isEditing) {
-    final menuItems = [
-      ZoeCommonMenuItems.copy(
-        onTapCopy: () => PollActions.copyPoll(context, ref, pollId),
-        subtitle: L10n.of(context).copyPollContent,
-      ),
-      ZoeCommonMenuItems.share(
-        onTapShare: () => PollActions.sharePoll(context, pollId),
-        subtitle: L10n.of(context).shareThisPoll,
-      ),
-      if (!isEditing)
-        ZoeCommonMenuItems.edit(
-          onTapEdit: () => PollActions.editPoll(ref, pollId),
-          subtitle: L10n.of(context).editThisPoll,
-        ),
-      ZoeCommonMenuItems.delete(
-        onTapDelete: () => PollActions.deletePoll(context, ref, pollId),
-        subtitle: L10n.of(context).deleteThisPoll,
-      ),
-    ];
-
-    ZoePopupMenuWidget.show(context: context, items: menuItems);
   }
 }
