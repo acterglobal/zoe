@@ -21,16 +21,16 @@ void showTaskMenu({
   final menuItems = [
     ZoeCommonMenuItems.copy(
       onTapCopy: () => TaskActions.copyTask(context, ref, taskId),
-      subtitle: L10n.of(context).copyBulletContent,
+      subtitle: L10n.of(context).copyTaskContent,
     ),
     ZoeCommonMenuItems.share(
       onTapShare: () => TaskActions.shareTask(context, taskId),
-      subtitle: L10n.of(context).shareThisBullet,
+      subtitle: L10n.of(context).shareThisTask,
     ),
     if (!isEditing)
       ZoeCommonMenuItems.edit(
         onTapEdit: () => TaskActions.editTask(ref, taskId),
-        subtitle: L10n.of(context).editThisBullet,
+        subtitle: L10n.of(context).editThisTask,
       ),
     ZoeCommonMenuItems.delete(
       onTapDelete: () {
