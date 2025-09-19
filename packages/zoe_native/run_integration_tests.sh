@@ -2,6 +2,13 @@
 
 # Script to run integration tests for zoe_native package
 # This script ensures proper setup and runs the live Rust integration tests
+#
+# Usage: ./run_integration_tests.sh [device]
+# Examples:
+#   ./run_integration_tests.sh           # Auto-detect device
+#   ./run_integration_tests.sh linux     # Force Linux device
+#   ./run_integration_tests.sh macos     # Force macOS device
+#   FLUTTER_DEVICE=linux ./run_integration_tests.sh  # Via environment variable
 
 set -e  # Exit on any error
 
@@ -46,13 +53,38 @@ if [[ -n "${CI}" ]] || [[ -n "${GITHUB_ACTIONS}" ]]; then
     fi
 fi
 
+# Determine device flag
+DEVICE_FLAG=""
+DEVICE=""
+
+# Priority: 1) Command line argument, 2) Environment variable, 3) Auto-detect
+if [[ -n "$1" ]]; then
+    DEVICE="$1"
+    echo "🖥️  Using device from command line: $DEVICE"
+elif [[ -n "${FLUTTER_DEVICE}" ]]; then
+    DEVICE="${FLUTTER_DEVICE}"
+    echo "🖥️  Using device from environment variable: $DEVICE"
+elif [[ -n "${CI}" ]] || [[ -n "${GITHUB_ACTIONS}" ]]; then
+    # Auto-detect for CI - assume Linux
+    DEVICE="linux"
+    echo "🖥️  Auto-detected device for CI environment: $DEVICE"
+else
+    # Local development - let Flutter auto-detect
+    echo "🖥️  Using Flutter's auto-detection for device selection"
+fi
+
+# Set device flag if device is specified
+if [[ -n "$DEVICE" ]]; then
+    DEVICE_FLAG="-d $DEVICE"
+fi
+
 # Run the integration tests with verbose output
-echo "🧪 Running UI Integration Tests..."
-flutter test integration_test/zoe_native_integration_test.dart --verbose
+echo "🧪 Running Direct Provider Integration Tests..."
+flutter test integration_test/direct_provider_test.dart --verbose $DEVICE_FLAG
 
 echo ""
-echo "🧪 Running Direct Provider Integration Tests..."
-flutter test integration_test/direct_provider_test.dart --verbose
+echo "🧪 Running UI Integration Tests..."
+flutter test integration_test/zoe_native_integration_test.dart --verbose $DEVICE_FLAG
 
 echo ""
 echo "✅ All integration tests completed successfully!"
