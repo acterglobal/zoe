@@ -10,7 +10,6 @@ import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/sheet/actions/sheet_actions.dart';
 import 'package:zoe/features/sheet/actions/sheet_data_updates.dart';
@@ -127,7 +126,12 @@ class SheetDetailScreen extends ConsumerWidget {
                 onTextChanged: (value) => Future.microtask(
                   () => updateSheetTitle(ref, sheetId, value),
                 ),
-                onTapLongPressText: () => _showSheetMenu(context, ref, isEditing),
+                onTapLongPressText: () => showSheetMenu(
+                  context: context,
+                  ref: ref,
+                  isEditing: isEditing,
+                  sheetId: sheetId,
+                ),
               ),
             ),
           ],
@@ -209,30 +213,5 @@ class SheetDetailScreen extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  /// Shows the sheet menu popup using the generic component
-  void _showSheetMenu(BuildContext context, WidgetRef ref, bool isEditing) {
-    final menuItems = [
-      ZoeCommonMenuItems.copy(
-        onTapCopy: () => SheetActions.copySheet(context, ref, sheetId),
-        subtitle: L10n.of(context).copySheetContent,
-      ),
-      ZoeCommonMenuItems.share(
-        onTapShare: () => SheetActions.shareSheet(context, sheetId),
-        subtitle: L10n.of(context).shareThisSheet,
-      ),
-      if (!isEditing)
-        ZoeCommonMenuItems.edit(
-          onTapEdit: () => SheetActions.editSheet(ref, sheetId),
-          subtitle: L10n.of(context).editThisSheet,
-        ),
-      ZoeCommonMenuItems.delete(
-        onTapDelete: () => SheetActions.deleteSheet(context, ref, sheetId),
-        subtitle: L10n.of(context).deleteThisSheet,
-      ),
-    ];
-
-    ZoePopupMenuWidget.show(context: context, items: menuItems);
   }
 }
