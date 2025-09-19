@@ -11,6 +11,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
+import 'package:zoe/features/events/actions/event_actions.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';
 import 'package:zoe/features/events/widgets/event_details_additional_fields.dart';
@@ -84,7 +85,7 @@ class EventDetailScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButtonWrapper(
         parentId: eventId,
         sheetId: event.sheetId,
-      ),  
+      ),
     );
   }
 
@@ -137,6 +138,13 @@ class EventDetailScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(eventListProvider.notifier)
                     .updateEventTitle(eventId, value),
+                onTapLongPressText: () => showEventMenu(
+                  context: context,
+                  ref: ref,
+                  isEditing: isEditing,
+                  eventId: eventId,
+                  isDetailScreen: true,
+                ),
               ),
             ),
           ],

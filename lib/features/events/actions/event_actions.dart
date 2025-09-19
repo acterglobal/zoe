@@ -1,12 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
+
+/// Shows the event menu popup using the generic component
+void showEventMenu({
+  required BuildContext context,
+  required WidgetRef ref,
+  required bool isEditing,
+  required String eventId,
+  bool isDetailScreen = false,
+}) {
+  final menuItems = [
+    ZoeCommonMenuItems.copy(
+      onTapCopy: () => EventActions.copyEvent(context, ref, eventId),
+      subtitle: L10n.of(context).copyEventContent,
+    ),
+    ZoeCommonMenuItems.share(
+      onTapShare: () => EventActions.shareEvent(context, eventId),
+      subtitle: L10n.of(context).shareThisEvent,
+    ),
+    if (!isEditing)
+      ZoeCommonMenuItems.edit(
+        onTapEdit: () => EventActions.editEvent(ref, eventId),
+        subtitle: L10n.of(context).editThisEvent,
+      ),
+    ZoeCommonMenuItems.delete(
+      onTapDelete: () {
+        EventActions.deleteEvent(context, ref, eventId);
+        if (context.mounted && context.canPop() && isDetailScreen) {
+          context.pop();
+        }
+      },
+      subtitle: L10n.of(context).deleteThisEvent,
+    ),
+  ];
+
+  ZoePopupMenuWidget.show(context: context, items: menuItems);
+}
 
 /// Event-specific actions that can be performed on event content
 class EventActions {

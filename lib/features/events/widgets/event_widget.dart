@@ -5,7 +5,6 @@ import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/events/actions/event_actions.dart';
 import 'package:zoe/features/events/models/events_model.dart';
@@ -107,7 +106,12 @@ class EventWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.eventDetail.route.replaceAll(':eventId', eventId),
       ),
-      onTapLongPressText: () => _showEventMenu(context, ref, isEditing),
+      onTapLongPressText: () => showEventMenu(
+        context: context,
+        ref: ref,
+        isEditing: isEditing,
+        eventId: eventId,
+      ),
     );
   }
 
@@ -148,30 +152,5 @@ class EventWidget extends ConsumerWidget {
         ),
       ],
     );
-  }
-
-  /// Shows the event menu popup using the generic component
-  void _showEventMenu(BuildContext context, WidgetRef ref, bool isEditing) {
-    final menuItems = [
-      ZoeCommonMenuItems.copy(
-        onTapCopy: () => EventActions.copyEvent(context, ref, eventId),
-        subtitle: L10n.of(context).copyEventContent,
-      ),
-      ZoeCommonMenuItems.share(
-        onTapShare: () => EventActions.shareEvent(context, eventId),
-        subtitle: L10n.of(context).shareThisEvent,
-      ),
-      if (!isEditing)
-        ZoeCommonMenuItems.edit(
-          onTapEdit: () => EventActions.editEvent(ref, eventId),
-          subtitle: L10n.of(context).editThisEvent,
-        ),
-      ZoeCommonMenuItems.delete(
-        onTapDelete: () => EventActions.deleteEvent(context, ref, eventId),
-        subtitle: L10n.of(context).deleteThisEvent,
-      ),
-    ];
-
-    ZoePopupMenuWidget.show(context: context, items: menuItems);
   }
 }
