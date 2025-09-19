@@ -7,7 +7,6 @@ import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/text/actions/text_actions.dart';
@@ -117,7 +116,12 @@ class TextWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.textBlockDetails.route.replaceAll(':textBlockId', textId),
       ),
-      onTapLongPressText: () => _showTextMenu(context, ref, isEditing),
+      onTapLongPressText: () => showTextMenu(
+        context: context,
+        ref: ref,
+        isEditing: isEditing,
+        textId: textId,
+      ),
     );
   }
 
@@ -143,30 +147,5 @@ class TextWidget extends ConsumerWidget {
         AppRoutes.textBlockDetails.route.replaceAll(':textBlockId', textId),
       ),
     );
-  }
-
-  /// Shows the text menu popup using the generic component
-  void _showTextMenu(BuildContext context, WidgetRef ref, bool isEditing) {
-    final menuItems = [
-      ZoeCommonMenuItems.copy(
-        onTapCopy: () => TextActions.copyText(context, ref, textId),
-        subtitle: L10n.of(context).copyTextContent,
-      ),
-      ZoeCommonMenuItems.share(
-        onTapShare: () => TextActions.shareText(context, ref, textId),
-        subtitle: L10n.of(context).shareThisText,
-      ),
-      if (!isEditing)
-        ZoeCommonMenuItems.edit(
-          onTapEdit: () => TextActions.editText(context, ref, textId),
-          subtitle: L10n.of(context).editThisText,
-        ),
-      ZoeCommonMenuItems.delete(
-        onTapDelete: () => TextActions.deleteText(context, ref, textId),
-        subtitle: L10n.of(context).deleteThisText,
-      ),
-    ];
-
-    ZoePopupMenuWidget.show(context: context, items: menuItems);
   }
 }

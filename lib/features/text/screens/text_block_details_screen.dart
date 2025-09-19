@@ -13,6 +13,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
+import 'package:zoe/features/text/actions/text_actions.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -151,6 +152,13 @@ class TextBlockDetailsScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(textListProvider.notifier)
                     .updateTextTitle(textBlockId, value),
+                onTapLongPressText: () => showTextMenu(
+                  context: context,
+                  ref: ref,
+                  isEditing: isEditing,
+                  textId: textBlockId,
+                  isDetailScreen: true,
+                ),
               ),
             ),
           ],
