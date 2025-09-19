@@ -21,6 +21,7 @@ enum AppRoutes {
   settingLanguage('/settings/language'),
   developerTools('/developer-tools'),
   systemsTest('/developer-tools/systems-test'),
+  settingsProfile('/settings/profile'),
   whatsappGroupConnect('/whatsapp-group-connect/:sheetId');
 
   final String route;

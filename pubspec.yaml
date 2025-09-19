@@ -87,6 +87,9 @@ dependencies:
   # Audio player
   audioplayers: ^6.5.0
 
+  # QR code
+  pretty_qr_code: ^3.5.0
+
 # Added cause; without this, it gives a 'Terminating app due to uncaught exception 'NSInvalidArgumentException'' error on macOS.
 dependency_overrides:
   flutter_quill:

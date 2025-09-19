@@ -45,6 +45,8 @@ class SettingItemWidget extends StatelessWidget {
           color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
           height: 1.3,
         ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
       trailing: Icon(
         Icons.chevron_right_rounded,
