@@ -61,7 +61,15 @@ class TextBlockDetailsScreen extends ConsumerWidget {
         title: ZoeAppBar(
           actions: [
             const SizedBox(width: 10),
-            ContentMenuButton(parentId: textBlockId),
+            ContentMenuButton(
+              onTap: (context) => showTextMenu(
+                context: context,
+                ref: ref,
+                isEditing: isEditing,
+                textId: textBlockId,
+                isDetailScreen: true,
+              ),
+            ),
           ],
         ),
       ),

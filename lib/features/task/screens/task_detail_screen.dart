@@ -61,7 +61,15 @@ class TaskDetailScreen extends ConsumerWidget {
         title: ZoeAppBar(
           actions: [
             const SizedBox(width: 10),
-            ContentMenuButton(parentId: taskId),
+            ContentMenuButton(
+              onTap: (context) => showTaskMenu(
+                context: context,
+                ref: ref,
+                isEditing: isEditing,
+                taskId: taskId,
+                isDetailScreen: true,
+              ),
+            ),
           ],
         ),
       ),

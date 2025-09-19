@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
+import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
@@ -52,6 +52,7 @@ class BulletDetailScreen extends ConsumerWidget {
     BulletModel bullet,
     bool isEditing,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -59,7 +60,30 @@ class BulletDetailScreen extends ConsumerWidget {
         title: ZoeAppBar(
           actions: [
             const SizedBox(width: 10),
-            ContentMenuButton(parentId: bulletId),
+            Builder(
+              builder: (context) {
+                return GestureDetector(
+                  onTap: () => showBulletMenu(
+                    context: context,
+                    ref: ref,
+                    isEditing: isEditing,
+                    bulletId: bulletId,
+                    isDetailScreen: true,
+                    isAppBarAction: true,
+                  ),
+                  child: StyledIconContainer(
+                    icon: Icons.more_vert_rounded,
+                    size: 40,
+                    iconSize: 20,
+                    primaryColor: colorScheme.onSurface,
+                    secondaryColor: colorScheme.onSurface.withValues(alpha: 0.4),
+                    backgroundOpacity: 0.08,
+                    borderOpacity: 0.15,
+                    shadowOpacity: 0.1,
+                  ),
+                );
+              }
+            ),
           ],
         ),
       ),
@@ -141,6 +165,7 @@ class BulletDetailScreen extends ConsumerWidget {
                   isEditing: isEditing,
                   bulletId: bulletId,
                   isDetailScreen: true,
+                  isAppBarAction: false,
                 ),
               ),
             ),

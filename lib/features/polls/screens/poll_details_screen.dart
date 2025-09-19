@@ -9,6 +9,7 @@ import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_
 import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
+import 'package:zoe/features/polls/actions/poll_actions.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_widget.dart';
@@ -57,7 +58,15 @@ class PollDetailsScreen extends ConsumerWidget {
         title: ZoeAppBar(
           actions: [
             const SizedBox(width: 10),
-            ContentMenuButton(parentId: pollId),
+            ContentMenuButton(
+              onTap: (context) => showPollMenu(
+                context: context,
+                ref: ref,
+                isEditing: isEditing,
+                pollId: pollId,
+                isDetailScreen: true,
+              ),
+            ),
           ],
         ),
       ),

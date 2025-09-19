@@ -60,7 +60,15 @@ class EventDetailScreen extends ConsumerWidget {
         title: ZoeAppBar(
           actions: [
             const SizedBox(width: 10),
-            ContentMenuButton(parentId: eventId),
+            ContentMenuButton(
+              onTap: (context) => showEventMenu(
+                context: context,
+                ref: ref,
+                isEditing: isEditing,
+                eventId: eventId,
+                isDetailScreen: true,
+              ),
+            ),
           ],
         ),
       ),

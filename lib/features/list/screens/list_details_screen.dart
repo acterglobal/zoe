@@ -61,7 +61,15 @@ class ListDetailsScreen extends ConsumerWidget {
         title: ZoeAppBar(
           actions: [
             const SizedBox(width: 10),
-            ContentMenuButton(parentId: listId),
+            ContentMenuButton(
+              onTap: (context) => showListMenu(
+                context: context,
+                ref: ref,
+                isEditing: isEditing,
+                listId: listId,
+                isDetailScreen: true,
+              ),
+            ),
           ],
         ),
       ),

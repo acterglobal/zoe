@@ -17,6 +17,7 @@ void showBulletMenu({
   required bool isEditing,
   required String bulletId,
   bool isDetailScreen = false,
+  bool isAppBarAction = false,
 }) {
   final menuItems = [
     ZoeCommonMenuItems.copy(
@@ -43,7 +44,11 @@ void showBulletMenu({
     ),
   ];
 
-  ZoePopupMenuWidget.show(context: context, items: menuItems);
+  ZoePopupMenuWidget.show(
+    context: context, 
+    items: menuItems,
+    isAppBarAction: isAppBarAction,
+  );
 }
 
 /// Bullet-specific actions that can be performed on bullet content

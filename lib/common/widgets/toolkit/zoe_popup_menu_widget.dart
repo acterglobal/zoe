@@ -44,6 +44,7 @@ class ZoePopupMenuWidget extends StatelessWidget {
     double elevation = 10,
     Color? shadowColor,
     ShapeBorder? shape,
+    bool isAppBarAction = false,
   }) async {
     final colorScheme = Theme.of(context).colorScheme;
     final renderBox = context.findRenderObject() as RenderBox?;
@@ -57,12 +58,19 @@ class ZoePopupMenuWidget extends StatelessWidget {
 
     final selectedItem = await showMenu<ZoePopupMenuItem>(
       context: context,
-      position: RelativeRect.fromLTRB(
-        offset.dx,
-        offset.dy + 50,
-        offset.dx + 200,
-        offset.dy + 200,
-      ),
+      position: isAppBarAction
+          ? RelativeRect.fromLTRB(
+              offset.dx - 40, // Position to the left of the button
+              offset.dy + 45, // Slightly below the button
+              offset.dx + 40,
+              offset.dy + 200,
+            )
+          : RelativeRect.fromLTRB(
+              offset.dx,
+              offset.dy + 50,
+              offset.dx + 200,
+              offset.dy + 200,
+            ),
       elevation: elevation,
       shadowColor: shadowColor ?? colorScheme.primary.withValues(alpha: 0.6),
       shape:

@@ -35,7 +35,14 @@ class SheetDetailScreen extends ConsumerWidget {
             title: L10n.of(context).sheet,
             actions: [
               const SizedBox(width: 10),
-              ContentMenuButton(parentId: sheetId, showConnectOption: true),
+              ContentMenuButton(
+                onTap: (context) => showSheetMenu(
+                  context: context,
+                  ref: ref,
+                  isEditing: isEditing,
+                  sheetId: sheetId,
+                ),
+              ),
             ],
           ),
         ),
