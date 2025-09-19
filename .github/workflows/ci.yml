@@ -369,9 +369,9 @@ jobs:
         working-directory: packages/zoe_native/example
         run: |
           # Run the main UI integration test
-          flutter test integration_test/zoe_native_integration_test.dart --verbose
+          flutter test integration_test/zoe_native_integration_test.dart --verbose -d linux
           
           # Run the direct provider integration tests  
-          flutter test integration_test/direct_provider_test.dart --verbose
+          flutter test integration_test/direct_provider_test.dart --verbose -d linux
         env:
           DISPLAY: :99
