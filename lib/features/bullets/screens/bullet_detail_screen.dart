@@ -10,6 +10,7 @@ import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
+import 'package:zoe/features/bullets/actions/bullet_actions.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
@@ -134,6 +135,13 @@ class BulletDetailScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(bulletListProvider.notifier)
                     .updateBulletTitle(bulletId, value),
+                onTapLongPressText: () => showBulletMenu(
+                  context: context,
+                  ref: ref,
+                  isEditing: isEditing,
+                  bulletId: bulletId,
+                  isDetailScreen: true,
+                ),
               ),
             ),
           ],

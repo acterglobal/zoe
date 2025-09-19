@@ -503,5 +503,10 @@
     "copySheetContent": "Copy sheet content",
     "shareThisSheet": "Share this sheet",
     "editThisSheet": "Edit this sheet",
-    "deleteThisSheet": "Delete this sheet"
+    "deleteThisSheet": "Delete this sheet",
+    "bulletDeleted": "Bullet deleted",
+    "copyBulletContent": "Copy bullet content",
+    "shareThisBullet": "Share this bullet",
+    "editThisBullet": "Edit this bullet",
+    "deleteThisBullet": "Delete this bullet"
 }
