@@ -140,6 +140,19 @@ class ZoePopupMenuWidget extends StatelessWidget {
 
 /// Predefined common menu items with nullable callbacks
 class ZoeCommonMenuItems {
+  /// Connect menu item
+  static ZoePopupMenuItem connect({
+    VoidCallback? onTapConnect,
+    String title = 'Connect',
+    String subtitle = 'Connect with WhatsApp Group',
+  }) => ZoePopupMenuItem(
+    id: 'connect',
+    icon: Icons.link_rounded,
+    title: title,
+    subtitle: subtitle,
+    onTap: onTapConnect,
+  );
+
   /// Copy menu item
   static ZoePopupMenuItem copy({
     VoidCallback? onTapCopy,

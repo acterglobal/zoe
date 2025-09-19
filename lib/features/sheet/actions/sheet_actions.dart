@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/sheet/actions/delete_sheet.dart';
@@ -17,6 +19,10 @@ void showSheetMenu({
   required String sheetId,
 }) {
   final menuItems = [
+    ZoeCommonMenuItems.connect(
+      onTapConnect: () => SheetActions.connectSheet(context, sheetId),
+      subtitle: L10n.of(context).connectWithWhatsAppGroup,
+    ),
     ZoeCommonMenuItems.copy(
       onTapCopy: () => SheetActions.copySheet(context, ref, sheetId),
       subtitle: L10n.of(context).copySheetContent,
@@ -41,6 +47,13 @@ void showSheetMenu({
 
 /// Sheet-specific actions that can be performed on sheet content
 class SheetActions {
+  /// Connects to the specified sheet content
+  static void connectSheet(BuildContext context, String sheetId) {
+    context.push(
+      AppRoutes.whatsappGroupConnect.route.replaceAll(':sheetId', sheetId),
+    );
+  }
+
   /// Copies sheet content to clipboard
   static void copySheet(BuildContext context, WidgetRef ref, String sheetId) {
     final sheetContent = ShareUtils.getSheetShareMessage(
