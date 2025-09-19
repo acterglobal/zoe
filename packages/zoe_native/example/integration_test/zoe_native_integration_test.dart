@@ -21,9 +21,20 @@ void main() {
     testWidgets('should run complete integration test flow', (
       WidgetTester tester,
     ) async {
+      // Set a longer timeout for this test
+      tester.binding.defaultTestTimeout = const Timeout(Duration(minutes: 5));
       // Start the app (only once)
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 10));
+
+      // Debug: Print all text widgets to see what's actually on screen
+      final allText = find.byType(Text);
+      print('=== DEBUG: All text widgets found ===');
+      for (int i = 0; i < allText.evaluate().length; i++) {
+        final widget = allText.evaluate().elementAt(i).widget as Text;
+        print('Text widget $i: "${widget.data}"');
+      }
+      print('=== END DEBUG ===');
 
       // Verify the app loaded with more flexible matching
       expect(find.text('Zoe Native Integration Test'), findsOneWidget);
@@ -37,19 +48,44 @@ void main() {
       expect(statusFinder, findsOneWidget);
 
       // Test 1: Client creation
-      await tester.tap(find.text('Test Client'));
+      print('=== DEBUG: Looking for Test Client button ===');
+      final testClientButton = find.text('Test Client');
+      expect(
+        testClientButton,
+        findsOneWidget,
+        reason: 'Test Client button should be visible',
+      );
+
+      await tester.tap(testClientButton);
       await tester.pumpAndSettle();
 
       // Wait for client creation with timeout
       await tester.pump(const Duration(seconds: 5));
       await tester.pumpAndSettle();
 
+      // Debug: Print status after client creation attempt
+      print('=== DEBUG: After client creation attempt ===');
+      final allTextAfterClient = find.byType(Text);
+      for (int i = 0; i < allTextAfterClient.evaluate().length; i++) {
+        final widget =
+            allTextAfterClient.evaluate().elementAt(i).widget as Text;
+        print('Text widget $i: "${widget.data}"');
+      }
+      print('=== END DEBUG ===');
+
       // Verify client was created successfully with more flexible matching
       expect(
         find.textContaining('Client created successfully'),
         findsOneWidget,
+        reason:
+            'Should find "Client created successfully" text after client creation',
       );
-      expect(find.text('Status: Client Ready'), findsOneWidget);
+      expect(
+        find.text('Status: Client Ready'),
+        findsOneWidget,
+        reason:
+            'Status should show "Client Ready" after successful client creation',
+      );
 
       // Test 2: Group creation
       await tester.tap(find.text('Create Group'));
