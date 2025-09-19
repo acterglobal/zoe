@@ -1,9 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
+import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/events/providers/events_proivder.dart';
@@ -113,6 +117,7 @@ void addNewTextContent({
     orderIndex: orderIndex,
   );
   ref.read(textListProvider.notifier).addText(textContentModel);
+  ref.read(editContentIdProvider.notifier).state = textContentModel.id;
 }
 
 void addNewEventContent({
@@ -136,6 +141,7 @@ void addNewEventContent({
     orderIndex: orderIndex,
   );
   ref.read(eventListProvider.notifier).addEvent(eventContentModel);
+  ref.read(editContentIdProvider.notifier).state = eventContentModel.id;
 }
 
 void addNewBulletedListContent({
@@ -157,7 +163,7 @@ void addNewBulletedListContent({
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(bulletedListContentModel);
-
+  ref.read(editContentIdProvider.notifier).state = bulletedListContentModel.id;
   // Add a default bullet item to the new list
   ref
       .read(bulletListProvider.notifier)
@@ -183,6 +189,7 @@ void addNewTaskListContent({
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(toDoListContentModel);
+  ref.read(editContentIdProvider.notifier).state = toDoListContentModel.id;
 
   // Add a default task item to the new list
   ref
@@ -209,6 +216,7 @@ void addNewLinkContent({
     orderIndex: orderIndex,
   );
   ref.read(linkListProvider.notifier).addLink(linkContentModel);
+  ref.read(editContentIdProvider.notifier).state = linkContentModel.id;
 }
 
 void addNewDocumentContent({
@@ -230,25 +238,33 @@ void addNewDocumentContent({
     orderIndex: orderIndex,
   );
   ref.read(listsrovider.notifier).addList(documentListContentModel);
+  ref.read(editContentIdProvider.notifier).state = documentListContentModel.id;
 }
 
-void addNewPollContent({
+Future<void> addNewPollContent({
   required WidgetRef ref,
   required String parentId,
   required String sheetId,
   bool addAtTop = false,
-}) {
+}) async {
   final orderIndex = _getNewOrderIndex(
     ref: ref,
     parentId: parentId,
     addAtTop: addAtTop,
   );
-  ref
-      .read(pollListProvider.notifier)
-      .addPoll(
-        parentId: parentId,
-        sheetId: sheetId,
-        orderIndex: orderIndex,
-        question: '',
-      );
+  final createdBy = await PreferencesService().getLoginUserId();
+  final newPoll = PollModel(
+    parentId: parentId,
+    question: '',
+    sheetId: sheetId,
+    orderIndex: orderIndex,
+    options: [
+      PollOption(id: CommonUtils.generateRandomId(), title: ''),
+      PollOption(id: CommonUtils.generateRandomId(), title: ''),
+    ],
+    createdBy: createdBy,
+  );
+
+  ref.read(pollListProvider.notifier).addPoll(newPoll);
+  ref.read(editContentIdProvider.notifier).state = newPoll.id;
 }
