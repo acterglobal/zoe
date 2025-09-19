@@ -11,6 +11,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
+import 'package:zoe/features/task/actions/task_actions.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_details_additional_fields.dart';
@@ -144,6 +145,13 @@ class TaskDetailScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(taskListProvider.notifier)
                     .updateTaskTitle(taskId, value),
+                onTapLongPressText: () => showTaskMenu(
+                  context: context,
+                  ref: ref,
+                  isEditing: isEditing,
+                  taskId: taskId,
+                  isDetailScreen: true,
+                ),
               ),
             ),
           ],

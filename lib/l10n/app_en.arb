@@ -508,5 +508,10 @@
     "copyBulletContent": "Copy bullet content",
     "shareThisBullet": "Share this bullet",
     "editThisBullet": "Edit this bullet",
-    "deleteThisBullet": "Delete this bullet"
+    "deleteThisBullet": "Delete this bullet",
+    "taskDeleted": "Task deleted",
+    "copyTaskContent": "Copy task content",
+    "shareThisTask": "Share this task",
+    "editThisTask": "Edit this task",
+    "deleteThisTask": "Delete this task"
 }
