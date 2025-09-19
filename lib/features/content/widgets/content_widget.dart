@@ -154,7 +154,7 @@ class ContentWidget extends ConsumerWidget {
         isEditing: isEditing,
         showSheetName: showSheetName,
       ),
-      ContentType.list => ListWidget(listId: contentId, isEditing: isEditing),
+      ContentType.list => ListWidget(listId: contentId),
       ContentType.task => TaskWidget(
         taskId: contentId,
         isEditing: isEditing,

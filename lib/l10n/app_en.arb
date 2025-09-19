@@ -485,5 +485,10 @@
     "copyPollContent": "Copy poll content",
     "shareThisPoll": "Share this poll",
     "editThisPoll": "Edit this poll",
-    "deleteThisPoll": "Delete this poll"
+    "deleteThisPoll": "Delete this poll",
+    "listDeleted": "List deleted",
+    "copyListContent": "Copy list content",
+    "shareThisList": "Share this list",
+    "editThisList": "Edit this list",
+    "deleteThisList": "Delete this list"
 }
