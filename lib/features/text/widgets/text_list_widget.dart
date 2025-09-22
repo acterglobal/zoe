@@ -31,11 +31,7 @@ class TextListWidget extends ConsumerWidget {
         final text = texts[index];
         return Padding(
           padding: const EdgeInsets.only(left: 24),
-          child: TextWidget(
-            key: ValueKey(text.id),
-            textId: text.id,
-            isEditing: isEditing,
-          ),
+          child: TextWidget(key: ValueKey(text.id), textId: text.id),
         );
       },
     );
