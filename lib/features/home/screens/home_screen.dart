@@ -13,6 +13,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dar
 import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/home/widgets/app_bar/connection_status_indicator.dart';
 import 'package:zoe/features/home/widgets/section_header/section_header_widget.dart';
 import 'package:zoe/features/home/widgets/stats_section/stats_section_widget.dart';
 import 'package:zoe/features/home/widgets/today_focus/todays_focus_widget.dart';
@@ -76,6 +77,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
       actions: [
+        const ConnectionStatusWidget(),
         if (Platform.isAndroid || Platform.isIOS) _buildQrScanButton(),
         _buildSearchButton(),
       ],
