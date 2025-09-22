@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/utils/validation_utils.dart';
 import 'package:zoe/common/widgets/animated_textfield_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
@@ -41,7 +41,7 @@ class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
 
   void _validateUrl() {
     final url = _urlController.text.trim();
-    if (CommonUtils.isValidUrl(url)) {
+    if (ValidationUtils.isValidUrl(url)) {
       Navigator.of(context).pop(url);
     } else {
       setState(() {
@@ -76,8 +76,10 @@ class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
           AnimatedTextField(
             controller: _urlController,
             errorText: _errorText,
+            hintText: L10n.of(context).pleaseEnterAValidURL,
             onErrorChanged: (error) => setState(() => _errorText = error),
             onSubmitted: _validateUrl,
+            keyboardType: TextInputType.url,
           ),
           const SizedBox(height: 24),
           buildActionButtons(),
@@ -145,7 +147,7 @@ class _AddLinkBottomSheetWidgetState extends State<AddLinkBottomSheetWidget> {
       return L10n.of(context).urlCannotContainSpaces;
     }
 
-    if (!CommonUtils.isValidUrl(url)) {
+    if (!ValidationUtils.isValidUrl(url)) {
       return L10n.of(context).pleaseEnterAValidURL;
     }
 

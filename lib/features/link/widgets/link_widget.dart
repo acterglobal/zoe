@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/utils/validation_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
@@ -140,7 +141,7 @@ class LinkWidget extends ConsumerWidget {
     bool isEditing,
   ) {
     final theme = Theme.of(context);
-    final color = url.isNotEmpty && CommonUtils.isValidUrl(url)
+    final color = url.isNotEmpty && ValidationUtils.isValidUrl(url)
         ? theme.colorScheme.primary
         : theme.colorScheme.onSurface;
 

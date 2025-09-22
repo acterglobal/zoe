@@ -49,7 +49,9 @@ class StyledIconContainer extends StatelessWidget {
             colors: [
               effectivePrimaryColor.withValues(alpha: backgroundOpacity),
               effectivePrimaryColor.withValues(alpha: backgroundOpacity * 0.67),
-              effectiveSecondaryColor.withValues(alpha: backgroundOpacity * 0.5),
+              effectiveSecondaryColor.withValues(
+                alpha: backgroundOpacity * 0.5,
+              ),
             ],
             stops: const [0.0, 0.6, 1.0],
           ),

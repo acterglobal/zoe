@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/models/user_chip_type.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
@@ -11,9 +12,14 @@ import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/features/bullets/actions/bullet_actions.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_chip_widget.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
+import 'package:zoe/features/bullets/widgets/bullet_added_by_header_widget.dart';
+import 'package:zoe/features/content/providers/content_menu_providers.dart';
+import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class BulletDetailScreen extends ConsumerWidget {
@@ -168,6 +174,29 @@ class BulletDetailScreen extends ConsumerWidget {
                 .read(bulletListProvider.notifier)
                 .updateBulletDescription(bulletId, description),
           ),
+        ),
+        const SizedBox(height: 16),
+        _buildUserDisplay(context, ref, bullet),
+      ],
+    );
+  }
+
+  Widget _buildUserDisplay(
+    BuildContext context,
+    WidgetRef ref,
+    BulletModel bullet,
+  ) {
+    final user = ref.watch(getUserByIdProvider(bullet.createdBy));
+    if (user == null) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        BulletAddedByHeaderWidget(),
+        const SizedBox(height: 10),
+        ZoeUserChipWidget(
+          user: user,
+          type: ZoeUserChipType.userNameWithAvatarChip,
         ),
       ],
     );

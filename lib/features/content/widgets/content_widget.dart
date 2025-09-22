@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/models/user_display_type.dart';
 import 'package:zoe/features/bullets/widgets/bullet_item_widget.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/content/providers/content_providers.dart';
@@ -158,10 +159,12 @@ class ContentWidget extends ConsumerWidget {
         taskId: contentId,
         isEditing: isEditing,
         showSheetName: showSheetName,
+        userDisplayType: ZoeUserDisplayType.nameChipsWrap,
       ),
       ContentType.bullet => BulletItemWidget(
         bulletId: contentId,
         isEditing: isEditing,
+        userDisplayType: ZoeUserDisplayType.nameChipBelow,
       ),
       ContentType.link => LinkWidget(
         linkId: contentId,
