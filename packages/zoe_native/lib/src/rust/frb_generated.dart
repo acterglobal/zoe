@@ -4,6 +4,7 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/client.dart';
+import 'api/group.dart';
 import 'api/simple.dart';
 import 'api/system_test.dart';
 import 'dart:async';
@@ -13,11 +14,29 @@ import 'frb_generated.io.dart'
     if (dart.library.js_interop) 'frb_generated.web.dart';
 import 'lib.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'third_party/zoe_app_primitives/connection.dart';
+import 'third_party/zoe_app_primitives/file.dart';
+import 'third_party/zoe_app_primitives/file/image.dart';
+import 'third_party/zoe_app_primitives/group/events.dart';
+import 'third_party/zoe_app_primitives/group/events/join_info.dart';
+import 'third_party/zoe_app_primitives/group/events/key_info.dart';
+import 'third_party/zoe_app_primitives/group/events/permissions.dart';
+import 'third_party/zoe_app_primitives/group/events/roles.dart';
+import 'third_party/zoe_app_primitives/group/events/settings.dart';
+import 'third_party/zoe_app_primitives/group/states.dart';
+import 'third_party/zoe_app_primitives/identity.dart';
+import 'third_party/zoe_app_primitives/metadata.dart';
+import 'third_party/zoe_app_primitives/qr.dart';
+import 'third_party/zoe_app_primitives/relay.dart';
 import 'third_party/zoe_client/client.dart';
+import 'third_party/zoe_client/client/api.dart';
 import 'third_party/zoe_client/client/api/file_storage.dart';
 import 'third_party/zoe_client/frb_api.dart';
 import 'third_party/zoe_client/system_check.dart';
 import 'third_party/zoe_client/util.dart';
+import 'third_party/zoe_state_machine/group.dart';
+import 'third_party/zoe_state_machine/state.dart';
+import 'third_party/zoe_wire_protocol/crypto.dart';
 import 'third_party/zoe_wire_protocol/keys.dart';
 import 'third_party/zoe_wire_protocol/primitives.dart';
 
@@ -76,7 +95,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => -1279430215;
+  int get rustContentHash => -1318156395;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -152,7 +171,16 @@ abstract class RustLibApi extends BaseApi {
 
   Future<void> zoeClientClientClientClose({required Client that});
 
+  Future<MessageId> zoeClientClientClientCreateGroup({
+    required Client that,
+    required CreateGroupBuilder createGroup,
+  });
+
   Future<List<RelayConnectionInfo>> zoeClientClientClientGetRelayStatus({
+    required Client that,
+  });
+
+  Future<GroupManager> zoeClientClientClientGroupManager({
     required Client that,
   });
 
@@ -189,6 +217,10 @@ abstract class RustLibApi extends BaseApi {
     required FileRef fileRef,
   });
 
+  Future<ArcZoeClientSessionManager> zoeClientClientClientSessionManager({
+    required Client that,
+  });
+
   Future<FileRef> zoeClientClientClientStoreData({
     required Client that,
     required List<int> data,
@@ -200,6 +232,206 @@ abstract class RustLibApi extends BaseApi {
     required Client that,
     required PathBuf filePath,
   });
+
+  Future<CreateGroupBuilder> zoeStateMachineGroupCreateGroupBuilderDefault();
+
+  Future<CreateGroupBuilder> zoeStateMachineGroupCreateGroupBuilderNew({
+    required String title,
+  });
+
+  Future<String?> zoeAppPrimitivesFileFileRefFileExtension({
+    required FileRef that,
+  });
+
+  Future<String?> zoeAppPrimitivesFileFileRefFilename({required FileRef that});
+
+  Future<BTreeMapStringString> zoeAppPrimitivesFileFileRefGenericMetadata({
+    required FileRef that,
+  });
+
+  Future<FileRef> zoeAppPrimitivesFileFileRefNew({
+    required String blobHash,
+    required ConvergentEncryptionInfo encryptionInfo,
+    String? filename,
+  });
+
+  Future<BigInt> zoeAppPrimitivesFileFileRefOriginalSize({
+    required FileRef that,
+  });
+
+  GroupKeyInfo zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetKeyInfo({
+    required GroupInfo that,
+  });
+
+  List<Metadata> zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetMetadata({
+    required GroupInfo that,
+  });
+
+  String zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetName({
+    required GroupInfo that,
+  });
+
+  GroupSettings zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetSettings({
+    required GroupInfo that,
+  });
+
+  void zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetKeyInfo({
+    required GroupInfo that,
+    required GroupKeyInfo keyInfo,
+  });
+
+  void zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetMetadata({
+    required GroupInfo that,
+    required List<Metadata> metadata,
+  });
+
+  void zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetName({
+    required GroupInfo that,
+    required String name,
+  });
+
+  void zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetSettings({
+    required GroupInfo that,
+    required GroupSettings settings,
+  });
+
+  Future<bool> zoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoHasRelays({
+    required GroupJoinInfo that,
+  });
+
+  Future<GroupJoinInfo> zoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoNew({
+    required String channelId,
+    required GroupInfo groupInfo,
+    required U8Array32 encryptionKey,
+    required GroupKeyInfo keyInfo,
+    required List<RelayEndpoint> relayEndpoints,
+  });
+
+  Future<RelayEndpoint?>
+  zoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoPrimaryRelay({
+    required GroupJoinInfo that,
+  });
+
+  Future<void>
+  zoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoRelaysByPriority({
+    required GroupJoinInfo that,
+  });
+
+  Future<void> zoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoAlgorithm({
+    required GroupKeyInfo that,
+  });
+
+  Future<void> zoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoKeyId({
+    required GroupKeyInfo that,
+  });
+
+  Future<bool> zoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoMatchesKeyId({
+    required GroupKeyInfo that,
+    required Hash otherKeyId,
+  });
+
+  Future<GroupKeyInfo>
+  zoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoNewChacha20Poly1305({
+    required Hash keyId,
+  });
+
+  Future<Map<MessageId, GroupSession>>
+  zoeStateMachineGroupGroupManagerAllGroupSessions({
+    required GroupManager that,
+  });
+
+  Future<Map<MessageId, GroupState>> zoeStateMachineGroupGroupManagerAllGroups({
+    required GroupManager that,
+  });
+
+  Future<GroupManager> zoeStateMachineGroupGroupManagerDefault();
+
+  Future<EncryptionKey> zoeStateMachineGroupGroupManagerGenerateGroupKey();
+
+  Future<GroupSession?> zoeStateMachineGroupGroupManagerGroupSession({
+    required GroupManager that,
+    required MessageId groupId,
+  });
+
+  Future<GroupState?> zoeStateMachineGroupGroupManagerGroupState({
+    required GroupManager that,
+    required MessageId groupId,
+  });
+
+  Future<bool> zoeStateMachineGroupGroupManagerIsMember({
+    required GroupManager that,
+    required MessageId groupId,
+    required VerifyingKey user,
+  });
+
+  Future<GroupRole?> zoeStateMachineGroupGroupManagerMemberRole({
+    required GroupManager that,
+    required MessageId groupId,
+    required VerifyingKey user,
+  });
+
+  Future<Set<IdentityRef>>
+  zoeAppPrimitivesGroupStatesGroupMembershipAvailableIdentities({
+    required GroupMembership that,
+    required VerifyingKey key,
+  });
+
+  Future<GroupMembership> zoeAppPrimitivesGroupStatesGroupMembershipDefault();
+
+  Future<String> zoeAppPrimitivesGroupStatesGroupMembershipDisplayName({
+    required GroupMembership that,
+    required VerifyingKey key,
+    required IdentityType identityType,
+  });
+
+  Future<GroupRole?> zoeAppPrimitivesGroupStatesGroupMembershipEffectiveRole({
+    required GroupMembership that,
+    required VerifyingKey key,
+    String? actingAsAlias,
+  });
+
+  Future<bool> zoeAppPrimitivesGroupStatesGroupMembershipIsAuthorized({
+    required GroupMembership that,
+    required VerifyingKey key,
+    required IdentityRef identityRef,
+  });
+
+  Future<GroupMembership> zoeAppPrimitivesGroupStatesGroupMembershipNew();
+
+  Future<GroupRole?> zoeAppPrimitivesGroupStatesGroupMembershipRole({
+    required GroupMembership that,
+    required IdentityRef identityRef,
+  });
+
+  Future<VerifyingKey> zoeAppPrimitivesIdentityIdentityRefControllingKey({
+    required IdentityRef that,
+  });
+
+  Future<String> zoeAppPrimitivesIdentityIdentityRefFallbackDisplay({
+    required IdentityRef that,
+  });
+
+  Future<bool> zoeAppPrimitivesIdentityIdentityRefIsControlledBy({
+    required IdentityRef that,
+    required VerifyingKey key,
+  });
+
+  Future<bool> zoeAppPrimitivesIdentityIdentityRefIsControlledByMlDsa({
+    required IdentityRef that,
+    required VerifyingKey key,
+  });
+
+  Future<double?> zoeAppPrimitivesFileImageImageAspectRatio({
+    required Image that,
+  });
+
+  Future<BTreeMapStringString> zoeAppPrimitivesFileImageImageGenericMetadata({
+    required Image that,
+  });
+
+  Future<bool?> zoeAppPrimitivesFileImageImageIsSquare({required Image that});
+
+  Future<Image> zoeAppPrimitivesFileImageImageNew({required FileRef fileRef});
 
   Future<Algorithm> zoeWireProtocolKeysKeyPairAlgorithm({
     required KeyPair that,
@@ -221,6 +453,39 @@ abstract class RustLibApi extends BaseApi {
   });
 
   Future<String> zoeWireProtocolKeysKeyPairToPem({required KeyPair that});
+
+  Future<NetworkAddress> zoeAppPrimitivesConnectionNetworkAddressIpv4({
+    required Ipv4Addr address,
+  });
+
+  Future<NetworkAddress> zoeAppPrimitivesConnectionNetworkAddressIpv4WithPort({
+    required Ipv4Addr address,
+    required int port,
+  });
+
+  Future<NetworkAddress> zoeAppPrimitivesConnectionNetworkAddressIpv6({
+    required Ipv6Addr address,
+  });
+
+  Future<NetworkAddress> zoeAppPrimitivesConnectionNetworkAddressIpv6WithPort({
+    required Ipv6Addr address,
+    required int port,
+  });
+
+  Future<int?> zoeAppPrimitivesConnectionNetworkAddressPort({
+    required NetworkAddress that,
+  });
+
+  Future<int> zoeAppPrimitivesConnectionNetworkAddressPortOrDefault({
+    required NetworkAddress that,
+    required int defaultPort,
+  });
+
+  Future<SocketAddr>
+  zoeAppPrimitivesConnectionNetworkAddressResolveToSocketAddr({
+    required NetworkAddress that,
+    required int defaultPort,
+  });
 
   RelayInfo zoeClientClientRelayConnectionInfoAutoAccessorGetInfo({
     required RelayConnectionInfo that,
@@ -341,9 +606,61 @@ abstract class RustLibApi extends BaseApi {
     required int port,
   });
 
+  Future<QrResult> zoeAppPrimitivesQrDisplayQrCodeFromString({
+    required String text,
+    required QrOptions options,
+  });
+
+  Future<EncryptionSettings>
+  zoeAppPrimitivesGroupEventsSettingsEncryptionSettingsDefault();
+
+  Future<EncryptionSettings>
+  zoeAppPrimitivesGroupEventsSettingsEncryptionSettingsNew();
+
   Future<void> zoeClientFrbApiFrbInit();
 
+  Future<QrResultString> zoeAppPrimitivesQrGenerateQrStringFromText({
+    required String text,
+    required QrOptions options,
+  });
+
   String crateApiSimpleGreet({required String name});
+
+  Future<bool>
+  zoeAppPrimitivesGroupEventsPermissionsGroupPermissionsCanPerformAction({
+    required GroupPermissions that,
+    required GroupRole role,
+    required GroupAction action,
+  });
+
+  Future<GroupPermissions>
+  zoeAppPrimitivesGroupEventsPermissionsGroupPermissionsDefault();
+
+  Future<GroupPermissions>
+  zoeAppPrimitivesGroupEventsPermissionsGroupPermissionsNew();
+
+  Future<bool> zoeAppPrimitivesGroupEventsRolesGroupRoleCanAssignRole({
+    required GroupRole that,
+    required GroupRole tarrole,
+  });
+
+  Future<void> zoeAppPrimitivesGroupEventsRolesGroupRoleDisplayName({
+    required GroupRole that,
+  });
+
+  Future<bool> zoeAppPrimitivesGroupEventsRolesGroupRoleHasPermission({
+    required GroupRole that,
+    required Permission required_,
+  });
+
+  Future<GroupSettings>
+  zoeAppPrimitivesGroupEventsSettingsGroupSettingsDefault();
+
+  Future<GroupSettings> zoeAppPrimitivesGroupEventsSettingsGroupSettingsNew();
+
+  Stream<GroupDataUpdate> crateApiGroupGroupUpdatesStream({
+    required GroupManager manager,
+  });
 
   Future<void> crateApiSimpleInitApp();
 
@@ -356,6 +673,8 @@ abstract class RustLibApi extends BaseApi {
     required String serverAddress,
     required String serverKeyHex,
   });
+
+  Future<QrOptions> zoeAppPrimitivesQrQrOptionsDefault();
 
   Future<SocketAddr> zoeClientUtilResolveToSocketAddr({required String s});
 
@@ -428,6 +747,33 @@ abstract class RustLibApi extends BaseApi {
     required String hex,
   });
 
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ArcZoeClientSessionManager;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ArcZoeClientSessionManager;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_ArcZoeClientSessionManagerPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_BTreeMapIdentityRefGroupMember;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_BTreeMapIdentityRefGroupMember;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_BTreeMapIdentityRefGroupMemberPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_BTreeMapStringString;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_BTreeMapStringString;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_BTreeMapStringStringPtr;
+
   RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Client;
 
   RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Client;
@@ -451,11 +797,124 @@ abstract class RustLibApi extends BaseApi {
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ClientSecretPtr;
 
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ConvergentEncryptionInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ConvergentEncryptionInfo;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_ConvergentEncryptionInfoPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_CreateGroupBuilder;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_CreateGroupBuilder;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_CreateGroupBuilderPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_EncryptionKey;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_EncryptionKey;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_EncryptionKeyPtr;
+
   RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_FileRef;
 
   RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_FileRef;
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_FileRefPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_GroupInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_GroupInfo;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_GroupInfoPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_GroupJoinInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_GroupJoinInfo;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_GroupJoinInfoPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_GroupKeyInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_GroupKeyInfo;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_GroupKeyInfoPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_GroupManager;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_GroupManager;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_GroupManagerPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_GroupMembership;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_GroupMembership;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_GroupMembershipPtr;
+
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Hash;
+
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Hash;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_HashPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_IdentityRef;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_IdentityRef;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_IdentityRefPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_IdentityType;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_IdentityType;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_IdentityTypePtr;
+
+  RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_Image;
+
+  RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_Image;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ImagePtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_Ipv4Addr;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_Ipv4Addr;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_Ipv4AddrPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_Ipv6Addr;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_Ipv6Addr;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_Ipv6AddrPtr;
 
   RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_KeyId;
 
@@ -477,11 +936,45 @@ abstract class RustLibApi extends BaseApi {
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_KeyPairErrorPtr;
 
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_MessageId;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_MessageId;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_MessageIdPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_NetworkAddress;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_NetworkAddress;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_NetworkAddressPtr;
+
   RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_PathBuf;
 
   RustArcDecrementStrongCountFnType get rust_arc_decrement_strong_count_PathBuf;
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_PathBufPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_QrResult;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_QrResult;
+
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_QrResultPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_QrResultString;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_QrResultString;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_QrResultStringPtr;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_RelayAddress;
@@ -508,6 +1001,15 @@ abstract class RustLibApi extends BaseApi {
 
   CrossPlatformFinalizerArg
   get rust_arc_decrement_strong_count_RelayConnectionStatusPtr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayEndpoint;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayEndpoint;
+
+  CrossPlatformFinalizerArg
+  get rust_arc_decrement_strong_count_RelayEndpointPtr;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_RelayInfo;
@@ -1218,6 +1720,48 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "Client_close", argNames: ["that"]);
 
   @override
+  Future<MessageId> zoeClientClientClientCreateGroup({
+    required Client that,
+    required CreateGroupBuilder createGroup,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateGroupBuilder(
+            createGroup,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 18,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kZoeClientClientClientCreateGroupConstMeta,
+        argValues: [that, createGroup],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientCreateGroupConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_create_group",
+        argNames: ["that", "createGroup"],
+      );
+
+  @override
   Future<List<RelayConnectionInfo>> zoeClientClientClientGetRelayStatus({
     required Client that,
   }) {
@@ -1232,7 +1776,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 18,
+            funcId: 19,
             port: port_,
           );
         },
@@ -1255,6 +1799,43 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<GroupManager> zoeClientClientClientGroupManager({
+    required Client that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 20,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientGroupManagerConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientGroupManagerConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_group_manager",
+        argNames: ["that"],
+      );
+
+  @override
   Future<bool> zoeClientClientClientHasConnectedRelays({required Client that}) {
     return handler.executeNormal(
       NormalTask(
@@ -1267,7 +1848,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 19,
+            funcId: 21,
             port: port_,
           );
         },
@@ -1308,7 +1889,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 20,
+            funcId: 22,
             port: port_,
           );
         },
@@ -1342,7 +1923,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 21,
+            funcId: 23,
             port: port_,
           );
         },
@@ -1375,7 +1956,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 22,
+            funcId: 24,
             port: port_,
           );
         },
@@ -1411,7 +1992,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 23,
+            funcId: 25,
             port: port_,
           );
         },
@@ -1452,7 +2033,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 24,
+            funcId: 26,
             port: port_,
           );
         },
@@ -1498,7 +2079,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 25,
+            funcId: 27,
             port: port_,
           );
         },
@@ -1539,7 +2120,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 26,
+            funcId: 28,
             port: port_,
           );
         },
@@ -1558,6 +2139,43 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(
         debugName: "Client_retrieve_file_bytes",
         argNames: ["that", "fileRef"],
+      );
+
+  @override
+  Future<ArcZoeClientSessionManager> zoeClientClientClientSessionManager({
+    required Client that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 29,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeClientClientClientSessionManagerConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeClientClientClientSessionManagerConstMeta =>
+      const TaskConstMeta(
+        debugName: "Client_session_manager",
+        argNames: ["that"],
       );
 
   @override
@@ -1581,7 +2199,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 27,
+            funcId: 30,
             port: port_,
           );
         },
@@ -1623,7 +2241,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 28,
+            funcId: 31,
             port: port_,
           );
         },
@@ -1646,6 +2264,1753 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<CreateGroupBuilder> zoeStateMachineGroupCreateGroupBuilderDefault() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 32,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateGroupBuilder,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeStateMachineGroupCreateGroupBuilderDefaultConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeStateMachineGroupCreateGroupBuilderDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "CreateGroupBuilder_default",
+        argNames: [],
+      );
+
+  @override
+  Future<CreateGroupBuilder> zoeStateMachineGroupCreateGroupBuilderNew({
+    required String title,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(title, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 33,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateGroupBuilder,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeStateMachineGroupCreateGroupBuilderNewConstMeta,
+        argValues: [title],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeStateMachineGroupCreateGroupBuilderNewConstMeta =>
+      const TaskConstMeta(
+        debugName: "CreateGroupBuilder_new",
+        argNames: ["title"],
+      );
+
+  @override
+  Future<String?> zoeAppPrimitivesFileFileRefFileExtension({
+    required FileRef that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 34,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesFileFileRefFileExtensionConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesFileFileRefFileExtensionConstMeta =>
+      const TaskConstMeta(
+        debugName: "FileRef_file_extension",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<String?> zoeAppPrimitivesFileFileRefFilename({required FileRef that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 35,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesFileFileRefFilenameConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesFileFileRefFilenameConstMeta =>
+      const TaskConstMeta(debugName: "FileRef_filename", argNames: ["that"]);
+
+  @override
+  Future<BTreeMapStringString> zoeAppPrimitivesFileFileRefGenericMetadata({
+    required FileRef that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 36,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesFileFileRefGenericMetadataConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesFileFileRefGenericMetadataConstMeta =>
+      const TaskConstMeta(
+        debugName: "FileRef_generic_metadata",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<FileRef> zoeAppPrimitivesFileFileRefNew({
+    required String blobHash,
+    required ConvergentEncryptionInfo encryptionInfo,
+    String? filename,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(blobHash, serializer);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConvergentEncryptionInfo(
+            encryptionInfo,
+            serializer,
+          );
+          sse_encode_opt_String(filename, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 37,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesFileFileRefNewConstMeta,
+        argValues: [blobHash, encryptionInfo, filename],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesFileFileRefNewConstMeta =>
+      const TaskConstMeta(
+        debugName: "FileRef_new",
+        argNames: ["blobHash", "encryptionInfo", "filename"],
+      );
+
+  @override
+  Future<BigInt> zoeAppPrimitivesFileFileRefOriginalSize({
+    required FileRef that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 38,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_usize,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesFileFileRefOriginalSizeConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesFileFileRefOriginalSizeConstMeta =>
+      const TaskConstMeta(
+        debugName: "FileRef_original_size",
+        argNames: ["that"],
+      );
+
+  @override
+  GroupKeyInfo zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetKeyInfo({
+    required GroupInfo that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 39)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetKeyInfoConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetKeyInfoConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupInfo_auto_accessor_get_key_info",
+        argNames: ["that"],
+      );
+
+  @override
+  List<Metadata> zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetMetadata({
+    required GroupInfo that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 40)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_list_metadata,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetMetadataConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetMetadataConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupInfo_auto_accessor_get_metadata",
+        argNames: ["that"],
+      );
+
+  @override
+  String zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetName({
+    required GroupInfo that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 41)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetNameConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetNameConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupInfo_auto_accessor_get_name",
+        argNames: ["that"],
+      );
+
+  @override
+  GroupSettings zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetSettings({
+    required GroupInfo that,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+            that,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 42)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_group_settings,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetSettingsConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetSettingsConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupInfo_auto_accessor_get_settings",
+        argNames: ["that"],
+      );
+
+  @override
+  void zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetKeyInfo({
+    required GroupInfo that,
+    required GroupKeyInfo keyInfo,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+            keyInfo,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 43)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetKeyInfoConstMeta,
+        argValues: [that, keyInfo],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetKeyInfoConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupInfo_auto_accessor_set_key_info",
+        argNames: ["that", "keyInfo"],
+      );
+
+  @override
+  void zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetMetadata({
+    required GroupInfo that,
+    required List<Metadata> metadata,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+            that,
+            serializer,
+          );
+          sse_encode_list_metadata(metadata, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 44)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetMetadataConstMeta,
+        argValues: [that, metadata],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetMetadataConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupInfo_auto_accessor_set_metadata",
+        argNames: ["that", "metadata"],
+      );
+
+  @override
+  void zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetName({
+    required GroupInfo that,
+    required String name,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+            that,
+            serializer,
+          );
+          sse_encode_String(name, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 45)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetNameConstMeta,
+        argValues: [that, name],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetNameConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupInfo_auto_accessor_set_name",
+        argNames: ["that", "name"],
+      );
+
+  @override
+  void zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetSettings({
+    required GroupInfo that,
+    required GroupSettings settings,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+            that,
+            serializer,
+          );
+          sse_encode_group_settings(settings, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 46)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetSettingsConstMeta,
+        argValues: [that, settings],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetSettingsConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupInfo_auto_accessor_set_settings",
+        argNames: ["that", "settings"],
+      );
+
+  @override
+  Future<bool> zoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoHasRelays({
+    required GroupJoinInfo that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 47,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoHasRelaysConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoHasRelaysConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupJoinInfo_has_relays",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<GroupJoinInfo> zoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoNew({
+    required String channelId,
+    required GroupInfo groupInfo,
+    required U8Array32 encryptionKey,
+    required GroupKeyInfo keyInfo,
+    required List<RelayEndpoint> relayEndpoints,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(channelId, serializer);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+            groupInfo,
+            serializer,
+          );
+          sse_encode_u_8_array_32(encryptionKey, serializer);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+            keyInfo,
+            serializer,
+          );
+          sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+            relayEndpoints,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 48,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoNewConstMeta,
+        argValues: [
+          channelId,
+          groupInfo,
+          encryptionKey,
+          keyInfo,
+          relayEndpoints,
+        ],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoNewConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupJoinInfo_new",
+        argNames: [
+          "channelId",
+          "groupInfo",
+          "encryptionKey",
+          "keyInfo",
+          "relayEndpoints",
+        ],
+      );
+
+  @override
+  Future<RelayEndpoint?>
+  zoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoPrimaryRelay({
+    required GroupJoinInfo that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 49,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoPrimaryRelayConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoPrimaryRelayConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupJoinInfo_primary_relay",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<void>
+  zoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoRelaysByPriority({
+    required GroupJoinInfo that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 50,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoRelaysByPriorityConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoRelaysByPriorityConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupJoinInfo_relays_by_priority",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<void> zoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoAlgorithm({
+    required GroupKeyInfo that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 51,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoAlgorithmConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoAlgorithmConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupKeyInfo_algorithm",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<void> zoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoKeyId({
+    required GroupKeyInfo that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 52,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoKeyIdConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoKeyIdConstMeta =>
+      const TaskConstMeta(debugName: "GroupKeyInfo_key_id", argNames: ["that"]);
+
+  @override
+  Future<bool> zoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoMatchesKeyId({
+    required GroupKeyInfo that,
+    required Hash otherKeyId,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash(
+            otherKeyId,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 53,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoMatchesKeyIdConstMeta,
+        argValues: [that, otherKeyId],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoMatchesKeyIdConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupKeyInfo_matches_key_id",
+        argNames: ["that", "otherKeyId"],
+      );
+
+  @override
+  Future<GroupKeyInfo>
+  zoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoNewChacha20Poly1305({
+    required Hash keyId,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash(
+            keyId,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 54,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoNewChacha20Poly1305ConstMeta,
+        argValues: [keyId],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoNewChacha20Poly1305ConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupKeyInfo_new_chacha20_poly1305",
+        argNames: ["keyId"],
+      );
+
+  @override
+  Future<Map<MessageId, GroupSession>>
+  zoeStateMachineGroupGroupManagerAllGroupSessions({
+    required GroupManager that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 55,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_session_None,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeStateMachineGroupGroupManagerAllGroupSessionsConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeStateMachineGroupGroupManagerAllGroupSessionsConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupManager_all_group_sessions",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<Map<MessageId, GroupState>> zoeStateMachineGroupGroupManagerAllGroups({
+    required GroupManager that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 56,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_state_None,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeStateMachineGroupGroupManagerAllGroupsConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeStateMachineGroupGroupManagerAllGroupsConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupManager_all_groups",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<GroupManager> zoeStateMachineGroupGroupManagerDefault() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 57,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeStateMachineGroupGroupManagerDefaultConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeStateMachineGroupGroupManagerDefaultConstMeta =>
+      const TaskConstMeta(debugName: "GroupManager_default", argNames: []);
+
+  @override
+  Future<EncryptionKey> zoeStateMachineGroupGroupManagerGenerateGroupKey() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 58,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeStateMachineGroupGroupManagerGenerateGroupKeyConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeStateMachineGroupGroupManagerGenerateGroupKeyConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupManager_generate_group_key",
+        argNames: [],
+      );
+
+  @override
+  Future<GroupSession?> zoeStateMachineGroupGroupManagerGroupSession({
+    required GroupManager that,
+    required MessageId groupId,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+            groupId,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 59,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_box_autoadd_group_session,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeStateMachineGroupGroupManagerGroupSessionConstMeta,
+        argValues: [that, groupId],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeStateMachineGroupGroupManagerGroupSessionConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupManager_group_session",
+        argNames: ["that", "groupId"],
+      );
+
+  @override
+  Future<GroupState?> zoeStateMachineGroupGroupManagerGroupState({
+    required GroupManager that,
+    required MessageId groupId,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+            groupId,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 60,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_box_autoadd_group_state,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeStateMachineGroupGroupManagerGroupStateConstMeta,
+        argValues: [that, groupId],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeStateMachineGroupGroupManagerGroupStateConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupManager_group_state",
+        argNames: ["that", "groupId"],
+      );
+
+  @override
+  Future<bool> zoeStateMachineGroupGroupManagerIsMember({
+    required GroupManager that,
+    required MessageId groupId,
+    required VerifyingKey user,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+            groupId,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            user,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 61,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeStateMachineGroupGroupManagerIsMemberConstMeta,
+        argValues: [that, groupId, user],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeStateMachineGroupGroupManagerIsMemberConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupManager_is_member",
+        argNames: ["that", "groupId", "user"],
+      );
+
+  @override
+  Future<GroupRole?> zoeStateMachineGroupGroupManagerMemberRole({
+    required GroupManager that,
+    required MessageId groupId,
+    required VerifyingKey user,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+            groupId,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            user,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 62,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_box_autoadd_group_role,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeStateMachineGroupGroupManagerMemberRoleConstMeta,
+        argValues: [that, groupId, user],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeStateMachineGroupGroupManagerMemberRoleConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupManager_member_role",
+        argNames: ["that", "groupId", "user"],
+      );
+
+  @override
+  Future<Set<IdentityRef>>
+  zoeAppPrimitivesGroupStatesGroupMembershipAvailableIdentities({
+    required GroupMembership that,
+    required VerifyingKey key,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            key,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 63,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Set_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef_None,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupStatesGroupMembershipAvailableIdentitiesConstMeta,
+        argValues: [that, key],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupStatesGroupMembershipAvailableIdentitiesConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupMembership_available_identities",
+        argNames: ["that", "key"],
+      );
+
+  @override
+  Future<GroupMembership> zoeAppPrimitivesGroupStatesGroupMembershipDefault() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 64,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesGroupStatesGroupMembershipDefaultConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupStatesGroupMembershipDefaultConstMeta =>
+      const TaskConstMeta(debugName: "GroupMembership_default", argNames: []);
+
+  @override
+  Future<String> zoeAppPrimitivesGroupStatesGroupMembershipDisplayName({
+    required GroupMembership that,
+    required VerifyingKey key,
+    required IdentityType identityType,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            key,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityType(
+            identityType,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 65,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupStatesGroupMembershipDisplayNameConstMeta,
+        argValues: [that, key, identityType],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupStatesGroupMembershipDisplayNameConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupMembership_display_name",
+        argNames: ["that", "key", "identityType"],
+      );
+
+  @override
+  Future<GroupRole?> zoeAppPrimitivesGroupStatesGroupMembershipEffectiveRole({
+    required GroupMembership that,
+    required VerifyingKey key,
+    String? actingAsAlias,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            key,
+            serializer,
+          );
+          sse_encode_opt_String(actingAsAlias, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 66,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_box_autoadd_group_role,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupStatesGroupMembershipEffectiveRoleConstMeta,
+        argValues: [that, key, actingAsAlias],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupStatesGroupMembershipEffectiveRoleConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupMembership_effective_role",
+        argNames: ["that", "key", "actingAsAlias"],
+      );
+
+  @override
+  Future<bool> zoeAppPrimitivesGroupStatesGroupMembershipIsAuthorized({
+    required GroupMembership that,
+    required VerifyingKey key,
+    required IdentityRef identityRef,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            key,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+            identityRef,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 67,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupStatesGroupMembershipIsAuthorizedConstMeta,
+        argValues: [that, key, identityRef],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupStatesGroupMembershipIsAuthorizedConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupMembership_is_authorized",
+        argNames: ["that", "key", "identityRef"],
+      );
+
+  @override
+  Future<GroupMembership> zoeAppPrimitivesGroupStatesGroupMembershipNew() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 68,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesGroupStatesGroupMembershipNewConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesGroupStatesGroupMembershipNewConstMeta =>
+      const TaskConstMeta(debugName: "GroupMembership_new", argNames: []);
+
+  @override
+  Future<GroupRole?> zoeAppPrimitivesGroupStatesGroupMembershipRole({
+    required GroupMembership that,
+    required IdentityRef identityRef,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+            identityRef,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 69,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_box_autoadd_group_role,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesGroupStatesGroupMembershipRoleConstMeta,
+        argValues: [that, identityRef],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesGroupStatesGroupMembershipRoleConstMeta =>
+      const TaskConstMeta(
+        debugName: "GroupMembership_role",
+        argNames: ["that", "identityRef"],
+      );
+
+  @override
+  Future<VerifyingKey> zoeAppPrimitivesIdentityIdentityRefControllingKey({
+    required IdentityRef that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 70,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesIdentityIdentityRefControllingKeyConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesIdentityIdentityRefControllingKeyConstMeta =>
+      const TaskConstMeta(
+        debugName: "IdentityRef_controlling_key",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<String> zoeAppPrimitivesIdentityIdentityRefFallbackDisplay({
+    required IdentityRef that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 71,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesIdentityIdentityRefFallbackDisplayConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesIdentityIdentityRefFallbackDisplayConstMeta =>
+      const TaskConstMeta(
+        debugName: "IdentityRef_fallback_display",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<bool> zoeAppPrimitivesIdentityIdentityRefIsControlledBy({
+    required IdentityRef that,
+    required VerifyingKey key,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            key,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 72,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesIdentityIdentityRefIsControlledByConstMeta,
+        argValues: [that, key],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesIdentityIdentityRefIsControlledByConstMeta =>
+      const TaskConstMeta(
+        debugName: "IdentityRef_is_controlled_by",
+        argNames: ["that", "key"],
+      );
+
+  @override
+  Future<bool> zoeAppPrimitivesIdentityIdentityRefIsControlledByMlDsa({
+    required IdentityRef that,
+    required VerifyingKey key,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+            that,
+            serializer,
+          );
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyingKey(
+            key,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 73,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesIdentityIdentityRefIsControlledByMlDsaConstMeta,
+        argValues: [that, key],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesIdentityIdentityRefIsControlledByMlDsaConstMeta =>
+      const TaskConstMeta(
+        debugName: "IdentityRef_is_controlled_by_ml_dsa",
+        argNames: ["that", "key"],
+      );
+
+  @override
+  Future<double?> zoeAppPrimitivesFileImageImageAspectRatio({
+    required Image that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 74,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_box_autoadd_f_32,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesFileImageImageAspectRatioConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesFileImageImageAspectRatioConstMeta =>
+      const TaskConstMeta(debugName: "Image_aspect_ratio", argNames: ["that"]);
+
+  @override
+  Future<BTreeMapStringString> zoeAppPrimitivesFileImageImageGenericMetadata({
+    required Image that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 75,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesFileImageImageGenericMetadataConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesFileImageImageGenericMetadataConstMeta =>
+      const TaskConstMeta(
+        debugName: "Image_generic_metadata",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<bool?> zoeAppPrimitivesFileImageImageIsSquare({required Image that}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 76,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_box_autoadd_bool,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesFileImageImageIsSquareConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesFileImageImageIsSquareConstMeta =>
+      const TaskConstMeta(debugName: "Image_is_square", argNames: ["that"]);
+
+  @override
+  Future<Image> zoeAppPrimitivesFileImageImageNew({required FileRef fileRef}) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
+            fileRef,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 77,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesFileImageImageNewConstMeta,
+        argValues: [fileRef],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesFileImageImageNewConstMeta =>
+      const TaskConstMeta(debugName: "Image_new", argNames: ["fileRef"]);
+
+  @override
   Future<Algorithm> zoeWireProtocolKeysKeyPairAlgorithm({
     required KeyPair that,
   }) {
@@ -1660,7 +4025,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 29,
+            funcId: 78,
             port: port_,
           );
         },
@@ -1690,7 +4055,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 30,
+            funcId: 79,
             port: port_,
           );
         },
@@ -1726,7 +4091,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 31,
+            funcId: 80,
             port: port_,
           );
         },
@@ -1760,7 +4125,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 32,
+            funcId: 81,
             port: port_,
           );
         },
@@ -1796,7 +4161,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 33,
+            funcId: 82,
             port: port_,
           );
         },
@@ -1831,7 +4196,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 34,
+            funcId: 83,
             port: port_,
           );
         },
@@ -1851,6 +4216,277 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "KeyPair_to_pem", argNames: ["that"]);
 
   @override
+  Future<NetworkAddress> zoeAppPrimitivesConnectionNetworkAddressIpv4({
+    required Ipv4Addr address,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv4Addr(
+            address,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 84,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesConnectionNetworkAddressIpv4ConstMeta,
+        argValues: [address],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesConnectionNetworkAddressIpv4ConstMeta =>
+      const TaskConstMeta(
+        debugName: "NetworkAddress_ipv4",
+        argNames: ["address"],
+      );
+
+  @override
+  Future<NetworkAddress> zoeAppPrimitivesConnectionNetworkAddressIpv4WithPort({
+    required Ipv4Addr address,
+    required int port,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv4Addr(
+            address,
+            serializer,
+          );
+          sse_encode_u_16(port, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 85,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesConnectionNetworkAddressIpv4WithPortConstMeta,
+        argValues: [address, port],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesConnectionNetworkAddressIpv4WithPortConstMeta =>
+      const TaskConstMeta(
+        debugName: "NetworkAddress_ipv4_with_port",
+        argNames: ["address", "port"],
+      );
+
+  @override
+  Future<NetworkAddress> zoeAppPrimitivesConnectionNetworkAddressIpv6({
+    required Ipv6Addr address,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv6Addr(
+            address,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 86,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesConnectionNetworkAddressIpv6ConstMeta,
+        argValues: [address],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesConnectionNetworkAddressIpv6ConstMeta =>
+      const TaskConstMeta(
+        debugName: "NetworkAddress_ipv6",
+        argNames: ["address"],
+      );
+
+  @override
+  Future<NetworkAddress> zoeAppPrimitivesConnectionNetworkAddressIpv6WithPort({
+    required Ipv6Addr address,
+    required int port,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv6Addr(
+            address,
+            serializer,
+          );
+          sse_encode_u_16(port, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 87,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesConnectionNetworkAddressIpv6WithPortConstMeta,
+        argValues: [address, port],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesConnectionNetworkAddressIpv6WithPortConstMeta =>
+      const TaskConstMeta(
+        debugName: "NetworkAddress_ipv6_with_port",
+        argNames: ["address", "port"],
+      );
+
+  @override
+  Future<int?> zoeAppPrimitivesConnectionNetworkAddressPort({
+    required NetworkAddress that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+            that,
+            serializer,
+          );
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 88,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_box_autoadd_u_16,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesConnectionNetworkAddressPortConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesConnectionNetworkAddressPortConstMeta =>
+      const TaskConstMeta(debugName: "NetworkAddress_port", argNames: ["that"]);
+
+  @override
+  Future<int> zoeAppPrimitivesConnectionNetworkAddressPortOrDefault({
+    required NetworkAddress that,
+    required int defaultPort,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+            that,
+            serializer,
+          );
+          sse_encode_u_16(defaultPort, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 89,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_16,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesConnectionNetworkAddressPortOrDefaultConstMeta,
+        argValues: [that, defaultPort],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesConnectionNetworkAddressPortOrDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "NetworkAddress_port_or_default",
+        argNames: ["that", "defaultPort"],
+      );
+
+  @override
+  Future<SocketAddr>
+  zoeAppPrimitivesConnectionNetworkAddressResolveToSocketAddr({
+    required NetworkAddress that,
+    required int defaultPort,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+            that,
+            serializer,
+          );
+          sse_encode_u_16(defaultPort, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 90,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSocketAddr,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta:
+            kZoeAppPrimitivesConnectionNetworkAddressResolveToSocketAddrConstMeta,
+        argValues: [that, defaultPort],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesConnectionNetworkAddressResolveToSocketAddrConstMeta =>
+      const TaskConstMeta(
+        debugName: "NetworkAddress_resolve_to_socket_addr",
+        argNames: ["that", "defaultPort"],
+      );
+
+  @override
   RelayInfo zoeClientClientRelayConnectionInfoAutoAccessorGetInfo({
     required RelayConnectionInfo that,
   }) {
@@ -1862,7 +4498,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 35)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 91)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -1897,7 +4533,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 36)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 92)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -1936,7 +4572,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             info,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 37)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 93)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -1974,7 +4610,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             status,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 38)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 94)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -2007,7 +4643,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 39)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 95)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -2041,7 +4677,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 40)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 96)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -2078,7 +4714,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             relayAddress,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 41)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 97)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -2116,7 +4752,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             relayId,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 42)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 98)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -2147,7 +4783,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 43)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 99)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -2181,7 +4817,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 44)!;
+          return pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 100,
+          )!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -2215,7 +4855,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 45)!;
+          return pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 101,
+          )!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -2254,7 +4898,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             relayAddress,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 46)!;
+          return pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 102,
+          )!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -2292,7 +4940,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             relayId,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 47)!;
+          return pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 103,
+          )!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -2330,7 +4982,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             status,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 48)!;
+          return pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 104,
+          )!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_unit,
@@ -2366,7 +5022,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 49,
+            funcId: 105,
             port: port_,
           );
         },
@@ -2397,7 +5053,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 50,
+            funcId: 106,
             port: port_,
           );
         },
@@ -2433,7 +5089,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 51,
+            funcId: 107,
             port: port_,
           );
         },
@@ -2470,7 +5126,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 52,
+            funcId: 108,
             port: port_,
           );
         },
@@ -2506,7 +5162,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 53,
+            funcId: 109,
             port: port_,
           );
         },
@@ -2536,7 +5192,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 54,
+            funcId: 110,
             port: port_,
           );
         },
@@ -2570,7 +5226,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 55,
+            funcId: 111,
             port: port_,
           );
         },
@@ -2608,7 +5264,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 56,
+            funcId: 112,
             port: port_,
           );
         },
@@ -2642,7 +5298,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 57,
+            funcId: 113,
             port: port_,
           );
         },
@@ -2678,7 +5334,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 58,
+            funcId: 114,
             port: port_,
           );
         },
@@ -2719,7 +5375,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 59,
+            funcId: 115,
             port: port_,
           );
         },
@@ -2755,7 +5411,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 60,
+            funcId: 116,
             port: port_,
           );
         },
@@ -2786,7 +5442,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 61,
+            funcId: 117,
             port: port_,
           );
         },
@@ -2818,7 +5474,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 62,
+            funcId: 118,
             port: port_,
           );
         },
@@ -2841,6 +5497,105 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<QrResult> zoeAppPrimitivesQrDisplayQrCodeFromString({
+    required String text,
+    required QrOptions options,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(text, serializer);
+          sse_encode_box_autoadd_qr_options(options, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 119,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResult,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesQrDisplayQrCodeFromStringConstMeta,
+        argValues: [text, options],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesQrDisplayQrCodeFromStringConstMeta =>
+      const TaskConstMeta(
+        debugName: "display_qr_code_from_string",
+        argNames: ["text", "options"],
+      );
+
+  @override
+  Future<EncryptionSettings>
+  zoeAppPrimitivesGroupEventsSettingsEncryptionSettingsDefault() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 120,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_encryption_settings,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsSettingsEncryptionSettingsDefaultConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsSettingsEncryptionSettingsDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "encryption_settings_default",
+        argNames: [],
+      );
+
+  @override
+  Future<EncryptionSettings>
+  zoeAppPrimitivesGroupEventsSettingsEncryptionSettingsNew() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 121,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_encryption_settings,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsSettingsEncryptionSettingsNewConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsSettingsEncryptionSettingsNewConstMeta =>
+      const TaskConstMeta(debugName: "encryption_settings_new", argNames: []);
+
+  @override
   Future<void> zoeClientFrbApiFrbInit() {
     return handler.executeNormal(
       NormalTask(
@@ -2849,7 +5604,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 63,
+            funcId: 122,
             port: port_,
           );
         },
@@ -2868,13 +5623,53 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "frb_init", argNames: []);
 
   @override
+  Future<QrResultString> zoeAppPrimitivesQrGenerateQrStringFromText({
+    required String text,
+    required QrOptions options,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(text, serializer);
+          sse_encode_box_autoadd_qr_options(options, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 123,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResultString,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesQrGenerateQrStringFromTextConstMeta,
+        argValues: [text, options],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesQrGenerateQrStringFromTextConstMeta =>
+      const TaskConstMeta(
+        debugName: "generate_qr_string_from_text",
+        argNames: ["text", "options"],
+      );
+
+  @override
   String crateApiSimpleGreet({required String name}) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(name, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 64)!;
+          return pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 124,
+          )!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -2891,6 +5686,315 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "greet", argNames: ["name"]);
 
   @override
+  Future<bool>
+  zoeAppPrimitivesGroupEventsPermissionsGroupPermissionsCanPerformAction({
+    required GroupPermissions that,
+    required GroupRole role,
+    required GroupAction action,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_box_autoadd_group_permissions(that, serializer);
+          sse_encode_group_role(role, serializer);
+          sse_encode_group_action(action, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 125,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsPermissionsGroupPermissionsCanPerformActionConstMeta,
+        argValues: [that, role, action],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsPermissionsGroupPermissionsCanPerformActionConstMeta =>
+      const TaskConstMeta(
+        debugName: "group_permissions_can_perform_action",
+        argNames: ["that", "role", "action"],
+      );
+
+  @override
+  Future<GroupPermissions>
+  zoeAppPrimitivesGroupEventsPermissionsGroupPermissionsDefault() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 126,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_group_permissions,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsPermissionsGroupPermissionsDefaultConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsPermissionsGroupPermissionsDefaultConstMeta =>
+      const TaskConstMeta(debugName: "group_permissions_default", argNames: []);
+
+  @override
+  Future<GroupPermissions>
+  zoeAppPrimitivesGroupEventsPermissionsGroupPermissionsNew() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 127,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_group_permissions,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsPermissionsGroupPermissionsNewConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsPermissionsGroupPermissionsNewConstMeta =>
+      const TaskConstMeta(debugName: "group_permissions_new", argNames: []);
+
+  @override
+  Future<bool> zoeAppPrimitivesGroupEventsRolesGroupRoleCanAssignRole({
+    required GroupRole that,
+    required GroupRole tarrole,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_group_role(that, serializer);
+          sse_encode_group_role(tarrole, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 128,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsRolesGroupRoleCanAssignRoleConstMeta,
+        argValues: [that, tarrole],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsRolesGroupRoleCanAssignRoleConstMeta =>
+      const TaskConstMeta(
+        debugName: "group_role_can_assign_role",
+        argNames: ["that", "tarrole"],
+      );
+
+  @override
+  Future<void> zoeAppPrimitivesGroupEventsRolesGroupRoleDisplayName({
+    required GroupRole that,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_group_role(that, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 129,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsRolesGroupRoleDisplayNameConstMeta,
+        argValues: [that],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsRolesGroupRoleDisplayNameConstMeta =>
+      const TaskConstMeta(
+        debugName: "group_role_display_name",
+        argNames: ["that"],
+      );
+
+  @override
+  Future<bool> zoeAppPrimitivesGroupEventsRolesGroupRoleHasPermission({
+    required GroupRole that,
+    required Permission required_,
+  }) {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_group_role(that, serializer);
+          sse_encode_permission(required_, serializer);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 130,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsRolesGroupRoleHasPermissionConstMeta,
+        argValues: [that, required_],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsRolesGroupRoleHasPermissionConstMeta =>
+      const TaskConstMeta(
+        debugName: "group_role_has_permission",
+        argNames: ["that", "required_"],
+      );
+
+  @override
+  Future<GroupSettings>
+  zoeAppPrimitivesGroupEventsSettingsGroupSettingsDefault() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 131,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_group_settings,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsSettingsGroupSettingsDefaultConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsSettingsGroupSettingsDefaultConstMeta =>
+      const TaskConstMeta(debugName: "group_settings_default", argNames: []);
+
+  @override
+  Future<GroupSettings> zoeAppPrimitivesGroupEventsSettingsGroupSettingsNew() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 132,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_group_settings,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kZoeAppPrimitivesGroupEventsSettingsGroupSettingsNewConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kZoeAppPrimitivesGroupEventsSettingsGroupSettingsNewConstMeta =>
+      const TaskConstMeta(debugName: "group_settings_new", argNames: []);
+
+  @override
+  Stream<GroupDataUpdate> crateApiGroupGroupUpdatesStream({
+    required GroupManager manager,
+  }) {
+    final sink = RustStreamSink<GroupDataUpdate>();
+    unawaited(
+      handler.executeNormal(
+        NormalTask(
+          callFfi: (port_) {
+            final serializer = SseSerializer(generalizedFrbRustBinding);
+            sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+              manager,
+              serializer,
+            );
+            sse_encode_StreamSink_group_data_update_Sse(sink, serializer);
+            pdeCallFfi(
+              generalizedFrbRustBinding,
+              serializer,
+              funcId: 133,
+              port: port_,
+            );
+          },
+          codec: SseCodec(
+            decodeSuccessData: sse_decode_unit,
+            decodeErrorData: null,
+          ),
+          constMeta: kCrateApiGroupGroupUpdatesStreamConstMeta,
+          argValues: [manager, sink],
+          apiImpl: this,
+        ),
+      ),
+    );
+    return sink.stream;
+  }
+
+  TaskConstMeta get kCrateApiGroupGroupUpdatesStreamConstMeta =>
+      const TaskConstMeta(
+        debugName: "group_updates_stream",
+        argNames: ["manager", "sink"],
+      );
+
+  @override
   Future<void> crateApiSimpleInitApp() {
     return handler.executeNormal(
       NormalTask(
@@ -2899,7 +6003,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 65,
+            funcId: 134,
             port: port_,
           );
         },
@@ -2938,7 +6042,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             pdeCallFfi(
               generalizedFrbRustBinding,
               serializer,
-              funcId: 66,
+              funcId: 135,
               port: port_,
             );
           },
@@ -2980,7 +6084,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 67,
+            funcId: 136,
             port: port_,
           );
         },
@@ -3002,6 +6106,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<QrOptions> zoeAppPrimitivesQrQrOptionsDefault() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 137,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_qr_options,
+          decodeErrorData: null,
+        ),
+        constMeta: kZoeAppPrimitivesQrQrOptionsDefaultConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kZoeAppPrimitivesQrQrOptionsDefaultConstMeta =>
+      const TaskConstMeta(debugName: "qr_options_default", argNames: []);
+
+  @override
   Future<SocketAddr> zoeClientUtilResolveToSocketAddr({required String s}) {
     return handler.executeNormal(
       NormalTask(
@@ -3011,7 +6142,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 68,
+            funcId: 138,
             port: port_,
           );
         },
@@ -3051,7 +6182,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             pdeCallFfi(
               generalizedFrbRustBinding,
               serializer,
-              funcId: 69,
+              funcId: 139,
               port: port_,
             );
           },
@@ -3084,7 +6215,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 70,
+            funcId: 140,
             port: port_,
           );
         },
@@ -3114,7 +6245,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 71,
+            funcId: 141,
             port: port_,
           );
         },
@@ -3148,7 +6279,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 72,
+            funcId: 142,
             port: port_,
           );
         },
@@ -3179,7 +6310,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 73,
+            funcId: 143,
             port: port_,
           );
         },
@@ -3210,7 +6341,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 74,
+            funcId: 144,
             port: port_,
           );
         },
@@ -3248,7 +6379,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 75,
+            funcId: 145,
             port: port_,
           );
         },
@@ -3286,7 +6417,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 76,
+            funcId: 146,
             port: port_,
           );
         },
@@ -3322,7 +6453,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 77,
+            funcId: 147,
             port: port_,
           );
         },
@@ -3362,7 +6493,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 78,
+            funcId: 148,
             port: port_,
           );
         },
@@ -3401,7 +6532,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 79,
+            funcId: 149,
             port: port_,
           );
         },
@@ -3437,7 +6568,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 80,
+            funcId: 150,
             port: port_,
           );
         },
@@ -3473,7 +6604,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 81,
+            funcId: 151,
             port: port_,
           );
         },
@@ -3509,7 +6640,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 82,
+            funcId: 152,
             port: port_,
           );
         },
@@ -3547,7 +6678,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 83,
+            funcId: 153,
             port: port_,
           );
         },
@@ -3583,7 +6714,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 84,
+            funcId: 154,
             port: port_,
           );
         },
@@ -3617,7 +6748,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 85,
+            funcId: 155,
             port: port_,
           );
         },
@@ -3648,7 +6779,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 86,
+            funcId: 156,
             port: port_,
           );
         },
@@ -3679,7 +6810,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 87,
+            funcId: 157,
             port: port_,
           );
         },
@@ -3710,7 +6841,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 88,
+            funcId: 158,
             port: port_,
           );
         },
@@ -3740,7 +6871,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
-            funcId: 89,
+            funcId: 159,
             port: port_,
           );
         },
@@ -3761,6 +6892,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         debugName: "verifying_key_from_hex",
         argNames: ["hex"],
       );
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ArcZoeClientSessionManager => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ArcZoeClientSessionManager => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_BTreeMapIdentityRefGroupMember => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_BTreeMapIdentityRefGroupMember => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_BTreeMapStringString => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_BTreeMapStringString => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_Client => wire
@@ -3787,12 +6942,124 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClientSecret;
 
   RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_ConvergentEncryptionInfo => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConvergentEncryptionInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_ConvergentEncryptionInfo => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConvergentEncryptionInfo;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_CreateGroupBuilder => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateGroupBuilder;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_CreateGroupBuilder => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateGroupBuilder;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_EncryptionKey => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_EncryptionKey => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey;
+
+  RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_FileRef => wire
       .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef;
 
   RustArcDecrementStrongCountFnType
   get rust_arc_decrement_strong_count_FileRef => wire
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_GroupInfo => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_GroupInfo => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_GroupJoinInfo => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_GroupJoinInfo => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_GroupKeyInfo => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_GroupKeyInfo => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_GroupManager => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_GroupManager => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_GroupMembership => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_GroupMembership => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_Hash => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_Hash => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_IdentityRef => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_IdentityRef => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_IdentityType => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityType;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_IdentityType => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityType;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_Image => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_Image => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_Ipv4Addr => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv4Addr;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_Ipv4Addr => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv4Addr;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_Ipv6Addr => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv6Addr;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_Ipv6Addr => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv6Addr;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_KeyId => wire
@@ -3819,12 +7086,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPairError;
 
   RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_MessageId => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_MessageId => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_NetworkAddress => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_NetworkAddress => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress;
+
+  RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_PathBuf => wire
       .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf;
 
   RustArcDecrementStrongCountFnType
   get rust_arc_decrement_strong_count_PathBuf => wire
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_QrResult => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResult;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_QrResult => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResult;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_QrResultString => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResultString;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_QrResultString => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResultString;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_RelayAddress => wire
@@ -3849,6 +7148,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RustArcDecrementStrongCountFnType
   get rust_arc_decrement_strong_count_RelayConnectionStatus => wire
       .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionStatus;
+
+  RustArcIncrementStrongCountFnType
+  get rust_arc_increment_strong_count_RelayEndpoint => wire
+      .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint;
+
+  RustArcDecrementStrongCountFnType
+  get rust_arc_decrement_strong_count_RelayEndpoint => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint;
 
   RustArcIncrementStrongCountFnType
   get rust_arc_increment_strong_count_RelayInfo => wire
@@ -3937,6 +7244,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ArcZoeClientSessionManager
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ArcZoeClientSessionManagerImpl.frbInternalDcoDecode(
+      raw as List<dynamic>,
+    );
+  }
+
+  @protected
+  BTreeMapIdentityRefGroupMember
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return BTreeMapIdentityRefGroupMemberImpl.frbInternalDcoDecode(
+      raw as List<dynamic>,
+    );
+  }
+
+  @protected
+  BTreeMapStringString
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return BTreeMapStringStringImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   Client
   dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
     dynamic raw,
@@ -3964,12 +7302,131 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ConvergentEncryptionInfo
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConvergentEncryptionInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ConvergentEncryptionInfoImpl.frbInternalDcoDecode(
+      raw as List<dynamic>,
+    );
+  }
+
+  @protected
+  CreateGroupBuilder
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateGroupBuilder(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return CreateGroupBuilderImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  EncryptionKey
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return EncryptionKeyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   FileRef
   dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return FileRefImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupInfo
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupJoinInfo
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupJoinInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupKeyInfo
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupKeyInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupManager
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupManagerImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupMembership
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupMembershipImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Hash
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return HashImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  IdentityRef
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return IdentityRefImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Image
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ImageImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Ipv4Addr
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv4Addr(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Ipv4AddrImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Ipv6Addr
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv6Addr(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Ipv6AddrImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -4000,12 +7457,48 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MessageId
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MessageIdImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  NetworkAddress
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return NetworkAddressImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   PathBuf
   dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return PathBufImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  QrResult
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResult(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return QrResultImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  QrResultString
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResultString(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return QrResultStringImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -4033,6 +7526,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return RelayConnectionStatusImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayEndpoint
+  dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayEndpointImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -4135,6 +7637,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  GroupInfo
+  dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   RelayConnectionInfo
   dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
     dynamic raw,
@@ -4189,12 +7700,111 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  GroupInfo
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupJoinInfo
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupJoinInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupKeyInfo
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupKeyInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupManager
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupManagerImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupMembership
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupMembershipImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Hash
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return HashImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  IdentityRef
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return IdentityRefImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  IdentityType
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityType(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return IdentityTypeImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Image
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ImageImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   KeyPair
   dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return KeyPairImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  MessageId
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MessageIdImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  NetworkAddress
+  dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return NetworkAddressImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -4279,6 +7889,63 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<MessageId, GroupSession>
+  dco_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_session_None(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(
+      dco_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
+        raw,
+      ).map((e) => MapEntry(e.$1, e.$2)),
+    );
+  }
+
+  @protected
+  Map<MessageId, GroupState>
+  dco_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_state_None(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(
+      dco_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
+        raw,
+      ).map((e) => MapEntry(e.$1, e.$2)),
+    );
+  }
+
+  @protected
+  ArcZoeClientSessionManager
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ArcZoeClientSessionManagerImpl.frbInternalDcoDecode(
+      raw as List<dynamic>,
+    );
+  }
+
+  @protected
+  BTreeMapIdentityRefGroupMember
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return BTreeMapIdentityRefGroupMemberImpl.frbInternalDcoDecode(
+      raw as List<dynamic>,
+    );
+  }
+
+  @protected
+  BTreeMapStringString
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return BTreeMapStringStringImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   Client
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
     dynamic raw,
@@ -4306,12 +7973,140 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ConvergentEncryptionInfo
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConvergentEncryptionInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ConvergentEncryptionInfoImpl.frbInternalDcoDecode(
+      raw as List<dynamic>,
+    );
+  }
+
+  @protected
+  CreateGroupBuilder
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateGroupBuilder(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return CreateGroupBuilderImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  EncryptionKey
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return EncryptionKeyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   FileRef
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return FileRefImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupInfo
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupJoinInfo
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupJoinInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupKeyInfo
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupKeyInfoImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupManager
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupManagerImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  GroupMembership
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupMembershipImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Hash
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return HashImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  IdentityRef
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return IdentityRefImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  IdentityType
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityType(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return IdentityTypeImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Image
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return ImageImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Ipv4Addr
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv4Addr(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Ipv4AddrImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  Ipv6Addr
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv6Addr(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Ipv6AddrImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -4342,12 +8137,48 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MessageId
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MessageIdImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  NetworkAddress
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return NetworkAddressImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   PathBuf
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return PathBufImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  QrResult
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResult(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return QrResultImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  QrResultString
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResultString(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return QrResultStringImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -4375,6 +8206,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return RelayConnectionStatusImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RelayEndpoint
+  dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RelayEndpointImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -4468,8 +8308,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Set<IdentityRef>
+  dco_decode_Set_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef_None(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Set.from(
+      dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+        raw,
+      ),
+    );
+  }
+
+  @protected
   RustStreamSink<SystemCheckResults>
   dco_decode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults_Sse(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError();
+  }
+
+  @protected
+  RustStreamSink<GroupDataUpdate> dco_decode_StreamSink_group_data_update_Sse(
     dynamic raw,
   ) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -4502,9 +8363,240 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  RelayEndpoint
+  dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+      raw,
+    );
+  }
+
+  @protected
+  bool dco_decode_box_autoadd_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as bool;
+  }
+
+  @protected
+  double dco_decode_box_autoadd_f_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as double;
+  }
+
+  @protected
+  GroupPermissions dco_decode_box_autoadd_group_permissions(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_group_permissions(raw);
+  }
+
+  @protected
+  GroupRole dco_decode_box_autoadd_group_role(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_group_role(raw);
+  }
+
+  @protected
+  GroupSession dco_decode_box_autoadd_group_session(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_group_session(raw);
+  }
+
+  @protected
+  GroupState dco_decode_box_autoadd_group_state(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_group_state(raw);
+  }
+
+  @protected
+  QrOptions dco_decode_box_autoadd_qr_options(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_qr_options(raw);
+  }
+
+  @protected
+  int dco_decode_box_autoadd_u_16(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
+  BigInt dco_decode_box_autoadd_u_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_u_64(raw);
+  }
+
+  @protected
+  EncryptionSettings dco_decode_encryption_settings(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return EncryptionSettings(
+      keyRotationEnabled: dco_decode_bool(arr[0]),
+      keyRotationInterval: dco_decode_opt_box_autoadd_u_64(arr[1]),
+    );
+  }
+
+  @protected
+  double dco_decode_f_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as double;
+  }
+
+  @protected
+  GroupAction dco_decode_group_action(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupAction.values[raw as int];
+  }
+
+  @protected
+  GroupDataUpdate dco_decode_group_data_update(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return GroupDataUpdate_GroupAdded(
+          dco_decode_box_autoadd_group_session(raw[1]),
+        );
+      case 1:
+        return GroupDataUpdate_GroupUpdated(
+          dco_decode_box_autoadd_group_session(raw[1]),
+        );
+      case 2:
+        return GroupDataUpdate_GroupRemoved(
+          dco_decode_box_autoadd_group_session(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
+  GroupPermissions dco_decode_group_permissions(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return GroupPermissions(
+      updateGroup: dco_decode_permission(arr[0]),
+      assignRoles: dco_decode_permission(arr[1]),
+      postActivities: dco_decode_permission(arr[2]),
+      updateEncryption: dco_decode_permission(arr[3]),
+    );
+  }
+
+  @protected
+  GroupRole dco_decode_group_role(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return GroupRole.values[raw as int];
+  }
+
+  @protected
+  GroupSession dco_decode_group_session(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return GroupSession(
+      state: dco_decode_group_state(arr[0]),
+      currentKey:
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+            arr[1],
+          ),
+      previousKeys:
+          dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+            arr[2],
+          ),
+    );
+  }
+
+  @protected
+  GroupSettings dco_decode_group_settings(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return GroupSettings(
+      permissions: dco_decode_group_permissions(arr[0]),
+      encryptionSettings: dco_decode_encryption_settings(arr[1]),
+    );
+  }
+
+  @protected
+  GroupState dco_decode_group_state(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 9)
+      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    return GroupState(
+      groupId:
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+            arr[0],
+          ),
+      name: dco_decode_String(arr[1]),
+      settings: dco_decode_group_settings(arr[2]),
+      metadata: dco_decode_list_metadata(arr[3]),
+      members:
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+            arr[4],
+          ),
+      membership:
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+            arr[5],
+          ),
+      eventHistory:
+          dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+            arr[6],
+          ),
+      lastEventTimestamp: dco_decode_u_64(arr[7]),
+      version: dco_decode_u_64(arr[8]),
+    );
+  }
+
+  @protected
   int dco_decode_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
+  }
+
+  @protected
+  List<EncryptionKey>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey,
+        )
+        .toList();
+  }
+
+  @protected
+  List<IdentityRef>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef,
+        )
+        .toList();
+  }
+
+  @protected
+  List<MessageId>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId,
+        )
+        .toList();
   }
 
   @protected
@@ -4534,6 +8626,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<RelayEndpoint>
+  dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint,
+        )
+        .toList();
+  }
+
+  @protected
   List<TestInfo>
   dco_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
     dynamic raw,
@@ -4553,6 +8658,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Metadata> dco_decode_list_metadata(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_metadata).toList();
+  }
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as List<int>;
@@ -4565,15 +8676,142 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<(MessageId, GroupSession)>
+  dco_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+          dco_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session,
+        )
+        .toList();
+  }
+
+  @protected
+  List<(MessageId, GroupState)>
+  dco_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(
+          dco_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state,
+        )
+        .toList();
+  }
+
+  @protected
   List<TestCategory> dco_decode_list_test_category(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_test_category).toList();
   }
 
   @protected
+  Metadata dco_decode_metadata(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return Metadata_Generic(
+          key: dco_decode_String(raw[1]),
+          value: dco_decode_String(raw[2]),
+        );
+      case 1:
+        return Metadata_Description(dco_decode_String(raw[1]));
+      case 2:
+        return Metadata_Avatar(
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+            raw[1],
+          ),
+        );
+      case 3:
+        return Metadata_Background(
+          dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+            raw[1],
+          ),
+        );
+      case 4:
+        return Metadata_Website(dco_decode_String(raw[1]));
+      case 5:
+        return Metadata_Email(dco_decode_String(raw[1]));
+      case 6:
+        return Metadata_Phone(dco_decode_String(raw[1]));
+      case 7:
+        return Metadata_Address(dco_decode_String(raw[1]));
+      case 8:
+        return Metadata_Social(
+          platform: dco_decode_String(raw[1]),
+          handle: dco_decode_String(raw[2]),
+        );
+      case 9:
+        return Metadata_Unknown(
+          discriminant: dco_decode_u_32(raw[1]),
+          data: dco_decode_list_prim_u_8_strict(raw[2]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
   String? dco_decode_opt_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_String(raw);
+  }
+
+  @protected
+  RelayEndpoint?
+  dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null
+        ? null
+        : dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+            raw,
+          );
+  }
+
+  @protected
+  bool? dco_decode_opt_box_autoadd_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_bool(raw);
+  }
+
+  @protected
+  double? dco_decode_opt_box_autoadd_f_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_f_32(raw);
+  }
+
+  @protected
+  GroupRole? dco_decode_opt_box_autoadd_group_role(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_group_role(raw);
+  }
+
+  @protected
+  GroupSession? dco_decode_opt_box_autoadd_group_session(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_group_session(raw);
+  }
+
+  @protected
+  GroupState? dco_decode_opt_box_autoadd_group_state(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_group_state(raw);
+  }
+
+  @protected
+  int? dco_decode_opt_box_autoadd_u_16(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_u_16(raw);
+  }
+
+  @protected
+  BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_u_64(raw);
   }
 
   @protected
@@ -4586,6 +8824,62 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       isConnected: dco_decode_bool(arr[0]),
       connectedCount: dco_decode_usize(arr[1]),
       totalCount: dco_decode_usize(arr[2]),
+    );
+  }
+
+  @protected
+  Permission dco_decode_permission(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Permission.values[raw as int];
+  }
+
+  @protected
+  QrOptions dco_decode_qr_options(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return QrOptions(
+      title: dco_decode_String(arr[0]),
+      subtitleLines: dco_decode_list_String(arr[1]),
+      footer: dco_decode_String(arr[2]),
+      borderWidth: dco_decode_usize(arr[3]),
+    );
+  }
+
+  @protected
+  (MessageId, GroupSession)
+  dco_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+        arr[0],
+      ),
+      dco_decode_group_session(arr[1]),
+    );
+  }
+
+  @protected
+  (MessageId, GroupState)
+  dco_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+        arr[0],
+      ),
+      dco_decode_group_state(arr[1]),
     );
   }
 
@@ -4645,6 +8939,42 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ArcZoeClientSessionManager
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ArcZoeClientSessionManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  BTreeMapIdentityRefGroupMember
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return BTreeMapIdentityRefGroupMemberImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  BTreeMapStringString
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return BTreeMapStringStringImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   Client
   sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
     SseDeserializer deserializer,
@@ -4681,12 +9011,168 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ConvergentEncryptionInfo
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConvergentEncryptionInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ConvergentEncryptionInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  CreateGroupBuilder
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateGroupBuilder(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return CreateGroupBuilderImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  EncryptionKey
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return EncryptionKeyImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   FileRef
   sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return FileRefImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupInfo
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupJoinInfo
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupJoinInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupKeyInfo
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupKeyInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupManager
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupMembership
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupMembershipImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Hash
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return HashImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  IdentityRef
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return IdentityRefImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Image
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ImageImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Ipv4Addr
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv4Addr(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return Ipv4AddrImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Ipv6Addr
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv6Addr(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return Ipv6AddrImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -4729,12 +9215,60 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MessageId
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return MessageIdImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  NetworkAddress
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return NetworkAddressImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   PathBuf
   sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return PathBufImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  QrResult
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResult(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return QrResultImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  QrResultString
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResultString(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return QrResultStringImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -4771,6 +9305,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return RelayConnectionStatusImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayEndpoint
+  sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayEndpointImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -4909,6 +9455,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  GroupInfo
+  sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   RelayConnectionInfo
   sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
     SseDeserializer deserializer,
@@ -4981,12 +9539,144 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  GroupInfo
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupJoinInfo
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupJoinInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupKeyInfo
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupKeyInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupManager
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupMembership
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupMembershipImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Hash
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return HashImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  IdentityRef
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return IdentityRefImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  IdentityType
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityType(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return IdentityTypeImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Image
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ImageImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   KeyPair
   sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return KeyPairImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  MessageId
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return MessageIdImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  NetworkAddress
+  sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return NetworkAddressImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -5101,6 +9791,68 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<MessageId, GroupSession>
+  sse_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_session_None(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner =
+        sse_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
+          deserializer,
+        );
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<MessageId, GroupState>
+  sse_decode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_state_None(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner =
+        sse_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
+          deserializer,
+        );
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  ArcZoeClientSessionManager
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ArcZoeClientSessionManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  BTreeMapIdentityRefGroupMember
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return BTreeMapIdentityRefGroupMemberImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  BTreeMapStringString
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return BTreeMapStringStringImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   Client
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
     SseDeserializer deserializer,
@@ -5137,12 +9889,180 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ConvergentEncryptionInfo
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConvergentEncryptionInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ConvergentEncryptionInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  CreateGroupBuilder
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateGroupBuilder(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return CreateGroupBuilderImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  EncryptionKey
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return EncryptionKeyImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   FileRef
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return FileRefImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupInfo
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupJoinInfo
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupJoinInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupKeyInfo
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupKeyInfoImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupManager
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupManagerImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  GroupMembership
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return GroupMembershipImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Hash
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return HashImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  IdentityRef
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return IdentityRefImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  IdentityType
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityType(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return IdentityTypeImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Image
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return ImageImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Ipv4Addr
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv4Addr(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return Ipv4AddrImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  Ipv6Addr
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv6Addr(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return Ipv6AddrImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -5185,12 +10105,60 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MessageId
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return MessageIdImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  NetworkAddress
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return NetworkAddressImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
   PathBuf
   sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return PathBufImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  QrResult
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResult(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return QrResultImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  QrResultString
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResultString(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return QrResultStringImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -5227,6 +10195,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return RelayConnectionStatusImpl.frbInternalSseDecode(
+      sse_decode_usize(deserializer),
+      sse_decode_i_32(deserializer),
+    );
+  }
+
+  @protected
+  RelayEndpoint
+  sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return RelayEndpointImpl.frbInternalSseDecode(
       sse_decode_usize(deserializer),
       sse_decode_i_32(deserializer),
     );
@@ -5353,8 +10333,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Set<IdentityRef>
+  sse_decode_Set_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef_None(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner =
+        sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+          deserializer,
+        );
+    return Set.from(inner);
+  }
+
+  @protected
   RustStreamSink<SystemCheckResults>
   sse_decode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults_Sse(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    throw UnimplementedError('Unreachable ()');
+  }
+
+  @protected
+  RustStreamSink<GroupDataUpdate> sse_decode_StreamSink_group_data_update_Sse(
     SseDeserializer deserializer,
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5391,9 +10392,270 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  RelayEndpoint
+  sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+      deserializer,
+    ));
+  }
+
+  @protected
+  bool sse_decode_box_autoadd_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_bool(deserializer));
+  }
+
+  @protected
+  double sse_decode_box_autoadd_f_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_f_32(deserializer));
+  }
+
+  @protected
+  GroupPermissions sse_decode_box_autoadd_group_permissions(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_group_permissions(deserializer));
+  }
+
+  @protected
+  GroupRole sse_decode_box_autoadd_group_role(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_group_role(deserializer));
+  }
+
+  @protected
+  GroupSession sse_decode_box_autoadd_group_session(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_group_session(deserializer));
+  }
+
+  @protected
+  GroupState sse_decode_box_autoadd_group_state(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_group_state(deserializer));
+  }
+
+  @protected
+  QrOptions sse_decode_box_autoadd_qr_options(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_qr_options(deserializer));
+  }
+
+  @protected
+  int sse_decode_box_autoadd_u_16(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_u_16(deserializer));
+  }
+
+  @protected
+  BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_u_64(deserializer));
+  }
+
+  @protected
+  EncryptionSettings sse_decode_encryption_settings(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_keyRotationEnabled = sse_decode_bool(deserializer);
+    var var_keyRotationInterval = sse_decode_opt_box_autoadd_u_64(deserializer);
+    return EncryptionSettings(
+      keyRotationEnabled: var_keyRotationEnabled,
+      keyRotationInterval: var_keyRotationInterval,
+    );
+  }
+
+  @protected
+  double sse_decode_f_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getFloat32();
+  }
+
+  @protected
+  GroupAction sse_decode_group_action(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return GroupAction.values[inner];
+  }
+
+  @protected
+  GroupDataUpdate sse_decode_group_data_update(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_field0 = sse_decode_box_autoadd_group_session(deserializer);
+        return GroupDataUpdate_GroupAdded(var_field0);
+      case 1:
+        var var_field0 = sse_decode_box_autoadd_group_session(deserializer);
+        return GroupDataUpdate_GroupUpdated(var_field0);
+      case 2:
+        var var_field0 = sse_decode_box_autoadd_group_session(deserializer);
+        return GroupDataUpdate_GroupRemoved(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
+  GroupPermissions sse_decode_group_permissions(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_updateGroup = sse_decode_permission(deserializer);
+    var var_assignRoles = sse_decode_permission(deserializer);
+    var var_postActivities = sse_decode_permission(deserializer);
+    var var_updateEncryption = sse_decode_permission(deserializer);
+    return GroupPermissions(
+      updateGroup: var_updateGroup,
+      assignRoles: var_assignRoles,
+      postActivities: var_postActivities,
+      updateEncryption: var_updateEncryption,
+    );
+  }
+
+  @protected
+  GroupRole sse_decode_group_role(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return GroupRole.values[inner];
+  }
+
+  @protected
+  GroupSession sse_decode_group_session(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_state = sse_decode_group_state(deserializer);
+    var var_currentKey =
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+          deserializer,
+        );
+    var var_previousKeys =
+        sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+          deserializer,
+        );
+    return GroupSession(
+      state: var_state,
+      currentKey: var_currentKey,
+      previousKeys: var_previousKeys,
+    );
+  }
+
+  @protected
+  GroupSettings sse_decode_group_settings(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_permissions = sse_decode_group_permissions(deserializer);
+    var var_encryptionSettings = sse_decode_encryption_settings(deserializer);
+    return GroupSettings(
+      permissions: var_permissions,
+      encryptionSettings: var_encryptionSettings,
+    );
+  }
+
+  @protected
+  GroupState sse_decode_group_state(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_groupId =
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+          deserializer,
+        );
+    var var_name = sse_decode_String(deserializer);
+    var var_settings = sse_decode_group_settings(deserializer);
+    var var_metadata = sse_decode_list_metadata(deserializer);
+    var var_members =
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+          deserializer,
+        );
+    var var_membership =
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+          deserializer,
+        );
+    var var_eventHistory =
+        sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+          deserializer,
+        );
+    var var_lastEventTimestamp = sse_decode_u_64(deserializer);
+    var var_version = sse_decode_u_64(deserializer);
+    return GroupState(
+      groupId: var_groupId,
+      name: var_name,
+      settings: var_settings,
+      metadata: var_metadata,
+      members: var_members,
+      membership: var_membership,
+      eventHistory: var_eventHistory,
+      lastEventTimestamp: var_lastEventTimestamp,
+      version: var_version,
+    );
+  }
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getInt32();
+  }
+
+  @protected
+  List<EncryptionKey>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <EncryptionKey>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+          deserializer,
+        ),
+      );
+    }
+    return ans_;
+  }
+
+  @protected
+  List<IdentityRef>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <IdentityRef>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+          deserializer,
+        ),
+      );
+    }
+    return ans_;
+  }
+
+  @protected
+  List<MessageId>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <MessageId>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+          deserializer,
+        ),
+      );
+    }
+    return ans_;
   }
 
   @protected
@@ -5435,6 +10697,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<RelayEndpoint>
+  sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <RelayEndpoint>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+          deserializer,
+        ),
+      );
+    }
+    return ans_;
+  }
+
+  @protected
   List<TestInfo>
   sse_decode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
     SseDeserializer deserializer,
@@ -5466,6 +10747,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Metadata> sse_decode_list_metadata(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Metadata>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_metadata(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
@@ -5477,6 +10770,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  List<(MessageId, GroupSession)>
+  sse_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(MessageId, GroupSession)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+        sse_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
+          deserializer,
+        ),
+      );
+    }
+    return ans_;
+  }
+
+  @protected
+  List<(MessageId, GroupState)>
+  sse_decode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(MessageId, GroupState)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(
+        sse_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
+          deserializer,
+        ),
+      );
+    }
+    return ans_;
   }
 
   @protected
@@ -5494,11 +10825,160 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Metadata sse_decode_metadata(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_key = sse_decode_String(deserializer);
+        var var_value = sse_decode_String(deserializer);
+        return Metadata_Generic(key: var_key, value: var_value);
+      case 1:
+        var var_field0 = sse_decode_String(deserializer);
+        return Metadata_Description(var_field0);
+      case 2:
+        var var_field0 =
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+              deserializer,
+            );
+        return Metadata_Avatar(var_field0);
+      case 3:
+        var var_field0 =
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+              deserializer,
+            );
+        return Metadata_Background(var_field0);
+      case 4:
+        var var_field0 = sse_decode_String(deserializer);
+        return Metadata_Website(var_field0);
+      case 5:
+        var var_field0 = sse_decode_String(deserializer);
+        return Metadata_Email(var_field0);
+      case 6:
+        var var_field0 = sse_decode_String(deserializer);
+        return Metadata_Phone(var_field0);
+      case 7:
+        var var_field0 = sse_decode_String(deserializer);
+        return Metadata_Address(var_field0);
+      case 8:
+        var var_platform = sse_decode_String(deserializer);
+        var var_handle = sse_decode_String(deserializer);
+        return Metadata_Social(platform: var_platform, handle: var_handle);
+      case 9:
+        var var_discriminant = sse_decode_u_32(deserializer);
+        var var_data = sse_decode_list_prim_u_8_strict(deserializer);
+        return Metadata_Unknown(discriminant: var_discriminant, data: var_data);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
   String? sse_decode_opt_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_String(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  RelayEndpoint?
+  sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+        deserializer,
+      ));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_bool(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  double? sse_decode_opt_box_autoadd_f_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_f_32(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  GroupRole? sse_decode_opt_box_autoadd_group_role(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_group_role(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  GroupSession? sse_decode_opt_box_autoadd_group_session(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_group_session(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  GroupState? sse_decode_opt_box_autoadd_group_state(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_group_state(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  int? sse_decode_opt_box_autoadd_u_16(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_u_16(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  BigInt? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_u_64(deserializer));
     } else {
       return null;
     }
@@ -5517,6 +10997,56 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       connectedCount: var_connectedCount,
       totalCount: var_totalCount,
     );
+  }
+
+  @protected
+  Permission sse_decode_permission(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return Permission.values[inner];
+  }
+
+  @protected
+  QrOptions sse_decode_qr_options(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_title = sse_decode_String(deserializer);
+    var var_subtitleLines = sse_decode_list_String(deserializer);
+    var var_footer = sse_decode_String(deserializer);
+    var var_borderWidth = sse_decode_usize(deserializer);
+    return QrOptions(
+      title: var_title,
+      subtitleLines: var_subtitleLines,
+      footer: var_footer,
+      borderWidth: var_borderWidth,
+    );
+  }
+
+  @protected
+  (MessageId, GroupSession)
+  sse_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 =
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+          deserializer,
+        );
+    var var_field1 = sse_decode_group_session(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
+  (MessageId, GroupState)
+  sse_decode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 =
+        sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+          deserializer,
+        );
+    var var_field1 = sse_decode_group_state(deserializer);
+    return (var_field0, var_field1);
   }
 
   @protected
@@ -5579,6 +11109,47 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
+    ArcZoeClientSessionManager self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ArcZoeClientSessionManagerImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    BTreeMapIdentityRefGroupMember self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as BTreeMapIdentityRefGroupMemberImpl).frbInternalSseEncode(
+        move: true,
+      ),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString(
+    BTreeMapStringString self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as BTreeMapStringStringImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
     Client self,
     SseSerializer serializer,
@@ -5618,6 +11189,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConvergentEncryptionInfo(
+    ConvergentEncryptionInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ConvergentEncryptionInfoImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateGroupBuilder(
+    CreateGroupBuilder self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as CreateGroupBuilderImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    EncryptionKey self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as EncryptionKeyImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
     FileRef self,
     SseSerializer serializer,
@@ -5625,6 +11235,136 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as FileRefImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    GroupInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupInfoImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+    GroupJoinInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupJoinInfoImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+    GroupKeyInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupKeyInfoImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+    GroupManager self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupManagerImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+    GroupMembership self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupMembershipImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash(
+    Hash self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as HashImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    IdentityRef self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as IdentityRefImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+    Image self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ImageImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv4Addr(
+    Ipv4Addr self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as Ipv4AddrImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv6Addr(
+    Ipv6Addr self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as Ipv6AddrImpl).frbInternalSseEncode(move: true),
       serializer,
     );
   }
@@ -5670,6 +11410,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    MessageId self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as MessageIdImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+    NetworkAddress self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as NetworkAddressImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
     PathBuf self,
     SseSerializer serializer,
@@ -5677,6 +11443,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as PathBufImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResult(
+    QrResult self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as QrResultImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResultString(
+    QrResultString self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as QrResultStringImpl).frbInternalSseEncode(move: true),
       serializer,
     );
   }
@@ -5716,6 +11508,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as RelayConnectionStatusImpl).frbInternalSseEncode(move: true),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    RelayEndpoint self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayEndpointImpl).frbInternalSseEncode(move: true),
       serializer,
     );
   }
@@ -5865,6 +11670,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    GroupInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupInfoImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayConnectionInfo(
     RelayConnectionInfo self,
     SseSerializer serializer,
@@ -5943,6 +11761,123 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    GroupInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupInfoImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+    GroupJoinInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupJoinInfoImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+    GroupKeyInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupKeyInfoImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+    GroupManager self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupManagerImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+    GroupMembership self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupMembershipImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash(
+    Hash self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as HashImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    IdentityRef self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as IdentityRefImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityType(
+    IdentityType self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as IdentityTypeImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+    Image self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ImageImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerKeyPair(
     KeyPair self,
     SseSerializer serializer,
@@ -5950,6 +11885,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as KeyPairImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    MessageId self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as MessageIdImpl).frbInternalSseEncode(move: false),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+    NetworkAddress self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as NetworkAddressImpl).frbInternalSseEncode(move: false),
       serializer,
     );
   }
@@ -6073,6 +12034,73 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_session_None(
+    Map<MessageId, GroupSession> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
+      self.entries.map((e) => (e.key, e.value)).toList(),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_Map_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId_group_state_None(
+    Map<MessageId, GroupState> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
+      self.entries.map((e) => (e.key, e.value)).toList(),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcZoeClientSessionManager(
+    ArcZoeClientSessionManager self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ArcZoeClientSessionManagerImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+    BTreeMapIdentityRefGroupMember self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as BTreeMapIdentityRefGroupMemberImpl).frbInternalSseEncode(
+        move: null,
+      ),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringString(
+    BTreeMapStringString self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as BTreeMapStringStringImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerClient(
     Client self,
     SseSerializer serializer,
@@ -6112,6 +12140,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConvergentEncryptionInfo(
+    ConvergentEncryptionInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ConvergentEncryptionInfoImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCreateGroupBuilder(
+    CreateGroupBuilder self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as CreateGroupBuilderImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    EncryptionKey self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as EncryptionKeyImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFileRef(
     FileRef self,
     SseSerializer serializer,
@@ -6119,6 +12186,149 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as FileRefImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupInfo(
+    GroupInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupInfoImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupJoinInfo(
+    GroupJoinInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupJoinInfoImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupKeyInfo(
+    GroupKeyInfo self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupKeyInfoImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupManager(
+    GroupManager self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupManagerImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+    GroupMembership self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as GroupMembershipImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerHash(
+    Hash self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as HashImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    IdentityRef self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as IdentityRefImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityType(
+    IdentityType self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as IdentityTypeImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+    Image self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as ImageImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv4Addr(
+    Ipv4Addr self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as Ipv4AddrImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIpv6Addr(
+    Ipv6Addr self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as Ipv6AddrImpl).frbInternalSseEncode(move: null),
       serializer,
     );
   }
@@ -6164,6 +12374,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    MessageId self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as MessageIdImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNetworkAddress(
+    NetworkAddress self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as NetworkAddressImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPathBuf(
     PathBuf self,
     SseSerializer serializer,
@@ -6171,6 +12407,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as PathBufImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResult(
+    QrResult self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as QrResultImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerQrResultString(
+    QrResultString self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as QrResultStringImpl).frbInternalSseEncode(move: null),
       serializer,
     );
   }
@@ -6210,6 +12472,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
       (self as RelayConnectionStatusImpl).frbInternalSseEncode(move: null),
+      serializer,
+    );
+  }
+
+  @protected
+  void
+  sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    RelayEndpoint self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+      (self as RelayEndpointImpl).frbInternalSseEncode(move: null),
       serializer,
     );
   }
@@ -6346,6 +12621,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_Set_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef_None(
+    Set<IdentityRef> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+      self.toList(),
+      serializer,
+    );
+  }
+
+  @protected
+  void
   sse_encode_StreamSink_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults_Sse(
     RustStreamSink<SystemCheckResults> self,
     SseSerializer serializer,
@@ -6356,6 +12644,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         codec: SseCodec(
           decodeSuccessData:
               sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSystemCheckResults,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+      ),
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_StreamSink_group_data_update_Sse(
+    RustStreamSink<GroupDataUpdate> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(
+      self.setupAndSerialize(
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_group_data_update,
           decodeErrorData: sse_decode_AnyhowException,
         ),
       ),
@@ -6399,9 +12704,245 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void
+  sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    RelayEndpoint self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+      self,
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_bool(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_f_32(double self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_f_32(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_group_permissions(
+    GroupPermissions self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_group_permissions(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_group_role(
+    GroupRole self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_group_role(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_group_session(
+    GroupSession self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_group_session(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_group_state(
+    GroupState self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_group_state(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_qr_options(
+    QrOptions self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_qr_options(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_u_16(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_u_16(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_u_64(self, serializer);
+  }
+
+  @protected
+  void sse_encode_encryption_settings(
+    EncryptionSettings self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_bool(self.keyRotationEnabled, serializer);
+    sse_encode_opt_box_autoadd_u_64(self.keyRotationInterval, serializer);
+  }
+
+  @protected
+  void sse_encode_f_32(double self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putFloat32(self);
+  }
+
+  @protected
+  void sse_encode_group_action(GroupAction self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_group_data_update(
+    GroupDataUpdate self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case GroupDataUpdate_GroupAdded(field0: final field0):
+        sse_encode_i_32(0, serializer);
+        sse_encode_box_autoadd_group_session(field0, serializer);
+      case GroupDataUpdate_GroupUpdated(field0: final field0):
+        sse_encode_i_32(1, serializer);
+        sse_encode_box_autoadd_group_session(field0, serializer);
+      case GroupDataUpdate_GroupRemoved(field0: final field0):
+        sse_encode_i_32(2, serializer);
+        sse_encode_box_autoadd_group_session(field0, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_group_permissions(
+    GroupPermissions self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_permission(self.updateGroup, serializer);
+    sse_encode_permission(self.assignRoles, serializer);
+    sse_encode_permission(self.postActivities, serializer);
+    sse_encode_permission(self.updateEncryption, serializer);
+  }
+
+  @protected
+  void sse_encode_group_role(GroupRole self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_group_session(GroupSession self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_group_state(self.state, serializer);
+    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+      self.currentKey,
+      serializer,
+    );
+    sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+      self.previousKeys,
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_group_settings(GroupSettings self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_group_permissions(self.permissions, serializer);
+    sse_encode_encryption_settings(self.encryptionSettings, serializer);
+  }
+
+  @protected
+  void sse_encode_group_state(GroupState self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+      self.groupId,
+      serializer,
+    );
+    sse_encode_String(self.name, serializer);
+    sse_encode_group_settings(self.settings, serializer);
+    sse_encode_list_metadata(self.metadata, serializer);
+    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapIdentityRefGroupMember(
+      self.members,
+      serializer,
+    );
+    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGroupMembership(
+      self.membership,
+      serializer,
+    );
+    sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+      self.eventHistory,
+      serializer,
+    );
+    sse_encode_u_64(self.lastEventTimestamp, serializer);
+    sse_encode_u_64(self.version, serializer);
+  }
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
+  }
+
+  @protected
+  void
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+    List<EncryptionKey> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerEncryptionKey(
+        item,
+        serializer,
+      );
+    }
+  }
+
+  @protected
+  void
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+    List<IdentityRef> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIdentityRef(
+        item,
+        serializer,
+      );
+    }
+  }
+
+  @protected
+  void
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+    List<MessageId> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+        item,
+        serializer,
+      );
+    }
   }
 
   @protected
@@ -6438,6 +12979,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+  sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    List<RelayEndpoint> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+        item,
+        serializer,
+      );
+    }
+  }
+
+  @protected
+  void
   sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerTestInfo(
     List<TestInfo> self,
     SseSerializer serializer,
@@ -6458,6 +13015,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_String(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_metadata(List<Metadata> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_metadata(item, serializer);
     }
   }
 
@@ -6484,6 +13050,38 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void
+  sse_encode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
+    List<(MessageId, GroupSession)> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
+        item,
+        serializer,
+      );
+    }
+  }
+
+  @protected
+  void
+  sse_encode_list_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
+    List<(MessageId, GroupState)> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
+        item,
+        serializer,
+      );
+    }
+  }
+
+  @protected
   void sse_encode_list_test_category(
     List<TestCategory> self,
     SseSerializer serializer,
@@ -6492,6 +13090,52 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_test_category(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_metadata(Metadata self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case Metadata_Generic(key: final key, value: final value):
+        sse_encode_i_32(0, serializer);
+        sse_encode_String(key, serializer);
+        sse_encode_String(value, serializer);
+      case Metadata_Description(field0: final field0):
+        sse_encode_i_32(1, serializer);
+        sse_encode_String(field0, serializer);
+      case Metadata_Avatar(field0: final field0):
+        sse_encode_i_32(2, serializer);
+        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+          field0,
+          serializer,
+        );
+      case Metadata_Background(field0: final field0):
+        sse_encode_i_32(3, serializer);
+        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerImage(
+          field0,
+          serializer,
+        );
+      case Metadata_Website(field0: final field0):
+        sse_encode_i_32(4, serializer);
+        sse_encode_String(field0, serializer);
+      case Metadata_Email(field0: final field0):
+        sse_encode_i_32(5, serializer);
+        sse_encode_String(field0, serializer);
+      case Metadata_Phone(field0: final field0):
+        sse_encode_i_32(6, serializer);
+        sse_encode_String(field0, serializer);
+      case Metadata_Address(field0: final field0):
+        sse_encode_i_32(7, serializer);
+        sse_encode_String(field0, serializer);
+      case Metadata_Social(platform: final platform, handle: final handle):
+        sse_encode_i_32(8, serializer);
+        sse_encode_String(platform, serializer);
+        sse_encode_String(handle, serializer);
+      case Metadata_Unknown(discriminant: final discriminant, data: final data):
+        sse_encode_i_32(9, serializer);
+        sse_encode_u_32(discriminant, serializer);
+        sse_encode_list_prim_u_8_strict(data, serializer);
     }
   }
 
@@ -6506,6 +13150,102 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void
+  sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+    RelayEndpoint? self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRelayEndpoint(
+        self,
+        serializer,
+      );
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_bool(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_f_32(double? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_f_32(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_group_role(
+    GroupRole? self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_group_role(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_group_session(
+    GroupSession? self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_group_session(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_group_state(
+    GroupState? self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_group_state(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_16(int? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_u_16(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_64(BigInt? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_u_64(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_overall_connection_status(
     OverallConnectionStatus self,
     SseSerializer serializer,
@@ -6514,6 +13254,49 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self.isConnected, serializer);
     sse_encode_usize(self.connectedCount, serializer);
     sse_encode_usize(self.totalCount, serializer);
+  }
+
+  @protected
+  void sse_encode_permission(Permission self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_qr_options(QrOptions self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.title, serializer);
+    sse_encode_list_String(self.subtitleLines, serializer);
+    sse_encode_String(self.footer, serializer);
+    sse_encode_usize(self.borderWidth, serializer);
+  }
+
+  @protected
+  void
+  sse_encode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_session(
+    (MessageId, GroupSession) self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+      self.$1,
+      serializer,
+    );
+    sse_encode_group_session(self.$2, serializer);
+  }
+
+  @protected
+  void
+  sse_encode_record_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_message_id_group_state(
+    (MessageId, GroupState) self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerMessageId(
+      self.$1,
+      serializer,
+    );
+    sse_encode_group_state(self.$2, serializer);
   }
 
   @protected
@@ -6562,6 +13345,93 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putBigUint64(self);
   }
+}
+
+@sealed
+class ArcZoeClientSessionManagerImpl extends RustOpaque
+    implements ArcZoeClientSessionManager {
+  // Not to be used by end users
+  ArcZoeClientSessionManagerImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  ArcZoeClientSessionManagerImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_increment_strong_count_ArcZoeClientSessionManager,
+    rustArcDecrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_ArcZoeClientSessionManager,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_ArcZoeClientSessionManagerPtr,
+  );
+}
+
+@sealed
+class BTreeMapIdentityRefGroupMemberImpl extends RustOpaque
+    implements BTreeMapIdentityRefGroupMember {
+  // Not to be used by end users
+  BTreeMapIdentityRefGroupMemberImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  BTreeMapIdentityRefGroupMemberImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_increment_strong_count_BTreeMapIdentityRefGroupMember,
+    rustArcDecrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_BTreeMapIdentityRefGroupMember,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_BTreeMapIdentityRefGroupMemberPtr,
+  );
+}
+
+@sealed
+class BTreeMapStringStringImpl extends RustOpaque
+    implements BTreeMapStringString {
+  // Not to be used by end users
+  BTreeMapStringStringImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  BTreeMapStringStringImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_increment_strong_count_BTreeMapStringString,
+    rustArcDecrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_BTreeMapStringString,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_BTreeMapStringStringPtr,
+  );
 }
 
 @sealed
@@ -6669,9 +13539,18 @@ class ClientImpl extends RustOpaque implements Client {
   Future<void> close() =>
       RustLib.instance.api.zoeClientClientClientClose(that: this);
 
+  Future<MessageId> createGroup({required CreateGroupBuilder createGroup}) =>
+      RustLib.instance.api.zoeClientClientClientCreateGroup(
+        that: this,
+        createGroup: createGroup,
+      );
+
   /// Get list of all configured relays with their connection status
   Future<List<RelayConnectionInfo>> getRelayStatus() =>
       RustLib.instance.api.zoeClientClientClientGetRelayStatus(that: this);
+
+  Future<GroupManager> groupManager() =>
+      RustLib.instance.api.zoeClientClientClientGroupManager(that: this);
 
   /// Check if any relays are currently connected
   Future<bool> hasConnectedRelays() =>
@@ -6763,6 +13642,18 @@ class ClientImpl extends RustOpaque implements Client {
       .api
       .zoeClientClientClientRetrieveFileBytes(that: this, fileRef: fileRef);
 
+  /// Close the client and clean up all resources
+  /// Get access to the session manager for PQXDH operations
+  ///
+  /// This provides access to the underlying session manager which handles
+  /// PQXDH protocol handlers and state management.
+  ///
+  /// # Returns
+  ///
+  /// A reference to the `SessionManager`
+  Future<ArcZoeClientSessionManager> sessionManager() =>
+      RustLib.instance.api.zoeClientClientClientSessionManager(that: this);
+
   /// Store raw data (not from a file) with encryption and blob storage
   ///
   /// This method allows storing arbitrary data without reading from disk.
@@ -6841,6 +13732,79 @@ class ClientSecretImpl extends RustOpaque implements ClientSecret {
 }
 
 @sealed
+class ConvergentEncryptionInfoImpl extends RustOpaque
+    implements ConvergentEncryptionInfo {
+  // Not to be used by end users
+  ConvergentEncryptionInfoImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  ConvergentEncryptionInfoImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_increment_strong_count_ConvergentEncryptionInfo,
+    rustArcDecrementStrongCount: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_ConvergentEncryptionInfo,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_ConvergentEncryptionInfoPtr,
+  );
+}
+
+@sealed
+class CreateGroupBuilderImpl extends RustOpaque implements CreateGroupBuilder {
+  // Not to be used by end users
+  CreateGroupBuilderImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  CreateGroupBuilderImpl.frbInternalSseDecode(
+    BigInt ptr,
+    int externalSizeOnNative,
+  ) : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_CreateGroupBuilder,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_CreateGroupBuilder,
+    rustArcDecrementStrongCountPtr: RustLib
+        .instance
+        .api
+        .rust_arc_decrement_strong_count_CreateGroupBuilderPtr,
+  );
+}
+
+@sealed
+class EncryptionKeyImpl extends RustOpaque implements EncryptionKey {
+  // Not to be used by end users
+  EncryptionKeyImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  EncryptionKeyImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_EncryptionKey,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_EncryptionKey,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_EncryptionKeyPtr,
+  );
+}
+
+@sealed
 class FileRefImpl extends RustOpaque implements FileRef {
   // Not to be used by end users
   FileRefImpl.frbInternalDcoDecode(List<dynamic> wire)
@@ -6857,6 +13821,442 @@ class FileRefImpl extends RustOpaque implements FileRef {
         RustLib.instance.api.rust_arc_decrement_strong_count_FileRef,
     rustArcDecrementStrongCountPtr:
         RustLib.instance.api.rust_arc_decrement_strong_count_FileRefPtr,
+  );
+
+  /// Get file extension from the filename (if available)
+  Future<String?> fileExtension() =>
+      RustLib.instance.api.zoeAppPrimitivesFileFileRefFileExtension(that: this);
+
+  /// Get the filename (if available)
+  Future<String?> filename() =>
+      RustLib.instance.api.zoeAppPrimitivesFileFileRefFilename(that: this);
+
+  /// Get all generic metadata as a key-value map for backward compatibility
+  ///
+  /// This method extracts only the `Metadata::Generic(key, value)` entries and returns them
+  /// as a `BTreeMap<String, String>` for backward compatibility with APIs that expect
+  /// key-value metadata.
+  Future<BTreeMapStringString> genericMetadata() => RustLib.instance.api
+      .zoeAppPrimitivesFileFileRefGenericMetadata(that: this);
+
+  /// Get the original file size (from encryption info)
+  Future<BigInt> originalSize() =>
+      RustLib.instance.api.zoeAppPrimitivesFileFileRefOriginalSize(that: this);
+}
+
+@sealed
+class GroupInfoImpl extends RustOpaque implements GroupInfo {
+  // Not to be used by end users
+  GroupInfoImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  GroupInfoImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_GroupInfo,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_GroupInfo,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_GroupInfoPtr,
+  );
+
+  GroupKeyInfo get keyInfo => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetKeyInfo(that: this);
+
+  List<Metadata> get metadata => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetMetadata(that: this);
+
+  String get name => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetName(that: this);
+
+  GroupSettings get settings => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorGetSettings(that: this);
+
+  set keyInfo(GroupKeyInfo keyInfo) => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetKeyInfo(
+        that: this,
+        keyInfo: keyInfo,
+      );
+
+  set metadata(List<Metadata> metadata) => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetMetadata(
+        that: this,
+        metadata: metadata,
+      );
+
+  set name(String name) => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetName(
+        that: this,
+        name: name,
+      );
+
+  set settings(GroupSettings settings) => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsGroupInfoAutoAccessorSetSettings(
+        that: this,
+        settings: settings,
+      );
+}
+
+@sealed
+class GroupJoinInfoImpl extends RustOpaque implements GroupJoinInfo {
+  // Not to be used by end users
+  GroupJoinInfoImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  GroupJoinInfoImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_GroupJoinInfo,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_GroupJoinInfo,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_GroupJoinInfoPtr,
+  );
+
+  /// Check if this invitation has any relay endpoints
+  Future<bool> hasRelays() => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoHasRelays(that: this);
+
+  /// Get the primary (first priority) relay endpoint
+  Future<RelayEndpoint?> primaryRelay() => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoPrimaryRelay(that: this);
+
+  /// Get all relay endpoints ordered by priority
+  Future<void> relaysByPriority() => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsJoinInfoGroupJoinInfoRelaysByPriority(
+        that: this,
+      );
+}
+
+@sealed
+class GroupKeyInfoImpl extends RustOpaque implements GroupKeyInfo {
+  // Not to be used by end users
+  GroupKeyInfoImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  GroupKeyInfoImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_GroupKeyInfo,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_GroupKeyInfo,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_GroupKeyInfoPtr,
+  );
+
+  /// Get the algorithm name for this key info
+  Future<void> algorithm() => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoAlgorithm(that: this);
+
+  /// Get the key ID for this key info
+  Future<void> keyId() => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoKeyId(that: this);
+
+  /// Check if this key info matches a given key ID
+  Future<bool> matchesKeyId({required Hash otherKeyId}) => RustLib.instance.api
+      .zoeAppPrimitivesGroupEventsKeyInfoGroupKeyInfoMatchesKeyId(
+        that: this,
+        otherKeyId: otherKeyId,
+      );
+}
+
+@sealed
+class GroupManagerImpl extends RustOpaque implements GroupManager {
+  // Not to be used by end users
+  GroupManagerImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  GroupManagerImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_GroupManager,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_GroupManager,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_GroupManagerPtr,
+  );
+
+  /// Get all managed group sessions
+  Future<Map<MessageId, GroupSession>> allGroupSessions() => RustLib
+      .instance
+      .api
+      .zoeStateMachineGroupGroupManagerAllGroupSessions(that: this);
+
+  /// Get all managed groups (state only, for backward compatibility)
+  Future<Map<MessageId, GroupState>> allGroups() => RustLib.instance.api
+      .zoeStateMachineGroupGroupManagerAllGroups(that: this);
+
+  /// Get a group session (state + encryption)
+  Future<GroupSession?> groupSession({required MessageId groupId}) =>
+      RustLib.instance.api.zoeStateMachineGroupGroupManagerGroupSession(
+        that: this,
+        groupId: groupId,
+      );
+
+  /// Get a group's current state
+  Future<GroupState?> groupState({required MessageId groupId}) => RustLib
+      .instance
+      .api
+      .zoeStateMachineGroupGroupManagerGroupState(that: this, groupId: groupId);
+
+  /// Check if a user is a member of a specific group
+  Future<bool> isMember({
+    required MessageId groupId,
+    required VerifyingKey user,
+  }) => RustLib.instance.api.zoeStateMachineGroupGroupManagerIsMember(
+    that: this,
+    groupId: groupId,
+    user: user,
+  );
+
+  /// Get a user's role in a specific group
+  Future<GroupRole?> memberRole({
+    required MessageId groupId,
+    required VerifyingKey user,
+  }) => RustLib.instance.api.zoeStateMachineGroupGroupManagerMemberRole(
+    that: this,
+    groupId: groupId,
+    user: user,
+  );
+}
+
+@sealed
+class GroupMembershipImpl extends RustOpaque implements GroupMembership {
+  // Not to be used by end users
+  GroupMembershipImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  GroupMembershipImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_GroupMembership,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_GroupMembership,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_GroupMembershipPtr,
+  );
+
+  /// Get all identities that a verifying key can act as
+  Future<Set<IdentityRef>> availableIdentities({required VerifyingKey key}) =>
+      RustLib.instance.api
+          .zoeAppPrimitivesGroupStatesGroupMembershipAvailableIdentities(
+            that: this,
+            key: key,
+          );
+
+  /// Get display name for an identity
+  Future<String> displayName({
+    required VerifyingKey key,
+    required IdentityType identityType,
+  }) => RustLib.instance.api
+      .zoeAppPrimitivesGroupStatesGroupMembershipDisplayName(
+        that: this,
+        key: key,
+        identityType: identityType,
+      );
+
+  /// Get effective role when a key acts as a specific identity
+  Future<GroupRole?> effectiveRole({
+    required VerifyingKey key,
+    String? actingAsAlias,
+  }) => RustLib.instance.api
+      .zoeAppPrimitivesGroupStatesGroupMembershipEffectiveRole(
+        that: this,
+        key: key,
+        actingAsAlias: actingAsAlias,
+      );
+
+  /// Check if a verifying key is authorized to act as a specific identity
+  Future<bool> isAuthorized({
+    required VerifyingKey key,
+    required IdentityRef identityRef,
+  }) => RustLib.instance.api
+      .zoeAppPrimitivesGroupStatesGroupMembershipIsAuthorized(
+        that: this,
+        key: key,
+        identityRef: identityRef,
+      );
+
+  /// Get the role for a specific identity
+  Future<GroupRole?> role({required IdentityRef identityRef}) =>
+      RustLib.instance.api.zoeAppPrimitivesGroupStatesGroupMembershipRole(
+        that: this,
+        identityRef: identityRef,
+      );
+}
+
+@sealed
+class HashImpl extends RustOpaque implements Hash {
+  // Not to be used by end users
+  HashImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  HashImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_Hash,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_Hash,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_HashPtr,
+  );
+}
+
+@sealed
+class IdentityRefImpl extends RustOpaque implements IdentityRef {
+  // Not to be used by end users
+  IdentityRefImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  IdentityRefImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_IdentityRef,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_IdentityRef,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_IdentityRefPtr,
+  );
+
+  /// Get the controlling verifying key for this identity
+  Future<VerifyingKey> controllingKey() => RustLib.instance.api
+      .zoeAppPrimitivesIdentityIdentityRefControllingKey(that: this);
+
+  /// Get a display string for this identity (used when no display name is set)
+  Future<String> fallbackDisplay() => RustLib.instance.api
+      .zoeAppPrimitivesIdentityIdentityRefFallbackDisplay(that: this);
+
+  /// Check if this identity is controlled by the given key
+  Future<bool> isControlledBy({required VerifyingKey key}) => RustLib
+      .instance
+      .api
+      .zoeAppPrimitivesIdentityIdentityRefIsControlledBy(that: this, key: key);
+
+  /// Check if this identity is controlled by the given ML-DSA key
+  /// This is a compatibility method for the ML-DSA transition
+  Future<bool> isControlledByMlDsa({required VerifyingKey key}) => RustLib
+      .instance
+      .api
+      .zoeAppPrimitivesIdentityIdentityRefIsControlledByMlDsa(
+        that: this,
+        key: key,
+      );
+}
+
+@sealed
+class IdentityTypeImpl extends RustOpaque implements IdentityType {
+  // Not to be used by end users
+  IdentityTypeImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  IdentityTypeImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_IdentityType,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_IdentityType,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_IdentityTypePtr,
+  );
+}
+
+@sealed
+class ImageImpl extends RustOpaque implements Image {
+  // Not to be used by end users
+  ImageImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  ImageImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_Image,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_Image,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ImagePtr,
+  );
+
+  /// Get the aspect ratio (width/height) if dimensions are available
+  Future<double?> aspectRatio() => RustLib.instance.api
+      .zoeAppPrimitivesFileImageImageAspectRatio(that: this);
+
+  /// Get all generic metadata as a key-value map for backward compatibility
+  ///
+  /// This method extracts only the `Metadata::Generic(key, value)` entries and returns them
+  /// as a `BTreeMap<String, String>` for backward compatibility with APIs that expect
+  /// key-value metadata.
+  Future<BTreeMapStringString> genericMetadata() => RustLib.instance.api
+      .zoeAppPrimitivesFileImageImageGenericMetadata(that: this);
+
+  /// Check if this is a square image
+  Future<bool?> isSquare() =>
+      RustLib.instance.api.zoeAppPrimitivesFileImageImageIsSquare(that: this);
+}
+
+@sealed
+class Ipv4AddrImpl extends RustOpaque implements Ipv4Addr {
+  // Not to be used by end users
+  Ipv4AddrImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  Ipv4AddrImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_Ipv4Addr,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_Ipv4Addr,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_Ipv4AddrPtr,
+  );
+}
+
+@sealed
+class Ipv6AddrImpl extends RustOpaque implements Ipv6Addr {
+  // Not to be used by end users
+  Ipv6AddrImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  Ipv6AddrImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_Ipv6Addr,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_Ipv6Addr,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_Ipv6AddrPtr,
   );
 }
 
@@ -6961,6 +14361,68 @@ class KeyPairImpl extends RustOpaque implements KeyPair {
 }
 
 @sealed
+class MessageIdImpl extends RustOpaque implements MessageId {
+  // Not to be used by end users
+  MessageIdImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  MessageIdImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_MessageId,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_MessageId,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_MessageIdPtr,
+  );
+}
+
+@sealed
+class NetworkAddressImpl extends RustOpaque implements NetworkAddress {
+  // Not to be used by end users
+  NetworkAddressImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  NetworkAddressImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_NetworkAddress,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_NetworkAddress,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_NetworkAddressPtr,
+  );
+
+  /// Get the port if specified
+  Future<int?> port() => RustLib.instance.api
+      .zoeAppPrimitivesConnectionNetworkAddressPort(that: this);
+
+  /// Get the port if specified, otherwise return the default port
+  Future<int> portOrDefault({required int defaultPort}) => RustLib.instance.api
+      .zoeAppPrimitivesConnectionNetworkAddressPortOrDefault(
+        that: this,
+        defaultPort: defaultPort,
+      );
+
+  /// Resolve this network address to a socket address
+  ///
+  /// For IP addresses, returns immediately. For DNS addresses, performs resolution.
+  Future<SocketAddr> resolveToSocketAddr({required int defaultPort}) => RustLib
+      .instance
+      .api
+      .zoeAppPrimitivesConnectionNetworkAddressResolveToSocketAddr(
+        that: this,
+        defaultPort: defaultPort,
+      );
+}
+
+@sealed
 class PathBufImpl extends RustOpaque implements PathBuf {
   // Not to be used by end users
   PathBufImpl.frbInternalDcoDecode(List<dynamic> wire)
@@ -6977,6 +14439,46 @@ class PathBufImpl extends RustOpaque implements PathBuf {
         RustLib.instance.api.rust_arc_decrement_strong_count_PathBuf,
     rustArcDecrementStrongCountPtr:
         RustLib.instance.api.rust_arc_decrement_strong_count_PathBufPtr,
+  );
+}
+
+@sealed
+class QrResultImpl extends RustOpaque implements QrResult {
+  // Not to be used by end users
+  QrResultImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  QrResultImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_QrResult,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_QrResult,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_QrResultPtr,
+  );
+}
+
+@sealed
+class QrResultStringImpl extends RustOpaque implements QrResultString {
+  // Not to be used by end users
+  QrResultStringImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  QrResultStringImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_QrResultString,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_QrResultString,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_QrResultStringPtr,
   );
 }
 
@@ -7073,6 +14575,26 @@ class RelayConnectionStatusImpl extends RustOpaque
         .instance
         .api
         .rust_arc_decrement_strong_count_RelayConnectionStatusPtr,
+  );
+}
+
+@sealed
+class RelayEndpointImpl extends RustOpaque implements RelayEndpoint {
+  // Not to be used by end users
+  RelayEndpointImpl.frbInternalDcoDecode(List<dynamic> wire)
+    : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  RelayEndpointImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+    : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_RelayEndpoint,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_RelayEndpoint,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_RelayEndpointPtr,
   );
 }
 

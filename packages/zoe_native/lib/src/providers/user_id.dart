@@ -1,5 +1,5 @@
 import 'package:riverpod/riverpod.dart';
-import 'package:zoe_native/src/providers/client.dart';
+import 'package:zoe_native/providers.dart';
 
 /// My user id
 final userIdProvider = FutureProvider<String>((ref) async {

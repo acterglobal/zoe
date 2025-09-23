@@ -1,6 +1,5 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:zoe_native/providers.dart';
-import 'package:zoe_native/src/rust/api/client.dart';
 import 'package:zoe_native/zoe_native.dart';
 
 final connectionStatusProvider = StreamProvider<OverallConnectionStatus>((
