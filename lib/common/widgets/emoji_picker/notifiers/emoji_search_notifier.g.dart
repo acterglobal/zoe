@@ -44,7 +44,7 @@ final class EmojiSearchProvider
   }
 }
 
-String _$emojiSearchHash() => r'cfb9e800d43a9f19677dff641def12f282fee59c';
+String _$emojiSearchHash() => r'9b8be7b5e8dfe8d1c6c6171d7ad2d49842b56d3e';
 
 /// Notifier for handling emoji search functionality
 

@@ -43,7 +43,7 @@ final class IsConnectingProvider extends $NotifierProvider<IsConnecting, bool> {
   }
 }
 
-String _$isConnectingHash() => r'fed382442df1bf897b1fbdf2d770f4e15d0b7601';
+String _$isConnectingHash() => r'5ea0b82bdf5cbfbb712be8564f3074e39788172d';
 
 /// Provider for is connecting state
 

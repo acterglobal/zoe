@@ -44,7 +44,7 @@ final class ToggleContentMenuProvider
   }
 }
 
-String _$toggleContentMenuHash() => r'92cc9585e3d4ff8cfda143cc4521e164f0f18eba';
+String _$toggleContentMenuHash() => r'6dde25951f53b356d67f6d27c8b5487af41f7089';
 
 /// Provider for toggling content menu visibility
 
@@ -119,7 +119,7 @@ final class IsEditValueProvider extends $NotifierProvider<IsEditValue, bool> {
   }
 }
 
-String _$isEditValueHash() => r'3bc28f85e78b7bd719285d58e5bc2e3d72a856da';
+String _$isEditValueHash() => r'5ada6f6d333e580de67518363e137834adc4ee18';
 
 /// Provider for tracking edit state for specific content by parentId
 

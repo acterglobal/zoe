@@ -553,7 +553,7 @@ final class ActivePollsWithPendingResponseProvider
 }
 
 String _$activePollsWithPendingResponseHash() =>
-    r'106d6a534b84088abdbd295f5153d56df4da4746';
+    r'd5d9f5fd04ce4361771949b5905025f22d07dce3';
 
 /// Provider for active polls with pending response from current user
 

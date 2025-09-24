@@ -1,9 +1,11 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/widgets/emoji_picker/emoji_picker_config.dart';
 
 part 'emoji_search_notifier.g.dart';
 
+Logger log = Logger('EmojiSearchNotifier');
 /// Notifier for handling emoji search functionality
 @riverpod
 class EmojiSearch extends _$EmojiSearch {
@@ -25,7 +27,8 @@ class EmojiSearch extends _$EmojiSearch {
         defaultEmojiSet,
       );
       state = state.copyWith(searchResults: results);
-    } catch (_) {
+    } catch (e) {
+      log.severe('Error searching emoji: $e');
       state = state.copyWith(searchResults: []);
     }
   }
