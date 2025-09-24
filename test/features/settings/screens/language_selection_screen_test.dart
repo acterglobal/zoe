@@ -5,7 +5,7 @@ import 'package:zoe/features/settings/models/language_model.dart';
 import 'package:zoe/features/settings/notifiers/local_notifier.dart';
 import 'package:zoe/features/settings/providers/local_provider.dart';
 import 'package:zoe/features/settings/screens/language_selection_screen.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
+import '../../../helpers/test_utils.dart';
 
 class MockLocaleNotifier extends LocaleNotifier {
   @override
@@ -33,16 +33,9 @@ void main() {
   });
 
   Future<void> pumpLanguageScreen(WidgetTester tester) async {
-    await tester.pumpWidget(
-      ProviderScope(
-        parent: container,
-        child: MaterialApp(
-          localizationsDelegates: const [
-            L10n.delegate,
-          ],
-          home: const LanguageSelectionScreen(),
-        ),
-      ),
+    await tester.pumpMaterialWidgetWithProviderScope(
+      child: const LanguageSelectionScreen(),
+        container: container,
     );
     await tester.pumpAndSettle();
   }

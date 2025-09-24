@@ -39,11 +39,9 @@ void main() {
   late ProviderContainer container;
 
   Future<void> pumpSystemsTestScreen(WidgetTester tester) async {
-    await tester.pumpMaterialWidget(
-      child: UncontrolledProviderScope(
-        container: container,
-        child: const SystemsTestScreen(),
-      ),
+    await tester.pumpMaterialWidgetWithProviderScope(
+      child: const SystemsTestScreen(),
+      container: container,
     );
     await tester.pump();
   }

@@ -164,17 +164,3 @@ void main() {
     });
   });
 }
-
-extension WidgetTesterX on WidgetTester {
-  Future<void> pumpUntilFound(
-    Finder finder, {
-    Duration timeout = const Duration(seconds: 2),
-  }) async {
-    final endTime = DateTime.now().add(timeout);
-    while (DateTime.now().isBefore(endTime)) {
-      await pump(const Duration(milliseconds: 50));
-      if (any(finder)) return;
-    }
-    throw TestFailure('pumpUntilFound: Widget not found: $finder');
-  }
-}

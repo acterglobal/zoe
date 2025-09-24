@@ -8,7 +8,7 @@ import 'package:zoe/features/settings/screens/settings_screen.dart';
 import 'package:zoe/features/settings/widgets/setting_item_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
+import '../../../helpers/test_utils.dart';
 
 void main() {
   late ProviderContainer container;
@@ -31,16 +31,9 @@ void main() {
   });
 
   Future<void> pumpSettingsScreen(WidgetTester tester) async {
-    await tester.pumpWidget(
-      ProviderScope(
-        parent: container,
-        child: MaterialApp(
-          localizationsDelegates: const [
-            L10n.delegate,
-          ],
-          home: const SettingsScreen(),
-        ),
-      ),
+    await tester.pumpMaterialWidgetWithProviderScope(
+      child: const SettingsScreen(),
+      container: container,
     );
     await tester.pumpAndSettle();
   }
