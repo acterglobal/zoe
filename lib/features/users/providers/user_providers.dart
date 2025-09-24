@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_notifiers.dart';
-import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe_native/providers.dart';
 
@@ -11,7 +10,7 @@ final isUserLoggedInProvider = FutureProvider<bool>((ref) async {
 });
 
 final loggedInUserProvider = FutureProvider<String?>((ref) async {
-  await ref.watch(userIdProvider.future);
+  return await ref.watch(userIdProvider.future);
 });
 
 final userListProvider = StateNotifierProvider<UserNotifier, List<UserModel>>(
