@@ -3,7 +3,7 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/quill_editor/config/quill_editor_manager.dart';
-import 'package:zoe/common/widgets/quill_editor/providers/quill_toolbar_providers.dart';
+import 'package:zoe/common/widgets/quill_editor/notifiers/quill_toolbar_notifier.dart';
 import 'package:flutter_quill_delta_from_html/flutter_quill_delta_from_html.dart';
 import 'dart:convert';
 

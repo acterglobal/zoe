@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/features/events/models/events_model.dart';
-import 'package:zoe/features/events/providers/events_proivder.dart';
-
+import 'package:zoe/features/events/providers/event_providers.dart';
 /// Updates the start date of the event
 Future<void> updateEventStartDate(
   BuildContext context,

@@ -12,7 +12,7 @@ import 'package:zoe/features/documents/actions/select_document_actions.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/documents/widgets/document_list_widget.dart';
 import 'package:zoe/features/events/models/events_model.dart';
-import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/events/widgets/event_list_widget.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
@@ -66,7 +66,8 @@ class ListWidget extends ConsumerWidget {
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
-                onTap: () => ref.read(listsrovider.notifier).deleteList(listId),
+                onTap: () =>
+                    ref.read(listsProvider.notifier).deleteList(listId),
               ),
           ],
         ),
@@ -91,7 +92,7 @@ class ListWidget extends ConsumerWidget {
         context,
         ref,
         onEmojiSelected: (emoji) {
-          ref.read(listsrovider.notifier).updateListEmoji(listId, emoji);
+          ref.read(listsProvider.notifier).updateListEmoji(listId, emoji);
         },
       ),
     );
@@ -114,7 +115,7 @@ class ListWidget extends ConsumerWidget {
         context,
       ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
       onTextChanged: (value) =>
-          ref.read(listsrovider.notifier).updateListTitle(listId, value),
+          ref.read(listsProvider.notifier).updateListTitle(listId, value),
       onTapText: () => context.push(
         AppRoutes.listDetail.route.replaceAll(':listId', listId),
       ),

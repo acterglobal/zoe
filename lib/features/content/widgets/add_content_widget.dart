@@ -32,7 +32,7 @@ class AddContentWidget extends ConsumerWidget {
     // If not editing, return empty widget
     if (!isEditing) return const SizedBox.shrink();
 
-    final isShowMenu = ref.watch(toogleContentMenuProvider);
+    final isShowMenu = ref.watch(toggleContentMenuProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -98,15 +98,15 @@ class AddContentWidget extends ConsumerWidget {
               ),
             ),
           ],
+          ),
         ),
-      ),
     );
   }
 
   void _toggleMenu(WidgetRef ref) {
     HapticFeedback.mediumImpact();
-    ref.read(toogleContentMenuProvider.notifier).state = !ref.read(
-      toogleContentMenuProvider,
-    );
+    ref.read(toggleContentMenuProvider.notifier).update(!ref.read(
+      toggleContentMenuProvider,
+    ));
   }
 }

@@ -1,18 +1,17 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/service_providers.dart';
 import 'package:zoe/features/settings/models/theme.dart';
 
-/// Provider for the theme
-final themeProvider = StateNotifierProvider<ThemeNotifier, AppThemeMode>((ref) {
-  return ThemeNotifier(ref);
-});
+part 'theme_provider.g.dart';
 
-/// Notifier for the theme provider
-class ThemeNotifier extends StateNotifier<AppThemeMode> {
-  final Ref ref;
-
-  ThemeNotifier(this.ref) : super(AppThemeMode.system) {
+/// Provider for managing app theme settings
+@Riverpod(keepAlive: true)
+class Theme extends _$Theme {
+  @override
+  AppThemeMode build() {
+    // Initialize with system theme and load saved theme
     _loadTheme();
+    return AppThemeMode.system;
   }
 
   Future<void> _loadTheme() async {
@@ -24,4 +23,25 @@ class ThemeNotifier extends StateNotifier<AppThemeMode> {
     await ref.read(preferencesServiceProvider).setThemeMode(themeMode);
     state = themeMode;
   }
+}
+
+/// Provider to check if the app is using system theme
+@riverpod
+bool isSystemTheme(Ref ref) {
+  final themeMode = ref.watch(themeProvider);
+  return themeMode == AppThemeMode.system;
+}
+
+/// Provider to check if the app is using dark theme
+@riverpod
+bool isDarkTheme(Ref ref) {
+  final themeMode = ref.watch(themeProvider);
+  return themeMode == AppThemeMode.dark;
+}
+
+/// Provider to check if the app is using light theme
+@riverpod
+bool isLightTheme(Ref ref) {
+  final themeMode = ref.watch(themeProvider);
+  return themeMode == AppThemeMode.light;
 }

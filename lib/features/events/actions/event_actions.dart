@@ -5,9 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
-import 'package:zoe/features/events/providers/events_proivder.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows the event menu popup using the generic component

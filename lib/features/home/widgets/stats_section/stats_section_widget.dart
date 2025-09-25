@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
-import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/home/widgets/stats_section/stats_widget.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';

@@ -33,7 +33,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
       setState(() {}); // Rebuild UI when tab changes
     });
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(searchValueProvider.notifier).state = '',
+      (_) => ref.invalidate(searchValueProvider),
     );
   }
 
@@ -79,7 +79,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
                 ZoeSearchBarWidget(
                   controller: searchController,
                   onChanged: (value) =>
-                      ref.read(searchValueProvider.notifier).state = value,
+                      ref.read(searchValueProvider.notifier).update(value),
                 ),
                 const SizedBox(height: 10),
               ],

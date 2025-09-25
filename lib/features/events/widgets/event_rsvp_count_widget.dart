@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/users/widgets/user_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 

@@ -7,7 +7,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_glassy_tab_widget.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/documents/widgets/document_list_widget.dart';
-import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/events/widgets/event_list_widget.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/features/link/widgets/link_list_widget.dart';
@@ -36,7 +36,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(searchValueProvider.notifier).state = '',
+      (_) => ref.invalidate(searchValueProvider),
     );
   }
 
@@ -68,7 +68,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
             ZoeSearchBarWidget(
               controller: searchController,
               onChanged: (value) =>
-                  ref.read(searchValueProvider.notifier).state = value,
+                  ref.read(searchValueProvider.notifier).update(value),
             ),
             const SizedBox(height: 10),
             ValueListenableBuilder(
