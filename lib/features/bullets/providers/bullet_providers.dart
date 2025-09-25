@@ -116,31 +116,27 @@ class BulletList extends _$BulletList {
   }
 
   String? getFocusBulletId(String bulletId) {
-    try {
-      // Get the bullet for the parent
-      final bullet = state.where((b) => b.id == bulletId).firstOrNull;
-      if (bullet == null) return null;
-      final parentId = bullet.parentId;
+    // Get the bullet for the parent
+    final bullet = state.where((b) => b.id == bulletId).firstOrNull;
+    if (bullet == null) return null;
+    final parentId = bullet.parentId;
 
-      // Get the parent bullet list from current state
-      final parentBullets = state.where((b) => b.parentId == parentId).toList()
-        ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
-      // Get the current bullet index
-      final currentBulletIndex = parentBullets.indexOf(bullet);
-      // If the current bullet is the first bullet, try to return the next bullet
-      if (currentBulletIndex <= 0) {
-        // Check if there's a next bullet available
-        if (currentBulletIndex < parentBullets.length - 1) {
-          // Return the next bullet id
-          return parentBullets[currentBulletIndex + 1].id;
-        }
-        return null;
+    // Get the parent bullet list from current state
+    final parentBullets = state.where((b) => b.parentId == parentId).toList()
+      ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+    // Get the current bullet index
+    final currentBulletIndex = parentBullets.indexOf(bullet);
+    // If the current bullet is the first bullet, try to return the next bullet
+    if (currentBulletIndex <= 0) {
+      // Check if there's a next bullet available
+      if (currentBulletIndex < parentBullets.length - 1) {
+        // Return the next bullet id
+        return parentBullets[currentBulletIndex + 1].id;
       }
-      // Return the previous bullet id
-      return parentBullets[currentBulletIndex - 1].id;
-    } catch (e) {
       return null;
     }
+    // Return the previous bullet id
+    return parentBullets[currentBulletIndex - 1].id;
   }
 }
 
