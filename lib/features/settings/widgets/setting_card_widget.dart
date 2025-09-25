@@ -4,10 +4,12 @@ import 'package:zoe/common/widgets/glassy_container_widget.dart';
 class SettingCardWidget extends StatelessWidget {
   final String title;
   final List<Widget> children;
+  final Color? titleColor;
   const SettingCardWidget({
     super.key,
     required this.title,
     required this.children,
+    this.titleColor,
   });
 
   @override
@@ -22,6 +24,7 @@ class SettingCardWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w600,
               letterSpacing: 0.5,
+              color: titleColor,
             ),
           ),
         ),

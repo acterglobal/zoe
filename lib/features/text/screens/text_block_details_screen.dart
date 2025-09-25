@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
-import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
+import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/features/content/providers/content_menu_providers.dart';
-import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
+import 'package:zoe/features/text/actions/text_actions.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -27,7 +25,7 @@ class TextBlockDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditing = ref.watch(isEditValueProvider(textBlockId));
+    final isEditing = ref.watch(editContentIdProvider) == textBlockId;
     final textBlock = ref.watch(textProvider(textBlockId));
 
     return NotebookPaperBackgroundWidget(
@@ -60,10 +58,18 @@ class TextBlockDetailsScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: ZoeAppBar(actions: [
-            EditViewToggleButton(parentId: textBlockId),
+        title: ZoeAppBar(
+          actions: [
             const SizedBox(width: 10),
-            ContentMenuButton(parentId: textBlockId),
+            ContentMenuButton(
+              onTap: (context) => showTextMenu(
+                context: context,
+                ref: ref,
+                isEditing: isEditing,
+                textId: textBlockId,
+                isDetailScreen: true,
+              ),
+            ),
           ],
         ),
       ),
@@ -85,24 +91,7 @@ class TextBlockDetailsScreen extends ConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: CommonUtils.isKeyboardOpen(context) ? null : _buildFloatingActionButton(
-        context,
-        isEditing,
-        textBlock,
-      ),
-    );
-  }
-
-  Widget _buildFloatingActionButton(
-    BuildContext context,
-    bool isEditing,
-    TextModel textBlock,
-  ) {
-    if (!isEditing) return const SizedBox.shrink();
-    return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(
-        context,
+      floatingActionButton: FloatingActionButtonWrapper(
         parentId: textBlockId,
         sheetId: textBlock.sheetId,
       ),
@@ -171,6 +160,13 @@ class TextBlockDetailsScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(textListProvider.notifier)
                     .updateTextTitle(textBlockId, value),
+                onTapLongPressText: () => showTextMenu(
+                  context: context,
+                  ref: ref,
+                  isEditing: isEditing,
+                  textId: textBlockId,
+                  isDetailScreen: true,
+                ),
               ),
             ),
           ],

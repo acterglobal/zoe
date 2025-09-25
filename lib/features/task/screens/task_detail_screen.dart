@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
-import 'package:zoe/common/widgets/edit_view_toggle_button.dart';
+import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
 import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/features/content/providers/content_menu_providers.dart';
-import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
+import 'package:zoe/features/task/actions/task_actions.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_details_additional_fields.dart';
@@ -29,7 +27,7 @@ class TaskDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final task = ref.watch(taskProvider(taskId));
-    final isEditing = ref.watch(isEditValueProvider(taskId));
+    final isEditing = ref.watch(editContentIdProvider) == taskId;
     return NotebookPaperBackgroundWidget(
       child: task != null
           ? _buildDataTaskWidget(context, ref, task, isEditing)
@@ -62,9 +60,16 @@ class TaskDetailScreen extends ConsumerWidget {
         automaticallyImplyLeading: false,
         title: ZoeAppBar(
           actions: [
-            EditViewToggleButton(parentId: taskId),
             const SizedBox(width: 10),
-            ContentMenuButton(parentId: taskId),
+            ContentMenuButton(
+              onTap: (context) => showTaskMenu(
+                context: context,
+                ref: ref,
+                isEditing: isEditing,
+                taskId: taskId,
+                isDetailScreen: true,
+              ),
+            ),
           ],
         ),
       ),
@@ -86,24 +91,7 @@ class TaskDetailScreen extends ConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: CommonUtils.isKeyboardOpen(context) ? null : _buildFloatingActionButton(
-        context,
-        isEditing,
-        task,
-      ),
-    );
-  }
-
-  Widget _buildFloatingActionButton(
-    BuildContext context,
-    bool isEditing,
-    TaskModel task,
-  ) {
-    if (!isEditing) return const SizedBox.shrink();
-    return ZoeFloatingActionButton(
-      icon: Icons.add_rounded,
-      onPressed: () => showAddContentBottomSheet(
-        context,
+      floatingActionButton: FloatingActionButtonWrapper(
         parentId: taskId,
         sheetId: task.sheetId,
       ),
@@ -165,6 +153,13 @@ class TaskDetailScreen extends ConsumerWidget {
                 onTextChanged: (value) => ref
                     .read(taskListProvider.notifier)
                     .updateTaskTitle(taskId, value),
+                onTapLongPressText: () => showTaskMenu(
+                  context: context,
+                  ref: ref,
+                  isEditing: isEditing,
+                  taskId: taskId,
+                  isDetailScreen: true,
+                ),
               ),
             ),
           ],

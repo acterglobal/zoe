@@ -9,3 +9,4 @@ class SearchValue extends _$SearchValue {
 
   void update(String value) => state = value;
 }
+final editContentIdProvider = StateProvider<String?>((ref) => null);

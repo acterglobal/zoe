@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
-import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
@@ -21,7 +21,11 @@ class DrawerSheetListWidget extends ConsumerWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SheetListWidget(sheetsProvider: sheetListProvider, shrinkWrap: false, isCompact: true),
+            child: SheetListWidget(
+              sheetsProvider: sheetListProvider,
+              shrinkWrap: false,
+              isCompact: true,
+            ),
           ),
         ),
       ],
@@ -54,7 +58,7 @@ class DrawerSheetListWidget extends ConsumerWidget {
               if (context.canPop()) context.pop();
               final sheet = SheetModel();
               ref.read(sheetListProvider.notifier).addSheet(sheet);
-              ref.read(isEditValueProvider(sheet.id).notifier).update(true);
+              ref.read(editContentIdProvider.notifier).state = sheet.id;
               context.push(
                 AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id),
               );

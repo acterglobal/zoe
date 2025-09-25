@@ -1,7 +1,7 @@
-import 'package:zoe/core/rust/frb_generated.dart';
 import 'package:zoe/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:zoe_native/zoe_native.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

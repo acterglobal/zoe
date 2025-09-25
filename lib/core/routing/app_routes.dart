@@ -19,6 +19,8 @@ enum AppRoutes {
   quickSearch('/quick-search'),
   settings('/settings'),
   settingLanguage('/settings/language'),
+  developerTools('/developer-tools'),
+  systemsTest('/developer-tools/systems-test'),
   settingsProfile('/settings/profile'),
   whatsappGroupConnect('/whatsapp-group-connect/:sheetId');
 
