@@ -29,7 +29,7 @@ class _TextPreviewWidgetState extends ConsumerState<TextPreviewWidget> {
 
     // reset search when widget initializes
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(searchValueProvider.notifier).update('');
+      ref.invalidate(searchValueProvider);
     });
   }
 

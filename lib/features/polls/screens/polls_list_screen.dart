@@ -33,7 +33,7 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
       setState(() {}); // Rebuild UI when tab changes
     });
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(searchValueProvider.notifier).update(''),
+      (_) => ref.invalidate(searchValueProvider),
     );
   }
 

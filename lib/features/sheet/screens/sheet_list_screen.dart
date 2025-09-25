@@ -24,7 +24,7 @@ class _SheetListScreenState extends ConsumerState<SheetListScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(searchValueProvider.notifier).update(''),
+      (_) => ref.invalidate(searchValueProvider),
     );
   }
 
@@ -56,7 +56,7 @@ class _SheetListScreenState extends ConsumerState<SheetListScreen> {
             ZoeSearchBarWidget(
               controller: searchController,
               onChanged: (value) =>
-                  ref.read(searchValueProvider.notifier).update(value),
+                  ref.read(searchValueProvider.notifier).state = value,
             ),
             const SizedBox(height: 10),
             Expanded(

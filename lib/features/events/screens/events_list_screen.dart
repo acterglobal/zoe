@@ -25,7 +25,7 @@ class _EventsListScreenState extends ConsumerState<EventsListScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(searchValueProvider.notifier).update(''),
+      (_) => ref.invalidate(searchValueProvider),
     );
   }
 
