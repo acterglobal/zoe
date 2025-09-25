@@ -90,6 +90,9 @@ dependencies:
   # QR code
   pretty_qr_code: ^3.5.0
 
+  # Test
+  mocktail: ^1.0.4
+
 # Added cause; without this, it gives a 'Terminating app due to uncaught exception 'NSInvalidArgumentException'' error on macOS.
 dependency_overrides:
   flutter_quill:
