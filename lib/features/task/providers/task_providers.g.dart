@@ -44,7 +44,7 @@ final class TaskListProvider
   }
 }
 
-String _$taskListHash() => r'e5229a1e1419818bf1849db67c470729e29abbe8';
+String _$taskListHash() => r'12c880e40656c1811721b6224d2d57aebfb633d3';
 
 /// Main task list provider with all task management functionality
 

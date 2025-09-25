@@ -70,7 +70,7 @@ class ListActions {
 
   /// Deletes the specified list content
   static void deleteList(BuildContext context, WidgetRef ref, String listId) {
-    ref.read(listsrovider.notifier).deleteList(listId);
+    ref.read(listsProvider.notifier).deleteList(listId);
     CommonUtils.showSnackBar(context, L10n.of(context).listDeleted);
   }
 }

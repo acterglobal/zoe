@@ -66,7 +66,8 @@ class ListWidget extends ConsumerWidget {
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
-                onTap: () => ref.read(listsProvider.notifier).deleteList(listId),
+                onTap: () =>
+                    ref.read(listsProvider.notifier).deleteList(listId),
               ),
           ],
         ),

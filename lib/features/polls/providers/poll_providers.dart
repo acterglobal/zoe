@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
-import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/features/polls/data/polls.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
@@ -16,36 +15,7 @@ class PollList extends _$PollList {
   @override
   List<PollModel> build() => polls;
 
-  Future<void> addPoll({
-    required String question,
-    required String parentId,
-    required String sheetId,
-    List<PollOption> options = const [],
-    bool isMultipleChoice = false,
-    DateTime? startDate,
-    DateTime? endDate,
-    int? orderIndex,
-  }) async {
-    final createdBy = await PreferencesService().getLoginUserId();
-
-    // Create the new poll
-    final newPoll = PollModel(
-      parentId: parentId,
-      question: question,
-      sheetId: sheetId,
-      orderIndex: orderIndex,
-      startDate: startDate,
-      endDate: endDate,
-      options: options.isEmpty
-          ? [
-              PollOption(id: CommonUtils.generateRandomId(), title: ''),
-              PollOption(id: CommonUtils.generateRandomId(), title: ''),
-            ]
-          : options,
-      isMultipleChoice: isMultipleChoice,
-      createdBy: createdBy,
-    );
-
+  Future<void> addPoll(PollModel newPoll) async {
     state = [...state, newPoll];
   }
 

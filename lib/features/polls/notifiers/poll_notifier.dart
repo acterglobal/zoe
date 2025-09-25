@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/features/polls/data/polls.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';

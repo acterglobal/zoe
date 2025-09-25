@@ -87,15 +87,15 @@ List<String> userIdsFromUserModels(Ref ref, List<UserModel> userModels) {
 String userDisplayName(Ref ref, String userId) {
   final currentUserId = ref.watch(loggedInUserProvider).value ?? '';
   final user = ref.watch(getUserByIdProvider(userId));
-  
+
   if (currentUserId == userId) {
     return 'You';
   }
-  
+
   if (user != null && user.name.isNotEmpty) {
     return user.name;
   }
-  
+
   return userId;
 }
 
