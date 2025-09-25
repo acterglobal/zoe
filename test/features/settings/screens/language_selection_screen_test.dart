@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/features/settings/models/language_model.dart';
-import 'package:zoe/features/settings/notifiers/local_notifier.dart';
-import 'package:zoe/features/settings/providers/local_provider.dart';
+import 'package:zoe/features/settings/providers/locale_provider.dart';
 import 'package:zoe/features/settings/screens/language_selection_screen.dart';
 import '../../../helpers/test_utils.dart';
 
-class MockLocaleNotifier extends LocaleNotifier {
+class MockLocaleNotifier extends AppLocale {
   @override
   Future<void> setLanguage(String languageCode) async {
     state = languageCode;
   }
 
   @override
-  Future<void> initLanguage() async {}
+  String build() => 'en';
 }
 
 void main() {
@@ -23,7 +22,7 @@ void main() {
   setUp(() {
     container = ProviderContainer(
       overrides: [
-        localeProvider.overrideWith((ref) => MockLocaleNotifier()),
+        appLocaleProvider.overrideWith(() => MockLocaleNotifier()),
       ],
     );
   });

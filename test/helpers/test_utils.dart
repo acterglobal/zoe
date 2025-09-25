@@ -18,8 +18,8 @@ extension WidgetTesterExtension on WidgetTester {
     required ProviderContainer container,
   }) async {
     await pumpWidget(
-      ProviderScope(
-        parent: container,
+      UncontrolledProviderScope(
+        container: container,
         child: MaterialApp(
           localizationsDelegates: const [L10n.delegate],
           home: Scaffold(body: child),
