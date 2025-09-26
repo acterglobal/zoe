@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zoe/common/widgets/document_selection_bottom_sheet.dart';
+import 'package:zoe/features/profile/providers/image_picker_provider.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-
-final imagePickerProvider = Provider<ImagePicker>((ref) => ImagePicker());
 
 void selectProfileFileSource(
   BuildContext context,

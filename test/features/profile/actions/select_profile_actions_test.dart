@@ -4,11 +4,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:zoe/features/profile/actions/select_profile_actions.dart';
+import 'package:zoe/features/profile/providers/image_picker_provider.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
+import '../mock_data.dart';
+
 class MockImagePicker extends Mock implements ImagePicker {}
+
 class MockXFile extends Mock implements XFile {}
 
 void main() {
@@ -26,11 +30,7 @@ void main() {
     mockImageFile = MockXFile();
     when(() => mockImageFile.path).thenReturn('/test/path/image.jpg');
 
-    testUser = UserModel(
-      id: 'test-id',
-      name: 'Test User',
-      bio: 'Test Bio',
-    );
+    testUser = UserModel(id: 'test-id', name: 'Test User', bio: 'Test Bio');
 
     container = ProviderContainer(
       overrides: [
@@ -60,19 +60,17 @@ void main() {
   }
 
   group('selectProfileFileSource', () {
-    testWidgets('shows bottom sheet with camera and gallery options',
-        (tester) async {
+    testWidgets('shows bottom sheet with camera and gallery options', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         buildTestWidget(
           container: container,
           child: Consumer(
             builder: (context, ref, _) {
               return TextButton(
-                onPressed: () => selectProfileFileSource(
-                  context,
-                  testUser.id,
-                  ref,
-                ),
+                onPressed: () =>
+                    selectProfileFileSource(context, testUser.id, ref),
                 child: const Text('Select Profile'),
               );
             },
@@ -89,8 +87,9 @@ void main() {
       expect(find.text('Select from gallery'), findsOneWidget);
     });
 
-    testWidgets('handles camera selection and updates user avatar',
-        (tester) async {
+    testWidgets('handles camera selection and updates user avatar', (
+      tester,
+    ) async {
       // Mock image picker to return our mock file
       when(
         () => mockImagePicker.pickImage(
@@ -141,8 +140,9 @@ void main() {
       expect(updatedUser.avatar, equals('/test/path/image.jpg'));
     });
 
-    testWidgets('handles gallery selection and updates user avatar',
-        (tester) async {
+    testWidgets('handles gallery selection and updates user avatar', (
+      tester,
+    ) async {
       // Mock image picker to return our mock file
       when(
         () => mockImagePicker.pickImage(
@@ -263,11 +263,8 @@ void main() {
           child: Consumer(
             builder: (context, ref, _) {
               return TextButton(
-                onPressed: () => selectProfileFileSource(
-                  context,
-                  testUser.id,
-                  ref,
-                ),
+                onPressed: () =>
+                    selectProfileFileSource(context, testUser.id, ref),
                 child: const Text('Select Profile'),
               );
             },
@@ -287,13 +284,4 @@ void main() {
       expect(users.first.avatar, isNull);
     });
   });
-}
-
-class TestUserList extends UserList {
-  final List<UserModel> initialUsers;
-
-  TestUserList(this.initialUsers);
-
-  @override
-  List<UserModel> build() => initialUsers;
 }
