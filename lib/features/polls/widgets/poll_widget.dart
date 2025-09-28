@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
+import 'package:zoe/features/polls/actions/poll_actions.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_checkbox_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
-
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
@@ -20,36 +21,37 @@ import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 
 class PollWidget extends ConsumerWidget {
   final String pollId;
-  final bool isEditing;
+  final bool isDetailScreen;
   final bool showSheetName;
 
   const PollWidget({
     super.key,
     required this.pollId,
-    required this.isEditing,
+    this.isDetailScreen = false,
     this.showSheetName = true,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final poll = ref.watch(pollProvider(pollId));
-
     if (poll == null) return const SizedBox.shrink();
 
-    return _buildPollContent(context, ref, poll);
+    final isEditing = ref.watch(editContentIdProvider) == pollId;
+    return _buildPollContent(context, ref, poll, isEditing);
   }
 
   Widget _buildPollContent(
     BuildContext context,
     WidgetRef ref,
     PollModel poll,
+    bool isEditing,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 8),
-        _buildPollQuestion(context, ref, poll),
+        _buildPollQuestion(context, ref, poll, isEditing),
         const SizedBox(height: 2),
         if (showSheetName) ...[
           Row(
@@ -60,11 +62,11 @@ class PollWidget extends ConsumerWidget {
           ),
         ],
         const SizedBox(height: 16),
-        _buildPollOptionsList(context, ref, poll),
+        _buildPollOptionsList(context, ref, poll, isEditing),
         const SizedBox(height: 12),
-        _buildPollActions(context, ref, poll),
+        _buildPollActions(context, ref, poll, isEditing),
         if (PollUtils.isCompleted(poll))
-          _buildPollClosedMessage(context, ref, poll),
+          _buildPollClosedMessage(context, ref, poll, isEditing),
       ],
     );
   }
@@ -73,6 +75,7 @@ class PollWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     PollModel poll,
+    bool isEditing,
   ) {
     final theme = Theme.of(context);
     return GestureDetector(
@@ -118,6 +121,13 @@ class PollWidget extends ConsumerWidget {
                   );
                 }
               },
+              onTapLongPressText: () => showPollMenu(
+                context: context,
+                ref: ref,
+                isEditing: isEditing,
+                pollId: pollId,
+                isDetailScreen: isDetailScreen,
+              ),
             ),
           ),
           if (isEditing)
@@ -140,12 +150,20 @@ class PollWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     PollModel poll,
+    bool isEditing,
   ) {
     return Column(
       children: poll.options.asMap().entries.map((entry) {
         final index = entry.key;
         final option = entry.value;
-        return _buildPollOptionWidget(context, ref, poll, option, index);
+        return _buildPollOptionWidget(
+          context,
+          ref,
+          poll,
+          option,
+          index,
+          isEditing,
+        );
       }).toList(),
     );
   }
@@ -156,6 +174,7 @@ class PollWidget extends ConsumerWidget {
     PollModel poll,
     PollOption option,
     int optionIndex,
+    bool isEditing,
   ) {
     final isVoted = PollUtils.isUserVoted(poll, option, ref);
     final color = PollUtils.getColorFromOptionId(option.id, poll);
@@ -170,14 +189,18 @@ class PollWidget extends ConsumerWidget {
               final currentUserId = ref.read(loggedInUserProvider).value;
               if (currentUserId != null) {
                 // Get current state before voting
-                final currentStateOfActivePollsWithPendingResponse = ref.read(activePollsWithPendingResponseProvider);
-                
+                final currentStateOfActivePollsWithPendingResponse = ref.read(
+                  activePollsWithPendingResponseProvider,
+                );
+
                 ref
                     .read(pollListProvider.notifier)
                     .voteOnPoll(pollId, option.id, currentUserId);
-                    
-                // added cause need to remain the state same for home screen poll list to show current user voted poll
-                ref.read(activePollsWithPendingResponseProvider.notifier).state = currentStateOfActivePollsWithPendingResponse;
+
+                // added cause need to remain the state same for home screen poll list to show current user voted pol
+                ref
+                    .read(activePollsWithPendingResponseProvider.notifier)
+                    .update(currentStateOfActivePollsWithPendingResponse);
               }
             }
             if (PollUtils.isDraft(poll)) {
@@ -207,7 +230,13 @@ class PollWidget extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildEditableOptionText(context, ref, poll, option),
+                      _buildEditableOptionText(
+                        context,
+                        ref,
+                        poll,
+                        option,
+                        isEditing,
+                      ),
                       const SizedBox(height: 2),
                       PollProgressWidget(
                         option: option,
@@ -256,6 +285,7 @@ class PollWidget extends ConsumerWidget {
     WidgetRef ref,
     PollModel poll,
     PollOption option,
+    bool isEditing,
   ) {
     return ZoeInlineTextEditWidget(
       hintText: L10n.of(context).enterOptionText,
@@ -305,6 +335,7 @@ class PollWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     PollModel poll,
+    bool isEditing,
   ) {
     return Column(
       children: [
@@ -314,7 +345,7 @@ class PollWidget extends ConsumerWidget {
             if (PollUtils.isDraft(poll) && isEditing)
               addPollOptionWidget(context, ref, poll),
             if (PollUtils.isDraft(poll)) ...[
-              _buildPollClosedMessage(context, ref, poll),
+              _buildPollClosedMessage(context, ref, poll, isEditing),
               startPollButtonWidget(context, ref, poll),
             ],
             if (PollUtils.isActive(poll) && !isEditing) ...[
@@ -335,6 +366,7 @@ class PollWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     PollModel poll,
+    bool isEditing,
   ) {
     if (PollUtils.isActive(poll) || (PollUtils.isDraft(poll) && isEditing)) {
       return const SizedBox.shrink();

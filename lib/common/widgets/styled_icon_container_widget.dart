@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class StyledIconContainer extends StatelessWidget {
   final IconData icon;
+  final VoidCallback? onTap;
   final Color? primaryColor;
   final Color? secondaryColor;
   final double size;
@@ -10,11 +11,11 @@ class StyledIconContainer extends StatelessWidget {
   final double backgroundOpacity;
   final double borderOpacity;
   final double shadowOpacity;
-  final VoidCallback? onTap;
 
   const StyledIconContainer({
     super.key,
     required this.icon,
+    this.onTap,
     this.primaryColor,
     this.secondaryColor,
     this.size = 64,
@@ -23,7 +24,6 @@ class StyledIconContainer extends StatelessWidget {
     this.backgroundOpacity = 0.12,
     this.borderOpacity = 0.2,
     this.shadowOpacity = 0.15,
-    this.onTap,
   });
 
   @override

@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_delete_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
@@ -12,11 +12,12 @@ import 'package:zoe/features/documents/actions/select_document_actions.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/documents/widgets/document_list_widget.dart';
 import 'package:zoe/features/events/models/events_model.dart';
-import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/events/widgets/event_list_widget.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/features/link/widgets/link_list_widget.dart';
+import 'package:zoe/features/list/actions/list_actions.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
@@ -32,18 +33,18 @@ import '../../../common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.
 
 class ListWidget extends ConsumerWidget {
   final String listId;
-  final bool isEditing;
 
-  const ListWidget({super.key, required this.listId, required this.isEditing});
+  const ListWidget({super.key, required this.listId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final list = ref.watch(listItemProvider(listId));
     if (list == null) return const SizedBox.shrink();
+    final isEditing = ref.watch(editContentIdProvider) == listId;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: _buildListContent(context, ref, list),
+      child: _buildListContent(context, ref, list, isEditing),
     );
   }
 
@@ -51,6 +52,7 @@ class ListWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     ListModel list,
+    bool isEditing,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,24 +61,30 @@ class ListWidget extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildListEmoji(context, ref, list),
-            Expanded(child: _buildListTitle(context, ref, list)),
+            _buildListEmoji(context, ref, list, isEditing),
+            Expanded(child: _buildListTitle(context, ref, list, isEditing)),
             const SizedBox(width: 6),
             if (isEditing)
               ZoeDeleteButtonWidget(
-                onTap: () => ref.read(listsrovider.notifier).deleteList(listId),
+                onTap: () =>
+                    ref.read(listsProvider.notifier).deleteList(listId),
               ),
           ],
         ),
         const SizedBox(height: 6),
-        _buildListTypeContent(context, ref, list),
+        _buildListTypeContent(context, ref, list, isEditing),
         if (isEditing) _buildAddListItemButton(context, ref, list),
       ],
     );
   }
 
   // Builds the list block icon
-  Widget _buildListEmoji(BuildContext context, WidgetRef ref, ListModel list) {
+  Widget _buildListEmoji(
+    BuildContext context,
+    WidgetRef ref,
+    ListModel list,
+    bool isEditing,
+  ) {
     return EmojiWidget(
       isEditing: isEditing,
       emoji: list.emoji ?? '🔸',
@@ -84,24 +92,39 @@ class ListWidget extends ConsumerWidget {
         context,
         ref,
         onEmojiSelected: (emoji) {
-          ref.read(listsrovider.notifier).updateListEmoji(listId, emoji);
+          ref.read(listsProvider.notifier).updateListEmoji(listId, emoji);
         },
       ),
     );
   }
 
   // Builds the list title
-  Widget _buildListTitle(BuildContext context, WidgetRef ref, ListModel list) {
+  Widget _buildListTitle(
+    BuildContext context,
+    WidgetRef ref,
+    ListModel list,
+    bool isEditing,
+  ) {
     return ZoeInlineTextEditWidget(
-      hintText: list.listType == ContentType.document ? L10n.of(context).documentTitle : L10n.of(context).listTitle ,
+      hintText: list.listType == ContentType.document
+          ? L10n.of(context).documentTitle
+          : L10n.of(context).listTitle,
       isEditing: isEditing,
       text: list.title,
       textStyle: Theme.of(
         context,
       ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
       onTextChanged: (value) =>
-          ref.read(listsrovider.notifier).updateListTitle(listId, value),
-      onTapText: () => context.push(AppRoutes.listDetail.route.replaceAll(':listId', listId)),
+          ref.read(listsProvider.notifier).updateListTitle(listId, value),
+      onTapText: () => context.push(
+        AppRoutes.listDetail.route.replaceAll(':listId', listId),
+      ),
+      onTapLongPressText: () => showListMenu(
+        context: context,
+        ref: ref,
+        isEditing: isEditing,
+        listId: listId,
+      ),
     );
   }
 
@@ -109,6 +132,7 @@ class ListWidget extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     ListModel list,
+    bool isEditing,
   ) {
     return switch (list.listType) {
       ContentType.bullet => BulletListWidget(
@@ -197,7 +221,9 @@ class ListWidget extends ConsumerWidget {
                   );
               break;
             case ContentType.link:
-              ref.read(linkListProvider.notifier).addLink(
+              ref
+                  .read(linkListProvider.notifier)
+                  .addLink(
                     LinkModel(
                       sheetId: sheetId,
                       parentId: listId,
@@ -223,7 +249,9 @@ class ListWidget extends ConsumerWidget {
             ),
             const SizedBox(width: 6),
             Text(
-              list.listType == ContentType.document ? l10n.addDocuments : l10n.addItem,
+              list.listType == ContentType.document
+                  ? l10n.addDocuments
+                  : l10n.addItem,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 14,

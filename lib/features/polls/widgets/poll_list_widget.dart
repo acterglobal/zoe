@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -10,9 +11,9 @@ import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/widgets/poll_widget.dart';
 import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-  
+
 class PollListWidget extends ConsumerWidget {
-  final ProviderBase<List<PollModel>> pollsProvider;
+  final ProviderListenable<List<PollModel>> pollsProvider;
   final bool isEditing;
   final int? maxItems;
   final bool shrinkWrap;
@@ -63,8 +64,11 @@ class PollListWidget extends ConsumerWidget {
     return _buildPollList(context, ref, polls);
   }
 
-  Widget _buildPollList(BuildContext context, WidgetRef ref, List<PollModel> polls) {
-
+  Widget _buildPollList(
+    BuildContext context,
+    WidgetRef ref,
+    List<PollModel> polls,
+  ) {
     final itemCount = maxItems != null
         ? min(maxItems!, polls.length)
         : polls.length;
@@ -84,13 +88,9 @@ class PollListWidget extends ConsumerWidget {
                   horizontal: 8,
                   vertical: 10,
                 ),
-                child: PollWidget(
-                  key: Key(poll.id),
-                  pollId: poll.id,
-                  isEditing: false,
-                ),
+                child: PollWidget(key: Key(poll.id), pollId: poll.id),
               )
-            : PollWidget(pollId: poll.id, isEditing: isEditing);
+            : PollWidget(pollId: poll.id);
       },
     );
   }

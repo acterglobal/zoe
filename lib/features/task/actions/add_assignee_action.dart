@@ -33,7 +33,7 @@ Future<void> assignTask(
       onTapUser: (userId) {
         ref
             .read(taskListProvider.notifier)
-            .addAssignee(context, ref, task, userId);
+            .addAssignee(task.id, userId);
       },
       title: l10n.availableMembersToAssignToThisTask,
     ),

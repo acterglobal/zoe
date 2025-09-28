@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/widgets/text_widget.dart';
 
 class TextListWidget extends ConsumerWidget {
-  final ProviderBase<List<TextModel>> textsProvider;
+  final ProviderListenable<List<TextModel>> textsProvider;
   final bool isEditing;
   final bool shrinkWrap;
   final Widget emptyState;
@@ -31,11 +32,7 @@ class TextListWidget extends ConsumerWidget {
         final text = texts[index];
         return Padding(
           padding: const EdgeInsets.only(left: 24),
-          child: TextWidget(
-            key: ValueKey(text.id),
-            textId: text.id,
-            isEditing: isEditing,
-          ),
+          child: TextWidget(key: ValueKey(text.id), textId: text.id),
         );
       },
     );

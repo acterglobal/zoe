@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/features/users/widgets/user_widget.dart';
 
 class UserListWidget extends ConsumerWidget {
-  final ProviderBase<List<String>> userIdList;
+  final ProviderListenable<List<String>> userIdList;
   final Widget? Function(String userId)? actionWidget;
   final Function(String userId)? onTapUser;
   final String title;

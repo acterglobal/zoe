@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
-import 'package:zoe/features/events/providers/events_proivder.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/events/widgets/event_widget.dart';
 import 'package:zoe/features/home/widgets/section_header/section_header_widget.dart';
 import 'package:zoe/features/home/widgets/today_focus/todays_item_widget.dart';
@@ -21,9 +21,13 @@ class TodaysFocusWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final todaysEvents = ref.watch(todaysEventsProvider);
     final todaysTasks = ref.watch(todaysTasksProvider);
-    final activePollsWithPendingResponse = ref.watch(activePollsWithPendingResponseProvider);
+    final activePollsWithPendingResponse = ref.watch(
+      activePollsWithPendingResponseProvider,
+    );
 
-    if (todaysEvents.isEmpty && todaysTasks.isEmpty && activePollsWithPendingResponse.isEmpty) {
+    if (todaysEvents.isEmpty &&
+        todaysTasks.isEmpty &&
+        activePollsWithPendingResponse.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -77,8 +81,7 @@ class TodaysFocusWidget extends ConsumerWidget {
   Widget _buildEventItem(BuildContext context, EventModel event) {
     return EventWidget(
       key: ValueKey(event.id),
-      eventsId: event.id,
-      isEditing: false,
+      eventId: event.id,
       margin: const EdgeInsets.only(top: 3, bottom: 3),
     );
   }
@@ -114,11 +117,7 @@ class TodaysFocusWidget extends ConsumerWidget {
           .map(
             (poll) => _buildSectionContainer(
               context,
-              PollWidget(
-                key: ValueKey(poll.id),
-                pollId: poll.id,
-                isEditing: false,
-              ),
+              PollWidget(key: ValueKey(poll.id), pollId: poll.id),
             ),
           )
           .toList(),

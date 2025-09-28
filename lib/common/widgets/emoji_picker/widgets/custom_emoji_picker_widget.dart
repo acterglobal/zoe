@@ -2,7 +2,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/emoji_picker/emoji_picker_config.dart';
-import 'package:zoe/common/widgets/emoji_picker/providers/emoji_search_provider.dart';
+import 'package:zoe/common/widgets/emoji_picker/notifiers/emoji_search_notifier.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 

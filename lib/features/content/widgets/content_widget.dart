@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/models/user_display_type.dart';
 import 'package:zoe/features/bullets/widgets/bullet_item_widget.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/content/providers/content_providers.dart';
-import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/utils/content_utils.dart';
 import 'package:zoe/features/content/widgets/add_content_widget.dart';
 import 'package:zoe/features/documents/widgets/document_widget.dart'
@@ -32,7 +32,7 @@ class ContentWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     /// Watch the content list provider
     final contentList = ref.watch(contentListByParentIdProvider(parentId));
-    final isEditing = ref.watch(isEditValueProvider(parentId));
+    final isEditing = ref.watch(editContentIdProvider) == parentId;
 
     // Separate documents from other content
     final documents = contentList
@@ -149,13 +149,12 @@ class ContentWidget extends ConsumerWidget {
     final key = ValueKey('${content.type.name}-$contentId');
 
     Widget contentWidget = switch (content.type) {
-      ContentType.text => TextWidget(textId: contentId, isEditing: isEditing),
+      ContentType.text => TextWidget(textId: contentId),
       ContentType.event => EventWidget(
-        eventsId: contentId,
-        isEditing: isEditing,
+        eventId: contentId,
         showSheetName: showSheetName,
       ),
-      ContentType.list => ListWidget(listId: contentId, isEditing: isEditing),
+      ContentType.list => ListWidget(listId: contentId),
       ContentType.task => TaskWidget(
         taskId: contentId,
         isEditing: isEditing,
@@ -169,7 +168,6 @@ class ContentWidget extends ConsumerWidget {
       ),
       ContentType.link => LinkWidget(
         linkId: contentId,
-        isEditing: isEditing,
         showSheetName: showSheetName,
       ),
       ContentType.document => DocumentWidget(
@@ -179,7 +177,6 @@ class ContentWidget extends ConsumerWidget {
       ),
       ContentType.poll => PollWidget(
         pollId: contentId,
-        isEditing: isEditing,
         showSheetName: showSheetName,
       ),
     };
@@ -218,10 +215,7 @@ class ContentWidget extends ConsumerWidget {
       );
     }
 
-    return Container(
-      key: key,
-      child: contentWidget,
-    );
+    return Container(key: key, child: contentWidget);
   }
 
   void _handleReorder(

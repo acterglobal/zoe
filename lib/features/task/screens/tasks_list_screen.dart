@@ -25,7 +25,7 @@ class _TasksListScreenState extends ConsumerState<TasksListScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(searchValueProvider.notifier).state = '',
+      (_) => ref.invalidate(searchValueProvider),
     );
   }
 
@@ -57,7 +57,7 @@ class _TasksListScreenState extends ConsumerState<TasksListScreen> {
             ZoeSearchBarWidget(
               controller: searchController,
               onChanged: (value) =>
-                  ref.read(searchValueProvider.notifier).state = value,
+                  ref.read(searchValueProvider.notifier).update(value),
             ),
             const SizedBox(height: 10),
             Expanded(

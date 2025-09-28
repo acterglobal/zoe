@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/animated_background_widget.dart';
 import 'package:zoe/common/widgets/drawer/hamburger_drawer_widget.dart';
@@ -12,7 +13,6 @@ import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dar
 import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/core/routing/app_routes.dart';
-import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/home/widgets/app_bar/connection_status_indicator.dart';
 import 'package:zoe/features/home/widgets/section_header/section_header_widget.dart';
 import 'package:zoe/features/home/widgets/stats_section/stats_section_widget.dart';
@@ -140,7 +140,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       onPressed: () async {
         final sheet = SheetModel();
         ref.read(sheetListProvider.notifier).addSheet(sheet);
-        ref.read(isEditValueProvider(sheet.id).notifier).state = true;
+        ref.read(editContentIdProvider.notifier).state = sheet.id;
         context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id));
       },
     );
