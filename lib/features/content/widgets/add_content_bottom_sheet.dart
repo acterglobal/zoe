@@ -37,6 +37,7 @@ class AddContentBottomSheet extends ConsumerWidget {
       children: [
         Text(
           L10n.of(context).addContent,
+          key: const Key('add_content_title'),
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 10),
