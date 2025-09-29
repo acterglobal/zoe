@@ -12,15 +12,7 @@ import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../helpers/test_utils.dart';
-
-class TestUserList extends UserList {
-  final List<UserModel> initialUsers;
-
-  TestUserList(this.initialUsers);
-
-  @override
-  List<UserModel> build() => initialUsers;
-}
+import '../mock_data.dart';
 
 void main() {
   late ProviderContainer container;
@@ -152,8 +144,11 @@ void main() {
       await tester.tap(find.byType(ZoePrimaryButton));
       await tester.pump();
 
-      // Should still be on the same screen (not popped)
-      expect(find.byType(EditProfileScreen), findsOneWidget);
+      // Should show validation error message
+      expect(
+        find.text(L10n.of(tester.element(find.byType(EditProfileScreen))).nameCannotBeEmpty),
+        findsOneWidget,
+      );
     });
 
     testWidgets('saves valid changes', (tester) async {
@@ -185,8 +180,10 @@ void main() {
       await tester.tap(find.byType(ZoePrimaryButton));
       await tester.pumpAndSettle();
 
-      // Verify navigation occurred
-      expect(find.byType(EditProfileScreen), findsNothing);
+      // Verify user data was updated in the provider
+      final updatedUser = container.read(userListProvider).firstWhere((u) => u.id == testUser.id);
+      expect(updatedUser.name, equals(newName));
+      expect(updatedUser.bio, equals(newBio));
     });
   });
 
