@@ -10,12 +10,3 @@ class ToggleContentMenu extends _$ToggleContentMenu {
 
   void update(bool value) => state = value;
 }
-
-/// Provider for tracking edit state for specific content by parentId
-@riverpod
-class IsEditValue extends _$IsEditValue {
-  @override
-  bool build(String parentId) => false;
-
-  void update(bool value) => state = value;
-}
