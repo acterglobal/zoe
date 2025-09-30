@@ -12,28 +12,50 @@ import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 
+/// Test utilities for content provider tests
+class ContentTestUtils {
+  /// Creates a test text model with default values
+  static TextModel createTestText({
+    String parentId = 'parent1',
+    String sheetId = 'sheet1',
+    String title = 'Text 1',
+    String plainText = '',
+    String htmlText = '',
+    int orderIndex = 0,
+    DateTime? createdAt,
+  }) {
+    return TextModel(
+      parentId: parentId,
+      sheetId: sheetId,
+      title: title,
+      description: (plainText: plainText, htmlText: htmlText),
+      orderIndex: orderIndex,
+      createdAt: createdAt,
+    );
+  }
+
+  /// Creates a provider container with given text models and empty other providers
+  static ProviderContainer createContainer({List<TextModel> texts = const []}) {
+    return ProviderContainer(
+      overrides: [
+        textListProvider.overrideWithValue(texts),
+        eventListProvider.overrideWithValue([]),
+        listsProvider.overrideWithValue([]),
+        bulletListProvider.overrideWithValue([]),
+        taskListProvider.overrideWithValue([]),
+        linkListProvider.overrideWithValue([]),
+        pollListProvider.overrideWithValue([]),
+        documentListProvider.overrideWithValue([]),
+      ],
+    );
+  }
+}
+
 void main() {
   group('ContentList Provider Tests', () {
     test('combines content from all providers', () {
-      final container = ProviderContainer(
-        overrides: [
-          textListProvider.overrideWithValue([
-            TextModel(
-              parentId: 'parent1',
-              sheetId: 'sheet1',
-              title: 'Text 1',
-              description: (plainText: '', htmlText: ''),
-              orderIndex: 0,
-            ),
-          ]),
-          eventListProvider.overrideWithValue([]),
-          listsProvider.overrideWithValue([]),
-          bulletListProvider.overrideWithValue([]),
-          taskListProvider.overrideWithValue([]),
-          linkListProvider.overrideWithValue([]),
-          pollListProvider.overrideWithValue([]),
-          documentListProvider.overrideWithValue([]),
-        ],
+      final container = ContentTestUtils.createContainer(
+        texts: [ContentTestUtils.createTestText()],
       );
       addTearDown(container.dispose);
 
@@ -44,41 +66,23 @@ void main() {
 
     test('sorts content by parentId, orderIndex, and createdAt', () {
       final now = DateTime.now();
-      final container = ProviderContainer(
-        overrides: [
-          textListProvider.overrideWithValue([
-            TextModel(
-              parentId: 'parent1',
-              sheetId: 'sheet1',
-              title: 'Text 1',
-              description: (plainText: '', htmlText: ''),
-              orderIndex: 1,
-              createdAt: now,
-            ),
-            TextModel(
-              parentId: 'parent1',
-              sheetId: 'sheet1',
-              title: 'Text 2',
-              description: (plainText: '', htmlText: ''),
-              orderIndex: 0,
-              createdAt: now.add(const Duration(seconds: 1)),
-            ),
-            TextModel(
-              parentId: 'parent2',
-              sheetId: 'sheet1',
-              title: 'Text 3',
-              description: (plainText: '', htmlText: ''),
-              orderIndex: 0,
-              createdAt: now,
-            ),
-          ]),
-          eventListProvider.overrideWithValue([]),
-          listsProvider.overrideWithValue([]),
-          bulletListProvider.overrideWithValue([]),
-          taskListProvider.overrideWithValue([]),
-          linkListProvider.overrideWithValue([]),
-          pollListProvider.overrideWithValue([]),
-          documentListProvider.overrideWithValue([]),
+      final container = ContentTestUtils.createContainer(
+        texts: [
+          ContentTestUtils.createTestText(
+            parentId: 'parent1',
+            orderIndex: 1,
+            createdAt: now,
+          ),
+          ContentTestUtils.createTestText(
+            parentId: 'parent1',
+            orderIndex: 0,
+            createdAt: now.add(const Duration(seconds: 1)),
+          ),
+          ContentTestUtils.createTestText(
+            parentId: 'parent2',
+            orderIndex: 0,
+            createdAt: now,
+          ),
         ],
       );
       addTearDown(container.dispose);
@@ -99,31 +103,10 @@ void main() {
 
   group('ContentListByParentId Provider Tests', () {
     test('filters content by parentId', () {
-      final container = ProviderContainer(
-        overrides: [
-          textListProvider.overrideWithValue([
-            TextModel(
-              parentId: 'parent1',
-              sheetId: 'sheet1',
-              title: 'Text 1',
-              description: (plainText: '', htmlText: ''),
-              orderIndex: 0,
-            ),
-            TextModel(
-              parentId: 'parent2',
-              sheetId: 'sheet1',
-              title: 'Text 2',
-              description: (plainText: '', htmlText: ''),
-              orderIndex: 0,
-            ),
-          ]),
-          eventListProvider.overrideWithValue([]),
-          listsProvider.overrideWithValue([]),
-          bulletListProvider.overrideWithValue([]),
-          taskListProvider.overrideWithValue([]),
-          linkListProvider.overrideWithValue([]),
-          pollListProvider.overrideWithValue([]),
-          documentListProvider.overrideWithValue([]),
+      final container = ContentTestUtils.createContainer(
+        texts: [
+          ContentTestUtils.createTestText(parentId: 'parent1'),
+          ContentTestUtils.createTestText(parentId: 'parent2'),
         ],
       );
       addTearDown(container.dispose);
@@ -143,26 +126,8 @@ void main() {
 
   group('Content Provider Tests', () {
     test('finds content by id', () {
-      final testContent = TextModel(
-        parentId: 'parent1',
-        sheetId: 'sheet1',
-        title: 'Text 1',
-        description: (plainText: '', htmlText: ''),
-        orderIndex: 0,
-      );
-
-      final container = ProviderContainer(
-        overrides: [
-          textListProvider.overrideWithValue([testContent]),
-          eventListProvider.overrideWithValue([]),
-          listsProvider.overrideWithValue([]),
-          bulletListProvider.overrideWithValue([]),
-          taskListProvider.overrideWithValue([]),
-          linkListProvider.overrideWithValue([]),
-          pollListProvider.overrideWithValue([]),
-          documentListProvider.overrideWithValue([]),
-        ],
-      );
+      final testContent = ContentTestUtils.createTestText();
+      final container = ContentTestUtils.createContainer(texts: [testContent]);
       addTearDown(container.dispose);
 
       final foundContent = container.read(contentProvider(testContent.id));
