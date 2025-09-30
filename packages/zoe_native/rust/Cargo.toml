@@ -11,6 +11,7 @@ flutter_rust_bridge = { workspace = true }
 zoe-client = { workspace = true, features = ["frb-api"] }
 zoe-wire-protocol = { workspace = true }
 zoe-app-primitives = { workspace = true }
+zoe-state-machine = { workspace = true }
 extend = "1.2"
 async-trait = "0.1"
 futures = "0.3"
