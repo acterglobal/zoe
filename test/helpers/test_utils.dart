@@ -9,6 +9,7 @@ extension WidgetTesterExtension on WidgetTester {
   Future<void> pumpMaterialWidget({
     required Widget child,
     GoRouter? router,
+    ThemeData? theme,
   }) async {
     await pumpWidget(
       MaterialApp(
@@ -20,6 +21,7 @@ extension WidgetTesterExtension on WidgetTester {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: L10n.supportedLocales,
+        theme: theme ?? ThemeData.light(),
         home: Scaffold(
           body: router != null
               ? InheritedGoRouter(
@@ -36,6 +38,7 @@ extension WidgetTesterExtension on WidgetTester {
     required Widget child,
     required ProviderContainer container,
     GoRouter? router,
+    ThemeData? theme,
   }) async {
     await pumpWidget(
       UncontrolledProviderScope(
@@ -49,6 +52,7 @@ extension WidgetTesterExtension on WidgetTester {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: L10n.supportedLocales,
+          theme: theme ?? ThemeData.light(),
           home: Scaffold(
             body: router != null
                 ? InheritedGoRouter(

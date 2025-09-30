@@ -6,7 +6,7 @@ part 'whatsapp_group_connect_provider.g.dart';
 @riverpod
 class IsConnecting extends _$IsConnecting {
   @override
-  bool build() => false;
+  bool build() => false; 
 
   void update(bool value) => state = value;
 }
