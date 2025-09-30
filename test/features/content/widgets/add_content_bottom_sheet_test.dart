@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_menu_options.dart';
 
+import '../../../helpers/mock_gorouter.dart';
 import '../../../helpers/test_utils.dart';
-
-class MockGoRouter extends Mock implements GoRouter {}
 
 void main() {
   late ProviderContainer container;
