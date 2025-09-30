@@ -7,11 +7,7 @@ void main() {
     late ProviderContainer container;
 
     setUp(() {
-      container = ProviderContainer();
-    });
-
-    tearDown(() {
-      container.dispose();
+      container = ProviderContainer.test();
     });
 
     test('initial state is false', () {

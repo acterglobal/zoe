@@ -22,17 +22,13 @@ void main() {
 
   setUp(() {
     mockRouter = MockGoRouter();
-    container = ProviderContainer(
+    container = ProviderContainer.test(
       overrides: [
         isConnectingProvider.overrideWithValue(false),
       ],
     );
 
     when(() => mockRouter.pop()).thenAnswer((_) async {});
-  });
-
-  tearDown(() {
-    container.dispose();
   });
 
   Future<void> pumpScreen(WidgetTester tester) async {
