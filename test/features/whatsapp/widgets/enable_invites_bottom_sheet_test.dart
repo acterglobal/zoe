@@ -10,7 +10,7 @@ import '../../../helpers/test_utils.dart';
 
 void main() {
   group('EnableInvitesBottomSheet', () {
-    testWidgets('renders all components correctly on iOS', (tester) async {
+    testWidgets('renders all components correctly', (tester) async {
       await tester.pumpMaterialWidget(
         child: const EnableInvitesBottomSheet(),
       );
