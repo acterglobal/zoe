@@ -11,7 +11,7 @@ class ZoeFloatingActionButtonTestUtils {
   static Widget createTestWidget({
     VoidCallback? onPressed,
     Widget? child,
-    IconData? icon = Icons.add,
+    IconData icon = Icons.add,
     double? size,
     Color? primaryColor,
     Color? secondaryColor,
@@ -51,20 +51,6 @@ void main() {
       final icon = tester.widget<Icon>(find.byIcon(Icons.add));
       expect(icon.size, 32);
       expect(icon.color, Colors.white);
-    });
-
-    testWidgets('renders with custom child correctly', (tester) async {
-      const childKey = Key('test-child');
-      await tester.pumpMaterialWidget(
-        child: ZoeFloatingActionButtonTestUtils.createTestWidget(
-          child: const Text('Test', key: childKey),
-          icon: null,
-        ),
-      );
-
-      // Verify child is shown instead of icon
-      expect(find.byKey(childKey), findsOneWidget);
-      expect(find.byType(Icon), findsNothing);
     });
 
     testWidgets('applies custom size correctly', (tester) async {

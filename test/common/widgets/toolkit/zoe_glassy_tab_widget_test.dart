@@ -12,10 +12,10 @@ class ZoeGlassyTabTestUtils {
     List<String>? tabTexts,
     int? selectedIndex,
     Function(int)? onTabChanged,
-    double? height = 60,
-    EdgeInsets? margin = const EdgeInsets.symmetric(vertical: 4),
-    double? borderRadius = 25,
-    double? borderOpacity = 0.1,
+    double height = 60,
+    EdgeInsets margin = const EdgeInsets.symmetric(vertical: 4),
+    double borderRadius = 25,
+    double borderOpacity = 0.1,
   }) {
     return ZoeGlassyTabWidget(
       tabTexts: tabTexts ?? ['Tab 1', 'Tab 2', 'Tab 3'],
@@ -180,8 +180,8 @@ void main() {
         final decoration = container.decoration as BoxDecoration;
         if (index == selectedIndex) {
           expect(decoration.border, isNotNull);
-          expect(decoration.color?.value,
-              equals(ThemeData.light().colorScheme.primary.withValues(alpha: 0.2).value));
+          expect(decoration.color,
+              equals(ThemeData.light().colorScheme.primary.withValues(alpha: 0.2)));
         } else {
           expect(decoration.border, isNull);
           expect(decoration.color, Colors.transparent);

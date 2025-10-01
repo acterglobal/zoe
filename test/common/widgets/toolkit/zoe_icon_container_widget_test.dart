@@ -8,23 +8,23 @@ import '../../../helpers/test_utils.dart';
 class ZoeIconContainerTestUtils {
   /// Creates a test wrapper for the ZoeIconContainer widget
   static ZoeIconContainer createTestWidget({
-    IconData? icon = Icons.close,
-    double? size = 72,
+    IconData icon = Icons.close,
+    double size = 72,
     Color? backgroundColor,
     Color? iconColor,
     Color? borderColor,
-    double? borderWidth = 1.0,
-    double? borderRadius = 36,
+    double borderWidth = 1.0,
+    double borderRadius = 36,
     VoidCallback? onTap,
   }) {
     return ZoeIconContainer(
-      icon: icon ?? Icons.close,
-      size: size ?? 72,
+      icon: icon,
+      size: size,
       backgroundColor: backgroundColor,
       iconColor: iconColor,
       borderColor: borderColor,
-      borderWidth: borderWidth ?? 1.0,
-      borderRadius: borderRadius ?? 36,
+      borderWidth: borderWidth,
+      borderRadius: borderRadius,
       onTap: onTap,
     );
   }

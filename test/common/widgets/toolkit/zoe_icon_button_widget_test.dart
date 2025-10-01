@@ -8,13 +8,13 @@ import '../../../helpers/test_utils.dart';
 class ZoeIconButtonTestUtils {
   /// Creates a test wrapper for the ZoeIconButton widget
   static ZoeIconButtonWidget createTestWidget({
-    IconData? icon = Icons.close,
+    IconData icon = Icons.close,
     VoidCallback? onTap,
-    double? size = 24,
-    double? padding = 10,
+    double size = 24,
+    double padding = 10,
   }) {
     return ZoeIconButtonWidget(
-      icon: icon ?? Icons.close,
+      icon: icon,
       onTap: onTap,
       size: size,
       padding: padding,
