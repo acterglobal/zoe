@@ -22,6 +22,7 @@ extension WidgetTesterExtension on WidgetTester {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: L10n.supportedLocales,
+        theme: theme ?? ThemeData.light(),
         home: Scaffold(
           body: router != null
               ? InheritedGoRouter(
@@ -53,6 +54,7 @@ extension WidgetTesterExtension on WidgetTester {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: L10n.supportedLocales,
+          theme: theme ?? ThemeData.light(),
           home: Scaffold(
             body: router != null
                 ? InheritedGoRouter(
