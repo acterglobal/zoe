@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/widgets/animated_textfield_widget.dart';
 import 'package:zoe/features/profile/widgets/profile_user_name_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 void main() {
   late TextEditingController controller;

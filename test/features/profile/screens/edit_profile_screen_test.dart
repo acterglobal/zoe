@@ -11,7 +11,7 @@ import 'package:zoe/features/profile/widgets/profile_user_name_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 import '../mock_data.dart';
 
 void main() {

@@ -7,7 +7,7 @@ import 'package:zoe/features/content/widgets/add_content_widget.dart';
 import 'package:zoe/features/content/widgets/content_menu_options.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 void main() {
   late ProviderContainer providerContainer;

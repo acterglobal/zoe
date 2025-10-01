@@ -6,7 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_menu_options.dart';
 
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 class MockGoRouter extends Mock implements GoRouter {}
 

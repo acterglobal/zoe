@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/features/content/widgets/content_menu_options.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 void main() {
   group('ContentMenuOptions', () {
