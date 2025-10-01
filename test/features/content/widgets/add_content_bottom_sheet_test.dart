@@ -6,7 +6,7 @@ import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_menu_options.dart';
 
 import '../../../test-utils/test_utils.dart';
-import '../../../helpers/mock_gorouter.dart';
+import '../../../test-utils/mock_gorouter.dart';
 
 void main() {
   late ProviderContainer container;

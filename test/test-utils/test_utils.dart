@@ -14,7 +14,6 @@ extension WidgetTesterExtension on WidgetTester {
     await pumpWidget(
       MaterialApp(
         locale: const Locale('en'),
-        theme: theme,
         localizationsDelegates: [
           L10n.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -46,7 +45,6 @@ extension WidgetTesterExtension on WidgetTester {
         container: container,
         child: MaterialApp(
           locale: const Locale('en'),
-          theme: theme,
           localizationsDelegates: [
             L10n.delegate,
             GlobalMaterialLocalizations.delegate,

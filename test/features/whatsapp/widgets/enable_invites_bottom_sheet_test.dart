@@ -6,7 +6,7 @@ import 'package:zoe/features/whatsapp/widgets/guide_step_widget.dart';
 import 'package:zoe/features/whatsapp/widgets/important_note_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 void main() {
   group('EnableInvitesBottomSheet', () {
