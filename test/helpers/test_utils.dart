@@ -9,10 +9,12 @@ extension WidgetTesterExtension on WidgetTester {
   Future<void> pumpMaterialWidget({
     required Widget child,
     GoRouter? router,
+    ThemeData? theme,
   }) async {
     await pumpWidget(
       MaterialApp(
         locale: const Locale('en'),
+        theme: theme,
         localizationsDelegates: [
           L10n.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -36,12 +38,14 @@ extension WidgetTesterExtension on WidgetTester {
     required Widget child,
     required ProviderContainer container,
     GoRouter? router,
+    ThemeData? theme,
   }) async {
     await pumpWidget(
       UncontrolledProviderScope(
         container: container,
         child: MaterialApp(
           locale: const Locale('en'),
+          theme: theme,
           localizationsDelegates: [
             L10n.delegate,
             GlobalMaterialLocalizations.delegate,
