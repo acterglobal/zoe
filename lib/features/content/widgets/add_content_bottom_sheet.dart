@@ -32,85 +32,87 @@ class AddContentBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          L10n.of(context).addContent,
-          key: const Key('add_content_title'),
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: ContentMenuOptions(
-            onTapText: () {
-              context.pop();
-              addNewTextContent(
-                ref: ref,
-                parentId: parentId,
-                sheetId: sheetId,
-                addAtTop: true,
-              );
-            },
-            onTapEvent: () {
-              context.pop();
-              addNewEventContent(
-                ref: ref,
-                parentId: parentId,
-                sheetId: sheetId,
-                addAtTop: true,
-              );
-            },
-            onTapBulletedList: () {
-              context.pop();
-              addNewBulletedListContent(
-                ref: ref,
-                parentId: parentId,
-                sheetId: sheetId,
-                addAtTop: true,
-              );
-            },
-            onTapToDoList: () {
-              context.pop();
-              addNewTaskListContent(
-                ref: ref,
-                parentId: parentId,
-                sheetId: sheetId,
-                addAtTop: true,
-              );
-            },
-            onTapLink: () {
-              context.pop();
-              addNewLinkContent(
-                ref: ref,
-                parentId: parentId,
-                sheetId: sheetId,
-                addAtTop: true,
-              );
-            },
-            onTapDocument: () {
-              context.pop();
-              addNewDocumentContent(
-                ref: ref,
-                parentId: parentId,
-                sheetId: sheetId,
-                addAtTop: true,
-              );
-            },
-            onTapPoll: () {
-              context.pop();
-              addNewPollContent(
-                ref: ref,
-                parentId: parentId,
-                sheetId: sheetId,
-                addAtTop: true,
-              );
-            },
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            L10n.of(context).addContent,
+            key: const Key('add_content_title'),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-        ),
-        const SizedBox(height: 20),
-      ],
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ContentMenuOptions(
+              onTapText: () {
+                context.pop();
+                addNewTextContent(
+                  ref: ref,
+                  parentId: parentId,
+                  sheetId: sheetId,
+                  addAtTop: true,
+                );
+              },
+              onTapEvent: () {
+                context.pop();
+                addNewEventContent(
+                  ref: ref,
+                  parentId: parentId,
+                  sheetId: sheetId,
+                  addAtTop: true,
+                );
+              },
+              onTapBulletedList: () {
+                context.pop();
+                addNewBulletedListContent(
+                  ref: ref,
+                  parentId: parentId,
+                  sheetId: sheetId,
+                  addAtTop: true,
+                );
+              },
+              onTapToDoList: () {
+                context.pop();
+                addNewTaskListContent(
+                  ref: ref,
+                  parentId: parentId,
+                  sheetId: sheetId,
+                  addAtTop: true,
+                );
+              },
+              onTapLink: () {
+                context.pop();
+                addNewLinkContent(
+                  ref: ref,
+                  parentId: parentId,
+                  sheetId: sheetId,
+                  addAtTop: true,
+                );
+              },
+              onTapDocument: () {
+                context.pop();
+                addNewDocumentContent(
+                  ref: ref,
+                  parentId: parentId,
+                  sheetId: sheetId,
+                  addAtTop: true,
+                );
+              },
+              onTapPoll: () {
+                context.pop();
+                addNewPollContent(
+                  ref: ref,
+                  parentId: parentId,
+                  sheetId: sheetId,
+                  addAtTop: true,
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 }

@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/features/bullets/actions/bullet_actions.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
+import 'package:zoe/features/bullets/screens/bullet_detail_screen.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 
 import '../../../helpers/test_utils.dart';
 
@@ -71,6 +73,36 @@ Future<void> pumpBulletDeleteActionsWidget({
   );
 }
 
+Future<void> pumpBulletDetailScreen({
+  required WidgetTester tester,
+  required ProviderContainer container,
+  required String bulletId,
+}) async {
+  await tester.pumpMaterialWidgetWithProviderScope(
+    child: BulletDetailScreen(bulletId: bulletId),
+    container: container,
+  );
+  await tester.pump(const Duration(milliseconds: 100));
+}
+
+// Test bullet data
+const nonExistentBulletId = 'non-existent-id';
+const testBulletId = 'test-bullet-id';
+const testBulletTitle = 'Test Bullet Title';
+const testParentId = 'test-parent-id';
+const testSheetId = 'test-sheet-id';
+
+// Test user data
+const testUserId = 'user_1';
+const testUserName = 'Test User';
+const testUserBio = 'Test Bio';
+
+final testUserModel = UserModel(
+  id: testUserId,
+  name: testUserName,
+  bio: testUserBio,
+);
+
 /// Helper function to add a bullet to the container and return the bullet model
 BulletModel addBulletAndGetModel(
   ProviderContainer container, {
@@ -81,9 +113,9 @@ BulletModel addBulletAndGetModel(
 }) {
   final notifier = container.read(bulletListProvider.notifier);
   notifier.addBullet(
-    title: title ?? 'Test Bullet',
-    parentId: parentId ?? 'parent-1',
-    sheetId: sheetId ?? 'sheet-1',
+    title: title ?? testBulletTitle,
+    parentId: parentId ?? testParentId,
+    sheetId: sheetId ?? testSheetId,
     orderIndex: orderIndex,
   );
 
