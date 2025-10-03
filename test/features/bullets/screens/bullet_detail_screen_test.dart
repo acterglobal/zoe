@@ -25,6 +25,7 @@ void main() {
   late ProviderContainer container;
 
   setUp(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
     container = ProviderContainer.test();
   });
 
@@ -250,6 +251,7 @@ void main() {
       late BulletModel testBulletOverride;
 
       setUp(() {
+        // Add a bullet to the container
         testBullet = addBulletAndGetModel(
           container,
           title: testBulletTitle,
@@ -257,6 +259,7 @@ void main() {
           sheetId: testSheetId,
         );
 
+        // Create a bullet override
         testBulletOverride = BulletModel(
           id: testBullet.id,
           title: testBulletTitle,
@@ -266,6 +269,7 @@ void main() {
           orderIndex: testBullet.orderIndex,
         );
 
+        // Override the bullet provider
         container = ProviderContainer.test(
           overrides: [
             bulletProvider(testBullet.id).overrideWithValue(testBulletOverride),
@@ -332,6 +336,41 @@ void main() {
 
           // Verify add content bottom sheet is shown
           expect(find.byType(AddContentBottomSheet), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'floating action button on tap shows add content bottom sheet and add text content',
+        (tester) async {
+          // Pump the screen
+          await pumpBulletDetailScreen(
+            tester: tester,
+            container: container,
+            bulletId: testBullet.id,
+            isWrapMediaQuery: true,
+          );
+
+          // Verify floating action button wrapper
+          final fab = find.byType(FloatingActionButtonWrapper);
+          expect(fab, findsOneWidget);
+
+          // Tap the floating action button
+          await tester.ensureVisible(fab);
+          await tester.tap(fab);
+          await tester.pump(const Duration(milliseconds: 100));
+
+          // Verify add content bottom sheet is shown
+          expect(find.byType(AddContentBottomSheet), findsOneWidget);
+
+          // Tap the add text content option
+          final textContentIcon = find.byIcon(Icons.text_fields);
+          await tester.ensureVisible(textContentIcon);
+          await tester.tap(textContentIcon, warnIfMissed: false);
+          await tester.pump(const Duration(milliseconds: 100));
+
+          // Verify text content is added
+          expect(find.byType(ZoeInlineTextEditWidget), findsOneWidget);
+          expect(find.byType(ZoeHtmlTextEditWidget), findsOneWidget);
         },
       );
     });

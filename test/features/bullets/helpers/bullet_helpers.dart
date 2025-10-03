@@ -77,9 +77,22 @@ Future<void> pumpBulletDetailScreen({
   required WidgetTester tester,
   required ProviderContainer container,
   required String bulletId,
+  bool isWrapMediaQuery = false,
 }) async {
+  // Create the screen
+  final screen = BulletDetailScreen(bulletId: bulletId);
+
+  // Wrap the screen in a MediaQuery if needed
+  final child = isWrapMediaQuery
+      ? MediaQuery(
+          data: const MediaQueryData(size: Size(1080, 1920)),
+          child: screen,
+        )
+      : screen;
+
+  // Pump the screen
   await tester.pumpMaterialWidgetWithProviderScope(
-    child: BulletDetailScreen(bulletId: bulletId),
+    child: child,
     container: container,
   );
   await tester.pump(const Duration(milliseconds: 100));
