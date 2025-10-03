@@ -70,16 +70,16 @@ void main() {
     });
 
     testWidgets('renders valueWidget correctly', (tester) async {
-      const testValueWidget = Text('Custom Value Widget');
+      const testValueWidget = 'Custom Value Widget';
 
       await tester.pumpMaterialWidget(
         child: AttributeFieldWidgetTestUtils.createTestWidget(
-          valueWidget: testValueWidget,
+          valueWidget: const Text(testValueWidget),
         ),
       );
 
       // Verify valueWidget is rendered
-      expect(find.text('Custom Value Widget'), findsOneWidget);
+      expect(find.text(testValueWidget), findsOneWidget);
     });
 
     testWidgets('handles isEditing false by default', (tester) async {
