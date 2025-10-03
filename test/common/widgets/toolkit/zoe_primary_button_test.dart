@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/widgets/shimmer_overlay_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 /// Test utilities for ZoePrimaryButton widget tests
 class ZoePrimaryButtonTestUtils {

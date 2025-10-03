@@ -4,7 +4,7 @@ import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/features/profile/widgets/profile_qr_code_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 void main() {
   const testUserName = 'John Doe';

@@ -19,7 +19,7 @@ import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 class MockSearchValue extends SearchValue {
   @override

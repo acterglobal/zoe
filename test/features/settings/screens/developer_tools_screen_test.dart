@@ -5,7 +5,7 @@ import 'package:zoe/features/settings/screens/developer_tools_screen.dart';
 import 'package:zoe/features/settings/widgets/setting_card_widget.dart';
 import 'package:zoe/features/settings/widgets/setting_item_widget.dart';
 
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 void main() {
   Future<void> pumpDeveloperToolsScreen(WidgetTester tester) async {

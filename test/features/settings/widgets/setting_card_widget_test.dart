@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/features/settings/widgets/setting_card_widget.dart';
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 void main() {
   Future<void> createWidgetUnderTest({

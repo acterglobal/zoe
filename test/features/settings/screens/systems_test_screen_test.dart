@@ -5,7 +5,7 @@ import 'package:zoe/features/settings/screens/systems_test_screen.dart';
 import 'package:zoe_native/providers.dart';
 import 'package:zoe_native/src/rust/third_party/zoe_client/client.dart';
 
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 /// Mock client for testing
 class MockClient implements Client {

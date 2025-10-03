@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 /// Test utilities for ZoeCloseButton widget tests
 class ZoeCloseButtonTestUtils {

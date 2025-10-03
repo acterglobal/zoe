@@ -4,7 +4,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_stacked_avatars_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 /// Test utilities for ZoeStackedAvatars widget tests
 class ZoeStackedAvatarsTestUtils {

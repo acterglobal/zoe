@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/features/quick-search/widgets/quick_search_tab_section_header_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 void main() {
   group('QuickSearchTabSectionHeaderWidget', () {

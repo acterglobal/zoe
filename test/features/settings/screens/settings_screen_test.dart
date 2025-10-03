@@ -8,7 +8,7 @@ import 'package:zoe/features/settings/screens/settings_screen.dart';
 import 'package:zoe/features/settings/widgets/setting_item_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 void main() {
   late ProviderContainer container;
