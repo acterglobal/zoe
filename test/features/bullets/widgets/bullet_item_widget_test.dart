@@ -12,23 +12,12 @@ import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/bullets/widgets/bullet_added_by_header_widget.dart';
 import 'package:zoe/features/bullets/widgets/bullet_item_widget.dart';
-import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import '../../../helpers/mock_gorouter.dart';
 import '../utils/bullets_utils.dart';
 
-class _EmptyBulletList extends BulletList {
-  @override
-  List<BulletModel> build() => [];
-}
-
 void main() {
   late ProviderContainer container;
-  final testUserModel = UserModel(
-    id: testUserId,
-    name: testUserName,
-    bio: testUserBio,
-  );
 
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +31,7 @@ void main() {
       // Create the final container with overrides
       container = ProviderContainer.test(
         overrides: [
-          bulletListProvider.overrideWith(() => _EmptyBulletList()),
+          bulletListProvider.overrideWith(() => EmptyBulletList()),
           bulletFocusProvider.overrideWith(() => BulletFocus()),
           getUserByIdProvider(testUserId).overrideWithValue(testUserModel),
         ],
@@ -573,7 +562,7 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            bulletListProvider.overrideWith(() => _EmptyBulletList()),
+            bulletListProvider.overrideWith(() => EmptyBulletList()),
             bulletProvider(
               emptyTitleBullet.id,
             ).overrideWithValue(emptyTitleBullet),
@@ -611,7 +600,7 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            bulletListProvider.overrideWith(() => _EmptyBulletList()),
+            bulletListProvider.overrideWith(() => EmptyBulletList()),
             bulletProvider(
               differentBulletId,
             ).overrideWithValue(differentBullet),
@@ -633,7 +622,7 @@ void main() {
       testWidgets('handles missing user gracefully', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            bulletListProvider.overrideWith(() => _EmptyBulletList()),
+            bulletListProvider.overrideWith(() => EmptyBulletList()),
             bulletProvider(
               testBulletModel.id,
             ).overrideWithValue(testBulletModel),

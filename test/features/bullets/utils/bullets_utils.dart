@@ -12,6 +12,11 @@ import 'package:zoe/features/users/models/user_model.dart';
 
 import '../../../helpers/test_utils.dart';
 
+class EmptyBulletList extends BulletList {
+  @override
+  List<BulletModel> build() => [];
+}
+
 Future<void> pumpBulletShareActionsWidget({
   required WidgetTester tester,
   required ProviderContainer container,
