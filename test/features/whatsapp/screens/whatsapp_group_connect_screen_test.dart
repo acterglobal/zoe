@@ -7,8 +7,8 @@ import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/features/whatsapp/providers/whatsapp_group_connect_provider.dart';
 import 'package:zoe/features/whatsapp/screens/whatsapp_group_connect_screen.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-import '../../../helpers/mock_gorouter.dart';
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/mock_gorouter.dart';
+import '../../../test-utils/test_utils.dart';
 
 void main() {
   late ProviderContainer container;

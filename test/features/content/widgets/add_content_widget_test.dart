@@ -5,9 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/features/content/providers/content_menu_providers.dart';
 import 'package:zoe/features/content/widgets/add_content_widget.dart';
 import 'package:zoe/features/content/widgets/content_menu_options.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
 
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 void main() {
   late ProviderContainer providerContainer;
@@ -64,7 +63,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final l10n = L10n.of(tester.element(find.byType(AddContentWidget)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: AddContentWidget);
       expect(find.byType(GestureDetector), findsOneWidget);
       expect(find.byIcon(Icons.add), findsOneWidget);
       expect(find.text(l10n.addContent), findsOneWidget);
@@ -86,7 +85,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final l10n = L10n.of(tester.element(find.byType(AddContentWidget)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: AddContentWidget);
 
       // Initially menu is hidden
       expect(find.byType(ContentMenuOptions), findsNothing);
@@ -147,7 +146,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final l10n = L10n.of(tester.element(find.byType(AddContentWidget)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: AddContentWidget);
       await tester.tap(find.text(l10n.addContent));
       await tester.pumpAndSettle(); // Wait for all animations and effects to complete
       
@@ -171,7 +170,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final l10n = L10n.of(tester.element(find.byType(AddContentWidget)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: AddContentWidget);
 
       // Open menu
       await tester.tap(find.text(l10n.addContent));
