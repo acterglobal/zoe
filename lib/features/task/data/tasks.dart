@@ -430,4 +430,73 @@ final tasks = [
     createdBy: 'user_3',
     assignedUsers: ['user_3', 'user_7'],
   ),
+  // Chat Management Tasks
+  TaskModel(
+    id: 'chat-task-1',
+    sheetId: 'sheet-6',
+    parentId: 'list-tasks-6',
+    title: 'Create poll for every group decision',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Stop endless debates! Create polls for meeting days, venues, activities, and any group decisions. No more "Friday or Sunday?" chaos!',
+      htmlText:
+          '<p>Stop endless debates! Create <strong>polls for meeting days, venues, activities</strong>, and any group decisions. No more "Friday or Sunday?" chaos!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_2'],
+  ),
+  TaskModel(
+    id: 'chat-task-2',
+    sheetId: 'sheet-6',
+    parentId: 'list-tasks-6',
+    title: 'Track who\'s coming to events',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Set up a system to track attendance for every event. No more "who\'s even coming?" confusion!',
+      htmlText:
+          '<p>Set up a system to <strong>track attendance for every event</strong>. No more "who\'s even coming?" confusion!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_3', 'user_4'],
+  ),
+  TaskModel(
+    id: 'chat-task-3',
+    sheetId: 'sheet-6',
+    parentId: 'list-tasks-6',
+    title: 'Organize chat topics and discussions',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Create organized threads for different topics. Keep random chat separate from important decisions and planning.',
+      htmlText:
+          '<p>Create <strong>organized threads for different topics</strong>. Keep random chat separate from important decisions and planning.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_5',
+    assignedUsers: ['user_5', 'user_6'],
+  ),
+  TaskModel(
+    id: 'chat-task-4',
+    sheetId: 'sheet-6',
+    parentId: 'list-tasks-6',
+    title: 'Set up quick decision-making rules',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Establish rules for group decisions: use polls, set deadlines, and stick to majority votes. End the chaos!',
+      htmlText:
+          '<p>Establish <strong>rules for group decisions</strong>: use polls, set deadlines, and stick to majority votes. End the chaos!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_7',
+    assignedUsers: ['user_7', 'user_8'],
+  ),
 ];

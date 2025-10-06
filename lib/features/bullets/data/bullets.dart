@@ -486,4 +486,75 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // Chat Management Frustrations & Solutions
+  BulletModel(
+    id: 'bullet-item-35',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-8',
+    title: 'Let\'s do Friday meet! No, Sunday! Who\'s even coming? 😤',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'This endless debate is driving me crazy! Can we just use a poll and decide already?',
+      htmlText:
+          '<p>This <strong>endless debate is driving me crazy</strong>! Can we just use a poll and decide already?</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-36',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-8',
+    title: 'Wait, where\'s the poll? 🤔',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Seriously, we need polls for everything! No more endless back-and-forth discussions.',
+      htmlText:
+          '<p>Seriously, we need <strong>polls for everything</strong>! No more endless back-and-forth discussions.</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-37',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-8',
+    title: 'Tired of endless Friday or Sunday debates? We feel you! 💪',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Zoe is fixing this chaos! Stay tuned for organized group decisions and no more endless debates.',
+      htmlText:
+          '<p>Zoe is <strong>fixing this chaos</strong>! Stay tuned for organized group decisions and no more endless debates.</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-38',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-8',
+    title: 'Finally! Polls for quick decisions 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'With Zoe, we can create polls for any decision and get quick results. No more chat chaos!',
+      htmlText:
+          '<p>With Zoe, we can <strong>create polls for any decision</strong> and get quick results. No more chat chaos!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-39',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-8',
+    title: 'Who\'s coming? Now we can track it properly! ✅',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'No more "who\'s even coming?" confusion. Zoe tracks attendance and keeps everyone informed.',
+      htmlText:
+          '<p>No more <strong>"who\'s even coming?" confusion</strong>. Zoe tracks attendance and keeps everyone informed.</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

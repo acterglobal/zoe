@@ -72,4 +72,18 @@ final sheetList = [
     createdBy: 'user_2',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7'],
   ),
+  SheetModel(
+    id: 'sheet-6',
+    title: 'Group Chat Chaos Management',
+    emoji: '💬',
+    color: const Color(0xFF7C2D12), // Brown
+    description: (
+      plainText:
+          'Tired of endless "Friday or Sunday?" debates in group chat? We feel you! This is your solution for managing group chat chaos. From creating polls for quick decisions to organizing who\'s coming, tracking meeting preferences, and putting an end to endless back-and-forth discussions - Zoe helps you stay organized and make decisions fast.',
+      htmlText:
+          '<p>Tired of endless <strong>"Friday or Sunday?" debates</strong> in group chat? We feel you! This is your solution for managing group chat chaos. From creating polls for quick decisions to organizing who\'s coming, tracking meeting preferences, and putting an end to endless back-and-forth discussions - Zoe helps you stay organized and make decisions fast.</p>',
+    ),
+    createdBy: 'user_3',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8'],
+  ),
 ];

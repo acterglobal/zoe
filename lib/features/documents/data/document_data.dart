@@ -201,4 +201,47 @@ final documentList = [
     sheetId: 'sheet-5',
     filePath: 'path/to/task_consolidation.docx',
   ),
+  // Chat Management Documents
+  DocumentModel(
+    id: 'document-29',
+    title: 'Group Chat Rules & Guidelines',
+    parentId: 'list-document-6',
+    sheetId: 'sheet-6',
+    filePath: 'path/to/chat_rules.pdf',
+  ),
+  DocumentModel(
+    id: 'document-30',
+    title: 'Decision Making Poll Templates',
+    parentId: 'list-document-6',
+    sheetId: 'sheet-6',
+    filePath: 'path/to/poll_templates.docx',
+  ),
+  DocumentModel(
+    id: 'document-31',
+    title: 'Attendance Tracking System',
+    parentId: 'list-document-6',
+    sheetId: 'sheet-6',
+    filePath: 'path/to/attendance_tracker.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-32',
+    title: 'Chat Topic Organization Guide',
+    parentId: 'list-document-6',
+    sheetId: 'sheet-6',
+    filePath: 'path/to/chat_organization.docx',
+  ),
+  DocumentModel(
+    id: 'document-33',
+    title: 'Group Decision History',
+    parentId: 'list-document-6',
+    sheetId: 'sheet-6',
+    filePath: 'path/to/decision_history.pdf',
+  ),
+  DocumentModel(
+    id: 'document-34',
+    title: 'Chat Management Best Practices',
+    parentId: 'list-document-6',
+    sheetId: 'sheet-6',
+    filePath: 'path/to/chat_best_practices.docx',
+  ),
 ];

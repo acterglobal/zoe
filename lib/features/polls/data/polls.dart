@@ -285,4 +285,50 @@ final polls = [
     isMultipleChoice: true,
     createdBy: 'user_3',
   ),
+  PollModel(
+    id: 'poll-7',
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    orderIndex: 1,
+    question: 'Let\'s do Friday meet? No, Sunday? Who\'s even coming?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 5)),
+    options: [
+      PollOption(
+        id: 'option-7-1',
+        title: 'Friday - End the week with friends',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+        ],
+      ),
+      PollOption(
+        id: 'option-7-2',
+        title: 'Sunday - Relaxed weekend vibes',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-7-3',
+        title: 'Saturday - Best of both worlds',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_4'),
+        ],
+      ),
+      PollOption(
+        id: 'option-7-4',
+        title: 'I\'m not coming anyway 😂',
+        votes: [
+          Vote(userId: 'user_8'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_1',
+  ),
 ];

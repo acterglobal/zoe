@@ -125,4 +125,20 @@ final textList = [
     ),
     createdBy: 'user_2',
   ),
+  // Chat Management Text Content
+  TextModel(
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    id: 'text-content-9',
+    title: 'End the Chat Chaos - Decision Making Hub',
+    emoji: '💬',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Tired of endless "Friday or Sunday?" debates? We feel you! 😤\n\nThis is your solution for group chat chaos. From creating polls for quick decisions to tracking who\'s coming, organizing discussions, and putting an end to endless back-and-forth - Zoe helps you make decisions fast and stay organized.\n\n🗳️ Create polls for every group decision\n📱 Track attendance and who\'s coming\n📅 Organize chat topics and discussions\n😤 Share frustrations and celebrate solutions\n🔗 Store chat management tools and resources\n📄 Keep all group documents organized\n\nTransform chat chaos into organized decision-making! 🎯✨',
+      htmlText:
+          '<p>Tired of endless <strong>"Friday or Sunday?" debates</strong>? We feel you! 😤</p><br><p>This is your solution for group chat chaos. From creating polls for quick decisions to tracking who\'s coming, organizing discussions, and putting an end to endless back-and-forth - Zoe helps you make decisions fast and stay organized.</p><br><br><p><strong>🗳️ Create</strong> polls for every group decision</p><br><p><strong>📱 Track</strong> attendance and who\'s coming</p><br><p><strong>📅 Organize</strong> chat topics and discussions</p><br><p><strong>😤 Share</strong> frustrations and celebrate solutions</p><br><p><strong>🔗 Store</strong> chat management tools and resources</p><br><p><strong>📄 Keep</strong> all group documents organized</p><br><br><p>Transform chat chaos into organized decision-making! 🎯✨</p>',
+    ),
+    createdBy: 'user_3',
+  ),
 ];
