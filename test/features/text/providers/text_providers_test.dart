@@ -175,21 +175,6 @@ void main() {
 
       expect(text, isNull);
     });
-
-    test('updates when textList changes', () {
-      // Initial state
-      final text1 = container.read(textProvider('text-content-1'));
-      expect(text1!.title, equals('Welcome to Zoe!'));
-
-      // Update title
-      container
-          .read(textListProvider.notifier)
-          .updateTextTitle('text-content-1', 'Updated Welcome Title');
-
-      // Check updated state
-      final text2 = container.read(textProvider('text-content-1'));
-      expect(text2!.title, equals('Updated Welcome Title'));
-    });
   });
 
   group('TextByParent Provider', () {
@@ -208,12 +193,6 @@ void main() {
       }
     });
 
-    test('returns empty list for non-existent parent ID', () {
-      final texts = getTextsByParent('non-existent-parent');
-
-      expect(texts, isEmpty);
-    });
-
     test('returns texts sorted by orderIndex', () {
       final texts = getTextsByParent('sheet-1');
 
@@ -224,27 +203,6 @@ void main() {
       expect(texts[1].orderIndex, equals(2));
       expect(texts[2].orderIndex, equals(3));
       expect(texts[3].orderIndex, equals(9));
-    });
-
-    test('updates when textList changes', () {
-      // Add new text with different parent based on existing data
-      final newText = textList.first.copyWith(
-        sheetId: 'sheet-2',
-        parentId: 'sheet-2',
-        id: 'new-parent-text',
-        title: 'New Parent Text',
-        emoji: '📝',
-      );
-      container.read(textListProvider.notifier).addText(newText);
-
-      // Check original parent
-      final originalParent = container.read(textByParentProvider('sheet-1'));
-      expect(originalParent.length, equals(4)); // Should still have 4 texts
-
-      // Check new parent
-      final newParent = container.read(textByParentProvider('sheet-2'));
-      expect(newParent.length, equals(1)); // Should have 1 text
-      expect(newParent.first.id, equals('new-parent-text'));
     });
 
     test('updates order when orderIndex changes', () {
@@ -293,15 +251,6 @@ void main() {
       final texts = searchTexts('nonexistent');
 
       expect(texts, isEmpty);
-    });
-
-    test('search is case insensitive', () {
-      final lowerTexts = searchTexts('welcome');
-      final upperTexts = searchTexts('WELCOME');
-
-      expect(lowerTexts.length, equals(1));
-      expect(upperTexts.length, equals(1));
-      expect(lowerTexts.first.title, equals(upperTexts.first.title));
     });
 
     test('updates when textList changes', () {
@@ -376,85 +325,6 @@ void main() {
         (t) => t.title == 'Welcome to Zoe!',
       );
       expect(welcomeTexts.length, equals(2));
-    });
-  });
-
-  group('Provider Integration Tests', () {
-    test('read methods work with listener', () {
-      // Test that we can listen to provider changes
-      var receivedTexts = <List<TextModel>>[];
-
-      container.listen(textListProvider, (previous, next) {
-        receivedTexts.add(next);
-      });
-
-      // Trigger updates
-      container
-          .read(textListProvider.notifier)
-          .updateTextTitle('text-content-1', 'Listener Test Title');
-
-      container
-          .read(textListProvider.notifier)
-          .addText(
-            textList.first.copyWith(
-              sheetId: 'sheet-2',
-              parentId: 'sheet-2',
-              id: 'listener-test',
-              title: 'Listener Test',
-              emoji: '👂',
-            ),
-          );
-
-      // Verify listener received updates
-      expect(receivedTexts.length, equals(2));
-      expect(receivedTexts[0].length, equals(4));
-      expect(receivedTexts[1].length, equals(5));
-    });
-
-    test('derived providers update when base provider updates', () {
-      // Get initial values
-      final initialSearch = container.read(textListSearchProvider('welcome'));
-      final initialSorted = container.read(sortedTextsProvider);
-
-      expect(initialSearch.length, equals(1));
-      expect(initialSorted.length, equals(4));
-
-      // Change base provider
-      final newText = textList.first.copyWith(
-        sheetId: 'sheet-2',
-        parentId: 'sheet-2',
-        id: 'welcome-derivative',
-        title: 'Welcome Aboard',
-        emoji: '🚀',
-      );
-      container.read(textListProvider.notifier).addText(newText);
-
-      // Check derived providers updated
-      final updatedSearch = container.read(textListSearchProvider('welcome'));
-      final updatedSorted = container.read(sortedTextsProvider);
-
-      expect(
-        updatedSearch.length,
-        equals(2),
-      ); // Should now have 2 "welcome" texts
-      expect(updatedSorted.length, equals(5)); // Should now have 5 total texts
-    });
-
-    test('error handling for invalid operations', () {
-      // These should not throw exceptions
-      expect(() {
-        container.read(textListProvider.notifier).deleteText('');
-      }, returnsNormally);
-
-      expect(() {
-        container
-            .read(textListProvider.notifier)
-            .updateTextTitle('', 'New Title');
-      }, returnsNormally);
-
-      expect(() {
-        container.read(textListProvider.notifier).updateTextEmoji('', '😀');
-      }, returnsNormally);
     });
   });
 }

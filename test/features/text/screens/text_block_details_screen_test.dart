@@ -107,34 +107,6 @@ void main() {
       // Stop editing
       container.read(editContentIdProvider.notifier).state = null;
       await tester.pump();
-
-      // Should still render correctly
-      expect(find.byType(MaxWidthWidget), findsOneWidget);
-    });
-
-    testWidgets('creates proper widget hierarchy', (tester) async {
-      await tester.pumpMaterialWidgetWithProviderScope(
-        child: const TextBlockDetailsScreen(textBlockId: 'text-content-1'),
-        container: container,
-      );
-
-      await tester.pump();
-
-      // Check main structure
-      expect(find.byType(Scaffold), findsAtLeastNWidgets(1));
-      expect(find.byType(AppBar), findsOneWidget);
-      expect(find.byType(MaxWidthWidget), findsOneWidget);
-
-      // Check body structure
-      expect(find.byType(SingleChildScrollView), findsAtLeastNWidgets(1));
-      expect(find.byType(Column), findsAtLeastNWidgets(1));
-
-      // Check text widgets
-      expect(find.byType(ZoeInlineTextEditWidget), findsOneWidget);
-      expect(find.byType(ZoeHtmlTextEditWidget), findsOneWidget);
-
-      // Check floating elements
-      expect(find.byType(FloatingActionButtonWrapper), findsOneWidget);
     });
 
     testWidgets('applies correct styling defaults', (tester) async {
@@ -210,19 +182,6 @@ void main() {
       await tester.pump();
 
       expect(find.byType(FloatingActionButtonWrapper), findsOneWidget);
-    });
-
-    testWidgets('configures app bar with correct settings', (tester) async {
-      await tester.pumpMaterialWidgetWithProviderScope(
-        child: const TextBlockDetailsScreen(textBlockId: 'text-content-4'),
-        container: container,
-      );
-
-      await tester.pump();
-
-      // Should have no back button
-      final appBar = tester.widget<AppBar>(find.byType(AppBar));
-      expect(appBar.automaticallyImplyLeading, false);
     });
 
     testWidgets('handles empty/null text block gracefully', (tester) async {

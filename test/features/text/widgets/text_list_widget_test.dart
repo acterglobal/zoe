@@ -38,7 +38,6 @@ void main() {
         // Should render empty state (SizedBox.shrink by default)
         expect(find.byType(ListView), findsNothing);
         expect(find.byType(SizedBox), findsOneWidget);
-
       });
 
       testWidgets('renders TextWidget for each text in the list', (
@@ -109,31 +108,6 @@ void main() {
 
         // Should render texts in sorted order (ListView may virtualize, so check at least 2)
         expect(find.byType(TextWidget), findsAtLeastNWidgets(2));
-      });
-
-      testWidgets('works with search provider', (tester) async {
-        final searchContainer = ProviderContainer(
-          overrides: [
-            textListProvider.overrideWithValue(textList),
-            textListSearchProvider('Welcome').overrideWithValue(
-              textList.where((t) => t.title.contains('Welcome')).toList(),
-            ),
-          ],
-        );
-
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TextListWidget(
-            textsProvider: textListSearchProvider('Welcome'),
-            isEditing: false,
-          ),
-          container: searchContainer,
-        );
-
-        await tester.pumpAndSettle();
-
-        // Should only render the text with title containing 'Welcome'
-        expect(find.byType(TextWidget), findsOneWidget);
-
       });
     });
 

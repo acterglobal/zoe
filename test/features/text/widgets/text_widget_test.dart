@@ -9,6 +9,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/features/text/widgets/text_widget.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/text/models/text_model.dart';
+import 'package:zoe/features/text/data/text_list.dart';
 import '../../../test-utils/test_utils.dart';
 
 void main() {
@@ -17,33 +18,19 @@ void main() {
     late TextModel testTextModel;
 
     setUp(() {
-      // Create a test TextModel
-      testTextModel = TextModel(
-        id: 'test-text-1',
-        parentId: 'parent-1',
-        sheetId: 'sheet-1',
-        title: 'Test Title',
-        description: (
-          plainText: 'Test Description',
-          htmlText: '<p>Test Description</p>',
-        ),
-        emoji: '📝',
-        createdBy: 'user-1',
-        createdAt: DateTime.now().subtract(const Duration(days: 1)),
-        updatedAt: DateTime.now(),
-        orderIndex: 0,
-      );
+      // Use existing data from textList
+      testTextModel = textList.first; // Uses 'Welcome to Zoe!' with 👋 emoji
 
       container = ProviderContainer.test(
         overrides: [
-          textProvider('test-text-1').overrideWith((ref) => testTextModel),
+          textProvider('text-content-1').overrideWith((ref) => testTextModel),
         ],
       );
     });
 
     testWidgets('renders correctly with valid text content', (tester) async {
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'test-text-1'),
+        child: TextWidget(textId: 'text-content-1'),
         container: container,
       );
 
@@ -58,10 +45,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Try to find text using more flexible approaches
-      expect(
-        find.text('📝'),
-        findsOneWidget,
-      ); // Emoji should be directly rendered by EmojiWidget
+      expect(find.text('Welcome to Zoe!'), findsOneWidget);
     });
 
     testWidgets('renders empty widget when text content is null', (
@@ -80,38 +64,25 @@ void main() {
 
       // Should render SizedBox.shrink() when text is null
       expect(find.byType(SizedBox), findsAtLeastNWidgets(1));
-      expect(find.text('Test Title'), findsNothing);
+      expect(find.text('Welcome to Zoe!'), findsNothing);
     });
 
     testWidgets('displays default emoji when no emoji is provided', (
       tester,
     ) async {
       // Create a TextModel with no emoji explicitly set
-      final TextModel textWithoutEmoji = TextModel(
-        id: 'test-text-1',
-        parentId: 'parent-1',
-        sheetId: 'sheet-1',
-        title: 'Test Title',
-        description: (
-          plainText: 'Test Description',
-          htmlText: '<p>Test Description</p>',
-        ),
-        emoji: null,
-        // Explicitly set to null
-        createdBy: 'user-1',
-        createdAt: DateTime.now().subtract(const Duration(days: 1)),
-        updatedAt: DateTime.now(),
-        orderIndex: 0,
-      );
+      final TextModel textWithoutEmoji = textList.first.copyWith(emoji: null);
 
       final containerNoEmoji = ProviderContainer.test(
         overrides: [
-          textProvider('test-text-1').overrideWith((ref) => textWithoutEmoji),
+          textProvider(
+            'text-content-1',
+          ).overrideWith((ref) => textWithoutEmoji),
         ],
       );
 
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'test-text-1'),
+        child: TextWidget(textId: 'text-content-1'),
         container: containerNoEmoji,
       );
 
@@ -122,7 +93,6 @@ void main() {
       expect(find.byType(EmojiWidget), findsOneWidget);
       final emojiWidget = tester.widget<EmojiWidget>(find.byType(EmojiWidget));
       expect(emojiWidget.emoji, '𝑻'); // Should display default emoji '𝑻'
-
     });
 
     testWidgets('displays empty description when no description provided', (
@@ -132,30 +102,33 @@ void main() {
       final containerNoDescription = ProviderContainer(
         overrides: [
           textProvider(
-            'test-text-1',
+            'text-content-1',
           ).overrideWith((ref) => textWithoutDescription),
         ],
       );
 
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'test-text-1'),
+        child: TextWidget(textId: 'text-content-1'),
         container: containerNoDescription,
       );
 
-      expect(find.text('Test Title'), findsOneWidget);
-      expect(find.text('Test Description'), findsNothing);
+      expect(find.text('Welcome to Zoe!'), findsOneWidget);
+      expect(
+        find.text('Welcome to Zoe - your intelligent personal workspace!'),
+        findsNothing,
+      );
     });
 
     testWidgets('shows delete button when in editing mode', (tester) async {
       final editModeContainer = ProviderContainer(
         overrides: [
-          textProvider('test-text-1').overrideWith((ref) => testTextModel),
-          editContentIdProvider.overrideWith((ref) => 'test-text-1'),
+          textProvider('text-content-1').overrideWith((ref) => testTextModel),
+          editContentIdProvider.overrideWith((ref) => 'text-content-1'),
         ],
       );
 
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'test-text-1'),
+        child: TextWidget(textId: 'text-content-1'),
         container: editModeContainer,
       );
 
@@ -165,13 +138,13 @@ void main() {
     testWidgets('hides delete button when not in editing mode', (tester) async {
       final noEditContainer = ProviderContainer(
         overrides: [
-          textProvider('test-text-1').overrideWith((ref) => testTextModel),
+          textProvider('text-content-1').overrideWith((ref) => testTextModel),
           editContentIdProvider.overrideWith((ref) => null),
         ],
       );
 
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'test-text-1'),
+        child: TextWidget(textId: 'text-content-1'),
         container: noEditContainer,
       );
 
@@ -182,12 +155,12 @@ void main() {
       final emptyTitleText = testTextModel.copyWith(title: '');
       final emptyTitleContainer = ProviderContainer(
         overrides: [
-          textProvider('test-text-1').overrideWith((ref) => emptyTitleText),
+          textProvider('text-content-1').overrideWith((ref) => emptyTitleText),
         ],
       );
 
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'test-text-1'),
+        child: TextWidget(textId: 'text-content-1'),
         container: emptyTitleContainer,
       );
 

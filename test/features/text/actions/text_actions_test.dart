@@ -12,16 +12,8 @@ void main() {
   setUp(() {
     container = ProviderContainer.test();
 
-    // Create test text model
-    testTextModel = textList.first.copyWith(
-      id: 'test-text-id',
-      title: 'Test Title',
-      emoji: '🧪',
-      description: (
-        plainText: 'This is a test description',
-        htmlText: '<p>This is a test description</p>',
-      ),
-    );
+    // Use existing data from textList
+    testTextModel = textList.first; // Uses 'Welcome to Zoe!' with 👋 emoji
 
     // Add test text to the container
     container.read(textListProvider.notifier).addText(testTextModel);
@@ -37,37 +29,37 @@ void main() {
       String? initialEditId = container.read(editContentIdProvider);
       
       // Simulate edit action by directly calling the provider update
-      container.read(editContentIdProvider.notifier).state = 'test-text-id';
+      container.read(editContentIdProvider.notifier).state = 'text-content-1';
       
       // Verify the edit content id is set
-      expect(container.read(editContentIdProvider), equals('test-text-id'));
+      expect(container.read(editContentIdProvider), equals('text-content-1'));
       expect(container.read(editContentIdProvider), isNot(equals(initialEditId)));
     });
 
     test('text is properly stored and retrieved from provider', () {
       // Verify text is in the provider
-      final retrievedText = container.read(textProvider('test-text-id'));
+      final retrievedText = container.read(textProvider('text-content-1'));
       
       expect(retrievedText, isNotNull);
-      expect(retrievedText!.id, equals('test-text-id'));
-      expect(retrievedText.title, equals('Test Title'));
-      expect(retrievedText.emoji, equals('🧪'));
-      expect(retrievedText.description?.plainText, equals('This is a test description'));
+      expect(retrievedText!.id, equals('text-content-1'));
+      expect(retrievedText.title, equals('Welcome to Zoe!'));
+      expect(retrievedText.emoji, equals('👋'));
+      expect(retrievedText.description?.plainText, contains('Welcome to Zoe - your intelligent personal workspace!'));
     });
 
     test('text can be deleted from provider', () {
       // Verify text exists initially
-      expect(container.read(textProvider('test-text-id')), isNotNull);
+      expect(container.read(textProvider('text-content-1')), isNotNull);
       
       // Delete the text
-      container.read(textListProvider.notifier).deleteText('test-text-id');
+      container.read(textListProvider.notifier).deleteText('text-content-1');
       
       // Verify text is removed
-      expect(container.read(textProvider('test-text-id')), isNull);
+      expect(container.read(textProvider('text-content-1')), isNull);
     });
 
     test('copyText logic works correctly with text content', () {
-      final textContent = container.read(textProvider('test-text-id'));
+      final textContent = container.read(textProvider('text-content-1'));
       expect(textContent, isNotNull);
       
       // Test the clipboard content construction logic
@@ -85,7 +77,7 @@ void main() {
         buffer.write('\n\n$description');
       }
 
-      final expectedContent = '🧪 Test Title\n\nThis is a test description';
+      final expectedContent = '👋 Welcome to Zoe!\n\nWelcome to Zoe - your intelligent personal workspace! Zoe helps you organize thoughts, manage tasks, plan events, and structure ideas all in one beautiful, intuitive interface.\n\nThis guide will walk you through everything you need to know to get the most out of your Zoe experience. Let\'s get started!';
       expect(buffer.toString(), equals(expectedContent));
     });
   });

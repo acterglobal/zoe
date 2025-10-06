@@ -6,7 +6,6 @@ final textList = [
     parentId: 'sheet-1',
     id: 'text-content-1',
     title: 'Welcome to Zoe!',
-    emoji: '👋',
     orderIndex: 1,
     description: (
       plainText:
