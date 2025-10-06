@@ -287,4 +287,61 @@ final bulletList = [
     ),
     createdBy: 'user_4',
   ),
+  // Christmas Planning Casual Chat
+  BulletModel(
+    id: 'bullet-item-21',
+    sheetId: 'sheet-3',
+    parentId: 'list-bulleted-5',
+    title: 'I bought fairy lights ✨',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Hey everyone! I found these amazing fairy lights on sale. Should I bring them for decoration?',
+      htmlText:
+          '<p>Hey everyone! I found these <strong>amazing fairy lights</strong> on sale. Should I bring them for decoration?</p>',
+    ),
+    createdBy: 'user_5',
+  ),
+  BulletModel(
+    id: 'bullet-item-22',
+    sheetId: 'sheet-3',
+    parentId: 'list-bulleted-5',
+    title: 'Lol check this meme 😂',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'This Christmas meme is so relatable! It\'s exactly how we\'re planning this party 😂',
+      htmlText:
+          '<p>This <strong>Christmas meme</strong> is so relatable! It\'s exactly how we\'re planning this party 😂</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-23',
+    sheetId: 'sheet-3',
+    parentId: 'list-bulleted-5',
+    title: 'Which date final?',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Guys, we really need to finalize the date soon! What works best for everyone?',
+      htmlText:
+          '<p>Guys, we really need to <strong>finalize the date</strong> soon! What works best for everyone?</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-24',
+    sheetId: 'sheet-3',
+    parentId: 'list-bulleted-5',
+    title: 'Secret Santa budget - how much?',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'What should our Secret Santa budget be? I\'m thinking around ₹500-1000? What do you all think?',
+      htmlText:
+          '<p>What should our <strong>Secret Santa budget</strong> be? I\'m thinking around ₹500-1000? What do you all think?</p>',
+    ),
+    createdBy: 'user_3',
+  ),
 ];

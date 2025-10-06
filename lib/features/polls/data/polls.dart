@@ -119,7 +119,6 @@ final polls = [
         id: 'option-3-1',
         title: 'Mumbai, India',
         votes: [
-          Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
         ],
       ),
@@ -134,9 +133,6 @@ final polls = [
       PollOption(
         id: 'option-3-3',
         title: 'Goa, India',
-        votes: [
-          Vote(userId: 'user_1'),
-        ],
       ),
       PollOption(
         id: 'option-3-4',
@@ -149,5 +145,45 @@ final polls = [
     ],
     isMultipleChoice: false,
     createdBy: 'user_2',
+  ),
+  PollModel(
+    id: 'poll-4',
+    sheetId: 'sheet-3',
+    parentId: 'sheet-3',
+    orderIndex: 1,
+    question: 'Is venue home or hall?',
+    startDate: DateTime.now().subtract(const Duration(hours: 1)),
+    options: [
+      PollOption(
+        id: 'option-4-1',
+        title: 'Home - Cozy and intimate',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+        ],
+      ),
+      PollOption(
+        id: 'option-4-2',
+        title: 'Hall - More space for everyone',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+        ],
+      ),
+      PollOption(
+        id: 'option-4-3',
+        title: 'Community Center',
+      ),
+      PollOption(
+        id: 'option-4-4',
+        title: 'Restaurant/Party Venue',
+        votes: [
+          Vote(userId: 'user_3'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_1',
   ),
 ];

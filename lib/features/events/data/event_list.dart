@@ -65,4 +65,27 @@ final eventList = [
       'user_4': RsvpStatus.yes,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-3',
+    parentId: 'sheet-3',
+    id: 'event-4',
+    title: 'Christmas Date Confirmation Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s finalize our Christmas celebration date! We need to confirm the exact date, check everyone\'s availability, and plan the timeline for preparations.',
+      htmlText:
+          '<p>Let\'s finalize our <strong>Christmas celebration date</strong>! We need to confirm the exact date, check everyone\'s availability, and plan the timeline for preparations.</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(days: 2)),
+    endDate: DateTime.now().add(const Duration(days: 2, hours: 1)),
+    createdBy: 'user_2',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.maybe,
+      'user_5': RsvpStatus.yes,
+    },
+  ),
 ];

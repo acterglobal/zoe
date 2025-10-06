@@ -65,15 +65,31 @@ final textList = [
     sheetId: 'sheet-2',
     parentId: 'sheet-2',
     id: 'text-content-5',
-    title: 'Trip Planning Overview',
+    title: 'Adventure Awaits - Trip Planning Hub',
     emoji: '🗺️',
     orderIndex: 5,
     description: (
       plainText:
-          'Welcome to our epic trip planning workspace! 🎉\n\nThis is where we\'ll coordinate everything for our upcoming adventure. We\'ve got polls to decide on destinations, tasks to track our preparations, events to schedule important dates, and casual notes for all the fun ideas and discussions.\n\nUse the different content types below to:\n• Vote on destinations and preferences\n\n• Track what needs to be done\n\n• Schedule important meetings and dates\n\n• Share ideas, memes, and random thoughts\n\n• Keep all important links and resources organized\n\n\nLet\'s make this trip absolutely amazing! ✈️🌍',
+          'Pack your bags and get ready for an unforgettable journey! 🎒\n\nThis is our command center for planning the perfect getaway. From choosing dream destinations to coordinating every detail, we\'ve got everything covered.\n\n🗳️ Vote on destinations and travel preferences\n✅ Track preparation tasks and deadlines\n📅 Schedule planning meetings and important dates\n💭 Share travel ideas, memes, and excitement\n🔗 Store booking confirmations and travel resources\n📄 Keep all documents organized and accessible\n\nReady to create memories that will last a lifetime? Let\'s make this adventure epic! ✈️🌍',
       htmlText:
-          '<p>Welcome to our epic <strong>trip planning workspace</strong>! 🎉</p><br><p>This is where we\'ll coordinate everything for our upcoming adventure. We\'ve got polls to decide on destinations, tasks to track our preparations, events to schedule important dates, and casual notes for all the fun ideas and discussions.</p><br><br><p>Use the different content types below to:</p><br><br><p>• Vote on destinations and preferences</p><br><p>• Track what needs to be done</p><br><p>• Schedule important meetings and dates</p><br><p>• Share ideas, memes, and random thoughts</p><br><p>• Keep all important links and resources organized</p><br><br><p>Let\'s make this trip absolutely amazing! ✈️🌍</p>',
+          '<p>Pack your bags and get ready for an <strong>unforgettable journey</strong>! 🎒</p><br><p>This is our command center for planning the perfect getaway. From choosing dream destinations to coordinating every detail, we\'ve got everything covered.</p><br><br><p><strong>🗳️ Vote</strong> on destinations and travel preferences</p><br><p><strong>✅ Track</strong> preparation tasks and deadlines</p><br><p><strong>📅 Schedule</strong> planning meetings and important dates</p><br><p><strong>💭 Share</strong> travel ideas, memes, and excitement</p><br><p><strong>🔗 Store</strong> booking confirmations and travel resources</p><br><p><strong>📄 Keep</strong> all documents organized and accessible</p><br><br><p>Ready to create memories that will last a lifetime? Let\'s make this adventure epic! ✈️🌍</p>',
     ),
     createdBy: 'user_1',
+  ),
+  // Christmas Planning Text Content
+  TextModel(
+    sheetId: 'sheet-3',
+    parentId: 'sheet-3',
+    id: 'text-content-6',
+    title: 'Festive Magic - Christmas Celebration Center',
+    emoji: '🎄',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Ho ho ho! Time to spread Christmas cheer! 🎅\n\nThis is our magical workshop for creating the most wonderful Christmas celebration ever. From planning the perfect party to coordinating festive activities, we\'re making this holiday season unforgettable.\n\n🗳️ Vote on venue and celebration preferences\n🎅 Track party preparation tasks and deadlines\n📅 Schedule planning meetings and festive events\n💬 Share Christmas ideas, memes, and holiday spirit\n🔗 Store booking confirmations and party resources\n📋 Keep all documents organized and accessible\n\nLet\'s deck the halls and make this Christmas absolutely magical! ✨🎁',
+      htmlText:
+          '<p>Ho ho ho! Time to spread <strong>Christmas cheer</strong>! 🎅</p><br><p>This is our magical workshop for creating the most wonderful Christmas celebration ever. From planning the perfect party to coordinating festive activities, we\'re making this holiday season unforgettable.</p><br><br><p><strong>🗳️ Vote</strong> on venue and celebration preferences</p><br><p><strong>🎅 Track</strong> party preparation tasks and deadlines</p><br><p><strong>📅 Schedule</strong> planning meetings and festive events</p><br><p><strong>💬 Share</strong> Christmas ideas, memes, and holiday spirit</p><br><p><strong>🔗 Store</strong> booking confirmations and party resources</p><br><p><strong>📋 Keep</strong> all documents organized and accessible</p><br><br><p>Let\'s deck the halls and make this Christmas absolutely magical! ✨🎁</p>',
+    ),
+    createdBy: 'user_2',
   ),
 ];

@@ -224,4 +224,73 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_1', 'user_2', 'user_3', 'user_4'],
   ),
+  // Christmas Planning Tasks
+  TaskModel(
+    id: 'christmas-task-1',
+    sheetId: 'sheet-3',
+    parentId: 'list-tasks-3',
+    title: 'Who\'s getting the cake?',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'We need to decide who will handle the Christmas cake order. Check local bakeries, compare prices, and place the order in advance.',
+      htmlText:
+          '<p>We need to decide who will handle the <strong>Christmas cake order</strong>. Check local bakeries, compare prices, and place the order in advance.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 7)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_3', 'user_5'],
+  ),
+  TaskModel(
+    id: 'christmas-task-2',
+    sheetId: 'sheet-3',
+    parentId: 'list-tasks-3',
+    title: 'Food menu decided?',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Plan the complete Christmas menu including appetizers, main course, desserts, and drinks. Consider dietary restrictions and preferences.',
+      htmlText:
+          '<p>Plan the complete <strong>Christmas menu</strong> including appetizers, main course, desserts, and drinks. Consider dietary restrictions and preferences.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 5)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_2', 'user_4'],
+  ),
+  TaskModel(
+    id: 'christmas-task-3',
+    sheetId: 'sheet-3',
+    parentId: 'list-tasks-3',
+    title: 'Secret Santa budget',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Set the Secret Santa gift budget and organize the gift exchange. Create a list of participants and assign names.',
+      htmlText:
+          '<p>Set the <strong>Secret Santa gift budget</strong> and organize the gift exchange. Create a list of participants and assign names.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_3'],
+  ),
+  TaskModel(
+    id: 'christmas-task-4',
+    sheetId: 'sheet-3',
+    parentId: 'list-tasks-3',
+    title: 'Need timing before flight booking?',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Check if anyone needs to book flights for Christmas. Coordinate travel plans and ensure everyone can make it to the celebration.',
+      htmlText:
+          '<p>Check if anyone needs to <strong>book flights for Christmas</strong>. Coordinate travel plans and ensure everyone can make it to the celebration.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 6)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_4', 'user_5'],
+  ),
 ];
