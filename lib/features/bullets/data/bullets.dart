@@ -415,4 +415,75 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // Community Management Frustrations & Solutions
+  BulletModel(
+    id: 'bullet-item-30',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-7',
+    title: '100+ notifications and I missed the important client! 😱',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Seriously, how am I supposed to find that one important message in a sea of notifications? This is chaos!',
+      htmlText:
+          '<p>Seriously, how am I supposed to find that <strong>one important message</strong> in a sea of notifications? This is chaos!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-31',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-7',
+    title: 'Note app here, todo list there, tasks everywhere! 🤯',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'I have tasks in 5 different apps and I can\'t keep track of anything. There has to be a better way!',
+      htmlText:
+          '<p>I have tasks in <strong>5 different apps</strong> and I can\'t keep track of anything. There has to be a better way!</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-32',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-7',
+    title: 'By the time I figure out what\'s happening, the meeting\'s over! ⏰',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'I keep missing important community meetings because everything is so scattered. We need one place for everything!',
+      htmlText:
+          '<p>I keep missing <strong>important community meetings</strong> because everything is so scattered. We need one place for everything!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-33',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-7',
+    title: 'Zoe is the one-stop solution we needed! 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Finally! One platform for community management, client tracking, tasks, and events. No more scattered chaos!',
+      htmlText:
+          '<p>Finally! <strong>One platform for community management</strong>, client tracking, tasks, and events. No more scattered chaos!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-34',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-7',
+    title: 'Important clients are now easy to track and never get lost! 👑',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'With Zoe, I can see all my VIP clients in one place, track their interactions, and never miss an opportunity again!',
+      htmlText:
+          '<p>With Zoe, I can see all my <strong>VIP clients in one place</strong>, track their interactions, and never miss an opportunity again!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

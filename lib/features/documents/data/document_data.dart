@@ -158,4 +158,47 @@ final documentList = [
     sheetId: 'sheet-4',
     filePath: 'path/to/chat_backup_strategy.docx',
   ),
+  // Community Management Documents
+  DocumentModel(
+    id: 'document-23',
+    title: 'VIP Client Database',
+    parentId: 'list-document-5',
+    sheetId: 'sheet-5',
+    filePath: 'path/to/vip_client_database.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-24',
+    title: 'Community Guidelines & Rules',
+    parentId: 'list-document-5',
+    sheetId: 'sheet-5',
+    filePath: 'path/to/community_guidelines.pdf',
+  ),
+  DocumentModel(
+    id: 'document-25',
+    title: 'Notification Management System',
+    parentId: 'list-document-5',
+    sheetId: 'sheet-5',
+    filePath: 'path/to/notification_system.docx',
+  ),
+  DocumentModel(
+    id: 'document-26',
+    title: 'Meeting Coordination Templates',
+    parentId: 'list-document-5',
+    sheetId: 'sheet-5',
+    filePath: 'path/to/meeting_templates.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-27',
+    title: 'Community Event Calendar',
+    parentId: 'list-document-5',
+    sheetId: 'sheet-5',
+    filePath: 'path/to/event_calendar.pdf',
+  ),
+  DocumentModel(
+    id: 'document-28',
+    title: 'Task Consolidation Plan',
+    parentId: 'list-document-5',
+    sheetId: 'sheet-5',
+    filePath: 'path/to/task_consolidation.docx',
+  ),
 ];

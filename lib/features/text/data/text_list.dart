@@ -109,4 +109,20 @@ final textList = [
     ),
     createdBy: 'user_1',
   ),
+  // Community Organization Text Content
+  TextModel(
+    sheetId: 'sheet-5',
+    parentId: 'sheet-5',
+    id: 'text-content-8',
+    title: 'Community Chaos to Coordination - One-Stop Solution',
+    emoji: '🏘️',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Drowning in 100+ notifications and scattered tools? You\'re not alone! 📱\n\nThis is your command center for community management. From organizing chat groups to tracking important clients, coordinating events, and managing tasks - Zoe brings everything together in one place.\n\n🗳️ Vote on community management challenges\n👥 Track community tasks and coordination efforts\n📅 Schedule community meetings and events\n💬 Share frustrations, solutions, and success stories\n🔗 Store community tools and resources\n📄 Keep all community documents organized\n\nTransform community chaos into seamless coordination! 🎯✨',
+      htmlText:
+          '<p>Drowning in <strong>100+ notifications and scattered tools</strong>? You\'re not alone! 📱</p><br><p>This is your command center for community management. From organizing chat groups to tracking important clients, coordinating events, and managing tasks - Zoe brings everything together in one place.</p><br><br><p><strong>🗳️ Vote</strong> on community management challenges</p><br><p><strong>👥 Track</strong> community tasks and coordination efforts</p><br><p><strong>📅 Schedule</strong> community meetings and events</p><br><p><strong>💬 Share</strong> frustrations, solutions, and success stories</p><br><p><strong>🔗 Store</strong> community tools and resources</p><br><p><strong>📄 Keep</strong> all community documents organized</p><br><br><p>Transform community chaos into seamless coordination! 🎯✨</p>',
+    ),
+    createdBy: 'user_2',
+  ),
 ];

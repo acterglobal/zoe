@@ -361,4 +361,73 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_4', 'user_6'],
   ),
+  // Community Management Tasks
+  TaskModel(
+    id: 'community-task-1',
+    sheetId: 'sheet-5',
+    parentId: 'list-tasks-5',
+    title: 'Consolidate 100+ notifications into priority system',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create a system to filter and prioritize notifications so important client messages don\'t get lost in the noise. Set up alerts for VIP clients and urgent matters.',
+      htmlText:
+          '<p>Create a system to <strong>filter and prioritize notifications</strong> so important client messages don\'t get lost in the noise. Set up alerts for VIP clients and urgent matters.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3'],
+  ),
+  TaskModel(
+    id: 'community-task-2',
+    sheetId: 'sheet-5',
+    parentId: 'list-tasks-5',
+    title: 'Create centralized client tracking system',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Build a unified system to track all important clients across different platforms. No more losing clients in scattered tools!',
+      htmlText:
+          '<p>Build a <strong>unified system to track all important clients</strong> across different platforms. No more losing clients in scattered tools!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_7'],
+  ),
+  TaskModel(
+    id: 'community-task-3',
+    sheetId: 'sheet-5',
+    parentId: 'list-tasks-5',
+    title: 'Migrate scattered tasks to one platform',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Consolidate all tasks from note apps, todo lists, and other scattered tools into one centralized system. Stop the chaos!',
+      htmlText:
+          '<p>Consolidate all tasks from <strong>note apps, todo lists, and other scattered tools</strong> into one centralized system. Stop the chaos!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_5',
+    assignedUsers: ['user_5', 'user_6'],
+  ),
+  TaskModel(
+    id: 'community-task-4',
+    sheetId: 'sheet-5',
+    parentId: 'list-tasks-5',
+    title: 'Set up meeting coordination system',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Create a system to never miss important meetings again. Coordinate schedules, send reminders, and track attendance.',
+      htmlText:
+          '<p>Create a system to <strong>never miss important meetings again</strong>. Coordinate schedules, send reminders, and track attendance.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 5)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_3', 'user_7'],
+  ),
 ];

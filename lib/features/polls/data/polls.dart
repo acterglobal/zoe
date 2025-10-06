@@ -235,4 +235,54 @@ final polls = [
     isMultipleChoice: true,
     createdBy: 'user_2',
   ),
+  PollModel(
+    id: 'poll-6',
+    sheetId: 'sheet-5',
+    parentId: 'sheet-5',
+    orderIndex: 1,
+    question: 'What\'s your biggest community management challenge?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 15)),
+    options: [
+      PollOption(
+        id: 'option-6-1',
+        title: '100+ notifications drowning out important messages',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+        ],
+      ),
+      PollOption(
+        id: 'option-6-2',
+        title: 'Important clients lost in scattered tools',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-6-3',
+        title: 'Tasks scattered across different apps',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+        ],
+      ),
+      PollOption(
+        id: 'option-6-4',
+        title: 'Missing meetings because of poor coordination',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_7'),
+        ],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_3',
+  ),
 ];

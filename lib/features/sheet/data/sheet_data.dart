@@ -58,4 +58,18 @@ final sheetList = [
     createdBy: 'user_1',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
   ),
+  SheetModel(
+    id: 'sheet-5',
+    title: 'Community Organization Hub',
+    emoji: '🏘️',
+    color: const Color(0xFF059669), // Emerald
+    description: (
+      plainText:
+          'Tired of 100+ notifications, scattered tools, and missing important clients? This is your one-stop solution for community management! From organizing chat groups to tracking important clients, event planning, and task management - Zoe brings everything together so you never miss what matters.',
+      htmlText:
+          '<p>Tired of <strong>100+ notifications</strong>, scattered tools, and missing important clients? This is your one-stop solution for community management! From organizing chat groups to tracking important clients, event planning, and task management - Zoe brings everything together so you never miss what matters.</p>',
+    ),
+    createdBy: 'user_2',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7'],
+  ),
 ];

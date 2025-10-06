@@ -112,4 +112,29 @@ final eventList = [
       'user_6': RsvpStatus.yes,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-5',
+    parentId: 'sheet-5',
+    id: 'event-6',
+    title: 'Community Coordination & Strategy Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s get our community organized! We\'ll consolidate all our scattered tools, create a system to track important clients, and ensure we never miss another important meeting or opportunity.',
+      htmlText:
+          '<p>Let\'s get our <strong>community organized</strong>! We\'ll consolidate all our scattered tools, create a system to track important clients, and ensure we never miss another important meeting or opportunity.</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(hours: 4)),
+    endDate: DateTime.now().add(const Duration(hours: 6)),
+    createdBy: 'user_4',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.yes,
+      'user_5': RsvpStatus.yes,
+      'user_6': RsvpStatus.maybe,
+      'user_7': RsvpStatus.yes,
+    },
+  ),
 ];
