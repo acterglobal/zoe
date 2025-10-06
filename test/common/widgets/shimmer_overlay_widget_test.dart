@@ -73,20 +73,6 @@ void main() {
       final clipRRect = tester.widget<ClipRRect>(find.byType(ClipRRect));
       expect(clipRRect.borderRadius, BorderRadius.zero);
     });
-
-   
-
-  
-
-  
- 
-
-   
-   
-
-
-
-   
     
     testWidgets('handles edge case with empty shimmer colors', (tester) async {
       await tester.pumpMaterialWidget(
@@ -100,7 +86,6 @@ void main() {
       expect(find.byType(ShimmerOverlay), findsOneWidget);
     });
 
-   
     testWidgets('handles edge case with single shimmer color', (tester) async {
       await tester.pumpMaterialWidget(
         child: ShimmerOverlayTestUtils.createTestWidget(

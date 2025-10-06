@@ -65,4 +65,10 @@ extension WidgetTesterExtension on WidgetTester {
       ),
     );
   }
+
+  /// Gets the L10n instance for any widget type
+  /// Usage: getL10n(tester, byType: MyWidget)
+  static L10n getL10n(WidgetTester tester, {required Type byType}) {
+    return L10n.of(tester.element(find.byType(byType)));
+  }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/features/content/widgets/content_menu_options.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
 
 import '../../../test-utils/test_utils.dart';
 
@@ -32,7 +31,7 @@ void main() {
       expect(find.byIcon(Icons.poll_outlined), findsOneWidget);
 
       // Get L10n instance
-      final l10n = L10n.of(tester.element(find.byType(ContentMenuOptions)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: ContentMenuOptions);
 
       // Verify all titles are present
       expect(find.text(l10n.text), findsOneWidget);
@@ -69,7 +68,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final l10n = L10n.of(tester.element(find.byType(ContentMenuOptions)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: ContentMenuOptions);
       await tester.tap(find.text(l10n.text));
       expect(textTapped, isTrue);
     });
@@ -90,7 +89,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final l10n = L10n.of(tester.element(find.byType(ContentMenuOptions)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: ContentMenuOptions);
       await tester.tap(find.text(l10n.event));
       expect(eventTapped, isTrue);
     });
@@ -111,7 +110,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final l10n = L10n.of(tester.element(find.byType(ContentMenuOptions)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: ContentMenuOptions);
       await tester.tap(find.text(l10n.bulletedList));
       expect(bulletedListTapped, isTrue);
     });
@@ -132,7 +131,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final l10n = L10n.of(tester.element(find.byType(ContentMenuOptions)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: ContentMenuOptions);
       await tester.tap(find.text(l10n.toDoList));
       expect(todoListTapped, isTrue);
     });
@@ -153,7 +152,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final l10n = L10n.of(tester.element(find.byType(ContentMenuOptions)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: ContentMenuOptions);
       await tester.tap(find.text(l10n.link));
       expect(linkTapped, isTrue);
     });
@@ -174,7 +173,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final l10n = L10n.of(tester.element(find.byType(ContentMenuOptions)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: ContentMenuOptions);
       await tester.tap(find.text(l10n.document));
       expect(documentTapped, isTrue);
     });
@@ -195,7 +194,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final l10n = L10n.of(tester.element(find.byType(ContentMenuOptions)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: ContentMenuOptions);
       await tester.tap(find.text(l10n.poll));
       expect(pollTapped, isTrue);
     });
@@ -234,7 +233,7 @@ void main() {
 
       // Since InkWell's borderRadius is not accessible in the widget tree,
       // we'll verify the tap functionality works instead
-      final l10n = L10n.of(tester.element(find.byType(ContentMenuOptions)));
+      final l10n = WidgetTesterExtension.getL10n(tester, byType: ContentMenuOptions);
       await tester.tap(find.text(l10n.text));
       await tester.tap(find.text(l10n.event));
       await tester.tap(find.text(l10n.bulletedList));
