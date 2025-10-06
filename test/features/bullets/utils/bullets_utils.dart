@@ -12,11 +12,31 @@ import 'package:zoe/features/users/models/user_model.dart';
 
 import '../../../test-utils/test_utils.dart';
 
+// Test bullet data
+const nonExistentBulletId = 'non-existent-id';
+const testBulletId = 'test-bullet-id';
+const testBulletTitle = 'Test Bullet Title';
+const testParentId = 'test-parent-id';
+const testSheetId = 'test-sheet-id';
+
+// Test user data
+const testUserId = 'user_1';
+const testUserName = 'Test User';
+const testUserBio = 'Test Bio';
+
+final testUserModel = UserModel(
+  id: testUserId,
+  name: testUserName,
+  bio: testUserBio,
+);
+
+// Empty bullet list
 class EmptyBulletList extends BulletList {
   @override
   List<BulletModel> build() => [];
 }
 
+// Pump bullet share actions widget
 Future<void> pumpBulletShareActionsWidget({
   required WidgetTester tester,
   required ProviderContainer container,
@@ -33,6 +53,7 @@ Future<void> pumpBulletShareActionsWidget({
   );
 }
 
+// Pump bullet copy actions widget
 Future<void> pumpBulletCopyActionsWidget({
   required WidgetTester tester,
   required ProviderContainer container,
@@ -49,6 +70,7 @@ Future<void> pumpBulletCopyActionsWidget({
   );
 }
 
+// Pump bullet edit actions widget
 Future<void> pumpBulletEditActionsWidget({
   required WidgetTester tester,
   required ProviderContainer container,
@@ -65,6 +87,7 @@ Future<void> pumpBulletEditActionsWidget({
   );
 }
 
+// Pump bullet delete actions widget
 Future<void> pumpBulletDeleteActionsWidget({
   required WidgetTester tester,
   required ProviderContainer container,
@@ -81,6 +104,7 @@ Future<void> pumpBulletDeleteActionsWidget({
   );
 }
 
+// Pump bullet detail screen
 Future<void> pumpBulletDetailScreen({
   required WidgetTester tester,
   required ProviderContainer container,
@@ -106,6 +130,7 @@ Future<void> pumpBulletDetailScreen({
   await tester.pump(const Duration(milliseconds: 100));
 }
 
+// Pump bullet item widget
 Future<void> pumpBulletItemWidget({
   required WidgetTester tester,
   required ProviderContainer container,
@@ -126,25 +151,7 @@ Future<void> pumpBulletItemWidget({
   await tester.pumpAndSettle();
 }
 
-// Test bullet data
-const nonExistentBulletId = 'non-existent-id';
-const testBulletId = 'test-bullet-id';
-const testBulletTitle = 'Test Bullet Title';
-const testParentId = 'test-parent-id';
-const testSheetId = 'test-sheet-id';
-
-// Test user data
-const testUserId = 'user_1';
-const testUserName = 'Test User';
-const testUserBio = 'Test Bio';
-
-final testUserModel = UserModel(
-  id: testUserId,
-  name: testUserName,
-  bio: testUserBio,
-);
-
-/// Helper function to add a bullet to the container and return the bullet model
+// Helper function to add a bullet to the container and return the bullet model
 BulletModel addBulletAndGetModel(
   ProviderContainer container, {
   String? title,
