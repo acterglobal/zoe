@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zoe/common/models/user_display_type.dart';
 import 'package:zoe/features/bullets/actions/bullet_actions.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/bullets/screens/bullet_detail_screen.dart';
+import 'package:zoe/features/bullets/widgets/bullet_item_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 
 import '../../../helpers/test_utils.dart';
@@ -98,6 +101,26 @@ Future<void> pumpBulletDetailScreen({
   await tester.pump(const Duration(milliseconds: 100));
 }
 
+Future<void> pumpBulletItemWidget({
+  required WidgetTester tester,
+  required ProviderContainer container,
+  required String bulletId,
+  bool isEditing = false,
+  ZoeUserDisplayType userDisplayType = ZoeUserDisplayType.avatarOnly,
+  GoRouter? router,
+}) async {
+  await tester.pumpMaterialWidgetWithProviderScope(
+    child: BulletItemWidget(
+      bulletId: bulletId,
+      isEditing: isEditing,
+      userDisplayType: userDisplayType,
+    ),
+    container: container,
+    router: router,
+  );
+  await tester.pumpAndSettle();
+}
+
 // Test bullet data
 const nonExistentBulletId = 'non-existent-id';
 const testBulletId = 'test-bullet-id';
@@ -123,6 +146,7 @@ BulletModel addBulletAndGetModel(
   String? parentId,
   String? sheetId,
   int? orderIndex,
+  String? createdBy,
 }) {
   final notifier = container.read(bulletListProvider.notifier);
   notifier.addBullet(
@@ -132,14 +156,28 @@ BulletModel addBulletAndGetModel(
     orderIndex: orderIndex,
   );
 
-  // Bullet ID is the last bullet in the list
+  // Get the bullet list once
   final bulletList = container.read(bulletListProvider);
   if (bulletList.isEmpty) fail('Bullet list is empty');
-  if (orderIndex != null) {
-    return bulletList.firstWhere(
-      (b) => b.orderIndex == orderIndex,
-      orElse: () => fail('Bullet with order index $orderIndex not found'),
-    );
+
+  // Find the target bullet (either by orderIndex or the last one)
+  final targetBullet = orderIndex != null
+      ? bulletList.firstWhere(
+          (b) => b.orderIndex == orderIndex,
+          orElse: () => fail('Bullet with order index $orderIndex not found'),
+        )
+      : bulletList.last;
+  
+  // Update createdBy if specified
+  if (createdBy != null) {
+    final updatedBullet = targetBullet.copyWith(createdBy: createdBy);
+    final updatedBulletList = bulletList.map((bullet) {
+      return bullet.id == targetBullet.id ? updatedBullet : bullet;
+    }).toList();
+    
+    container.read(bulletListProvider.notifier).state = updatedBulletList;
+    return updatedBullet;
   }
-  return bulletList.last;
+
+  return targetBullet;
 }

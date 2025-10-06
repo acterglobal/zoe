@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
-import '../helpers/bullet_helpers.dart';
+import '../utils/bullets_utils.dart';
 
 void main() {
   setUpAll(() {

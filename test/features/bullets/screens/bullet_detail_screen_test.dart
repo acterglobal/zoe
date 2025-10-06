@@ -19,7 +19,7 @@ import 'package:zoe/features/bullets/widgets/bullet_added_by_header_widget.dart'
 import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-import '../helpers/bullet_helpers.dart';
+import '../utils/bullets_utils.dart';
 
 void main() {
   late ProviderContainer container;
