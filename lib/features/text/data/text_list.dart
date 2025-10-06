@@ -60,4 +60,20 @@ final textList = [
     ),
     createdBy: 'user_2',
   ),
+  // Trip Planning Text Content
+  TextModel(
+    sheetId: 'sheet-2',
+    parentId: 'sheet-2',
+    id: 'text-content-5',
+    title: 'Trip Planning Overview',
+    emoji: '🗺️',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Welcome to our epic trip planning workspace! 🎉\n\nThis is where we\'ll coordinate everything for our upcoming adventure. We\'ve got polls to decide on destinations, tasks to track our preparations, events to schedule important dates, and casual notes for all the fun ideas and discussions.\n\nUse the different content types below to:\n• Vote on destinations and preferences\n\n• Track what needs to be done\n\n• Schedule important meetings and dates\n\n• Share ideas, memes, and random thoughts\n\n• Keep all important links and resources organized\n\n\nLet\'s make this trip absolutely amazing! ✈️🌍',
+      htmlText:
+          '<p>Welcome to our epic <strong>trip planning workspace</strong>! 🎉</p><br><p>This is where we\'ll coordinate everything for our upcoming adventure. We\'ve got polls to decide on destinations, tasks to track our preparations, events to schedule important dates, and casual notes for all the fun ideas and discussions.</p><br><br><p>Use the different content types below to:</p><br><br><p>• Vote on destinations and preferences</p><br><p>• Track what needs to be done</p><br><p>• Schedule important meetings and dates</p><br><p>• Share ideas, memes, and random thoughts</p><br><p>• Keep all important links and resources organized</p><br><br><p>Let\'s make this trip absolutely amazing! ✈️🌍</p>',
+    ),
+    createdBy: 'user_1',
+  ),
 ];

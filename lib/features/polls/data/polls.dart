@@ -107,4 +107,47 @@ final polls = [
     isMultipleChoice: true,
     createdBy: 'user_1',
   ),
+  PollModel(
+    id: 'poll-3',
+    sheetId: 'sheet-2',
+    parentId: 'sheet-2',
+    orderIndex: 1,
+    question: 'Which city are we going finally?',
+    startDate: DateTime.now().subtract(const Duration(hours: 2)),
+    options: [
+      PollOption(
+        id: 'option-3-1',
+        title: 'Mumbai, India',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+        ],
+      ),
+      PollOption(
+        id: 'option-3-2',
+        title: 'Delhi, India',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+        ],
+      ),
+      PollOption(
+        id: 'option-3-3',
+        title: 'Goa, India',
+        votes: [
+          Vote(userId: 'user_1'),
+        ],
+      ),
+      PollOption(
+        id: 'option-3-4',
+        title: 'Bangalore, India',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_4'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_2',
+  ),
 ];
