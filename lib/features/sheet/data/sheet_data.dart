@@ -44,4 +44,18 @@ final sheetList = [
     createdBy: 'user_3',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5'],
   ),
+  SheetModel(
+    id: 'sheet-4',
+    title: 'Important Details Lost in the Messages',
+    emoji: '🔍',
+    color: const Color(0xFF7C3AED), // Purple
+    description: (
+      plainText:
+          'Tired of endless scrolling through chats and thousands of photos? This is your digital organization sanctuary! From managing important details to finding better ways to organize photos, chats, and documents - Zoe helps you keep what matters most accessible and organized.',
+      htmlText:
+          '<p>Tired of <strong>endless scrolling</strong> through chats and thousands of photos? This is your digital organization sanctuary! From managing important details to finding better ways to organize photos, chats, and documents - Zoe helps you keep what matters most accessible and organized.</p>',
+    ),
+    createdBy: 'user_1',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
+  ),
 ];

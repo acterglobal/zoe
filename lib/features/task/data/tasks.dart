@@ -293,4 +293,73 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_4', 'user_5'],
   ),
+  // Digital Organization Tasks
+  TaskModel(
+    id: 'organize-task-1',
+    sheetId: 'sheet-4',
+    parentId: 'list-tasks-4',
+    title: 'Organize 10,000+ photos into albums',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create organized photo albums by date, event, and people. Delete duplicates and blurry photos. Use cloud storage for backup.',
+      htmlText:
+          '<p>Create organized <strong>photo albums</strong> by date, event, and people. Delete duplicates and blurry photos. Use cloud storage for backup.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 7)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4'],
+  ),
+  TaskModel(
+    id: 'organize-task-2',
+    sheetId: 'sheet-4',
+    parentId: 'list-tasks-4',
+    title: 'Clean up endless chat history',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Archive old conversations, pin important messages, and create a system to find important details quickly without endless scrolling.',
+      htmlText:
+          '<p>Archive old conversations, <strong>pin important messages</strong>, and create a system to find important details quickly without endless scrolling.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 5)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3'],
+  ),
+  TaskModel(
+    id: 'organize-task-3',
+    sheetId: 'sheet-4',
+    parentId: 'list-tasks-4',
+    title: 'Create system for important details',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Set up a centralized system to store and quickly access important information like passwords, contacts, and key details.',
+      htmlText:
+          '<p>Set up a <strong>centralized system</strong> to store and quickly access important information like passwords, contacts, and key details.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_3', 'user_5'],
+  ),
+  TaskModel(
+    id: 'organize-task-4',
+    sheetId: 'sheet-4',
+    parentId: 'list-tasks-4',
+    title: 'Consolidate multiple apps and platforms',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Review all apps and platforms, delete unused ones, and consolidate similar functions into fewer, more efficient tools.',
+      htmlText:
+          '<p>Review all apps and platforms, <strong>delete unused ones</strong>, and consolidate similar functions into fewer, more efficient tools.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 10)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_4', 'user_6'],
+  ),
 ];

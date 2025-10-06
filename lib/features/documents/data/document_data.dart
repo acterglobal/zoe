@@ -115,4 +115,47 @@ final documentList = [
     sheetId: 'sheet-3',
     filePath: 'path/to/decoration_checklist.docx',
   ),
+  // Digital Organization Documents
+  DocumentModel(
+    id: 'document-17',
+    title: 'Photo Organization System Guide',
+    parentId: 'list-document-4',
+    sheetId: 'sheet-4',
+    filePath: 'path/to/photo_organization_guide.pdf',
+  ),
+  DocumentModel(
+    id: 'document-18',
+    title: 'Important Contacts & Details',
+    parentId: 'list-document-4',
+    sheetId: 'sheet-4',
+    filePath: 'path/to/important_contacts.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-19',
+    title: 'Digital Cleanup Checklist',
+    parentId: 'list-document-4',
+    sheetId: 'sheet-4',
+    filePath: 'path/to/digital_cleanup_checklist.docx',
+  ),
+  DocumentModel(
+    id: 'document-20',
+    title: 'App Inventory & Usage',
+    parentId: 'list-document-4',
+    sheetId: 'sheet-4',
+    filePath: 'path/to/app_inventory.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-21',
+    title: 'Password & Security Vault',
+    parentId: 'list-document-4',
+    sheetId: 'sheet-4',
+    filePath: 'path/to/security_vault.pdf',
+  ),
+  DocumentModel(
+    id: 'document-22',
+    title: 'Chat Backup Strategy',
+    parentId: 'list-document-4',
+    sheetId: 'sheet-4',
+    filePath: 'path/to/chat_backup_strategy.docx',
+  ),
 ];
