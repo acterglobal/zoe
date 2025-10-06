@@ -163,4 +163,31 @@ final eventList = [
       'user_8': RsvpStatus.yes,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-7',
+    parentId: 'sheet-7',
+    id: 'event-8',
+    title: 'Exhibition Planning Coordination Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s organize this exhibition properly! We\'ll consolidate all scattered tools, create a system for food stalls, guest lists, and stage management. No more panic and confusion!',
+      htmlText:
+          '<p>Let\'s organize this <strong>exhibition properly</strong>! We\'ll consolidate all scattered tools, create a system for food stalls, guest lists, and stage management. No more panic and confusion!</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(hours: 6)),
+    endDate: DateTime.now().add(const Duration(hours: 8)),
+    createdBy: 'user_3',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.yes,
+      'user_5': RsvpStatus.maybe,
+      'user_6': RsvpStatus.yes,
+      'user_7': RsvpStatus.yes,
+      'user_8': RsvpStatus.maybe,
+      'user_9': RsvpStatus.yes,
+    },
+  ),
 ];

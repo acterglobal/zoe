@@ -244,4 +244,47 @@ final documentList = [
     sheetId: 'sheet-6',
     filePath: 'path/to/chat_best_practices.docx',
   ),
+  // Exhibition Planning Documents
+  DocumentModel(
+    id: 'document-35',
+    title: 'Exhibition Master Checklist',
+    parentId: 'list-document-7',
+    sheetId: 'sheet-7',
+    filePath: 'path/to/exhibition_checklist.pdf',
+  ),
+  DocumentModel(
+    id: 'document-36',
+    title: 'Food Stall Vendor List',
+    parentId: 'list-document-7',
+    sheetId: 'sheet-7',
+    filePath: 'path/to/food_vendors.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-37',
+    title: 'Guest List & RSVP Tracker',
+    parentId: 'list-document-7',
+    sheetId: 'sheet-7',
+    filePath: 'path/to/guest_list.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-38',
+    title: 'Stage Management Schedule',
+    parentId: 'list-document-7',
+    sheetId: 'sheet-7',
+    filePath: 'path/to/stage_schedule.docx',
+  ),
+  DocumentModel(
+    id: 'document-39',
+    title: 'Exhibition Budget Breakdown',
+    parentId: 'list-document-7',
+    sheetId: 'sheet-7',
+    filePath: 'path/to/exhibition_budget.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-40',
+    title: 'Vendor Coordination Guide',
+    parentId: 'list-document-7',
+    sheetId: 'sheet-7',
+    filePath: 'path/to/vendor_guide.pdf',
+  ),
 ];

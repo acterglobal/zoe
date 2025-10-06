@@ -331,4 +331,55 @@ final polls = [
     isMultipleChoice: false,
     createdBy: 'user_1',
   ),
+  PollModel(
+    id: 'poll-8',
+    sheetId: 'sheet-7',
+    parentId: 'sheet-7',
+    orderIndex: 1,
+    question: 'What\'s your biggest exhibition planning challenge?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 10)),
+    options: [
+      PollOption(
+        id: 'option-8-1',
+        title: 'Too many scattered tools and apps',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+      PollOption(
+        id: 'option-8-2',
+        title: 'Food stall coordination chaos',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-8-3',
+        title: 'Guest list management nightmare',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-8-4',
+        title: 'Stage management confusion',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_2',
+  ),
 ];

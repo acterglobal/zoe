@@ -86,4 +86,18 @@ final sheetList = [
     createdBy: 'user_3',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8'],
   ),
+  SheetModel(
+    id: 'sheet-7',
+    title: 'Exhibition Planning Hub',
+    emoji: '🎨',
+    color: const Color(0xFF1E40AF), // Blue
+    description: (
+      plainText:
+          'Planning an exhibition feels overwhelming? We get it! Papers, notes, too many tools, but nothing is organized. Note apps, chat groups, calendars, paper flyers - so much stress and confusion! From food stalls to guest lists, stage management to vendor coordination - Zoe brings everything together in one organized place.',
+      htmlText:
+          '<p>Planning an exhibition feels <strong>overwhelming</strong>? We get it! Papers, notes, too many tools, but nothing is organized. Note apps, chat groups, calendars, paper flyers - so much stress and confusion! From food stalls to guest lists, stage management to vendor coordination - Zoe brings everything together in one organized place.</p>',
+    ),
+    createdBy: 'user_4',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9'],
+  ),
 ];

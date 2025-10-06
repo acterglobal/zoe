@@ -557,4 +557,75 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // Exhibition Management Frustrations & Solutions
+  BulletModel(
+    id: 'bullet-item-40',
+    sheetId: 'sheet-7',
+    parentId: 'list-bulleted-9',
+    title: 'Planning an exhibition feels overwhelming! 😰',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Papers, notes, too many tools, but nothing is organized! Note apps, chat groups, calendars, paper flyers - so much stress and confusion!',
+      htmlText:
+          '<p><strong>Papers, notes, too many tools</strong>, but nothing is organized! Note apps, chat groups, calendars, paper flyers - so much stress and confusion!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-41',
+    sheetId: 'sheet-7',
+    parentId: 'list-bulleted-9',
+    title: 'Food stall? Where\'s the guest list? Who\'s managing stage? 🤯',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Panic questions everywhere! Food stall coordination, guest list management, stage management - everything is scattered and chaotic!',
+      htmlText:
+          '<p><strong>Panic questions everywhere</strong>! Food stall coordination, guest list management, stage management - everything is scattered and chaotic!</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-42',
+    sheetId: 'sheet-7',
+    parentId: 'list-bulleted-9',
+    title: 'Better way is Zoe! 🎯',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Finally! One platform for exhibition planning. Consolidate all tools, manage food stalls, track guests, and coordinate stage management!',
+      htmlText:
+          '<p>Finally! <strong>One platform for exhibition planning</strong>. Consolidate all tools, manage food stalls, track guests, and coordinate stage management!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-43',
+    sheetId: 'sheet-7',
+    parentId: 'list-bulleted-9',
+    title: 'No more scattered confusion - everything in one place! ✨',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'With Zoe, all exhibition planning is organized in one place. No more hunting through different apps and papers!',
+      htmlText:
+          '<p>With Zoe, <strong>all exhibition planning is organized in one place</strong>. No more hunting through different apps and papers!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-44',
+    sheetId: 'sheet-7',
+    parentId: 'list-bulleted-9',
+    title: 'From panic to peace - organized exhibition planning! 🎨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Transform exhibition planning from overwhelming chaos to organized peace. Zoe makes it all manageable and stress-free!',
+      htmlText:
+          '<p>Transform exhibition planning from <strong>overwhelming chaos to organized peace</strong>. Zoe makes it all manageable and stress-free!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

@@ -499,4 +499,73 @@ final tasks = [
     createdBy: 'user_7',
     assignedUsers: ['user_7', 'user_8'],
   ),
+  // Exhibition Management Tasks
+  TaskModel(
+    id: 'exhibition-task-1',
+    sheetId: 'sheet-7',
+    parentId: 'list-tasks-7',
+    title: 'Consolidate scattered tools and apps',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Stop the chaos! Consolidate note apps, chat groups, calendars, and paper flyers into one organized system. No more scattered confusion!',
+      htmlText:
+          '<p>Stop the chaos! Consolidate <strong>note apps, chat groups, calendars, and paper flyers</strong> into one organized system. No more scattered confusion!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3', 'user_5'],
+  ),
+  TaskModel(
+    id: 'exhibition-task-2',
+    sheetId: 'sheet-7',
+    parentId: 'list-tasks-7',
+    title: 'Organize food stall coordination',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Create a system to manage all food stalls, vendors, and catering. Track menus, payments, and logistics in one place.',
+      htmlText:
+          '<p>Create a system to <strong>manage all food stalls, vendors, and catering</strong>. Track menus, payments, and logistics in one place.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_6'],
+  ),
+  TaskModel(
+    id: 'exhibition-task-3',
+    sheetId: 'sheet-7',
+    parentId: 'list-tasks-7',
+    title: 'Create comprehensive guest list system',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Build a complete guest list management system. Track RSVPs, VIP guests, and attendance. No more "where\'s the guest list?" panic!',
+      htmlText:
+          '<p>Build a complete <strong>guest list management system</strong>. Track RSVPs, VIP guests, and attendance. No more "where\'s the guest list?" panic!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_3', 'user_7', 'user_9'],
+  ),
+  TaskModel(
+    id: 'exhibition-task-4',
+    sheetId: 'sheet-7',
+    parentId: 'list-tasks-7',
+    title: 'Set up stage management coordination',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Organize stage management, sound systems, lighting, and performance schedules. Clear communication and coordination!',
+      htmlText:
+          '<p>Organize <strong>stage management, sound systems, lighting, and performance schedules</strong>. Clear communication and coordination!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 5)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_4', 'user_5', 'user_8'],
+  ),
 ];

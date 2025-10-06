@@ -141,4 +141,20 @@ final textList = [
     ),
     createdBy: 'user_3',
   ),
+  // Exhibition Planning Text Content
+  TextModel(
+    sheetId: 'sheet-7',
+    parentId: 'sheet-7',
+    id: 'text-content-10',
+    title: 'From Overwhelming Chaos to Organized Excellence',
+    emoji: '🎨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Planning an exhibition feels overwhelming? We get it! 😰\n\nPapers, notes, too many tools, but nothing is organized. Note apps, chat groups, calendars, paper flyers - so much stress and confusion! From food stalls to guest lists, stage management to vendor coordination - Zoe brings everything together in one organized place.\n\n🗳️ Vote on exhibition planning challenges\n🎨 Track exhibition tasks and coordination efforts\n📅 Schedule planning meetings and vendor coordination\n😰 Share frustrations and celebrate organized solutions\n🔗 Store exhibition tools and vendor resources\n📄 Keep all exhibition documents organized\n\nTransform overwhelming chaos into organized excellence! 🎯✨',
+      htmlText:
+          '<p>Planning an exhibition feels <strong>overwhelming</strong>? We get it! 😰</p><br><p>Papers, notes, too many tools, but nothing is organized. Note apps, chat groups, calendars, paper flyers - so much stress and confusion! From food stalls to guest lists, stage management to vendor coordination - Zoe brings everything together in one organized place.</p><br><br><p><strong>🗳️ Vote</strong> on exhibition planning challenges</p><br><p><strong>🎨 Track</strong> exhibition tasks and coordination efforts</p><br><p><strong>📅 Schedule</strong> planning meetings and vendor coordination</p><br><p><strong>😰 Share</strong> frustrations and celebrate organized solutions</p><br><p><strong>🔗 Store</strong> exhibition tools and vendor resources</p><br><p><strong>📄 Keep</strong> all exhibition documents organized</p><br><br><p>Transform overwhelming chaos into organized excellence! 🎯✨</p>',
+    ),
+    createdBy: 'user_4',
+  ),
 ];
