@@ -13,7 +13,7 @@ import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/bullets/widgets/bullet_added_by_header_widget.dart';
 import 'package:zoe/features/bullets/widgets/bullet_item_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-import '../../../helpers/mock_gorouter.dart';
+import '../../../test-utils/mock_gorouter.dart';
 import '../utils/bullets_utils.dart';
 
 void main() {

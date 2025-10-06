@@ -10,7 +10,7 @@ import 'package:zoe/features/bullets/screens/bullet_detail_screen.dart';
 import 'package:zoe/features/bullets/widgets/bullet_item_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 class EmptyBulletList extends BulletList {
   @override
