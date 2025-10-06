@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/features/settings/models/language_model.dart';
 import 'package:zoe/features/settings/providers/locale_provider.dart';
 import 'package:zoe/features/settings/screens/language_selection_screen.dart';
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 class MockLocaleNotifier extends AppLocale {
   @override

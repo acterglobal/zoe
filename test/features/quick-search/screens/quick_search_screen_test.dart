@@ -18,8 +18,7 @@ import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_list_widget.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
-import '../../../helpers/test_utils.dart';
+import '../../../test-utils/test_utils.dart';
 
 class MockSearchValue extends SearchValue {
   @override
@@ -60,7 +59,7 @@ void main() {
       expect(
         find.descendant(
           of: find.byType(ZoeAppBar),
-          matching: find.text(L10n.of(tester.element(find.byType(QuickSearchScreen))).search),
+          matching: find.text(WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen).search),
         ),
         findsOneWidget,
       );
@@ -87,7 +86,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final lang = L10n.of(tester.element(find.byType(QuickSearchScreen)));
+      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
       
       // Tap on Sheets tab
       await tester.tap(find.text(lang.sheets));
@@ -109,7 +108,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final lang = L10n.of(tester.element(find.byType(QuickSearchScreen)));
+      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
       
       // Tap on Events tab
       await tester.tap(find.text(lang.events));
@@ -131,7 +130,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final lang = L10n.of(tester.element(find.byType(QuickSearchScreen)));
+      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
       
       // Tap on Tasks tab
       await tester.tap(find.text(lang.tasks));
@@ -153,7 +152,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final lang = L10n.of(tester.element(find.byType(QuickSearchScreen)));
+      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
       
       // Tap on Links tab
       await tester.tap(find.text(lang.links));
@@ -175,7 +174,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final lang = L10n.of(tester.element(find.byType(QuickSearchScreen)));
+      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
       
       // Find and tap Documents tab
       final documentsTab = find.text(lang.documents);
@@ -205,7 +204,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Select sheets filter
-      final lang = L10n.of(tester.element(find.byType(QuickSearchScreen)));
+      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
       await tester.tap(find.text(lang.sheets));
       await tester.pumpAndSettle();
 
