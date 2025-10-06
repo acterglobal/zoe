@@ -61,4 +61,20 @@ final textList = [
     ),
     createdBy: 'user_2',
   ),
+  // Trip Planning Text Content
+  TextModel(
+    sheetId: 'sheet-2',
+    parentId: 'sheet-2',
+    id: 'text-content-5',
+    title: 'Adventure Awaits - Trip Planning Hub',
+    emoji: '🗺️',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Pack your bags and get ready for an unforgettable journey! 🎒\n\nThis is our command center for planning the perfect getaway. From choosing dream destinations to coordinating every detail, we\'ve got everything covered.\n\n🗳️ Vote on destinations and travel preferences\n✅ Track preparation tasks and deadlines\n📅 Schedule planning meetings and important dates\n💭 Share travel ideas, memes, and excitement\n🔗 Store booking confirmations and travel resources\n📄 Keep all documents organized and accessible\n\nReady to create memories that will last a lifetime? Let\'s make this adventure epic! ✈️🌍',
+      htmlText:
+          '<p>Pack your bags and get ready for an <strong>unforgettable journey</strong>! 🎒</p><br><p>This is our command center for planning the perfect getaway. From choosing dream destinations to coordinating every detail, we\'ve got everything covered.</p><br><br><p><strong>🗳️ Vote</strong> on destinations and travel preferences</p><br><p><strong>✅ Track</strong> preparation tasks and deadlines</p><br><p><strong>📅 Schedule</strong> planning meetings and important dates</p><br><p><strong>💭 Share</strong> travel ideas, memes, and excitement</p><br><p><strong>🔗 Store</strong> booking confirmations and travel resources</p><br><p><strong>📄 Keep</strong> all documents organized and accessible</p><br><br><p>Ready to create memories that will last a lifetime? Let\'s make this adventure epic! ✈️🌍</p>',
+    ),
+    createdBy: 'user_1',
+  ),
 ];

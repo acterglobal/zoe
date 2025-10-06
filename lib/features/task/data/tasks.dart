@@ -154,4 +154,73 @@ final tasks = [
     createdBy: 'user_1',
     assignedUsers: ['user_1', 'user_2', 'user_3'],
   ),
+  // Trip Planning Tasks
+  TaskModel(
+    id: 'trip-task-1',
+    sheetId: 'sheet-2',
+    parentId: 'list-tasks-2',
+    title: 'Research local attractions and activities',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Find the best tourist spots, local experiences, and hidden gems in our chosen destination. Create a must-visit list.',
+      htmlText:
+          '<p>Find the best <strong>tourist spots</strong>, local experiences, and hidden gems in our chosen destination. Create a must-visit list.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 5)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_3'],
+  ),
+  TaskModel(
+    id: 'trip-task-2',
+    sheetId: 'sheet-2',
+    parentId: 'list-tasks-2',
+    title: 'Book accommodation and check-in details',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Compare hotel options, read reviews, and make reservations. Get confirmation details and check-in instructions.',
+      htmlText:
+          '<p>Compare <strong>hotel options</strong>, read reviews, and make reservations. Get confirmation details and check-in instructions.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_4'],
+  ),
+  TaskModel(
+    id: 'trip-task-3',
+    sheetId: 'sheet-2',
+    parentId: 'list-tasks-2',
+    title: 'Arrange transportation and travel documents',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Book flights, arrange airport transfers, and ensure all travel documents (passports, visas) are ready.',
+      htmlText:
+          '<p>Book <strong>flights</strong>, arrange airport transfers, and ensure all travel documents (passports, visas) are ready.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_3'],
+  ),
+  TaskModel(
+    id: 'trip-task-4',
+    sheetId: 'sheet-2',
+    parentId: 'list-tasks-2',
+    title: 'Plan daily schedule and restaurant reservations',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Create a detailed daily itinerary with activities, meal times, and make restaurant reservations for special dinners.',
+      htmlText:
+          '<p>Create a detailed <strong>daily itinerary</strong> with activities, meal times, and make restaurant reservations for special dinners.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 6)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_1', 'user_2', 'user_3', 'user_4'],
+  ),
 ];

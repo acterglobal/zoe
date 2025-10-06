@@ -230,4 +230,61 @@ final bulletList = [
     ),
     createdBy: 'user_1',
   ),
+  // Trip Planning Casual Notes
+  BulletModel(
+    id: 'bullet-item-17',
+    sheetId: 'sheet-2',
+    parentId: 'list-bulleted-4',
+    title: 'Look at this meme omg 😂',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Guys, check this out! This travel meme is literally us planning this trip 😂',
+      htmlText:
+          '<p>Guys, check this out! This <strong>travel meme</strong> is literally us planning this trip 😂</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-18',
+    sheetId: 'sheet-2',
+    parentId: 'list-bulleted-4',
+    title: 'I can bring a speaker if needed',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Hey everyone! I have a portable Bluetooth speaker. Should I bring it for music during the trip?',
+      htmlText:
+          '<p>Hey everyone! I have a <strong>portable Bluetooth speaker</strong>. Should I bring it for music during the trip?</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-19',
+    sheetId: 'sheet-2',
+    parentId: 'list-bulleted-4',
+    title: 'Morning or evening flights?',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Quick question: Do we prefer morning flights (usually cheaper) or evening flights (more convenient timing)?',
+      htmlText:
+          '<p>Quick question: Do we prefer <strong>morning flights</strong> (usually cheaper) or <strong>evening flights</strong> (more convenient timing)?</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-20',
+    sheetId: 'sheet-2',
+    parentId: 'list-bulleted-4',
+    title: 'Bro did u watch yesterday match?',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'That game was absolutely insane! We should definitely find a sports bar during our trip to catch up on games.',
+      htmlText:
+          '<p>That game was <strong>absolutely insane</strong>! We should definitely find a sports bar during our trip to catch up on games.</p>',
+    ),
+    createdBy: 'user_4',
+  ),
 ];
