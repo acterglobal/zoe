@@ -33,7 +33,17 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(minutes: 30)),
     createdBy: 'user_1',
-    assignedUsers: ['user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+    assignedUsers: [
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+      'user_9',
+      'user_10',
+    ],
   ),
   TaskModel(
     id: 'task-3',
@@ -153,213 +163,5 @@ final tasks = [
     dueDate: DateTime.now().add(const Duration(days: 1)),
     createdBy: 'user_1',
     assignedUsers: ['user_1', 'user_2', 'user_3'],
-  ),
-  
-  // Trip Planning Tasks
-  TaskModel(
-    id: 'trip-task-1',
-    sheetId: 'sheet-2',
-    parentId: 'list-tasks-2',
-    title: 'Research local attractions and activities',
-    orderIndex: 1,
-    description: (
-      plainText:
-          'Find the best tourist spots, local experiences, and hidden gems in our chosen destination. Create a must-visit list.',
-      htmlText:
-          '<p>Find the best <strong>tourist spots</strong>, local experiences, and hidden gems in our chosen destination. Create a must-visit list.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 5)),
-    createdBy: 'user_2',
-    assignedUsers: ['user_2', 'user_3'],
-  ),
-  TaskModel(
-    id: 'trip-task-2',
-    sheetId: 'sheet-2',
-    parentId: 'list-tasks-2',
-    title: 'Book accommodation and check-in details',
-    orderIndex: 2,
-    description: (
-      plainText:
-          'Compare hotel options, read reviews, and make reservations. Get confirmation details and check-in instructions.',
-      htmlText:
-          '<p>Compare <strong>hotel options</strong>, read reviews, and make reservations. Get confirmation details and check-in instructions.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 3)),
-    createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_4'],
-  ),
-  TaskModel(
-    id: 'trip-task-3',
-    sheetId: 'sheet-2',
-    parentId: 'list-tasks-2',
-    title: 'Arrange transportation and travel documents',
-    orderIndex: 3,
-    description: (
-      plainText:
-          'Book flights, arrange airport transfers, and ensure all travel documents (passports, visas) are ready.',
-      htmlText:
-          '<p>Book <strong>flights</strong>, arrange airport transfers, and ensure all travel documents (passports, visas) are ready.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 4)),
-    createdBy: 'user_3',
-    assignedUsers: ['user_3'],
-  ),
-  TaskModel(
-    id: 'trip-task-4',
-    sheetId: 'sheet-2',
-    parentId: 'list-tasks-2',
-    title: 'Plan daily schedule and restaurant reservations',
-    orderIndex: 4,
-    description: (
-      plainText:
-          'Create a detailed daily itinerary with activities, meal times, and make restaurant reservations for special dinners.',
-      htmlText:
-          '<p>Create a detailed <strong>daily itinerary</strong> with activities, meal times, and make restaurant reservations for special dinners.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 6)),
-    createdBy: 'user_4',
-    assignedUsers: ['user_1', 'user_2', 'user_3', 'user_4'],
-  ),
-  // Christmas Planning Tasks
-  TaskModel(
-    id: 'christmas-task-1',
-    sheetId: 'sheet-3',
-    parentId: 'list-tasks-3',
-    title: 'Who\'s getting the cake?',
-    orderIndex: 1,
-    description: (
-      plainText:
-          'We need to decide who will handle the Christmas cake order. Check local bakeries, compare prices, and place the order in advance.',
-      htmlText:
-          '<p>We need to decide who will handle the <strong>Christmas cake order</strong>. Check local bakeries, compare prices, and place the order in advance.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 7)),
-    createdBy: 'user_3',
-    assignedUsers: ['user_3', 'user_5'],
-  ),
-  TaskModel(
-    id: 'christmas-task-2',
-    sheetId: 'sheet-3',
-    parentId: 'list-tasks-3',
-    title: 'Food menu decided?',
-    orderIndex: 2,
-    description: (
-      plainText:
-          'Plan the complete Christmas menu including appetizers, main course, desserts, and drinks. Consider dietary restrictions and preferences.',
-      htmlText:
-          '<p>Plan the complete <strong>Christmas menu</strong> including appetizers, main course, desserts, and drinks. Consider dietary restrictions and preferences.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 5)),
-    createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_2', 'user_4'],
-  ),
-  TaskModel(
-    id: 'christmas-task-3',
-    sheetId: 'sheet-3',
-    parentId: 'list-tasks-3',
-    title: 'Secret Santa budget',
-    orderIndex: 3,
-    description: (
-      plainText:
-          'Set the Secret Santa gift budget and organize the gift exchange. Create a list of participants and assign names.',
-      htmlText:
-          '<p>Set the <strong>Secret Santa gift budget</strong> and organize the gift exchange. Create a list of participants and assign names.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 4)),
-    createdBy: 'user_2',
-    assignedUsers: ['user_2', 'user_3'],
-  ),
-  TaskModel(
-    id: 'christmas-task-4',
-    sheetId: 'sheet-3',
-    parentId: 'list-tasks-3',
-    title: 'Need timing before flight booking?',
-    orderIndex: 4,
-    description: (
-      plainText:
-          'Check if anyone needs to book flights for Christmas. Coordinate travel plans and ensure everyone can make it to the celebration.',
-      htmlText:
-          '<p>Check if anyone needs to <strong>book flights for Christmas</strong>. Coordinate travel plans and ensure everyone can make it to the celebration.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 6)),
-    createdBy: 'user_4',
-    assignedUsers: ['user_4', 'user_5'],
-  ),
-  // Digital Organization Tasks
-  TaskModel(
-    id: 'organize-task-1',
-    sheetId: 'sheet-4',
-    parentId: 'list-tasks-4',
-    title: 'Organize 10,000+ photos into albums',
-    orderIndex: 1,
-    description: (
-      plainText:
-          'Create organized photo albums by date, event, and people. Delete duplicates and blurry photos. Use cloud storage for backup.',
-      htmlText:
-          '<p>Create organized <strong>photo albums</strong> by date, event, and people. Delete duplicates and blurry photos. Use cloud storage for backup.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 7)),
-    createdBy: 'user_2',
-    assignedUsers: ['user_2', 'user_4'],
-  ),
-  TaskModel(
-    id: 'organize-task-2',
-    sheetId: 'sheet-4',
-    parentId: 'list-tasks-4',
-    title: 'Clean up endless chat history',
-    orderIndex: 2,
-    description: (
-      plainText:
-          'Archive old conversations, pin important messages, and create a system to find important details quickly without endless scrolling.',
-      htmlText:
-          '<p>Archive old conversations, <strong>pin important messages</strong>, and create a system to find important details quickly without endless scrolling.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 5)),
-    createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_3'],
-  ),
-  TaskModel(
-    id: 'organize-task-3',
-    sheetId: 'sheet-4',
-    parentId: 'list-tasks-4',
-    title: 'Create system for important details',
-    orderIndex: 3,
-    description: (
-      plainText:
-          'Set up a centralized system to store and quickly access important information like passwords, contacts, and key details.',
-      htmlText:
-          '<p>Set up a <strong>centralized system</strong> to store and quickly access important information like passwords, contacts, and key details.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 3)),
-    createdBy: 'user_3',
-    assignedUsers: ['user_3', 'user_5'],
-  ),
-  TaskModel(
-    id: 'organize-task-4',
-    sheetId: 'sheet-4',
-    parentId: 'list-tasks-4',
-    title: 'Consolidate multiple apps and platforms',
-    orderIndex: 4,
-    description: (
-      plainText:
-          'Review all apps and platforms, delete unused ones, and consolidate similar functions into fewer, more efficient tools.',
-      htmlText:
-          '<p>Review all apps and platforms, <strong>delete unused ones</strong>, and consolidate similar functions into fewer, more efficient tools.</p>',
-    ),
-    isCompleted: false,
-    dueDate: DateTime.now().add(const Duration(days: 10)),
-    createdBy: 'user_4',
-    assignedUsers: ['user_4', 'user_6'],
   ),
 ];

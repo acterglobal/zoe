@@ -16,46 +16,4 @@ final sheetList = [
     createdBy: 'user_1',
     users: ['user_1', 'user_2', 'user_3'],
   ),
-  SheetModel(
-    id: 'sheet-2',
-    title: 'Planning a Trip',
-    emoji: '✈️',
-    color: const Color(0xFF10B981), // Emerald
-    description: (
-      plainText:
-          'Our epic trip planning workspace! From choosing the perfect destination to coordinating all the fun details. Use polls to decide on destinations, tasks to track preparations, events to schedule activities, and share all the important links and resources.',
-      htmlText:
-          '<p>Our epic <strong>trip planning workspace</strong>! From choosing the perfect destination to coordinating all the fun details. Use polls to decide on destinations, tasks to track preparations, events to schedule activities, and share all the important links and resources.</p>',
-    ),
-    createdBy: 'user_2',
-    users: ['user_1', 'user_2', 'user_3', 'user_4'],
-  ),
-  SheetModel(
-    id: 'sheet-3',
-    title: 'Christmas Time for Joy & Celebrations',
-    emoji: '🎄',
-    color: const Color(0xFFDC2626), // Red
-    description: (
-      plainText:
-          'Our festive Christmas celebration workspace! From planning the perfect party to coordinating all the holiday fun. Use polls to decide on venues, tasks to track preparations, events to schedule activities, and share all the Christmas cheer and memes.',
-      htmlText:
-          '<p>Our festive <strong>Christmas celebration workspace</strong>! From planning the perfect party to coordinating all the holiday fun. Use polls to decide on venues, tasks to track preparations, events to schedule activities, and share all the Christmas cheer and memes.</p>',
-    ),
-    createdBy: 'user_3',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5'],
-  ),
-  SheetModel(
-    id: 'sheet-4',
-    title: 'Important Details Lost in the Messages',
-    emoji: '🔍',
-    color: const Color(0xFF7C3AED), // Purple
-    description: (
-      plainText:
-          'Tired of endless scrolling through chats and thousands of photos? This is your digital organization sanctuary! From managing important details to finding better ways to organize photos, chats, and documents - Zoe helps you keep what matters most accessible and organized.',
-      htmlText:
-          '<p>Tired of <strong>endless scrolling</strong> through chats and thousands of photos? This is your digital organization sanctuary! From managing important details to finding better ways to organize photos, chats, and documents - Zoe helps you keep what matters most accessible and organized.</p>',
-    ),
-    createdBy: 'user_1',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
-  ),
 ];
