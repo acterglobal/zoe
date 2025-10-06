@@ -77,4 +77,20 @@ final textList = [
     ),
     createdBy: 'user_1',
   ),
+  // Christmas Planning Text Content
+  TextModel(
+    sheetId: 'sheet-3',
+    parentId: 'sheet-3',
+    id: 'text-content-6',
+    title: 'Festive Magic - Christmas Celebration Center',
+    emoji: '🎄',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Ho ho ho! Time to spread Christmas cheer! 🎅\n\nThis is our magical workshop for creating the most wonderful Christmas celebration ever. From planning the perfect party to coordinating festive activities, we\'re making this holiday season unforgettable.\n\n🗳️ Vote on venue and celebration preferences\n🎅 Track party preparation tasks and deadlines\n📅 Schedule planning meetings and festive events\n💬 Share Christmas ideas, memes, and holiday spirit\n🔗 Store booking confirmations and party resources\n📋 Keep all documents organized and accessible\n\nLet\'s deck the halls and make this Christmas absolutely magical! ✨🎁',
+      htmlText:
+          '<p>Ho ho ho! Time to spread <strong>Christmas cheer</strong>! 🎅</p><br><p>This is our magical workshop for creating the most wonderful Christmas celebration ever. From planning the perfect party to coordinating festive activities, we\'re making this holiday season unforgettable.</p><br><br><p><strong>🗳️ Vote</strong> on venue and celebration preferences</p><br><p><strong>🎅 Track</strong> party preparation tasks and deadlines</p><br><p><strong>📅 Schedule</strong> planning meetings and festive events</p><br><p><strong>💬 Share</strong> Christmas ideas, memes, and holiday spirit</p><br><p><strong>🔗 Store</strong> booking confirmations and party resources</p><br><p><strong>📋 Keep</strong> all documents organized and accessible</p><br><br><p>Let\'s deck the halls and make this Christmas absolutely magical! ✨🎁</p>',
+    ),
+    createdBy: 'user_2',
+  ),
 ];

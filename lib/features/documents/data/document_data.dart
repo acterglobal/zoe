@@ -72,4 +72,47 @@ final documentList = [
     sheetId: 'sheet-2',
     filePath: 'path/to/emergency_contacts.docx',
   ),
+  // Christmas Planning Documents
+  DocumentModel(
+    id: 'document-11',
+    title: 'Christmas Party Guest List',
+    parentId: 'list-document-3',
+    sheetId: 'sheet-3',
+    filePath: 'path/to/christmas_guest_list.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-12',
+    title: 'Christmas Menu Plan',
+    parentId: 'list-document-3',
+    sheetId: 'sheet-3',
+    filePath: 'path/to/christmas_menu.docx',
+  ),
+  DocumentModel(
+    id: 'document-13',
+    title: 'Secret Santa Assignments',
+    parentId: 'list-document-3',
+    sheetId: 'sheet-3',
+    filePath: 'path/to/secret_santa_list.pdf',
+  ),
+  DocumentModel(
+    id: 'document-14',
+    title: 'Christmas Budget Breakdown',
+    parentId: 'list-document-3',
+    sheetId: 'sheet-3',
+    filePath: 'path/to/christmas_budget.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-15',
+    title: 'Venue Booking Confirmation',
+    parentId: 'list-document-3',
+    sheetId: 'sheet-3',
+    filePath: 'path/to/venue_booking.pdf',
+  ),
+  DocumentModel(
+    id: 'document-16',
+    title: 'Christmas Decoration Checklist',
+    parentId: 'list-document-3',
+    sheetId: 'sheet-3',
+    filePath: 'path/to/decoration_checklist.docx',
+  ),
 ];

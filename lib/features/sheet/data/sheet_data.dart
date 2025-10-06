@@ -30,4 +30,18 @@ final sheetList = [
     createdBy: 'user_2',
     users: ['user_1', 'user_2', 'user_3', 'user_4'],
   ),
+  SheetModel(
+    id: 'sheet-3',
+    title: 'Christmas Time for Joy & Celebrations',
+    emoji: '🎄',
+    color: const Color(0xFFDC2626), // Red
+    description: (
+      plainText:
+          'Our festive Christmas celebration workspace! From planning the perfect party to coordinating all the holiday fun. Use polls to decide on venues, tasks to track preparations, events to schedule activities, and share all the Christmas cheer and memes.',
+      htmlText:
+          '<p>Our festive <strong>Christmas celebration workspace</strong>! From planning the perfect party to coordinating all the holiday fun. Use polls to decide on venues, tasks to track preparations, events to schedule activities, and share all the Christmas cheer and memes.</p>',
+    ),
+    createdBy: 'user_3',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5'],
+  ),
 ];
