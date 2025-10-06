@@ -189,4 +189,50 @@ final polls = [
     isMultipleChoice: false,
     createdBy: 'user_1',
   ),
+  PollModel(
+    id: 'poll-5',
+    sheetId: 'sheet-4',
+    parentId: 'sheet-4',
+    orderIndex: 1,
+    question: 'What\'s your biggest digital organization challenge?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 30)),
+    options: [
+      PollOption(
+        id: 'option-5-1',
+        title: 'Endless scrolling through chat history',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+        ],
+      ),
+      PollOption(
+        id: 'option-5-2',
+        title: 'Thousands of photos with no organization',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-5-3',
+        title: 'Important details lost in the messages',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+        ],
+      ),
+      PollOption(
+        id: 'option-5-4',
+        title: 'Multiple apps and platforms to manage',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+        ],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_2',
+  ),
 ];

@@ -93,4 +93,20 @@ final textList = [
     ),
     createdBy: 'user_2',
   ),
+  // Digital Organization Text Content
+  TextModel(
+    sheetId: 'sheet-4',
+    parentId: 'sheet-4',
+    id: 'text-content-7',
+    title: 'Digital Clutter Crisis - Organization Hub',
+    emoji: '🔍',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Drowning in digital chaos? You\'re not alone! 📱\n\nThis is our mission control for conquering digital clutter. From endless scrolling through chats to managing thousands of photos, we\'re creating systems that actually work.\n\n🗳️ Vote on your biggest digital challenges\n📱 Track organization tasks and cleanup progress\n📅 Schedule digital cleanup sessions\n💡 Share tips, frustrations, and solutions\n🔗 Store organization tools and resources\n📄 Keep important details accessible and organized\n\nLet\'s transform digital chaos into organized bliss! ✨🗂️',
+      htmlText:
+          '<p>Drowning in <strong>digital chaos</strong>? You\'re not alone! 📱</p><br><p>This is our mission control for conquering digital clutter. From endless scrolling through chats to managing thousands of photos, we\'re creating systems that actually work.</p><br><br><p><strong>🗳️ Vote</strong> on your biggest digital challenges</p><br><p><strong>📱 Track</strong> organization tasks and cleanup progress</p><br><p><strong>📅 Schedule</strong> digital cleanup sessions</p><br><p><strong>💡 Share</strong> tips, frustrations, and solutions</p><br><p><strong>🔗 Store</strong> organization tools and resources</p><br><p><strong>📄 Keep</strong> important details accessible and organized</p><br><br><p>Let\'s transform digital chaos into organized bliss! ✨🗂️</p>',
+    ),
+    createdBy: 'user_1',
+  ),
 ];

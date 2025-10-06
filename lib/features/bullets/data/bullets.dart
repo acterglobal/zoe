@@ -344,4 +344,75 @@ final bulletList = [
     ),
     createdBy: 'user_3',
   ),
+  // Digital Organization Tips & Frustrations
+  BulletModel(
+    id: 'bullet-item-25',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-6',
+    title: 'Ugh, I can\'t find that important message! 😤',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Scrolled through 500+ messages to find that one important detail. There has to be a better way than endless scrolling!',
+      htmlText:
+          '<p>Scrolled through <strong>500+ messages</strong> to find that one important detail. There has to be a better way than endless scrolling!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-26',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-6',
+    title: 'My phone has 10,000+ photos and I can\'t find anything! 📸',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Trying to find that one photo from last month is like finding a needle in a haystack. Need a better organization system!',
+      htmlText:
+          '<p>Trying to find that <strong>one photo from last month</strong> is like finding a needle in a haystack. Need a better organization system!</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-27',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-6',
+    title: 'Pro tip: Use folders and tags for photos',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Create folders by year/month and tag people in photos. Makes finding specific memories so much easier!',
+      htmlText:
+          '<p>Create <strong>folders by year/month</strong> and tag people in photos. Makes finding specific memories so much easier!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-28',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-6',
+    title: 'Pin important messages to avoid scrolling',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Pin important messages, addresses, and phone numbers at the top of chats. Saves so much time!',
+      htmlText:
+          '<p><strong>Pin important messages</strong>, addresses, and phone numbers at the top of chats. Saves so much time!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-29',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-6',
+    title: 'There has to be a better way than this mess! 🤯',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Between WhatsApp, Instagram, Photos, Notes, and 20 other apps - I\'m drowning in digital clutter. Help!',
+      htmlText:
+          '<p>Between <strong>WhatsApp, Instagram, Photos, Notes</strong>, and 20 other apps - I\'m drowning in digital clutter. Help!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

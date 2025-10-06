@@ -88,4 +88,28 @@ final eventList = [
       'user_5': RsvpStatus.yes,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-4',
+    parentId: 'sheet-4',
+    id: 'event-5',
+    title: 'Digital Cleanup & Organization Session',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s tackle our digital mess together! We\'ll organize photos, clean up chat history, and create a system to keep important details accessible. Bring your devices and let\'s make digital life manageable!',
+      htmlText:
+          '<p>Let\'s tackle our <strong>digital mess together</strong>! We\'ll organize photos, clean up chat history, and create a system to keep important details accessible. Bring your devices and let\'s make digital life manageable!</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(days: 1)),
+    endDate: DateTime.now().add(const Duration(days: 1, hours: 3)),
+    createdBy: 'user_3',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.yes,
+      'user_5': RsvpStatus.maybe,
+      'user_6': RsvpStatus.yes,
+    },
+  ),
 ];
