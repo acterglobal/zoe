@@ -1111,4 +1111,75 @@ final bulletList = [
     ),
     createdBy: 'user_4',
   ),
+  // PTA Bake Sale Chaos & Success Stories
+  BulletModel(
+    id: 'bullet-item-79',
+    sheetId: 'sheet-15',
+    parentId: 'list-bulleted-17',
+    title: 'Organizing PTA bake sale in school: The moms are full of energy! 🧁',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'The excitement begins! Everyone excited to start baking together, full of energy and ready to make this bake sale amazing!',
+      htmlText:
+          '<p>The <strong>excitement begins</strong>! Everyone excited to start baking together, full of energy and ready to make this bake sale amazing!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-80',
+    sheetId: 'sheet-15',
+    parentId: 'list-bulleted-17',
+    title: 'But in group chat total chaos! 😱',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'The chaos begins! "Everyone nothing clear, who brings brownies? I will do cupcakes, need gluten-free too! Coffee included? Can\'t do Saturday, budget again? Decorations volunteer? Out this week, who pays?"',
+      htmlText:
+          '<p>The <strong>chaos begins</strong>! "Everyone nothing clear, who brings brownies? I will do cupcakes, need gluten-free too! Coffee included? Can\'t do Saturday, budget again? Decorations volunteer? Out this week, who pays?"</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-81',
+    sheetId: 'sheet-15',
+    parentId: 'list-bulleted-17',
+    title: 'Nobody really knows, details lost! 😤',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Total confusion! Nobody really knows what\'s happening, details lost, no clear organization, and what should be fun becomes overwhelming!',
+      htmlText:
+          '<p><strong>Total confusion</strong>! Nobody really knows what\'s happening, details lost, no clear organization, and what should be fun becomes overwhelming!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-82',
+    sheetId: 'sheet-15',
+    parentId: 'list-bulleted-17',
+    title: 'There\'s a better way - Zoe! 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Finally! One platform to organize PTA bake sale planning, coordinate baking assignments, handle dietary restrictions, and create clear budget planning!',
+      htmlText:
+          '<p>Finally! <strong>One platform to organize PTA bake sale planning</strong>, coordinate baking assignments, handle dietary restrictions, and create clear budget planning!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-83',
+    sheetId: 'sheet-15',
+    parentId: 'list-bulleted-17',
+    title: 'From chaos to success - PTA bake sale paradise! 🧁✨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Transform PTA bake sale planning from chaos to success! Zoe makes organizing baking assignments, dietary needs, and budget planning fun and stress-free!',
+      htmlText:
+          '<p>Transform PTA bake sale planning from <strong>chaos to success</strong>! Zoe makes organizing baking assignments, dietary needs, and budget planning fun and stress-free!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

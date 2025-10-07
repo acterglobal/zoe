@@ -554,4 +554,65 @@ final linkList = [
     orderIndex: 5,
     createdBy: 'user_3',
   ),
+  // PTA Bake Sale Links
+  LinkModel(
+    id: 'link-55',
+    sheetId: 'sheet-15',
+    parentId: 'sheet-15',
+    title: 'PTA Bake Sale Planning Tools',
+    orderIndex: 7,
+    description: (
+      plainText:
+          'Essential tools for organizing PTA bake sale planning, coordinating baking assignments, and managing dietary restrictions.',
+      htmlText:
+          '<p>Essential tools for <strong>organizing PTA bake sale planning</strong>, coordinating baking assignments, and managing dietary restrictions.</p>',
+    ),
+    url: 'https://www.signupgenius.com/groups/pta-bake-sale-planning',
+    createdBy: 'user_1',
+  ),
+  LinkModel(
+    id: 'link-56',
+    sheetId: 'sheet-15',
+    parentId: 'sheet-15',
+    title: 'Baking Assignment Coordination',
+    orderIndex: 8,
+    description: (
+      plainText:
+          'Organize baking assignments and coordinate who brings what. No more "who brings brownies? I will do cupcakes" chaos!',
+      htmlText:
+          '<p>Organize <strong>baking assignments and coordinate who brings what</strong>. No more "who brings brownies? I will do cupcakes" chaos!</p>',
+    ),
+    url: 'https://www.volunteerspot.com/login/entry/pta-bake-sale',
+    createdBy: 'user_2',
+  ),
+  LinkModel(
+    id: 'link-57',
+    sheetId: 'sheet-15',
+    parentId: 'sheet-15',
+    title: 'Dietary Restrictions Management',
+    orderIndex: 9,
+    description: (
+      plainText:
+          'Handle dietary restrictions and special needs. Organize gluten-free and other dietary requirements clearly!',
+      htmlText:
+          '<p>Handle <strong>dietary restrictions and special needs</strong>. Organize gluten-free and other dietary requirements clearly!</p>',
+    ),
+    url: 'https://www.allrecipes.com/recipes/1642/everyday-cooking/special-diets/gluten-free/',
+    createdBy: 'user_3',
+  ),
+  LinkModel(
+    id: 'link-58',
+    sheetId: 'sheet-15',
+    parentId: 'sheet-15',
+    title: 'PTA Budget Planning Resources',
+    orderIndex: 10,
+    description: (
+      plainText:
+          'Create clear budget planning and payment coordination. No more "budget again? who pays? nobody really knows" confusion!',
+      htmlText:
+          '<p>Create <strong>clear budget planning and payment coordination</strong>. No more "budget again? who pays? nobody really knows" confusion!</p>',
+    ),
+    url: 'https://www.pta.org/home/programs/fundraising',
+    createdBy: 'user_4',
+  ),
 ];

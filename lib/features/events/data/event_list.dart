@@ -372,4 +372,32 @@ final eventList = [
       'user_8': RsvpStatus.maybe,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-15',
+    parentId: 'sheet-15',
+    id: 'event-16',
+    title: 'PTA Bake Sale Planning Coordination Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s organize our PTA bake sale properly! We\'ll coordinate baking assignments, handle dietary restrictions, resolve scheduling conflicts, and create clear budget planning. No more group chat chaos!',
+      htmlText:
+          '<p>Let\'s organize our <strong>PTA bake sale properly</strong>! We\'ll coordinate baking assignments, handle dietary restrictions, resolve scheduling conflicts, and create clear budget planning. No more group chat chaos!</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(hours: 18)),
+    endDate: DateTime.now().add(const Duration(hours: 20)),
+    createdBy: 'user_11',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.yes,
+      'user_5': RsvpStatus.yes,
+      'user_6': RsvpStatus.maybe,
+      'user_7': RsvpStatus.yes,
+      'user_8': RsvpStatus.yes,
+      'user_9': RsvpStatus.maybe,
+      'user_10': RsvpStatus.yes,
+    },
+  ),
 ];

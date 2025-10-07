@@ -771,4 +771,60 @@ final polls = [
     isMultipleChoice: true,
     createdBy: 'user_9',
   ),
+  PollModel(
+    id: 'poll-16',
+    sheetId: 'sheet-15',
+    parentId: 'sheet-15',
+    orderIndex: 1,
+    question: 'What\'s your biggest PTA bake sale planning challenge?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 3)),
+    options: [
+      PollOption(
+        id: 'option-16-1',
+        title: 'Baking assignments and coordination chaos',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+      PollOption(
+        id: 'option-16-2',
+        title: 'Dietary restrictions and special needs',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_8'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+      PollOption(
+        id: 'option-16-3',
+        title: 'Scheduling conflicts and availability',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+      PollOption(
+        id: 'option-16-4',
+        title: 'Budget and payment coordination',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_10',
+  ),
 ];

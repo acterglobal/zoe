@@ -1,4 +1,5 @@
 import 'package:zoe/features/content/models/content_model.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 
 class LinkModel extends ContentModel {
 
@@ -12,6 +13,7 @@ class LinkModel extends ContentModel {
     required super.sheetId,
     required super.title,
     super.emoji,
+    super.description,
     super.createdBy,
     super.createdAt,
     super.updatedAt,
@@ -28,6 +30,7 @@ class LinkModel extends ContentModel {
     String? parentId,
     String? title,
     String? emoji,
+    Description? description,
     String? createdBy,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -43,6 +46,7 @@ class LinkModel extends ContentModel {
       parentId: parentId ?? this.parentId,
       title: title ?? this.title,
       emoji: emoji ?? this.emoji,
+      description: description ?? this.description,
       createdBy: createdBy ?? this.createdBy,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),

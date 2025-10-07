@@ -1051,4 +1051,73 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8'],
   ),
+  // PTA Bake Sale Management Tasks
+  TaskModel(
+    id: 'pta-task-1',
+    sheetId: 'sheet-15',
+    parentId: 'list-tasks-15',
+    title: 'Organize baking assignments and coordination',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create a clear system for baking assignments. No more "who brings brownies? I will do cupcakes" chaos - organize baking tasks clearly!',
+      htmlText:
+          '<p>Create a clear system for <strong>baking assignments</strong>. No more "who brings brownies? I will do cupcakes" chaos - organize baking tasks clearly!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3', 'user_5', 'user_7', 'user_9'],
+  ),
+  TaskModel(
+    id: 'pta-task-2',
+    sheetId: 'sheet-15',
+    parentId: 'list-tasks-15',
+    title: 'Handle dietary restrictions and special needs',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Organize gluten-free and other dietary requirements. No more "need gluten-free too!" confusion - create clear dietary planning!',
+      htmlText:
+          '<p>Organize <strong>gluten-free and other dietary requirements</strong>. No more "need gluten-free too!" confusion - create clear dietary planning!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_6', 'user_8', 'user_10'],
+  ),
+  TaskModel(
+    id: 'pta-task-3',
+    sheetId: 'sheet-15',
+    parentId: 'list-tasks-15',
+    title: 'Resolve scheduling conflicts and availability',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Coordinate schedules and find dates that work. No more "can\'t do Saturday, out this week" conflicts - create clear scheduling!',
+      htmlText:
+          '<p>Coordinate <strong>schedules and find dates that work</strong>. No more "can\'t do Saturday, out this week" conflicts - create clear scheduling!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_1', 'user_2', 'user_5', 'user_6', 'user_9'],
+  ),
+  TaskModel(
+    id: 'pta-task-4',
+    sheetId: 'sheet-15',
+    parentId: 'list-tasks-15',
+    title: 'Create clear budget and payment coordination',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Establish organized budget planning and payment system. No more "budget again? who pays? nobody really knows" confusion!',
+      htmlText:
+          '<p>Establish <strong>organized budget planning and payment system</strong>. No more "budget again? who pays? nobody really knows" confusion!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8', 'user_10'],
+  ),
 ];

@@ -269,4 +269,32 @@ final textList = [
     ),
     createdBy: 'user_3',
   ),
+  TextModel(
+    id: 'text-content-18',
+    sheetId: 'sheet-15',
+    parentId: 'sheet-15',
+    title: 'From PTA Bake Sale Chaos to Sweet Success Paradise',
+    orderIndex: 6,
+    description: (
+      plainText:
+          '🧁 PTA Bake Sale Success Hub - Your organized command center for school fundraising!\n\n'
+          'The moms are full of energy, everyone excited to start baking together, but in group chat total chaos! Everyone nothing clear, who brings brownies? I will do cupcakes, need gluten-free too! Coffee included? Can\'t do Saturday, budget again? Decorations volunteer? Out this week, who pays? Nobody really knows, details lost!\n\n'
+          '🎯 Zoe transforms PTA bake sale planning from chaos to success:\n'
+          '• Baking assignments and coordination (no more "who brings brownies?" confusion)\n'
+          '• Dietary restrictions and special needs (gluten-free, allergies, preferences)\n'
+          '• Scheduling conflicts and availability (find dates that work for everyone)\n'
+          '• Budget and payment coordination (clear financial planning and tracking)\n\n'
+          '✨ Create reliable planning tools, systematically organize baking tasks, handle dietary requirements, and coordinate schedules with Zoe!',
+      htmlText:
+          '<p><strong>🧁 PTA Bake Sale Success Hub</strong> - Your organized command center for school fundraising!</p>\n'
+          '<p>The moms are full of energy, everyone excited to start baking together, but in group chat total chaos! Everyone nothing clear, who brings brownies? I will do cupcakes, need gluten-free too! Coffee included? Can\'t do Saturday, budget again? Decorations volunteer? Out this week, who pays? Nobody really knows, details lost!</p>\n'
+          '<p><strong>🎯 Zoe transforms PTA bake sale planning from chaos to success:</strong></p>\n'
+          '<p>• Baking assignments and coordination (no more "who brings brownies?" confusion)<br>\n'
+          '• Dietary restrictions and special needs (gluten-free, allergies, preferences)<br>\n'
+          '• Scheduling conflicts and availability (find dates that work for everyone)<br>\n'
+          '• Budget and payment coordination (clear financial planning and tracking)</p>\n'
+          '<p><strong>✨ Create reliable planning tools</strong>, systematically organize baking tasks, handle dietary requirements, and coordinate schedules with Zoe!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
 ];

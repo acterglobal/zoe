@@ -315,4 +315,50 @@ final documentList = [
     sheetId: 'sheet-14',
     filePath: 'path/to/equipment_setup_guide.xlsx',
   ),
+  // PTA Bake Sale Documents
+  DocumentModel(
+    id: 'document-77',
+    sheetId: 'sheet-15',
+    parentId: 'list-document-15',
+    title: 'PTA Bake Sale Planning Guide',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Complete guide for organizing PTA bake sale planning, coordinating baking assignments, and managing dietary restrictions.',
+      htmlText:
+          '<p>Complete guide for <strong>organizing PTA bake sale planning</strong>, coordinating baking assignments, and managing dietary restrictions.</p>',
+    ),
+    filePath: '/documents/pta-bake-sale-planning-guide.pdf',
+    createdBy: 'user_1',
+  ),
+  DocumentModel(
+    id: 'document-78',
+    sheetId: 'sheet-15',
+    parentId: 'list-document-15',
+    title: 'Baking Assignment Coordination Template',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Template for organizing baking assignments and coordinating who brings what. No more "who brings brownies? I will do cupcakes" chaos!',
+      htmlText:
+          '<p>Template for <strong>organizing baking assignments and coordinating who brings what</strong>. No more "who brings brownies? I will do cupcakes" chaos!</p>',
+    ),
+    filePath: '/documents/baking-assignment-coordination-template.xlsx',
+    createdBy: 'user_2',
+  ),
+  DocumentModel(
+    id: 'document-79',
+    sheetId: 'sheet-15',
+    parentId: 'list-document-15',
+    title: 'PTA Budget Planning Worksheet',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Worksheet for creating clear budget planning and payment coordination. No more "budget again? who pays? nobody really knows" confusion!',
+      htmlText:
+          '<p>Worksheet for <strong>creating clear budget planning and payment coordination</strong>. No more "budget again? who pays? nobody really knows" confusion!</p>',
+    ),
+    filePath: '/documents/pta-budget-planning-worksheet.xlsx',
+    createdBy: 'user_3',
+  ),
 ];

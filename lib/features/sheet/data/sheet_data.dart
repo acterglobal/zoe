@@ -198,4 +198,18 @@ final sheetList = [
     createdBy: 'user_3',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8'],
   ),
+  SheetModel(
+    id: 'sheet-15',
+    title: 'PTA Bake Sale Success Hub',
+    emoji: '🧁',
+    color: const Color(0xFFDC2626), // Red
+    description: (
+      plainText:
+          'Organizing PTA bake sale in school: The moms are full of energy, everyone excited to start baking together, but in group chat total chaos! Everyone nothing clear, who brings brownies? I will do cupcakes, need gluten-free too! Coffee included? Can\'t do Saturday, budget again? Decorations volunteer? Out this week, who pays? Nobody really knows, details lost!',
+      htmlText:
+          '<p>Organizing PTA bake sale in school: <strong>The moms are full of energy</strong>, everyone excited to start baking together, but in group chat total chaos! Everyone nothing clear, who brings brownies? I will do cupcakes, need gluten-free too! Coffee included? Can\'t do Saturday, budget again? Decorations volunteer? Out this week, who pays? Nobody really knows, details lost!</p>',
+    ),
+    createdBy: 'user_4',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+  ),
 ];
