@@ -190,4 +190,61 @@ final eventList = [
       'user_9': RsvpStatus.yes,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-8',
+    parentId: 'sheet-8',
+    id: 'event-9',
+    title: 'School Fundraiser Coordination Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s organize this fundraiser properly! We\'ll consolidate all the scattered cupcakes, ticket lists, volunteer signups, and calendar chaos. No more "Who\'s bringing cookies?" confusion!',
+      htmlText:
+          '<p>Let\'s organize this <strong>fundraiser properly</strong>! We\'ll consolidate all the scattered cupcakes, ticket lists, volunteer signups, and calendar chaos. No more "Who\'s bringing cookies?" confusion!</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(hours: 4)),
+    endDate: DateTime.now().add(const Duration(hours: 6)),
+    createdBy: 'user_4',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.yes,
+      'user_5': RsvpStatus.yes,
+      'user_6': RsvpStatus.maybe,
+      'user_7': RsvpStatus.yes,
+      'user_8': RsvpStatus.yes,
+      'user_9': RsvpStatus.maybe,
+      'user_10': RsvpStatus.yes,
+    },
+  ),
+  EventModel(
+    sheetId: 'sheet-9',
+    parentId: 'sheet-9',
+    id: 'event-10',
+    title: 'BBQ Planning Coordination Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s organize this BBQ properly! We\'ll consolidate all the scattered messages, coordinate who\'s bringing what, handle dietary restrictions, and set a clear meeting time. No more endless group chat confusion!',
+      htmlText:
+          '<p>Let\'s organize this <strong>BBQ properly</strong>! We\'ll consolidate all the scattered messages, coordinate who\'s bringing what, handle dietary restrictions, and set a clear meeting time. No more endless group chat confusion!</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(hours: 3)),
+    endDate: DateTime.now().add(const Duration(hours: 5)),
+    createdBy: 'user_5',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.yes,
+      'user_5': RsvpStatus.yes,
+      'user_6': RsvpStatus.yes,
+      'user_7': RsvpStatus.maybe,
+      'user_8': RsvpStatus.yes,
+      'user_9': RsvpStatus.yes,
+      'user_10': RsvpStatus.maybe,
+      'user_11': RsvpStatus.yes,
+    },
+  ),
 ];

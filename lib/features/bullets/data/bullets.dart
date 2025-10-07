@@ -628,4 +628,146 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // School Fundraiser Chaos & Success Stories
+  BulletModel(
+    id: 'bullet-item-45',
+    sheetId: 'sheet-8',
+    parentId: 'list-bulleted-10',
+    title: 'It starts with one parent saying "Let\'s do a school fundraiser!" 😅',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'The excitement begins! Everyone\'s on board, ready to make a difference for the school. What could go wrong?',
+      htmlText:
+          '<p>The <strong>excitement begins</strong>! Everyone\'s on board, ready to make a difference for the school. What could go wrong?</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-46',
+    sheetId: 'sheet-8',
+    parentId: 'list-bulleted-10',
+    title: 'Then suddenly: Cupcakes everywhere! Ticket lists flying! 😱',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'The chaos begins! Cupcakes scattered everywhere, ticket lists flying around, volunteer signups no one tracks, calendar overflowing with meetings!',
+      htmlText:
+          '<p>The <strong>chaos begins</strong>! Cupcakes scattered everywhere, ticket lists flying around, volunteer signups no one tracks, calendar overflowing with meetings!</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-47',
+    sheetId: 'sheet-8',
+    parentId: 'list-bulleted-10',
+    title: 'What should be fun turns into mayhem! 😤',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Too many chats and questions: "Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!" The fun fundraiser becomes overwhelming chaos!',
+      htmlText:
+          '<p>Too many chats and questions: <strong>"Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!"</strong> The fun fundraiser becomes overwhelming chaos!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-48',
+    sheetId: 'sheet-8',
+    parentId: 'list-bulleted-10',
+    title: 'There\'s a better way - Zoe! 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Finally! One platform to organize cupcakes, track ticket lists, manage volunteer signups, and coordinate meetings. No more mayhem!',
+      htmlText:
+          '<p>Finally! <strong>One platform to organize cupcakes, track ticket lists, manage volunteer signups, and coordinate meetings</strong>. No more mayhem!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-49',
+    sheetId: 'sheet-8',
+    parentId: 'list-bulleted-10',
+    title: 'From mayhem to success - organized fundraiser planning! 🎓✨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Transform school fundraiser planning from overwhelming chaos to organized success. Zoe makes it fun again!',
+      htmlText:
+          '<p>Transform school fundraiser planning from <strong>overwhelming chaos to organized success</strong>. Zoe makes it fun again!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
+  // BBQ Chaos & Success Stories
+  BulletModel(
+    id: 'bullet-item-50',
+    sheetId: 'sheet-9',
+    parentId: 'list-bulleted-11',
+    title: 'Planning a BBQ always starts with fun ideas! 🔥',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'The excitement begins! Everyone\'s ready for a great BBQ, delicious food, and good times with friends. What could go wrong?',
+      htmlText:
+          '<p>The <strong>excitement begins</strong>! Everyone\'s ready for a great BBQ, delicious food, and good times with friends. What could go wrong?</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-51',
+    sheetId: 'sheet-9',
+    parentId: 'list-bulleted-11',
+    title: 'But then the group chat messages never stop! 😱',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'The chaos begins! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates!"',
+      htmlText:
+          '<p>The <strong>chaos begins</strong>! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates!"</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-52',
+    sheetId: 'sheet-9',
+    parentId: 'list-bulleted-11',
+    title: 'Guys, where is the BBQ planning? What time we are meeting? 😤',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Total confusion! No one knows where the planning is, what time to meet, who\'s bringing what, or how to coordinate everything!',
+      htmlText:
+          '<p><strong>Total confusion</strong>! No one knows where the planning is, what time to meet, who\'s bringing what, or how to coordinate everything!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-53',
+    sheetId: 'sheet-9',
+    parentId: 'list-bulleted-11',
+    title: 'There\'s a better way - Zoe! 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Finally! One platform to organize all BBQ planning, coordinate who\'s bringing what, handle dietary restrictions, and set clear meeting times!',
+      htmlText:
+          '<p>Finally! <strong>One platform to organize all BBQ planning</strong>, coordinate who\'s bringing what, handle dietary restrictions, and set clear meeting times!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-54',
+    sheetId: 'sheet-9',
+    parentId: 'list-bulleted-11',
+    title: 'From chaos to paradise - organized BBQ planning! 🔥✨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Transform BBQ planning from endless group chat confusion to organized paradise. Zoe makes it fun and stress-free again!',
+      htmlText:
+          '<p>Transform BBQ planning from <strong>endless group chat confusion to organized paradise</strong>. Zoe makes it fun and stress-free again!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

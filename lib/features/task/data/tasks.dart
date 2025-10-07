@@ -568,4 +568,142 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_4', 'user_5', 'user_8'],
   ),
+  // School Fundraiser Management Tasks
+  TaskModel(
+    id: 'fundraiser-task-1',
+    sheetId: 'sheet-8',
+    parentId: 'list-tasks-8',
+    title: 'Organize cupcake chaos - who\'s bringing what?',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Stop the cupcake chaos! Create a system to track who\'s bringing what, when, and where. No more scattered cupcakes everywhere!',
+      htmlText:
+          '<p>Stop the <strong>cupcake chaos</strong>! Create a system to track who\'s bringing what, when, and where. No more scattered cupcakes everywhere!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3', 'user_5', 'user_7'],
+  ),
+  TaskModel(
+    id: 'fundraiser-task-2',
+    sheetId: 'sheet-8',
+    parentId: 'list-tasks-8',
+    title: 'Consolidate flying ticket lists',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Gather all the scattered ticket lists and create one organized system. Track who has what tickets and prevent the flying chaos!',
+      htmlText:
+          '<p>Gather all the <strong>scattered ticket lists</strong> and create one organized system. Track who has what tickets and prevent the flying chaos!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_6', 'user_8'],
+  ),
+  TaskModel(
+    id: 'fundraiser-task-3',
+    sheetId: 'sheet-8',
+    parentId: 'list-tasks-8',
+    title: 'Track volunteer signups properly',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Create a proper volunteer tracking system. No more lost signups! Know who\'s volunteering for what and when.',
+      htmlText:
+          '<p>Create a proper <strong>volunteer tracking system</strong>. No more lost signups! Know who\'s volunteering for what and when.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_3', 'user_5', 'user_7', 'user_9'],
+  ),
+  TaskModel(
+    id: 'fundraiser-task-4',
+    sheetId: 'sheet-8',
+    parentId: 'list-tasks-8',
+    title: 'Organize overflowing calendar and meetings',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Consolidate all the scattered meetings and calendar chaos. Create one organized schedule that everyone can follow!',
+      htmlText:
+          '<p>Consolidate all the <strong>scattered meetings and calendar chaos</strong>. Create one organized schedule that everyone can follow!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_4', 'user_6', 'user_8', 'user_10'],
+  ),
+  // BBQ Management Tasks
+  TaskModel(
+    id: 'bbq-task-1',
+    sheetId: 'sheet-9',
+    parentId: 'list-tasks-9',
+    title: 'Organize endless group chat messages',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Stop the endless group chat chaos! Consolidate all the scattered messages about chips, drinks, plates, and timing into one organized system.',
+      htmlText:
+          '<p>Stop the <strong>endless group chat chaos</strong>! Consolidate all the scattered messages about chips, drinks, plates, and timing into one organized system.</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(hours: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3', 'user_5', 'user_7', 'user_9'],
+  ),
+  TaskModel(
+    id: 'bbq-task-2',
+    sheetId: 'sheet-9',
+    parentId: 'list-tasks-9',
+    title: 'Coordinate equipment - who\'s bringing the grill?',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Create a clear system to track who\'s bringing what equipment. No more "who\'s bringing the grill?" confusion!',
+      htmlText:
+          '<p>Create a clear system to <strong>track who\'s bringing what equipment</strong>. No more "who\'s bringing the grill?" confusion!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(hours: 2)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_6', 'user_8', 'user_10'],
+  ),
+  TaskModel(
+    id: 'bbq-task-3',
+    sheetId: 'sheet-9',
+    parentId: 'list-tasks-9',
+    title: 'Handle dietary restrictions - veggie options, no pork!',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Organize all dietary restrictions and preferences. Ensure veggie options, no pork, and accommodate everyone\'s needs!',
+      htmlText:
+          '<p>Organize all <strong>dietary restrictions and preferences</strong>. Ensure veggie options, no pork, and accommodate everyone\'s needs!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(hours: 3)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_3', 'user_5', 'user_7', 'user_9', 'user_11'],
+  ),
+  TaskModel(
+    id: 'bbq-task-4',
+    sheetId: 'sheet-9',
+    parentId: 'list-tasks-9',
+    title: 'Set clear meeting time and location',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'End the timing confusion! Set a clear meeting time and location that everyone can follow. No more "what time are we meeting?" questions!',
+      htmlText:
+          '<p>End the <strong>timing confusion</strong>! Set a clear meeting time and location that everyone can follow. No more "what time are we meeting?" questions!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(hours: 4)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_4', 'user_6', 'user_8', 'user_10', 'user_11'],
+  ),
 ];

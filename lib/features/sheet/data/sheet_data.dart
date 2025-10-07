@@ -100,4 +100,32 @@ final sheetList = [
     createdBy: 'user_4',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9'],
   ),
+  SheetModel(
+    id: 'sheet-8',
+    title: 'School Fundraiser Success Hub',
+    emoji: '🎓',
+    color: const Color(0xFFDC2626), // Red
+    description: (
+      plainText:
+          'It starts with one parent saying "Let\'s do a school fundraiser!" Then suddenly: cupcakes everywhere, ticket lists flying, volunteer signups no one tracks, calendar overflowing. What should be fun turns into mayhem! Too many chats and questions like "Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!" There\'s a better way - Zoe!',
+      htmlText:
+          '<p>It starts with one parent saying <strong>"Let\'s do a school fundraiser!"</strong> Then suddenly: cupcakes everywhere, ticket lists flying, volunteer signups no one tracks, calendar overflowing. What should be fun turns into mayhem! Too many chats and questions like "Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!" There\'s a better way - Zoe!</p>',
+    ),
+    createdBy: 'user_5',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+  ),
+  SheetModel(
+    id: 'sheet-9',
+    title: 'BBQ Planning Paradise',
+    emoji: '🔥',
+    color: const Color(0xFFEA580C), // Orange
+    description: (
+      plainText:
+          'Planning a BBQ always starts with fun ideas, but then the group chat messages never stop! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates! Guys, where is the BBQ planning? What time we are meeting?" Total confusion! There\'s a better way - Zoe!',
+      htmlText:
+          '<p>Planning a BBQ always starts with <strong>fun ideas</strong>, but then the group chat messages never stop! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates! Guys, where is the BBQ planning? What time we are meeting?" Total confusion! There\'s a better way - Zoe!</p>',
+    ),
+    createdBy: 'user_6',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+  ),
 ];

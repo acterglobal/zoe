@@ -157,4 +157,36 @@ final textList = [
     ),
     createdBy: 'user_4',
   ),
+  // School Fundraiser Text Content
+  TextModel(
+    sheetId: 'sheet-8',
+    parentId: 'sheet-8',
+    id: 'text-content-11',
+    title: 'From Fundraiser Mayhem to Organized Success',
+    emoji: '🎓',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'It starts with one parent saying "Let\'s do a school fundraiser!" 😅\n\nThen suddenly: cupcakes everywhere, ticket lists flying, volunteer signups no one tracks, calendar overflowing! What should be fun turns into mayhem! Too many chats and questions like "Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!"\n\n🗳️ Vote on fundraiser planning challenges\n🎓 Track cupcake coordination and ticket management\n📅 Schedule planning meetings and volunteer coordination\n😅 Share chaos stories and celebrate organized solutions\n🔗 Store fundraiser tools and parent resources\n📄 Keep all fundraiser documents organized\n\nTransform fundraiser mayhem into organized success! 🎯✨',
+      htmlText:
+          '<p>It starts with one parent saying <strong>"Let\'s do a school fundraiser!"</strong> 😅</p><br><p>Then suddenly: cupcakes everywhere, ticket lists flying, volunteer signups no one tracks, calendar overflowing! What should be fun turns into mayhem! Too many chats and questions like "Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!"</p><br><br><p><strong>🗳️ Vote</strong> on fundraiser planning challenges</p><br><p><strong>🎓 Track</strong> cupcake coordination and ticket management</p><br><p><strong>📅 Schedule</strong> planning meetings and volunteer coordination</p><br><p><strong>😅 Share</strong> chaos stories and celebrate organized solutions</p><br><p><strong>🔗 Store</strong> fundraiser tools and parent resources</p><br><p><strong>📄 Keep</strong> all fundraiser documents organized</p><br><br><p>Transform fundraiser mayhem into organized success! 🎯✨</p>',
+    ),
+    createdBy: 'user_5',
+  ),
+  // BBQ Planning Text Content
+  TextModel(
+    sheetId: 'sheet-9',
+    parentId: 'sheet-9',
+    id: 'text-content-12',
+    title: 'From BBQ Chaos to Planning Paradise',
+    emoji: '🔥',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Planning a BBQ always starts with fun ideas! 🔥\n\nBut then the group chat messages never stop! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates! Guys, where is the BBQ planning? What time we are meeting?" Total confusion!\n\n🗳️ Vote on BBQ planning challenges\n🔥 Track equipment coordination and food planning\n📅 Schedule BBQ meetings and timing coordination\n😅 Share chaos stories and celebrate organized solutions\n🔗 Store BBQ tools and recipe resources\n📄 Keep all BBQ planning documents organized\n\nTransform BBQ chaos into planning paradise! 🎯✨',
+      htmlText:
+          '<p>Planning a BBQ always starts with <strong>fun ideas</strong>! 🔥</p><br><p>But then the group chat messages never stop! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates! Guys, where is the BBQ planning? What time we are meeting?" Total confusion!</p><br><br><p><strong>🗳️ Vote</strong> on BBQ planning challenges</p><br><p><strong>🔥 Track</strong> equipment coordination and food planning</p><br><p><strong>📅 Schedule</strong> BBQ meetings and timing coordination</p><br><p><strong>😅 Share</strong> chaos stories and celebrate organized solutions</p><br><p><strong>🔗 Store</strong> BBQ tools and recipe resources</p><br><p><strong>📄 Keep</strong> all BBQ planning documents organized</p><br><br><p>Transform BBQ chaos into planning paradise! 🎯✨</p>',
+    ),
+    createdBy: 'user_6',
+  ),
 ];
