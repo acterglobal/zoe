@@ -37,33 +37,33 @@ void main() {
     testBullet = getBulletModelByIndex(container, 0);
   });
 
+  // Pump bullet detail screen
+  Future<void> pumpBulletDetailScreen({
+    required WidgetTester tester,
+    required ProviderContainer container,
+    required String bulletId,
+    bool isWrapMediaQuery = false,
+  }) async {
+    // Create the screen
+    final screen = BulletDetailScreen(bulletId: bulletId);
+
+    // Wrap the screen in a MediaQuery if needed
+    final child = isWrapMediaQuery
+        ? MediaQuery(
+            data: const MediaQueryData(size: Size(1080, 1920)),
+            child: screen,
+          )
+        : screen;
+
+    // Pump the screen
+    await tester.pumpMaterialWidgetWithProviderScope(
+      child: child,
+      container: container,
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+
   group('Bullet Detail Screen', () {
-    // Pump bullet detail screen
-    Future<void> pumpBulletDetailScreen({
-      required WidgetTester tester,
-      required ProviderContainer container,
-      required String bulletId,
-      bool isWrapMediaQuery = false,
-    }) async {
-      // Create the screen
-      final screen = BulletDetailScreen(bulletId: bulletId);
-
-      // Wrap the screen in a MediaQuery if needed
-      final child = isWrapMediaQuery
-          ? MediaQuery(
-              data: const MediaQueryData(size: Size(1080, 1920)),
-              child: screen,
-            )
-          : screen;
-
-      // Pump the screen
-      await tester.pumpMaterialWidgetWithProviderScope(
-        child: child,
-        container: container,
-      );
-      await tester.pump(const Duration(milliseconds: 100));
-    }
-
     group('Empty State', () {
       testWidgets('displays empty state when bullet does not exist', (
         tester,

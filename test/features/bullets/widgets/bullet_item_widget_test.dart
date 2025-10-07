@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:zoe/common/models/user_chip_type.dart';
 import 'package:zoe/common/models/user_display_type.dart';
@@ -14,6 +15,7 @@ import 'package:zoe/features/bullets/widgets/bullet_added_by_header_widget.dart'
 import 'package:zoe/features/bullets/widgets/bullet_item_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import '../../../test-utils/mock_gorouter.dart';
+import '../../../test-utils/test_utils.dart';
 import '../utils/bullets_utils.dart';
 
 void main() {
@@ -30,6 +32,27 @@ void main() {
     // Get the test bullet
     testBulletModel = getBulletModelByIndex(container, 0);
   });
+
+  // Pump bullet item widget// Pump bullet item widget
+  Future<void> pumpBulletItemWidget({
+    required WidgetTester tester,
+    required ProviderContainer container,
+    required String bulletId,
+    bool isEditing = false,
+    ZoeUserDisplayType userDisplayType = ZoeUserDisplayType.avatarOnly,
+    GoRouter? router,
+  }) async {
+    await tester.pumpMaterialWidgetWithProviderScope(
+      child: BulletItemWidget(
+        bulletId: bulletId,
+        isEditing: isEditing,
+        userDisplayType: userDisplayType,
+      ),
+      container: container,
+      router: router,
+    );
+    await tester.pumpAndSettle();
+  }
 
   group('Bullet Item Widget', () {
     group('Basic Rendering with Test Bullet', () {
@@ -654,7 +677,7 @@ void main() {
         // Test when bullet is not focused
         container.read(bulletFocusProvider.notifier).state =
             'different-bullet-id';
-            
+
         await pumpBulletItemWidget(
           tester: tester,
           container: container,

@@ -6,6 +6,7 @@ import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/bullets/actions/bullet_actions.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
+import '../../../test-utils/test_utils.dart';
 import '../utils/bullets_utils.dart';
 
 void main() {
@@ -21,6 +22,24 @@ void main() {
     // Get the first bullet model
     testFirstBullet = getBulletModelByIndex(container, 0);
   });
+
+  // Pump actions widget
+  Future<void> pumpActionsWidget({
+    required WidgetTester tester,
+    required ProviderContainer container,
+    required String buttonText,
+    required Function(BuildContext, WidgetRef) onPressed,
+  }) async {
+    await tester.pumpMaterialWidgetWithProviderScope(
+      container: container,
+      child: Consumer(
+        builder: (context, ref, child) => ElevatedButton(
+          onPressed: () => onPressed(context, ref),
+          child: Text(buttonText),
+        ),
+      ),
+    );
+  }
 
   group('BulletActions', () {
     group('Copy Bullet Action', () {
@@ -293,11 +312,8 @@ void main() {
           tester: tester,
           container: container,
           buttonText: buttonText,
-          onPressed: (context, ref) => BulletActions.deleteBullet(
-            context,
-            ref,
-            bulletId,
-          ),
+          onPressed: (context, ref) =>
+              BulletActions.deleteBullet(context, ref, bulletId),
         );
       }
 
