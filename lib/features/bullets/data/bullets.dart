@@ -841,4 +841,75 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // Book Club Chaos & Success Stories
+  BulletModel(
+    id: 'bullet-item-60',
+    sheetId: 'sheet-11',
+    parentId: 'list-bulleted-13',
+    title: 'Book club - the perfect way to meet friends monthly! 📚',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'The excitement begins! Book club is the perfect way to meet friends monthly, share stories, and discover new books together!',
+      htmlText:
+          '<p>The <strong>excitement begins</strong>! Book club is the perfect way to meet friends monthly, share stories, and discover new books together!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-61',
+    sheetId: 'sheet-11',
+    parentId: 'list-bulleted-13',
+    title: 'But when it\'s time to plan, messy chat! 😱',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'The chaos begins! "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book!',
+      htmlText:
+          '<p>The <strong>chaos begins</strong>! "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book!</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-62',
+    sheetId: 'sheet-11',
+    parentId: 'list-bulleted-13',
+    title: 'Sometimes it feels more stress than stories! 😤',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Total confusion! Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories! What should be fun becomes overwhelming!',
+      htmlText:
+          '<p><strong>Total confusion</strong>! Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories! What should be fun becomes overwhelming!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-63',
+    sheetId: 'sheet-11',
+    parentId: 'list-bulleted-13',
+    title: 'Now imagine one place for book, task, calendar with Zoe! 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Finally! One platform to organize book selection, task management, and calendar coordination. Make book club planning fun again!',
+      htmlText:
+          '<p>Finally! <strong>One platform to organize book selection, task management, and calendar coordination</strong>. Make book club planning fun again!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-64',
+    sheetId: 'sheet-11',
+    parentId: 'list-bulleted-13',
+    title: 'From stress to stories - book club paradise! 📚✨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Transform book club planning from stress to stories! Zoe makes organizing monthly meetings, hosting, and book selection a breeze!',
+      htmlText:
+          '<p>Transform book club planning from <strong>stress to stories</strong>! Zoe makes organizing monthly meetings, hosting, and book selection a breeze!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

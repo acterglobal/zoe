@@ -416,4 +416,47 @@ final documentList = [
     sheetId: 'sheet-10',
     filePath: 'path/to/student_communication.pdf',
   ),
+  // Book Club Documents
+  DocumentModel(
+    id: 'document-59',
+    title: 'Book Club Master Checklist',
+    parentId: 'list-document-11',
+    sheetId: 'sheet-11',
+    filePath: 'path/to/bookclub_checklist.pdf',
+  ),
+  DocumentModel(
+    id: 'document-60',
+    title: 'Monthly Meeting Schedule & Hosting Rotation',
+    parentId: 'list-document-11',
+    sheetId: 'sheet-11',
+    filePath: 'path/to/meeting_schedule.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-61',
+    title: 'Book Selection & Reading List',
+    parentId: 'list-document-11',
+    sheetId: 'sheet-11',
+    filePath: 'path/to/reading_list.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-62',
+    title: 'Discussion Questions & Meeting Notes',
+    parentId: 'list-document-11',
+    sheetId: 'sheet-11',
+    filePath: 'path/to/discussion_notes.docx',
+  ),
+  DocumentModel(
+    id: 'document-63',
+    title: 'Book Club Budget & Expenses',
+    parentId: 'list-document-11',
+    sheetId: 'sheet-11',
+    filePath: 'path/to/bookclub_budget.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-64',
+    title: 'Member Communication & RSVP Tracker',
+    parentId: 'list-document-11',
+    sheetId: 'sheet-11',
+    filePath: 'path/to/member_tracker.xlsx',
+  ),
 ];

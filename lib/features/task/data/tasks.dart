@@ -775,4 +775,73 @@ final tasks = [
     createdBy: 'user_8',
     assignedUsers: ['user_6', 'user_8'],
   ),
+  // Book Club Management Tasks
+  TaskModel(
+    id: 'bookclub-task-1',
+    sheetId: 'sheet-11',
+    parentId: 'list-tasks-11',
+    title: 'Organize monthly meeting scheduling',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create a system to coordinate monthly book club meetings. No more "I\'m busy Friday, can we do next week?" chaos!',
+      htmlText:
+          '<p>Create a system to <strong>coordinate monthly book club meetings</strong>. No more "I\'m busy Friday, can we do next week?" chaos!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3', 'user_5', 'user_7'],
+  ),
+  TaskModel(
+    id: 'bookclub-task-2',
+    sheetId: 'sheet-11',
+    parentId: 'list-tasks-11',
+    title: 'Set up hosting rotation system',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Organize a fair hosting rotation so everyone knows who\'s hosting each month. No more "Who\'s hosting?" confusion!',
+      htmlText:
+          '<p>Organize a <strong>fair hosting rotation</strong> so everyone knows who\'s hosting each month. No more "Who\'s hosting?" confusion!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_6', 'user_8'],
+  ),
+  TaskModel(
+    id: 'bookclub-task-3',
+    sheetId: 'sheet-11',
+    parentId: 'list-tasks-11',
+    title: 'Create book selection process',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Build a system for choosing books together. No more "Which book this time?" stress - make it fun and democratic!',
+      htmlText:
+          '<p>Build a system for <strong>choosing books together</strong>. No more "Which book this time?" stress - make it fun and democratic!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_1', 'user_2', 'user_5', 'user_6'],
+  ),
+  TaskModel(
+    id: 'bookclub-task-4',
+    sheetId: 'sheet-11',
+    parentId: 'list-tasks-11',
+    title: 'Organize one place for book, task, calendar',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Create the ultimate book club hub! One place for book selection, task management, and calendar coordination with Zoe!',
+      htmlText:
+          '<p>Create the <strong>ultimate book club hub</strong>! One place for book selection, task management, and calendar coordination with Zoe!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8'],
+  ),
 ];

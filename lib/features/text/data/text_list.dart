@@ -205,4 +205,20 @@ final textList = [
     ),
     createdBy: 'user_7',
   ),
+  // Book Club Text Content
+  TextModel(
+    sheetId: 'sheet-11',
+    parentId: 'sheet-11',
+    id: 'text-content-14',
+    title: 'From Book Club Stress to Story Paradise',
+    emoji: '📚',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Book club - the perfect way to meet friends monthly! 📚\n\nBut when it\'s time to plan, messy chat: "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories!\n\n🗳️ Vote on book club planning challenges\n📚 Track book selection and hosting rotation\n📅 Schedule monthly meetings and coordinate dates\n😅 Share stress stories and celebrate organized solutions\n🔗 Store book club tools and reading resources\n📄 Keep all book club documents organized\n\nTransform book club stress into story paradise! 🎯✨',
+      htmlText:
+          '<p>Book club - <strong>the perfect way to meet friends monthly</strong>! 📚</p><br><p>But when it\'s time to plan, messy chat: "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories!</p><br><br><p><strong>🗳️ Vote</strong> on book club planning challenges</p><br><p><strong>📚 Track</strong> book selection and hosting rotation</p><br><p><strong>📅 Schedule</strong> monthly meetings and coordinate dates</p><br><p><strong>😅 Share</strong> stress stories and celebrate organized solutions</p><br><p><strong>🔗 Store</strong> book club tools and reading resources</p><br><p><strong>📄 Keep</strong> all book club documents organized</p><br><br><p>Transform book club stress into story paradise! 🎯✨</p>',
+    ),
+    createdBy: 'user_8',
+  ),
 ];

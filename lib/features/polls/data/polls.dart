@@ -539,4 +539,56 @@ final polls = [
     isMultipleChoice: true,
     createdBy: 'user_5',
   ),
+  PollModel(
+    id: 'poll-12',
+    sheetId: 'sheet-11',
+    parentId: 'sheet-11',
+    orderIndex: 1,
+    question: 'What\'s your biggest book club planning challenge?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 30)),
+    options: [
+      PollOption(
+        id: 'option-12-1',
+        title: 'Juggling dates and scheduling',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+        ],
+      ),
+      PollOption(
+        id: 'option-12-2',
+        title: 'Deciding who\'s hosting each month',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-12-3',
+        title: 'Choosing which book to read',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-12-4',
+        title: 'Messy chat and communication chaos',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_6',
+  ),
 ];

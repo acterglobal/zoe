@@ -142,4 +142,18 @@ final sheetList = [
     createdBy: 'user_7',
     users: ['user_1', 'user_5', 'user_6', 'user_7', 'user_8'],
   ),
+  SheetModel(
+    id: 'sheet-11',
+    title: 'Book Club Paradise',
+    emoji: '📚',
+    color: const Color(0xFF059669), // Green
+    description: (
+      plainText:
+          'Book club - the perfect way to meet friends monthly! But when it\'s time to plan, messy chat: "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories! Now imagine one place for book, task, calendar with Zoe!',
+      htmlText:
+          '<p>Book club - <strong>the perfect way to meet friends monthly</strong>! But when it\'s time to plan, messy chat: "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories! Now imagine one place for book, task, calendar with Zoe!</p>',
+    ),
+    createdBy: 'user_8',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8'],
+  ),
 ];
