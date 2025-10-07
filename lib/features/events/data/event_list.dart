@@ -247,4 +247,27 @@ final eventList = [
       'user_11': RsvpStatus.yes,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-10',
+    parentId: 'sheet-10',
+    id: 'event-11',
+    title: 'University Hangout Coordination Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s organize our university hangouts properly! We\'ll coordinate different timetables, find the right places to meet, track who\'s actually coming, and create a system that works for everyone!',
+      htmlText:
+          '<p>Let\'s organize our <strong>university hangouts properly</strong>! We\'ll coordinate different timetables, find the right places to meet, track who\'s actually coming, and create a system that works for everyone!</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(hours: 2)).subtract(const Duration(days: 1)),
+    endDate: DateTime.now().add(const Duration(hours: 4)).subtract(const Duration(days: 1)),
+    createdBy: 'user_6',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_5': RsvpStatus.yes,
+      'user_6': RsvpStatus.yes,
+      'user_7': RsvpStatus.maybe,
+      'user_8': RsvpStatus.yes,
+    },
+  ),
 ];

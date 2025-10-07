@@ -770,4 +770,75 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // University Hangout Chaos & Success Stories
+  BulletModel(
+    id: 'bullet-item-55',
+    sheetId: 'sheet-10',
+    parentId: 'list-bulleted-12',
+    title: 'New at university? Making friends is exciting! 🎓',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'The excitement begins! New group made, making friends is exciting, ready to explore university life together!',
+      htmlText:
+          '<p>The <strong>excitement begins</strong>! New group made, making friends is exciting, ready to explore university life together!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-56',
+    sheetId: 'sheet-10',
+    parentId: 'list-bulleted-12',
+    title: 'But organizing hangouts? Total chaos! 😱',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'The chaos begins! When we meet? Which place? Not free Tuesday, change the time, different timetables, nobody replies!',
+      htmlText:
+          '<p>The <strong>chaos begins</strong>! When we meet? Which place? Not free Tuesday, change the time, different timetables, nobody replies!</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-57',
+    sheetId: 'sheet-10',
+    parentId: 'list-bulleted-12',
+    title: 'Who\'s even coming? Nobody knows who\'s actually coming! 😤',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Total confusion! Nobody replies to messages, nobody knows who\'s actually coming, and everyone has different schedules!',
+      htmlText:
+          '<p><strong>Total confusion</strong>! Nobody replies to messages, nobody knows who\'s actually coming, and everyone has different schedules!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-58',
+    sheetId: 'sheet-10',
+    parentId: 'list-bulleted-12',
+    title: 'Now imagine one place for all - calendar, checklist, poll, attendance! 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Finally! One platform to organize all university hangouts, coordinate schedules, track attendance, and make planning fun again!',
+      htmlText:
+          '<p>Finally! <strong>One platform to organize all university hangouts</strong>, coordinate schedules, track attendance, and make planning fun again!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-59',
+    sheetId: 'sheet-10',
+    parentId: 'list-bulleted-12',
+    title: 'From chaos to organized fun - university hangout success! 🎓✨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Transform university hangout planning from total chaos to organized fun. Zoe makes making friends and hanging out stress-free!',
+      htmlText:
+          '<p>Transform university hangout planning from <strong>total chaos to organized fun</strong>. Zoe makes making friends and hanging out stress-free!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

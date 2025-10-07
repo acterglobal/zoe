@@ -493,4 +493,50 @@ final polls = [
     isMultipleChoice: true,
     createdBy: 'user_4',
   ),
+  PollModel(
+    id: 'poll-11',
+    sheetId: 'sheet-10',
+    parentId: 'sheet-10',
+    orderIndex: 1,
+    question: 'What\'s your biggest university hangout challenge?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 1)),
+    options: [
+      PollOption(
+        id: 'option-11-1',
+        title: 'Different timetables and schedules',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+        ],
+      ),
+      PollOption(
+        id: 'option-11-2',
+        title: 'Nobody replies to messages',
+        votes: [
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-11-3',
+        title: 'Finding the right place to meet',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+        ],
+      ),
+      PollOption(
+        id: 'option-11-4',
+        title: 'Tracking who\'s actually coming',
+        votes: [
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_5',
+  ),
 ];

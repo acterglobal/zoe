@@ -189,4 +189,20 @@ final textList = [
     ),
     createdBy: 'user_6',
   ),
+  // University Hangout Text Content
+  TextModel(
+    sheetId: 'sheet-10',
+    parentId: 'sheet-10',
+    id: 'text-content-13',
+    title: 'From University Chaos to Organized Fun',
+    emoji: '🎓',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'New at university? Making friends is exciting! 🎓\n\nNew group made, making friends is exciting, but organizing hangouts? Total chaos! When we meet? Which place? Not free Tuesday, change the time, different timetables, nobody replies, who\'s even coming? And nobody knows who\'s actually coming!\n\n🗳️ Vote on university hangout challenges\n🎓 Track schedules and coordinate timetables\n📅 Schedule hangouts and find perfect meeting spots\n😅 Share chaos stories and celebrate organized solutions\n🔗 Store university hangout tools and campus resources\n📄 Keep all hangout planning documents organized\n\nTransform university chaos into organized fun! 🎯✨',
+      htmlText:
+          '<p>New at university? <strong>Making friends is exciting</strong>! 🎓</p><br><p>New group made, making friends is exciting, but organizing hangouts? Total chaos! When we meet? Which place? Not free Tuesday, change the time, different timetables, nobody replies, who\'s even coming? And nobody knows who\'s actually coming!</p><br><br><p><strong>🗳️ Vote</strong> on university hangout challenges</p><br><p><strong>🎓 Track</strong> schedules and coordinate timetables</p><br><p><strong>📅 Schedule</strong> hangouts and find perfect meeting spots</p><br><p><strong>😅 Share</strong> chaos stories and celebrate organized solutions</p><br><p><strong>🔗 Store</strong> university hangout tools and campus resources</p><br><p><strong>📄 Keep</strong> all hangout planning documents organized</p><br><br><p>Transform university chaos into organized fun! 🎯✨</p>',
+    ),
+    createdBy: 'user_7',
+  ),
 ];

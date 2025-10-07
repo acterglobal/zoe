@@ -706,4 +706,73 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_4', 'user_6', 'user_8', 'user_10', 'user_11'],
   ),
+  // University Hangout Management Tasks
+  TaskModel(
+    id: 'university-task-1',
+    sheetId: 'sheet-10',
+    parentId: 'list-tasks-10',
+    title: 'Coordinate different timetables and schedules',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create a system to manage different university timetables. No more "not free Tuesday, change the time" chaos!',
+      htmlText:
+          '<p>Create a system to <strong>manage different university timetables</strong>. No more "not free Tuesday, change the time" chaos!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(hours: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_5', 'user_7'],
+  ),
+  TaskModel(
+    id: 'university-task-2',
+    sheetId: 'sheet-10',
+    parentId: 'list-tasks-10',
+    title: 'Find the right places to meet',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Organize a list of great hangout spots around campus. No more "which place?" confusion!',
+      htmlText:
+          '<p>Organize a <strong>list of great hangout spots around campus</strong>. No more "which place?" confusion!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(hours: 2)),
+    createdBy: 'user_6',
+    assignedUsers: ['user_6', 'user_8'],
+  ),
+  TaskModel(
+    id: 'university-task-3',
+    sheetId: 'sheet-10',
+    parentId: 'list-tasks-10',
+    title: 'Track who\'s actually coming to hangouts',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Create a system to track attendance and RSVPs. No more "who\'s even coming?" confusion!',
+      htmlText:
+          '<p>Create a system to <strong>track attendance and RSVPs</strong>. No more "who\'s even coming?" confusion!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(hours: 3)),
+    createdBy: 'user_7',
+    assignedUsers: ['user_1', 'user_5', 'user_7'],
+  ),
+  TaskModel(
+    id: 'university-task-4',
+    sheetId: 'sheet-10',
+    parentId: 'list-tasks-10',
+    title: 'Create one place for all - calendar, checklist, poll, attendance',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Build the ultimate university hangout hub! One place for calendar, checklist, polls, and attendance tracking!',
+      htmlText:
+          '<p>Build the <strong>ultimate university hangout hub</strong>! One place for calendar, checklist, polls, and attendance tracking!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(hours: 4)),
+    createdBy: 'user_8',
+    assignedUsers: ['user_6', 'user_8'],
+  ),
 ];

@@ -373,4 +373,47 @@ final documentList = [
     sheetId: 'sheet-9',
     filePath: 'path/to/chat_organization.pdf',
   ),
+  // University Hangout Documents
+  DocumentModel(
+    id: 'document-53',
+    title: 'University Hangout Master Checklist',
+    parentId: 'list-document-10',
+    sheetId: 'sheet-10',
+    filePath: 'path/to/university_hangout_checklist.pdf',
+  ),
+  DocumentModel(
+    id: 'document-54',
+    title: 'Student Schedule Coordination Guide',
+    parentId: 'list-document-10',
+    sheetId: 'sheet-10',
+    filePath: 'path/to/schedule_coordination.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-55',
+    title: 'Campus Hangout Spots Directory',
+    parentId: 'list-document-10',
+    sheetId: 'sheet-10',
+    filePath: 'path/to/campus_spots.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-56',
+    title: 'Attendance & RSVP Tracker',
+    parentId: 'list-document-10',
+    sheetId: 'sheet-10',
+    filePath: 'path/to/attendance_tracker.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-57',
+    title: 'University Hangout Budget & Expenses',
+    parentId: 'list-document-10',
+    sheetId: 'sheet-10',
+    filePath: 'path/to/hangout_budget.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-58',
+    title: 'Student Group Communication Guide',
+    parentId: 'list-document-10',
+    sheetId: 'sheet-10',
+    filePath: 'path/to/student_communication.pdf',
+  ),
 ];

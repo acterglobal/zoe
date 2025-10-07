@@ -128,4 +128,18 @@ final sheetList = [
     createdBy: 'user_6',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
   ),
+  SheetModel(
+    id: 'sheet-10',
+    title: 'University Hangout Hub',
+    emoji: '🎓',
+    color: const Color(0xFF7C3AED), // Purple
+    description: (
+      plainText:
+          'New at university? Making friends is exciting! New group made, making friends is exciting, but organizing hangouts? Total chaos! When we meet? Which place? Not free Tuesday, change the time, different timetables, nobody replies, who\'s even coming? And nobody knows who\'s actually coming! Now imagine one place for all - calendar, checklist, poll, attendance!',
+      htmlText:
+          '<p>New at university? <strong>Making friends is exciting</strong>! New group made, making friends is exciting, but organizing hangouts? Total chaos! When we meet? Which place? Not free Tuesday, change the time, different timetables, nobody replies, who\'s even coming? And nobody knows who\'s actually coming! Now imagine one place for all - calendar, checklist, poll, attendance!</p>',
+    ),
+    createdBy: 'user_7',
+    users: ['user_1', 'user_5', 'user_6', 'user_7', 'user_8'],
+  ),
 ];
