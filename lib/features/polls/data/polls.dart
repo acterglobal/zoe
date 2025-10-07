@@ -112,7 +112,7 @@ final polls = [
     sheetId: 'sheet-2',
     parentId: 'sheet-2',
     orderIndex: 1,
-    question: 'Which city are we going finally?',
+    question: 'Which city should we visit for our trip?',
     startDate: DateTime.now().subtract(const Duration(hours: 2)),
     options: [
       PollOption(
@@ -150,11 +150,57 @@ final polls = [
     createdBy: 'user_1',
   ),
   PollModel(
-    id: 'poll-3b',
+    id: 'poll-2b',
     sheetId: 'sheet-2',
     parentId: 'sheet-2',
     orderIndex: 2,
-    question: 'Morning or evening flights?',
+    question: 'What type of accommodation do you prefer?',
+    startDate: DateTime.now().subtract(const Duration(hours: 1)),
+    options: [
+      PollOption(
+        id: 'option-2b-1',
+        title: 'Hotel - Comfort and convenience',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+        ],
+      ),
+      PollOption(
+        id: 'option-2b-2',
+        title: 'Airbnb - Home-like experience',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-2b-3',
+        title: 'Hostel - Budget-friendly and social',
+        votes: [
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-2b-4',
+        title: 'Resort - All-inclusive luxury',
+        votes: [
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_2',
+  ),
+  PollModel(
+    id: 'poll-3b',
+    sheetId: 'sheet-2',
+    parentId: 'sheet-2',
+    orderIndex: 3,
+    question: 'What time should we book our flights?',
     startDate: DateTime.now().subtract(const Duration(hours: 1)),
     options: [
       PollOption(
@@ -182,7 +228,7 @@ final polls = [
     sheetId: 'sheet-3',
     parentId: 'sheet-3',
     orderIndex: 1,
-    question: 'Is venue home or hall?',
+    question: 'Where should we celebrate Christmas this year?',
     startDate: DateTime.now().subtract(const Duration(hours: 1)),
     options: [
       PollOption(
@@ -218,16 +264,16 @@ final polls = [
     createdBy: 'user_1',
   ),
   PollModel(
-    id: 'poll-5',
-    sheetId: 'sheet-4',
-    parentId: 'sheet-4',
-    orderIndex: 1,
-    question: 'What\'s your biggest digital organization challenge?',
+    id: 'poll-4b',
+    sheetId: 'sheet-3',
+    parentId: 'sheet-3',
+    orderIndex: 2,
+    question: 'What type of Christmas dinner do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 30)),
     options: [
       PollOption(
-        id: 'option-5-1',
-        title: 'Endless scrolling through chat history',
+        id: 'option-4b-1',
+        title: 'Traditional roast dinner',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -235,8 +281,8 @@ final polls = [
         ],
       ),
       PollOption(
-        id: 'option-5-2',
-        title: 'Thousands of photos with no organization',
+        id: 'option-4b-2',
+        title: 'Buffet style with variety',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -244,36 +290,82 @@ final polls = [
         ],
       ),
       PollOption(
-        id: 'option-5-3',
-        title: 'Important details lost in the messages',
+        id: 'option-4b-3',
+        title: 'Potluck with family contributions',
         votes: [
-          Vote(userId: 'user_1'),
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
         ],
       ),
       PollOption(
-        id: 'option-5-4',
-        title: 'Multiple apps and platforms to manage',
+        id: 'option-4b-4',
+        title: 'Ordered catering service',
         votes: [
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_4',
+  ),
+  PollModel(
+    id: 'poll-5b',
+    sheetId: 'sheet-4',
+    parentId: 'sheet-4',
+    orderIndex: 2,
+    question: 'How do you prefer to backup your important files?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 15)),
+    options: [
+      PollOption(
+        id: 'option-5b-1',
+        title: 'Cloud storage (Google Drive, Dropbox)',
+        votes: [
+          Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
           Vote(userId: 'user_5'),
         ],
       ),
+      PollOption(
+        id: 'option-5b-2',
+        title: 'External hard drive',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-5b-3',
+        title: 'USB flash drives',
+        votes: [
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-5b-4',
+        title: 'Multiple backup methods',
+        votes: [
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
     ],
-    isMultipleChoice: true,
-    createdBy: 'user_2',
+    isMultipleChoice: false,
+    createdBy: 'user_3',
   ),
   PollModel(
     id: 'poll-6',
     sheetId: 'sheet-5',
     parentId: 'sheet-5',
     orderIndex: 1,
-    question: 'What\'s your biggest community management challenge?',
+    question: 'Which communication tool works best for your community?',
     startDate: DateTime.now().subtract(const Duration(minutes: 15)),
     options: [
       PollOption(
         id: 'option-6-1',
-        title: '100+ notifications drowning out important messages',
+        title: 'WhatsApp - Quick and personal',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -283,7 +375,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-6-2',
-        title: 'Important clients lost in scattered tools',
+        title: 'Slack - Organized channels and threads',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -292,7 +384,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-6-3',
-        title: 'Tasks scattered across different apps',
+        title: 'Discord - Voice and text combined',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -301,7 +393,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-6-4',
-        title: 'Missing meetings because of poor coordination',
+        title: 'Email - Formal and professional',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_5'),
@@ -314,11 +406,57 @@ final polls = [
     createdBy: 'user_3',
   ),
   PollModel(
+    id: 'poll-6b',
+    sheetId: 'sheet-5',
+    parentId: 'sheet-5',
+    orderIndex: 2,
+    question: 'How often should community meetings be scheduled?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 10)),
+    options: [
+      PollOption(
+        id: 'option-6b-1',
+        title: 'Weekly - Regular and consistent',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+        ],
+      ),
+      PollOption(
+        id: 'option-6b-2',
+        title: 'Bi-weekly - Every two weeks',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-6b-3',
+        title: 'Monthly - Less frequent but focused',
+        votes: [
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-6b-4',
+        title: 'As needed - Flexible scheduling',
+        votes: [
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_4',
+  ),
+  PollModel(
     id: 'poll-7',
     sheetId: 'sheet-6',
     parentId: 'sheet-6',
     orderIndex: 1,
-    question: 'Let\'s do Friday meet? No, Sunday? Who\'s even coming?',
+    question: 'Which day works best for our group meeting?',
     startDate: DateTime.now().subtract(const Duration(minutes: 5)),
     options: [
       PollOption(
@@ -350,7 +488,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-7-4',
-        title: 'I\'m not coming anyway 😂',
+        title: 'Weekday evening - After work',
         votes: [
           Vote(userId: 'user_8'),
         ],
@@ -360,16 +498,62 @@ final polls = [
     createdBy: 'user_1',
   ),
   PollModel(
+    id: 'poll-7b',
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
+    orderIndex: 2,
+    question: 'What type of group chat management do you prefer?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 3)),
+    options: [
+      PollOption(
+        id: 'option-7b-1',
+        title: 'Structured channels with clear topics',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+        ],
+      ),
+      PollOption(
+        id: 'option-7b-2',
+        title: 'Free-flowing conversation style',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-7b-3',
+        title: 'Scheduled discussion times',
+        votes: [
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-7b-4',
+        title: 'Separate chats for different topics',
+        votes: [
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_2',
+  ),
+  PollModel(
     id: 'poll-8',
     sheetId: 'sheet-7',
     parentId: 'sheet-7',
     orderIndex: 1,
-    question: 'What\'s your biggest exhibition planning challenge?',
+    question: 'What type of exhibition setup do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 10)),
     options: [
       PollOption(
         id: 'option-8-1',
-        title: 'Too many scattered tools and apps',
+        title: 'Indoor gallery with controlled lighting',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -380,7 +564,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-8-2',
-        title: 'Food stall coordination chaos',
+        title: 'Outdoor venue with natural lighting',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -389,7 +573,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-8-3',
-        title: 'Guest list management nightmare',
+        title: 'Mixed indoor-outdoor hybrid space',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -398,7 +582,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-8-4',
-        title: 'Stage management confusion',
+        title: 'Pop-up or temporary exhibition space',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_5'),
@@ -411,16 +595,62 @@ final polls = [
     createdBy: 'user_2',
   ),
   PollModel(
+    id: 'poll-8b',
+    sheetId: 'sheet-7',
+    parentId: 'sheet-7',
+    orderIndex: 2,
+    question: 'What type of exhibition theme do you prefer?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 5)),
+    options: [
+      PollOption(
+        id: 'option-8b-1',
+        title: 'Contemporary art and modern pieces',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+        ],
+      ),
+      PollOption(
+        id: 'option-8b-2',
+        title: 'Traditional and classical art',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-8b-3',
+        title: 'Interactive and multimedia displays',
+        votes: [
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-8b-4',
+        title: 'Mixed media and diverse collection',
+        votes: [
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_3',
+  ),
+  PollModel(
     id: 'poll-9',
     sheetId: 'sheet-8',
     parentId: 'sheet-8',
     orderIndex: 1,
-    question: 'What\'s your biggest school fundraiser challenge?',
+    question: 'What type of school fundraiser do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 5)),
     options: [
       PollOption(
         id: 'option-9-1',
-        title: 'Cupcakes everywhere - no organization!',
+        title: 'Bake sale with homemade treats',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -431,7 +661,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-9-2',
-        title: 'Ticket lists flying around - who has what?',
+        title: 'Silent auction with donated items',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -441,7 +671,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-9-3',
-        title: 'Volunteer signups no one tracks',
+        title: 'Carnival or fun fair with games',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -452,7 +682,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-9-4',
-        title: 'Calendar overflowing with meetings',
+        title: 'Online crowdfunding campaign',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
@@ -470,12 +700,12 @@ final polls = [
     sheetId: 'sheet-9',
     parentId: 'sheet-9',
     orderIndex: 1,
-    question: 'What\'s your biggest BBQ planning challenge?',
+    question: 'What type of BBQ setup do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 2)),
     options: [
       PollOption(
         id: 'option-10-1',
-        title: 'Endless group chat messages',
+        title: 'Backyard grill setup',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -486,7 +716,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-10-2',
-        title: 'Equipment coordination chaos',
+        title: 'Park or beach BBQ',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -497,7 +727,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-10-3',
-        title: 'Dietary restrictions management',
+        title: 'Indoor grill or kitchen cooking',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -508,7 +738,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-10-4',
-        title: 'Timing and scheduling confusion',
+        title: 'Professional catering service',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
@@ -526,12 +756,12 @@ final polls = [
     sheetId: 'sheet-10',
     parentId: 'sheet-10',
     orderIndex: 1,
-    question: 'What\'s your biggest university hangout challenge?',
+    question: 'What type of university hangout do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 1)),
     options: [
       PollOption(
         id: 'option-11-1',
-        title: 'Different timetables and schedules',
+        title: 'Campus coffee shop or café',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_5'),
@@ -540,7 +770,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-11-2',
-        title: 'Nobody replies to messages',
+        title: 'Library study area or quiet space',
         votes: [
           Vote(userId: 'user_6'),
           Vote(userId: 'user_8'),
@@ -548,7 +778,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-11-3',
-        title: 'Finding the right place to meet',
+        title: 'Student center or common area',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_5'),
@@ -557,7 +787,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-11-4',
-        title: 'Tracking who\'s actually coming',
+        title: 'Off-campus restaurant or bar',
         votes: [
           Vote(userId: 'user_6'),
           Vote(userId: 'user_8'),
@@ -572,12 +802,12 @@ final polls = [
     sheetId: 'sheet-11',
     parentId: 'sheet-11',
     orderIndex: 1,
-    question: 'What\'s your biggest book club planning challenge?',
+    question: 'What type of book club meeting do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 30)),
     options: [
       PollOption(
         id: 'option-12-1',
-        title: 'Juggling dates and scheduling',
+        title: 'In-person meetings at someone\'s home',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -587,7 +817,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-12-2',
-        title: 'Deciding who\'s hosting each month',
+        title: 'Virtual meetings via video call',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -597,7 +827,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-12-3',
-        title: 'Choosing which book to read',
+        title: 'Café or library meetings',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -607,7 +837,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-12-4',
-        title: 'Messy chat and communication chaos',
+        title: 'Hybrid meetings (in-person + virtual)',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
@@ -624,12 +854,12 @@ final polls = [
     sheetId: 'sheet-12',
     parentId: 'sheet-12',
     orderIndex: 1,
-    question: 'What\'s your biggest softball club BBQ planning challenge?',
+    question: 'What type of softball club BBQ do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 15)),
     options: [
       PollOption(
         id: 'option-13-1',
-        title: 'Finding a date that works for everyone',
+        title: 'Traditional BBQ with burgers and hot dogs',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -640,7 +870,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-13-2',
-        title: 'Everyone talking but nobody deciding',
+        title: 'Grilled chicken and vegetable skewers',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -651,7 +881,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-13-3',
-        title: 'Endless planning with no clarity',
+        title: 'Potluck style with everyone bringing dishes',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -662,7 +892,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-13-4',
-        title: 'Everyone missing and plan gone wrong',
+        title: 'Catered BBQ with professional service',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
@@ -680,12 +910,12 @@ final polls = [
     sheetId: 'sheet-13',
     parentId: 'sheet-13',
     orderIndex: 1,
-    question: 'What\'s your biggest bachelorette party planning challenge?',
+    question: 'What type of bachelorette party do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 10)),
     options: [
       PollOption(
         id: 'option-14-1',
-        title: 'Non-stop group chat buzzing with questions',
+        title: 'Weekend getaway to a destination city',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -693,7 +923,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-14-2',
-        title: 'Juggling dates and availability conflicts',
+        title: 'Local night out with dinner and dancing',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -701,7 +931,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-14-3',
-        title: 'No fixed budget or date decisions',
+        title: 'Spa day with relaxation and pampering',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -709,7 +939,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-14-4',
-        title: 'Empty checklist and coordination chaos',
+        title: 'Home party with games and activities',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
@@ -724,12 +954,12 @@ final polls = [
     sheetId: 'sheet-14',
     parentId: 'sheet-14',
     orderIndex: 1,
-    question: 'What\'s your biggest church summer fest planning challenge?',
+    question: 'What type of church summer fest do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 5)),
     options: [
       PollOption(
         id: 'option-15-1',
-        title: 'Food coordination chaos',
+        title: 'Traditional church festival with food stalls',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -739,7 +969,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-15-2',
-        title: 'Budget planning confusion',
+        title: 'Community picnic with games and activities',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -749,7 +979,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-15-3',
-        title: 'Date scheduling conflicts',
+        title: 'Charity fundraiser with raffle and auctions',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -759,7 +989,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-15-4',
-        title: 'Equipment and setup coordination',
+        title: 'Simple potluck with music and fellowship',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
@@ -776,12 +1006,12 @@ final polls = [
     sheetId: 'sheet-15',
     parentId: 'sheet-15',
     orderIndex: 1,
-    question: 'What\'s your biggest PTA bake sale planning challenge?',
+    question: 'What type of PTA bake sale do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 3)),
     options: [
       PollOption(
         id: 'option-16-1',
-        title: 'Baking assignments and coordination chaos',
+        title: 'Traditional bake sale with homemade goods',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -792,7 +1022,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-16-2',
-        title: 'Dietary restrictions and special needs',
+        title: 'Pre-packaged and store-bought items',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -803,7 +1033,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-16-3',
-        title: 'Scheduling conflicts and availability',
+        title: 'Online bake sale with delivery',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -814,7 +1044,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-16-4',
-        title: 'Budget and payment coordination',
+        title: 'Combined bake sale and craft fair',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
@@ -832,12 +1062,12 @@ final polls = [
     sheetId: 'sheet-16',
     parentId: 'sheet-16',
     orderIndex: 1,
-    question: 'What\'s your biggest Halloween planning challenge?',
+    question: 'What type of Halloween celebration do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 2)),
     options: [
       PollOption(
         id: 'option-17-1',
-        title: 'Location confusion and wrong streets',
+        title: 'House party with friends',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -848,7 +1078,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-17-2',
-        title: 'Messy group chat and unclear communication',
+        title: 'Trick-or-treating in neighborhood',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -859,7 +1089,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-17-3',
-        title: 'Scheduling conflicts and late arrivals',
+        title: 'Halloween movie night',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -870,7 +1100,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-17-4',
-        title: 'Nobody knows where to meet or which house',
+        title: 'Costume party at a venue',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
@@ -884,16 +1114,62 @@ final polls = [
     createdBy: 'user_1',
   ),
   PollModel(
+    id: 'poll-17b',
+    sheetId: 'sheet-16',
+    parentId: 'sheet-16',
+    orderIndex: 2,
+    question: 'What type of Halloween costume do you prefer?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 1)),
+    options: [
+      PollOption(
+        id: 'option-17b-1',
+        title: 'Scary and spooky costumes',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+        ],
+      ),
+      PollOption(
+        id: 'option-17b-2',
+        title: 'Funny and creative costumes',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-17b-3',
+        title: 'Movie or TV character costumes',
+        votes: [
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-17b-4',
+        title: 'Simple and comfortable costumes',
+        votes: [
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_2',
+  ),
+  PollModel(
     id: 'poll-18',
     sheetId: 'sheet-17',
     parentId: 'sheet-17',
     orderIndex: 1,
-    question: 'What\'s your biggest summer camp sign-up challenge?',
+    question: 'What type of summer camp do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 1)),
     options: [
       PollOption(
         id: 'option-18-1',
-        title: 'Form confusion and sign-up process chaos',
+        title: 'Day camp with daily activities',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -904,7 +1180,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-18-2',
-        title: 'Date conflicts and scheduling confusion',
+        title: 'Overnight camp with full immersion',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -915,7 +1191,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-18-3',
-        title: 'Payment handling and financial coordination',
+        title: 'Weekend camp with short sessions',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -926,7 +1202,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-18-4',
-        title: 'Equipment and supplies organization',
+        title: 'Virtual or online camp experience',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
@@ -940,16 +1216,62 @@ final polls = [
     createdBy: 'user_2',
   ),
   PollModel(
+    id: 'poll-18b',
+    sheetId: 'sheet-17',
+    parentId: 'sheet-17',
+    orderIndex: 2,
+    question: 'What type of summer camp activities do you prefer?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 1)),
+    options: [
+      PollOption(
+        id: 'option-18b-1',
+        title: 'Outdoor adventure and sports',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+        ],
+      ),
+      PollOption(
+        id: 'option-18b-2',
+        title: 'Arts and crafts activities',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-18b-3',
+        title: 'Educational and learning programs',
+        votes: [
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-18b-4',
+        title: 'Mixed activities and variety',
+        votes: [
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_3',
+  ),
+  PollModel(
     id: 'poll-19',
     sheetId: 'sheet-18',
     parentId: 'sheet-18',
     orderIndex: 1,
-    question: 'What\'s your biggest Thanksgiving planning challenge?',
+    question: 'What type of Thanksgiving dinner do you prefer?',
     startDate: DateTime.now().subtract(const Duration(minutes: 1)),
     options: [
       PollOption(
         id: 'option-19-1',
-        title: 'Weeks of cooking endless stress',
+        title: 'Traditional home-cooked meal',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
@@ -960,7 +1282,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-19-2',
-        title: 'Broken promises and unreliable help',
+        title: 'Potluck style with everyone contributing',
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
@@ -971,7 +1293,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-19-3',
-        title: 'Family group chat chaos and confusion',
+        title: 'Restaurant or catering service',
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
@@ -982,7 +1304,7 @@ final polls = [
       ),
       PollOption(
         id: 'option-19-4',
-        title: 'Everything falls on mom at the end',
+        title: 'Simple and minimal celebration',
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
@@ -994,5 +1316,51 @@ final polls = [
     ],
     isMultipleChoice: true,
     createdBy: 'user_3',
+  ),
+  PollModel(
+    id: 'poll-19b',
+    sheetId: 'sheet-18',
+    parentId: 'sheet-18',
+    orderIndex: 2,
+    question: 'What type of Thanksgiving dessert do you prefer?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 1)),
+    options: [
+      PollOption(
+        id: 'option-19b-1',
+        title: 'Traditional pumpkin pie',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+        ],
+      ),
+      PollOption(
+        id: 'option-19b-2',
+        title: 'Apple pie with cinnamon',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-19b-3',
+        title: 'Chocolate-based desserts',
+        votes: [
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-19b-4',
+        title: 'Assorted dessert platter',
+        votes: [
+          Vote(userId: 'user_9'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_4',
   ),
 ];

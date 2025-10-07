@@ -306,7 +306,7 @@ final textList = [
     description: (
       plainText:
           '🎃\n\nHalloween Planning Spectacular Hub - Your organized command center for Halloween fun!\n\n'
-          'Everyone\'s excited! Where you? We missed you! Wrong street, nobody on the same place, messy group chat like: meet at Maple St? Wait, Elm St right? I can only join later, we\'ll just go without u, wait which house again? Nobody is here!\n\n'
+          'Everyone\'s excited! But then the chaos begins with wrong streets, nobody on the same place, messy group chat confusion about meeting locations, timing issues, and people getting lost!\n\n'
           '🎯\n\nZoe transforms Halloween planning from chaos to success:\n\n'
           '• Location coordination and clear directions (no more "wrong street" confusion)\n'
           '• Clear communication and organized group chat (no more "Maple St? Wait, Elm St?" chaos)\n'
@@ -316,7 +316,7 @@ final textList = [
       htmlText:
           '<p><strong>🎃</strong></p>\n'
           '<p>Your organized command center for Halloween fun!</p>\n'
-          '<p>Everyone\'s excited! Where you? We missed you! Wrong street, nobody on the same place, messy group chat like: meet at Maple St? Wait, Elm St right? I can only join later, we\'ll just go without u, wait which house again? Nobody is here!</p><br>\n'
+          '<p>Everyone\'s excited! But then the chaos begins with wrong streets, nobody on the same place, messy group chat confusion about meeting locations, timing issues, and people getting lost!</p><br>\n'
           '<p><strong>🎯</strong></p>\n'
           '<p>Zoe transforms Halloween planning from chaos to success:</p><br>\n'
           '<p>• Location coordination and clear directions (no more "wrong street" confusion)<br>\n'
@@ -337,7 +337,7 @@ final textList = [
     description: (
       plainText:
           '🏕️\n\nSummer Camp Sign-ups Success Hub - Your organized command center for summer camp fun!\n\n'
-          'Parents are excited, kids wait for camp to start, and who bringing snacks? Did you fill the form? What\'s do when? Chats are full of questions: can we change the date? I thought it\'s July 15? I already booked tickets for Aug, who\'s handling payments? Snacks list? I can\'t find it, tents or not? Stress overload!\n\n'
+          'Parents are excited, kids wait for camp to start, but then chaos begins with form confusion, date conflicts, payment issues, equipment questions, and stress overload!\n\n'
           '🎯\n\nZoe transforms summer camp sign-ups from chaos to success:\n\n'
           '• Form submissions and sign-up process (no more "did you fill the form?" confusion)\n'
           '• Date conflicts and scheduling coordination (handle "I thought it\'s July 15?" chaos)\n'
@@ -347,7 +347,7 @@ final textList = [
       htmlText:
           '<p><strong>🏕️</strong></p>\n'
           '<p>Summer Camp Sign-ups Success Hub - Your organized command center for summer camp fun!</p>\n'
-          '<p>Parents are excited, kids wait for camp to start, and who bringing snacks? Did you fill the form? What\'s do when? Chats are full of questions: can we change the date? I thought it\'s July 15? I already booked tickets for Aug, who\'s handling payments? Snacks list? I can\'t find it, tents or not? Stress overload!</p><br>\n'
+          '<p>Parents are excited, kids wait for camp to start, but then chaos begins with form confusion, date conflicts, payment issues, equipment questions, and stress overload!</p><br>\n'
           '<p><strong>🎯</strong></p>\n'
           '<p>Zoe transforms summer camp sign-ups from chaos to success:</p><br>\n'
           '<p>• Form submissions and sign-up process (no more "did you fill the form?" confusion)<br>\n'
@@ -368,7 +368,7 @@ final textList = [
     description: (
       plainText:
           '🦃\n\nThanksgiving Will Not Be Terrible This Year Hub - Your organized command center for Thanksgiving success!\n\n'
-          'Weeks of cooking endless stress, they all promised they will help but will they really help? I will handle the turkey in family group chats like: who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday and at end everything falls on mom!\n\n'
+          'Weeks of cooking endless stress, they all promised they will help but will they really help? I will handle the turkey in family group chats with confusion about who\'s bringing what, random memes, and timing confusion. At the end everything falls on mom!\n\n'
           '🎯\n\nZoe transforms Thanksgiving planning from chaos to success:\n\n'
           '• Cooking assignments and stress reduction (no more "weeks of cooking endless stress")\n'
           '• Reliable help and promise follow-through (handle "they all promised they will help but will they really help?")\n'
@@ -378,7 +378,7 @@ final textList = [
       htmlText:
           '<p><strong>🦃</strong></p>\n'
           '<p>Thanksgiving Will Not Be Terrible This Year Hub - Your organized command center for Thanksgiving success!</p>\n'
-          '<p>Weeks of cooking endless stress, they all promised they will help but will they really help? I will handle the turkey in family group chats like: who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday and at end everything falls on mom!</p><br>\n'
+          '<p>Weeks of cooking endless stress, they all promised they will help but will they really help? I will handle the turkey in family group chats with confusion about who\'s bringing what, random memes, and timing confusion. At the end everything falls on mom!</p><br>\n'
           '<p><strong>🎯</strong></p>\n'
           '<p>Zoe transforms Thanksgiving planning from chaos to success:</p><br>\n'
           '<p>• Cooking assignments and stress reduction (no more "weeks of cooking endless stress")<br>\n'

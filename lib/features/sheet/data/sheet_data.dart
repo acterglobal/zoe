@@ -23,7 +23,7 @@ final sheetList = [
     color: const Color(0xFF10B981), // Emerald
     description: (
       plainText:
-          'Our epic trip planning workspace! From choosing the perfect destination to coordinating all the fun details. Use polls to decide on destinations, tasks to track preparations, events to schedule activities, and share all the important links and resources.',
+          'Our epic trip planning workspace! From  choosing the perfect destination to coordinating all the fun details. Use polls to decide on destinations, tasks to track preparations, events to schedule activities, and share all the important links and resources.',
       htmlText:
           '<p>Our epic <strong>trip planning workspace</strong>! From choosing the perfect destination to coordinating all the fun details. Use polls to decide on destinations, tasks to track preparations, events to schedule activities, and share all the important links and resources.</p>',
     ),
@@ -242,8 +242,8 @@ final sheetList = [
   ),
   SheetModel(
     id: 'sheet-18',
-    title: 'Thanksgiving Will Not Be Terrible This Year Hub',
-    emoji: '🦃',
+    title: 'Thanksgiving Will Not Be Terrible',
+    emoji: '🍽️',
     color: const Color(0xFFEA580C), // Orange
     description: (
       plainText:
