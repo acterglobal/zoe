@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import '../utils/bullets_utils.dart';
 
@@ -13,23 +14,29 @@ void main() {
 
   group('BulletActions', () {
     late ProviderContainer container;
+    late BulletModel testBulletModel;
 
     setUp(() {
       container = ProviderContainer.test(
-        overrides: [bulletListProvider.overrideWith(() => BulletList())],
+        overrides: [bulletListProvider.overrideWith(() => EmptyBulletList())],
+      );
+
+      testBulletModel = addBulletAndGetModel(
+        container,
+        title: testBulletTitle,
+        parentId: testParentId,
+        sheetId: testSheetId,
+        createdBy: testUserId,
       );
     });
 
     group('Copy Bullet Action', () {
       testWidgets('copies bullet content to clipboard', (tester) async {
-        final bulletModel = addBulletAndGetModel(container);
-        final bulletId = bulletModel.id;
-
         // Pump the widget with the bullet content
         await pumpBulletCopyActionsWidget(
           tester: tester,
           container: container,
-          bulletId: bulletId,
+          bulletId: testBulletModel.id,
         );
 
         // Tap the copy button
@@ -45,14 +52,11 @@ void main() {
       testWidgets('shows share bottom sheet when share action is triggered', (
         tester,
       ) async {
-        final bulletModel = addBulletAndGetModel(container);
-        final bulletId = bulletModel.id;
-
         // Pump the widget with the bullet content
         await pumpBulletShareActionsWidget(
           tester: tester,
           container: container,
-          bulletId: bulletId,
+          bulletId: testBulletModel.id,
         );
 
         // Tap the share button
@@ -68,14 +72,11 @@ void main() {
       testWidgets('displays correct bullet content in share preview', (
         tester,
       ) async {
-        final bulletModel = addBulletAndGetModel(container);
-        final bulletId = bulletModel.id;
-
         // Pump the widget with the bullet content
         await pumpBulletShareActionsWidget(
           tester: tester,
           container: container,
-          bulletId: bulletId,
+          bulletId: testBulletModel.id,
         );
 
         // Get the context of the share button
@@ -88,18 +89,15 @@ void main() {
         expect(find.byType(BottomSheet), findsOneWidget);
 
         // Verify bullet title is displayed in the bottom sheet
-        expect(find.textContaining(bulletModel.title), findsOneWidget);
+        expect(find.textContaining(testBulletModel.title), findsOneWidget);
       });
 
       testWidgets('share bottom sheet can be dismissed', (tester) async {
-        final bulletModel = addBulletAndGetModel(container);
-        final bulletId = bulletModel.id;
-
         // Pump the widget with the bullet content
         await pumpBulletShareActionsWidget(
           tester: tester,
           container: container,
-          bulletId: bulletId,
+          bulletId: testBulletModel.id,
         );
 
         // Tap the share button
@@ -131,14 +129,11 @@ void main() {
                 return null;
               });
 
-          final bulletModel = addBulletAndGetModel(container);
-          final bulletId = bulletModel.id;
-
           // Pump the widget with the bullet content
           await pumpBulletShareActionsWidget(
             tester: tester,
             container: container,
-            bulletId: bulletId,
+            bulletId: testBulletModel.id,
           );
 
           // Tap the share button to open bottom sheet
@@ -171,9 +166,6 @@ void main() {
       testWidgets('sets edit content id when edit action is triggered', (
         tester,
       ) async {
-        final bulletModel = addBulletAndGetModel(container);
-        final bulletId = bulletModel.id;
-
         // Verify initial state - no bullet is being edited
         expect(container.read(editContentIdProvider), isNull);
 
@@ -181,7 +173,7 @@ void main() {
         await pumpBulletEditActionsWidget(
           tester: tester,
           container: container,
-          bulletId: bulletId,
+          bulletId: testBulletModel.id,
         );
 
         // Tap the edit button
@@ -189,7 +181,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Verify that the edit content id is set to the bullet id
-        expect(container.read(editContentIdProvider), equals(bulletId));
+        expect(container.read(editContentIdProvider), equals(testBulletModel.id));
       });
 
       testWidgets('edit action sets correct bullet id for editing', (
@@ -235,12 +227,9 @@ void main() {
       testWidgets('edit action can clear edit state by setting null', (
         tester,
       ) async {
-        final bulletModel = addBulletAndGetModel(container);
-        final bulletId = bulletModel.id;
-
         // Set initial edit state
-        container.read(editContentIdProvider.notifier).state = bulletId;
-        expect(container.read(editContentIdProvider), equals(bulletId));
+        container.read(editContentIdProvider.notifier).state = testBulletModel.id;
+        expect(container.read(editContentIdProvider), equals(testBulletModel.id));
 
         // Clear edit state manually (simulating cancel edit)
         container.read(editContentIdProvider.notifier).state = null;
@@ -250,28 +239,26 @@ void main() {
         await pumpBulletEditActionsWidget(
           tester: tester,
           container: container,
-          bulletId: bulletId,
+          bulletId: testBulletModel.id,
         );
 
         await tester.tap(find.text('Edit'));
         await tester.pumpAndSettle();
 
         // Verify edit state is set again
-        expect(container.read(editContentIdProvider), equals(bulletId));
+        expect(container.read(editContentIdProvider), equals(testBulletModel.id));
       });
 
       testWidgets(
         'edit action preserves bullet data integrity and update the bullet',
         (tester) async {
-          final bulletModel = addBulletAndGetModel(container);
-          final bulletId = bulletModel.id;
-          final originalTitle = bulletModel.title;
+          final originalTitle = testBulletModel.title;
 
           // Pump the widget
           await pumpBulletEditActionsWidget(
             tester: tester,
             container: container,
-            bulletId: bulletId,
+            bulletId: testBulletModel.id,
           );
 
           // Trigger edit action
@@ -279,25 +266,25 @@ void main() {
           await tester.pumpAndSettle();
 
           // Verify edit state is set
-          expect(container.read(editContentIdProvider), equals(bulletId));
+          expect(container.read(editContentIdProvider), equals(testBulletModel.id));
 
           // Verify bullet data is unchanged
-          final bulletBeforeEdit = container.read(bulletProvider(bulletId));
+          final bulletBeforeEdit = container.read(bulletProvider(testBulletModel.id));
           expect(bulletBeforeEdit, isNotNull);
           expect(bulletBeforeEdit?.title, equals(originalTitle));
-          expect(bulletBeforeEdit?.id, equals(bulletId));
+          expect(bulletBeforeEdit?.id, equals(testBulletModel.id));
 
           final updatedTitle = 'Updated Title';
 
           // Update the bullet title
           final bulletNotifier = container.read(bulletListProvider.notifier);
-          bulletNotifier.updateBulletTitle(bulletId, updatedTitle);
+          bulletNotifier.updateBulletTitle(testBulletModel.id, updatedTitle);
 
           // Verify bullet data is updated
-          final bulletAfterEdit = container.read(bulletProvider(bulletId));
+          final bulletAfterEdit = container.read(bulletProvider(testBulletModel.id));
           expect(bulletAfterEdit, isNotNull);
           expect(bulletAfterEdit?.title, equals(updatedTitle));
-          expect(bulletAfterEdit?.id, equals(bulletId));
+          expect(bulletAfterEdit?.id, equals(testBulletModel.id));
         },
       );
     });
@@ -306,18 +293,15 @@ void main() {
       testWidgets('deletes bullet from list when delete action is triggered', (
         tester,
       ) async {
-        final bulletModel = addBulletAndGetModel(container);
-        final bulletId = bulletModel.id;
-
         // Verify bullet exists
-        final bulletBeforeDelete = container.read(bulletProvider(bulletId));
+        final bulletBeforeDelete = container.read(bulletProvider(testBulletModel.id));
         expect(bulletBeforeDelete, isNotNull);
 
         // Pump the widget with the bullet content
         await pumpBulletDeleteActionsWidget(
           tester: tester,
           container: container,
-          bulletId: bulletId,
+          bulletId: testBulletModel.id,
         );
 
         // Tap the delete button
@@ -325,7 +309,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Verify bullet is deleted
-        final bulletAfterDelete = container.read(bulletProvider(bulletId));
+        final bulletAfterDelete = container.read(bulletProvider(testBulletModel.id));
         expect(bulletAfterDelete, isNull);
 
         // Verify snackbar is shown (indicating delete completed)
@@ -375,12 +359,12 @@ void main() {
         final bulletModel1 = addBulletAndGetModel(
           container,
           title: firstBulletTitle,
-          orderIndex: 1,
+          orderIndex: 0,
         );
         final bulletModel2 = addBulletAndGetModel(
           container,
           title: secondBulletTitle,
-          orderIndex: 2,
+          orderIndex: 1,
         );
         final firstBulletId = bulletModel1.id;
         final secondBulletId = bulletModel2.id;
