@@ -929,7 +929,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 1)),
     createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_3', 'user_5', 'user_7', 'user_9', 'user_11'],
+    assignedUsers: ['user_1', 'user_3'],
   ),
   TaskModel(
     id: 'bachelorette-task-2',
@@ -946,7 +946,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 2)),
     createdBy: 'user_2',
-    assignedUsers: ['user_2', 'user_4', 'user_6', 'user_8', 'user_10', 'user_12'],
+    assignedUsers: ['user_2', 'user_4'],
   ),
   TaskModel(
     id: 'bachelorette-task-3',
@@ -963,7 +963,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
     createdBy: 'user_3',
-    assignedUsers: ['user_1', 'user_2', 'user_5', 'user_6', 'user_9', 'user_12'],
+    assignedUsers: ['user_1', 'user_2'],
   ),
   TaskModel(
     id: 'bachelorette-task-4',
@@ -980,6 +980,6 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 4)),
     createdBy: 'user_4',
-    assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8', 'user_10', 'user_11'],
+    assignedUsers: ['user_3', 'user_4'],
   ),
 ];

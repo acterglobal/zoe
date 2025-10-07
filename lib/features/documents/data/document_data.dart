@@ -51,27 +51,6 @@ final documentList = [
     sheetId: 'sheet-2',
     filePath: 'path/to/flight_tickets.pdf',
   ),
-  DocumentModel(
-    id: 'document-8',
-    title: 'Travel Insurance Policy',
-    parentId: 'list-document-2',
-    sheetId: 'sheet-2',
-    filePath: 'path/to/travel_insurance.pdf',
-  ),
-  DocumentModel(
-    id: 'document-9',
-    title: 'Passport Copies',
-    parentId: 'list-document-2',
-    sheetId: 'sheet-2',
-    filePath: 'path/to/passport_copies.pdf',
-  ),
-  DocumentModel(
-    id: 'document-10',
-    title: 'Emergency Contacts List',
-    parentId: 'list-document-2',
-    sheetId: 'sheet-2',
-    filePath: 'path/to/emergency_contacts.docx',
-  ),
   // Christmas Planning Documents
   DocumentModel(
     id: 'document-11',
@@ -93,27 +72,6 @@ final documentList = [
     parentId: 'list-document-3',
     sheetId: 'sheet-3',
     filePath: 'path/to/secret_santa_list.pdf',
-  ),
-  DocumentModel(
-    id: 'document-14',
-    title: 'Christmas Budget Breakdown',
-    parentId: 'list-document-3',
-    sheetId: 'sheet-3',
-    filePath: 'path/to/christmas_budget.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-15',
-    title: 'Venue Booking Confirmation',
-    parentId: 'list-document-3',
-    sheetId: 'sheet-3',
-    filePath: 'path/to/venue_booking.pdf',
-  ),
-  DocumentModel(
-    id: 'document-16',
-    title: 'Christmas Decoration Checklist',
-    parentId: 'list-document-3',
-    sheetId: 'sheet-3', 
-    filePath: 'path/to/decoration_checklist.docx',
   ),
   // Digital Organization Documents
   DocumentModel(
@@ -137,27 +95,6 @@ final documentList = [
     sheetId: 'sheet-4',
     filePath: 'path/to/digital_cleanup_checklist.docx',
   ),
-  DocumentModel(
-    id: 'document-20',
-    title: 'App Inventory & Usage',
-    parentId: 'list-document-4',
-    sheetId: 'sheet-4',
-    filePath: 'path/to/app_inventory.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-21',
-    title: 'Password & Security Vault',
-    parentId: 'list-document-4',
-    sheetId: 'sheet-4',
-    filePath: 'path/to/security_vault.pdf',
-  ),
-  DocumentModel(
-    id: 'document-22',
-    title: 'Chat Backup Strategy',
-    parentId: 'list-document-4',
-    sheetId: 'sheet-4',
-    filePath: 'path/to/chat_backup_strategy.docx',
-  ),
   // Community Management Documents
   DocumentModel(
     id: 'document-23',
@@ -179,27 +116,6 @@ final documentList = [
     parentId: 'list-document-5',
     sheetId: 'sheet-5',
     filePath: 'path/to/notification_system.docx',
-  ),
-  DocumentModel(
-    id: 'document-26',
-    title: 'Meeting Coordination Templates',
-    parentId: 'list-document-5',
-    sheetId: 'sheet-5',
-    filePath: 'path/to/meeting_templates.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-27',
-    title: 'Community Event Calendar',
-    parentId: 'list-document-5',
-    sheetId: 'sheet-5',
-    filePath: 'path/to/event_calendar.pdf',
-  ),
-  DocumentModel(
-    id: 'document-28',
-    title: 'Task Consolidation Plan',
-    parentId: 'list-document-5',
-    sheetId: 'sheet-5',
-    filePath: 'path/to/task_consolidation.docx',
   ),
   // Chat Management Documents
   DocumentModel(
@@ -223,27 +139,6 @@ final documentList = [
     sheetId: 'sheet-6',
     filePath: 'path/to/attendance_tracker.xlsx',
   ),
-  DocumentModel(
-    id: 'document-32',
-    title: 'Chat Topic Organization Guide',
-    parentId: 'list-document-6',
-    sheetId: 'sheet-6',
-    filePath: 'path/to/chat_organization.docx',
-  ),
-  DocumentModel(
-    id: 'document-33',
-    title: 'Group Decision History',
-    parentId: 'list-document-6',
-    sheetId: 'sheet-6',
-    filePath: 'path/to/decision_history.pdf',
-  ),
-  DocumentModel(
-    id: 'document-34',
-    title: 'Chat Management Best Practices',
-    parentId: 'list-document-6',
-    sheetId: 'sheet-6',
-    filePath: 'path/to/chat_best_practices.docx',
-  ),
   // Exhibition Planning Documents
   DocumentModel(
     id: 'document-35',
@@ -265,27 +160,6 @@ final documentList = [
     parentId: 'list-document-7',
     sheetId: 'sheet-7',
     filePath: 'path/to/guest_list.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-38',
-    title: 'Stage Management Schedule',
-    parentId: 'list-document-7',
-    sheetId: 'sheet-7',
-    filePath: 'path/to/stage_schedule.docx',
-  ),
-  DocumentModel(
-    id: 'document-39',
-    title: 'Exhibition Budget Breakdown',
-    parentId: 'list-document-7',
-    sheetId: 'sheet-7',
-    filePath: 'path/to/exhibition_budget.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-40',
-    title: 'Vendor Coordination Guide',
-    parentId: 'list-document-7',
-    sheetId: 'sheet-7',
-    filePath: 'path/to/vendor_guide.pdf',
   ),
   // School Fundraiser Documents
   DocumentModel(
@@ -309,27 +183,6 @@ final documentList = [
     sheetId: 'sheet-8',
     filePath: 'path/to/ticket_tracker.xlsx',
   ),
-  DocumentModel(
-    id: 'document-44',
-    title: 'Volunteer Signup Sheet',
-    parentId: 'list-document-8',
-    sheetId: 'sheet-8',
-    filePath: 'path/to/volunteer_signup.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-45',
-    title: 'Fundraiser Budget & Expenses',
-    parentId: 'list-document-8',
-    sheetId: 'sheet-8',
-    filePath: 'path/to/fundraiser_budget.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-46',
-    title: 'Parent Communication Guide',
-    parentId: 'list-document-8',
-    sheetId: 'sheet-8',
-    filePath: 'path/to/parent_guide.pdf',
-  ),
   // BBQ Planning Documents
   DocumentModel(
     id: 'document-47',
@@ -351,27 +204,6 @@ final documentList = [
     parentId: 'list-document-9',
     sheetId: 'sheet-9',
     filePath: 'path/to/dietary_tracker.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-50',
-    title: 'BBQ Recipe Collection',
-    parentId: 'list-document-9',
-    sheetId: 'sheet-9',
-    filePath: 'path/to/bbq_recipes.pdf',
-  ),
-  DocumentModel(
-    id: 'document-51',
-    title: 'BBQ Budget & Shopping List',
-    parentId: 'list-document-9',
-    sheetId: 'sheet-9',
-    filePath: 'path/to/bbq_budget.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-52',
-    title: 'Group Chat Organization Guide',
-    parentId: 'list-document-9',
-    sheetId: 'sheet-9',
-    filePath: 'path/to/chat_organization.pdf',
   ),
   // University Hangout Documents
   DocumentModel(
@@ -395,27 +227,6 @@ final documentList = [
     sheetId: 'sheet-10',
     filePath: 'path/to/campus_spots.xlsx',
   ),
-  DocumentModel(
-    id: 'document-56',
-    title: 'Attendance & RSVP Tracker',
-    parentId: 'list-document-10',
-    sheetId: 'sheet-10',
-    filePath: 'path/to/attendance_tracker.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-57',
-    title: 'University Hangout Budget & Expenses',
-    parentId: 'list-document-10',
-    sheetId: 'sheet-10',
-    filePath: 'path/to/hangout_budget.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-58',
-    title: 'Student Group Communication Guide',
-    parentId: 'list-document-10',
-    sheetId: 'sheet-10',
-    filePath: 'path/to/student_communication.pdf',
-  ),
   // Book Club Documents
   DocumentModel(
     id: 'document-59',
@@ -437,27 +248,6 @@ final documentList = [
     parentId: 'list-document-11',
     sheetId: 'sheet-11',
     filePath: 'path/to/reading_list.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-62',
-    title: 'Discussion Questions & Meeting Notes',
-    parentId: 'list-document-11',
-    sheetId: 'sheet-11',
-    filePath: 'path/to/discussion_notes.docx',
-  ),
-  DocumentModel(
-    id: 'document-63',
-    title: 'Book Club Budget & Expenses',
-    parentId: 'list-document-11',
-    sheetId: 'sheet-11',
-    filePath: 'path/to/bookclub_budget.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-64',
-    title: 'Member Communication & RSVP Tracker',
-    parentId: 'list-document-11',
-    sheetId: 'sheet-11',
-    filePath: 'path/to/member_tracker.xlsx',
   ),
   // Softball Club BBQ Party Documents
   DocumentModel(
@@ -481,27 +271,6 @@ final documentList = [
     sheetId: 'sheet-12',
     filePath: 'path/to/bbq_menu.xlsx',
   ),
-  DocumentModel(
-    id: 'document-68',
-    title: 'Decision Making & Voting Records',
-    parentId: 'list-document-12',
-    sheetId: 'sheet-12',
-    filePath: 'path/to/decision_records.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-69',
-    title: 'Softball Club BBQ Party Budget',
-    parentId: 'list-document-12',
-    sheetId: 'sheet-12',
-    filePath: 'path/to/bbq_budget.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-70',
-    title: 'Attendance & RSVP Management',
-    parentId: 'list-document-12',
-    sheetId: 'sheet-12',
-    filePath: 'path/to/attendance_management.xlsx',
-  ),
   // Bachelorette Party Documents
   DocumentModel(
     id: 'document-71',
@@ -523,26 +292,5 @@ final documentList = [
     parentId: 'list-document-13',
     sheetId: 'sheet-13',
     filePath: 'path/to/theme_planning.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-74',
-    title: 'Accommodation & Transportation Booking',
-    parentId: 'list-document-13',
-    sheetId: 'sheet-13',
-    filePath: 'path/to/booking_guide.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-75',
-    title: 'Guest List & RSVP Tracker',
-    parentId: 'list-document-13',
-    sheetId: 'sheet-13',
-    filePath: 'path/to/guest_tracker.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-76',
-    title: 'Bachelorette Party Timeline & Schedule',
-    parentId: 'list-document-13',
-    sheetId: 'sheet-13',
-    filePath: 'path/to/party_timeline.xlsx',
   ),
 ];

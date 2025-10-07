@@ -661,10 +661,6 @@ final polls = [
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_3'),
-          Vote(userId: 'user_5'),
-          Vote(userId: 'user_7'),
-          Vote(userId: 'user_9'),
-          Vote(userId: 'user_11'),
         ],
       ),
       PollOption(
@@ -673,9 +669,6 @@ final polls = [
         votes: [
           Vote(userId: 'user_2'),
           Vote(userId: 'user_4'),
-          Vote(userId: 'user_6'),
-          Vote(userId: 'user_8'),
-          Vote(userId: 'user_10'),
         ],
       ),
       PollOption(
@@ -684,10 +677,6 @@ final polls = [
         votes: [
           Vote(userId: 'user_1'),
           Vote(userId: 'user_2'),
-          Vote(userId: 'user_5'),
-          Vote(userId: 'user_6'),
-          Vote(userId: 'user_9'),
-          Vote(userId: 'user_12'),
         ],
       ),
       PollOption(
@@ -696,11 +685,6 @@ final polls = [
         votes: [
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
-          Vote(userId: 'user_7'),
-          Vote(userId: 'user_8'),
-          Vote(userId: 'user_10'),
-          Vote(userId: 'user_11'),
-          Vote(userId: 'user_12'),
         ],
       ),
     ],
