@@ -883,4 +883,60 @@ final polls = [
     isMultipleChoice: true,
     createdBy: 'user_1',
   ),
+  PollModel(
+    id: 'poll-18',
+    sheetId: 'sheet-17',
+    parentId: 'sheet-17',
+    orderIndex: 1,
+    question: 'What\'s your biggest summer camp sign-up challenge?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 1)),
+    options: [
+      PollOption(
+        id: 'option-18-1',
+        title: 'Form confusion and sign-up process chaos',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+      PollOption(
+        id: 'option-18-2',
+        title: 'Date conflicts and scheduling confusion',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_8'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+      PollOption(
+        id: 'option-18-3',
+        title: 'Payment handling and financial coordination',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+      PollOption(
+        id: 'option-18-4',
+        title: 'Equipment and supplies organization',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_2',
+  ),
 ];

@@ -226,4 +226,18 @@ final sheetList = [
     createdBy: 'user_5',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
   ),
+  SheetModel(
+    id: 'sheet-17',
+    title: 'Summer Camp Sign-ups Success Hub',
+    emoji: '🏕️',
+    color: const Color(0xFF059669), // Green
+    description: (
+      plainText:
+          'Organizing summer camp sign-ups: Parents are excited, kids wait for camp to start, and who bringing snacks? Did you fill the form? What\'s do when? Chats are full of questions: can we change the date? I thought it\'s July 15? I already booked tickets for Aug, who\'s handling payments? Snacks list? I can\'t find it, tents or not? Stress overload!',
+      htmlText:
+          '<p>Organizing summer camp sign-ups: <strong>Parents are excited</strong>, kids wait for camp to start, and who bringing snacks? Did you fill the form? What\'s do when? Chats are full of questions: can we change the date? I thought it\'s July 15? I already booked tickets for Aug, who\'s handling payments? Snacks list? I can\'t find it, tents or not? Stress overload!</p>',
+    ),
+    createdBy: 'user_6',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+  ),
 ];

@@ -1189,4 +1189,73 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8', 'user_10'],
   ),
+  // Summer Camp Sign-ups Management Tasks
+  TaskModel(
+    id: 'camp-task-1',
+    sheetId: 'sheet-17',
+    parentId: 'list-tasks-17',
+    title: 'Organize form submissions and sign-up process',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create clear form submission process and sign-up coordination. No more "did you fill the form? what\'s do when?" confusion - organize sign-ups clearly!',
+      htmlText:
+          '<p>Create clear <strong>form submission process and sign-up coordination</strong>. No more "did you fill the form? what\'s do when?" confusion - organize sign-ups clearly!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3', 'user_5', 'user_7', 'user_9'],
+  ),
+  TaskModel(
+    id: 'camp-task-2',
+    sheetId: 'sheet-17',
+    parentId: 'list-tasks-17',
+    title: 'Handle date conflicts and scheduling confusion',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Resolve date conflicts and create clear scheduling. No more "can we change the date? I thought it\'s July 15? I already booked tickets for Aug" chaos!',
+      htmlText:
+          '<p>Resolve <strong>date conflicts and create clear scheduling</strong>. No more "can we change the date? I thought it\'s July 15? I already booked tickets for Aug" chaos!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_6', 'user_8', 'user_10'],
+  ),
+  TaskModel(
+    id: 'camp-task-3',
+    sheetId: 'sheet-17',
+    parentId: 'list-tasks-17',
+    title: 'Manage payment handling and financial coordination',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Create organized payment system and financial coordination. No more "who\'s handling payments?" confusion - organize finances clearly!',
+      htmlText:
+          '<p>Create <strong>organized payment system and financial coordination</strong>. No more "who\'s handling payments?" confusion - organize finances clearly!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_1', 'user_2', 'user_5', 'user_6', 'user_9'],
+  ),
+  TaskModel(
+    id: 'camp-task-4',
+    sheetId: 'sheet-17',
+    parentId: 'list-tasks-17',
+    title: 'Organize equipment and supplies coordination',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Create clear equipment and supplies organization. No more "snacks list? I can\'t find it, tents or not?" confusion - organize supplies clearly!',
+      htmlText:
+          '<p>Create <strong>clear equipment and supplies organization</strong>. No more "snacks list? I can\'t find it, tents or not?" confusion - organize supplies clearly!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8', 'user_10'],
+  ),
 ];

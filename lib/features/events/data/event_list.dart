@@ -428,4 +428,32 @@ final eventList = [
       'user_10': RsvpStatus.yes,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-17',
+    parentId: 'sheet-17',
+    id: 'event-18',
+    title: 'Summer Camp Sign-ups Coordination Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s organize our summer camp sign-ups properly! We\'ll coordinate form submissions, handle date conflicts, manage payment processing, and organize equipment and supplies. No more "stress overload" chaos!',
+      htmlText:
+          '<p>Let\'s organize our <strong>summer camp sign-ups properly</strong>! We\'ll coordinate form submissions, handle date conflicts, manage payment processing, and organize equipment and supplies. No more "stress overload" chaos!</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(hours: 22)),
+    endDate: DateTime.now().add(const Duration(hours: 24)),
+    createdBy: 'user_3',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.maybe,
+      'user_5': RsvpStatus.yes,
+      'user_6': RsvpStatus.yes,
+      'user_7': RsvpStatus.maybe,
+      'user_8': RsvpStatus.yes,
+      'user_9': RsvpStatus.yes,
+      'user_10': RsvpStatus.yes,
+    },
+  ),
 ];

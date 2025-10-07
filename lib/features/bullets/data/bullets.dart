@@ -1253,4 +1253,75 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // Summer Camp Sign-ups Chaos & Success Stories
+  BulletModel(
+    id: 'bullet-item-89',
+    sheetId: 'sheet-17',
+    parentId: 'list-bulleted-19',
+    title: 'Organizing summer camp sign-ups: Parents are excited! 🏕️',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'The excitement begins! Parents are excited, kids wait for camp to start, full of energy and ready to make this summer camp amazing!',
+      htmlText:
+          '<p>The <strong>excitement begins</strong>! Parents are excited, kids wait for camp to start, full of energy and ready to make this summer camp amazing!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-90',
+    sheetId: 'sheet-17',
+    parentId: 'list-bulleted-19',
+    title: 'But who bringing snacks? Did you fill the form? 😱',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'The chaos begins! "Who bringing snacks? Did you fill the form? What\'s do when? Chats are full of questions: can we change the date? I thought it\'s July 15? I already booked tickets for Aug, who\'s handling payments? Snacks list? I can\'t find it, tents or not?"',
+      htmlText:
+          '<p>The <strong>chaos begins</strong>! "Who bringing snacks? Did you fill the form? What\'s do when? Chats are full of questions: can we change the date? I thought it\'s July 15? I already booked tickets for Aug, who\'s handling payments? Snacks list? I can\'t find it, tents or not?"</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-91',
+    sheetId: 'sheet-17',
+    parentId: 'list-bulleted-19',
+    title: 'Stress overload! 😤',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Total confusion! Form confusion, date conflicts, payment chaos, equipment confusion, and what should be fun becomes overwhelming stress overload!',
+      htmlText:
+          '<p><strong>Total confusion</strong>! Form confusion, date conflicts, payment chaos, equipment confusion, and what should be fun becomes overwhelming stress overload!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-92',
+    sheetId: 'sheet-17',
+    parentId: 'list-bulleted-19',
+    title: 'There\'s a better way - Zoe! 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Finally! One platform to organize summer camp sign-ups, coordinate form submissions, handle date conflicts, manage payments, and organize equipment!',
+      htmlText:
+          '<p>Finally! <strong>One platform to organize summer camp sign-ups</strong>, coordinate form submissions, handle date conflicts, manage payments, and organize equipment!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-93',
+    sheetId: 'sheet-17',
+    parentId: 'list-bulleted-19',
+    title: 'From chaos to success - Summer camp paradise! 🏕️✨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Transform summer camp sign-ups from chaos to success! Zoe makes organizing forms, dates, payments, and equipment fun and stress-free!',
+      htmlText:
+          '<p>Transform summer camp sign-ups from <strong>chaos to success</strong>! Zoe makes organizing forms, dates, payments, and equipment fun and stress-free!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

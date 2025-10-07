@@ -407,4 +407,50 @@ final documentList = [
     filePath: '/documents/halloween-event-coordination-worksheet.xlsx',
     createdBy: 'user_3',
   ),
+  // Summer Camp Sign-ups Documents
+  DocumentModel(
+    id: 'document-83',
+    sheetId: 'sheet-17',
+    parentId: 'list-document-17',
+    title: 'Summer Camp Sign-ups Planning Guide',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Complete guide for organizing summer camp sign-ups, coordinating form submissions, and managing registration process.',
+      htmlText:
+          '<p>Complete guide for <strong>organizing summer camp sign-ups</strong>, coordinating form submissions, and managing registration process.</p>',
+    ),
+    filePath: '/documents/summer-camp-signups-planning-guide.pdf',
+    createdBy: 'user_1',
+  ),
+  DocumentModel(
+    id: 'document-84',
+    sheetId: 'sheet-17',
+    parentId: 'list-document-17',
+    title: 'Form Submission & Registration Template',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Template for organizing form submissions and registration process. No more "did you fill the form? what\'s do when?" confusion!',
+      htmlText:
+          '<p>Template for <strong>organizing form submissions and registration process</strong>. No more "did you fill the form? what\'s do when?" confusion!</p>',
+    ),
+    filePath: '/documents/form-submission-registration-template.xlsx',
+    createdBy: 'user_2',
+  ),
+  DocumentModel(
+    id: 'document-85',
+    sheetId: 'sheet-17',
+    parentId: 'list-document-17',
+    title: 'Summer Camp Equipment & Supplies Worksheet',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Worksheet for organizing equipment and supplies coordination. No more "snacks list? I can\'t find it, tents or not?" confusion!',
+      htmlText:
+          '<p>Worksheet for <strong>organizing equipment and supplies coordination</strong>. No more "snacks list? I can\'t find it, tents or not?" confusion!</p>',
+    ),
+    filePath: '/documents/summer-camp-equipment-supplies-worksheet.xlsx',
+    createdBy: 'user_3',
+  ),
 ];

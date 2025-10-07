@@ -676,4 +676,65 @@ final linkList = [
     url: 'https://www.eventbrite.com/halloween',
     createdBy: 'user_4',
   ),
+  // Summer Camp Sign-ups Links
+  LinkModel(
+    id: 'link-63',
+    sheetId: 'sheet-17',
+    parentId: 'sheet-17',
+    title: 'Summer Camp Sign-ups Platform',
+    orderIndex: 7,
+    description: (
+      plainText:
+          'Essential tools for organizing summer camp sign-ups, coordinating form submissions, and managing registration process.',
+      htmlText:
+          '<p>Essential tools for <strong>organizing summer camp sign-ups</strong>, coordinating form submissions, and managing registration process.</p>',
+    ),
+    url: 'https://www.campsignup.com',
+    createdBy: 'user_1',
+  ),
+  LinkModel(
+    id: 'link-64',
+    sheetId: 'sheet-17',
+    parentId: 'sheet-17',
+    title: 'Form Submission & Registration Tools',
+    orderIndex: 8,
+    description: (
+      plainText:
+          'Organize form submissions and registration process. No more "did you fill the form? what\'s do when?" confusion!',
+      htmlText:
+          '<p>Organize <strong>form submissions and registration process</strong>. No more "did you fill the form? what\'s do when?" confusion!</p>',
+    ),
+    url: 'https://www.google.com/forms',
+    createdBy: 'user_2',
+  ),
+  LinkModel(
+    id: 'link-65',
+    sheetId: 'sheet-17',
+    parentId: 'sheet-17',
+    title: 'Payment Processing & Financial Tools',
+    orderIndex: 9,
+    description: (
+      plainText:
+          'Handle payment processing and financial coordination. No more "who\'s handling payments?" confusion!',
+      htmlText:
+          '<p>Handle <strong>payment processing and financial coordination</strong>. No more "who\'s handling payments?" confusion!</p>',
+    ),
+    url: 'https://www.paypal.com',
+    createdBy: 'user_3',
+  ),
+  LinkModel(
+    id: 'link-66',
+    sheetId: 'sheet-17',
+    parentId: 'sheet-17',
+    title: 'Equipment & Supplies Coordination',
+    orderIndex: 10,
+    description: (
+      plainText:
+          'Organize equipment and supplies coordination. No more "snacks list? I can\'t find it, tents or not?" confusion!',
+      htmlText:
+          '<p>Organize <strong>equipment and supplies coordination</strong>. No more "snacks list? I can\'t find it, tents or not?" confusion!</p>',
+    ),
+    url: 'https://www.signupgenius.com',
+    createdBy: 'user_4',
+  ),
 ];

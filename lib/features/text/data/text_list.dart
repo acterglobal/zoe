@@ -328,4 +328,35 @@ final textList = [
     ),
     createdBy: 'user_5',
   ),
+  TextModel(
+    id: 'text-content-20',
+    sheetId: 'sheet-17',
+    parentId: 'sheet-17',
+    title: 'From Summer Camp Sign-ups Chaos to Spectacular Success',
+    orderIndex: 6,
+    description: (
+      plainText:
+          '🏕️\n\nSummer Camp Sign-ups Success Hub - Your organized command center for summer camp fun!\n\n'
+          'Parents are excited, kids wait for camp to start, and who bringing snacks? Did you fill the form? What\'s do when? Chats are full of questions: can we change the date? I thought it\'s July 15? I already booked tickets for Aug, who\'s handling payments? Snacks list? I can\'t find it, tents or not? Stress overload!\n\n'
+          '🎯\n\nZoe transforms summer camp sign-ups from chaos to success:\n\n'
+          '• Form submissions and sign-up process (no more "did you fill the form?" confusion)\n'
+          '• Date conflicts and scheduling coordination (handle "I thought it\'s July 15?" chaos)\n'
+          '• Payment handling and financial coordination (clear "who\'s handling payments?" organization)\n'
+          '• Equipment and supplies organization (no more "snacks list? I can\'t find it" confusion)\n\n'
+          '✨\n\nCreate reliable planning tools, systematically organize sign-ups, handle date conflicts, manage payments, and coordinate equipment with Zoe!',
+      htmlText:
+          '<p><strong>🏕️</strong></p>\n'
+          '<p>Summer Camp Sign-ups Success Hub - Your organized command center for summer camp fun!</p>\n'
+          '<p>Parents are excited, kids wait for camp to start, and who bringing snacks? Did you fill the form? What\'s do when? Chats are full of questions: can we change the date? I thought it\'s July 15? I already booked tickets for Aug, who\'s handling payments? Snacks list? I can\'t find it, tents or not? Stress overload!</p><br>\n'
+          '<p><strong>🎯</strong></p>\n'
+          '<p>Zoe transforms summer camp sign-ups from chaos to success:</p><br>\n'
+          '<p>• Form submissions and sign-up process (no more "did you fill the form?" confusion)<br>\n'
+          '• Date conflicts and scheduling coordination (handle "I thought it\'s July 15?" chaos)<br>\n'
+          '• Payment handling and financial coordination (clear "who\'s handling payments?" organization)<br>\n'
+          '• Equipment and supplies organization (no more "snacks list? I can\'t find it" confusion)</p><br>\n'
+          '<p><strong>✨</strong></p>\n'
+          '<p>Create reliable planning tools, systematically organize sign-ups, handle date conflicts, manage payments, and coordinate equipment with Zoe!</p>',
+    ),
+    createdBy: 'user_6',
+  ),
 ];
