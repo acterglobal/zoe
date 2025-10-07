@@ -237,4 +237,20 @@ final textList = [
     ),
     createdBy: 'user_1',
   ),
+  // Bachelorette Party Text Content
+  TextModel(
+    sheetId: 'sheet-13',
+    parentId: 'sheet-13',
+    id: 'text-content-16',
+    title: 'From Bachelorette Party Stress to Celebration Paradise',
+    emoji: '💃',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Organizing a bachelorette party: Let\'s plan her bachelorette! 💃\n\nThe group chat is non-stop buzzing like "When we are doing it? Vegas or local? Too expensive, who\'s booking the Airbnb? I can\'t that weekend, what\'s the theme? Should we rent a limo? I vote for wine tasting." Juggling dates, no fix budget, no fix date, empty checklist - stress steals the fun!\n\n🗳️ Vote on bachelorette party planning challenges\n💃 Track theme selection and activity coordination\n📅 Schedule party dates and coordinate availability\n😅 Share stress stories and celebrate organized solutions\n🔗 Store bachelorette party tools and celebration resources\n📄 Keep all party planning documents organized\n\nTransform bachelorette party stress into celebration paradise! 🎯✨',
+      htmlText:
+          '<p>Organizing a bachelorette party: <strong>Let\'s plan her bachelorette</strong>! 💃</p><br><p>The group chat is non-stop buzzing like "When we are doing it? Vegas or local? Too expensive, who\'s booking the Airbnb? I can\'t that weekend, what\'s the theme? Should we rent a limo? I vote for wine tasting." Juggling dates, no fix budget, no fix date, empty checklist - stress steals the fun!</p><br><br><p><strong>🗳️ Vote</strong> on bachelorette party planning challenges</p><br><p><strong>💃 Track</strong> theme selection and activity coordination</p><br><p><strong>📅 Schedule</strong> party dates and coordinate availability</p><br><p><strong>😅 Share</strong> stress stories and celebrate organized solutions</p><br><p><strong>🔗 Store</strong> bachelorette party tools and celebration resources</p><br><p><strong>📄 Keep</strong> all party planning documents organized</p><br><br><p>Transform bachelorette party stress into celebration paradise! 🎯✨</p>',
+    ),
+    createdBy: 'user_2',
+  ),
 ];

@@ -170,4 +170,18 @@ final sheetList = [
     createdBy: 'user_1',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
   ),
+  SheetModel(
+    id: 'sheet-13',
+    title: 'Bachelorette Party Paradise',
+    emoji: '💃',
+    color: const Color(0xFFEC4899), // Pink
+    description: (
+      plainText:
+          'Organizing a bachelorette party: Let\'s plan her bachelorette! The group chat is non-stop buzzing like "When we are doing it? Vegas or local? Too expensive, who\'s booking the Airbnb? I can\'t that weekend, what\'s the theme? Should we rent a limo? I vote for wine tasting." Juggling dates, no fix budget, no fix date, empty checklist - stress steals the fun!',
+      htmlText:
+          '<p>Organizing a bachelorette party: <strong>Let\'s plan her bachelorette</strong>! The group chat is non-stop buzzing like "When we are doing it? Vegas or local? Too expensive, who\'s booking the Airbnb? I can\'t that weekend, what\'s the theme? Should we rent a limo? I vote for wine tasting." Juggling dates, no fix budget, no fix date, empty checklist - stress steals the fun!</p>',
+    ),
+    createdBy: 'user_2',
+    users: ['user_1', 'user_2', 'user_3', 'user_4'],
+  ),
 ];

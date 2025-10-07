@@ -324,4 +324,34 @@ final eventList = [
       'user_10': RsvpStatus.yes,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-13',
+    parentId: 'sheet-13',
+    id: 'event-14',
+    title: 'Bachelorette Party Planning Coordination Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s organize her bachelorette party properly! We\'ll stop the non-stop group chat buzzing, set a fixed budget and date, create a proper checklist, and make planning fun instead of stressful!',
+      htmlText:
+          '<p>Let\'s organize her <strong>bachelorette party properly</strong>! We\'ll stop the non-stop group chat buzzing, set a fixed budget and date, create a proper checklist, and make planning fun instead of stressful!</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(hours: 24)),
+    endDate: DateTime.now().add(const Duration(hours: 26)),
+    createdBy: 'user_9',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.yes,
+      'user_5': RsvpStatus.yes,
+      'user_6': RsvpStatus.maybe,
+      'user_7': RsvpStatus.yes,
+      'user_8': RsvpStatus.yes,
+      'user_9': RsvpStatus.yes,
+      'user_10': RsvpStatus.maybe,
+      'user_11': RsvpStatus.yes,
+      'user_12': RsvpStatus.yes,
+    },
+  ),
 ];

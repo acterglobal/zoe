@@ -913,4 +913,73 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8', 'user_10'],
   ),
+  // Bachelorette Party Management Tasks
+  TaskModel(
+    id: 'bachelorette-task-1',
+    sheetId: 'sheet-13',
+    parentId: 'list-tasks-13',
+    title: 'Stop non-stop group chat buzzing and organize decisions',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create a system to organize all the buzzing questions. No more endless "When we are doing it? Vegas or local? Too expensive, who\'s booking the Airbnb?" chaos!',
+      htmlText:
+          '<p>Create a system to <strong>organize all the buzzing questions</strong>. No more endless "When we are doing it? Vegas or local? Too expensive, who\'s booking the Airbnb?" chaos!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3', 'user_5', 'user_7', 'user_9', 'user_11'],
+  ),
+  TaskModel(
+    id: 'bachelorette-task-2',
+    sheetId: 'sheet-13',
+    parentId: 'list-tasks-13',
+    title: 'Set fixed budget and date decisions',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Establish clear budget limits and finalize the date. No more "no fix budget, no fix date" confusion - make concrete decisions!',
+      htmlText:
+          '<p>Establish <strong>clear budget limits and finalize the date</strong>. No more "no fix budget, no fix date" confusion - make concrete decisions!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_6', 'user_8', 'user_10', 'user_12'],
+  ),
+  TaskModel(
+    id: 'bachelorette-task-3',
+    sheetId: 'sheet-13',
+    parentId: 'list-tasks-13',
+    title: 'Create comprehensive bachelorette party checklist',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Build a complete checklist for theme, activities, transportation, and coordination. No more "empty checklist" - make it organized and fun!',
+      htmlText:
+          '<p>Build a <strong>complete checklist for theme, activities, transportation, and coordination</strong>. No more "empty checklist" - make it organized and fun!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_1', 'user_2', 'user_5', 'user_6', 'user_9', 'user_12'],
+  ),
+  TaskModel(
+    id: 'bachelorette-task-4',
+    sheetId: 'sheet-13',
+    parentId: 'list-tasks-13',
+    title: 'Transform stress into fun celebration planning',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Create a system that makes bachelorette party planning enjoyable. No more "stress steals the fun" - make it a celebration from start to finish!',
+      htmlText:
+          '<p>Create a system that <strong>makes bachelorette party planning enjoyable</strong>. No more "stress steals the fun" - make it a celebration from start to finish!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8', 'user_10', 'user_11'],
+  ),
 ];

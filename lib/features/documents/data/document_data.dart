@@ -502,4 +502,47 @@ final documentList = [
     sheetId: 'sheet-12',
     filePath: 'path/to/attendance_management.xlsx',
   ),
+  // Bachelorette Party Documents
+  DocumentModel(
+    id: 'document-71',
+    title: 'Bachelorette Party Master Checklist',
+    parentId: 'list-document-13',
+    sheetId: 'sheet-13',
+    filePath: 'path/to/bachelorette_checklist.pdf',
+  ),
+  DocumentModel(
+    id: 'document-72',
+    title: 'Budget Planning & Cost Breakdown',
+    parentId: 'list-document-13',
+    sheetId: 'sheet-13',
+    filePath: 'path/to/budget_planning.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-73',
+    title: 'Theme & Activity Planning Guide',
+    parentId: 'list-document-13',
+    sheetId: 'sheet-13',
+    filePath: 'path/to/theme_planning.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-74',
+    title: 'Accommodation & Transportation Booking',
+    parentId: 'list-document-13',
+    sheetId: 'sheet-13',
+    filePath: 'path/to/booking_guide.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-75',
+    title: 'Guest List & RSVP Tracker',
+    parentId: 'list-document-13',
+    sheetId: 'sheet-13',
+    filePath: 'path/to/guest_tracker.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-76',
+    title: 'Bachelorette Party Timeline & Schedule',
+    parentId: 'list-document-13',
+    sheetId: 'sheet-13',
+    filePath: 'path/to/party_timeline.xlsx',
+  ),
 ];

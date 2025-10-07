@@ -983,4 +983,75 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // Bachelorette Party Chaos & Success Stories
+  BulletModel(
+    id: 'bullet-item-70',
+    sheetId: 'sheet-13',
+    parentId: 'list-bulleted-15',
+    title: 'Organizing a bachelorette party: Let\'s plan her bachelorette! 💃',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'The excitement begins! Let\'s plan her bachelorette! Everyone\'s excited to celebrate and make it special for the bride-to-be!',
+      htmlText:
+          '<p>The <strong>excitement begins</strong>! Let\'s plan her bachelorette! Everyone\'s excited to celebrate and make it special for the bride-to-be!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-71',
+    sheetId: 'sheet-13',
+    parentId: 'list-bulleted-15',
+    title: 'But the group chat is non-stop buzzing! 😱',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'The chaos begins! "When we are doing it? Vegas or local? Too expensive, who\'s booking the Airbnb? I can\'t that weekend, what\'s the theme? Should we rent a limo? I vote for wine tasting."',
+      htmlText:
+          '<p>The <strong>chaos begins</strong>! "When we are doing it? Vegas or local? Too expensive, who\'s booking the Airbnb? I can\'t that weekend, what\'s the theme? Should we rent a limo? I vote for wine tasting."</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-72',
+    sheetId: 'sheet-13',
+    parentId: 'list-bulleted-15',
+    title: 'Juggling dates, no fix budget, no fix date, empty checklist! 😤',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Total confusion! Juggling dates, no fix budget, no fix date, empty checklist - stress steals the fun! What should be exciting becomes overwhelming!',
+      htmlText:
+          '<p><strong>Total confusion</strong>! Juggling dates, no fix budget, no fix date, empty checklist - stress steals the fun! What should be exciting becomes overwhelming!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-73',
+    sheetId: 'sheet-13',
+    parentId: 'list-bulleted-15',
+    title: 'There\'s a better way - Zoe! 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Finally! One platform to organize bachelorette party planning, coordinate decisions, set budgets, and create comprehensive checklists!',
+      htmlText:
+          '<p>Finally! <strong>One platform to organize bachelorette party planning</strong>, coordinate decisions, set budgets, and create comprehensive checklists!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-74',
+    sheetId: 'sheet-13',
+    parentId: 'list-bulleted-15',
+    title: 'From stress to celebration - bachelorette party paradise! 💃✨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Transform bachelorette party planning from stress to celebration! Zoe makes organizing themes, activities, and coordination fun and stress-free!',
+      htmlText:
+          '<p>Transform bachelorette party planning from <strong>stress to celebration</strong>! Zoe makes organizing themes, activities, and coordination fun and stress-free!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];
