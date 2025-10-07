@@ -150,6 +150,34 @@ final polls = [
     createdBy: 'user_1',
   ),
   PollModel(
+    id: 'poll-3b',
+    sheetId: 'sheet-2',
+    parentId: 'sheet-2',
+    orderIndex: 2,
+    question: 'Morning or evening flights?',
+    startDate: DateTime.now().subtract(const Duration(hours: 1)),
+    options: [
+      PollOption(
+        id: 'option-3b-1',
+        title: 'Morning flights - early start, more day time',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+        ],
+      ),
+      PollOption(
+        id: 'option-3b-2',
+        title: 'Evening flights - relaxed morning, arrive at night',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+        ],
+      ),
+    ],
+    isMultipleChoice: false,
+    createdBy: 'user_2',
+  ),
+  PollModel(
     id: 'poll-4',
     sheetId: 'sheet-3',
     parentId: 'sheet-3',
@@ -690,5 +718,57 @@ final polls = [
     ],
     isMultipleChoice: true,
     createdBy: 'user_8',
+  ),
+  PollModel(
+    id: 'poll-15',
+    sheetId: 'sheet-14',
+    parentId: 'sheet-14',
+    orderIndex: 1,
+    question: 'What\'s your biggest church summer fest planning challenge?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 5)),
+    options: [
+      PollOption(
+        id: 'option-15-1',
+        title: 'Food coordination chaos',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+        ],
+      ),
+      PollOption(
+        id: 'option-15-2',
+        title: 'Budget planning confusion',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+      PollOption(
+        id: 'option-15-3',
+        title: 'Date scheduling conflicts',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_6'),
+        ],
+      ),
+      PollOption(
+        id: 'option-15-4',
+        title: 'Equipment and setup coordination',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+        ],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_9',
   ),
 ];

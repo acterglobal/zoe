@@ -1054,4 +1054,61 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // Church Summer Fest 2026 Chaos & Success Stories
+  BulletModel(
+    id: 'bullet-item-75',
+    sheetId: 'sheet-14',
+    parentId: 'list-bulleted-16',
+    title: 'Church Summer Fest 2026: Coming together this summer! ⛪',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'The excitement begins! Food, music, games, charity raffle - everyone\'s excited to come together this summer for our church community!',
+      htmlText:
+          '<p>The <strong>excitement begins</strong>! Food, music, games, charity raffle - everyone\'s excited to come together this summer for our church community!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-76',
+    sheetId: 'sheet-14',
+    parentId: 'list-bulleted-16',
+    title: 'But planning total chaos! 😱',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'The chaos begins! "Who\'s cooking? What\'s the budget? Which date works? Who brings chair?" Busy lives, clashing schedules, no clarity!',
+      htmlText:
+          '<p>The <strong>chaos begins</strong>! "Who\'s cooking? What\'s the budget? Which date works? Who brings chair?" Busy lives, clashing schedules, no clarity!</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-77',
+    sheetId: 'sheet-14',
+    parentId: 'list-bulleted-16',
+    title: 'There\'s a better way - Zoe! 🎯',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Finally! One platform to organize church summer fest planning, coordinate food, set budgets, resolve scheduling conflicts, and organize equipment!',
+      htmlText:
+          '<p>Finally! <strong>One platform to organize church summer fest planning</strong>, coordinate food, set budgets, resolve scheduling conflicts, and organize equipment!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-78',
+    sheetId: 'sheet-14',
+    parentId: 'list-bulleted-16',
+    title: 'From chaos to community - church summer fest success! ⛪✨',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Transform church summer fest planning from chaos to community success! Zoe makes organizing food, music, games, and charity raffle fun and stress-free!',
+      htmlText:
+          '<p>Transform church summer fest planning from <strong>chaos to community success</strong>! Zoe makes organizing food, music, games, and charity raffle fun and stress-free!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
 ];

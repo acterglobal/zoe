@@ -184,4 +184,18 @@ final sheetList = [
     createdBy: 'user_2',
     users: ['user_1', 'user_2', 'user_3', 'user_4'],
   ),
+  SheetModel(
+    id: 'sheet-14',
+    title: 'Church Summer Fest 2026 Hub',
+    emoji: '⛪',
+    color: const Color(0xFF059669), // Green
+    description: (
+      plainText:
+          'Church Summer Fest 2026: Coming together this summer! Food, music, games, charity raffle, but planning total chaos! Who\'s cooking? What\'s the budget? Which date works? Who brings chair? Busy lives, clashing schedules, no clarity! There\'s a better way - Zoe!',
+      htmlText:
+          '<p>Church Summer Fest 2026: <strong>Coming together this summer</strong>! Food, music, games, charity raffle, but planning total chaos! Who\'s cooking? What\'s the budget? Which date works? Who brings chair? Busy lives, clashing schedules, no clarity! There\'s a better way - Zoe!</p>',
+    ),
+    createdBy: 'user_3',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8'],
+  ),
 ];

@@ -293,4 +293,26 @@ final documentList = [
     sheetId: 'sheet-13',
     filePath: 'path/to/theme_planning.xlsx',
   ),
+  // Church Summer Fest 2026 Documents
+  DocumentModel(
+    id: 'document-74',
+    title: 'Church Summer Fest 2026 Master Checklist',
+    parentId: 'list-document-14',
+    sheetId: 'sheet-14',
+    filePath: 'path/to/church_fest_checklist.pdf',
+  ),
+  DocumentModel(
+    id: 'document-75',
+    title: 'Food Coordination & Budget Planning',
+    parentId: 'list-document-14',
+    sheetId: 'sheet-14',
+    filePath: 'path/to/food_budget_planning.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-76',
+    title: 'Equipment & Setup Coordination Guide',
+    parentId: 'list-document-14',
+    sheetId: 'sheet-14',
+    filePath: 'path/to/equipment_setup_guide.xlsx',
+  ),
 ];

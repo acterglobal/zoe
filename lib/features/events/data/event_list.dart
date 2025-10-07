@@ -346,4 +346,30 @@ final eventList = [
       'user_4': RsvpStatus.maybe,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-14',
+    parentId: 'sheet-14',
+    id: 'event-15',
+    title: 'Church Summer Fest 2026 Planning Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s organize our church summer fest properly! We\'ll coordinate food planning, set clear budgets, find dates that work for everyone, and organize equipment setup. No more planning chaos!',
+      htmlText:
+          '<p>Let\'s organize our <strong>church summer fest properly</strong>! We\'ll coordinate food planning, set clear budgets, find dates that work for everyone, and organize equipment setup. No more planning chaos!</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(hours: 12)),
+    endDate: DateTime.now().add(const Duration(hours: 14)),
+    createdBy: 'user_10',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.yes,
+      'user_5': RsvpStatus.maybe,
+      'user_6': RsvpStatus.yes,
+      'user_7': RsvpStatus.yes,
+      'user_8': RsvpStatus.maybe,
+    },
+  ),
 ];

@@ -71,9 +71,9 @@ final textList = [
     orderIndex: 5,
     description: (
       plainText:
-          'Pack your bags and get ready for an unforgettable journey! 🎒\n\nThis is our command center for planning the perfect getaway. From choosing dream destinations to coordinating every detail, we\'ve got everything covered.\n\n🗳️ Vote on destinations and travel preferences\n✅ Track preparation tasks and deadlines\n📅 Schedule planning meetings and important dates\n💭 Share travel ideas, memes, and excitement\n🔗 Store booking confirmations and travel resources\n📄 Keep all documents organized and accessible\n\nReady to create memories that will last a lifetime? Let\'s make this adventure epic! ✈️🌍',
+          'Pack your bags and get ready for an unforgettable journey! 🎒\n\nThis is our organized command center for planning the perfect getaway. From choosing dream destinations to coordinating every detail, we\'ve got everything covered with reliable planning tools.\n\n🗳️ Vote on destinations and flight preferences (morning vs evening)\n✅ Track preparation tasks and deadlines systematically\n📅 Schedule planning meetings and important dates\n💭 Share travel ideas, memes, and excitement\n🔗 Store booking confirmations and travel resources\n📄 Keep all documents organized and accessible\n\nReady to create memories that will last a lifetime? Let\'s make this adventure epic! ✈️🌍',
       htmlText:
-          '<p>Pack your bags and get ready for an <strong>unforgettable journey</strong>! 🎒</p><br><p>This is our command center for planning the perfect getaway. From choosing dream destinations to coordinating every detail, we\'ve got everything covered.</p><br><br><p><strong>🗳️ Vote</strong> on destinations and travel preferences</p><br><p><strong>✅ Track</strong> preparation tasks and deadlines</p><br><p><strong>📅 Schedule</strong> planning meetings and important dates</p><br><p><strong>💭 Share</strong> travel ideas, memes, and excitement</p><br><p><strong>🔗 Store</strong> booking confirmations and travel resources</p><br><p><strong>📄 Keep</strong> all documents organized and accessible</p><br><br><p>Ready to create memories that will last a lifetime? Let\'s make this adventure epic! ✈️🌍</p>',
+          '<p>Pack your bags and get ready for an <strong>unforgettable journey</strong>! 🎒</p><br><p>This is our <strong>organized command center</strong> for planning the perfect getaway. From choosing dream destinations to coordinating every detail, we\'ve got everything covered with reliable planning tools.</p><br><br><p><strong>🗳️ Vote</strong> on destinations and flight preferences (morning vs evening)</p><br><p><strong>✅ Track</strong> preparation tasks and deadlines systematically</p><br><p><strong>📅 Schedule</strong> planning meetings and important dates</p><br><p><strong>💭 Share</strong> travel ideas, memes, and excitement</p><br><p><strong>🔗 Store</strong> booking confirmations and travel resources</p><br><p><strong>📄 Keep</strong> all documents organized and accessible</p><br><br><p>Ready to create memories that will last a lifetime? Let\'s make this adventure epic! ✈️🌍</p>',
     ),
     createdBy: 'user_1',
   ),
@@ -252,5 +252,21 @@ final textList = [
           '<p>Organizing a bachelorette party: <strong>Let\'s plan her bachelorette</strong>! 💃</p><br><p>The group chat is non-stop buzzing like "When we are doing it? Vegas or local? Too expensive, who\'s booking the Airbnb? I can\'t that weekend, what\'s the theme? Should we rent a limo? I vote for wine tasting." Juggling dates, no fix budget, no fix date, empty checklist - stress steals the fun!</p><br><br><p><strong>🗳️ Vote</strong> on bachelorette party planning challenges</p><br><p><strong>💃 Track</strong> theme selection and activity coordination</p><br><p><strong>📅 Schedule</strong> party dates and coordinate availability</p><br><p><strong>😅 Share</strong> stress stories and celebrate organized solutions</p><br><p><strong>🔗 Store</strong> bachelorette party tools and celebration resources</p><br><p><strong>📄 Keep</strong> all party planning documents organized</p><br><br><p>Transform bachelorette party stress into celebration paradise! 🎯✨</p>',
     ),
     createdBy: 'user_2',
+  ),
+  // Church Summer Fest 2026 Text Content
+  TextModel(
+    sheetId: 'sheet-14',
+    parentId: 'sheet-14',
+    id: 'text-content-17',
+    title: 'From Church Summer Fest Chaos to Community Success',
+    emoji: '⛪',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Church Summer Fest 2026: Coming together this summer! ⛪\n\nFood, music, games, charity raffle, but planning total chaos! Who\'s cooking? What\'s the budget? Which date works? Who brings chair? Busy lives, clashing schedules, no clarity!\n\n🗳️ Vote on church summer fest planning challenges\n⛪ Track food coordination and budget planning\n📅 Schedule fest dates and resolve conflicts\n😅 Share chaos stories and celebrate organized solutions\n🔗 Store church fest tools and community resources\n📄 Keep all fest planning documents organized\n\nTransform church summer fest chaos into community success! 🎯✨',
+      htmlText:
+          '<p>Church Summer Fest 2026: <strong>Coming together this summer</strong>! ⛪</p><br><p>Food, music, games, charity raffle, but planning total chaos! Who\'s cooking? What\'s the budget? Which date works? Who brings chair? Busy lives, clashing schedules, no clarity!</p><br><br><p><strong>🗳️ Vote</strong> on church summer fest planning challenges</p><br><p><strong>⛪ Track</strong> food coordination and budget planning</p><br><p><strong>📅 Schedule</strong> fest dates and resolve conflicts</p><br><p><strong>😅 Share</strong> chaos stories and celebrate organized solutions</p><br><p><strong>🔗 Store</strong> church fest tools and community resources</p><br><p><strong>📄 Keep</strong> all fest planning documents organized</p><br><br><p>Transform church summer fest chaos into community success! 🎯✨</p>',
+    ),
+    createdBy: 'user_3',
   ),
 ];

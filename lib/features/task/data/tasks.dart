@@ -982,4 +982,73 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_3', 'user_4'],
   ),
+  // Church Summer Fest 2026 Management Tasks
+  TaskModel(
+    id: 'church-task-1',
+    sheetId: 'sheet-14',
+    parentId: 'list-tasks-14',
+    title: 'Organize food coordination and cooking assignments',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create a system to coordinate who\'s cooking what. No more "who\'s cooking?" chaos - organize food assignments clearly!',
+      htmlText:
+          '<p>Create a system to <strong>coordinate who\'s cooking what</strong>. No more "who\'s cooking?" chaos - organize food assignments clearly!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3', 'user_5', 'user_7'],
+  ),
+  TaskModel(
+    id: 'church-task-2',
+    sheetId: 'sheet-14',
+    parentId: 'list-tasks-14',
+    title: 'Set clear budget and cost planning',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Establish a clear budget for the summer fest. No more "what\'s the budget?" confusion - create organized cost planning!',
+      htmlText:
+          '<p>Establish a <strong>clear budget for the summer fest</strong>. No more "what\'s the budget?" confusion - create organized cost planning!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_6', 'user_8'],
+  ),
+  TaskModel(
+    id: 'church-task-3',
+    sheetId: 'sheet-14',
+    parentId: 'list-tasks-14',
+    title: 'Coordinate dates and resolve scheduling conflicts',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Find dates that work for everyone. No more "which date works?" and "busy lives, clashing schedules" - create clear coordination!',
+      htmlText:
+          '<p>Find <strong>dates that work for everyone</strong>. No more "which date works?" and "busy lives, clashing schedules" - create clear coordination!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_1', 'user_2', 'user_5', 'user_6'],
+  ),
+  TaskModel(
+    id: 'church-task-4',
+    sheetId: 'sheet-14',
+    parentId: 'list-tasks-14',
+    title: 'Organize equipment and setup coordination',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Create a system for equipment coordination. No more "who brings chair?" confusion - organize setup and equipment clearly!',
+      htmlText:
+          '<p>Create a system for <strong>equipment coordination</strong>. No more "who brings chair?" confusion - organize setup and equipment clearly!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8'],
+  ),
 ];
