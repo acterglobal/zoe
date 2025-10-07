@@ -14,6 +14,7 @@ extension WidgetTesterExtension on WidgetTester {
     await pumpWidget(
       MaterialApp(
         locale: const Locale('en'),
+        theme: theme ?? ThemeData.light(),
         localizationsDelegates: [
           L10n.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -21,7 +22,6 @@ extension WidgetTesterExtension on WidgetTester {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: L10n.supportedLocales,
-        theme: theme ?? ThemeData.light(),
         home: Scaffold(
           body: router != null
               ? InheritedGoRouter(
@@ -45,6 +45,7 @@ extension WidgetTesterExtension on WidgetTester {
         container: container,
         child: MaterialApp(
           locale: const Locale('en'),
+          theme: theme ?? ThemeData.light(),
           localizationsDelegates: [
             L10n.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -52,7 +53,6 @@ extension WidgetTesterExtension on WidgetTester {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: L10n.supportedLocales,
-          theme: theme ?? ThemeData.light(),
           home: Scaffold(
             body: router != null
                 ? InheritedGoRouter(
