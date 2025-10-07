@@ -297,4 +297,35 @@ final textList = [
     ),
     createdBy: 'user_4',
   ),
+  TextModel(
+    id: 'text-content-19',
+    sheetId: 'sheet-16',
+    parentId: 'sheet-16',
+    title: 'From Halloween Planning Chaos to Spectacular Success',
+    orderIndex: 6,
+    description: (
+      plainText:
+          '🎃\n\nHalloween Planning Spectacular Hub - Your organized command center for Halloween fun!\n\n'
+          'Everyone\'s excited! Where you? We missed you! Wrong street, nobody on the same place, messy group chat like: meet at Maple St? Wait, Elm St right? I can only join later, we\'ll just go without u, wait which house again? Nobody is here!\n\n'
+          '🎯\n\nZoe transforms Halloween planning from chaos to success:\n\n'
+          '• Location coordination and clear directions (no more "wrong street" confusion)\n'
+          '• Clear communication and organized group chat (no more "Maple St? Wait, Elm St?" chaos)\n'
+          '• Scheduling conflicts and late arrivals (handle "I can only join later" situations)\n'
+          '• House locations and meeting points (clear "which house again?" organization)\n\n'
+          '✨\n\nCreate reliable planning tools, systematically organize meeting locations, handle scheduling conflicts, and coordinate communication with Zoe!',
+      htmlText:
+          '<p><strong>🎃</strong></p>\n'
+          '<p>Your organized command center for Halloween fun!</p>\n'
+          '<p>Everyone\'s excited! Where you? We missed you! Wrong street, nobody on the same place, messy group chat like: meet at Maple St? Wait, Elm St right? I can only join later, we\'ll just go without u, wait which house again? Nobody is here!</p><br>\n'
+          '<p><strong>🎯</strong></p>\n'
+          '<p>Zoe transforms Halloween planning from chaos to success:</p><br>\n'
+          '<p>• Location coordination and clear directions (no more "wrong street" confusion)<br>\n'
+          '• Clear communication and organized group chat (no more "Maple St? Wait, Elm St?" chaos)<br>\n'
+          '• Scheduling conflicts and late arrivals (handle "I can only join later" situations)<br>\n'
+          '• House locations and meeting points (clear "which house again?" organization)</p><br>\n'
+          '<p><strong>✨</strong></p>\n'
+          '<p>Create reliable planning tools, systematically organize meeting locations, handle scheduling conflicts, and coordinate communication with Zoe!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

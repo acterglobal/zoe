@@ -1120,4 +1120,73 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8', 'user_10'],
   ),
+  // Halloween Planning Management Tasks
+  TaskModel(
+    id: 'halloween-task-1',
+    sheetId: 'sheet-16',
+    parentId: 'list-tasks-16',
+    title: 'Coordinate meeting locations and clear directions',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create clear meeting locations and directions. No more "wrong street, nobody on the same place" confusion - organize meeting spots clearly!',
+      htmlText:
+          '<p>Create clear <strong>meeting locations and directions</strong>. No more "wrong street, nobody on the same place" confusion - organize meeting spots clearly!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3', 'user_5', 'user_7', 'user_9'],
+  ),
+  TaskModel(
+    id: 'halloween-task-2',
+    sheetId: 'sheet-16',
+    parentId: 'list-tasks-16',
+    title: 'Organize clear communication and group chat',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Fix messy group chat and create clear communication. No more "meet at Maple St? Wait, Elm St right?" confusion - organize communication clearly!',
+      htmlText:
+          '<p>Fix <strong>messy group chat and create clear communication</strong>. No more "meet at Maple St? Wait, Elm St right?" confusion - organize communication clearly!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_6', 'user_8', 'user_10'],
+  ),
+  TaskModel(
+    id: 'halloween-task-3',
+    sheetId: 'sheet-16',
+    parentId: 'list-tasks-16',
+    title: 'Handle scheduling conflicts and late arrivals',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Coordinate schedules and handle late arrivals. No more "I can only join later, we\'ll just go without u" conflicts - create clear scheduling!',
+      htmlText:
+          '<p>Coordinate <strong>schedules and handle late arrivals</strong>. No more "I can only join later, we\'ll just go without u" conflicts - create clear scheduling!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_1', 'user_2', 'user_5', 'user_6', 'user_9'],
+  ),
+  TaskModel(
+    id: 'halloween-task-4',
+    sheetId: 'sheet-16',
+    parentId: 'list-tasks-16',
+    title: 'Create clear house locations and meeting points',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Establish clear house locations and meeting points. No more "wait which house again? Nobody is here" confusion - organize locations clearly!',
+      htmlText:
+          '<p>Establish <strong>clear house locations and meeting points</strong>. No more "wait which house again? Nobody is here" confusion - organize locations clearly!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8', 'user_10'],
+  ),
 ];

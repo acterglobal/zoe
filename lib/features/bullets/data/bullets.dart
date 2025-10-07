@@ -1182,4 +1182,75 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // Halloween Planning Chaos & Success Stories
+  BulletModel(
+    id: 'bullet-item-84',
+    sheetId: 'sheet-16',
+    parentId: 'list-bulleted-18',
+    title: 'Halloween planning: Everyone\'s excited! 🎃',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'The excitement begins! Everyone\'s excited for Halloween planning, full of energy and ready to make this Halloween amazing!',
+      htmlText:
+          '<p>The <strong>excitement begins</strong>! Everyone\'s excited for Halloween planning, full of energy and ready to make this Halloween amazing!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-85',
+    sheetId: 'sheet-16',
+    parentId: 'list-bulleted-18',
+    title: 'But where you? We missed you! 😱',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'The chaos begins! "Where you? We missed you! Wrong street, nobody on the same place, messy group chat like: meet at Maple St? Wait, Elm St right? I can only join later, we\'ll just go without u, wait which house again? Nobody is here!"',
+      htmlText:
+          '<p>The <strong>chaos begins</strong>! "Where you? We missed you! Wrong street, nobody on the same place, messy group chat like: meet at Maple St? Wait, Elm St right? I can only join later, we\'ll just go without u, wait which house again? Nobody is here!"</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-86',
+    sheetId: 'sheet-16',
+    parentId: 'list-bulleted-18',
+    title: 'Wrong street, nobody is here! 😤',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Total confusion! Wrong street, nobody on the same place, messy group chat, and what should be fun becomes overwhelming!',
+      htmlText:
+          '<p><strong>Total confusion</strong>! Wrong street, nobody on the same place, messy group chat, and what should be fun becomes overwhelming!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-87',
+    sheetId: 'sheet-16',
+    parentId: 'list-bulleted-18',
+    title: 'There\'s a better way - Zoe! 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Finally! One platform to organize Halloween planning, coordinate meeting locations, handle scheduling conflicts, and create clear communication!',
+      htmlText:
+          '<p>Finally! <strong>One platform to organize Halloween planning</strong>, coordinate meeting locations, handle scheduling conflicts, and create clear communication!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-88',
+    sheetId: 'sheet-16',
+    parentId: 'list-bulleted-18',
+    title: 'From chaos to success - Halloween Spectacular! 🎃✨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Transform Halloween planning from chaos to success! Zoe makes organizing meeting locations, scheduling, and communication fun and stress-free!',
+      htmlText:
+          '<p>Transform Halloween planning from <strong>chaos to success</strong>! Zoe makes organizing meeting locations, scheduling, and communication fun and stress-free!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

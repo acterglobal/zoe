@@ -827,4 +827,60 @@ final polls = [
     isMultipleChoice: true,
     createdBy: 'user_10',
   ),
+  PollModel(
+    id: 'poll-17',
+    sheetId: 'sheet-16',
+    parentId: 'sheet-16',
+    orderIndex: 1,
+    question: 'What\'s your biggest Halloween planning challenge?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 2)),
+    options: [
+      PollOption(
+        id: 'option-17-1',
+        title: 'Location confusion and wrong streets',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+      PollOption(
+        id: 'option-17-2',
+        title: 'Messy group chat and unclear communication',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_8'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+      PollOption(
+        id: 'option-17-3',
+        title: 'Scheduling conflicts and late arrivals',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+      PollOption(
+        id: 'option-17-4',
+        title: 'Nobody knows where to meet or which house',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_1',
+  ),
 ];

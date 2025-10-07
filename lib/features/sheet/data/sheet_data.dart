@@ -212,4 +212,18 @@ final sheetList = [
     createdBy: 'user_4',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
   ),
+  SheetModel(
+    id: 'sheet-16',
+    title: 'Halloween Planning Spectacular Hub',
+    emoji: '🎃',
+    color: const Color(0xFF7C2D12), // Dark orange/brown
+    description: (
+      plainText:
+          'Halloween planning: Everyone\'s excited! Where you? We missed you! Wrong street, nobody on the same place, messy group chat like: meet at Maple St? Wait, Elm St right? I can only join later, we\'ll just go without u, wait which house again? Nobody is here!',
+      htmlText:
+          '<p>Halloween planning: <strong>Everyone\'s excited</strong>! Where you? We missed you! Wrong street, nobody on the same place, messy group chat like: meet at Maple St? Wait, Elm St right? I can only join later, we\'ll just go without u, wait which house again? Nobody is here!</p>',
+    ),
+    createdBy: 'user_5',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+  ),
 ];

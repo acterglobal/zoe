@@ -400,4 +400,32 @@ final eventList = [
       'user_10': RsvpStatus.yes,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-16',
+    parentId: 'sheet-16',
+    id: 'event-17',
+    title: 'Halloween Planning Coordination Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s organize our Halloween planning properly! We\'ll coordinate meeting locations, handle scheduling conflicts, create clear communication, and ensure everyone knows where to meet. No more "wrong street, nobody is here" chaos!',
+      htmlText:
+          '<p>Let\'s organize our <strong>Halloween planning properly</strong>! We\'ll coordinate meeting locations, handle scheduling conflicts, create clear communication, and ensure everyone knows where to meet. No more "wrong street, nobody is here" chaos!</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(hours: 20)),
+    endDate: DateTime.now().add(const Duration(hours: 22)),
+    createdBy: 'user_2',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.yes,
+      'user_5': RsvpStatus.maybe,
+      'user_6': RsvpStatus.yes,
+      'user_7': RsvpStatus.yes,
+      'user_8': RsvpStatus.maybe,
+      'user_9': RsvpStatus.yes,
+      'user_10': RsvpStatus.yes,
+    },
+  ),
 ];

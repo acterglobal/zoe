@@ -361,4 +361,50 @@ final documentList = [
     filePath: '/documents/pta-budget-planning-worksheet.xlsx',
     createdBy: 'user_3',
   ),
+  // Halloween Planning Documents
+  DocumentModel(
+    id: 'document-80',
+    sheetId: 'sheet-16',
+    parentId: 'list-document-16',
+    title: 'Halloween Planning Guide',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Complete guide for organizing Halloween planning, coordinating meeting locations, and managing group communication.',
+      htmlText:
+          '<p>Complete guide for <strong>organizing Halloween planning</strong>, coordinating meeting locations, and managing group communication.</p>',
+    ),
+    filePath: '/documents/halloween-planning-guide.pdf',
+    createdBy: 'user_1',
+  ),
+  DocumentModel(
+    id: 'document-81',
+    sheetId: 'sheet-16',
+    parentId: 'list-document-16',
+    title: 'Location Coordination & Maps Template',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Template for organizing meeting locations and providing clear directions. No more "wrong street, nobody on the same place" confusion!',
+      htmlText:
+          '<p>Template for <strong>organizing meeting locations and providing clear directions</strong>. No more "wrong street, nobody on the same place" confusion!</p>',
+    ),
+    filePath: '/documents/location-coordination-maps-template.xlsx',
+    createdBy: 'user_2',
+  ),
+  DocumentModel(
+    id: 'document-82',
+    sheetId: 'sheet-16',
+    parentId: 'list-document-16',
+    title: 'Halloween Event Coordination Worksheet',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Worksheet for creating clear house locations and meeting points. No more "wait which house again? Nobody is here" confusion!',
+      htmlText:
+          '<p>Worksheet for <strong>creating clear house locations and meeting points</strong>. No more "wait which house again? Nobody is here" confusion!</p>',
+    ),
+    filePath: '/documents/halloween-event-coordination-worksheet.xlsx',
+    createdBy: 'user_3',
+  ),
 ];

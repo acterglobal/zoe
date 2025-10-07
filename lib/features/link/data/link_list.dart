@@ -615,4 +615,65 @@ final linkList = [
     url: 'https://www.pta.org/home/programs/fundraising',
     createdBy: 'user_4',
   ),
+  // Halloween Planning Links
+  LinkModel(
+    id: 'link-59',
+    sheetId: 'sheet-16',
+    parentId: 'sheet-16',
+    title: 'Halloween Planning Platform',
+    orderIndex: 7,
+    description: (
+      plainText:
+          'Essential tools for organizing Halloween planning, coordinating meeting locations, and managing group communication.',
+      htmlText:
+          '<p>Essential tools for <strong>organizing Halloween planning</strong>, coordinating meeting locations, and managing group communication.</p>',
+    ),
+    url: 'https://www.halloweenplanner.com',
+    createdBy: 'user_1',
+  ),
+  LinkModel(
+    id: 'link-60',
+    sheetId: 'sheet-16',
+    parentId: 'sheet-16',
+    title: 'Location Coordination & Maps',
+    orderIndex: 8,
+    description: (
+      plainText:
+          'Organize meeting locations and provide clear directions. No more "wrong street, nobody on the same place" confusion!',
+      htmlText:
+          '<p>Organize <strong>meeting locations and provide clear directions</strong>. No more "wrong street, nobody on the same place" confusion!</p>',
+    ),
+    url: 'https://www.google.com/maps',
+    createdBy: 'user_2',
+  ),
+  LinkModel(
+    id: 'link-61',
+    sheetId: 'sheet-16',
+    parentId: 'sheet-16',
+    title: 'Group Communication Tools',
+    orderIndex: 9,
+    description: (
+      plainText:
+          'Fix messy group chat and create clear communication. No more "meet at Maple St? Wait, Elm St right?" chaos!',
+      htmlText:
+          '<p>Fix <strong>messy group chat and create clear communication</strong>. No more "meet at Maple St? Wait, Elm St right?" chaos!</p>',
+    ),
+    url: 'https://www.whatsapp.com',
+    createdBy: 'user_3',
+  ),
+  LinkModel(
+    id: 'link-62',
+    sheetId: 'sheet-16',
+    parentId: 'sheet-16',
+    title: 'Halloween Event Coordination',
+    orderIndex: 10,
+    description: (
+      plainText:
+          'Create clear house locations and meeting points. No more "wait which house again? Nobody is here" confusion!',
+      htmlText:
+          '<p>Create <strong>clear house locations and meeting points</strong>. No more "wait which house again? Nobody is here" confusion!</p>',
+    ),
+    url: 'https://www.eventbrite.com/halloween',
+    createdBy: 'user_4',
+  ),
 ];
