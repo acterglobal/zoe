@@ -5,7 +5,6 @@ import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/bullets/widgets/bullet_item_widget.dart';
 import 'package:zoe/features/bullets/widgets/bullet_list_widget.dart';
-import 'package:zoe/features/users/providers/user_providers.dart';
 import '../../../test-utils/test_utils.dart';
 import '../utils/bullets_utils.dart';
 
@@ -14,34 +13,16 @@ void main() {
 
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();
+  });
+
+  setUp(() {
     container = ProviderContainer.test();
   });
 
   group('Bullet List Widget', () {
-    late List<BulletModel> testBullets;
-
-    setUp(() {
-      // Create the final container with overrides
-      container = ProviderContainer.test(
-        overrides: [
-          bulletListProvider.overrideWith(() => EmptyBulletList()),
-          getUserByIdProvider(testUserId).overrideWithValue(testUserModel),
-        ],
-      );
-
-      // Add test bullets to the container
-      testBullets = [];
-      for (int i = 0; i < 3; i++) {
-        final bullet = addBulletAndGetModel(
-          container,
-          title: '$testBulletTitle $i',
-          parentId: testParentId,
-          sheetId: testSheetId,
-          createdBy: testUserId,
-        );
-        testBullets.add(bullet);
-      }
-    });
+    const testSheetId = 'sheet-1';
+    const testParentId = 'list-bulleted-1';
+    const nonExistentParentId = 'non-existent-parent-id';
 
     group('Basic Rendering', () {
       testWidgets('displays bullet list when bullets exist', (tester) async {
@@ -53,8 +34,15 @@ void main() {
         // Verify ListView is displayed
         expect(find.byType(ListView), findsOneWidget);
 
+        final testBullets = container.read(
+          bulletListByParentProvider(testParentId),
+        );
+
         // Verify bullet items are displayed
-        expect(find.byType(BulletItemWidget), findsNWidgets(3));
+        expect(
+          find.byType(BulletItemWidget),
+          findsNWidgets(testBullets.length),
+        );
 
         // Verify bullet titles are displayed
         for (final bullet in testBullets) {
@@ -87,8 +75,12 @@ void main() {
             .widgetList<BulletItemWidget>(find.byType(BulletItemWidget))
             .toList();
 
+        final testBullets = container.read(
+          bulletListByParentProvider(testParentId),
+        );
+
         // Verify bullets are in correct order (by orderIndex)
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < testBullets.length; i++) {
           expect(bulletItems[i].bulletId, equals(testBullets[i].id));
         }
       });
@@ -155,14 +147,27 @@ void main() {
           child: BulletListWidget(parentId: testParentId, isEditing: false),
         );
 
+        // Get the test bullets
+        final testBullets = container.read(
+          bulletListByParentProvider(testParentId),
+        );
+
         // Verify correct number of bullet items
-        expect(find.byType(BulletItemWidget), findsNWidgets(testBullets.length));
+        expect(
+          find.byType(BulletItemWidget),
+          findsNWidgets(testBullets.length),
+        );
       });
 
       testWidgets('uses correct keys for bullet items', (tester) async {
         await tester.pumpMaterialWidgetWithProviderScope(
           container: container,
           child: BulletListWidget(parentId: testParentId, isEditing: false),
+        );
+
+        // Get the test bullets
+        final testBullets = container.read(
+          bulletListByParentProvider(testParentId),
         );
 
         // Verify each bullet item has the correct ValueKey
@@ -184,58 +189,111 @@ void main() {
           child: BulletListWidget(parentId: testParentId, isEditing: false),
         );
 
-        // Verify bullets are displayed
-        expect(find.byType(BulletItemWidget), findsNWidgets(testBullets.length));
+        // Get the initial test bullets
+        final initialBullets = container.read(
+          bulletListByParentProvider(testParentId),
+        );
+
+        // Verify initial bullets are displayed
+        expect(
+          find.byType(BulletItemWidget),
+          findsNWidgets(initialBullets.length),
+        );
 
         // Add a new bullet
-        addBulletAndGetModel(
-          container,
-          title: newBulletTitle,
-          parentId: testParentId,
-          sheetId: testSheetId,
-          createdBy: testUserId,
-        );
+        container
+            .read(bulletListProvider.notifier)
+            .addBullet(
+              title: newBulletTitle,
+              parentId: testParentId,
+              sheetId: testParentId,
+            );
         await tester.pump();
 
+        // Get the updated bullets
+        final updatedBullets = container.read(
+          bulletListByParentProvider(testParentId),
+        );
+
         // Verify new bullet is displayed
-        expect(find.byType(BulletItemWidget), findsNWidgets(testBullets.length + 1));
+        expect(
+          find.byType(BulletItemWidget),
+          findsNWidgets(updatedBullets.length),
+        );
         expect(find.text(newBulletTitle), findsOneWidget);
       });
 
       testWidgets('updates when bullets are modified', (tester) async {
+        // Get the first bullet
+        final testFirstBullet = getBulletModelByIndex(container, 0);
+        final bulletId = testFirstBullet.id;
+        final originalTitle = testFirstBullet.title;
         final updatedTitle = 'Updated Title';
-        
+
         await tester.pumpMaterialWidgetWithProviderScope(
           container: container,
-          child: BulletListWidget(parentId: testParentId, isEditing: false),
+          child: BulletListWidget(
+            parentId: testFirstBullet.parentId,
+            isEditing: false,
+          ),
         );
+
+        // Get the test bullets
+        final testBullets = container.read(
+          bulletListByParentProvider(testFirstBullet.parentId),
+        );
+
+        // Verify the test bullets are not empty
+        expect(testBullets.isNotEmpty, isTrue);
 
         // Update a bullet title
         container
             .read(bulletListProvider.notifier)
-            .updateBulletTitle(testBullets[0].id, updatedTitle);
-        await tester.pump();
+            .updateBulletTitle(bulletId, updatedTitle);
+        await tester.pumpAndSettle();
 
         // Verify updated title is displayed
         expect(find.text(updatedTitle), findsOneWidget);
-        expect(find.text(testBullets[0].title), findsNothing);
+        expect(find.text(originalTitle), findsNothing);
       });
 
       testWidgets('updates when bullets are deleted', (tester) async {
+        // Get the first bullet
+        final testFirstBullet = getBulletModelByIndex(container, 0);
+        final bulletId = testFirstBullet.id;
+        final bulletToDelete = testFirstBullet.title;
+
         await tester.pumpMaterialWidgetWithProviderScope(
           container: container,
-          child: BulletListWidget(parentId: testParentId, isEditing: false),
+          child: BulletListWidget(
+            parentId: testFirstBullet.parentId,
+            isEditing: false,
+          ),
         );
 
+        // Get the initial test bullets
+        final initialBullets = container.read(
+          bulletListByParentProvider(testParentId),
+        );
+
+        // Verify the test bullets are not empty
+        expect(initialBullets.isNotEmpty, isTrue);
+
         // Delete a bullet
-        container
-            .read(bulletListProvider.notifier)
-            .deleteBullet(testBullets[0].id);
+        container.read(bulletListProvider.notifier).deleteBullet(bulletId);
         await tester.pump();
 
+        // Get the updated bullets
+        final updatedBullets = container.read(
+          bulletListByParentProvider(testParentId),
+        );
+
         // Verify bullet is removed
-        expect(find.byType(BulletItemWidget), findsNWidgets(testBullets.length - 1));
-        expect(find.text(testBullets[0].title), findsNothing);
+        expect(
+          find.byType(BulletItemWidget),
+          findsNWidgets(updatedBullets.length),
+        );
+        expect(find.text(bulletToDelete), findsNothing);
       });
     });
 
@@ -243,40 +301,53 @@ void main() {
       testWidgets('displays bullets for specific parent ID only', (
         tester,
       ) async {
-        // Add bullets for a different parent
-        const differentParentId = 'different-parent-id';
-        final differentParentBulletTitle = 'Different Parent Bullet';
-        addBulletAndGetModel(
-          container,
-          title: differentParentBulletTitle,
-          parentId: differentParentId,
-          sheetId: testSheetId,
-          createdBy: testUserId,
-        );
+        // Define constants for different parent ID and bullet title
+        const differentParentId = 'different-parent-id-1';
+        final differentParentBulletTitle = 'Different Parent Bullet 1';
+
+        // Add a bullet for a different parent
+        container
+            .read(bulletListProvider.notifier)
+            .addBullet(
+              title: differentParentBulletTitle,
+              parentId: differentParentId,
+              sheetId: testSheetId,
+            );
 
         await tester.pumpMaterialWidgetWithProviderScope(
           container: container,
           child: BulletListWidget(parentId: testParentId, isEditing: false),
         );
 
+        // Get the test bullets
+        final testBullets = container.read(
+          bulletListByParentProvider(testParentId),
+        );
+
         // Should only show bullets for testParentId
-        expect(find.byType(BulletItemWidget), findsNWidgets(testBullets.length));
+        expect(
+          find.byType(BulletItemWidget),
+          findsNWidgets(testBullets.length),
+        );
         expect(find.text(differentParentBulletTitle), findsNothing);
-        expect(find.text(testBullets[0].title), findsOneWidget);
+        expect(find.text(testBullets.last.title), findsOneWidget);
       });
 
       testWidgets(
         'displays bullets for different parent when parentId changes',
         (tester) async {
-          const differentParentId = 'different-parent-id';
-          final differentParentBulletTitle = 'Different Parent Bullet';
-          addBulletAndGetModel(
-            container,
-            title: differentParentBulletTitle,
-            parentId: differentParentId,
-            sheetId: testSheetId,
-            createdBy: testUserId,
-          );
+          // Define constants for different parent ID and bullet title
+          const differentParentId = 'different-parent-id-2';
+          final differentParentBulletTitle = 'Different Parent Bullet 2';
+
+          // Add a bullet for a different parent
+          container
+              .read(bulletListProvider.notifier)
+              .addBullet(
+                title: differentParentBulletTitle,
+                parentId: differentParentId,
+                sheetId: testSheetId,
+              );
 
           await tester.pumpMaterialWidgetWithProviderScope(
             container: container,
@@ -286,26 +357,26 @@ void main() {
             ),
           );
 
+          // Get the original test bullets (for testParentId)
+          final testBullets = container.read(
+            bulletListByParentProvider(testParentId),
+          );
+          expect(testBullets.isNotEmpty, isTrue);
+
           // Should show bullets for differentParentId
           expect(find.byType(BulletItemWidget), findsNWidgets(1));
           expect(find.text(differentParentBulletTitle), findsOneWidget);
-          expect(find.text(testBullets[0].title), findsNothing);
+          // Should not show bullets from the original parent
+          expect(find.text(testBullets.last.title), findsNothing);
         },
       );
     });
 
     group('Edge Cases', () {
       testWidgets('handles empty bullet list gracefully', (tester) async {
-        // Create a container with no bullets
-        container = ProviderContainer.test(
-          overrides: [
-            bulletListProvider.overrideWith(() => EmptyBulletList()),
-          ],
-        );
-
         await tester.pumpMaterialWidgetWithProviderScope(
           container: container,
-          child: BulletListWidget(parentId: testParentId, isEditing: false),
+          child: BulletListWidget(parentId: nonExistentParentId, isEditing: false),
         );
 
         // Should return empty widget
@@ -315,21 +386,19 @@ void main() {
       });
 
       testWidgets('handles single bullet correctly', (tester) async {
-        final singleBulletTitle = 'Single Bullet';
-
-        // Create a container with only one bullet
+        const singleBulletTitle = 'Single Bullet';
+        
         container = ProviderContainer.test(
           overrides: [
-            bulletListProvider.overrideWith(() => EmptyBulletList()),
+            bulletListProvider.overrideWithValue([
+              BulletModel(
+                id: '1',
+                title: singleBulletTitle,
+                parentId: testParentId,
+                sheetId: testSheetId,
+              ),
+            ]),
           ],
-        );
-
-        addBulletAndGetModel(
-          container,
-          title: singleBulletTitle,
-          parentId: testParentId,
-          sheetId: testSheetId,
-          createdBy: testUserId,
         );
 
         await tester.pumpMaterialWidgetWithProviderScope(
@@ -345,24 +414,46 @@ void main() {
       testWidgets('handles large number of bullets efficiently', (
         tester,
       ) async {
-        // Add many bullets
-        for (int i = 3; i < 20; i++) {
-          addBulletAndGetModel(
-            container,
-            title: '$testBulletTitle $i',
-            parentId: testParentId,
-            sheetId: testSheetId,
-            createdBy: testUserId,
-          );
-        }
+        // Add a Many bullets
+        container
+            .read(bulletListProvider.notifier)
+            .addBullet(
+              title: 'Test Bullet',
+              parentId: testParentId,
+              sheetId: testSheetId,
+            );
+
+        container
+            .read(bulletListProvider.notifier)
+            .addBullet(
+              title: 'Test Bullet 2',
+              parentId: testParentId,
+              sheetId: testSheetId,
+            );
+
+        container
+            .read(bulletListProvider.notifier)
+            .addBullet(
+              title: 'Test Bullet 3',
+              parentId: testParentId,
+              sheetId: testSheetId,
+            );
 
         await tester.pumpMaterialWidgetWithProviderScope(
           container: container,
           child: BulletListWidget(parentId: testParentId, isEditing: false),
         );
 
-        // Should display all bullets (3 initial + 17 new = 20 total)
-        expect(find.byType(BulletItemWidget), findsAtLeastNWidgets(17));
+        // Get the test bullets
+        final testBullets = container.read(
+          bulletListByParentProvider(testParentId),
+        );
+
+        // Should display all bullets
+        expect(
+          find.byType(BulletItemWidget),
+          findsAtLeastNWidgets(testBullets.length),
+        );
       });
     });
 

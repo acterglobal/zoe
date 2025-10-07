@@ -14,22 +14,56 @@ import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_chip_widget.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
-import 'package:zoe/features/bullets/providers/bullet_providers.dart';
+import 'package:zoe/features/bullets/screens/bullet_detail_screen.dart';
 import 'package:zoe/features/bullets/widgets/bullet_added_by_header_widget.dart';
 import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
+import '../../../test-utils/test_utils.dart';
 import '../utils/bullets_utils.dart';
 
 void main() {
   late ProviderContainer container;
+  const nonExistentBulletId = 'non-existent-id';
+  late BulletModel testBullet;
 
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
+
+    // Create the container
     container = ProviderContainer.test();
+
+    // Get the test bullet
+    testBullet = getBulletModelByIndex(container, 0);
   });
 
   group('Bullet Detail Screen', () {
+    // Pump bullet detail screen
+    Future<void> pumpBulletDetailScreen({
+      required WidgetTester tester,
+      required ProviderContainer container,
+      required String bulletId,
+      bool isWrapMediaQuery = false,
+    }) async {
+      // Create the screen
+      final screen = BulletDetailScreen(bulletId: bulletId);
+
+      // Wrap the screen in a MediaQuery if needed
+      final child = isWrapMediaQuery
+          ? MediaQuery(
+              data: const MediaQueryData(size: Size(1080, 1920)),
+              child: screen,
+            )
+          : screen;
+
+      // Pump the screen
+      await tester.pumpMaterialWidgetWithProviderScope(
+        child: child,
+        container: container,
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+
     group('Empty State', () {
       testWidgets('displays empty state when bullet does not exist', (
         tester,
@@ -63,34 +97,6 @@ void main() {
     });
 
     group('Data State', () {
-      late BulletModel testBullet;
-      late BulletModel testBulletOverride;
-
-      setUp(() {
-        testBullet = addBulletAndGetModel(
-          container,
-          title: testBulletTitle,
-          parentId: testParentId,
-          sheetId: testSheetId,
-        );
-
-        testBulletOverride = BulletModel(
-          id: testBullet.id,
-          title: testBulletTitle,
-          parentId: testParentId,
-          sheetId: testSheetId,
-          createdBy: testUserId,
-          orderIndex: testBullet.orderIndex,
-        );
-
-        container = ProviderContainer.test(
-          overrides: [
-            bulletProvider(testBullet.id).overrideWithValue(testBulletOverride),
-            getUserByIdProvider(testUserId).overrideWithValue(testUserModel),
-          ],
-        );
-      });
-
       testWidgets('displays bullet data when bullet exists', (tester) async {
         // Pump the screen
         await pumpBulletDetailScreen(
@@ -127,7 +133,7 @@ void main() {
         );
 
         // Verify title is displayed
-        expect(find.text(testBulletTitle), findsOneWidget);
+        expect(find.text(testBullet.title), findsOneWidget);
         expect(find.byType(ZoeInlineTextEditWidget), findsOneWidget);
 
         // Verify it's in read-only mode (not editing)
@@ -142,7 +148,6 @@ void main() {
       ) async {
         container = ProviderContainer.test(
           overrides: [
-            bulletProvider(testBullet.id).overrideWithValue(testBulletOverride),
             editContentIdProvider.overrideWith((ref) => testBullet.id),
           ],
         );
@@ -192,7 +197,7 @@ void main() {
           find.byType(ContentWidget),
         );
         expect(contentWidget.parentId, equals(testBullet.id));
-        expect(contentWidget.sheetId, equals(testSheetId));
+        expect(contentWidget.sheetId, equals(testBullet.sheetId));
       });
 
       testWidgets('displays user information section', (tester) async {
@@ -206,15 +211,26 @@ void main() {
         // Verify user display components
         expect(find.byType(BulletAddedByHeaderWidget), findsOneWidget);
         expect(find.byType(ZoeUserChipWidget), findsOneWidget);
-        expect(find.text(testUserName), findsOneWidget);
+        final testUser = container.read(
+          getUserByIdProvider(testBullet.createdBy),
+        );
+        expect(find.text(testUser?.name ?? ''), findsOneWidget);
       });
 
       testWidgets('hides user section when user is null', (tester) async {
+        container = ProviderContainer.test(
+          overrides: [
+            getUserByIdProvider(
+              testBullet.createdBy,
+            ).overrideWith((ref) => null),
+          ],
+        );
+
         // Pump the screen
         await pumpBulletDetailScreen(
           tester: tester,
           container: container,
-          bulletId: testBulletId,
+          bulletId: testBullet.id,
         );
 
         // Verify user section is hidden
@@ -238,7 +254,10 @@ void main() {
         expect(userChipFinder, findsOneWidget);
 
         final userChipWidget = tester.widget<ZoeUserChipWidget>(userChipFinder);
-        expect(userChipWidget.user, equals(testUserModel));
+        final testUser = container.read(
+          getUserByIdProvider(testBullet.createdBy),
+        );
+        expect(userChipWidget.user, equals(testUser));
         expect(
           userChipWidget.type,
           equals(ZoeUserChipType.userNameWithAvatarChip),
@@ -247,37 +266,6 @@ void main() {
     });
 
     group('Interaction Tap Tests', () {
-      late BulletModel testBullet;
-      late BulletModel testBulletOverride;
-
-      setUp(() {
-        // Add a bullet to the container
-        testBullet = addBulletAndGetModel(
-          container,
-          title: testBulletTitle,
-          parentId: testParentId,
-          sheetId: testSheetId,
-        );
-
-        // Create a bullet override
-        testBulletOverride = BulletModel(
-          id: testBullet.id,
-          title: testBulletTitle,
-          parentId: testParentId,
-          sheetId: testSheetId,
-          createdBy: testUserId,
-          orderIndex: testBullet.orderIndex,
-        );
-
-        // Override the bullet provider
-        container = ProviderContainer.test(
-          overrides: [
-            bulletProvider(testBullet.id).overrideWithValue(testBulletOverride),
-            getUserByIdProvider(testUserId).overrideWithValue(testUserModel),
-          ],
-        );
-      });
-
       testWidgets('menu button is tappable', (tester) async {
         // Pump the screen
         await pumpBulletDetailScreen(
@@ -313,7 +301,7 @@ void main() {
           find.byType(FloatingActionButtonWrapper),
         );
         expect(fab.parentId, equals(testBullet.id));
-        expect(fab.sheetId, equals(testSheetId));
+        expect(fab.sheetId, equals(testBullet.sheetId));
       });
 
       testWidgets(

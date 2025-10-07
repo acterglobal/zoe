@@ -3,44 +3,41 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/features/bullets/actions/bullet_actions.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import '../utils/bullets_utils.dart';
 
 void main() {
-  setUpAll(() {
+  late ProviderContainer container;
+  late BulletModel testFirstBullet;
+
+  setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
+
+    // Create the container
+    container = ProviderContainer.test();
+
+    // Get the first bullet model
+    testFirstBullet = getBulletModelByIndex(container, 0);
   });
 
   group('BulletActions', () {
-    late ProviderContainer container;
-    late BulletModel testBulletModel;
-
-    setUp(() {
-      container = ProviderContainer.test(
-        overrides: [bulletListProvider.overrideWith(() => EmptyBulletList())],
-      );
-
-      testBulletModel = addBulletAndGetModel(
-        container,
-        title: testBulletTitle,
-        parentId: testParentId,
-        sheetId: testSheetId,
-        createdBy: testUserId,
-      );
-    });
-
     group('Copy Bullet Action', () {
+      final buttonText = 'Copy';
+
       testWidgets('copies bullet content to clipboard', (tester) async {
         // Pump the widget with the bullet content
-        await pumpBulletCopyActionsWidget(
+        await pumpActionsWidget(
           tester: tester,
           container: container,
-          bulletId: testBulletModel.id,
+          buttonText: buttonText,
+          onPressed: (context, ref) =>
+              BulletActions.copyBullet(context, ref, testFirstBullet.id),
         );
 
         // Tap the copy button
-        await tester.tap(find.text('Copy'));
+        await tester.tap(find.text(buttonText));
         await tester.pumpAndSettle();
 
         // Verify snackbar is shown (this indicates the action completed)
@@ -49,20 +46,26 @@ void main() {
     });
 
     group('Share Bullet Action', () {
+      final buttonText = 'Share';
+
+      Future<void> pumpShareActionsWidget(WidgetTester tester) async {
+        await pumpActionsWidget(
+          tester: tester,
+          container: container,
+          buttonText: buttonText,
+          onPressed: (context, ref) =>
+              BulletActions.shareBullet(context, testFirstBullet.id),
+        );
+      }
+
       testWidgets('shows share bottom sheet when share action is triggered', (
         tester,
       ) async {
-        // Pump the widget with the bullet content
-        await pumpBulletShareActionsWidget(
-          tester: tester,
-          container: container,
-          bulletId: testBulletModel.id,
-        );
+        await pumpShareActionsWidget(tester);
 
         // Tap the share button
-        await tester.tap(find.text('Share'));
+        await tester.tap(find.text(buttonText));
         await tester.pump();
-        // Wait for animation
         await tester.pump(const Duration(milliseconds: 300));
 
         // Verify bottom sheet is shown
@@ -72,36 +75,25 @@ void main() {
       testWidgets('displays correct bullet content in share preview', (
         tester,
       ) async {
-        // Pump the widget with the bullet content
-        await pumpBulletShareActionsWidget(
-          tester: tester,
-          container: container,
-          bulletId: testBulletModel.id,
-        );
+        await pumpShareActionsWidget(tester);
 
         // Get the context of the share button
-        await tester.tap(find.text('Share'));
+        await tester.tap(find.text(buttonText));
         await tester.pump();
-        // Wait for animation
         await tester.pump(const Duration(milliseconds: 300));
 
         // Verify bottom sheet is shown
         expect(find.byType(BottomSheet), findsOneWidget);
 
         // Verify bullet title is displayed in the bottom sheet
-        expect(find.textContaining(testBulletModel.title), findsOneWidget);
+        expect(find.textContaining(testFirstBullet.title), findsOneWidget);
       });
 
       testWidgets('share bottom sheet can be dismissed', (tester) async {
-        // Pump the widget with the bullet content
-        await pumpBulletShareActionsWidget(
-          tester: tester,
-          container: container,
-          bulletId: testBulletModel.id,
-        );
+        await pumpShareActionsWidget(tester);
 
         // Tap the share button
-        await tester.tap(find.text('Share'));
+        await tester.tap(find.text(buttonText));
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 300));
 
@@ -130,14 +122,10 @@ void main() {
               });
 
           // Pump the widget with the bullet content
-          await pumpBulletShareActionsWidget(
-            tester: tester,
-            container: container,
-            bulletId: testBulletModel.id,
-          );
+          await pumpShareActionsWidget(tester);
 
           // Tap the share button to open bottom sheet
-          await tester.tap(find.text('Share'));
+          await tester.tap(find.text(buttonText));
           await tester.pump();
           await tester.pump(const Duration(milliseconds: 300));
 
@@ -148,7 +136,7 @@ void main() {
           // Look for the share text within the bottom sheet and tap on it
           final shareButtonInSheet = find.descendant(
             of: find.byType(BottomSheet),
-            matching: find.text('Share'),
+            matching: find.text(buttonText),
           );
 
           expect(shareButtonInSheet, findsOneWidget);
@@ -163,6 +151,29 @@ void main() {
     });
 
     group('Edit Bullet Action', () {
+      final buttonText = 'Edit';
+      late BulletModel testSecondBullet;
+
+      setUp(() {
+        container = ProviderContainer.test(
+          overrides: [editContentIdProvider.overrideWith((ref) => null)],
+        );
+        testSecondBullet = getBulletModelByIndex(container, 1);
+      });
+
+      Future<void> pumpEditActionsWidget(
+        WidgetTester tester, {
+        String? bulletId,
+      }) async {
+        await pumpActionsWidget(
+          tester: tester,
+          container: container,
+          buttonText: buttonText,
+          onPressed: (context, ref) =>
+              BulletActions.editBullet(ref, bulletId ?? testFirstBullet.id),
+        );
+      }
+
       testWidgets('sets edit content id when edit action is triggered', (
         tester,
       ) async {
@@ -170,40 +181,33 @@ void main() {
         expect(container.read(editContentIdProvider), isNull);
 
         // Pump the widget with the bullet content
-        await pumpBulletEditActionsWidget(
-          tester: tester,
-          container: container,
-          bulletId: testBulletModel.id,
-        );
+        await pumpEditActionsWidget(tester);
 
         // Tap the edit button
-        await tester.tap(find.text('Edit'));
+        await tester.tap(find.text(buttonText));
         await tester.pumpAndSettle();
 
         // Verify that the edit content id is set to the bullet id
-        expect(container.read(editContentIdProvider), equals(testBulletModel.id));
+        expect(
+          container.read(editContentIdProvider),
+          equals(testFirstBullet.id),
+        );
       });
 
       testWidgets('edit action sets correct bullet id for editing', (
         tester,
       ) async {
         // Add multiple bullets
-        final bulletModel1 = addBulletAndGetModel(container);
-        final bulletModel2 = addBulletAndGetModel(container);
-        final bulletId1 = bulletModel1.id;
-        final bulletId2 = bulletModel2.id;
+        final bulletId1 = testFirstBullet.id;
+        final bulletId2 = testSecondBullet.id;
 
         // Verify initial state
         expect(container.read(editContentIdProvider), isNull);
 
         // Edit first bullet
-        await pumpBulletEditActionsWidget(
-          tester: tester,
-          container: container,
-          bulletId: bulletId1,
-        );
+        await pumpEditActionsWidget(tester, bulletId: bulletId1);
 
-        await tester.tap(find.text('Edit'));
+        await tester.tap(find.text(buttonText));
         await tester.pumpAndSettle();
 
         // Verify first bullet is being edited
@@ -211,13 +215,9 @@ void main() {
 
         // Now edit second bullet
         await tester.pumpWidget(Container()); // Clear previous widget
-        await pumpBulletEditActionsWidget(
-          tester: tester,
-          container: container,
-          bulletId: bulletId2,
-        );
+        await pumpEditActionsWidget(tester, bulletId: bulletId2);
 
-        await tester.tap(find.text('Edit'));
+        await tester.tap(find.text(buttonText));
         await tester.pumpAndSettle();
 
         // Verify second bullet is now being edited
@@ -227,89 +227,98 @@ void main() {
       testWidgets('edit action can clear edit state by setting null', (
         tester,
       ) async {
+        final bulletId = testFirstBullet.id;
         // Set initial edit state
-        container.read(editContentIdProvider.notifier).state = testBulletModel.id;
-        expect(container.read(editContentIdProvider), equals(testBulletModel.id));
+        container.read(editContentIdProvider.notifier).state = bulletId;
+        expect(container.read(editContentIdProvider), equals(bulletId));
 
         // Clear edit state manually (simulating cancel edit)
         container.read(editContentIdProvider.notifier).state = null;
         expect(container.read(editContentIdProvider), isNull);
 
         // Now trigger edit action again
-        await pumpBulletEditActionsWidget(
-          tester: tester,
-          container: container,
-          bulletId: testBulletModel.id,
-        );
+        await pumpEditActionsWidget(tester);
 
-        await tester.tap(find.text('Edit'));
+        await tester.tap(find.text(buttonText));
         await tester.pumpAndSettle();
 
         // Verify edit state is set again
-        expect(container.read(editContentIdProvider), equals(testBulletModel.id));
+        expect(container.read(editContentIdProvider), equals(bulletId));
       });
 
       testWidgets(
         'edit action preserves bullet data integrity and update the bullet',
         (tester) async {
-          final originalTitle = testBulletModel.title;
+          final updatedTitle = 'Updated Title';
+          final bulletId = testFirstBullet.id;
+          final originalTitle = testFirstBullet.title;
 
           // Pump the widget
-          await pumpBulletEditActionsWidget(
-            tester: tester,
-            container: container,
-            bulletId: testBulletModel.id,
-          );
+          await pumpEditActionsWidget(tester);
 
           // Trigger edit action
-          await tester.tap(find.text('Edit'));
+          await tester.tap(find.text(buttonText));
           await tester.pumpAndSettle();
 
           // Verify edit state is set
-          expect(container.read(editContentIdProvider), equals(testBulletModel.id));
+          expect(container.read(editContentIdProvider), equals(bulletId));
 
           // Verify bullet data is unchanged
-          final bulletBeforeEdit = container.read(bulletProvider(testBulletModel.id));
+          final bulletBeforeEdit = container.read(bulletProvider(bulletId));
           expect(bulletBeforeEdit, isNotNull);
           expect(bulletBeforeEdit?.title, equals(originalTitle));
-          expect(bulletBeforeEdit?.id, equals(testBulletModel.id));
-
-          final updatedTitle = 'Updated Title';
+          expect(bulletBeforeEdit?.id, equals(bulletId));
 
           // Update the bullet title
           final bulletNotifier = container.read(bulletListProvider.notifier);
-          bulletNotifier.updateBulletTitle(testBulletModel.id, updatedTitle);
+          bulletNotifier.updateBulletTitle(bulletId, updatedTitle);
 
           // Verify bullet data is updated
-          final bulletAfterEdit = container.read(bulletProvider(testBulletModel.id));
+          final bulletAfterEdit = container.read(bulletProvider(bulletId));
           expect(bulletAfterEdit, isNotNull);
           expect(bulletAfterEdit?.title, equals(updatedTitle));
-          expect(bulletAfterEdit?.id, equals(testBulletModel.id));
+          expect(bulletAfterEdit?.id, equals(bulletId));
         },
       );
     });
 
     group('Delete Bullet Action', () {
+      final buttonText = 'Delete';
+
+      Future<void> pumpDeleteActionsWidget(
+        WidgetTester tester, {
+        required String bulletId,
+      }) async {
+        await pumpActionsWidget(
+          tester: tester,
+          container: container,
+          buttonText: buttonText,
+          onPressed: (context, ref) => BulletActions.deleteBullet(
+            context,
+            ref,
+            bulletId,
+          ),
+        );
+      }
+
       testWidgets('deletes bullet from list when delete action is triggered', (
         tester,
       ) async {
+        final bulletId = testFirstBullet.id;
+
         // Verify bullet exists
-        final bulletBeforeDelete = container.read(bulletProvider(testBulletModel.id));
+        final bulletBeforeDelete = container.read(bulletProvider(bulletId));
         expect(bulletBeforeDelete, isNotNull);
 
         // Pump the widget with the bullet content
-        await pumpBulletDeleteActionsWidget(
-          tester: tester,
-          container: container,
-          bulletId: testBulletModel.id,
-        );
+        await pumpDeleteActionsWidget(tester, bulletId: bulletId);
 
         // Tap the delete button
-        await tester.tap(find.text('Delete'));
+        await tester.tap(find.text(buttonText));
         await tester.pumpAndSettle();
 
         // Verify bullet is deleted
-        final bulletAfterDelete = container.read(bulletProvider(testBulletModel.id));
+        final bulletAfterDelete = container.read(bulletProvider(bulletId));
         expect(bulletAfterDelete, isNull);
 
         // Verify snackbar is shown (indicating delete completed)
@@ -320,10 +329,10 @@ void main() {
         tester,
       ) async {
         // Add multiple bullets
-        final bulletModel1 = addBulletAndGetModel(container);
-        final bulletModel2 = addBulletAndGetModel(container);
-        final bulletId1 = bulletModel1.id;
-        final bulletId2 = bulletModel2.id;
+        final testFirstBullet = getBulletModelByIndex(container, 0);
+        final bulletId1 = testFirstBullet.id;
+        final testSecondBullet = getBulletModelByIndex(container, 1);
+        final bulletId2 = testSecondBullet.id;
 
         // Verify both bullets exist
         final bulletBeforeDelete1 = container.read(bulletProvider(bulletId1));
@@ -332,13 +341,9 @@ void main() {
         expect(bulletBeforeDelete2, isNotNull);
 
         // Delete first bullet
-        await pumpBulletDeleteActionsWidget(
-          tester: tester,
-          container: container,
-          bulletId: bulletId1,
-        );
+        await pumpDeleteActionsWidget(tester, bulletId: bulletId1);
 
-        await tester.tap(find.text('Delete'));
+        await tester.tap(find.text(buttonText));
         await tester.pumpAndSettle();
 
         // Verify only first bullet is deleted
@@ -351,36 +356,19 @@ void main() {
       testWidgets('delete action updates bullet focus correctly', (
         tester,
       ) async {
-        // Add multiple bullets with same parent and sheet
-        const firstBulletTitle = 'First Bullet';
-        const secondBulletTitle = 'Second Bullet';
-
-        // Add multiple bullets
-        final bulletModel1 = addBulletAndGetModel(
-          container,
-          title: firstBulletTitle,
-          orderIndex: 0,
-        );
-        final bulletModel2 = addBulletAndGetModel(
-          container,
-          title: secondBulletTitle,
-          orderIndex: 1,
-        );
-        final firstBulletId = bulletModel1.id;
-        final secondBulletId = bulletModel2.id;
+        final testFirstBullet = getBulletModelByIndex(container, 0);
+        final firstBulletId = testFirstBullet.id;
+        final testSecondBullet = getBulletModelByIndex(container, 1);
+        final secondBulletId = testSecondBullet.id;
 
         // Set focus to first bullet
         container.read(bulletFocusProvider.notifier).state = firstBulletId;
         expect(container.read(bulletFocusProvider), equals(firstBulletId));
 
         // Delete first bullet
-        await pumpBulletDeleteActionsWidget(
-          tester: tester,
-          container: container,
-          bulletId: firstBulletId,
-        );
+        await pumpDeleteActionsWidget(tester, bulletId: firstBulletId);
 
-        await tester.tap(find.text('Delete'));
+        await tester.tap(find.text(buttonText));
         await tester.pumpAndSettle();
 
         // Verify focus is updated to second bullet

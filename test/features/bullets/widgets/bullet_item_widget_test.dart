@@ -18,35 +18,20 @@ import '../utils/bullets_utils.dart';
 
 void main() {
   late ProviderContainer container;
+  late BulletModel testBulletModel;
+  const nonExistentBulletId = 'non-existent-bullet-id';
 
-  setUpAll(() {
+  setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
+
+    // Create the container
     container = ProviderContainer.test();
+
+    // Get the test bullet
+    testBulletModel = getBulletModelByIndex(container, 0);
   });
 
   group('Bullet Item Widget', () {
-    late BulletModel testBulletModel;
-
-    setUp(() {
-      // Create the final container with overrides
-      container = ProviderContainer.test(
-        overrides: [
-          bulletListProvider.overrideWith(() => EmptyBulletList()),
-          bulletFocusProvider.overrideWith(() => BulletFocus()),
-          getUserByIdProvider(testUserId).overrideWithValue(testUserModel),
-        ],
-      );
-
-      // Add the test bullet to the container
-      testBulletModel = addBulletAndGetModel(
-        container,
-        title: testBulletTitle,
-        parentId: testParentId,
-        sheetId: testSheetId,
-        createdBy: testUserId,
-      );
-    });
-
     group('Basic Rendering with Test Bullet', () {
       testWidgets('displays bullet item when bullet exists', (tester) async {
         await pumpBulletItemWidget(
@@ -57,7 +42,7 @@ void main() {
 
         // Verify main components are present
         expect(find.byType(BulletItemWidget), findsOneWidget);
-        expect(find.text(testBulletTitle), findsOneWidget);
+        expect(find.text(testBulletModel.title), findsOneWidget);
         expect(find.byType(ZoeInlineTextEditWidget), findsOneWidget);
         expect(find.byIcon(Icons.circle), findsOneWidget);
       });
@@ -73,7 +58,7 @@ void main() {
 
         // Should return SizedBox.shrink() when bullet is null
         expect(find.byType(BulletItemWidget), findsOneWidget);
-        expect(find.text(testBulletTitle), findsNothing);
+        expect(find.text(testBulletModel.title), findsNothing);
         expect(find.byType(ZoeInlineTextEditWidget), findsNothing);
       });
     });
@@ -93,7 +78,7 @@ void main() {
           find.byType(ZoeInlineTextEditWidget),
         );
         expect(textEditWidget.isEditing, isFalse);
-        expect(textEditWidget.text, equals(testBulletTitle));
+        expect(textEditWidget.text, equals(testBulletModel.title));
       });
 
       testWidgets('displays title in edit mode when editing', (tester) async {
@@ -108,7 +93,7 @@ void main() {
           find.byType(ZoeInlineTextEditWidget),
         );
         expect(textEditWidget.isEditing, isTrue);
-        expect(textEditWidget.text, equals(testBulletTitle));
+        expect(textEditWidget.text, equals(testBulletModel.title));
       });
 
       testWidgets('has correct text input action', (tester) async {
@@ -226,9 +211,9 @@ void main() {
 
         // Verify new bullet has correct properties
         final newBullet = updatedBullets.last;
-        expect(newBullet.parentId, equals(testParentId));
-        expect(newBullet.sheetId, equals(testSheetId));
-        expect(newBullet.orderIndex, equals(1));
+        expect(newBullet.parentId, equals(testBulletModel.parentId));
+        expect(newBullet.sheetId, equals(testBulletModel.sheetId));
+        expect(newBullet.orderIndex, equals(testBulletModel.orderIndex + 1));
       });
 
       testWidgets('deletes bullet on backspace with empty text', (
@@ -383,10 +368,9 @@ void main() {
         // Override with null user
         container = ProviderContainer.test(
           overrides: [
-            bulletProvider(
-              testBulletModel.id,
-            ).overrideWithValue(testBulletModel),
-            getUserByIdProvider(testUserId).overrideWithValue(null),
+            getUserByIdProvider(
+              testBulletModel.createdBy,
+            ).overrideWithValue(null),
           ],
         );
 
@@ -432,7 +416,10 @@ void main() {
           find.byType(ZoeUserChipWidget),
         );
         expect(userChip.type, equals(ZoeUserChipType.userNameChip));
-        expect(userChip.user, equals(testUserModel));
+        final testUser = container.read(
+          getUserByIdProvider(testBulletModel.createdBy),
+        );
+        expect(userChip.user, equals(testUser));
       });
 
       testWidgets('bullet added by header has correct properties', (
@@ -552,22 +539,19 @@ void main() {
     group('Edge Cases', () {
       testWidgets('handles empty bullet title', (tester) async {
         final emptyTitleBullet = BulletModel(
-          id: testBulletId,
+          id: testBulletModel.id,
           title: '', // Empty title
-          parentId: testParentId,
-          sheetId: testSheetId,
-          createdBy: testUserId,
+          parentId: testBulletModel.parentId,
+          sheetId: testBulletModel.sheetId,
+          createdBy: testBulletModel.createdBy,
           orderIndex: 0,
         );
 
         container = ProviderContainer.test(
           overrides: [
-            bulletListProvider.overrideWith(() => EmptyBulletList()),
             bulletProvider(
               emptyTitleBullet.id,
             ).overrideWithValue(emptyTitleBullet),
-            bulletFocusProvider.overrideWithValue(null),
-            getUserByIdProvider(testUserId).overrideWithValue(testUserModel),
           ],
         );
 
@@ -592,20 +576,17 @@ void main() {
         final differentBullet = BulletModel(
           id: differentBulletId,
           title: differentTitle,
-          parentId: testParentId,
-          sheetId: testSheetId,
-          createdBy: testUserId,
+          parentId: testBulletModel.parentId,
+          sheetId: testBulletModel.sheetId,
+          createdBy: testBulletModel.createdBy,
           orderIndex: 1,
         );
 
         container = ProviderContainer.test(
           overrides: [
-            bulletListProvider.overrideWith(() => EmptyBulletList()),
             bulletProvider(
               differentBulletId,
             ).overrideWithValue(differentBullet),
-            bulletFocusProvider.overrideWithValue(null),
-            getUserByIdProvider(testUserId).overrideWithValue(testUserModel),
           ],
         );
 
@@ -622,7 +603,6 @@ void main() {
       testWidgets('handles missing user gracefully', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            bulletListProvider.overrideWith(() => EmptyBulletList()),
             bulletProvider(
               testBulletModel.id,
             ).overrideWithValue(testBulletModel),
@@ -642,12 +622,14 @@ void main() {
 
         // Should not crash and should hide user display
         expect(find.byType(ZoeUserAvatarWidget), findsNothing);
-        expect(find.text(testBulletTitle), findsOneWidget);
+        expect(find.text(testBulletModel.title), findsOneWidget);
       });
     });
 
     group('Provider Integration', () {
       testWidgets('watches bullet provider correctly', (tester) async {
+        final updatedTitle = 'Updated Title';
+
         await pumpBulletItemWidget(
           tester: tester,
           container: container,
@@ -655,22 +637,24 @@ void main() {
         );
 
         // Verify bullet data is displayed
-        expect(find.text(testBulletTitle), findsOneWidget);
+        expect(find.text(testBulletModel.title), findsOneWidget);
 
         // Update bullet title through provider
         container
             .read(bulletListProvider.notifier)
-            .updateBulletTitle(testBulletModel.id, 'Updated Title');
+            .updateBulletTitle(testBulletModel.id, updatedTitle);
         await tester.pump();
 
         // Verify updated title is displayed
-        expect(find.text('Updated Title'), findsOneWidget);
-        expect(find.text(testBulletTitle), findsNothing);
+        expect(find.text(updatedTitle), findsOneWidget);
+        expect(find.text(testBulletModel.title), findsNothing);
       });
 
       testWidgets('watches focus provider correctly', (tester) async {
         // Test when bullet is not focused
-        container.read(bulletFocusProvider.notifier).state = 'different-bullet-id';
+        container.read(bulletFocusProvider.notifier).state =
+            'different-bullet-id';
+            
         await pumpBulletItemWidget(
           tester: tester,
           container: container,
