@@ -20,7 +20,8 @@ void showAddContentBottomSheet(
         topRight: Radius.circular(20),
       ),
     ),
-    builder: (context) => AddContentBottomSheet(parentId: parentId, sheetId: sheetId),
+    builder: (context) =>
+        AddContentBottomSheet(parentId: parentId, sheetId: sheetId),
   );
 }
 
@@ -28,7 +29,11 @@ class AddContentBottomSheet extends ConsumerWidget {
   final String parentId;
   final String sheetId;
 
-  const AddContentBottomSheet({super.key, required this.parentId, required this.sheetId});
+  const AddContentBottomSheet({
+    super.key,
+    required this.parentId,
+    required this.sheetId,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
