@@ -112,7 +112,7 @@ final documentList = [
     id: 'document-16',
     title: 'Christmas Decoration Checklist',
     parentId: 'list-document-3',
-    sheetId: 'sheet-3',
+    sheetId: 'sheet-3', 
     filePath: 'path/to/decoration_checklist.docx',
   ),
   // Digital Organization Documents
@@ -458,5 +458,48 @@ final documentList = [
     parentId: 'list-document-11',
     sheetId: 'sheet-11',
     filePath: 'path/to/member_tracker.xlsx',
+  ),
+  // Softball Club BBQ Party Documents
+  DocumentModel(
+    id: 'document-65',
+    title: 'Softball Club BBQ Party Master Checklist',
+    parentId: 'list-document-12',
+    sheetId: 'sheet-12',
+    filePath: 'path/to/softball_bbq_checklist.pdf',
+  ),
+  DocumentModel(
+    id: 'document-66',
+    title: 'Date Coordination & Availability Tracker',
+    parentId: 'list-document-12',
+    sheetId: 'sheet-12',
+    filePath: 'path/to/date_coordination.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-67',
+    title: 'BBQ Party Menu & Equipment List',
+    parentId: 'list-document-12',
+    sheetId: 'sheet-12',
+    filePath: 'path/to/bbq_menu.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-68',
+    title: 'Decision Making & Voting Records',
+    parentId: 'list-document-12',
+    sheetId: 'sheet-12',
+    filePath: 'path/to/decision_records.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-69',
+    title: 'Softball Club BBQ Party Budget',
+    parentId: 'list-document-12',
+    sheetId: 'sheet-12',
+    filePath: 'path/to/bbq_budget.xlsx',
+  ),
+  DocumentModel(
+    id: 'document-70',
+    title: 'Attendance & RSVP Management',
+    parentId: 'list-document-12',
+    sheetId: 'sheet-12',
+    filePath: 'path/to/attendance_management.xlsx',
   ),
 ];

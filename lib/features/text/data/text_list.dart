@@ -221,4 +221,20 @@ final textList = [
     ),
     createdBy: 'user_8',
   ),
+  // Softball Club BBQ Party Text Content
+  TextModel(
+    sheetId: 'sheet-12',
+    parentId: 'sheet-12',
+    id: 'text-content-15',
+    title: 'From Softball Club BBQ Chaos to Success Paradise',
+    emoji: '⚾',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Softball club BBQ party planning: Great idea before it gets cold! ⚾\n\nBBQ? Softball? Drinks? This weekend? Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning, no clarity, everyone\'s missing, plan gone wrong!\n\n🗳️ Vote on softball club BBQ planning challenges\n⚾ Track date coordination and decision making\n📅 Schedule BBQ party and coordinate attendance\n😅 Share chaos stories and celebrate organized solutions\n🔗 Store softball club tools and BBQ resources\n📄 Keep all party planning documents organized\n\nTransform softball club BBQ chaos into success paradise! 🎯✨',
+      htmlText:
+          '<p>Softball club BBQ party planning: <strong>Great idea before it gets cold</strong>! ⚾</p><br><p>BBQ? Softball? Drinks? This weekend? Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning, no clarity, everyone\'s missing, plan gone wrong!</p><br><br><p><strong>🗳️ Vote</strong> on softball club BBQ planning challenges</p><br><p><strong>⚾ Track</strong> date coordination and decision making</p><br><p><strong>📅 Schedule</strong> BBQ party and coordinate attendance</p><br><p><strong>😅 Share</strong> chaos stories and celebrate organized solutions</p><br><p><strong>🔗 Store</strong> softball club tools and BBQ resources</p><br><p><strong>📄 Keep</strong> all party planning documents organized</p><br><br><p>Transform softball club BBQ chaos into success paradise! 🎯✨</p>',
+    ),
+    createdBy: 'user_1',
+  ),
 ];

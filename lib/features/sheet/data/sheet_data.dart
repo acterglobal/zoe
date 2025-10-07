@@ -156,4 +156,18 @@ final sheetList = [
     createdBy: 'user_8',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8'],
   ),
+  SheetModel(
+    id: 'sheet-12',
+    title: 'Softball Club BBQ Party Hub',
+    emoji: '⚾',
+    color: const Color(0xFFDC2626), // Red
+    description: (
+      plainText:
+          'Softball club BBQ party planning: Great idea before it gets cold! BBQ? Softball? Drinks? This weekend? Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning, no clarity, everyone\'s missing, plan gone wrong! There\'s a better way - Zoe!',
+      htmlText:
+          '<p>Softball club BBQ party planning: <strong>Great idea before it gets cold</strong>! BBQ? Softball? Drinks? This weekend? Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning, no clarity, everyone\'s missing, plan gone wrong! There\'s a better way - Zoe!</p>',
+    ),
+    createdBy: 'user_1',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+  ),
 ];

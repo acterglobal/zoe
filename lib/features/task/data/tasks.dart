@@ -844,4 +844,73 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8'],
   ),
+  // Softball Club BBQ Party Management Tasks
+  TaskModel(
+    id: 'softball-task-1',
+    sheetId: 'sheet-12',
+    parentId: 'list-tasks-12',
+    title: 'Find a date that works for everyone',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create a system to coordinate everyone\'s availability. No more "someone is busy" chaos - find the perfect date!',
+      htmlText:
+          '<p>Create a system to <strong>coordinate everyone\'s availability</strong>. No more "someone is busy" chaos - find the perfect date!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3', 'user_5', 'user_7', 'user_9'],
+  ),
+  TaskModel(
+    id: 'softball-task-2',
+    sheetId: 'sheet-12',
+    parentId: 'list-tasks-12',
+    title: 'Stop endless talking and make clear decisions',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Organize decision-making process. No more "everyone talking, nobody decide" - create clear choices and votes!',
+      htmlText:
+          '<p>Organize <strong>decision-making process</strong>. No more "everyone talking, nobody decide" - create clear choices and votes!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_6', 'user_8', 'user_10'],
+  ),
+  TaskModel(
+    id: 'softball-task-3',
+    sheetId: 'sheet-12',
+    parentId: 'list-tasks-12',
+    title: 'Create clarity in planning process',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Build a clear planning system. No more "endless planning with no clarity" - make everything organized and transparent!',
+      htmlText:
+          '<p>Build a <strong>clear planning system</strong>. No more "endless planning with no clarity" - make everything organized and transparent!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_1', 'user_2', 'user_5', 'user_6', 'user_9'],
+  ),
+  TaskModel(
+    id: 'softball-task-4',
+    sheetId: 'sheet-12',
+    parentId: 'list-tasks-12',
+    title: 'Ensure everyone attends and plan succeeds',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Create a system to track attendance and ensure success. No more "everyone missing, plan gone wrong" - make it happen!',
+      htmlText:
+          '<p>Create a system to <strong>track attendance and ensure success</strong>. No more "everyone missing, plan gone wrong" - make it happen!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8', 'user_10'],
+  ),
 ];

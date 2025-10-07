@@ -591,4 +591,60 @@ final polls = [
     isMultipleChoice: true,
     createdBy: 'user_6',
   ),
+  PollModel(
+    id: 'poll-13',
+    sheetId: 'sheet-12',
+    parentId: 'sheet-12',
+    orderIndex: 1,
+    question: 'What\'s your biggest softball club BBQ planning challenge?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 15)),
+    options: [
+      PollOption(
+        id: 'option-13-1',
+        title: 'Finding a date that works for everyone',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+      PollOption(
+        id: 'option-13-2',
+        title: 'Everyone talking but nobody deciding',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_8'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+      PollOption(
+        id: 'option-13-3',
+        title: 'Endless planning with no clarity',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+      PollOption(
+        id: 'option-13-4',
+        title: 'Everyone missing and plan gone wrong',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_7',
+  ),
 ];

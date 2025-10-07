@@ -912,4 +912,75 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // Softball Club BBQ Party Chaos & Success Stories
+  BulletModel(
+    id: 'bullet-item-65',
+    sheetId: 'sheet-12',
+    parentId: 'list-bulleted-14',
+    title: 'Softball club BBQ party planning: Great idea before it gets cold! ⚾',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'The excitement begins! BBQ? Softball? Drinks? This weekend? Great idea before it gets cold - everyone\'s excited!',
+      htmlText:
+          '<p>The <strong>excitement begins</strong>! BBQ? Softball? Drinks? This weekend? Great idea before it gets cold - everyone\'s excited!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-66',
+    sheetId: 'sheet-12',
+    parentId: 'list-bulleted-14',
+    title: 'But finding date is tough, someone is busy! 😱',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'The chaos begins! Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning!',
+      htmlText:
+          '<p>The <strong>chaos begins</strong>! Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning!</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-67',
+    sheetId: 'sheet-12',
+    parentId: 'list-bulleted-14',
+    title: 'No clarity, everyone\'s missing, plan gone wrong! 😤',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Total confusion! No clarity, everyone\'s missing, plan gone wrong! What should be fun becomes a disaster!',
+      htmlText:
+          '<p><strong>Total confusion</strong>! No clarity, everyone\'s missing, plan gone wrong! What should be fun becomes a disaster!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-68',
+    sheetId: 'sheet-12',
+    parentId: 'list-bulleted-14',
+    title: 'There\'s a better way - Zoe! 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Finally! One platform to organize softball club BBQ parties, coordinate dates, make clear decisions, and ensure everyone attends!',
+      htmlText:
+          '<p>Finally! <strong>One platform to organize softball club BBQ parties</strong>, coordinate dates, make clear decisions, and ensure everyone attends!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-69',
+    sheetId: 'sheet-12',
+    parentId: 'list-bulleted-14',
+    title: 'From chaos to success - softball club BBQ paradise! ⚾✨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Transform softball club BBQ party planning from chaos to success! Zoe makes organizing dates, decisions, and attendance a breeze!',
+      htmlText:
+          '<p>Transform softball club BBQ party planning from <strong>chaos to success</strong>! Zoe makes organizing dates, decisions, and attendance a breeze!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];
