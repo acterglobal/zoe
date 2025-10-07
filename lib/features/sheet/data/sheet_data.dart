@@ -240,4 +240,18 @@ final sheetList = [
     createdBy: 'user_6',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
   ),
+  SheetModel(
+    id: 'sheet-18',
+    title: 'Thanksgiving Will Not Be Terrible This Year Hub',
+    emoji: '🦃',
+    color: const Color(0xFFEA580C), // Orange
+    description: (
+      plainText:
+          'Thanksgiving will not be terrible this year! Weeks of cooking endless stress, they all promised they will help but will they really help? I will handle the turkey in family group chats like: who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday and at end everything falls on mom!',
+      htmlText:
+          '<p>Thanksgiving will not be terrible this year! <strong>Weeks of cooking endless stress</strong>, they all promised they will help but will they really help? I will handle the turkey in family group chats like: who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday and at end everything falls on mom!</p>',
+    ),
+    createdBy: 'user_7',
+    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+  ),
 ];

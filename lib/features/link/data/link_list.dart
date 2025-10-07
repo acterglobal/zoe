@@ -737,4 +737,65 @@ final linkList = [
     url: 'https://www.signupgenius.com',
     createdBy: 'user_4',
   ),
+  // Thanksgiving Planning Links
+  LinkModel(
+    id: 'link-67',
+    sheetId: 'sheet-18',
+    parentId: 'sheet-18',
+    title: 'Thanksgiving Planning Platform',
+    orderIndex: 7,
+    description: (
+      plainText:
+          'Essential tools for organizing Thanksgiving planning, coordinating cooking assignments, and managing family communication.',
+      htmlText:
+          '<p>Essential tools for <strong>organizing Thanksgiving planning</strong>, coordinating cooking assignments, and managing family communication.</p>',
+    ),
+    url: 'https://www.thanksgivingplanner.com',
+    createdBy: 'user_1',
+  ),
+  LinkModel(
+    id: 'link-68',
+    sheetId: 'sheet-18',
+    parentId: 'sheet-18',
+    title: 'Cooking Assignment & Recipe Coordination',
+    orderIndex: 8,
+    description: (
+      plainText:
+          'Organize cooking assignments and reduce endless stress. No more "weeks of cooking endless stress" - organize cooking tasks clearly!',
+      htmlText:
+          '<p>Organize <strong>cooking assignments and reduce endless stress</strong>. No more "weeks of cooking endless stress" - organize cooking tasks clearly!</p>',
+    ),
+    url: 'https://www.allrecipes.com/thanksgiving',
+    createdBy: 'user_2',
+  ),
+  LinkModel(
+    id: 'link-69',
+    sheetId: 'sheet-18',
+    parentId: 'sheet-18',
+    title: 'Family Group Chat Organization Tools',
+    orderIndex: 9,
+    description: (
+      plainText:
+          'Handle family group chat chaos and confusion. No more "who\'s bringing the pie? I can do it" chaos!',
+      htmlText:
+          '<p>Handle <strong>family group chat chaos and confusion</strong>. No more "who\'s bringing the pie? I can do it" chaos!</p>',
+    ),
+    url: 'https://www.whatsapp.com',
+    createdBy: 'user_3',
+  ),
+  LinkModel(
+    id: 'link-70',
+    sheetId: 'sheet-18',
+    parentId: 'sheet-18',
+    title: 'Workload Distribution & Help Coordination',
+    orderIndex: 10,
+    description: (
+      plainText:
+          'Prevent everything from falling on mom. No more "at end everything falls on mom" - organize balanced responsibilities!',
+      htmlText:
+          '<p>Prevent <strong>everything from falling on mom</strong>. No more "at end everything falls on mom" - organize balanced responsibilities!</p>',
+    ),
+    url: 'https://www.signupgenius.com/thanksgiving',
+    createdBy: 'user_4',
+  ),
 ];

@@ -1324,4 +1324,75 @@ final bulletList = [
     ),
     createdBy: 'user_5',
   ),
+  // Thanksgiving Planning Chaos & Success Stories
+  BulletModel(
+    id: 'bullet-item-94',
+    sheetId: 'sheet-18',
+    parentId: 'list-bulleted-20',
+    title: 'Thanksgiving will not be terrible this year! 🦃',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'The excitement begins! Thanksgiving will not be terrible this year, full of hope and ready to make this Thanksgiving amazing!',
+      htmlText:
+          '<p>The <strong>excitement begins</strong>! Thanksgiving will not be terrible this year, full of hope and ready to make this Thanksgiving amazing!</p>',
+    ),
+    createdBy: 'user_1',
+  ),
+  BulletModel(
+    id: 'bullet-item-95',
+    sheetId: 'sheet-18',
+    parentId: 'list-bulleted-20',
+    title: 'But weeks of cooking endless stress! 😱',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'The chaos begins! "Weeks of cooking endless stress, they all promised they will help but will they really help? I will handle the turkey in family group chats like: who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday and at end everything falls on mom!"',
+      htmlText:
+          '<p>The <strong>chaos begins</strong>! "Weeks of cooking endless stress, they all promised they will help but will they really help? I will handle the turkey in family group chats like: who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday and at end everything falls on mom!"</p>',
+    ),
+    createdBy: 'user_2',
+  ),
+  BulletModel(
+    id: 'bullet-item-96',
+    sheetId: 'sheet-18',
+    parentId: 'list-bulleted-20',
+    title: 'Everything falls on mom at the end! 😤',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Total frustration! Weeks of cooking endless stress, broken promises, family group chat chaos, and at the end everything falls on mom!',
+      htmlText:
+          '<p><strong>Total frustration</strong>! Weeks of cooking endless stress, broken promises, family group chat chaos, and at the end everything falls on mom!</p>',
+    ),
+    createdBy: 'user_3',
+  ),
+  BulletModel(
+    id: 'bullet-item-97',
+    sheetId: 'sheet-18',
+    parentId: 'list-bulleted-20',
+    title: 'There\'s a better way - Zoe! 🎯',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Finally! One platform to organize Thanksgiving planning, coordinate cooking assignments, handle family group chat chaos, and ensure reliable help!',
+      htmlText:
+          '<p>Finally! <strong>One platform to organize Thanksgiving planning</strong>, coordinate cooking assignments, handle family group chat chaos, and ensure reliable help!</p>',
+    ),
+    createdBy: 'user_4',
+  ),
+  BulletModel(
+    id: 'bullet-item-98',
+    sheetId: 'sheet-18',
+    parentId: 'list-bulleted-20',
+    title: 'From chaos to success - Thanksgiving paradise! 🦃✨',
+    orderIndex: 5,
+    description: (
+      plainText:
+          'Transform Thanksgiving planning from chaos to success! Zoe makes organizing cooking, coordinating help, and managing family communication fun and stress-free!',
+      htmlText:
+          '<p>Transform Thanksgiving planning from <strong>chaos to success</strong>! Zoe makes organizing cooking, coordinating help, and managing family communication fun and stress-free!</p>',
+    ),
+    createdBy: 'user_5',
+  ),
 ];

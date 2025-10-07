@@ -939,4 +939,60 @@ final polls = [
     isMultipleChoice: true,
     createdBy: 'user_2',
   ),
+  PollModel(
+    id: 'poll-19',
+    sheetId: 'sheet-18',
+    parentId: 'sheet-18',
+    orderIndex: 1,
+    question: 'What\'s your biggest Thanksgiving planning challenge?',
+    startDate: DateTime.now().subtract(const Duration(minutes: 1)),
+    options: [
+      PollOption(
+        id: 'option-19-1',
+        title: 'Weeks of cooking endless stress',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+      PollOption(
+        id: 'option-19-2',
+        title: 'Broken promises and unreliable help',
+        votes: [
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_8'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+      PollOption(
+        id: 'option-19-3',
+        title: 'Family group chat chaos and confusion',
+        votes: [
+          Vote(userId: 'user_1'),
+          Vote(userId: 'user_2'),
+          Vote(userId: 'user_5'),
+          Vote(userId: 'user_6'),
+          Vote(userId: 'user_9'),
+        ],
+      ),
+      PollOption(
+        id: 'option-19-4',
+        title: 'Everything falls on mom at the end',
+        votes: [
+          Vote(userId: 'user_3'),
+          Vote(userId: 'user_4'),
+          Vote(userId: 'user_7'),
+          Vote(userId: 'user_8'),
+          Vote(userId: 'user_10'),
+        ],
+      ),
+    ],
+    isMultipleChoice: true,
+    createdBy: 'user_3',
+  ),
 ];

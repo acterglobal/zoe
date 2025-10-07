@@ -453,4 +453,50 @@ final documentList = [
     filePath: '/documents/summer-camp-equipment-supplies-worksheet.xlsx',
     createdBy: 'user_3',
   ),
+  // Thanksgiving Planning Documents
+  DocumentModel(
+    id: 'document-86',
+    sheetId: 'sheet-18',
+    parentId: 'list-document-18',
+    title: 'Thanksgiving Planning Guide',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Complete guide for organizing Thanksgiving planning, coordinating cooking assignments, and managing family communication.',
+      htmlText:
+          '<p>Complete guide for <strong>organizing Thanksgiving planning</strong>, coordinating cooking assignments, and managing family communication.</p>',
+    ),
+    filePath: '/documents/thanksgiving-planning-guide.pdf',
+    createdBy: 'user_1',
+  ),
+  DocumentModel(
+    id: 'document-87',
+    sheetId: 'sheet-18',
+    parentId: 'list-document-18',
+    title: 'Cooking Assignment & Recipe Coordination Template',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Template for organizing cooking assignments and reducing endless stress. No more "weeks of cooking endless stress" - organize cooking tasks clearly!',
+      htmlText:
+          '<p>Template for <strong>organizing cooking assignments and reducing endless stress</strong>. No more "weeks of cooking endless stress" - organize cooking tasks clearly!</p>',
+    ),
+    filePath: '/documents/cooking-assignment-recipe-coordination-template.xlsx',
+    createdBy: 'user_2',
+  ),
+  DocumentModel(
+    id: 'document-88',
+    sheetId: 'sheet-18',
+    parentId: 'list-document-18',
+    title: 'Thanksgiving Workload Distribution Worksheet',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Worksheet for preventing everything from falling on mom. No more "at end everything falls on mom" - organize balanced responsibilities!',
+      htmlText:
+          '<p>Worksheet for <strong>preventing everything from falling on mom</strong>. No more "at end everything falls on mom" - organize balanced responsibilities!</p>',
+    ),
+    filePath: '/documents/thanksgiving-workload-distribution-worksheet.xlsx',
+    createdBy: 'user_3',
+  ),
 ];

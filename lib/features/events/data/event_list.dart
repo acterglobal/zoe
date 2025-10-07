@@ -456,4 +456,32 @@ final eventList = [
       'user_10': RsvpStatus.yes,
     },
   ),
+  EventModel(
+    sheetId: 'sheet-18',
+    parentId: 'sheet-18',
+    id: 'event-19',
+    title: 'Thanksgiving Planning Coordination Meeting',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Let\'s organize our Thanksgiving planning properly! We\'ll coordinate cooking assignments, handle family group chat chaos, manage reliable help, and ensure everything doesn\'t fall on mom. No more "weeks of cooking endless stress"!',
+      htmlText:
+          '<p>Let\'s organize our <strong>Thanksgiving planning properly</strong>! We\'ll coordinate cooking assignments, handle family group chat chaos, manage reliable help, and ensure everything doesn\'t fall on mom. No more "weeks of cooking endless stress"!</p>',
+    ),
+    startDate: DateTime.now().add(const Duration(hours: 24)),
+    endDate: DateTime.now().add(const Duration(hours: 26)),
+    createdBy: 'user_4',
+    rsvpResponses: {
+      'user_1': RsvpStatus.yes,
+      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
+      'user_4': RsvpStatus.yes,
+      'user_5': RsvpStatus.maybe,
+      'user_6': RsvpStatus.yes,
+      'user_7': RsvpStatus.maybe,
+      'user_8': RsvpStatus.yes,
+      'user_9': RsvpStatus.yes,
+      'user_10': RsvpStatus.yes,
+    },
+  ),
 ];

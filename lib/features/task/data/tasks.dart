@@ -1258,4 +1258,73 @@ final tasks = [
     createdBy: 'user_4',
     assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8', 'user_10'],
   ),
+  // Thanksgiving Planning Management Tasks
+  TaskModel(
+    id: 'thanksgiving-task-1',
+    sheetId: 'sheet-18',
+    parentId: 'list-tasks-18',
+    title: 'Organize cooking assignments and reduce endless stress',
+    orderIndex: 1,
+    description: (
+      plainText:
+          'Create clear cooking assignments and reduce weeks of endless stress. No more "weeks of cooking endless stress" - organize cooking tasks clearly!',
+      htmlText:
+          '<p>Create clear <strong>cooking assignments and reduce weeks of endless stress</strong>. No more "weeks of cooking endless stress" - organize cooking tasks clearly!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 1)),
+    createdBy: 'user_1',
+    assignedUsers: ['user_1', 'user_3', 'user_5', 'user_7', 'user_9'],
+  ),
+  TaskModel(
+    id: 'thanksgiving-task-2',
+    sheetId: 'sheet-18',
+    parentId: 'list-tasks-18',
+    title: 'Ensure reliable help and follow through on promises',
+    orderIndex: 2,
+    description: (
+      plainText:
+          'Create reliable help system and ensure follow through on promises. No more "they all promised they will help but will they really help?" - organize reliable help!',
+      htmlText:
+          '<p>Create <strong>reliable help system and ensure follow through on promises</strong>. No more "they all promised they will help but will they really help?" - organize reliable help!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 2)),
+    createdBy: 'user_2',
+    assignedUsers: ['user_2', 'user_4', 'user_6', 'user_8', 'user_10'],
+  ),
+  TaskModel(
+    id: 'thanksgiving-task-3',
+    sheetId: 'sheet-18',
+    parentId: 'list-tasks-18',
+    title: 'Handle family group chat chaos and confusion',
+    orderIndex: 3,
+    description: (
+      plainText:
+          'Organize family group chat and reduce chaos. No more "who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday" confusion!',
+      htmlText:
+          '<p>Organize <strong>family group chat and reduce chaos</strong>. No more "who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday" confusion!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 3)),
+    createdBy: 'user_3',
+    assignedUsers: ['user_1', 'user_2', 'user_5', 'user_6', 'user_9'],
+  ),
+  TaskModel(
+    id: 'thanksgiving-task-4',
+    sheetId: 'sheet-18',
+    parentId: 'list-tasks-18',
+    title: 'Prevent everything from falling on mom',
+    orderIndex: 4,
+    description: (
+      plainText:
+          'Create balanced workload distribution and prevent everything from falling on mom. No more "at end everything falls on mom" - organize balanced responsibilities!',
+      htmlText:
+          '<p>Create <strong>balanced workload distribution and prevent everything from falling on mom</strong>. No more "at end everything falls on mom" - organize balanced responsibilities!</p>',
+    ),
+    isCompleted: false,
+    dueDate: DateTime.now().add(const Duration(days: 4)),
+    createdBy: 'user_4',
+    assignedUsers: ['user_3', 'user_4', 'user_7', 'user_8', 'user_10'],
+  ),
 ];

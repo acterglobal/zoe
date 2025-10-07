@@ -359,4 +359,35 @@ final textList = [
     ),
     createdBy: 'user_6',
   ),
+  TextModel(
+    id: 'text-content-21',
+    sheetId: 'sheet-18',
+    parentId: 'sheet-18',
+    title: 'From Thanksgiving Planning Chaos to Spectacular Success',
+    orderIndex: 6,
+    description: (
+      plainText:
+          '🦃\n\nThanksgiving Will Not Be Terrible This Year Hub - Your organized command center for Thanksgiving success!\n\n'
+          'Weeks of cooking endless stress, they all promised they will help but will they really help? I will handle the turkey in family group chats like: who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday and at end everything falls on mom!\n\n'
+          '🎯\n\nZoe transforms Thanksgiving planning from chaos to success:\n\n'
+          '• Cooking assignments and stress reduction (no more "weeks of cooking endless stress")\n'
+          '• Reliable help and promise follow-through (handle "they all promised they will help but will they really help?")\n'
+          '• Family group chat organization (no more "who\'s bringing the pie? I can do it" chaos)\n'
+          '• Balanced workload distribution (prevent "everything falls on mom" situations)\n\n'
+          '✨\n\nCreate reliable planning tools, systematically organize cooking tasks, coordinate reliable help, and manage family communication with Zoe!',
+      htmlText:
+          '<p><strong>🦃</strong></p>\n'
+          '<p>Thanksgiving Will Not Be Terrible This Year Hub - Your organized command center for Thanksgiving success!</p>\n'
+          '<p>Weeks of cooking endless stress, they all promised they will help but will they really help? I will handle the turkey in family group chats like: who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday and at end everything falls on mom!</p><br>\n'
+          '<p><strong>🎯</strong></p>\n'
+          '<p>Zoe transforms Thanksgiving planning from chaos to success:</p><br>\n'
+          '<p>• Cooking assignments and stress reduction (no more "weeks of cooking endless stress")<br>\n'
+          '• Reliable help and promise follow-through (handle "they all promised they will help but will they really help?")<br>\n'
+          '• Family group chat organization (no more "who\'s bringing the pie? I can do it" chaos)<br>\n'
+          '• Balanced workload distribution (prevent "everything falls on mom" situations)</p><br>\n'
+          '<p><strong>✨</strong></p>\n'
+          '<p>Create reliable planning tools, systematically organize cooking tasks, coordinate reliable help, and manage family communication with Zoe!</p>',
+    ),
+    createdBy: 'user_7',
+  ),
 ];
