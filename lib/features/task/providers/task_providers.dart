@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/providers/service_providers.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
-import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/features/task/data/tasks.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
@@ -45,7 +45,9 @@ class TaskList extends _$TaskList {
       }
     }
 
-    final createdBy = await PreferencesService().getLoginUserId();
+    final createdBy = await ref
+        .read(preferencesServiceProvider)
+        .getLoginUserId();
 
     // Create the new task
     final newTask = TaskModel(
