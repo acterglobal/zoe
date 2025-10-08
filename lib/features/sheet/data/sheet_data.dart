@@ -51,9 +51,9 @@ final sheetList = [
     color: const Color(0xFF7C3AED), // Purple
     description: (
       plainText:
-          'Tired of endless scrolling through chats and thousands of photos? This is your digital organization sanctuary! From managing important details to finding better ways to organize photos, chats, and documents - Zoe helps you keep what matters most accessible and organized.',
+          'Tired of endless scrolling through chats and thousands of photos? This is your digital organization sanctuary! From managing important details to finding better ways to organize photos, chats, and documents - keep what matters most accessible and organized.',
       htmlText:
-          '<p>Tired of <strong>endless scrolling</strong> through chats and thousands of photos? This is your digital organization sanctuary! From managing important details to finding better ways to organize photos, chats, and documents - Zoe helps you keep what matters most accessible and organized.</p>',
+          '<p>Tired of <strong>endless scrolling</strong> through chats and thousands of photos? This is your digital organization sanctuary! From managing important details to finding better ways to organize photos, chats, and documents - keep what matters most accessible and organized.</p>',
     ),
     createdBy: 'user_1',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
@@ -65,12 +65,20 @@ final sheetList = [
     color: const Color(0xFF059669), // Emerald
     description: (
       plainText:
-          'Tired of 100+ notifications, scattered tools, and missing important clients? This is your one-stop solution for community management! From organizing chat groups to tracking important clients, event planning, and task management - Zoe brings everything together so you never miss what matters.',
+          'Tired of 100+ notifications, scattered tools, and missing important clients? This is your one-stop solution for community management! From organizing chat groups to tracking important clients, event planning, and task management - bring everything together so you never miss what matters.',
       htmlText:
-          '<p>Tired of <strong>100+ notifications</strong>, scattered tools, and missing important clients? This is your one-stop solution for community management! From organizing chat groups to tracking important clients, event planning, and task management - Zoe brings everything together so you never miss what matters.</p>',
+          '<p>Tired of <strong>100+ notifications</strong>, scattered tools, and missing important clients? This is your one-stop solution for community management! From organizing chat groups to tracking important clients, event planning, and task management - bring everything together so you never miss what matters.</p>',
     ),
     createdBy: 'user_2',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+    ],
   ),
   SheetModel(
     id: 'sheet-6',
@@ -79,12 +87,21 @@ final sheetList = [
     color: const Color(0xFF7C2D12), // Brown
     description: (
       plainText:
-          'Tired of endless "Friday or Sunday?" debates in group chat? We feel you! This is your solution for managing group chat chaos. From creating polls for quick decisions to organizing who\'s coming, tracking meeting preferences, and putting an end to endless back-and-forth discussions - Zoe helps you stay organized and make decisions fast.',
+          'Tired of endless "Friday or Sunday?" debates in group chat? We feel you! This is your solution for managing group chat chaos. From creating polls for quick decisions to organizing who\'s coming, tracking meeting preferences, and putting an end to endless back-and-forth discussions - stay organized and make decisions fast.',
       htmlText:
-          '<p>Tired of endless <strong>"Friday or Sunday?" debates</strong> in group chat? We feel you! This is your solution for managing group chat chaos. From creating polls for quick decisions to organizing who\'s coming, tracking meeting preferences, and putting an end to endless back-and-forth discussions - Zoe helps you stay organized and make decisions fast.</p>',
+          '<p>Tired of endless <strong>"Friday or Sunday?" debates</strong> in group chat? We feel you! This is your solution for managing group chat chaos. From creating polls for quick decisions to organizing who\'s coming, tracking meeting preferences, and putting an end to endless back-and-forth discussions - stay organized and make decisions fast.</p>',
     ),
     createdBy: 'user_3',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+    ],
   ),
   SheetModel(
     id: 'sheet-7',
@@ -93,12 +110,22 @@ final sheetList = [
     color: const Color(0xFF1E40AF), // Blue
     description: (
       plainText:
-          'Planning an exhibition feels overwhelming? We get it! Papers, notes, too many tools, but nothing is organized. Note apps, chat groups, calendars, paper flyers - so much stress and confusion! From food stalls to guest lists, stage management to vendor coordination - Zoe brings everything together in one organized place.',
+          'Planning an exhibition feels overwhelming? We get it! Papers, notes, too many tools, but nothing is organized. Note apps, chat groups, calendars, paper flyers - so much stress and confusion! From food stalls to guest lists, stage management to vendor coordination - bring everything together in one organized place.',
       htmlText:
-          '<p>Planning an exhibition feels <strong>overwhelming</strong>? We get it! Papers, notes, too many tools, but nothing is organized. Note apps, chat groups, calendars, paper flyers - so much stress and confusion! From food stalls to guest lists, stage management to vendor coordination - Zoe brings everything together in one organized place.</p>',
+          '<p>Planning an exhibition feels <strong>overwhelming</strong>? We get it! Papers, notes, too many tools, but nothing is organized. Note apps, chat groups, calendars, paper flyers - so much stress and confusion! From food stalls to guest lists, stage management to vendor coordination - bring everything together in one organized place.</p>',
     ),
     createdBy: 'user_4',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+      'user_9',
+    ],
   ),
   SheetModel(
     id: 'sheet-8',
@@ -107,12 +134,23 @@ final sheetList = [
     color: const Color(0xFFDC2626), // Red
     description: (
       plainText:
-          'It starts with one parent saying "Let\'s do a school fundraiser!" Then suddenly: cupcakes everywhere, ticket lists flying, volunteer signups no one tracks, calendar overflowing. What should be fun turns into mayhem! Too many chats and questions like "Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!" There\'s a better way - Zoe!',
+          'It starts with one parent saying "Let\'s do a school fundraiser!" Then suddenly: cupcakes everywhere, ticket lists flying, volunteer signups no one tracks, calendar overflowing. What should be fun turns into mayhem! Too many chats and questions like "Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!" There\'s a better way to organize!',
       htmlText:
-          '<p>It starts with one parent saying <strong>"Let\'s do a school fundraiser!"</strong> Then suddenly: cupcakes everywhere, ticket lists flying, volunteer signups no one tracks, calendar overflowing. What should be fun turns into mayhem! Too many chats and questions like "Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!" There\'s a better way - Zoe!</p>',
+          '<p>It starts with one parent saying <strong>"Let\'s do a school fundraiser!"</strong> Then suddenly: cupcakes everywhere, ticket lists flying, volunteer signups no one tracks, calendar overflowing. What should be fun turns into mayhem! Too many chats and questions like "Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!" There\'s a better way to organize!</p>',
     ),
     createdBy: 'user_5',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+      'user_9',
+      'user_10',
+    ],
   ),
   SheetModel(
     id: 'sheet-9',
@@ -121,12 +159,23 @@ final sheetList = [
     color: const Color(0xFFEA580C), // Orange
     description: (
       plainText:
-          'Planning a BBQ always starts with fun ideas, but then the group chat messages never stop! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates! Guys, where is the BBQ planning? What time we are meeting?" Total confusion! There\'s a better way - Zoe!',
+          'Planning a BBQ always starts with fun ideas, but then the group chat messages never stop! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates! Guys, where is the BBQ planning? What time we are meeting?" Total confusion! There\'s a better way to organize!',
       htmlText:
-          '<p>Planning a BBQ always starts with <strong>fun ideas</strong>, but then the group chat messages never stop! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates! Guys, where is the BBQ planning? What time we are meeting?" Total confusion! There\'s a better way - Zoe!</p>',
+          '<p>Planning a BBQ always starts with <strong>fun ideas</strong>, but then the group chat messages never stop! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates! Guys, where is the BBQ planning? What time we are meeting?" Total confusion! There\'s a better way to organize!</p>',
     ),
     createdBy: 'user_6',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+      'user_9',
+      'user_10',
+    ],
   ),
   SheetModel(
     id: 'sheet-10',
@@ -149,12 +198,21 @@ final sheetList = [
     color: const Color(0xFF059669), // Green
     description: (
       plainText:
-          'Book club - the perfect way to meet friends monthly! But when it\'s time to plan, messy chat: "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories! Now imagine one place for book, task, calendar with Zoe!',
+          'Book club - the perfect way to meet friends monthly! But when it\'s time to plan, messy chat: "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories! Now imagine one place for book, task, calendar!',
       htmlText:
-          '<p>Book club - <strong>the perfect way to meet friends monthly</strong>! But when it\'s time to plan, messy chat: "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories! Now imagine one place for book, task, calendar with Zoe!</p>',
+          '<p>Book club - <strong>the perfect way to meet friends monthly</strong>! But when it\'s time to plan, messy chat: "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories! Now imagine one place for book, task, calendar!</p>',
     ),
     createdBy: 'user_8',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+    ],
   ),
   SheetModel(
     id: 'sheet-12',
@@ -163,12 +221,23 @@ final sheetList = [
     color: const Color(0xFFDC2626), // Red
     description: (
       plainText:
-          'Softball club BBQ party planning: Great idea before it gets cold! BBQ? Softball? Drinks? This weekend? Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning, no clarity, everyone\'s missing, plan gone wrong! There\'s a better way - Zoe!',
+          'Softball club BBQ party planning: Great idea before it gets cold! BBQ? Softball? Drinks? This weekend? Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning, no clarity, everyone\'s missing, plan gone wrong! There\'s a better way to organize!',
       htmlText:
-          '<p>Softball club BBQ party planning: <strong>Great idea before it gets cold</strong>! BBQ? Softball? Drinks? This weekend? Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning, no clarity, everyone\'s missing, plan gone wrong! There\'s a better way - Zoe!</p>',
+          '<p>Softball club BBQ party planning: <strong>Great idea before it gets cold</strong>! BBQ? Softball? Drinks? This weekend? Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning, no clarity, everyone\'s missing, plan gone wrong! There\'s a better way to organize!</p>',
     ),
     createdBy: 'user_1',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+      'user_9',
+      'user_10',
+    ],
   ),
   SheetModel(
     id: 'sheet-13',
@@ -191,12 +260,21 @@ final sheetList = [
     color: const Color(0xFF059669), // Green
     description: (
       plainText:
-          'Church Summer Fest 2026: Coming together this summer! Food, music, games, charity raffle, but planning total chaos! Who\'s cooking? What\'s the budget? Which date works? Who brings chair? Busy lives, clashing schedules, no clarity! There\'s a better way - Zoe!',
+          'Church Summer Fest 2026: Coming together this summer! Food, music, games, charity raffle, but planning total chaos! Who\'s cooking? What\'s the budget? Which date works? Who brings chair? Busy lives, clashing schedules, no clarity! There\'s a better way to organize!',
       htmlText:
-          '<p>Church Summer Fest 2026: <strong>Coming together this summer</strong>! Food, music, games, charity raffle, but planning total chaos! Who\'s cooking? What\'s the budget? Which date works? Who brings chair? Busy lives, clashing schedules, no clarity! There\'s a better way - Zoe!</p>',
+          '<p>Church Summer Fest 2026: <strong>Coming together this summer</strong>! Food, music, games, charity raffle, but planning total chaos! Who\'s cooking? What\'s the budget? Which date works? Who brings chair? Busy lives, clashing schedules, no clarity! There\'s a better way to organize!</p>',
     ),
     createdBy: 'user_3',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+    ],
   ),
   SheetModel(
     id: 'sheet-15',
@@ -210,7 +288,18 @@ final sheetList = [
           '<p>Organizing PTA bake sale in school: <strong>The moms are full of energy</strong>, everyone excited to start baking together, but in group chat total chaos! Everyone nothing clear, who brings brownies? I will do cupcakes, need gluten-free too! Coffee included? Can\'t do Saturday, budget again? Decorations volunteer? Out this week, who pays? Nobody really knows, details lost!</p>',
     ),
     createdBy: 'user_4',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+      'user_9',
+      'user_10',
+    ],
   ),
   SheetModel(
     id: 'sheet-16',
@@ -224,7 +313,18 @@ final sheetList = [
           '<p>Halloween planning: <strong>Everyone\'s excited</strong>! Where you? We missed you! Wrong street, nobody on the same place, messy group chat like: meet at Maple St? Wait, Elm St right? I can only join later, we\'ll just go without u, wait which house again? Nobody is here!</p>',
     ),
     createdBy: 'user_5',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+      'user_9',
+      'user_10',
+    ],
   ),
   SheetModel(
     id: 'sheet-17',
@@ -238,7 +338,18 @@ final sheetList = [
           '<p>Organizing summer camp sign-ups: <strong>Parents are excited</strong>, kids wait for camp to start, and who bringing snacks? Did you fill the form? What\'s do when? Chats are full of questions: can we change the date? I thought it\'s July 15? I already booked tickets for Aug, who\'s handling payments? Snacks list? I can\'t find it, tents or not? Stress overload!</p>',
     ),
     createdBy: 'user_6',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+      'user_9',
+      'user_10',
+    ],
   ),
   SheetModel(
     id: 'sheet-18',
@@ -252,6 +363,17 @@ final sheetList = [
           '<p>Thanksgiving will not be terrible this year! <strong>Weeks of cooking endless stress</strong>, they all promised they will help but will they really help? I will handle the turkey in family group chats like: who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday and at end everything falls on mom!</p>',
     ),
     createdBy: 'user_7',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7', 'user_8', 'user_9', 'user_10'],
+    users: [
+      'user_1',
+      'user_2',
+      'user_3',
+      'user_4',
+      'user_5',
+      'user_6',
+      'user_7',
+      'user_8',
+      'user_9',
+      'user_10',
+    ],
   ),
 ];
