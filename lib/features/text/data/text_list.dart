@@ -92,22 +92,6 @@ final textList = [
     ),
     createdBy: 'user_2',
   ),
-  // Digital Organization Text Content
-  TextModel(
-    sheetId: 'sheet-4',
-    parentId: 'sheet-4',
-    id: 'text-content-7',
-    title: 'Digital Clutter Crisis - Organization Hub',
-    emoji: '🔍',
-    orderIndex: 5,
-    description: (
-      plainText:
-          'Your mission control for conquering digital clutter! 📱\n\nThis workspace helps you manage endless scrolling through chats and thousands of photos. We\'re creating systems that actually work for digital organization.\n\n🗳️ Vote on your biggest digital challenges\n📱 Track organization tasks and cleanup progress\n📅 Schedule digital cleanup sessions\n💡 Share tips, frustrations, and solutions\n🔗 Store organization tools and resources\n📄 Keep important details accessible and organized\n\nTransform digital chaos into organized bliss! ✨🗂️',
-      htmlText:
-          '<p>Your <strong>mission control for conquering digital clutter</strong>! 📱</p><br><p>This workspace helps you manage endless scrolling through chats and thousands of photos. We\'re creating systems that actually work for digital organization.</p><br><br><p><strong>🗳️ Vote</strong> on your biggest digital challenges</p><br><p><strong>📱 Track</strong> organization tasks and cleanup progress</p><br><p><strong>📅 Schedule</strong> digital cleanup sessions</p><br><p><strong>💡 Share</strong> tips, frustrations, and solutions</p><br><p><strong>🔗 Store</strong> organization tools and resources</p><br><p><strong>📄 Keep</strong> important details accessible and organized</p><br><br><p>Transform digital chaos into organized bliss! ✨🗂️</p>',
-    ),
-    createdBy: 'user_1',
-  ),
   // Community Organization Text Content
   TextModel(
     sheetId: 'sheet-5',
@@ -123,22 +107,6 @@ final textList = [
           '<p>Your <strong>command center for community management</strong>! 📱</p><br><p>This workspace helps you organize 100+ notifications and scattered tools. From organizing chat groups to tracking important clients, coordinating events, and managing tasks - bring everything together in one place.</p><br><br><p><strong>🗳️ Vote</strong> on community management challenges</p><br><p><strong>👥 Track</strong> community tasks and coordination efforts</p><br><p><strong>📅 Schedule</strong> community meetings and events</p><br><p><strong>💬 Share</strong> frustrations, solutions, and success stories</p><br><p><strong>🔗 Store</strong> community tools and resources</p><br><p><strong>📄 Keep</strong> all community documents organized</p><br><br><p>Transform community chaos into seamless coordination! 🎯✨</p>',
     ),
     createdBy: 'user_2',
-  ),
-  // Chat Management Text Content
-  TextModel(
-    sheetId: 'sheet-6',
-    parentId: 'sheet-6',
-    id: 'text-content-9',
-    title: 'End the Chat Chaos - Decision Making Hub',
-    emoji: '💬',
-    orderIndex: 5,
-    description: (
-      plainText:
-          'Your solution for group chat chaos and endless debates! 😤\n\nThis workspace helps you create polls for quick decisions, track who\'s coming, organize discussions, and put an end to endless back-and-forth - make decisions fast and stay organized.\n\n🗳️ Create polls for every group decision\n📱 Track attendance and who\'s coming\n📅 Organize chat topics and discussions\n😤 Share frustrations and celebrate solutions\n🔗 Store chat management tools and resources\n📄 Keep all group documents organized\n\nTransform chat chaos into organized decision-making! 🎯✨',
-      htmlText:
-          '<p>Your <strong>solution for group chat chaos and endless debates</strong>! 😤</p><br><p>This workspace helps you create polls for quick decisions, track who\'s coming, organize discussions, and put an end to endless back-and-forth - make decisions fast and stay organized.</p><br><br><p><strong>🗳️ Create</strong> polls for every group decision</p><br><p><strong>📱 Track</strong> attendance and who\'s coming</p><br><p><strong>📅 Organize</strong> chat topics and discussions</p><br><p><strong>😤 Share</strong> frustrations and celebrate solutions</p><br><p><strong>🔗 Store</strong> chat management tools and resources</p><br><p><strong>📄 Keep</strong> all group documents organized</p><br><br><p>Transform chat chaos into organized decision-making! 🎯✨</p>',
-    ),
-    createdBy: 'user_3',
   ),
   // Exhibition Planning Text Content
   TextModel(

@@ -45,20 +45,6 @@ final sheetList = [
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5'],
   ),
   SheetModel(
-    id: 'sheet-4',
-    title: 'Important Details Lost in the Messages',
-    emoji: '🔍',
-    color: const Color(0xFF7C3AED), // Purple
-    description: (
-      plainText:
-          'Your digital organization sanctuary for managing endless scrolling through chats and thousands of photos. This workspace helps you organize important details, photos, chats, and documents - keeping what matters most accessible and organized.',
-      htmlText:
-          '<p>Your <strong>digital organization sanctuary</strong> for managing endless scrolling through chats and thousands of photos. This workspace helps you organize important details, photos, chats, and documents - keeping what matters most accessible and organized.</p>',
-    ),
-    createdBy: 'user_1',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
-  ),
-  SheetModel(
     id: 'sheet-5',
     title: 'Community Organization Hub',
     emoji: '🏘️',
@@ -78,29 +64,6 @@ final sheetList = [
       'user_5',
       'user_6',
       'user_7',
-    ],
-  ),
-  SheetModel(
-    id: 'sheet-6',
-    title: 'Group Chat Chaos Management',
-    emoji: '💬',
-    color: const Color(0xFF7C2D12), // Brown
-    description: (
-      plainText:
-          'Your solution for managing group chat chaos and endless debates. This workspace helps you create polls for quick decisions, organize who\'s coming, track meeting preferences, and put an end to endless back-and-forth discussions - stay organized and make decisions fast.',
-      htmlText:
-          '<p>Your <strong>solution for managing group chat chaos</strong> and endless debates. This workspace helps you create polls for quick decisions, organize who\'s coming, track meeting preferences, and put an end to endless back-and-forth discussions - stay organized and make decisions fast.</p>',
-    ),
-    createdBy: 'user_3',
-    users: [
-      'user_1',
-      'user_2',
-      'user_3',
-      'user_4',
-      'user_5',
-      'user_6',
-      'user_7',
-      'user_8',
     ],
   ),
   SheetModel(

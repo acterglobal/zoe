@@ -73,28 +73,6 @@ final documentList = [
     sheetId: 'sheet-3',
     filePath: 'path/to/secret_santa_list.pdf',
   ),
-  // Digital Organization Documents
-  DocumentModel(
-    id: 'document-17',
-    title: 'Photo Organization System Guide',
-    parentId: 'list-document-4',
-    sheetId: 'sheet-4',
-    filePath: 'path/to/photo_organization_guide.pdf',
-  ),
-  DocumentModel(
-    id: 'document-18',
-    title: 'Important Contacts & Details',
-    parentId: 'list-document-4',
-    sheetId: 'sheet-4',
-    filePath: 'path/to/important_contacts.xlsx',
-  ),
-  DocumentModel(
-    id: 'document-19',
-    title: 'Digital Cleanup Checklist',
-    parentId: 'list-document-4',
-    sheetId: 'sheet-4',
-    filePath: 'path/to/digital_cleanup_checklist.docx',
-  ),
   // Community Management Documents
   DocumentModel(
     id: 'document-23',
@@ -116,28 +94,6 @@ final documentList = [
     parentId: 'list-document-5',
     sheetId: 'sheet-5',
     filePath: 'path/to/notification_system.docx',
-  ),
-  // Chat Management Documents
-  DocumentModel(
-    id: 'document-29',
-    title: 'Group Chat Rules & Guidelines',
-    parentId: 'list-document-6',
-    sheetId: 'sheet-6',
-    filePath: 'path/to/chat_rules.pdf',
-  ),
-  DocumentModel(
-    id: 'document-30',
-    title: 'Decision Making Poll Templates',
-    parentId: 'list-document-6',
-    sheetId: 'sheet-6',
-    filePath: 'path/to/poll_templates.docx',
-  ),
-  DocumentModel(
-    id: 'document-31',
-    title: 'Attendance Tracking System',
-    parentId: 'list-document-6',
-    sheetId: 'sheet-6',
-    filePath: 'path/to/attendance_tracker.xlsx',
   ),
   // Exhibition Planning Documents
   DocumentModel(

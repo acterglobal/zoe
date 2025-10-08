@@ -89,30 +89,6 @@ final eventList = [
     },
   ),
   EventModel(
-    sheetId: 'sheet-4',
-    parentId: 'sheet-4',
-    id: 'event-5',
-    title: 'Digital Cleanup & Organization Session',
-    orderIndex: 2,
-    description: (
-      plainText:
-          'Let\'s tackle our digital mess together! We\'ll organize photos, clean up chat history, and create a system to keep important details accessible. Bring your devices and let\'s make digital life manageable!',
-      htmlText:
-          '<p>Let\'s tackle our <strong>digital mess together</strong>! We\'ll organize photos, clean up chat history, and create a system to keep important details accessible. Bring your devices and let\'s make digital life manageable!</p>',
-    ),
-    startDate: DateTime.now().add(const Duration(days: 1)),
-    endDate: DateTime.now().add(const Duration(days: 1, hours: 3)),
-    createdBy: 'user_3',
-    rsvpResponses: {
-      'user_1': RsvpStatus.yes,
-      'user_2': RsvpStatus.yes,
-      'user_3': RsvpStatus.yes,
-      'user_4': RsvpStatus.yes,
-      'user_5': RsvpStatus.maybe,
-      'user_6': RsvpStatus.yes,
-    },
-  ),
-  EventModel(
     sheetId: 'sheet-5',
     parentId: 'sheet-5',
     id: 'event-6',
@@ -135,32 +111,6 @@ final eventList = [
       'user_5': RsvpStatus.yes,
       'user_6': RsvpStatus.maybe,
       'user_7': RsvpStatus.yes,
-    },
-  ),
-  EventModel(
-    sheetId: 'sheet-6',
-    parentId: 'sheet-6',
-    id: 'event-7',
-    title: 'Group Chat Decision Making Session',
-    orderIndex: 2,
-    description: (
-      plainText:
-          'Let\'s put an end to endless "Friday or Sunday?" debates! We\'ll use polls to make quick decisions, organize who\'s coming, and create a system to avoid future chat chaos.',
-      htmlText:
-          '<p>Let\'s put an end to endless <strong>"Friday or Sunday?" debates</strong>! We\'ll use polls to make quick decisions, organize who\'s coming, and create a system to avoid future chat chaos.</p>',
-    ),
-    startDate: DateTime.now().add(const Duration(hours: 2)),
-    endDate: DateTime.now().add(const Duration(hours: 3)),
-    createdBy: 'user_2',
-    rsvpResponses: {
-      'user_1': RsvpStatus.yes,
-      'user_2': RsvpStatus.yes,
-      'user_3': RsvpStatus.yes,
-      'user_4': RsvpStatus.maybe,
-      'user_5': RsvpStatus.yes,
-      'user_6': RsvpStatus.yes,
-      'user_7': RsvpStatus.maybe,
-      'user_8': RsvpStatus.yes,
     },
   ),
   EventModel(
