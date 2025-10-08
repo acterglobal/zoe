@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:zoe/common/providers/service_providers.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
@@ -15,16 +14,13 @@ void main() {
   late ProviderContainer container;
   late MockPreferencesService mockPreferencesService;
 
-  setUpAll(() {
+  setUp(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
-  });
 
-  setUp(() {
-    mockPreferencesService = MockPreferencesService();
-    when(
-      () => mockPreferencesService.getLoginUserId(),
-    ).thenAnswer((_) async => 'user_1');
+    // Create mock preferences service
+    mockPreferencesService = await mockGetLoginUserId();
 
+    // Create the container with mock
     container = ProviderContainer.test(
       overrides: [
         preferencesServiceProvider.overrideWithValue(mockPreferencesService),
