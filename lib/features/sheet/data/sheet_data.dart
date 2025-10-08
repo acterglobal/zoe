@@ -51,9 +51,9 @@ final sheetList = [
     color: const Color(0xFF7C3AED), // Purple
     description: (
       plainText:
-          'Tired of endless scrolling through chats and thousands of photos? This is your digital organization sanctuary! From managing important details to finding better ways to organize photos, chats, and documents - keep what matters most accessible and organized.',
+          'Your digital organization sanctuary for managing endless scrolling through chats and thousands of photos. This workspace helps you organize important details, photos, chats, and documents - keeping what matters most accessible and organized.',
       htmlText:
-          '<p>Tired of <strong>endless scrolling</strong> through chats and thousands of photos? This is your digital organization sanctuary! From managing important details to finding better ways to organize photos, chats, and documents - keep what matters most accessible and organized.</p>',
+          '<p>Your <strong>digital organization sanctuary</strong> for managing endless scrolling through chats and thousands of photos. This workspace helps you organize important details, photos, chats, and documents - keeping what matters most accessible and organized.</p>',
     ),
     createdBy: 'user_1',
     users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
@@ -65,9 +65,9 @@ final sheetList = [
     color: const Color(0xFF059669), // Emerald
     description: (
       plainText:
-          'Tired of 100+ notifications, scattered tools, and missing important clients? This is your one-stop solution for community management! From organizing chat groups to tracking important clients, event planning, and task management - bring everything together so you never miss what matters.',
+          'Your one-stop solution for community management! This workspace helps you organize 100+ notifications, scattered tools, and important clients. From organizing chat groups to tracking important clients, event planning, and task management - bring everything together so you never miss what matters.',
       htmlText:
-          '<p>Tired of <strong>100+ notifications</strong>, scattered tools, and missing important clients? This is your one-stop solution for community management! From organizing chat groups to tracking important clients, event planning, and task management - bring everything together so you never miss what matters.</p>',
+          '<p>Your <strong>one-stop solution for community management</strong>! This workspace helps you organize 100+ notifications, scattered tools, and important clients. From organizing chat groups to tracking important clients, event planning, and task management - bring everything together so you never miss what matters.</p>',
     ),
     createdBy: 'user_2',
     users: [
@@ -87,9 +87,9 @@ final sheetList = [
     color: const Color(0xFF7C2D12), // Brown
     description: (
       plainText:
-          'Tired of endless "Friday or Sunday?" debates in group chat? We feel you! This is your solution for managing group chat chaos. From creating polls for quick decisions to organizing who\'s coming, tracking meeting preferences, and putting an end to endless back-and-forth discussions - stay organized and make decisions fast.',
+          'Your solution for managing group chat chaos and endless debates. This workspace helps you create polls for quick decisions, organize who\'s coming, track meeting preferences, and put an end to endless back-and-forth discussions - stay organized and make decisions fast.',
       htmlText:
-          '<p>Tired of endless <strong>"Friday or Sunday?" debates</strong> in group chat? We feel you! This is your solution for managing group chat chaos. From creating polls for quick decisions to organizing who\'s coming, tracking meeting preferences, and putting an end to endless back-and-forth discussions - stay organized and make decisions fast.</p>',
+          '<p>Your <strong>solution for managing group chat chaos</strong> and endless debates. This workspace helps you create polls for quick decisions, organize who\'s coming, track meeting preferences, and put an end to endless back-and-forth discussions - stay organized and make decisions fast.</p>',
     ),
     createdBy: 'user_3',
     users: [
@@ -110,9 +110,9 @@ final sheetList = [
     color: const Color(0xFF1E40AF), // Blue
     description: (
       plainText:
-          'Planning an exhibition feels overwhelming? We get it! Papers, notes, too many tools, but nothing is organized. Note apps, chat groups, calendars, paper flyers - so much stress and confusion! From food stalls to guest lists, stage management to vendor coordination - bring everything together in one organized place.',
+          'Your organized workspace for exhibition planning! This hub helps you manage papers, notes, and multiple tools that were previously scattered. From food stalls to guest lists, stage management to vendor coordination - bring everything together in one organized place.',
       htmlText:
-          '<p>Planning an exhibition feels <strong>overwhelming</strong>? We get it! Papers, notes, too many tools, but nothing is organized. Note apps, chat groups, calendars, paper flyers - so much stress and confusion! From food stalls to guest lists, stage management to vendor coordination - bring everything together in one organized place.</p>',
+          '<p>Your <strong>organized workspace for exhibition planning</strong>! This hub helps you manage papers, notes, and multiple tools that were previously scattered. From food stalls to guest lists, stage management to vendor coordination - bring everything together in one organized place.</p>',
     ),
     createdBy: 'user_4',
     users: [
@@ -134,9 +134,9 @@ final sheetList = [
     color: const Color(0xFFDC2626), // Red
     description: (
       plainText:
-          'It starts with one parent saying "Let\'s do a school fundraiser!" Then suddenly: cupcakes everywhere, ticket lists flying, volunteer signups no one tracks, calendar overflowing. What should be fun turns into mayhem! Too many chats and questions like "Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!" There\'s a better way to organize!',
+          'Your organized workspace for school fundraiser success! This hub helps you manage cupcake coordination, ticket lists, volunteer signups, and calendar overflow. Transform what should be fun from mayhem into organized success with clear coordination and planning.',
       htmlText:
-          '<p>It starts with one parent saying <strong>"Let\'s do a school fundraiser!"</strong> Then suddenly: cupcakes everywhere, ticket lists flying, volunteer signups no one tracks, calendar overflowing. What should be fun turns into mayhem! Too many chats and questions like "Who\'s bringing cookies?" "When\'s the meeting?" "We need more flyers!" There\'s a better way to organize!</p>',
+          '<p>Your <strong>organized workspace for school fundraiser success</strong>! This hub helps you manage cupcake coordination, ticket lists, volunteer signups, and calendar overflow. Transform what should be fun from mayhem into organized success with clear coordination and planning.</p>',
     ),
     createdBy: 'user_5',
     users: [
@@ -159,9 +159,9 @@ final sheetList = [
     color: const Color(0xFFEA580C), // Orange
     description: (
       plainText:
-          'Planning a BBQ always starts with fun ideas, but then the group chat messages never stop! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates! Guys, where is the BBQ planning? What time we are meeting?" Total confusion! There\'s a better way to organize!',
+          'Your organized workspace for BBQ planning paradise! This hub helps you coordinate group chat messages, equipment planning, dietary restrictions, and meeting logistics. Transform BBQ planning from total confusion into organized fun with clear coordination.',
       htmlText:
-          '<p>Planning a BBQ always starts with <strong>fun ideas</strong>, but then the group chat messages never stop! "I will bring chips, wait who\'s bringing the grill? We need veggie options, I can\'t eat pork, do not forget the drinks, I already bought plates! Guys, where is the BBQ planning? What time we are meeting?" Total confusion! There\'s a better way to organize!</p>',
+          '<p>Your <strong>organized workspace for BBQ planning paradise</strong>! This hub helps you coordinate group chat messages, equipment planning, dietary restrictions, and meeting logistics. Transform BBQ planning from total confusion into organized fun with clear coordination.</p>',
     ),
     createdBy: 'user_6',
     users: [
@@ -184,9 +184,9 @@ final sheetList = [
     color: const Color(0xFF7C3AED), // Purple
     description: (
       plainText:
-          'New at university? Making friends is exciting! New group made, making friends is exciting, but organizing hangouts? Total chaos! When we meet? Which place? Not free Tuesday, change the time, different timetables, nobody replies, who\'s even coming? And nobody knows who\'s actually coming! Now imagine one place for all - calendar, checklist, poll, attendance!',
+          'Your organized workspace for university hangout coordination! This hub helps you manage different timetables, meeting places, and attendance tracking. Transform hangout planning from total chaos into organized fun with calendar, checklist, poll, and attendance management.',
       htmlText:
-          '<p>New at university? <strong>Making friends is exciting</strong>! New group made, making friends is exciting, but organizing hangouts? Total chaos! When we meet? Which place? Not free Tuesday, change the time, different timetables, nobody replies, who\'s even coming? And nobody knows who\'s actually coming! Now imagine one place for all - calendar, checklist, poll, attendance!</p>',
+          '<p>Your <strong>organized workspace for university hangout coordination</strong>! This hub helps you manage different timetables, meeting places, and attendance tracking. Transform hangout planning from total chaos into organized fun with calendar, checklist, poll, and attendance management.</p>',
     ),
     createdBy: 'user_7',
     users: ['user_1', 'user_5', 'user_6', 'user_7', 'user_8'],
@@ -198,9 +198,9 @@ final sheetList = [
     color: const Color(0xFF059669), // Green
     description: (
       plainText:
-          'Book club - the perfect way to meet friends monthly! But when it\'s time to plan, messy chat: "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories! Now imagine one place for book, task, calendar!',
+          'Your organized workspace for book club paradise! This hub helps you manage monthly meeting scheduling, hosting rotation, and book selection. Transform book club planning from stressful chaos into organized fun with one place for book, task, and calendar management.',
       htmlText:
-          '<p>Book club - <strong>the perfect way to meet friends monthly</strong>! But when it\'s time to plan, messy chat: "I\'m busy Friday, can we do next week? Who\'s hosting? Which book this time?" Juggling dates, hosting, deciding the book - sometimes it feels more stress than stories! Now imagine one place for book, task, calendar!</p>',
+          '<p>Your <strong>organized workspace for book club paradise</strong>! This hub helps you manage monthly meeting scheduling, hosting rotation, and book selection. Transform book club planning from stressful chaos into organized fun with one place for book, task, and calendar management.</p>',
     ),
     createdBy: 'user_8',
     users: [
@@ -221,9 +221,9 @@ final sheetList = [
     color: const Color(0xFFDC2626), // Red
     description: (
       plainText:
-          'Softball club BBQ party planning: Great idea before it gets cold! BBQ? Softball? Drinks? This weekend? Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning, no clarity, everyone\'s missing, plan gone wrong! There\'s a better way to organize!',
+          'Your organized workspace for softball club BBQ party planning! This hub helps you coordinate date finding, decision making, and attendance tracking. Transform BBQ party planning from endless confusion into organized success with clear coordination and planning.',
       htmlText:
-          '<p>Softball club BBQ party planning: <strong>Great idea before it gets cold</strong>! BBQ? Softball? Drinks? This weekend? Finding date is tough, someone is busy, everyone talking, nobody decide, endless planning, no clarity, everyone\'s missing, plan gone wrong! There\'s a better way to organize!</p>',
+          '<p>Your <strong>organized workspace for softball club BBQ party planning</strong>! This hub helps you coordinate date finding, decision making, and attendance tracking. Transform BBQ party planning from endless confusion into organized success with clear coordination and planning.</p>',
     ),
     createdBy: 'user_1',
     users: [
@@ -246,9 +246,9 @@ final sheetList = [
     color: const Color(0xFFEC4899), // Pink
     description: (
       plainText:
-          'Organizing a bachelorette party: Let\'s plan her bachelorette! The group chat is non-stop buzzing like "When we are doing it? Vegas or local? Too expensive, who\'s booking the Airbnb? I can\'t that weekend, what\'s the theme? Should we rent a limo? I vote for wine tasting." Juggling dates, no fix budget, no fix date, empty checklist - stress steals the fun!',
+          'Your organized workspace for bachelorette party paradise! This hub helps you manage group chat coordination, date planning, budget decisions, and activity selection. Transform bachelorette party planning from stressful chaos into organized fun with clear coordination and planning.',
       htmlText:
-          '<p>Organizing a bachelorette party: <strong>Let\'s plan her bachelorette</strong>! The group chat is non-stop buzzing like "When we are doing it? Vegas or local? Too expensive, who\'s booking the Airbnb? I can\'t that weekend, what\'s the theme? Should we rent a limo? I vote for wine tasting." Juggling dates, no fix budget, no fix date, empty checklist - stress steals the fun!</p>',
+          '<p>Your <strong>organized workspace for bachelorette party paradise</strong>! This hub helps you manage group chat coordination, date planning, budget decisions, and activity selection. Transform bachelorette party planning from stressful chaos into organized fun with clear coordination and planning.</p>',
     ),
     createdBy: 'user_2',
     users: ['user_1', 'user_2', 'user_3', 'user_4'],
@@ -260,9 +260,9 @@ final sheetList = [
     color: const Color(0xFF059669), // Green
     description: (
       plainText:
-          'Church Summer Fest 2026: Coming together this summer! Food, music, games, charity raffle, but planning total chaos! Who\'s cooking? What\'s the budget? Which date works? Who brings chair? Busy lives, clashing schedules, no clarity! There\'s a better way to organize!',
+          'Your organized workspace for Church Summer Fest 2026! This hub helps you coordinate food planning, budget management, date scheduling, and equipment coordination. Transform festival planning from total chaos into organized success with clear coordination and planning.',
       htmlText:
-          '<p>Church Summer Fest 2026: <strong>Coming together this summer</strong>! Food, music, games, charity raffle, but planning total chaos! Who\'s cooking? What\'s the budget? Which date works? Who brings chair? Busy lives, clashing schedules, no clarity! There\'s a better way to organize!</p>',
+          '<p>Your <strong>organized workspace for Church Summer Fest 2026</strong>! This hub helps you coordinate food planning, budget management, date scheduling, and equipment coordination. Transform festival planning from total chaos into organized success with clear coordination and planning.</p>',
     ),
     createdBy: 'user_3',
     users: [
@@ -283,9 +283,9 @@ final sheetList = [
     color: const Color(0xFFDC2626), // Red
     description: (
       plainText:
-          'Organizing PTA bake sale in school: The moms are full of energy, everyone excited to start baking together, but in group chat total chaos! Everyone nothing clear, who brings brownies? I will do cupcakes, need gluten-free too! Coffee included? Can\'t do Saturday, budget again? Decorations volunteer? Out this week, who pays? Nobody really knows, details lost!',
+          'Your organized workspace for PTA bake sale success! This hub helps you coordinate baking assignments, dietary restrictions, scheduling, budget management, and volunteer coordination. Transform bake sale planning from total chaos into organized success with clear coordination and planning.',
       htmlText:
-          '<p>Organizing PTA bake sale in school: <strong>The moms are full of energy</strong>, everyone excited to start baking together, but in group chat total chaos! Everyone nothing clear, who brings brownies? I will do cupcakes, need gluten-free too! Coffee included? Can\'t do Saturday, budget again? Decorations volunteer? Out this week, who pays? Nobody really knows, details lost!</p>',
+          '<p>Your <strong>organized workspace for PTA bake sale success</strong>! This hub helps you coordinate baking assignments, dietary restrictions, scheduling, budget management, and volunteer coordination. Transform bake sale planning from total chaos into organized success with clear coordination and planning.</p>',
     ),
     createdBy: 'user_4',
     users: [
@@ -308,9 +308,9 @@ final sheetList = [
     color: const Color(0xFF7C2D12), // Dark orange/brown
     description: (
       plainText:
-          'Halloween planning: Everyone\'s excited! Where you? We missed you! Wrong street, nobody on the same place, messy group chat like: meet at Maple St? Wait, Elm St right? I can only join later, we\'ll just go without u, wait which house again? Nobody is here!',
+          'Your organized workspace for Halloween planning spectacular! This hub helps you coordinate meeting locations, group chat organization, and attendance tracking. Transform Halloween planning from location confusion into organized fun with clear coordination and planning.',
       htmlText:
-          '<p>Halloween planning: <strong>Everyone\'s excited</strong>! Where you? We missed you! Wrong street, nobody on the same place, messy group chat like: meet at Maple St? Wait, Elm St right? I can only join later, we\'ll just go without u, wait which house again? Nobody is here!</p>',
+          '<p>Your <strong>organized workspace for Halloween planning spectacular</strong>! This hub helps you coordinate meeting locations, group chat organization, and attendance tracking. Transform Halloween planning from location confusion into organized fun with clear coordination and planning.</p>',
     ),
     createdBy: 'user_5',
     users: [
@@ -333,9 +333,9 @@ final sheetList = [
     color: const Color(0xFF059669), // Green
     description: (
       plainText:
-          'Organizing summer camp sign-ups: Parents are excited, kids wait for camp to start, and who bringing snacks? Did you fill the form? What\'s do when? Chats are full of questions: can we change the date? I thought it\'s July 15? I already booked tickets for Aug, who\'s handling payments? Snacks list? I can\'t find it, tents or not? Stress overload!',
+          'Your organized workspace for summer camp sign-ups success! This hub helps you coordinate form management, date scheduling, payment processing, and equipment planning. Transform camp sign-up planning from stress overload into organized success with clear coordination and planning.',
       htmlText:
-          '<p>Organizing summer camp sign-ups: <strong>Parents are excited</strong>, kids wait for camp to start, and who bringing snacks? Did you fill the form? What\'s do when? Chats are full of questions: can we change the date? I thought it\'s July 15? I already booked tickets for Aug, who\'s handling payments? Snacks list? I can\'t find it, tents or not? Stress overload!</p>',
+          '<p>Your <strong>organized workspace for summer camp sign-ups success</strong>! This hub helps you coordinate form management, date scheduling, payment processing, and equipment planning. Transform camp sign-up planning from stress overload into organized success with clear coordination and planning.</p>',
     ),
     createdBy: 'user_6',
     users: [
@@ -358,9 +358,9 @@ final sheetList = [
     color: const Color(0xFFEA580C), // Orange
     description: (
       plainText:
-          'Thanksgiving will not be terrible this year! Weeks of cooking endless stress, they all promised they will help but will they really help? I will handle the turkey in family group chats like: who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday and at end everything falls on mom!',
+          'Your organized workspace for Thanksgiving success! This hub helps you coordinate cooking assignments, family group chat management, and meal planning. Transform Thanksgiving planning from endless stress into organized success with clear coordination and planning.',
       htmlText:
-          '<p>Thanksgiving will not be terrible this year! <strong>Weeks of cooking endless stress</strong>, they all promised they will help but will they really help? I will handle the turkey in family group chats like: who\'s bringing the pie? I can do it. I will get the turkey, shares random meme, what time again? Thursday, dad! Not Friday and at end everything falls on mom!</p>',
+          '<p>Your <strong>organized workspace for Thanksgiving success</strong>! This hub helps you coordinate cooking assignments, family group chat management, and meal planning. Transform Thanksgiving planning from endless stress into organized success with clear coordination and planning.</p>',
     ),
     createdBy: 'user_7',
     users: [
