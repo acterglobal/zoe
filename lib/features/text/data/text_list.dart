@@ -94,8 +94,8 @@ final textList = [
   ),
   // Community Organization Text Content
   TextModel(
-    sheetId: 'sheet-5',
-    parentId: 'sheet-5',
+    sheetId: 'sheet-4',
+    parentId: 'sheet-4',
     id: 'text-content-8',
     title: 'Community Chaos to Coordination - One-Stop Solution',
     emoji: '🏘️',
@@ -110,8 +110,8 @@ final textList = [
   ),
   // Exhibition Planning Text Content
   TextModel(
-    sheetId: 'sheet-7',
-    parentId: 'sheet-7',
+    sheetId: 'sheet-5',
+    parentId: 'sheet-5',
     id: 'text-content-10',
     title: 'From Overwhelming Chaos to Organized Excellence',
     emoji: '🎨',
@@ -126,8 +126,8 @@ final textList = [
   ),
   // School Fundraiser Text Content
   TextModel(
-    sheetId: 'sheet-8',
-    parentId: 'sheet-8',
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
     id: 'text-content-11',
     title: 'From Fundraiser Mayhem to Organized Success',
     emoji: '🎓',
@@ -142,8 +142,8 @@ final textList = [
   ),
   // BBQ Planning Text Content
   TextModel(
-    sheetId: 'sheet-9',
-    parentId: 'sheet-9',
+    sheetId: 'sheet-7',
+    parentId: 'sheet-7',
     id: 'text-content-12',
     title: 'From BBQ Chaos to Planning Paradise',
     emoji: '🔥',
@@ -158,8 +158,8 @@ final textList = [
   ),
   // University Hangout Text Content
   TextModel(
-    sheetId: 'sheet-10',
-    parentId: 'sheet-10',
+    sheetId: 'sheet-8',
+    parentId: 'sheet-8',
     id: 'text-content-13',
     title: 'From University Chaos to Organized Fun',
     emoji: '🎓',
@@ -174,8 +174,8 @@ final textList = [
   ),
   // Book Club Text Content
   TextModel(
-    sheetId: 'sheet-11',
-    parentId: 'sheet-11',
+    sheetId: 'sheet-9',
+    parentId: 'sheet-9',
     id: 'text-content-14',
     title: 'From Book Club Stress to Story Paradise',
     emoji: '📚',
@@ -190,8 +190,8 @@ final textList = [
   ),
   // Softball Club BBQ Party Text Content
   TextModel(
-    sheetId: 'sheet-12',
-    parentId: 'sheet-12',
+    sheetId: 'sheet-10',
+    parentId: 'sheet-10',
     id: 'text-content-15',
     title: 'From Softball Club BBQ Chaos to Success Paradise',
     emoji: '⚾',
@@ -206,8 +206,8 @@ final textList = [
   ),
   // Bachelorette Party Text Content
   TextModel(
-    sheetId: 'sheet-13',
-    parentId: 'sheet-13',
+    sheetId: 'sheet-11',
+    parentId: 'sheet-11',
     id: 'text-content-16',
     title: 'From Bachelorette Party Stress to Celebration Paradise',
     emoji: '💃',
@@ -222,8 +222,8 @@ final textList = [
   ),
   // Church Summer Fest 2026 Text Content
   TextModel(
-    sheetId: 'sheet-14',
-    parentId: 'sheet-14',
+    sheetId: 'sheet-12',
+    parentId: 'sheet-12',
     id: 'text-content-17',
     title: 'From Church Summer Fest Chaos to Community Success',
     emoji: '⛪',
@@ -238,8 +238,8 @@ final textList = [
   ),
   TextModel(
     id: 'text-content-18',
-    sheetId: 'sheet-15',
-    parentId: 'sheet-15',
+    sheetId: 'sheet-13',
+    parentId: 'sheet-13',
     title: 'From PTA Bake Sale Chaos to Sweet Success Paradise',
     orderIndex: 6,
     description: (
@@ -266,8 +266,8 @@ final textList = [
   ),
   TextModel(
     id: 'text-content-19',
-    sheetId: 'sheet-16',
-    parentId: 'sheet-16',
+    sheetId: 'sheet-14',
+    parentId: 'sheet-14',
     title: 'From Halloween Planning Chaos to Spectacular Success',
     orderIndex: 6,
     description: (
@@ -297,8 +297,8 @@ final textList = [
   ),
   TextModel(
     id: 'text-content-20',
-    sheetId: 'sheet-17',
-    parentId: 'sheet-17',
+    sheetId: 'sheet-15',
+    parentId: 'sheet-15',
     title: 'From Summer Camp Sign-ups Chaos to Spectacular Success',
     orderIndex: 6,
     description: (
@@ -328,8 +328,8 @@ final textList = [
   ),
   TextModel(
     id: 'text-content-21',
-    sheetId: 'sheet-18',
-    parentId: 'sheet-18',
+    sheetId: 'sheet-16',
+    parentId: 'sheet-16',
     title: 'From Thanksgiving Planning Chaos to Spectacular Success',
     orderIndex: 6,
     description: (

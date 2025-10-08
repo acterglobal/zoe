@@ -305,8 +305,8 @@ final tasks = [
   // Community Management Tasks
   TaskModel(
     id: 'community-task-1',
-    sheetId: 'sheet-5',
-    parentId: 'list-tasks-5',
+    sheetId: 'sheet-4',
+    parentId: 'list-tasks-4',
     title: 'Consolidate 100+ notifications into priority system',
     orderIndex: 1,
     description: (
@@ -322,8 +322,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'community-task-2',
-    sheetId: 'sheet-5',
-    parentId: 'list-tasks-5',
+    sheetId: 'sheet-4',
+    parentId: 'list-tasks-4',
     title: 'Create centralized client tracking system',
     orderIndex: 2,
     description: (
@@ -339,8 +339,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'community-task-3',
-    sheetId: 'sheet-5',
-    parentId: 'list-tasks-5',
+    sheetId: 'sheet-4',
+    parentId: 'list-tasks-4',
     title: 'Migrate scattered tasks to one platform',
     orderIndex: 3,
     description: (
@@ -356,8 +356,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'community-task-4',
-    sheetId: 'sheet-5',
-    parentId: 'list-tasks-5',
+    sheetId: 'sheet-4',
+    parentId: 'list-tasks-4',
     title: 'Set up meeting coordination system',
     orderIndex: 4,
     description: (
@@ -374,8 +374,8 @@ final tasks = [
   // Exhibition Management Tasks
   TaskModel(
     id: 'exhibition-task-1',
-    sheetId: 'sheet-7',
-    parentId: 'list-tasks-7',
+    sheetId: 'sheet-5',
+    parentId: 'list-tasks-5',
     title: 'Consolidate scattered tools and apps',
     orderIndex: 1,
     description: (
@@ -391,8 +391,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'exhibition-task-2',
-    sheetId: 'sheet-7',
-    parentId: 'list-tasks-7',
+    sheetId: 'sheet-5',
+    parentId: 'list-tasks-5',
     title: 'Organize food stall coordination',
     orderIndex: 2,
     description: (
@@ -408,8 +408,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'exhibition-task-3',
-    sheetId: 'sheet-7',
-    parentId: 'list-tasks-7',
+    sheetId: 'sheet-5',
+    parentId: 'list-tasks-5',
     title: 'Create comprehensive guest list system',
     orderIndex: 3,
     description: (
@@ -425,8 +425,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'exhibition-task-4',
-    sheetId: 'sheet-7',
-    parentId: 'list-tasks-7',
+    sheetId: 'sheet-5',
+    parentId: 'list-tasks-5',
     title: 'Set up stage management coordination',
     orderIndex: 4,
     description: (
@@ -443,8 +443,8 @@ final tasks = [
   // School Fundraiser Management Tasks
   TaskModel(
     id: 'fundraiser-task-1',
-    sheetId: 'sheet-8',
-    parentId: 'list-tasks-8',
+    sheetId: 'sheet-6',
+    parentId: 'list-tasks-6',
     title: 'Organize cupcake chaos - who\'s bringing what?',
     orderIndex: 1,
     description: (
@@ -460,8 +460,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'fundraiser-task-2',
-    sheetId: 'sheet-8',
-    parentId: 'list-tasks-8',
+    sheetId: 'sheet-6',
+    parentId: 'list-tasks-6',
     title: 'Consolidate flying ticket lists',
     orderIndex: 2,
     description: (
@@ -477,8 +477,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'fundraiser-task-3',
-    sheetId: 'sheet-8',
-    parentId: 'list-tasks-8',
+    sheetId: 'sheet-6',
+    parentId: 'list-tasks-6',
     title: 'Track volunteer signups properly',
     orderIndex: 3,
     description: (
@@ -494,8 +494,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'fundraiser-task-4',
-    sheetId: 'sheet-8',
-    parentId: 'list-tasks-8',
+    sheetId: 'sheet-6',
+    parentId: 'list-tasks-6',
     title: 'Organize overflowing calendar and meetings',
     orderIndex: 4,
     description: (
@@ -512,8 +512,8 @@ final tasks = [
   // BBQ Management Tasks
   TaskModel(
     id: 'bbq-task-1',
-    sheetId: 'sheet-9',
-    parentId: 'list-tasks-9',
+    sheetId: 'sheet-7',
+    parentId: 'list-tasks-7',
     title: 'Organize endless group chat messages',
     orderIndex: 1,
     description: (
@@ -529,8 +529,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'bbq-task-2',
-    sheetId: 'sheet-9',
-    parentId: 'list-tasks-9',
+    sheetId: 'sheet-7',
+    parentId: 'list-tasks-7',
     title: 'Coordinate equipment - who\'s bringing the grill?',
     orderIndex: 2,
     description: (
@@ -546,8 +546,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'bbq-task-3',
-    sheetId: 'sheet-9',
-    parentId: 'list-tasks-9',
+    sheetId: 'sheet-7',
+    parentId: 'list-tasks-7',
     title: 'Handle dietary restrictions - veggie options, no pork!',
     orderIndex: 3,
     description: (
@@ -563,8 +563,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'bbq-task-4',
-    sheetId: 'sheet-9',
-    parentId: 'list-tasks-9',
+    sheetId: 'sheet-7',
+    parentId: 'list-tasks-7',
     title: 'Set clear meeting time and location',
     orderIndex: 4,
     description: (
@@ -581,8 +581,8 @@ final tasks = [
   // University Hangout Management Tasks
   TaskModel(
     id: 'university-task-1',
-    sheetId: 'sheet-10',
-    parentId: 'list-tasks-10',
+    sheetId: 'sheet-8',
+    parentId: 'list-tasks-8',
     title: 'Coordinate different timetables and schedules',
     orderIndex: 1,
     description: (
@@ -598,8 +598,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'university-task-2',
-    sheetId: 'sheet-10',
-    parentId: 'list-tasks-10',
+    sheetId: 'sheet-8',
+    parentId: 'list-tasks-8',
     title: 'Find the right places to meet',
     orderIndex: 2,
     description: (
@@ -615,8 +615,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'university-task-3',
-    sheetId: 'sheet-10',
-    parentId: 'list-tasks-10',
+    sheetId: 'sheet-8',
+    parentId: 'list-tasks-8',
     title: 'Track who\'s actually coming to hangouts',
     orderIndex: 3,
     description: (
@@ -632,8 +632,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'university-task-4',
-    sheetId: 'sheet-10',
-    parentId: 'list-tasks-10',
+    sheetId: 'sheet-8',
+    parentId: 'list-tasks-8',
     title: 'Create one place for all - calendar, checklist, poll, attendance',
     orderIndex: 4,
     description: (
@@ -650,8 +650,8 @@ final tasks = [
   // Book Club Management Tasks
   TaskModel(
     id: 'bookclub-task-1',
-    sheetId: 'sheet-11',
-    parentId: 'list-tasks-11',
+    sheetId: 'sheet-9',
+    parentId: 'list-tasks-9',
     title: 'Organize monthly meeting scheduling',
     orderIndex: 1,
     description: (
@@ -667,8 +667,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'bookclub-task-2',
-    sheetId: 'sheet-11',
-    parentId: 'list-tasks-11',
+    sheetId: 'sheet-9',
+    parentId: 'list-tasks-9',
     title: 'Set up hosting rotation system',
     orderIndex: 2,
     description: (
@@ -684,8 +684,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'bookclub-task-3',
-    sheetId: 'sheet-11',
-    parentId: 'list-tasks-11',
+    sheetId: 'sheet-9',
+    parentId: 'list-tasks-9',
     title: 'Create book selection process',
     orderIndex: 3,
     description: (
@@ -701,8 +701,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'bookclub-task-4',
-    sheetId: 'sheet-11',
-    parentId: 'list-tasks-11',
+    sheetId: 'sheet-9',
+    parentId: 'list-tasks-9',
     title: 'Organize one place for book, task, calendar',
     orderIndex: 4,
     description: (
@@ -719,8 +719,8 @@ final tasks = [
   // Softball Club BBQ Party Management Tasks
   TaskModel(
     id: 'softball-task-1',
-    sheetId: 'sheet-12',
-    parentId: 'list-tasks-12',
+    sheetId: 'sheet-10',
+    parentId: 'list-tasks-10',
     title: 'Find a date that works for everyone',
     orderIndex: 1,
     description: (
@@ -736,8 +736,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'softball-task-2',
-    sheetId: 'sheet-12',
-    parentId: 'list-tasks-12',
+    sheetId: 'sheet-10',
+    parentId: 'list-tasks-10',
     title: 'Stop endless talking and make clear decisions',
     orderIndex: 2,
     description: (
@@ -753,8 +753,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'softball-task-3',
-    sheetId: 'sheet-12',
-    parentId: 'list-tasks-12',
+    sheetId: 'sheet-10',
+    parentId: 'list-tasks-10',
     title: 'Create clarity in planning process',
     orderIndex: 3,
     description: (
@@ -770,8 +770,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'softball-task-4',
-    sheetId: 'sheet-12',
-    parentId: 'list-tasks-12',
+    sheetId: 'sheet-10',
+    parentId: 'list-tasks-10',
     title: 'Ensure everyone attends and plan succeeds',
     orderIndex: 4,
     description: (
@@ -788,8 +788,8 @@ final tasks = [
   // Bachelorette Party Management Tasks
   TaskModel(
     id: 'bachelorette-task-1',
-    sheetId: 'sheet-13',
-    parentId: 'list-tasks-13',
+    sheetId: 'sheet-11',
+    parentId: 'list-tasks-11',
     title: 'Stop non-stop group chat buzzing and organize decisions',
     orderIndex: 1,
     description: (
@@ -805,8 +805,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'bachelorette-task-2',
-    sheetId: 'sheet-13',
-    parentId: 'list-tasks-13',
+    sheetId: 'sheet-11',
+    parentId: 'list-tasks-11',
     title: 'Set fixed budget and date decisions',
     orderIndex: 2,
     description: (
@@ -822,8 +822,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'bachelorette-task-3',
-    sheetId: 'sheet-13',
-    parentId: 'list-tasks-13',
+    sheetId: 'sheet-11',
+    parentId: 'list-tasks-11',
     title: 'Create comprehensive bachelorette party checklist',
     orderIndex: 3,
     description: (
@@ -839,8 +839,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'bachelorette-task-4',
-    sheetId: 'sheet-13',
-    parentId: 'list-tasks-13',
+    sheetId: 'sheet-11',
+    parentId: 'list-tasks-11',
     title: 'Transform stress into fun celebration planning',
     orderIndex: 4,
     description: (
@@ -857,8 +857,8 @@ final tasks = [
   // Church Summer Fest 2026 Management Tasks
   TaskModel(
     id: 'church-task-1',
-    sheetId: 'sheet-14',
-    parentId: 'list-tasks-14',
+    sheetId: 'sheet-12',
+    parentId: 'list-tasks-12',
     title: 'Organize food coordination and cooking assignments',
     orderIndex: 1,
     description: (
@@ -874,8 +874,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'church-task-2',
-    sheetId: 'sheet-14',
-    parentId: 'list-tasks-14',
+    sheetId: 'sheet-12',
+    parentId: 'list-tasks-12',
     title: 'Set clear budget and cost planning',
     orderIndex: 2,
     description: (
@@ -891,8 +891,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'church-task-3',
-    sheetId: 'sheet-14',
-    parentId: 'list-tasks-14',
+    sheetId: 'sheet-12',
+    parentId: 'list-tasks-12',
     title: 'Coordinate dates and resolve scheduling conflicts',
     orderIndex: 3,
     description: (
@@ -908,8 +908,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'church-task-4',
-    sheetId: 'sheet-14',
-    parentId: 'list-tasks-14',
+    sheetId: 'sheet-12',
+    parentId: 'list-tasks-12',
     title: 'Organize equipment and setup coordination',
     orderIndex: 4,
     description: (
@@ -926,8 +926,8 @@ final tasks = [
   // PTA Bake Sale Management Tasks
   TaskModel(
     id: 'pta-task-1',
-    sheetId: 'sheet-15',
-    parentId: 'list-tasks-15',
+    sheetId: 'sheet-13',
+    parentId: 'list-tasks-13',
     title: 'Organize baking assignments and coordination',
     orderIndex: 1,
     description: (
@@ -943,8 +943,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'pta-task-2',
-    sheetId: 'sheet-15',
-    parentId: 'list-tasks-15',
+    sheetId: 'sheet-13',
+    parentId: 'list-tasks-13',
     title: 'Handle dietary restrictions and special needs',
     orderIndex: 2,
     description: (
@@ -960,8 +960,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'pta-task-3',
-    sheetId: 'sheet-15',
-    parentId: 'list-tasks-15',
+    sheetId: 'sheet-13',
+    parentId: 'list-tasks-13',
     title: 'Resolve scheduling conflicts and availability',
     orderIndex: 3,
     description: (
@@ -977,8 +977,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'pta-task-4',
-    sheetId: 'sheet-15',
-    parentId: 'list-tasks-15',
+    sheetId: 'sheet-13',
+    parentId: 'list-tasks-13',
     title: 'Create clear budget and payment coordination',
     orderIndex: 4,
     description: (
@@ -995,8 +995,8 @@ final tasks = [
   // Halloween Planning Management Tasks
   TaskModel(
     id: 'halloween-task-1',
-    sheetId: 'sheet-16',
-    parentId: 'list-tasks-16',
+    sheetId: 'sheet-14',
+    parentId: 'list-tasks-14',
     title: 'Coordinate meeting locations and clear directions',
     orderIndex: 1,
     description: (
@@ -1012,8 +1012,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'halloween-task-2',
-    sheetId: 'sheet-16',
-    parentId: 'list-tasks-16',
+    sheetId: 'sheet-14',
+    parentId: 'list-tasks-14',
     title: 'Organize clear communication and group chat',
     orderIndex: 2,
     description: (
@@ -1029,8 +1029,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'halloween-task-3',
-    sheetId: 'sheet-16',
-    parentId: 'list-tasks-16',
+    sheetId: 'sheet-14',
+    parentId: 'list-tasks-14',
     title: 'Handle scheduling conflicts and late arrivals',
     orderIndex: 3,
     description: (
@@ -1046,8 +1046,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'halloween-task-4',
-    sheetId: 'sheet-16',
-    parentId: 'list-tasks-16',
+    sheetId: 'sheet-14',
+    parentId: 'list-tasks-14',
     title: 'Create clear house locations and meeting points',
     orderIndex: 4,
     description: (
@@ -1064,8 +1064,8 @@ final tasks = [
   // Summer Camp Sign-ups Management Tasks
   TaskModel(
     id: 'camp-task-1',
-    sheetId: 'sheet-17',
-    parentId: 'list-tasks-17',
+    sheetId: 'sheet-15',
+    parentId: 'list-tasks-15',
     title: 'Organize form submissions and sign-up process',
     orderIndex: 1,
     description: (
@@ -1081,8 +1081,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'camp-task-2',
-    sheetId: 'sheet-17',
-    parentId: 'list-tasks-17',
+    sheetId: 'sheet-15',
+    parentId: 'list-tasks-15',
     title: 'Handle date conflicts and scheduling confusion',
     orderIndex: 2,
     description: (
@@ -1098,8 +1098,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'camp-task-3',
-    sheetId: 'sheet-17',
-    parentId: 'list-tasks-17',
+    sheetId: 'sheet-15',
+    parentId: 'list-tasks-15',
     title: 'Manage payment handling and financial coordination',
     orderIndex: 3,
     description: (
@@ -1115,8 +1115,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'camp-task-4',
-    sheetId: 'sheet-17',
-    parentId: 'list-tasks-17',
+    sheetId: 'sheet-15',
+    parentId: 'list-tasks-15',
     title: 'Organize equipment and supplies coordination',
     orderIndex: 4,
     description: (
@@ -1133,8 +1133,8 @@ final tasks = [
   // Thanksgiving Planning Management Tasks
   TaskModel(
     id: 'thanksgiving-task-1',
-    sheetId: 'sheet-18',
-    parentId: 'list-tasks-18',
+    sheetId: 'sheet-16',
+    parentId: 'list-tasks-16',
     title: 'Organize cooking assignments and reduce endless stress',
     orderIndex: 1,
     description: (
@@ -1150,8 +1150,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'thanksgiving-task-2',
-    sheetId: 'sheet-18',
-    parentId: 'list-tasks-18',
+    sheetId: 'sheet-16',
+    parentId: 'list-tasks-16',
     title: 'Ensure reliable help and follow through on promises',
     orderIndex: 2,
     description: (
@@ -1167,8 +1167,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'thanksgiving-task-3',
-    sheetId: 'sheet-18',
-    parentId: 'list-tasks-18',
+    sheetId: 'sheet-16',
+    parentId: 'list-tasks-16',
     title: 'Handle family group chat chaos and confusion',
     orderIndex: 3,
     description: (
@@ -1184,8 +1184,8 @@ final tasks = [
   ),
   TaskModel(
     id: 'thanksgiving-task-4',
-    sheetId: 'sheet-18',
-    parentId: 'list-tasks-18',
+    sheetId: 'sheet-16',
+    parentId: 'list-tasks-16',
     title: 'Prevent everything from falling on mom',
     orderIndex: 4,
     description: (

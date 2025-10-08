@@ -291,7 +291,7 @@ final bulletList = [
   BulletModel(
     id: 'bullet-item-21',
     sheetId: 'sheet-3',
-    parentId: 'list-bulleted-5',
+    parentId: 'list-bulleted-3',
     title: 'I bought fairy lights ✨',
     orderIndex: 1,
     description: (
@@ -305,7 +305,7 @@ final bulletList = [
   BulletModel(
     id: 'bullet-item-22',
     sheetId: 'sheet-3',
-    parentId: 'list-bulleted-5',
+    parentId: 'list-bulleted-3',
     title: 'Lol check this meme 😂',
     orderIndex: 2,
     description: (
@@ -319,7 +319,7 @@ final bulletList = [
   BulletModel(
     id: 'bullet-item-23',
     sheetId: 'sheet-3',
-    parentId: 'list-bulleted-5',
+    parentId: 'list-bulleted-3',
     title: 'Which date final?',
     orderIndex: 3,
     description: (
@@ -333,7 +333,7 @@ final bulletList = [
   BulletModel(
     id: 'bullet-item-24',
     sheetId: 'sheet-3',
-    parentId: 'list-bulleted-5',
+    parentId: 'list-bulleted-3',
     title: 'Secret Santa budget - how much?',
     orderIndex: 4,
     description: (
@@ -347,8 +347,8 @@ final bulletList = [
   // Community Management Frustrations & Solutions
   BulletModel(
     id: 'bullet-item-30',
-    sheetId: 'sheet-5',
-    parentId: 'list-bulleted-7',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-4',
     title: '100+ notifications and I missed the important client! 😱',
     orderIndex: 1,
     description: (
@@ -361,8 +361,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-31',
-    sheetId: 'sheet-5',
-    parentId: 'list-bulleted-7',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-4',
     title: 'Note app here, todo list there, tasks everywhere! 🤯',
     orderIndex: 2,
     description: (
@@ -375,8 +375,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-32',
-    sheetId: 'sheet-5',
-    parentId: 'list-bulleted-7',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-4',
     title: 'By the time I figure out what\'s happening, the meeting\'s over! ⏰',
     orderIndex: 3,
     description: (
@@ -389,8 +389,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-33',
-    sheetId: 'sheet-5',
-    parentId: 'list-bulleted-7',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-4',
     title: 'Zoe is the one-stop solution we needed! 🎯',
     orderIndex: 4,
     description: (
@@ -403,8 +403,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-34',
-    sheetId: 'sheet-5',
-    parentId: 'list-bulleted-7',
+    sheetId: 'sheet-4',
+    parentId: 'list-bulleted-4',
     title: 'Important clients are now easy to track and never get lost! 👑',
     orderIndex: 5,
     description: (
@@ -418,8 +418,8 @@ final bulletList = [
   // Exhibition Management Frustrations & Solutions
   BulletModel(
     id: 'bullet-item-40',
-    sheetId: 'sheet-7',
-    parentId: 'list-bulleted-9',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-5',
     title: 'Planning an exhibition feels overwhelming! 😰',
     orderIndex: 1,
     description: (
@@ -432,8 +432,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-41',
-    sheetId: 'sheet-7',
-    parentId: 'list-bulleted-9',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-5',
     title: 'Food stall? Where\'s the guest list? Who\'s managing stage? 🤯',
     orderIndex: 2,
     description: (
@@ -446,8 +446,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-42',
-    sheetId: 'sheet-7',
-    parentId: 'list-bulleted-9',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-5',
     title: 'Better way is Zoe! 🎯',
     orderIndex: 3,
     description: (
@@ -460,8 +460,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-43',
-    sheetId: 'sheet-7',
-    parentId: 'list-bulleted-9',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-5',
     title: 'No more scattered confusion - everything in one place! ✨',
     orderIndex: 4,
     description: (
@@ -474,8 +474,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-44',
-    sheetId: 'sheet-7',
-    parentId: 'list-bulleted-9',
+    sheetId: 'sheet-5',
+    parentId: 'list-bulleted-5',
     title: 'From panic to peace - organized exhibition planning! 🎨',
     orderIndex: 5,
     description: (
@@ -489,8 +489,8 @@ final bulletList = [
   // School Fundraiser Chaos & Success Stories
   BulletModel(
     id: 'bullet-item-45',
-    sheetId: 'sheet-8',
-    parentId: 'list-bulleted-10',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-6',
     title: 'It starts with one parent saying "Let\'s do a school fundraiser!" 😅',
     orderIndex: 1,
     description: (
@@ -503,8 +503,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-46',
-    sheetId: 'sheet-8',
-    parentId: 'list-bulleted-10',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-6',
     title: 'Then suddenly: Cupcakes everywhere! Ticket lists flying! 😱',
     orderIndex: 2,
     description: (
@@ -517,8 +517,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-47',
-    sheetId: 'sheet-8',
-    parentId: 'list-bulleted-10',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-6',
     title: 'What should be fun turns into mayhem! 😤',
     orderIndex: 3,
     description: (
@@ -530,23 +530,9 @@ final bulletList = [
     createdBy: 'user_3',
   ),
   BulletModel(
-    id: 'bullet-item-48',
-    sheetId: 'sheet-8',
-    parentId: 'list-bulleted-10',
-    title: 'There\'s a better way - Zoe! 🎯',
-    orderIndex: 4,
-    description: (
-      plainText:
-          'Finally! One platform to organize cupcakes, track ticket lists, manage volunteer signups, and coordinate meetings. No more mayhem!',
-      htmlText:
-          '<p>Finally! <strong>One platform to organize cupcakes, track ticket lists, manage volunteer signups, and coordinate meetings</strong>. No more mayhem!</p>',
-    ),
-    createdBy: 'user_4',
-  ),
-  BulletModel(
     id: 'bullet-item-49',
-    sheetId: 'sheet-8',
-    parentId: 'list-bulleted-10',
+    sheetId: 'sheet-6',
+    parentId: 'list-bulleted-6',
     title: 'From mayhem to success - organized fundraiser planning! 🎓✨',
     orderIndex: 5,
     description: (
@@ -560,8 +546,8 @@ final bulletList = [
   // BBQ Chaos & Success Stories
   BulletModel(
     id: 'bullet-item-50',
-    sheetId: 'sheet-9',
-    parentId: 'list-bulleted-11',
+    sheetId: 'sheet-7',
+    parentId: 'list-bulleted-7',
     title: 'Planning a BBQ always starts with fun ideas! 🔥',
     orderIndex: 1,
     description: (
@@ -574,8 +560,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-51',
-    sheetId: 'sheet-9',
-    parentId: 'list-bulleted-11',
+    sheetId: 'sheet-7',
+    parentId: 'list-bulleted-7',
     title: 'But then the group chat messages never stop! 😱',
     orderIndex: 2,
     description: (
@@ -588,8 +574,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-52',
-    sheetId: 'sheet-9',
-    parentId: 'list-bulleted-11',
+    sheetId: 'sheet-7',
+    parentId: 'list-bulleted-7',
     title: 'Guys, where is the BBQ planning? What time we are meeting? 😤',
     orderIndex: 3,
     description: (
@@ -601,23 +587,9 @@ final bulletList = [
     createdBy: 'user_3',
   ),
   BulletModel(
-    id: 'bullet-item-53',
-    sheetId: 'sheet-9',
-    parentId: 'list-bulleted-11',
-    title: 'There\'s a better way - Zoe! 🎯',
-    orderIndex: 4,
-    description: (
-      plainText:
-          'Finally! One platform to organize all BBQ planning, coordinate who\'s bringing what, handle dietary restrictions, and set clear meeting times!',
-      htmlText:
-          '<p>Finally! <strong>One platform to organize all BBQ planning</strong>, coordinate who\'s bringing what, handle dietary restrictions, and set clear meeting times!</p>',
-    ),
-    createdBy: 'user_4',
-  ),
-  BulletModel(
     id: 'bullet-item-54',
-    sheetId: 'sheet-9',
-    parentId: 'list-bulleted-11',
+    sheetId: 'sheet-7',
+    parentId: 'list-bulleted-7',
     title: 'From chaos to paradise - organized BBQ planning! 🔥✨',
     orderIndex: 5,
     description: (
@@ -631,8 +603,8 @@ final bulletList = [
   // University Hangout Chaos & Success Stories
   BulletModel(
     id: 'bullet-item-55',
-    sheetId: 'sheet-10',
-    parentId: 'list-bulleted-12',
+    sheetId: 'sheet-8',
+    parentId: 'list-bulleted-8',
     title: 'New at university? Making friends is exciting! 🎓',
     orderIndex: 1,
     description: (
@@ -645,8 +617,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-56',
-    sheetId: 'sheet-10',
-    parentId: 'list-bulleted-12',
+    sheetId: 'sheet-8',
+    parentId: 'list-bulleted-8',
     title: 'But organizing hangouts? Total chaos! 😱',
     orderIndex: 2,
     description: (
@@ -659,8 +631,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-57',
-    sheetId: 'sheet-10',
-    parentId: 'list-bulleted-12',
+    sheetId: 'sheet-8',
+    parentId: 'list-bulleted-8',
     title: 'Who\'s even coming? Nobody knows who\'s actually coming! 😤',
     orderIndex: 3,
     description: (
@@ -673,8 +645,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-58',
-    sheetId: 'sheet-10',
-    parentId: 'list-bulleted-12',
+    sheetId: 'sheet-8',
+    parentId: 'list-bulleted-8',
     title: 'Now imagine one place for all - calendar, checklist, poll, attendance! 🎯',
     orderIndex: 4,
     description: (
@@ -687,8 +659,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-59',
-    sheetId: 'sheet-10',
-    parentId: 'list-bulleted-12',
+    sheetId: 'sheet-8',
+    parentId: 'list-bulleted-8',
     title: 'From chaos to organized fun - university hangout success! 🎓✨',
     orderIndex: 5,
     description: (
@@ -702,8 +674,8 @@ final bulletList = [
   // Book Club Chaos & Success Stories
   BulletModel(
     id: 'bullet-item-60',
-    sheetId: 'sheet-11',
-    parentId: 'list-bulleted-13',
+    sheetId: 'sheet-9',
+    parentId: 'list-bulleted-9',
     title: 'Book club - the perfect way to meet friends monthly! 📚',
     orderIndex: 1,
     description: (
@@ -716,8 +688,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-61',
-    sheetId: 'sheet-11',
-    parentId: 'list-bulleted-13',
+    sheetId: 'sheet-9',
+    parentId: 'list-bulleted-9',
     title: 'But when it\'s time to plan, messy chat! 😱',
     orderIndex: 2,
     description: (
@@ -730,8 +702,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-62',
-    sheetId: 'sheet-11',
-    parentId: 'list-bulleted-13',
+    sheetId: 'sheet-9',
+    parentId: 'list-bulleted-9',
     title: 'Sometimes it feels more stress than stories! 😤',
     orderIndex: 3,
     description: (
@@ -744,8 +716,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-63',
-    sheetId: 'sheet-11',
-    parentId: 'list-bulleted-13',
+    sheetId: 'sheet-9',
+    parentId: 'list-bulleted-9',
     title: 'Now imagine one place for book, task, calendar with Zoe! 🎯',
     orderIndex: 4,
     description: (
@@ -758,8 +730,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-64',
-    sheetId: 'sheet-11',
-    parentId: 'list-bulleted-13',
+    sheetId: 'sheet-9',
+    parentId: 'list-bulleted-9',
     title: 'From stress to stories - book club paradise! 📚✨',
     orderIndex: 5,
     description: (
@@ -773,8 +745,8 @@ final bulletList = [
   // Softball Club BBQ Party Chaos & Success Stories
   BulletModel(
     id: 'bullet-item-65',
-    sheetId: 'sheet-12',
-    parentId: 'list-bulleted-14',
+    sheetId: 'sheet-10',
+    parentId: 'list-bulleted-10',
     title: 'Softball club BBQ party planning: Great idea before it gets cold! ⚾',
     orderIndex: 1,
     description: (
@@ -787,8 +759,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-66',
-    sheetId: 'sheet-12',
-    parentId: 'list-bulleted-14',
+    sheetId: 'sheet-10',
+    parentId: 'list-bulleted-10',
     title: 'But finding date is tough, someone is busy! 😱',
     orderIndex: 2,
     description: (
@@ -801,8 +773,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-67',
-    sheetId: 'sheet-12',
-    parentId: 'list-bulleted-14',
+    sheetId: 'sheet-10',
+    parentId: 'list-bulleted-10',
     title: 'No clarity, everyone\'s missing, plan gone wrong! 😤',
     orderIndex: 3,
     description: (
@@ -814,23 +786,9 @@ final bulletList = [
     createdBy: 'user_3',
   ),
   BulletModel(
-    id: 'bullet-item-68',
-    sheetId: 'sheet-12',
-    parentId: 'list-bulleted-14',
-    title: 'There\'s a better way - Zoe! 🎯',
-    orderIndex: 4,
-    description: (
-      plainText:
-          'Finally! One platform to organize softball club BBQ parties, coordinate dates, make clear decisions, and ensure everyone attends!',
-      htmlText:
-          '<p>Finally! <strong>One platform to organize softball club BBQ parties</strong>, coordinate dates, make clear decisions, and ensure everyone attends!</p>',
-    ),
-    createdBy: 'user_4',
-  ),
-  BulletModel(
     id: 'bullet-item-69',
-    sheetId: 'sheet-12',
-    parentId: 'list-bulleted-14',
+    sheetId: 'sheet-10',
+    parentId: 'list-bulleted-10',
     title: 'From chaos to success - softball club BBQ paradise! ⚾✨',
     orderIndex: 5,
     description: (
@@ -844,8 +802,8 @@ final bulletList = [
   // Bachelorette Party Chaos & Success Stories
   BulletModel(
     id: 'bullet-item-70',
-    sheetId: 'sheet-13',
-    parentId: 'list-bulleted-15',
+    sheetId: 'sheet-11',
+    parentId: 'list-bulleted-11',
     title: 'Organizing a bachelorette party: Let\'s plan her bachelorette! 💃',
     orderIndex: 1,
     description: (
@@ -858,8 +816,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-71',
-    sheetId: 'sheet-13',
-    parentId: 'list-bulleted-15',
+    sheetId: 'sheet-11',
+    parentId: 'list-bulleted-11',
     title: 'But the group chat is non-stop buzzing! 😱',
     orderIndex: 2,
     description: (
@@ -872,8 +830,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-72',
-    sheetId: 'sheet-13',
-    parentId: 'list-bulleted-15',
+    sheetId: 'sheet-11',
+    parentId: 'list-bulleted-11',
     title: 'Juggling dates, no fix budget, no fix date, empty checklist! 😤',
     orderIndex: 3,
     description: (
@@ -885,23 +843,9 @@ final bulletList = [
     createdBy: 'user_3',
   ),
   BulletModel(
-    id: 'bullet-item-73',
-    sheetId: 'sheet-13',
-    parentId: 'list-bulleted-15',
-    title: 'There\'s a better way - Zoe! 🎯',
-    orderIndex: 4,
-    description: (
-      plainText:
-          'Finally! One platform to organize bachelorette party planning, coordinate decisions, set budgets, and create comprehensive checklists!',
-      htmlText:
-          '<p>Finally! <strong>One platform to organize bachelorette party planning</strong>, coordinate decisions, set budgets, and create comprehensive checklists!</p>',
-    ),
-    createdBy: 'user_4',
-  ),
-  BulletModel(
     id: 'bullet-item-74',
-    sheetId: 'sheet-13',
-    parentId: 'list-bulleted-15',
+    sheetId: 'sheet-11',
+    parentId: 'list-bulleted-11',
     title: 'From stress to celebration - bachelorette party paradise! 💃✨',
     orderIndex: 5,
     description: (
@@ -915,8 +859,8 @@ final bulletList = [
   // Church Summer Fest 2026 Chaos & Success Stories
   BulletModel(
     id: 'bullet-item-75',
-    sheetId: 'sheet-14',
-    parentId: 'list-bulleted-16',
+    sheetId: 'sheet-12',
+    parentId: 'list-bulleted-12',
     title: 'Church Summer Fest 2026: Coming together this summer! ⛪',
     orderIndex: 1,
     description: (
@@ -929,8 +873,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-76',
-    sheetId: 'sheet-14',
-    parentId: 'list-bulleted-16',
+    sheetId: 'sheet-12',
+    parentId: 'list-bulleted-12',
     title: 'But planning total chaos! 😱',
     orderIndex: 2,
     description: (
@@ -942,23 +886,9 @@ final bulletList = [
     createdBy: 'user_2',
   ),
   BulletModel(
-    id: 'bullet-item-77',
-    sheetId: 'sheet-14',
-    parentId: 'list-bulleted-16',
-    title: 'There\'s a better way - Zoe! 🎯',
-    orderIndex: 3,
-    description: (
-      plainText:
-          'Finally! One platform to organize church summer fest planning, coordinate food, set budgets, resolve scheduling conflicts, and organize equipment!',
-      htmlText:
-          '<p>Finally! <strong>One platform to organize church summer fest planning</strong>, coordinate food, set budgets, resolve scheduling conflicts, and organize equipment!</p>',
-    ),
-    createdBy: 'user_3',
-  ),
-  BulletModel(
     id: 'bullet-item-78',
-    sheetId: 'sheet-14',
-    parentId: 'list-bulleted-16',
+    sheetId: 'sheet-12',
+    parentId: 'list-bulleted-12',
     title: 'From chaos to community - church summer fest success! ⛪✨',
     orderIndex: 4,
     description: (
@@ -972,8 +902,8 @@ final bulletList = [
   // PTA Bake Sale Chaos & Success Stories
   BulletModel(
     id: 'bullet-item-79',
-    sheetId: 'sheet-15',
-    parentId: 'list-bulleted-17',
+    sheetId: 'sheet-13',
+    parentId: 'list-bulleted-13',
     title: 'Organizing PTA bake sale in school: The moms are full of energy! 🧁',
     orderIndex: 1,
     description: (
@@ -986,8 +916,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-80',
-    sheetId: 'sheet-15',
-    parentId: 'list-bulleted-17',
+    sheetId: 'sheet-13',
+    parentId: 'list-bulleted-13',
     title: 'But in group chat total chaos! 😱',
     orderIndex: 2,
     description: (
@@ -1000,8 +930,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-81',
-    sheetId: 'sheet-15',
-    parentId: 'list-bulleted-17',
+    sheetId: 'sheet-13',
+    parentId: 'list-bulleted-13',
     title: 'Nobody really knows, details lost! 😤',
     orderIndex: 3,
     description: (
@@ -1013,23 +943,9 @@ final bulletList = [
     createdBy: 'user_3',
   ),
   BulletModel(
-    id: 'bullet-item-82',
-    sheetId: 'sheet-15',
-    parentId: 'list-bulleted-17',
-    title: 'There\'s a better way - Zoe! 🎯',
-    orderIndex: 4,
-    description: (
-      plainText:
-          'Finally! One platform to organize PTA bake sale planning, coordinate baking assignments, handle dietary restrictions, and create clear budget planning!',
-      htmlText:
-          '<p>Finally! <strong>One platform to organize PTA bake sale planning</strong>, coordinate baking assignments, handle dietary restrictions, and create clear budget planning!</p>',
-    ),
-    createdBy: 'user_4',
-  ),
-  BulletModel(
     id: 'bullet-item-83',
-    sheetId: 'sheet-15',
-    parentId: 'list-bulleted-17',
+    sheetId: 'sheet-13',
+    parentId: 'list-bulleted-13',
     title: 'From chaos to success - PTA bake sale paradise! 🧁✨',
     orderIndex: 5,
     description: (
@@ -1043,8 +959,8 @@ final bulletList = [
   // Halloween Planning Chaos & Success Stories
   BulletModel(
     id: 'bullet-item-84',
-    sheetId: 'sheet-16',
-    parentId: 'list-bulleted-18',
+    sheetId: 'sheet-14',
+    parentId: 'list-bulleted-14',
     title: 'Halloween planning: Everyone\'s excited! 🎃',
     orderIndex: 1,
     description: (
@@ -1057,8 +973,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-85',
-    sheetId: 'sheet-16',
-    parentId: 'list-bulleted-18',
+    sheetId: 'sheet-14',
+    parentId: 'list-bulleted-14',
     title: 'But where you? We missed you! 😱',
     orderIndex: 2,
     description: (
@@ -1071,8 +987,8 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-86',
-    sheetId: 'sheet-16',
-    parentId: 'list-bulleted-18',
+    sheetId: 'sheet-14',
+    parentId: 'list-bulleted-14',
     title: 'Wrong street, nobody is here! 😤',
     orderIndex: 3,
     description: (
@@ -1084,23 +1000,9 @@ final bulletList = [
     createdBy: 'user_3',
   ),
   BulletModel(
-    id: 'bullet-item-87',
-    sheetId: 'sheet-16',
-    parentId: 'list-bulleted-18',
-    title: 'There\'s a better way - Zoe! 🎯',
-    orderIndex: 4,
-    description: (
-      plainText:
-          'Finally! One platform to organize Halloween planning, coordinate meeting locations, handle scheduling conflicts, and create clear communication!',
-      htmlText:
-          '<p>Finally! <strong>One platform to organize Halloween planning</strong>, coordinate meeting locations, handle scheduling conflicts, and create clear communication!</p>',
-    ),
-    createdBy: 'user_4',
-  ),
-  BulletModel(
     id: 'bullet-item-88',
-    sheetId: 'sheet-16',
-    parentId: 'list-bulleted-18',
+    sheetId: 'sheet-14',
+    parentId: 'list-bulleted-14',
     title: 'From chaos to success - Halloween Spectacular! 🎃✨',
     orderIndex: 5,
     description: (
@@ -1114,7 +1016,7 @@ final bulletList = [
   // Summer Camp Sign-ups Chaos & Success Stories
   BulletModel(
     id: 'bullet-item-89',
-    sheetId: 'sheet-17',
+    sheetId: 'sheet-15',
     parentId: 'list-bulleted-19',
     title: 'Organizing summer camp sign-ups: Parents are excited! 🏕️',
     orderIndex: 1,
@@ -1128,7 +1030,7 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-90',
-    sheetId: 'sheet-17',
+    sheetId: 'sheet-15',
     parentId: 'list-bulleted-19',
     title: 'But who bringing snacks? Did you fill the form? 😱',
     orderIndex: 2,
@@ -1142,7 +1044,7 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-91',
-    sheetId: 'sheet-17',
+    sheetId: 'sheet-15',
     parentId: 'list-bulleted-19',
     title: 'Stress overload! 😤',
     orderIndex: 3,
@@ -1155,22 +1057,8 @@ final bulletList = [
     createdBy: 'user_3',
   ),
   BulletModel(
-    id: 'bullet-item-92',
-    sheetId: 'sheet-17',
-    parentId: 'list-bulleted-19',
-    title: 'There\'s a better way - Zoe! 🎯',
-    orderIndex: 4,
-    description: (
-      plainText:
-          'Finally! One platform to organize summer camp sign-ups, coordinate form submissions, handle date conflicts, manage payments, and organize equipment!',
-      htmlText:
-          '<p>Finally! <strong>One platform to organize summer camp sign-ups</strong>, coordinate form submissions, handle date conflicts, manage payments, and organize equipment!</p>',
-    ),
-    createdBy: 'user_4',
-  ),
-  BulletModel(
     id: 'bullet-item-93',
-    sheetId: 'sheet-17',
+    sheetId: 'sheet-15',
     parentId: 'list-bulleted-19',
     title: 'From chaos to success - Summer camp paradise! 🏕️✨',
     orderIndex: 5,
@@ -1185,7 +1073,7 @@ final bulletList = [
   // Thanksgiving Planning Chaos & Success Stories
   BulletModel(
     id: 'bullet-item-94',
-    sheetId: 'sheet-18',
+    sheetId: 'sheet-16',
     parentId: 'list-bulleted-20',
     title: 'Thanksgiving will not be terrible this year! 🦃',
     orderIndex: 1,
@@ -1199,7 +1087,7 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-95',
-    sheetId: 'sheet-18',
+    sheetId: 'sheet-16',
     parentId: 'list-bulleted-20',
     title: 'But weeks of cooking endless stress! 😱',
     orderIndex: 2,
@@ -1213,7 +1101,7 @@ final bulletList = [
   ),
   BulletModel(
     id: 'bullet-item-96',
-    sheetId: 'sheet-18',
+    sheetId: 'sheet-16',
     parentId: 'list-bulleted-20',
     title: 'Everything falls on mom at the end! 😤',
     orderIndex: 3,
@@ -1226,22 +1114,8 @@ final bulletList = [
     createdBy: 'user_3',
   ),
   BulletModel(
-    id: 'bullet-item-97',
-    sheetId: 'sheet-18',
-    parentId: 'list-bulleted-20',
-    title: 'There\'s a better way - Zoe! 🎯',
-    orderIndex: 4,
-    description: (
-      plainText:
-          'Finally! One platform to organize Thanksgiving planning, coordinate cooking assignments, handle family group chat chaos, and ensure reliable help!',
-      htmlText:
-          '<p>Finally! <strong>One platform to organize Thanksgiving planning</strong>, coordinate cooking assignments, handle family group chat chaos, and ensure reliable help!</p>',
-    ),
-    createdBy: 'user_4',
-  ),
-  BulletModel(
     id: 'bullet-item-98',
-    sheetId: 'sheet-18',
+    sheetId: 'sheet-16',
     parentId: 'list-bulleted-20',
     title: 'From chaos to success - Thanksgiving paradise! 🦃✨',
     orderIndex: 5,
