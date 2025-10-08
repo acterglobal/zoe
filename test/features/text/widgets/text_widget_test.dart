@@ -13,6 +13,7 @@ import 'package:zoe/features/text/data/text_list.dart';
 import '../../../test-utils/test_utils.dart';
 
 void main() {
+  late String testTextId = 'text-content-1';
   group('TextWidget', () {
     late ProviderContainer container;
     late TextModel testTextModel;
@@ -23,14 +24,14 @@ void main() {
 
       container = ProviderContainer.test(
         overrides: [
-          textProvider('text-content-1').overrideWith((ref) => testTextModel),
+          textProvider(testTextId).overrideWith((ref) => testTextModel),
         ],
       );
     });
 
     testWidgets('renders correctly with valid text content', (tester) async {
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'text-content-1'),
+        child: TextWidget(textId: testTextId),
         container: container,
       );
 
@@ -76,13 +77,13 @@ void main() {
       final containerNoEmoji = ProviderContainer.test(
         overrides: [
           textProvider(
-            'text-content-1',
+            testTextId,
           ).overrideWith((ref) => textWithoutEmoji),
         ],
       );
 
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'text-content-1'),
+        child: TextWidget(textId: testTextId),
         container: containerNoEmoji,
       );
 
@@ -108,7 +109,7 @@ void main() {
       );
 
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'text-content-1'),
+        child: TextWidget(textId: testTextId),
         container: containerNoDescription,
       );
 
@@ -122,13 +123,13 @@ void main() {
     testWidgets('shows delete button when in editing mode', (tester) async {
       final editModeContainer = ProviderContainer(
         overrides: [
-          textProvider('text-content-1').overrideWith((ref) => testTextModel),
-          editContentIdProvider.overrideWith((ref) => 'text-content-1'),
+          textProvider(testTextId).overrideWith((ref) => testTextModel),
+          editContentIdProvider.overrideWith((ref) => testTextId),
         ],
       );
 
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'text-content-1'),
+        child: TextWidget(textId: testTextId),
         container: editModeContainer,
       );
 
@@ -138,13 +139,13 @@ void main() {
     testWidgets('hides delete button when not in editing mode', (tester) async {
       final noEditContainer = ProviderContainer(
         overrides: [
-          textProvider('text-content-1').overrideWith((ref) => testTextModel),
+          textProvider(testTextId).overrideWith((ref) => testTextModel),
           editContentIdProvider.overrideWith((ref) => null),
         ],
       );
 
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'text-content-1'),
+        child: TextWidget(textId: testTextId),
         container: noEditContainer,
       );
 
@@ -155,12 +156,12 @@ void main() {
       final emptyTitleText = testTextModel.copyWith(title: '');
       final emptyTitleContainer = ProviderContainer(
         overrides: [
-          textProvider('text-content-1').overrideWith((ref) => emptyTitleText),
+          textProvider(testTextId).overrideWith((ref) => emptyTitleText),
         ],
       );
 
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: TextWidget(textId: 'text-content-1'),
+        child: TextWidget(textId: testTextId),
         container: emptyTitleContainer,
       );
 
