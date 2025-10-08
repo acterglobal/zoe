@@ -264,7 +264,7 @@ List<String> listOfUsersByTaskId(Ref ref, String taskId) {
 }
 
 /// Provider for task focus management
-@riverpod
+@Riverpod(keepAlive: true)
 class TaskFocus extends _$TaskFocus {
   @override
   String? build() => null;

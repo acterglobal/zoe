@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,10 +25,7 @@ extension WidgetTesterExtension on WidgetTester {
         supportedLocales: L10n.supportedLocales,
         home: Scaffold(
           body: router != null
-              ? InheritedGoRouter(
-                  goRouter: router,
-                  child: child,
-                )
+              ? InheritedGoRouter(goRouter: router, child: child)
               : child,
         ),
       ),
@@ -55,12 +53,25 @@ extension WidgetTesterExtension on WidgetTester {
           supportedLocales: L10n.supportedLocales,
           home: Scaffold(
             body: router != null
-                ? InheritedGoRouter(
-                    goRouter: router,
-                    child: child,
-                  )
+                ? InheritedGoRouter(goRouter: router, child: child)
                 : child,
           ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> pumpActionsWidget({
+    required ProviderContainer container,
+    required String buttonText,
+    required Function(BuildContext, WidgetRef) onPressed,
+  }) async {
+    await pumpMaterialWidgetWithProviderScope(
+      container: container,
+      child: Consumer(
+        builder: (context, ref, child) => ElevatedButton(
+          onPressed: () => onPressed(context, ref),
+          child: Text(buttonText),
         ),
       ),
     );
@@ -71,4 +82,13 @@ extension WidgetTesterExtension on WidgetTester {
   static L10n getL10n(WidgetTester tester, {required Type byType}) {
     return L10n.of(tester.element(find.byType(byType)));
   }
+}
+
+Future<void> initSharePlatformMethodCallHandler({VoidCallback? onShare}) async {
+  final shareChannel = MethodChannel('dev.fluttercommunity.plus/share');
+  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+      .setMockMethodCallHandler(shareChannel, (call) async {
+        if (call.method == 'share') onShare?.call();
+        return null;
+      });
 }
