@@ -84,6 +84,7 @@ extension WidgetTesterExtension on WidgetTester {
   }
 }
 
+/// Initializes the share platform method call handler
 Future<void> initSharePlatformMethodCallHandler({VoidCallback? onShare}) async {
   final shareChannel = MethodChannel('dev.fluttercommunity.plus/share');
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
