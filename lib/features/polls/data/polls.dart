@@ -114,6 +114,7 @@ final polls = [
     orderIndex: 1,
     question: 'Which city should we visit for our trip?',
     startDate: DateTime.now().subtract(const Duration(hours: 2)),
+    endDate: DateTime.now().subtract(const Duration(hours: 1)), // This poll is ended
     options: [
       PollOption(
         id: 'option-3-1',
@@ -156,6 +157,7 @@ final polls = [
     orderIndex: 2,
     question: 'What type of accommodation do you prefer?',
     startDate: DateTime.now().subtract(const Duration(hours: 1)),
+    endDate: DateTime.now().subtract(const Duration(minutes: 30)), // This poll is ended
     options: [
       PollOption(
         id: 'option-2b-1',
@@ -202,6 +204,7 @@ final polls = [
     orderIndex: 3,
     question: 'What time should we book our flights?',
     startDate: DateTime.now().subtract(const Duration(hours: 1)),
+    endDate: DateTime.now().subtract(const Duration(minutes: 15)), // This poll is ended
     options: [
       PollOption(
         id: 'option-3b-1',
@@ -230,6 +233,7 @@ final polls = [
     orderIndex: 1,
     question: 'Where should we celebrate Christmas this year?',
     startDate: DateTime.now().subtract(const Duration(hours: 1)),
+    endDate: DateTime.now().subtract(const Duration(minutes: 10)), // This poll is ended
     options: [
       PollOption(
         id: 'option-4-1',
