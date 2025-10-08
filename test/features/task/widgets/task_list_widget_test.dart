@@ -91,7 +91,7 @@ void main() {
       });
 
       testWidgets('returns empty widget when no tasks exist', (tester) async {
-        // Use a different parent ID that has no bullets
+        // Use a different parent ID that has no tasks
         const emptyParentId = 'empty-parent-id';
 
         await pumpTaskListWidget(
@@ -100,7 +100,7 @@ void main() {
           listId: emptyParentId,
         );
 
-        // Should return SizedBox.shrink() when no bullets
+        // Should return SizedBox.shrink() when no tasks
         expect(find.byType(ListView), findsNothing);
         expect(find.byType(TaskWidget), findsNothing);
       });
@@ -112,7 +112,7 @@ void main() {
           listId: testListId,
         );
 
-        // Get all bullet item widgets (including off-screen ones)
+        // Get all task item widgets (including off-screen ones)
         final taskItems = tester
             .widgetList<TaskWidget>(
               find.byType(TaskWidget, skipOffstage: false),
@@ -139,7 +139,7 @@ void main() {
           isEditing: true,
         );
 
-        // Verify all bullet items receive isEditing: true
+        // Verify all task items receive isEditing: true
         final taskItems = tester
             .widgetList<TaskWidget>(find.byType(TaskWidget))
             .toList();
@@ -203,7 +203,7 @@ void main() {
         );
       });
 
-      testWidgets('uses correct keys for bullet items', (tester) async {
+      testWidgets('uses correct keys for task items', (tester) async {
         await pumpTaskListWidget(
           tester: tester,
           container: container,
@@ -391,7 +391,7 @@ void main() {
         // Should show tasks for differentParentId
         expect(find.byType(TaskWidget, skipOffstage: false), findsNWidgets(1));
         expect(find.text(differentParentTaskTitle), findsOneWidget);
-        // Should not show bullets from the original parent
+        // Should not show tasks from the original parent
         expect(find.text(testTasks.last.title), findsNothing);
       });
     });
@@ -435,7 +435,7 @@ void main() {
           listId: testListId,
         );
 
-        // Should display single bullet
+        // Should display single task
         expect(find.byType(TaskWidget), findsOneWidget);
         expect(find.text(singleTaskTitle), findsOneWidget);
       });
