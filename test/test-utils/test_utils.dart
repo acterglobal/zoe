@@ -82,6 +82,12 @@ extension WidgetTesterExtension on WidgetTester {
   static L10n getL10n(WidgetTester tester, {required Type byType}) {
     return L10n.of(tester.element(find.byType(byType)));
   }
+
+  /// Gets the Theme instance for any widget type
+  /// Usage: getTheme(tester, byType: MyWidget)
+  static ThemeData getTheme(WidgetTester tester, {required Type byType}) {
+    return Theme.of(tester.element(find.byType(byType)));
+  }
 }
 
 /// Initializes the share platform method call handler
