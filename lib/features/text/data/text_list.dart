@@ -6,7 +6,6 @@ final textList = [
     parentId: 'sheet-1',
     id: 'text-content-1',
     title: 'Welcome to Zoe!',
-    emoji: '👋',
     orderIndex: 1,
     description: (
       plainText:
@@ -93,26 +92,10 @@ final textList = [
     ),
     createdBy: 'user_2',
   ),
-  // Digital Organization Text Content
+  // Community Organization Text Content
   TextModel(
     sheetId: 'sheet-4',
     parentId: 'sheet-4',
-    id: 'text-content-7',
-    title: 'Digital Clutter Crisis - Organization Hub',
-    emoji: '🔍',
-    orderIndex: 5,
-    description: (
-      plainText:
-          'Your mission control for conquering digital clutter! 📱\n\nThis workspace helps you manage endless scrolling through chats and thousands of photos. We\'re creating systems that actually work for digital organization.\n\n🗳️ Vote on your biggest digital challenges\n📱 Track organization tasks and cleanup progress\n📅 Schedule digital cleanup sessions\n💡 Share tips, frustrations, and solutions\n🔗 Store organization tools and resources\n📄 Keep important details accessible and organized\n\nTransform digital chaos into organized bliss! ✨🗂️',
-      htmlText:
-          '<p>Your <strong>mission control for conquering digital clutter</strong>! 📱</p><br><p>This workspace helps you manage endless scrolling through chats and thousands of photos. We\'re creating systems that actually work for digital organization.</p><br><br><p><strong>🗳️ Vote</strong> on your biggest digital challenges</p><br><p><strong>📱 Track</strong> organization tasks and cleanup progress</p><br><p><strong>📅 Schedule</strong> digital cleanup sessions</p><br><p><strong>💡 Share</strong> tips, frustrations, and solutions</p><br><p><strong>🔗 Store</strong> organization tools and resources</p><br><p><strong>📄 Keep</strong> important details accessible and organized</p><br><br><p>Transform digital chaos into organized bliss! ✨🗂️</p>',
-    ),
-    createdBy: 'user_1',
-  ),
-  // Community Organization Text Content
-  TextModel(
-    sheetId: 'sheet-5',
-    parentId: 'sheet-5',
     id: 'text-content-8',
     title: 'Community Chaos to Coordination - One-Stop Solution',
     emoji: '🏘️',
@@ -125,26 +108,10 @@ final textList = [
     ),
     createdBy: 'user_2',
   ),
-  // Chat Management Text Content
-  TextModel(
-    sheetId: 'sheet-6',
-    parentId: 'sheet-6',
-    id: 'text-content-9',
-    title: 'End the Chat Chaos - Decision Making Hub',
-    emoji: '💬',
-    orderIndex: 5,
-    description: (
-      plainText:
-          'Your solution for group chat chaos and endless debates! 😤\n\nThis workspace helps you create polls for quick decisions, track who\'s coming, organize discussions, and put an end to endless back-and-forth - make decisions fast and stay organized.\n\n🗳️ Create polls for every group decision\n📱 Track attendance and who\'s coming\n📅 Organize chat topics and discussions\n😤 Share frustrations and celebrate solutions\n🔗 Store chat management tools and resources\n📄 Keep all group documents organized\n\nTransform chat chaos into organized decision-making! 🎯✨',
-      htmlText:
-          '<p>Your <strong>solution for group chat chaos and endless debates</strong>! 😤</p><br><p>This workspace helps you create polls for quick decisions, track who\'s coming, organize discussions, and put an end to endless back-and-forth - make decisions fast and stay organized.</p><br><br><p><strong>🗳️ Create</strong> polls for every group decision</p><br><p><strong>📱 Track</strong> attendance and who\'s coming</p><br><p><strong>📅 Organize</strong> chat topics and discussions</p><br><p><strong>😤 Share</strong> frustrations and celebrate solutions</p><br><p><strong>🔗 Store</strong> chat management tools and resources</p><br><p><strong>📄 Keep</strong> all group documents organized</p><br><br><p>Transform chat chaos into organized decision-making! 🎯✨</p>',
-    ),
-    createdBy: 'user_3',
-  ),
   // Exhibition Planning Text Content
   TextModel(
-    sheetId: 'sheet-7',
-    parentId: 'sheet-7',
+    sheetId: 'sheet-5',
+    parentId: 'sheet-5',
     id: 'text-content-10',
     title: 'From Overwhelming Chaos to Organized Excellence',
     emoji: '🎨',
@@ -159,8 +126,8 @@ final textList = [
   ),
   // School Fundraiser Text Content
   TextModel(
-    sheetId: 'sheet-8',
-    parentId: 'sheet-8',
+    sheetId: 'sheet-6',
+    parentId: 'sheet-6',
     id: 'text-content-11',
     title: 'From Fundraiser Mayhem to Organized Success',
     emoji: '🎓',
@@ -175,8 +142,8 @@ final textList = [
   ),
   // BBQ Planning Text Content
   TextModel(
-    sheetId: 'sheet-9',
-    parentId: 'sheet-9',
+    sheetId: 'sheet-7',
+    parentId: 'sheet-7',
     id: 'text-content-12',
     title: 'From BBQ Chaos to Planning Paradise',
     emoji: '🔥',
@@ -191,8 +158,8 @@ final textList = [
   ),
   // University Hangout Text Content
   TextModel(
-    sheetId: 'sheet-10',
-    parentId: 'sheet-10',
+    sheetId: 'sheet-8',
+    parentId: 'sheet-8',
     id: 'text-content-13',
     title: 'From University Chaos to Organized Fun',
     emoji: '🎓',
@@ -207,8 +174,8 @@ final textList = [
   ),
   // Book Club Text Content
   TextModel(
-    sheetId: 'sheet-11',
-    parentId: 'sheet-11',
+    sheetId: 'sheet-9',
+    parentId: 'sheet-9',
     id: 'text-content-14',
     title: 'From Book Club Stress to Story Paradise',
     emoji: '📚',
@@ -223,8 +190,8 @@ final textList = [
   ),
   // Softball Club BBQ Party Text Content
   TextModel(
-    sheetId: 'sheet-12',
-    parentId: 'sheet-12',
+    sheetId: 'sheet-10',
+    parentId: 'sheet-10',
     id: 'text-content-15',
     title: 'From Softball Club BBQ Chaos to Success Paradise',
     emoji: '⚾',
@@ -239,8 +206,8 @@ final textList = [
   ),
   // Bachelorette Party Text Content
   TextModel(
-    sheetId: 'sheet-13',
-    parentId: 'sheet-13',
+    sheetId: 'sheet-11',
+    parentId: 'sheet-11',
     id: 'text-content-16',
     title: 'From Bachelorette Party Stress to Celebration Paradise',
     emoji: '💃',
@@ -255,8 +222,8 @@ final textList = [
   ),
   // Church Summer Fest 2026 Text Content
   TextModel(
-    sheetId: 'sheet-14',
-    parentId: 'sheet-14',
+    sheetId: 'sheet-12',
+    parentId: 'sheet-12',
     id: 'text-content-17',
     title: 'From Church Summer Fest Chaos to Community Success',
     emoji: '⛪',
@@ -271,8 +238,8 @@ final textList = [
   ),
   TextModel(
     id: 'text-content-18',
-    sheetId: 'sheet-15',
-    parentId: 'sheet-15',
+    sheetId: 'sheet-13',
+    parentId: 'sheet-13',
     title: 'From PTA Bake Sale Chaos to Sweet Success Paradise',
     orderIndex: 6,
     description: (
@@ -299,8 +266,8 @@ final textList = [
   ),
   TextModel(
     id: 'text-content-19',
-    sheetId: 'sheet-16',
-    parentId: 'sheet-16',
+    sheetId: 'sheet-14',
+    parentId: 'sheet-14',
     title: 'From Halloween Planning Chaos to Spectacular Success',
     orderIndex: 6,
     description: (
@@ -330,8 +297,8 @@ final textList = [
   ),
   TextModel(
     id: 'text-content-20',
-    sheetId: 'sheet-17',
-    parentId: 'sheet-17',
+    sheetId: 'sheet-15',
+    parentId: 'sheet-15',
     title: 'From Summer Camp Sign-ups Chaos to Spectacular Success',
     orderIndex: 6,
     description: (
@@ -361,8 +328,8 @@ final textList = [
   ),
   TextModel(
     id: 'text-content-21',
-    sheetId: 'sheet-18',
-    parentId: 'sheet-18',
+    sheetId: 'sheet-16',
+    parentId: 'sheet-16',
     title: 'From Thanksgiving Planning Chaos to Spectacular Success',
     orderIndex: 6,
     description: (
