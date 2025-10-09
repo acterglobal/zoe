@@ -46,20 +46,6 @@ final sheetList = [
   ),
   SheetModel(
     id: 'sheet-4',
-    title: 'Important Details Lost in the Messages',
-    emoji: '🔍',
-    color: const Color(0xFF7C3AED), // Purple
-    description: (
-      plainText:
-          'Your digital organization sanctuary for managing endless scrolling through chats and thousands of photos. This workspace helps you organize important details, photos, chats, and documents - keeping what matters most accessible and organized.',
-      htmlText:
-          '<p>Your <strong>digital organization sanctuary</strong> for managing endless scrolling through chats and thousands of photos. This workspace helps you organize important details, photos, chats, and documents - keeping what matters most accessible and organized.</p>',
-    ),
-    createdBy: 'user_1',
-    users: ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6'],
-  ),
-  SheetModel(
-    id: 'sheet-5',
     title: 'Community Organization Hub',
     emoji: '🏘️',
     color: const Color(0xFF059669), // Emerald
@@ -81,30 +67,7 @@ final sheetList = [
     ],
   ),
   SheetModel(
-    id: 'sheet-6',
-    title: 'Group Chat Chaos Management',
-    emoji: '💬',
-    color: const Color(0xFF7C2D12), // Brown
-    description: (
-      plainText:
-          'Your solution for managing group chat chaos and endless debates. This workspace helps you create polls for quick decisions, organize who\'s coming, track meeting preferences, and put an end to endless back-and-forth discussions - stay organized and make decisions fast.',
-      htmlText:
-          '<p>Your <strong>solution for managing group chat chaos</strong> and endless debates. This workspace helps you create polls for quick decisions, organize who\'s coming, track meeting preferences, and put an end to endless back-and-forth discussions - stay organized and make decisions fast.</p>',
-    ),
-    createdBy: 'user_3',
-    users: [
-      'user_1',
-      'user_2',
-      'user_3',
-      'user_4',
-      'user_5',
-      'user_6',
-      'user_7',
-      'user_8',
-    ],
-  ),
-  SheetModel(
-    id: 'sheet-7',
+    id: 'sheet-5',
     title: 'Exhibition Planning Hub',
     emoji: '🎨',
     color: const Color(0xFF1E40AF), // Blue
@@ -128,7 +91,7 @@ final sheetList = [
     ],
   ),
   SheetModel(
-    id: 'sheet-8',
+    id: 'sheet-6',
     title: 'School Fundraiser Success Hub',
     emoji: '🎓',
     color: const Color(0xFFDC2626), // Red
@@ -153,7 +116,7 @@ final sheetList = [
     ],
   ),
   SheetModel(
-    id: 'sheet-9',
+    id: 'sheet-7',
     title: 'BBQ Planning Paradise',
     emoji: '🔥',
     color: const Color(0xFFEA580C), // Orange
@@ -178,7 +141,7 @@ final sheetList = [
     ],
   ),
   SheetModel(
-    id: 'sheet-10',
+    id: 'sheet-8',
     title: 'University Hangout Hub',
     emoji: '🎓',
     color: const Color(0xFF7C3AED), // Purple
@@ -192,7 +155,7 @@ final sheetList = [
     users: ['user_1', 'user_5', 'user_6', 'user_7', 'user_8'],
   ),
   SheetModel(
-    id: 'sheet-11',
+    id: 'sheet-9',
     title: 'Book Club Paradise',
     emoji: '📚',
     color: const Color(0xFF059669), // Green
@@ -215,7 +178,7 @@ final sheetList = [
     ],
   ),
   SheetModel(
-    id: 'sheet-12',
+    id: 'sheet-10',
     title: 'Softball Club BBQ Party Hub',
     emoji: '⚾',
     color: const Color(0xFFDC2626), // Red
@@ -240,7 +203,7 @@ final sheetList = [
     ],
   ),
   SheetModel(
-    id: 'sheet-13',
+    id: 'sheet-11',
     title: 'Bachelorette Party Paradise',
     emoji: '💃',
     color: const Color(0xFFEC4899), // Pink
@@ -254,7 +217,7 @@ final sheetList = [
     users: ['user_1', 'user_2', 'user_3', 'user_4'],
   ),
   SheetModel(
-    id: 'sheet-14',
+    id: 'sheet-12',
     title: 'Church Summer Fest 2026 Hub',
     emoji: '⛪',
     color: const Color(0xFF059669), // Green
@@ -277,7 +240,7 @@ final sheetList = [
     ],
   ),
   SheetModel(
-    id: 'sheet-15',
+    id: 'sheet-13',
     title: 'PTA Bake Sale Success Hub',
     emoji: '🧁',
     color: const Color(0xFFDC2626), // Red
@@ -302,7 +265,7 @@ final sheetList = [
     ],
   ),
   SheetModel(
-    id: 'sheet-16',
+    id: 'sheet-14',
     title: 'Halloween Planning Spectacular Hub',
     emoji: '🎃',
     color: const Color(0xFF7C2D12), // Dark orange/brown
@@ -327,7 +290,7 @@ final sheetList = [
     ],
   ),
   SheetModel(
-    id: 'sheet-17',
+    id: 'sheet-15',
     title: 'Summer Camp Sign-ups Success Hub',
     emoji: '🏕️',
     color: const Color(0xFF059669), // Green
@@ -352,7 +315,7 @@ final sheetList = [
     ],
   ),
   SheetModel(
-    id: 'sheet-18',
+    id: 'sheet-16',
     title: 'Thanksgiving Will Not Be Terrible',
     emoji: '🍽️',
     color: const Color(0xFFEA580C), // Orange
