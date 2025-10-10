@@ -1,12 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 
-class MockPreferencesService extends Mock implements PreferencesService {}
+import '../../../test-utils/mock_preferences.dart';
 
 class Listener extends Mock {
   void call(List<ContentModel>? previous, List<ContentModel>? next);

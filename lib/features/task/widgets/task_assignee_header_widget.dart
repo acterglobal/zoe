@@ -9,7 +9,14 @@ class TaskAssigneeHeaderWidget extends ConsumerWidget {
   final TaskModel task;
   final double? iconSize;
   final double? textSize;
-  const TaskAssigneeHeaderWidget({super.key, required this.isEditing, required this.task, this.iconSize = 20, this.textSize = 14});
+  
+  const TaskAssigneeHeaderWidget({
+    super.key,
+    required this.isEditing,
+    required this.task,
+    this.iconSize = 20,
+    this.textSize = 14,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,9 +27,7 @@ class TaskAssigneeHeaderWidget extends ConsumerWidget {
         const SizedBox(width: 8),
         Text(
           L10n.of(context).assignees,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontSize: textSize,
-          ),
+          style: theme.textTheme.titleMedium?.copyWith(fontSize: textSize),
         ),
         const Spacer(),
         if (isEditing)

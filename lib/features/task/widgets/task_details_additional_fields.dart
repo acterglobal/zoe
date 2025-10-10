@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/features/task/actions/update_task_actions.dart';
 import 'package:zoe/features/task/models/task_model.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class TaskDetailsAdditionalFields extends ConsumerWidget {
   final TaskModel task;
@@ -52,7 +53,7 @@ class TaskDetailsAdditionalFields extends ConsumerWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                'Due Date',
+                L10n.of(context).dueDate,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: Theme.of(context).colorScheme.onSurface,
@@ -64,7 +65,7 @@ class TaskDetailsAdditionalFields extends ConsumerWidget {
           _buildFieldItem(
             context: context,
             icon: Icons.calendar_today_outlined,
-            label: 'Date',
+            label: L10n.of(context).date,
             value: dateText,
             onTap: onDateTap,
           ),
