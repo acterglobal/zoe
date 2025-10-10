@@ -44,7 +44,7 @@ final class TaskListProvider
   }
 }
 
-String _$taskListHash() => r'12c880e40656c1811721b6224d2d57aebfb633d3';
+String _$taskListHash() => r'4d24ff92eee39945a3b1bcc09988d898ebc8fb8a';
 
 /// Main task list provider with all task management functionality
 
@@ -576,7 +576,7 @@ final class TaskFocusProvider extends $NotifierProvider<TaskFocus, String?> {
         argument: null,
         retry: null,
         name: r'taskFocusProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -597,7 +597,7 @@ final class TaskFocusProvider extends $NotifierProvider<TaskFocus, String?> {
   }
 }
 
-String _$taskFocusHash() => r'cb2e899205b5536c71caa2201823c37b4fdff27e';
+String _$taskFocusHash() => r'd251c36c1f7a0197a6e575113cd6b99bc5df17bb';
 
 /// Provider for task focus management
 

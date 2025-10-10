@@ -537,5 +537,7 @@
     "copyTaskContent": "Copy task content",
     "shareThisTask": "Share this task",
     "editThisTask": "Edit this task",
-    "deleteThisTask": "Delete this task"
+    "deleteThisTask": "Delete this task",
+    "dueDate": "Due Date",
+    "date": "Date"
 }
