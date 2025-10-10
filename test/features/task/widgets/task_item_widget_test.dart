@@ -26,8 +26,6 @@ void main() {
   const nonExistentTaskId = 'non-existent-task-id';
 
   setUp(() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
-
     // Create mock preferences service
     mockPreferencesService = await mockGetLoginUserId();
 

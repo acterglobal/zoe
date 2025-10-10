@@ -13,8 +13,6 @@ void main() {
   late TaskModel testFirstTask;
 
   setUp(() {
-    TestWidgetsFlutterBinding.ensureInitialized();
-
     // Create the container
     container = ProviderContainer.test();
 

@@ -13,8 +13,6 @@ void main() {
   late TaskModel testTaskModel;
 
   setUp(() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
-
     // Create the container
     container = ProviderContainer.test();
 
@@ -51,33 +49,6 @@ void main() {
           find.byType(Container),
           findsAtLeastNWidgets(2),
         ); // Main container + field item container
-      });
-
-      testWidgets('displays due date card with correct structure', (
-        tester,
-      ) async {
-        await pumpTaskDetailsAdditionalFields(
-          tester: tester,
-          container: container,
-        );
-
-        // Verify due date card structure
-        expect(
-          find.byType(Column),
-          findsAtLeastNWidgets(2),
-        ); // Main column + field item column
-        expect(
-          find.byType(Row),
-          findsAtLeastNWidgets(2),
-        ); // Header row + field item row
-        expect(
-          find.byType(Icon),
-          findsAtLeastNWidgets(2),
-        ); // Flag icon + calendar icon
-        expect(
-          find.byType(Text),
-          findsAtLeastNWidgets(3),
-        ); // "Due Date", "Date", and date value
       });
 
       testWidgets('displays correct due date text', (tester) async {

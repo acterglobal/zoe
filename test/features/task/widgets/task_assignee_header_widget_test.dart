@@ -14,8 +14,6 @@ void main() {
   late TaskModel testTaskModel;
 
   setUp(() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
-
     // Create mock preferences service
     mockPreferencesService = await mockGetLoginUserId();
 

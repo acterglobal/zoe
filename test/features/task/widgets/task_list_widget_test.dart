@@ -15,8 +15,6 @@ void main() {
   late MockPreferencesService mockPreferencesService;
 
   setUp(() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
-
     // Create mock preferences service
     mockPreferencesService = await mockGetLoginUserId();
 

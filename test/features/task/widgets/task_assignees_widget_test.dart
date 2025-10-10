@@ -16,8 +16,6 @@ void main() {
   const invalidUserId = 'invalid-user-id';
 
   setUp(() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
-
     // Create the container with mock
     container = ProviderContainer.test();
 
