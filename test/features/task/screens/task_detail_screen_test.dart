@@ -73,10 +73,15 @@ void main() {
           taskId: nonExistentTaskId,
         );
 
+        final l10n = WidgetTesterExtension.getL10n(
+          tester,
+          byType: EmptyStateWidget,
+        );
+
         // Verify empty state is shown
         expect(find.byType(EmptyStateWidget), findsOneWidget);
         expect(find.byIcon(Icons.task_alt_outlined), findsOneWidget);
-        expect(find.text('Task not found'), findsOneWidget);
+        expect(find.text(l10n.taskNotFound), findsOneWidget);
       });
 
       testWidgets('displays app bar in empty state', (tester) async {
