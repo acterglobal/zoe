@@ -34,7 +34,9 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
+    if (_isInitialized) {
+      _audioPlayer.dispose();
+    }
     super.dispose();
   }
 

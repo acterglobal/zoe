@@ -18,12 +18,9 @@ import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_list_widget.dart';
+import '../../../test-utils/mock_searchValue.dart';
 import '../../../test-utils/test_utils.dart';
 
-class MockSearchValue extends SearchValue {
-  @override
-  String build() => '';
-}
 
 void main() {
   late ProviderContainer container;
