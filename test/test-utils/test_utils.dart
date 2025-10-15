@@ -61,18 +61,29 @@ extension WidgetTesterExtension on WidgetTester {
     );
   }
 
+  Future<void> pumpConsumerWidget({
+    required ProviderContainer container,
+    required Function(BuildContext context, WidgetRef ref, Widget? child)
+    builder,
+  }) async {
+    await pumpMaterialWidgetWithProviderScope(
+      container: container,
+      child: Consumer(
+        builder: (context, ref, child) => builder(context, ref, child),
+      ),
+    );
+  }
+
   Future<void> pumpActionsWidget({
     required ProviderContainer container,
     required String buttonText,
     required Function(BuildContext, WidgetRef) onPressed,
   }) async {
-    await pumpMaterialWidgetWithProviderScope(
+    await pumpConsumerWidget(
       container: container,
-      child: Consumer(
-        builder: (context, ref, child) => ElevatedButton(
-          onPressed: () => onPressed(context, ref),
-          child: Text(buttonText),
-        ),
+      builder: (context, ref, child) => ElevatedButton(
+        onPressed: () => onPressed(context, ref),
+        child: Text(buttonText),
       ),
     );
   }
