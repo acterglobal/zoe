@@ -3,12 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/text/models/text_model.dart';
+import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
+import 'package:zoe/common/utils/date_time_utils.dart';
 import '../../../test-utils/test_utils.dart';
 import '../../sheet/utils/sheet_utils.dart';
 import '../../text/utils/text_utils.dart';
+import '../../events/utils/event_utils.dart';
 
 void main() {
   late ProviderContainer container;
@@ -366,6 +370,230 @@ void main() {
           textWidget.data,
           contains(getTextContentLink(parentId: textWithoutEmoji.id)),
         );
+      });
+    });
+
+    group('Event Content Share Message', () {
+      late EventModel testEventModel;
+
+      setUp(() {
+        testEventModel = getEventByIndex(container);
+      });
+
+      Future<void> pumpEventShareUtilsWidget(
+        WidgetTester tester, {
+        String? parentId,
+      }) async {
+        await tester.pumpConsumerWidget(
+          container: container,
+          builder: (_, ref, _) => Text(
+            ShareUtils.getEventContentShareMessage(
+              ref: ref,
+              parentId: parentId ?? testEventModel.id,
+            ),
+          ),
+        );
+      }
+
+      String getEventContentLink({String? parentId}) {
+        return '🔗 ${ShareUtils.linkPrefixUrl}/event/${parentId ?? testEventModel.id}';
+      }
+
+      testWidgets('generates correct share message for event with all fields', (
+        tester,
+      ) async {
+        await pumpEventShareUtilsWidget(tester);
+
+        // Verify the message contains all expected elements
+        if (testEventModel.emoji != null) {
+          expect(find.textContaining(testEventModel.emoji!), findsOneWidget);
+        }
+        expect(find.textContaining(testEventModel.title), findsOneWidget);
+        if (testEventModel.description?.plainText != null) {
+          expect(
+            find.textContaining(testEventModel.description!.plainText!),
+            findsOneWidget,
+          );
+        }
+        expect(find.textContaining('🕓 Start'), findsOneWidget);
+        expect(find.textContaining('🕓 End'), findsOneWidget);
+        expect(find.textContaining(getEventContentLink()), findsOneWidget);
+      });
+
+      testWidgets('returns empty string for non-existent event', (
+        tester,
+      ) async {
+        await pumpEventShareUtilsWidget(tester, parentId: 'non-existent-id');
+
+        // Verify empty message
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, isEmpty);
+      });
+
+      testWidgets('includes emoji and title in correct format', (tester) async {
+        await pumpEventShareUtilsWidget(tester);
+
+        // Verify the message starts with emoji and title (if emoji exists)
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        String expectedTitle = testEventModel.title;
+        if (testEventModel.emoji != null) {
+          expectedTitle = '${testEventModel.emoji} ${testEventModel.title}';
+        }
+        expect(textWidget.data, startsWith(expectedTitle));
+      });
+
+      testWidgets('includes description when present', (tester) async {
+        if (testEventModel.description?.plainText != null) {
+          await pumpEventShareUtilsWidget(tester);
+
+          // Verify the message contains description with proper spacing
+          final textWidget = tester.widget<Text>(find.byType(Text));
+          expect(
+            textWidget.data,
+            contains('\n\n${testEventModel.description!.plainText}'),
+          );
+        }
+      });
+
+      testWidgets('includes start and end dates', (tester) async {
+        await pumpEventShareUtilsWidget(tester);
+
+        // Verify the message contains formatted dates
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final startDateString = DateTimeUtils.formatDateTime(
+          testEventModel.startDate,
+        );
+        final endDateString = DateTimeUtils.formatDateTime(
+          testEventModel.endDate,
+        );
+
+        expect(textWidget.data, contains('🕓 Start\n$startDateString'));
+        expect(textWidget.data, contains('🕓 End\n$endDateString'));
+      });
+
+      testWidgets('includes link at the end', (tester) async {
+        await pumpEventShareUtilsWidget(tester);
+
+        // Verify the message ends with the link
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, endsWith(getEventContentLink()));
+      });
+
+      testWidgets('maintains correct message structure', (tester) async {
+        await pumpEventShareUtilsWidget(tester);
+
+        // Verify the message structure
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final lines = textWidget.data!.split('\n');
+        expect(
+          lines.length,
+          greaterThanOrEqualTo(4),
+        ); // At least title, start date, end date, and link
+
+        // First line should be emoji + title (if emoji exists) or just title
+        String firstLine = testEventModel.title;
+        if (testEventModel.emoji != null) {
+          firstLine = '${testEventModel.emoji} ${testEventModel.title}';
+        }
+        expect(lines.first, equals(firstLine));
+
+        // Last line should be the link
+        expect(lines.last, equals(getEventContentLink()));
+      });
+
+      testWidgets('handles special characters in event data', (tester) async {
+        final specialEventId = 'special-event-id';
+        final specialEventTitle = 'Special Event';
+        final specialEventDescription = (
+          plainText: 'Line 1\nLine 2\tTabbed',
+          htmlText: null,
+        );
+
+        // Create a new event with special characters
+        final specialEvent = testEventModel.copyWith(
+          id: specialEventId,
+          title: specialEventTitle,
+          description: specialEventDescription,
+        );
+
+        // Add the special event to the container
+        container.read(eventListProvider.notifier).state = [specialEvent];
+
+        // Pump the widget
+        await pumpEventShareUtilsWidget(tester, parentId: specialEvent.id);
+
+        // Verify special characters are handled correctly
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(specialEventTitle));
+        expect(textWidget.data, contains(specialEventDescription.plainText));
+        expect(
+          textWidget.data,
+          contains(getEventContentLink(parentId: specialEvent.id)),
+        );
+      });
+
+      testWidgets('handles event without description', (tester) async {
+        final eventWithoutDescriptionId = 'no-description-event-id';
+        final eventWithoutDescriptionTitle = 'Event Without Description';
+
+        // Create an event without description
+        final eventWithoutDescription = testEventModel.copyWith(
+          id: eventWithoutDescriptionId,
+          title: eventWithoutDescriptionTitle,
+          description: null,
+        );
+
+        // Add the event to the container
+        container.read(eventListProvider.notifier).state = [
+          eventWithoutDescription,
+        ];
+
+        // Pump the widget
+        await pumpEventShareUtilsWidget(
+          tester,
+          parentId: eventWithoutDescription.id,
+        );
+
+        // Verify the message doesn't contain description
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(eventWithoutDescriptionTitle));
+        expect(textWidget.data, contains('🕓 Start'));
+        expect(textWidget.data, contains('🕓 End'));
+        expect(
+          textWidget.data,
+          contains(getEventContentLink(parentId: eventWithoutDescription.id)),
+        );
+      });
+
+      testWidgets('formats dates correctly', (tester) async {
+        final now = DateTime.now();
+        final yesterday = now.subtract(const Duration(days: 1));
+        final tomorrow = now.add(const Duration(days: 1));
+
+        // Create an event with specific dates
+        final eventWithSpecificDates = testEventModel.copyWith(
+          startDate: yesterday,
+          endDate: tomorrow,
+        );
+
+        // Add the event to the container
+        container.read(eventListProvider.notifier).state = [
+          eventWithSpecificDates,
+        ];
+
+        // Pump the widget
+        await pumpEventShareUtilsWidget(
+          tester,
+          parentId: eventWithSpecificDates.id,
+        );
+
+        // Verify the dates are formatted correctly
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final formattedStartDate = DateTimeUtils.formatDateTime(yesterday);
+        final formattedEndDate = DateTimeUtils.formatDateTime(tomorrow);
+
+        expect(textWidget.data, contains(formattedStartDate));
+        expect(textWidget.data, contains(formattedEndDate));
       });
     });
   });
