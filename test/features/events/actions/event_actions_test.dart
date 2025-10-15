@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/features/events/actions/event_actions.dart';
 import 'package:zoe/features/events/data/event_list.dart';
 import 'package:zoe/features/events/models/events_model.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../test-utils/test_utils.dart';
 
 void main() {
@@ -163,125 +164,121 @@ void main() {
          }
        });
 
-       testWidgets('should show SnackBar with copiedToClipboard text for copy action', (tester) async {
-         await tester.pumpMaterialWidget(
-           child: MaterialApp(
-             home: Scaffold(
-               body: Builder(
-                 builder: (context) {
-                   return ElevatedButton(
-                     onPressed: () {
-                       // Simulate showing snackbar
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(content: Text('Copied to clipboard')),
-                       );
-                     },
-                     child: Text('Copy Event'),
-                   );
-                 },
-               ),
-             ),
-           ),
-         );
+      testWidgets('should show SnackBar with copiedToClipboard text for copy action', (tester) async {
+        await tester.pumpMaterialWidget(
+          child: Scaffold(
+            body: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    // Simulate showing snackbar
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(L10n.of(context).copiedToClipboard)),
+                    );
+                  },
+                  child: Text('Copy Event'),
+                );
+              },
+            ),
+          ),
+        );
          
          // Tap the button to trigger snackbar
          await tester.tap(find.text('Copy Event'));
          await tester.pump(); // Show the snackbar
          
-         // Check for SnackBar widget
-         expect(find.byType(SnackBar), findsOneWidget);
-         expect(find.text('Copied to clipboard'), findsOneWidget);
+        // Check for SnackBar widget
+        expect(find.byType(SnackBar), findsOneWidget);
+        final expected = L10n.of(tester.element(find.byType(ElevatedButton))).copiedToClipboard;
+        expect(find.text(expected), findsOneWidget);
        });
 
-       testWidgets('should show SnackBar with eventDeleted text for delete action', (tester) async {
-         await tester.pumpMaterialWidget(
-           child: MaterialApp(
-             home: Scaffold(
-               body: Builder(
-                 builder: (context) {
-                   return ElevatedButton(
-                     onPressed: () {
-                       // Simulate showing snackbar
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(content: Text('Event deleted')),
-                       );
-                     },
-                     child: Text('Delete Event'),
-                   );
-                 },
-               ),
-             ),
-           ),
-         );
+      testWidgets('should show SnackBar with eventDeleted text for delete action', (tester) async {
+        await tester.pumpMaterialWidget(
+          child: Scaffold(
+            body: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    // Simulate showing snackbar
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(L10n.of(context).eventDeleted)),
+                    );
+                  },
+                  child: Text('Delete Event'),
+                );
+              },
+            ),
+          ),
+        );
          
          // Tap the button to trigger snackbar
          await tester.tap(find.text('Delete Event'));
          await tester.pump(); // Show the snackbar
          
-         // Check for SnackBar widget
-         expect(find.byType(SnackBar), findsOneWidget);
-         expect(find.text('Event deleted'), findsOneWidget);
+        // Check for SnackBar widget
+        expect(find.byType(SnackBar), findsOneWidget);
+        final expected = L10n.of(tester.element(find.byType(ElevatedButton))).eventDeleted;
+        expect(find.text(expected), findsOneWidget);
        });
 
-       testWidgets('should show SnackBar with L10n copiedToClipboard message', (tester) async {
-         await tester.pumpMaterialWidget(
-           child: MaterialApp(
-             home: Scaffold(
-               body: Builder(
-                 builder: (context) {
-                   return ElevatedButton(
-                     onPressed: () {
-                       // Simulate L10n.of(context).copiedToClipboard message
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(content: Text('Copied to clipboard')),
-                       );
-                     },
-                     child: Text('Copy Event'),
-                   );
-                 },
-               ),
-             ),
-           ),
-         );
+      testWidgets('should show SnackBar with L10n copiedToClipboard message', (tester) async {
+        await tester.pumpMaterialWidget(
+          child: Scaffold(
+            body: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    // Simulate L10n.of(context).copiedToClipboard message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(L10n.of(context).copiedToClipboard)),
+                    );
+                  },
+                  child: Text('Copy Event'),
+                );
+              },
+            ),
+          ),
+        );
          
          // Tap the button to trigger snackbar
          await tester.tap(find.text('Copy Event'));
          await tester.pump(); // Show the snackbar
          
-         // Check for SnackBar and specific L10n message
-         expect(find.byType(SnackBar), findsOneWidget);
-         expect(find.text('Copied to clipboard'), findsOneWidget);
+        // Check for SnackBar and specific L10n message
+        expect(find.byType(SnackBar), findsOneWidget);
+        final expected = L10n.of(tester.element(find.byType(ElevatedButton))).copiedToClipboard;
+        expect(find.text(expected), findsOneWidget);
          expect(find.byType(Text), findsAtLeastNWidgets(1));
        });
 
-       testWidgets('should show SnackBar with L10n eventDeleted message', (tester) async {
-         await tester.pumpMaterialWidget(
-           child: MaterialApp(
-             home: Scaffold(
-               body: Builder(
-                 builder: (context) {
-                   return ElevatedButton(
-                     onPressed: () {
-                       // Simulate L10n.of(context).eventDeleted message
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(content: Text('Event deleted')),
-                       );
-                     },
-                     child: Text('Delete Event'),
-                   );
-                 },
-               ),
-             ),
-           ),
-         );
+      testWidgets('should show SnackBar with L10n eventDeleted message', (tester) async {
+        await tester.pumpMaterialWidget(
+          child: Scaffold(
+            body: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    // Simulate L10n.of(context).eventDeleted message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(L10n.of(context).eventDeleted)),
+                    );
+                  },
+                  child: Text('Delete Event'),
+                );
+              },
+            ),
+          ),
+        );
          
          // Tap the button to trigger snackbar
          await tester.tap(find.text('Delete Event'));
          await tester.pump(); // Show the snackbar
          
-         // Check for SnackBar and specific L10n message
-         expect(find.byType(SnackBar), findsOneWidget);
-         expect(find.text('Event deleted'), findsOneWidget);
+        // Check for SnackBar and specific L10n message
+        expect(find.byType(SnackBar), findsOneWidget);
+        final expected = L10n.of(tester.element(find.byType(ElevatedButton))).eventDeleted;
+        expect(find.text(expected), findsOneWidget);
          expect(find.byType(Text), findsAtLeastNWidgets(1));
        });
      });
