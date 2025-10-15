@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/events/models/events_model.dart';
+import 'package:zoe/features/list/models/list_model.dart';
+import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
+import 'package:zoe/features/list/providers/list_providers.dart';
+import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
 import '../../../test-utils/test_utils.dart';
+import '../../bullets/utils/bullets_utils.dart';
 import '../../sheet/utils/sheet_utils.dart';
 import '../../text/utils/text_utils.dart';
 import '../../events/utils/event_utils.dart';
+import '../../list/utils/list_utils.dart';
+import '../../task/utils/task_utils.dart';
 
 void main() {
   late ProviderContainer container;
@@ -594,6 +602,413 @@ void main() {
 
         expect(textWidget.data, contains(formattedStartDate));
         expect(textWidget.data, contains(formattedEndDate));
+      });
+    });
+
+    group('List Content Share Message', () {
+      late ListModel testListModel;
+
+      setUp(() {
+        testListModel = getListByIndex(container);
+      });
+
+      Future<void> pumpListShareUtilsWidget(
+        WidgetTester tester, {
+        String? parentId,
+      }) async {
+        await tester.pumpConsumerWidget(
+          container: container,
+          builder: (_, ref, _) => Text(
+            ShareUtils.getListContentShareMessage(
+              ref: ref,
+              parentId: parentId ?? testListModel.id,
+            ),
+          ),
+        );
+      }
+
+      String getListContentLink({String? parentId}) {
+        return '🔗 ${ShareUtils.linkPrefixUrl}/list/${parentId ?? testListModel.id}';
+      }
+
+      testWidgets('generates correct share message for list with all fields', (
+        tester,
+      ) async {
+        await pumpListShareUtilsWidget(tester);
+
+        // Verify the message contains all expected elements
+        if (testListModel.emoji != null) {
+          expect(find.textContaining(testListModel.emoji!), findsOneWidget);
+        }
+        expect(find.textContaining(testListModel.title), findsOneWidget);
+        if (testListModel.description?.plainText != null) {
+          expect(
+            find.textContaining(testListModel.description!.plainText!),
+            findsOneWidget,
+          );
+        }
+        expect(find.textContaining(getListContentLink()), findsOneWidget);
+      });
+
+      testWidgets('returns empty string for non-existent list', (tester) async {
+        await pumpListShareUtilsWidget(tester, parentId: 'non-existent-id');
+
+        // Verify empty message
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, isEmpty);
+      });
+
+      testWidgets('includes emoji and title in correct format', (tester) async {
+        await pumpListShareUtilsWidget(tester);
+
+        // Verify the message starts with emoji and title (if emoji exists)
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        String expectedTitle = testListModel.title;
+        if (testListModel.emoji != null) {
+          expectedTitle = '${testListModel.emoji} ${testListModel.title}';
+        }
+        expect(textWidget.data, startsWith(expectedTitle));
+      });
+
+      testWidgets('includes description when present', (tester) async {
+        if (testListModel.description?.plainText != null) {
+          await pumpListShareUtilsWidget(tester);
+
+          // Verify the message contains description with proper spacing
+          final textWidget = tester.widget<Text>(find.byType(Text));
+          expect(
+            textWidget.data,
+            contains('\n\n${testListModel.description!.plainText}'),
+          );
+        }
+      });
+
+      testWidgets('includes link at the end', (tester) async {
+        await pumpListShareUtilsWidget(tester);
+
+        // Verify the message ends with the link
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, endsWith(getListContentLink()));
+      });
+
+      testWidgets('maintains correct message structure', (tester) async {
+        await pumpListShareUtilsWidget(tester);
+
+        // Verify the message structure
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final lines = textWidget.data!.split('\n');
+        expect(
+          lines.length,
+          greaterThanOrEqualTo(2),
+        ); // At least title and link
+
+        // First line should be emoji + title (if emoji exists) or just title
+        String firstLine = testListModel.title;
+        if (testListModel.emoji != null) {
+          firstLine = '${testListModel.emoji} ${testListModel.title}';
+        }
+        expect(lines.first, equals(firstLine));
+
+        // Last line should be the link
+        expect(lines.last, equals(getListContentLink()));
+      });
+
+      testWidgets('handles special characters in list data', (tester) async {
+        final specialListId = 'special-list-id';
+        final specialListTitle = 'Special List';
+        final specialListEmoji = '📝';
+        final specialListDescription = (
+          plainText: 'Line 1\nLine 2\tTabbed',
+          htmlText: null,
+        );
+
+        // Create a new list with special characters
+        final specialList = testListModel.copyWith(
+          id: specialListId,
+          title: specialListTitle,
+          emoji: specialListEmoji,
+          description: specialListDescription,
+        );
+
+        // Add the special list to the container
+        container.read(listsProvider.notifier).state = [specialList];
+
+        // Pump the widget
+        await pumpListShareUtilsWidget(tester, parentId: specialList.id);
+
+        // Verify special characters are handled correctly
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(specialListTitle));
+        expect(textWidget.data, contains(specialListDescription.plainText));
+        expect(
+          textWidget.data,
+          contains(getListContentLink(parentId: specialList.id)),
+        );
+      });
+
+      testWidgets('handles list without description', (tester) async {
+        final listWithoutDescId = 'no-desc-list-id';
+        final listWithoutDescTitle = 'List Without Description';
+
+        // Create a list without description
+        final listWithoutDesc = testListModel.copyWith(
+          id: listWithoutDescId,
+          description: null,
+          title: listWithoutDescTitle,
+        );
+
+        // Add the list to the container
+        container.read(listsProvider.notifier).state = [listWithoutDesc];
+
+        // Pump the widget
+        await pumpListShareUtilsWidget(tester, parentId: listWithoutDesc.id);
+
+        // Verify the message doesn't contain description
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(listWithoutDescTitle));
+        expect(
+          textWidget.data,
+          contains(getListContentLink(parentId: listWithoutDesc.id)),
+        );
+      });
+
+      testWidgets('includes tasks when list type is task', (tester) async {
+        final taskListId = 'task-list-id';
+        final taskListTitle = 'Task List';
+        final task1Id = 'task-1-id';
+        final task1Title = 'Task 1';
+        final task2Id = 'task-2-id';
+        final task2Title = 'Task 2';
+
+        // Create a task list
+        final taskList = testListModel.copyWith(
+          id: taskListId,
+          title: taskListTitle,
+          listType: ContentType.task,
+        );
+
+        // Create tasks for the list
+        final taskContent = getTaskByIndex(container);
+        final task1 = taskContent.copyWith(
+          id: task1Id,
+          title: task1Title,
+          parentId: taskList.id,
+        );
+        final task2 = taskContent.copyWith(
+          id: task2Id,
+          title: task2Title,
+          parentId: taskList.id,
+        );
+
+        // Add the list and tasks to the container
+        container.read(listsProvider.notifier).state = [taskList];
+        container.read(taskListProvider.notifier).state = [task1, task2];
+
+        // Pump the widget
+        await pumpListShareUtilsWidget(tester, parentId: taskList.id);
+
+        // Verify tasks are included in the message
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains('☑️ $task1Title'));
+        expect(textWidget.data, contains('☑️ $task2Title'));
+        expect(
+          textWidget.data,
+          contains(getListContentLink(parentId: taskList.id)),
+        );
+      });
+
+      testWidgets('handles task list with empty tasks', (tester) async {
+        final emptyTaskListId = 'empty-task-list-id';
+        final emptyTaskListTitle = 'Empty Task List';
+
+        // Create a task list with no tasks
+        final emptyTaskList = testListModel.copyWith(
+          id: emptyTaskListId,
+          title: emptyTaskListTitle,
+          listType: ContentType.task,
+        );
+
+        // Add the list to the container (no tasks added)
+        container.read(listsProvider.notifier).state = [emptyTaskList];
+        container.read(taskListProvider.notifier).state = [];
+
+        // Pump the widget
+        await pumpListShareUtilsWidget(tester, parentId: emptyTaskList.id);
+
+        // Verify the message doesn't contain task items
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(emptyTaskListTitle));
+        expect(textWidget.data, isNot(contains('☑️')));
+        expect(
+          textWidget.data,
+          contains(getListContentLink(parentId: emptyTaskList.id)),
+        );
+      });
+
+      testWidgets('handles list with description and tasks', (tester) async {
+        final taskListWithDescId = 'task-list-with-desc-id';
+        final taskListWithDescTitle = 'Task List With Description';
+        final taskListWithDescDescription = (
+          plainText: 'This is a task list with description',
+          htmlText: null,
+        );
+
+        final task1Id = 'task-desc-1';
+        final task1Title = 'Task with Description';
+
+        // Create a task list with description
+        final taskListWithDesc = testListModel.copyWith(
+          id: taskListWithDescId,
+          title: taskListWithDescTitle,
+          listType: ContentType.task,
+          description: taskListWithDescDescription,
+        );
+
+        // Create a task
+        final task = getTaskByIndex(container).copyWith(
+          id: task1Id,
+          title: task1Title,
+          parentId: taskListWithDesc.id,
+        );
+
+        // Add the list and task to the container
+        container.read(listsProvider.notifier).state = [taskListWithDesc];
+        container.read(taskListProvider.notifier).state = [task];
+
+        // Pump the widget
+        await pumpListShareUtilsWidget(tester, parentId: taskListWithDesc.id);
+
+        // Verify description and tasks are both included
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(
+          textWidget.data,
+          contains(taskListWithDescDescription.plainText),
+        );
+        expect(textWidget.data, contains('☑️ $task1Title'));
+        expect(
+          textWidget.data,
+          contains(getListContentLink(parentId: taskListWithDesc.id)),
+        );
+      });
+
+      testWidgets('includes bullets when list type is bullet', (tester) async {
+        final bulletListId = 'bullet-list-id';
+        final bulletListTitle = 'Bullet List';
+        final bullet1Id = 'bullet-1-id';
+        final bullet1Title = 'Bullet 1';
+        final bullet2Id = 'bullet-2-id';
+        final bullet2Title = 'Bullet 2';
+
+        // Create a bullet list
+        final bulletList = testListModel.copyWith(
+          id: bulletListId,
+          title: bulletListTitle,
+          listType: ContentType.bullet,
+        );
+
+        // Create bullets for the list
+        final bulletContent = getBulletByIndex(container);
+        final bullet1 = bulletContent.copyWith(
+          id: bullet1Id,
+          title: bullet1Title,
+          parentId: bulletList.id,
+        );
+        final bullet2 = bulletContent.copyWith(
+          id: bullet2Id,
+          title: bullet2Title,
+          parentId: bulletList.id,
+        );
+
+        // Add the list to the container
+        container.read(listsProvider.notifier).state = [bulletList];
+        container.read(bulletListProvider.notifier).state = [bullet1, bullet2];
+
+        // Pump the widget
+        await pumpListShareUtilsWidget(tester, parentId: bulletList.id);
+
+        // Verify the message is generated
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(bulletListTitle));
+        expect(textWidget.data, contains('🔹 $bullet1Title'));
+        expect(textWidget.data, contains('🔹 $bullet2Title'));
+        expect(
+          textWidget.data,
+          contains(getListContentLink(parentId: bulletList.id)),
+        );
+      });
+
+      testWidgets('handles bullet list with empty bullets', (tester) async {
+        final emptyBulletListId = 'empty-bullet-list-id';
+        final emptyBulletListTitle = 'Empty Bullet List';
+
+        // Create a bullet list with no bullets
+        final emptyBulletList = testListModel.copyWith(
+          id: emptyBulletListId,
+          title: emptyBulletListTitle,
+          listType: ContentType.bullet,
+        );
+
+        // Add the list to the container (no bullets added)
+        container.read(listsProvider.notifier).state = [emptyBulletList];
+        container.read(bulletListProvider.notifier).state = [];
+
+        // Pump the widget
+        await pumpListShareUtilsWidget(tester, parentId: emptyBulletList.id);
+
+        // Verify the message doesn't contain bullet items
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(emptyBulletListTitle));
+        expect(textWidget.data, isNot(contains('🔹')));
+        expect(
+          textWidget.data,
+          contains(getListContentLink(parentId: emptyBulletList.id)),
+        );
+      });
+
+      testWidgets('handles list with description and bullets', (tester) async {
+        final bulletListWithDescId = 'bullet-list-with-desc-id';
+        final bulletListWithDescTitle = 'Bullet List With Description';
+        final bulletListWithDescDescription = (
+          plainText: 'This is a bullet list with description',
+          htmlText: null,
+        );
+
+        final bullet1Id = 'bullet-desc-1';
+        final bullet1Title = 'Bullet with Description';
+
+        // Create a bullet list with description
+        final bulletListWithDesc = testListModel.copyWith(
+          id: bulletListWithDescId,
+          title: bulletListWithDescTitle,
+          listType: ContentType.bullet,
+          description: bulletListWithDescDescription,
+        );
+
+        // Create a bullet
+        final bullet = getBulletByIndex(container).copyWith(
+          id: bullet1Id,
+          title: bullet1Title,
+          parentId: bulletListWithDesc.id,
+        );
+
+        // Add the list and bullet to the container
+        container.read(listsProvider.notifier).state = [bulletListWithDesc];
+        container.read(bulletListProvider.notifier).state = [bullet];
+
+        // Pump the widget
+        await pumpListShareUtilsWidget(tester, parentId: bulletListWithDesc.id);
+
+        // Verify description and bullets are both included
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(
+          textWidget.data,
+          contains(bulletListWithDescDescription.plainText),
+        );
+        expect(textWidget.data, contains('🔹 $bullet1Title'));
+        expect(
+          textWidget.data,
+          contains(getListContentLink(parentId: bulletListWithDesc.id)),
+        );
       });
     });
   });
