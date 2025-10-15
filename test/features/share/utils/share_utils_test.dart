@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/list/models/list_model.dart';
@@ -14,6 +15,7 @@ import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import '../../../test-utils/test_utils.dart';
 import '../../bullets/utils/bullets_utils.dart';
 import '../../sheet/utils/sheet_utils.dart';
@@ -1009,6 +1011,370 @@ void main() {
           textWidget.data,
           contains(getListContentLink(parentId: bulletListWithDesc.id)),
         );
+      });
+    });
+
+    group('Task Content Share Message', () {
+      late TaskModel testTaskModel;
+
+      setUp(() {
+        testTaskModel = getTaskByIndex(container);
+      });
+
+      Future<void> pumpTaskShareUtilsWidget(
+        WidgetTester tester, {
+        String? parentId,
+      }) async {
+        await tester.pumpConsumerWidget(
+          container: container,
+          builder: (_, ref, _) => Text(
+            ShareUtils.getTaskContentShareMessage(
+              ref: ref,
+              parentId: parentId ?? testTaskModel.id,
+            ),
+          ),
+        );
+      }
+
+      String getTaskContentLink({String? parentId}) {
+        return '🔗 ${ShareUtils.linkPrefixUrl}/task/${parentId ?? testTaskModel.id}';
+      }
+
+      testWidgets('generates correct share message for task with all fields', (
+        tester,
+      ) async {
+        await pumpTaskShareUtilsWidget(tester);
+
+        // Verify the message contains all expected elements
+        expect(find.textContaining(testTaskModel.title), findsOneWidget);
+        if (testTaskModel.description?.plainText != null) {
+          expect(
+            find.textContaining(testTaskModel.description!.plainText!),
+            findsOneWidget,
+          );
+        }
+        expect(find.textContaining('🕒 Due:'), findsOneWidget);
+        expect(find.textContaining(getTaskContentLink()), findsOneWidget);
+      });
+
+      testWidgets('returns empty string for non-existent task', (tester) async {
+        await pumpTaskShareUtilsWidget(tester, parentId: 'non-existent-id');
+
+        // Verify empty message
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, isEmpty);
+      });
+
+      testWidgets('includes emoji and title in correct format', (tester) async {
+        await pumpTaskShareUtilsWidget(tester);
+
+        // Verify the message starts with emoji and title
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final emoji = testTaskModel.emoji ?? '💻';
+        expect(textWidget.data, startsWith('$emoji ${testTaskModel.title}'));
+      });
+
+      testWidgets('includes description when present', (tester) async {
+        if (testTaskModel.description?.plainText != null) {
+          await pumpTaskShareUtilsWidget(tester);
+
+          // Verify the message contains description with proper spacing
+          final textWidget = tester.widget<Text>(find.byType(Text));
+          expect(
+            textWidget.data,
+            contains('\n\n${testTaskModel.description!.plainText}'),
+          );
+        }
+      });
+
+      testWidgets('includes due date', (tester) async {
+        await pumpTaskShareUtilsWidget(tester);
+
+        // Verify the message contains formatted due date
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final dueDateString = DateTimeUtils.formatDate(testTaskModel.dueDate);
+        expect(textWidget.data, contains('🕒 Due: $dueDateString'));
+      });
+
+      testWidgets('includes assigned users when present', (tester) async {
+        if (testTaskModel.assignedUsers.isNotEmpty) {
+          await pumpTaskShareUtilsWidget(tester);
+
+          // Verify the message contains assigned users
+          final textWidget = tester.widget<Text>(find.byType(Text));
+          expect(textWidget.data, contains('👥 Assigned:'));
+        }
+      });
+
+      testWidgets('includes link at the end', (tester) async {
+        await pumpTaskShareUtilsWidget(tester);
+
+        // Verify the message ends with the link
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, endsWith(getTaskContentLink()));
+      });
+
+      testWidgets('maintains correct message structure', (tester) async {
+        await pumpTaskShareUtilsWidget(tester);
+
+        // Verify the message structure
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final lines = textWidget.data!.split('\n');
+        expect(
+          lines.length,
+          greaterThanOrEqualTo(3),
+        ); // At least title, due date, and link
+
+        // First line should be emoji + title
+        final emoji = testTaskModel.emoji ?? '💻';
+        expect(lines.first, equals('$emoji ${testTaskModel.title}'));
+
+        // Last line should be the link
+        expect(lines.last, equals(getTaskContentLink()));
+      });
+
+      testWidgets('handles special characters in task data', (tester) async {
+        final specialTaskId = 'special-task-id';
+        final specialTaskTitle = 'Special Task';
+        final specialTaskDescription = (
+          plainText: 'Line 1\nLine 2\tTabbed',
+          htmlText: null,
+        );
+
+        // Create a new task with special characters
+        final specialTask = testTaskModel.copyWith(
+          id: specialTaskId,
+          title: specialTaskTitle,
+          description: specialTaskDescription,
+        );
+
+        // Add the special task to the container
+        container.read(taskListProvider.notifier).state = [specialTask];
+
+        // Pump the widget
+        await pumpTaskShareUtilsWidget(tester, parentId: specialTask.id);
+
+        // Verify special characters are handled correctly
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(specialTaskTitle));
+        expect(textWidget.data, contains(specialTaskDescription.plainText));
+        expect(
+          textWidget.data,
+          contains(getTaskContentLink(parentId: specialTask.id)),
+        );
+      });
+
+      testWidgets('handles task without description', (tester) async {
+        final taskWithoutDescId = 'no-description-task-id';
+        final taskWithoutDescTitle = 'Task Without Description';
+
+        // Create a task without description
+        final taskWithoutDescription = testTaskModel.copyWith(
+          id: taskWithoutDescId,
+          title: taskWithoutDescTitle,
+          description: null,
+        );
+
+        // Add the task to the container
+        container.read(taskListProvider.notifier).state = [
+          taskWithoutDescription,
+        ];
+
+        // Pump the widget
+        await pumpTaskShareUtilsWidget(
+          tester,
+          parentId: taskWithoutDescription.id,
+        );
+
+        // Verify the message doesn't contain description
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(taskWithoutDescTitle));
+        expect(textWidget.data, contains('🕒 Due:'));
+        expect(
+          textWidget.data,
+          contains(getTaskContentLink(parentId: taskWithoutDescription.id)),
+        );
+      });
+
+      testWidgets('formats due date correctly', (tester) async {
+        final now = DateTime.now();
+        final tomorrow = now.add(const Duration(days: 1));
+
+        // Create a task with specific due date
+        final taskWithSpecificDate = testTaskModel.copyWith(
+          dueDate: tomorrow,
+        );
+
+        // Add the task to the container
+        container.read(taskListProvider.notifier).state = [
+          taskWithSpecificDate,
+        ];
+
+        // Pump the widget
+        await pumpTaskShareUtilsWidget(
+          tester,
+          parentId: taskWithSpecificDate.id,
+        );
+
+        // Verify the due date is formatted correctly
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final formattedDueDate = DateTimeUtils.formatDate(tomorrow);
+        expect(textWidget.data, contains('🕒 Due: $formattedDueDate'));
+      });
+
+      testWidgets('includes single assigned user', (tester) async {
+        final taskWithUserId = 'task-with-user-id';
+        final taskWithUserTitle = 'Task With User';
+        final userId = 'user_1';
+
+        // Create a task with one assigned user
+        final taskWithUser = testTaskModel.copyWith(
+          id: taskWithUserId,
+          title: taskWithUserTitle,
+          assignedUsers: [userId],
+        );
+
+        // Add the task to the container
+        container.read(taskListProvider.notifier).state = [taskWithUser];
+
+        // Pump the widget
+        await pumpTaskShareUtilsWidget(tester, parentId: taskWithUser.id);
+
+        // Verify assigned user is included
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains('👥 Assigned:'));
+        final user = container.read(getUserByIdProvider(userId));
+        expect(textWidget.data, contains(user?.name ?? ''));
+        expect(
+          textWidget.data,
+          contains(getTaskContentLink(parentId: taskWithUser.id)),
+        );
+      });
+
+      testWidgets('includes multiple assigned users', (tester) async {
+        final taskWithUsersId = 'task-with-users-id';
+        final taskWithUsersTitle = 'Task With Multiple Users';
+        final userIds = ['user_1', 'user_2', 'user_3'];
+
+        // Create a task with multiple assigned users
+        final taskWithUsers = testTaskModel.copyWith(
+          id: taskWithUsersId,
+          title: taskWithUsersTitle,
+          assignedUsers: userIds,
+        );
+
+        // Add the task to the container
+        container.read(taskListProvider.notifier).state = [taskWithUsers];
+
+        // Pump the widget
+        await pumpTaskShareUtilsWidget(tester, parentId: taskWithUsers.id);
+
+        // Verify assigned users are included
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains('👥 Assigned:'));
+        for (final userId in userIds) {
+          final user = container.read(getUserByIdProvider(userId));
+          expect(textWidget.data, contains(user?.name ?? ''));
+        }
+        expect(
+          textWidget.data,
+          contains(getTaskContentLink(parentId: taskWithUsers.id)),
+        );
+      });
+
+      testWidgets('handles task without assigned users', (tester) async {
+        final taskWithoutUsersId = 'task-without-users-id';
+        final taskWithoutUsersTitle = 'Task Without Users';
+
+        // Create a task without assigned users
+        final taskWithoutUsers = testTaskModel.copyWith(
+          id: taskWithoutUsersId,
+          title: taskWithoutUsersTitle,
+          assignedUsers: [],
+        );
+
+        // Add the task to the container
+        container.read(taskListProvider.notifier).state = [taskWithoutUsers];
+
+        // Pump the widget
+        await pumpTaskShareUtilsWidget(tester, parentId: taskWithoutUsers.id);
+
+        // Verify assigned users section is not included
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, isNot(contains('👥 Assigned:')));
+        expect(
+          textWidget.data,
+          contains(getTaskContentLink(parentId: taskWithoutUsers.id)),
+        );
+      });
+
+      testWidgets('handles task with description and assigned users', (
+        tester,
+      ) async {
+        final taskWithAllFieldsId = 'task-with-all-fields-id';
+        final taskWithAllFieldsTitle = 'Task With All Fields';
+        final taskWithAllFieldsDescription = (
+          plainText: 'This task has all fields',
+          htmlText: null,
+        );
+        final userIds = ['user_1', 'user_2'];
+
+        // Create a task with description and assigned users
+        final taskWithAllFields = testTaskModel.copyWith(
+          id: taskWithAllFieldsId,
+          title: taskWithAllFieldsTitle,
+          description: taskWithAllFieldsDescription,
+          assignedUsers: userIds,
+        );
+
+        // Add the task to the container
+        container.read(taskListProvider.notifier).state = [taskWithAllFields];
+
+        // Pump the widget
+        await pumpTaskShareUtilsWidget(tester, parentId: taskWithAllFields.id);
+
+        // Verify all fields are included
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(
+          textWidget.data,
+          contains(taskWithAllFieldsDescription.plainText),
+        );
+        expect(textWidget.data, contains('🕒 Due:'));
+        expect(textWidget.data, contains('👥 Assigned:'));
+        for (final userId in userIds) {
+          final user = container.read(getUserByIdProvider(userId));
+          expect(textWidget.data, contains(user?.name ?? ''));
+        }
+        expect(
+          textWidget.data,
+          contains(getTaskContentLink(parentId: taskWithAllFields.id)),
+        );
+      });
+
+      testWidgets('uses default emoji when emoji is null', (tester) async {
+        final taskWithDefaultEmojiId = 'task-default-emoji-id';
+        final taskWithDefaultEmojiTitle = 'Task Default Emoji';
+
+        // Create a task with null emoji
+        final taskWithDefaultEmoji = testTaskModel.copyWith(
+          id: taskWithDefaultEmojiId,
+          title: taskWithDefaultEmojiTitle,
+        );
+
+        // Add the task to the container
+        container.read(taskListProvider.notifier).state = [
+          taskWithDefaultEmoji,
+        ];
+
+        // Pump the widget
+        await pumpTaskShareUtilsWidget(
+          tester,
+          parentId: taskWithDefaultEmoji.id,
+        );
+
+        // Verify default emoji (💻) is used
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, startsWith('💻 $taskWithDefaultEmojiTitle'));
       });
     });
   });
