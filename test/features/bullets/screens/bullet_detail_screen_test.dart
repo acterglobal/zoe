@@ -34,7 +34,7 @@ void main() {
     container = ProviderContainer.test();
 
     // Get the test bullet
-    testBullet = getBulletModelByIndex(container, 0);
+    testBullet = getBulletByIndex(container);
   });
 
   // Pump bullet detail screen
