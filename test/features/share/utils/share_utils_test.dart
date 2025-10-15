@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/task/models/task_model.dart';
@@ -1201,9 +1202,7 @@ void main() {
         final tomorrow = now.add(const Duration(days: 1));
 
         // Create a task with specific due date
-        final taskWithSpecificDate = testTaskModel.copyWith(
-          dueDate: tomorrow,
-        );
+        final taskWithSpecificDate = testTaskModel.copyWith(dueDate: tomorrow);
 
         // Add the task to the container
         container.read(taskListProvider.notifier).state = [
@@ -1375,6 +1374,231 @@ void main() {
         // Verify default emoji (💻) is used
         final textWidget = tester.widget<Text>(find.byType(Text));
         expect(textWidget.data, startsWith('💻 $taskWithDefaultEmojiTitle'));
+      });
+    });
+
+    group('Bullet Content Share Message', () {
+      late BulletModel testBulletModel;
+
+      setUp(() {
+        testBulletModel = getBulletByIndex(container);
+      });
+
+      Future<void> pumpBulletShareUtilsWidget(
+        WidgetTester tester, {
+        String? parentId,
+      }) async {
+        await tester.pumpConsumerWidget(
+          container: container,
+          builder: (_, ref, _) => Text(
+            ShareUtils.getBulletContentShareMessage(
+              ref: ref,
+              parentId: parentId ?? testBulletModel.id,
+            ),
+          ),
+        );
+      }
+
+      String getBulletContentLink({String? parentId}) {
+        return '🔗 ${ShareUtils.linkPrefixUrl}/bullet/${parentId ?? testBulletModel.id}';
+      }
+
+      testWidgets(
+        'generates correct share message for bullet with all fields',
+        (tester) async {
+          await pumpBulletShareUtilsWidget(tester);
+
+          // Verify the message contains all expected elements
+          expect(find.textContaining(testBulletModel.title), findsOneWidget);
+          if (testBulletModel.description?.plainText != null) {
+            expect(
+              find.textContaining(testBulletModel.description!.plainText!),
+              findsOneWidget,
+            );
+          }
+          expect(find.textContaining(getBulletContentLink()), findsOneWidget);
+        },
+      );
+
+      testWidgets('returns empty string for non-existent bullet', (
+        tester,
+      ) async {
+        await pumpBulletShareUtilsWidget(tester, parentId: 'non-existent-id');
+
+        // Verify empty message
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, isEmpty);
+      });
+
+      testWidgets('includes emoji and title in correct format', (tester) async {
+        await pumpBulletShareUtilsWidget(tester);
+
+        // Verify the message starts with emoji and title
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final emoji = testBulletModel.emoji ?? '🔹';
+        expect(textWidget.data, startsWith('$emoji ${testBulletModel.title}'));
+      });
+
+      testWidgets('includes description when present', (tester) async {
+        if (testBulletModel.description?.plainText != null) {
+          await pumpBulletShareUtilsWidget(tester);
+
+          // Verify the message contains description with proper spacing
+          final textWidget = tester.widget<Text>(find.byType(Text));
+          expect(
+            textWidget.data,
+            contains('\n\n${testBulletModel.description!.plainText}'),
+          );
+        }
+      });
+
+      testWidgets('includes link at the end', (tester) async {
+        await pumpBulletShareUtilsWidget(tester);
+
+        // Verify the message ends with the link
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, endsWith(getBulletContentLink()));
+      });
+
+      testWidgets('maintains correct message structure', (tester) async {
+        await pumpBulletShareUtilsWidget(tester);
+
+        // Verify the message structure
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final lines = textWidget.data!.split('\n');
+        expect(
+          lines.length,
+          greaterThanOrEqualTo(2),
+        ); // At least title and link
+
+        // First line should be emoji + title
+        final emoji = testBulletModel.emoji ?? '🔹';
+        expect(lines.first, equals('$emoji ${testBulletModel.title}'));
+
+        // Last line should be the link
+        expect(lines.last, equals(getBulletContentLink()));
+      });
+
+      testWidgets('handles special characters in bullet data', (tester) async {
+        final specialBulletId = 'special-bullet-id';
+        final specialBulletTitle = 'Special Bullet';
+        final specialBulletDescription = (
+          plainText: 'Line 1\nLine 2\tTabbed',
+          htmlText: null,
+        );
+
+        // Create a new bullet with special characters
+        final specialBullet = testBulletModel.copyWith(
+          id: specialBulletId,
+          title: specialBulletTitle,
+          description: specialBulletDescription,
+        );
+
+        // Add the special bullet to the container
+        container.read(bulletListProvider.notifier).state = [specialBullet];
+
+        // Pump the widget
+        await pumpBulletShareUtilsWidget(tester, parentId: specialBullet.id);
+
+        // Verify special characters are handled correctly
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(specialBulletTitle));
+        expect(textWidget.data, contains(specialBulletDescription.plainText));
+        expect(
+          textWidget.data,
+          contains(getBulletContentLink(parentId: specialBullet.id)),
+        );
+      });
+
+      testWidgets('handles bullet without description', (tester) async {
+        final bulletWithoutDescId = 'no-description-bullet-id';
+        final bulletWithoutDescTitle = 'Bullet Without Description';
+
+        // Create a bullet without description
+        final bulletWithoutDescription = testBulletModel.copyWith(
+          id: bulletWithoutDescId,
+          title: bulletWithoutDescTitle,
+          description: null,
+        );
+
+        // Add the bullet to the container
+        container.read(bulletListProvider.notifier).state = [
+          bulletWithoutDescription,
+        ];
+
+        // Pump the widget
+        await pumpBulletShareUtilsWidget(
+          tester,
+          parentId: bulletWithoutDescription.id,
+        );
+
+        // Verify the message doesn't contain description
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(bulletWithoutDescTitle));
+        expect(
+          textWidget.data,
+          contains(getBulletContentLink(parentId: bulletWithoutDescription.id)),
+        );
+      });
+
+      testWidgets('uses default emoji when emoji is null', (tester) async {
+        final bulletWithDefaultEmojiId = 'bullet-default-emoji-id';
+        final bulletWithDefaultEmojiTitle = 'Bullet Default Emoji';
+
+        // Create a bullet with null emoji
+        final bulletWithDefaultEmoji = testBulletModel.copyWith(
+          id: bulletWithDefaultEmojiId,
+          title: bulletWithDefaultEmojiTitle,
+        );
+
+        // Add the bullet to the container
+        container.read(bulletListProvider.notifier).state = [
+          bulletWithDefaultEmoji,
+        ];
+
+        // Pump the widget
+        await pumpBulletShareUtilsWidget(
+          tester,
+          parentId: bulletWithDefaultEmoji.id,
+        );
+
+        // Verify default emoji (🔹) is used
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, startsWith('🔹 $bulletWithDefaultEmojiTitle'));
+      });
+
+      testWidgets('handles bullet with long description', (tester) async {
+        final bulletLongDescId = 'bullet-long-desc-id';
+        final bulletLongDescTitle = 'Bullet Long Description';
+        final bulletLongDescDescription = (
+          plainText:
+              'This is a very long description that spans multiple lines and contains a lot of text. '
+              'It should be properly formatted in the share message. '
+              'The description can include various details and information about the bullet point.',
+          htmlText: null,
+        );
+
+        // Create a bullet with long description
+        final bulletLongDesc = testBulletModel.copyWith(
+          id: bulletLongDescId,
+          title: bulletLongDescTitle,
+          description: bulletLongDescDescription,
+        );
+
+        // Add the bullet to the container
+        container.read(bulletListProvider.notifier).state = [bulletLongDesc];
+
+        // Pump the widget
+        await pumpBulletShareUtilsWidget(tester, parentId: bulletLongDesc.id);
+
+        // Verify the long description is included
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(bulletLongDescTitle));
+        expect(textWidget.data, contains(bulletLongDescDescription.plainText));
+        expect(
+          textWidget.data,
+          contains(getBulletContentLink(parentId: bulletLongDesc.id)),
+        );
       });
     });
   });
