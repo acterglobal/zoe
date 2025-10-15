@@ -8,6 +8,7 @@ import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/list/models/list_model.dart';
+import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
@@ -15,6 +16,7 @@ import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import '../../../test-utils/test_utils.dart';
@@ -24,6 +26,7 @@ import '../../text/utils/text_utils.dart';
 import '../../events/utils/event_utils.dart';
 import '../../list/utils/list_utils.dart';
 import '../../task/utils/task_utils.dart';
+import '../../polls/utils/poll_utils.dart';
 
 void main() {
   late ProviderContainer container;
@@ -1598,6 +1601,200 @@ void main() {
         expect(
           textWidget.data,
           contains(getBulletContentLink(parentId: bulletLongDesc.id)),
+        );
+      });
+    });
+
+    group('Poll Content Share Message', () {
+      late PollModel testPollModel;
+
+      setUp(() {
+        testPollModel = getPollByIndex(container);
+      });
+
+      Future<void> pumpPollShareUtilsWidget(
+        WidgetTester tester, {
+        String? parentId,
+      }) async {
+        await tester.pumpConsumerWidget(
+          container: container,
+          builder: (_, ref, _) => Text(
+            ShareUtils.getPollContentShareMessage(
+              ref: ref,
+              parentId: parentId ?? testPollModel.id,
+            ),
+          ),
+        );
+      }
+
+      String getPollContentLink({String? parentId}) {
+        return '🔗 ${ShareUtils.linkPrefixUrl}/poll/${parentId ?? testPollModel.id}';
+      }
+
+      testWidgets('generates correct share message for poll with all fields', (
+        tester,
+      ) async {
+        await pumpPollShareUtilsWidget(tester);
+
+        // Verify the message contains all expected elements
+        expect(find.textContaining(testPollModel.title), findsOneWidget);
+        if (testPollModel.emoji != null) {
+          expect(find.textContaining(testPollModel.emoji!), findsOneWidget);
+        }
+        expect(find.textContaining('🔘'), findsWidgets);
+        expect(find.textContaining(getPollContentLink()), findsOneWidget);
+      });
+
+      testWidgets('returns empty string for non-existent poll', (tester) async {
+        await pumpPollShareUtilsWidget(tester, parentId: 'non-existent-id');
+
+        // Verify empty message
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, isEmpty);
+      });
+
+      testWidgets('includes emoji and title in correct format', (tester) async {
+        await pumpPollShareUtilsWidget(tester);
+
+        // Verify the message starts with emoji and title (if emoji exists)
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final expectedTitle = testPollModel.emoji != null
+            ? '${testPollModel.emoji} ${testPollModel.title}'
+            : testPollModel.title;
+        expect(textWidget.data, startsWith(expectedTitle));
+      });
+
+      testWidgets('includes poll options', (tester) async {
+        await pumpPollShareUtilsWidget(tester);
+
+        // Verify all options are included with 🔘 emoji
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        for (final option in testPollModel.options) {
+          expect(textWidget.data, contains('🔘 ${option.title}'));
+        }
+      });
+
+      testWidgets('includes link at the end', (tester) async {
+        await pumpPollShareUtilsWidget(tester);
+
+        // Verify the message ends with the link
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, endsWith(getPollContentLink()));
+      });
+
+      testWidgets('maintains correct message structure', (tester) async {
+        await pumpPollShareUtilsWidget(tester);
+
+        // Verify the message structure
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final lines = textWidget.data!.split('\n');
+        expect(
+          lines.length,
+          greaterThanOrEqualTo(3),
+        ); // At least title, option, and link
+
+        // First line should be emoji + title (if emoji exists) or just title
+        final firstLine = testPollModel.emoji != null
+            ? '${testPollModel.emoji} ${testPollModel.title}'
+            : testPollModel.title;
+        expect(lines.first, equals(firstLine));
+
+        // Last line should be the link
+        expect(lines.last, equals(getPollContentLink()));
+      });
+
+      testWidgets('handles special characters in poll data', (tester) async {
+        final specialPollId = 'special-poll-id';
+        final specialPollQuestion = 'Special Poll Question';
+        final specialOptions = [
+          PollOption(id: 'opt-1', title: 'Option & Special "Characters"'),
+          PollOption(id: 'opt-2', title: 'Option with\ttab'),
+        ];
+
+        // Create a new poll with special characters
+        final specialPoll = testPollModel.copyWith(
+          id: specialPollId,
+          question: specialPollQuestion,
+          options: specialOptions,
+        );
+
+        // Add the special poll to the container
+        container.read(pollListProvider.notifier).state = [specialPoll];
+
+        // Pump the widget
+        await pumpPollShareUtilsWidget(tester, parentId: specialPoll.id);
+
+        // Verify special characters are handled correctly
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(specialPollQuestion));
+        for (final option in specialOptions) {
+          expect(textWidget.data, contains(option.title));
+        }
+        expect(
+          textWidget.data,
+          contains(getPollContentLink(parentId: specialPoll.id)),
+        );
+      });
+
+      testWidgets('handles poll with single option', (tester) async {
+        final singleOptionPollId = 'single-option-poll-id';
+        final singleOptionPollQuestion = 'Poll With Single Option';
+        final optionTitle = 'Only Option';
+        final singleOption = [PollOption(id: 'single-opt', title: optionTitle)];
+
+        // Create a poll with single option
+        final singleOptionPoll = testPollModel.copyWith(
+          id: singleOptionPollId,
+          question: singleOptionPollQuestion,
+          options: singleOption,
+        );
+
+        // Add the poll to the container
+        container.read(pollListProvider.notifier).state = [singleOptionPoll];
+
+        // Pump the widget
+        await pumpPollShareUtilsWidget(tester, parentId: singleOptionPoll.id);
+
+        // Verify the single option is included
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(singleOptionPollQuestion));
+        expect(textWidget.data, contains('🔘 $optionTitle'));
+        expect(
+          textWidget.data,
+          contains(getPollContentLink(parentId: singleOptionPoll.id)),
+        );
+      });
+
+      testWidgets('handles poll with multiple options', (tester) async {
+        final multiOptionPollId = 'multi-option-poll-id';
+        final multiOptionPollQuestion = 'Poll With Multiple Options';
+        final multiOptions = List.generate(
+          5,
+          (index) => PollOption(id: 'opt-$index', title: 'Option ${index + 1}'),
+        );
+
+        // Create a poll with multiple options
+        final multiOptionPoll = testPollModel.copyWith(
+          id: multiOptionPollId,
+          question: multiOptionPollQuestion,
+          options: multiOptions,
+        );
+
+        // Add the poll to the container
+        container.read(pollListProvider.notifier).state = [multiOptionPoll];
+
+        // Pump the widget
+        await pumpPollShareUtilsWidget(tester, parentId: multiOptionPoll.id);
+
+        // Verify all options are included
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains(multiOptionPollQuestion));
+        for (int i = 1; i <= 5; i++) {
+          expect(textWidget.data, contains('🔘 Option $i'));
+        }
+        expect(
+          textWidget.data,
+          contains(getPollContentLink(parentId: multiOptionPoll.id)),
         );
       });
     });
