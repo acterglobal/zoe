@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
-import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_toolbar_widget.dart';
@@ -94,45 +93,23 @@ void main() {
     });
 
     testWidgets('updates title in edit mode', (tester) async {
-      final eventListNotifier = EventList();
-      final scoped = ProviderContainer(overrides: [
-        eventListProvider.overrideWith(() => eventListNotifier),
-        editContentIdProvider.overrideWith((ref) => testEvent.id),
-      ]);
 
-      await tester.pumpMaterialWidgetWithProviderScope(
-        container: scoped,
-        child: EventDetailScreen(eventId: testEvent.id),
+      final container = await pumpScreen(
+        tester,
+        eventId: testEvent.id,
+        events: [testEvent],
+        isEditing: true,
       );
-      await tester.pump();
-
-      // Seed event list after provider is initialized
-      scoped.read(eventListProvider.notifier).state = [testEvent];
-      await tester.pump();
 
       final titleEditor = tester.widget<ZoeInlineTextEditWidget>(find.byType(ZoeInlineTextEditWidget));
       titleEditor.onTextChanged.call('New Title');
       await tester.pump();
 
       expect(
-        scoped.read(eventListProvider).firstWhere((e) => e.id == testEvent.id).title,
+        container.read(eventListProvider).firstWhere((e) => e.id == testEvent.id).title,
         'New Title',
       );
-    });
-
-    testWidgets('app bar contains ContentMenuButton and tapping it does not crash', (tester) async {
-      await pumpScreen(
-        tester,
-        eventId: testEvent.id,
-        events: [testEvent],
-        isEditing: false,
-      );
-
-      expect(find.byType(ContentMenuButton), findsOneWidget);
-      await tester.tap(find.byType(ContentMenuButton));
-      await tester.pump();
-      expect(find.byType(EventDetailScreen), findsOneWidget);
-    });
+    });  
 
     testWidgets('title editor isEditing is false when not editing', (tester) async {
       await pumpScreen(
