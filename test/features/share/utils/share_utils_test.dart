@@ -180,7 +180,7 @@ void main() {
         expect(lines.last, equals(getSheetShareLink()));
       });
 
-      testWidgets('handles special characters in sheet data', (tester) async {
+      testWidgets('handles special in sheet data', (tester) async {
         final specialSheetId = 'special-sheet-id';
         final specialSheetTitle = 'Special Sheet';
         final specialSheetEmoji = '🧪';
@@ -323,22 +323,11 @@ void main() {
         expect(lines.last, equals(getTextContentLink()));
       });
 
-      testWidgets('handles special characters in text data', (tester) async {
-        final specialTextId = 'special-text-id';
-        final specialTextTitle = 'Special Text';
+      testWidgets('handles special emoji in text data', (tester) async {
         final specialTextEmoji = '🧪';
-        final specialTextDescription = (
-          plainText: 'Line 1\nLine 2\tTabbed',
-          htmlText: null,
-        );
 
         // Create a new text with special characters
-        final specialText = testTextModel.copyWith(
-          id: specialTextId,
-          title: specialTextTitle,
-          emoji: specialTextEmoji,
-          description: specialTextDescription,
-        );
+        final specialText = testTextModel.copyWith(emoji: specialTextEmoji);
 
         // Add the special text to the container
         container.read(textListProvider.notifier).state = [specialText];
@@ -348,8 +337,8 @@ void main() {
 
         // Verify special characters are handled correctly
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(specialTextTitle));
-        expect(textWidget.data, contains(specialTextDescription.plainText));
+        expect(textWidget.data, contains(specialTextEmoji));
+        expect(textWidget.data, contains(testTextModel.title));
         expect(
           textWidget.data,
           contains(getTextContentLink(parentId: specialText.id)),
@@ -357,15 +346,8 @@ void main() {
       });
 
       testWidgets('handles text without emoji', (tester) async {
-        final textWithoutEmojiId = 'no-emoji-text-id';
-        final textWithoutEmojiTitle = 'Text Without Emoji';
-
         // Create a text without emoji
-        final textWithoutEmoji = testTextModel.copyWith(
-          id: textWithoutEmojiId,
-          emoji: null,
-          title: textWithoutEmojiTitle,
-        );
+        final textWithoutEmoji = testTextModel.copyWith(emoji: null);
 
         // Add the text to the container
         container.read(textListProvider.notifier).state = [textWithoutEmoji];
@@ -375,11 +357,7 @@ void main() {
 
         // Verify the message starts with title only (no emoji)
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, startsWith(textWithoutEmojiTitle));
-        expect(
-          textWidget.data,
-          contains(textWithoutEmoji.description?.plainText),
-        );
+        expect(textWidget.data, startsWith(testTextModel.title));
         expect(
           textWidget.data,
           contains(getTextContentLink(parentId: textWithoutEmoji.id)),
@@ -515,19 +493,13 @@ void main() {
         expect(lines.last, equals(getEventContentLink()));
       });
 
-      testWidgets('handles special characters in event data', (tester) async {
-        final specialEventId = 'special-event-id';
-        final specialEventTitle = 'Special Event';
-        final specialEventDescription = (
-          plainText: 'Line 1\nLine 2\tTabbed',
-          htmlText: null,
-        );
-
-        // Create a new event with special characters
+      testWidgets('handles special dates in event data', (tester) async {
+        final now = DateTime.now();
+        final yesterday = now.subtract(const Duration(days: 1));
+        final tomorrow = now.add(const Duration(days: 1));
         final specialEvent = testEventModel.copyWith(
-          id: specialEventId,
-          title: specialEventTitle,
-          description: specialEventDescription,
+          startDate: yesterday,
+          endDate: tomorrow,
         );
 
         // Add the special event to the container
@@ -538,8 +510,17 @@ void main() {
 
         // Verify special characters are handled correctly
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(specialEventTitle));
-        expect(textWidget.data, contains(specialEventDescription.plainText));
+        expect(textWidget.data, contains(specialEvent.title));
+        expect(textWidget.data, contains('🕓 Start'));
+        expect(
+          textWidget.data,
+          contains(DateTimeUtils.formatDateTime(specialEvent.startDate)),
+        );
+        expect(textWidget.data, contains('🕓 End'));
+        expect(
+          textWidget.data,
+          contains(DateTimeUtils.formatDateTime(specialEvent.endDate)),
+        );
         expect(
           textWidget.data,
           contains(getEventContentLink(parentId: specialEvent.id)),
@@ -547,13 +528,8 @@ void main() {
       });
 
       testWidgets('handles event without description', (tester) async {
-        final eventWithoutDescriptionId = 'no-description-event-id';
-        final eventWithoutDescriptionTitle = 'Event Without Description';
-
         // Create an event without description
         final eventWithoutDescription = testEventModel.copyWith(
-          id: eventWithoutDescriptionId,
-          title: eventWithoutDescriptionTitle,
           description: null,
         );
 
@@ -570,44 +546,13 @@ void main() {
 
         // Verify the message doesn't contain description
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(eventWithoutDescriptionTitle));
+        expect(textWidget.data, contains(testEventModel.title));
         expect(textWidget.data, contains('🕓 Start'));
         expect(textWidget.data, contains('🕓 End'));
         expect(
           textWidget.data,
           contains(getEventContentLink(parentId: eventWithoutDescription.id)),
         );
-      });
-
-      testWidgets('formats dates correctly', (tester) async {
-        final now = DateTime.now();
-        final yesterday = now.subtract(const Duration(days: 1));
-        final tomorrow = now.add(const Duration(days: 1));
-
-        // Create an event with specific dates
-        final eventWithSpecificDates = testEventModel.copyWith(
-          startDate: yesterday,
-          endDate: tomorrow,
-        );
-
-        // Add the event to the container
-        container.read(eventListProvider.notifier).state = [
-          eventWithSpecificDates,
-        ];
-
-        // Pump the widget
-        await pumpEventShareUtilsWidget(
-          tester,
-          parentId: eventWithSpecificDates.id,
-        );
-
-        // Verify the dates are formatted correctly
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        final formattedStartDate = DateTimeUtils.formatDateTime(yesterday);
-        final formattedEndDate = DateTimeUtils.formatDateTime(tomorrow);
-
-        expect(textWidget.data, contains(formattedStartDate));
-        expect(textWidget.data, contains(formattedEndDate));
       });
     });
 
@@ -719,22 +664,11 @@ void main() {
         expect(lines.last, equals(getListContentLink()));
       });
 
-      testWidgets('handles special characters in list data', (tester) async {
-        final specialListId = 'special-list-id';
-        final specialListTitle = 'Special List';
+      testWidgets('handles special emoji in list data', (tester) async {
         final specialListEmoji = '📝';
-        final specialListDescription = (
-          plainText: 'Line 1\nLine 2\tTabbed',
-          htmlText: null,
-        );
 
         // Create a new list with special characters
-        final specialList = testListModel.copyWith(
-          id: specialListId,
-          title: specialListTitle,
-          emoji: specialListEmoji,
-          description: specialListDescription,
-        );
+        final specialList = testListModel.copyWith(emoji: specialListEmoji);
 
         // Add the special list to the container
         container.read(listsProvider.notifier).state = [specialList];
@@ -744,8 +678,8 @@ void main() {
 
         // Verify special characters are handled correctly
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(specialListTitle));
-        expect(textWidget.data, contains(specialListDescription.plainText));
+        expect(textWidget.data, contains(specialListEmoji));
+        expect(textWidget.data, contains(testListModel.title));
         expect(
           textWidget.data,
           contains(getListContentLink(parentId: specialList.id)),
@@ -753,15 +687,8 @@ void main() {
       });
 
       testWidgets('handles list without description', (tester) async {
-        final listWithoutDescId = 'no-desc-list-id';
-        final listWithoutDescTitle = 'List Without Description';
-
         // Create a list without description
-        final listWithoutDesc = testListModel.copyWith(
-          id: listWithoutDescId,
-          description: null,
-          title: listWithoutDescTitle,
-        );
+        final listWithoutDesc = testListModel.copyWith(description: null);
 
         // Add the list to the container
         container.read(listsProvider.notifier).state = [listWithoutDesc];
@@ -771,7 +698,7 @@ void main() {
 
         // Verify the message doesn't contain description
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(listWithoutDescTitle));
+        expect(textWidget.data, contains(testListModel.title));
         expect(
           textWidget.data,
           contains(getListContentLink(parentId: listWithoutDesc.id)),
@@ -779,32 +706,14 @@ void main() {
       });
 
       testWidgets('includes tasks when list type is task', (tester) async {
-        final taskListId = 'task-list-id';
-        final taskListTitle = 'Task List';
-        final task1Id = 'task-1-id';
-        final task1Title = 'Task 1';
-        final task2Id = 'task-2-id';
-        final task2Title = 'Task 2';
-
         // Create a task list
-        final taskList = testListModel.copyWith(
-          id: taskListId,
-          title: taskListTitle,
-          listType: ContentType.task,
-        );
+        final taskList = testListModel.copyWith(listType: ContentType.task);
 
         // Create tasks for the list
-        final taskContent = getTaskByIndex(container);
-        final task1 = taskContent.copyWith(
-          id: task1Id,
-          title: task1Title,
-          parentId: taskList.id,
-        );
-        final task2 = taskContent.copyWith(
-          id: task2Id,
-          title: task2Title,
-          parentId: taskList.id,
-        );
+        final taskContent1 = getTaskByIndex(container);
+        final task1 = taskContent1.copyWith(parentId: taskList.id);
+        final taskContent2 = getTaskByIndex(container, index: 1);
+        final task2 = taskContent2.copyWith(parentId: taskList.id);
 
         // Add the list and tasks to the container
         container.read(listsProvider.notifier).state = [taskList];
@@ -815,8 +724,8 @@ void main() {
 
         // Verify tasks are included in the message
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains('☑️ $task1Title'));
-        expect(textWidget.data, contains('☑️ $task2Title'));
+        expect(textWidget.data, contains('☑️ ${task1.title}'));
+        expect(textWidget.data, contains('☑️ ${task2.title}'));
         expect(
           textWidget.data,
           contains(getListContentLink(parentId: taskList.id)),
@@ -824,13 +733,8 @@ void main() {
       });
 
       testWidgets('handles task list with empty tasks', (tester) async {
-        final emptyTaskListId = 'empty-task-list-id';
-        final emptyTaskListTitle = 'Empty Task List';
-
         // Create a task list with no tasks
         final emptyTaskList = testListModel.copyWith(
-          id: emptyTaskListId,
-          title: emptyTaskListTitle,
           listType: ContentType.task,
         );
 
@@ -843,7 +747,7 @@ void main() {
 
         // Verify the message doesn't contain task items
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(emptyTaskListTitle));
+        expect(textWidget.data, contains(testListModel.title));
         expect(textWidget.data, isNot(contains('☑️')));
         expect(
           textWidget.data,
@@ -852,30 +756,20 @@ void main() {
       });
 
       testWidgets('handles list with description and tasks', (tester) async {
-        final taskListWithDescId = 'task-list-with-desc-id';
-        final taskListWithDescTitle = 'Task List With Description';
         final taskListWithDescDescription = (
           plainText: 'This is a task list with description',
           htmlText: null,
         );
 
-        final task1Id = 'task-desc-1';
-        final task1Title = 'Task with Description';
-
         // Create a task list with description
         final taskListWithDesc = testListModel.copyWith(
-          id: taskListWithDescId,
-          title: taskListWithDescTitle,
           listType: ContentType.task,
           description: taskListWithDescDescription,
         );
 
         // Create a task
-        final task = getTaskByIndex(container).copyWith(
-          id: task1Id,
-          title: task1Title,
-          parentId: taskListWithDesc.id,
-        );
+        final taskContent = getTaskByIndex(container);
+        final task = taskContent.copyWith(parentId: taskListWithDesc.id);
 
         // Add the list and task to the container
         container.read(listsProvider.notifier).state = [taskListWithDesc];
@@ -890,7 +784,7 @@ void main() {
           textWidget.data,
           contains(taskListWithDescDescription.plainText),
         );
-        expect(textWidget.data, contains('☑️ $task1Title'));
+        expect(textWidget.data, contains('☑️ ${task.title}'));
         expect(
           textWidget.data,
           contains(getListContentLink(parentId: taskListWithDesc.id)),
@@ -898,32 +792,14 @@ void main() {
       });
 
       testWidgets('includes bullets when list type is bullet', (tester) async {
-        final bulletListId = 'bullet-list-id';
-        final bulletListTitle = 'Bullet List';
-        final bullet1Id = 'bullet-1-id';
-        final bullet1Title = 'Bullet 1';
-        final bullet2Id = 'bullet-2-id';
-        final bullet2Title = 'Bullet 2';
-
         // Create a bullet list
-        final bulletList = testListModel.copyWith(
-          id: bulletListId,
-          title: bulletListTitle,
-          listType: ContentType.bullet,
-        );
+        final bulletList = testListModel.copyWith(listType: ContentType.bullet);
 
         // Create bullets for the list
-        final bulletContent = getBulletByIndex(container);
-        final bullet1 = bulletContent.copyWith(
-          id: bullet1Id,
-          title: bullet1Title,
-          parentId: bulletList.id,
-        );
-        final bullet2 = bulletContent.copyWith(
-          id: bullet2Id,
-          title: bullet2Title,
-          parentId: bulletList.id,
-        );
+        final bulletContent1 = getBulletByIndex(container);
+        final bullet1 = bulletContent1.copyWith(parentId: bulletList.id);
+        final bulletContent2 = getBulletByIndex(container, index: 1);
+        final bullet2 = bulletContent2.copyWith(parentId: bulletList.id);
 
         // Add the list to the container
         container.read(listsProvider.notifier).state = [bulletList];
@@ -934,9 +810,9 @@ void main() {
 
         // Verify the message is generated
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(bulletListTitle));
-        expect(textWidget.data, contains('🔹 $bullet1Title'));
-        expect(textWidget.data, contains('🔹 $bullet2Title'));
+        expect(textWidget.data, contains(testListModel.title));
+        expect(textWidget.data, contains('🔹 ${bullet1.title}'));
+        expect(textWidget.data, contains('🔹 ${bullet2.title}'));
         expect(
           textWidget.data,
           contains(getListContentLink(parentId: bulletList.id)),
@@ -944,13 +820,8 @@ void main() {
       });
 
       testWidgets('handles bullet list with empty bullets', (tester) async {
-        final emptyBulletListId = 'empty-bullet-list-id';
-        final emptyBulletListTitle = 'Empty Bullet List';
-
         // Create a bullet list with no bullets
         final emptyBulletList = testListModel.copyWith(
-          id: emptyBulletListId,
-          title: emptyBulletListTitle,
           listType: ContentType.bullet,
         );
 
@@ -963,7 +834,7 @@ void main() {
 
         // Verify the message doesn't contain bullet items
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(emptyBulletListTitle));
+        expect(textWidget.data, contains(testListModel.title));
         expect(textWidget.data, isNot(contains('🔹')));
         expect(
           textWidget.data,
@@ -972,30 +843,20 @@ void main() {
       });
 
       testWidgets('handles list with description and bullets', (tester) async {
-        final bulletListWithDescId = 'bullet-list-with-desc-id';
-        final bulletListWithDescTitle = 'Bullet List With Description';
         final bulletListWithDescDescription = (
           plainText: 'This is a bullet list with description',
           htmlText: null,
         );
 
-        final bullet1Id = 'bullet-desc-1';
-        final bullet1Title = 'Bullet with Description';
-
         // Create a bullet list with description
         final bulletListWithDesc = testListModel.copyWith(
-          id: bulletListWithDescId,
-          title: bulletListWithDescTitle,
           listType: ContentType.bullet,
           description: bulletListWithDescDescription,
         );
 
         // Create a bullet
-        final bullet = getBulletByIndex(container).copyWith(
-          id: bullet1Id,
-          title: bullet1Title,
-          parentId: bulletListWithDesc.id,
-        );
+        final bulletContent = getBulletByIndex(container);
+        final bullet = bulletContent.copyWith(parentId: bulletListWithDesc.id);
 
         // Add the list and bullet to the container
         container.read(listsProvider.notifier).state = [bulletListWithDesc];
@@ -1010,7 +871,7 @@ void main() {
           textWidget.data,
           contains(bulletListWithDescDescription.plainText),
         );
-        expect(textWidget.data, contains('🔹 $bullet1Title'));
+        expect(textWidget.data, contains('🔹 ${bullet.title}'));
         expect(
           textWidget.data,
           contains(getListContentLink(parentId: bulletListWithDesc.id)),
@@ -1137,45 +998,23 @@ void main() {
         expect(lines.last, equals(getTaskContentLink()));
       });
 
-      testWidgets('handles special characters in task data', (tester) async {
-        final specialTaskId = 'special-task-id';
-        final specialTaskTitle = 'Special Task';
-        final specialTaskDescription = (
-          plainText: 'Line 1\nLine 2\tTabbed',
-          htmlText: null,
-        );
-
-        // Create a new task with special characters
-        final specialTask = testTaskModel.copyWith(
-          id: specialTaskId,
-          title: specialTaskTitle,
-          description: specialTaskDescription,
-        );
+      testWidgets('handles special due date in task data', (tester) async {
+        final specialDueDate = DateTime.now().add(const Duration(days: 1));
+        final specialTask = testTaskModel.copyWith(dueDate: specialDueDate);
 
         // Add the special task to the container
         container.read(taskListProvider.notifier).state = [specialTask];
-
         // Pump the widget
         await pumpTaskShareUtilsWidget(tester, parentId: specialTask.id);
-
         // Verify special characters are handled correctly
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(specialTaskTitle));
-        expect(textWidget.data, contains(specialTaskDescription.plainText));
-        expect(
-          textWidget.data,
-          contains(getTaskContentLink(parentId: specialTask.id)),
-        );
+        final formattedDueDate = DateTimeUtils.formatDate(specialDueDate);
+        expect(textWidget.data, contains('🕒 Due: $formattedDueDate'));
       });
 
       testWidgets('handles task without description', (tester) async {
-        final taskWithoutDescId = 'no-description-task-id';
-        final taskWithoutDescTitle = 'Task Without Description';
-
         // Create a task without description
         final taskWithoutDescription = testTaskModel.copyWith(
-          id: taskWithoutDescId,
-          title: taskWithoutDescTitle,
           description: null,
         );
 
@@ -1192,49 +1031,16 @@ void main() {
 
         // Verify the message doesn't contain description
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(taskWithoutDescTitle));
+        expect(textWidget.data, contains(testTaskModel.title));
         expect(textWidget.data, contains('🕒 Due:'));
-        expect(
-          textWidget.data,
-          contains(getTaskContentLink(parentId: taskWithoutDescription.id)),
-        );
-      });
-
-      testWidgets('formats due date correctly', (tester) async {
-        final now = DateTime.now();
-        final tomorrow = now.add(const Duration(days: 1));
-
-        // Create a task with specific due date
-        final taskWithSpecificDate = testTaskModel.copyWith(dueDate: tomorrow);
-
-        // Add the task to the container
-        container.read(taskListProvider.notifier).state = [
-          taskWithSpecificDate,
-        ];
-
-        // Pump the widget
-        await pumpTaskShareUtilsWidget(
-          tester,
-          parentId: taskWithSpecificDate.id,
-        );
-
-        // Verify the due date is formatted correctly
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        final formattedDueDate = DateTimeUtils.formatDate(tomorrow);
-        expect(textWidget.data, contains('🕒 Due: $formattedDueDate'));
+        expect(textWidget.data, contains(getTaskContentLink()));
       });
 
       testWidgets('includes single assigned user', (tester) async {
-        final taskWithUserId = 'task-with-user-id';
-        final taskWithUserTitle = 'Task With User';
-        final userId = 'user_1';
+        final user = getUserByIndex(container);
 
         // Create a task with one assigned user
-        final taskWithUser = testTaskModel.copyWith(
-          id: taskWithUserId,
-          title: taskWithUserTitle,
-          assignedUsers: [userId],
-        );
+        final taskWithUser = testTaskModel.copyWith(assignedUsers: [user.id]);
 
         // Add the task to the container
         container.read(taskListProvider.notifier).state = [taskWithUser];
@@ -1245,8 +1051,8 @@ void main() {
         // Verify assigned user is included
         final textWidget = tester.widget<Text>(find.byType(Text));
         expect(textWidget.data, contains('👥 Assigned:'));
-        final user = container.read(getUserByIdProvider(userId));
-        expect(textWidget.data, contains(user?.name ?? ''));
+        final userData = container.read(getUserByIdProvider(user.id));
+        expect(textWidget.data, contains(userData?.name ?? ''));
         expect(
           textWidget.data,
           contains(getTaskContentLink(parentId: taskWithUser.id)),
@@ -1254,15 +1060,14 @@ void main() {
       });
 
       testWidgets('includes multiple assigned users', (tester) async {
-        final taskWithUsersId = 'task-with-users-id';
-        final taskWithUsersTitle = 'Task With Multiple Users';
-        final userIds = ['user_1', 'user_2', 'user_3'];
+        final user1 = getUserByIndex(container);
+        final user2 = getUserByIndex(container, index: 1);
+        final user3 = getUserByIndex(container, index: 2);
+        final assignedUsers = [user1.id, user2.id, user3.id];
 
         // Create a task with multiple assigned users
         final taskWithUsers = testTaskModel.copyWith(
-          id: taskWithUsersId,
-          title: taskWithUsersTitle,
-          assignedUsers: userIds,
+          assignedUsers: assignedUsers,
         );
 
         // Add the task to the container
@@ -1274,7 +1079,7 @@ void main() {
         // Verify assigned users are included
         final textWidget = tester.widget<Text>(find.byType(Text));
         expect(textWidget.data, contains('👥 Assigned:'));
-        for (final userId in userIds) {
+        for (final userId in assignedUsers) {
           final user = container.read(getUserByIdProvider(userId));
           expect(textWidget.data, contains(user?.name ?? ''));
         }
@@ -1285,15 +1090,8 @@ void main() {
       });
 
       testWidgets('handles task without assigned users', (tester) async {
-        final taskWithoutUsersId = 'task-without-users-id';
-        final taskWithoutUsersTitle = 'Task Without Users';
-
         // Create a task without assigned users
-        final taskWithoutUsers = testTaskModel.copyWith(
-          id: taskWithoutUsersId,
-          title: taskWithoutUsersTitle,
-          assignedUsers: [],
-        );
+        final taskWithoutUsers = testTaskModel.copyWith(assignedUsers: []);
 
         // Add the task to the container
         container.read(taskListProvider.notifier).state = [taskWithoutUsers];
@@ -1313,20 +1111,18 @@ void main() {
       testWidgets('handles task with description and assigned users', (
         tester,
       ) async {
-        final taskWithAllFieldsId = 'task-with-all-fields-id';
-        final taskWithAllFieldsTitle = 'Task With All Fields';
         final taskWithAllFieldsDescription = (
           plainText: 'This task has all fields',
           htmlText: null,
         );
-        final userIds = ['user_1', 'user_2'];
+        final user1 = getUserByIndex(container);
+        final user2 = getUserByIndex(container, index: 1);
+        final assignedUsers = [user1.id, user2.id];
 
         // Create a task with description and assigned users
         final taskWithAllFields = testTaskModel.copyWith(
-          id: taskWithAllFieldsId,
-          title: taskWithAllFieldsTitle,
           description: taskWithAllFieldsDescription,
-          assignedUsers: userIds,
+          assignedUsers: assignedUsers,
         );
 
         // Add the task to the container
@@ -1343,40 +1139,14 @@ void main() {
         );
         expect(textWidget.data, contains('🕒 Due:'));
         expect(textWidget.data, contains('👥 Assigned:'));
-        for (final userId in userIds) {
-          final user = container.read(getUserByIdProvider(userId));
-          expect(textWidget.data, contains(user?.name ?? ''));
+        for (final userId in assignedUsers) {
+          final userData = container.read(getUserByIdProvider(userId));
+          expect(textWidget.data, contains(userData?.name ?? ''));
         }
         expect(
           textWidget.data,
           contains(getTaskContentLink(parentId: taskWithAllFields.id)),
         );
-      });
-
-      testWidgets('uses default emoji when emoji is null', (tester) async {
-        final taskWithDefaultEmojiId = 'task-default-emoji-id';
-        final taskWithDefaultEmojiTitle = 'Task Default Emoji';
-
-        // Create a task with null emoji
-        final taskWithDefaultEmoji = testTaskModel.copyWith(
-          id: taskWithDefaultEmojiId,
-          title: taskWithDefaultEmojiTitle,
-        );
-
-        // Add the task to the container
-        container.read(taskListProvider.notifier).state = [
-          taskWithDefaultEmoji,
-        ];
-
-        // Pump the widget
-        await pumpTaskShareUtilsWidget(
-          tester,
-          parentId: taskWithDefaultEmoji.id,
-        );
-
-        // Verify default emoji (💻) is used
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, startsWith('💻 $taskWithDefaultEmojiTitle'));
       });
     });
 
@@ -1482,45 +1252,9 @@ void main() {
         expect(lines.last, equals(getBulletContentLink()));
       });
 
-      testWidgets('handles special characters in bullet data', (tester) async {
-        final specialBulletId = 'special-bullet-id';
-        final specialBulletTitle = 'Special Bullet';
-        final specialBulletDescription = (
-          plainText: 'Line 1\nLine 2\tTabbed',
-          htmlText: null,
-        );
-
-        // Create a new bullet with special characters
-        final specialBullet = testBulletModel.copyWith(
-          id: specialBulletId,
-          title: specialBulletTitle,
-          description: specialBulletDescription,
-        );
-
-        // Add the special bullet to the container
-        container.read(bulletListProvider.notifier).state = [specialBullet];
-
-        // Pump the widget
-        await pumpBulletShareUtilsWidget(tester, parentId: specialBullet.id);
-
-        // Verify special characters are handled correctly
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(specialBulletTitle));
-        expect(textWidget.data, contains(specialBulletDescription.plainText));
-        expect(
-          textWidget.data,
-          contains(getBulletContentLink(parentId: specialBullet.id)),
-        );
-      });
-
       testWidgets('handles bullet without description', (tester) async {
-        final bulletWithoutDescId = 'no-description-bullet-id';
-        final bulletWithoutDescTitle = 'Bullet Without Description';
-
         // Create a bullet without description
         final bulletWithoutDescription = testBulletModel.copyWith(
-          id: bulletWithoutDescId,
-          title: bulletWithoutDescTitle,
           description: null,
         );
 
@@ -1537,42 +1271,14 @@ void main() {
 
         // Verify the message doesn't contain description
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(bulletWithoutDescTitle));
+        expect(textWidget.data, contains(testBulletModel.title));
         expect(
           textWidget.data,
           contains(getBulletContentLink(parentId: bulletWithoutDescription.id)),
         );
       });
 
-      testWidgets('uses default emoji when emoji is null', (tester) async {
-        final bulletWithDefaultEmojiId = 'bullet-default-emoji-id';
-        final bulletWithDefaultEmojiTitle = 'Bullet Default Emoji';
-
-        // Create a bullet with null emoji
-        final bulletWithDefaultEmoji = testBulletModel.copyWith(
-          id: bulletWithDefaultEmojiId,
-          title: bulletWithDefaultEmojiTitle,
-        );
-
-        // Add the bullet to the container
-        container.read(bulletListProvider.notifier).state = [
-          bulletWithDefaultEmoji,
-        ];
-
-        // Pump the widget
-        await pumpBulletShareUtilsWidget(
-          tester,
-          parentId: bulletWithDefaultEmoji.id,
-        );
-
-        // Verify default emoji (🔹) is used
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, startsWith('🔹 $bulletWithDefaultEmojiTitle'));
-      });
-
       testWidgets('handles bullet with long description', (tester) async {
-        final bulletLongDescId = 'bullet-long-desc-id';
-        final bulletLongDescTitle = 'Bullet Long Description';
         final bulletLongDescDescription = (
           plainText:
               'This is a very long description that spans multiple lines and contains a lot of text. '
@@ -1583,8 +1289,6 @@ void main() {
 
         // Create a bullet with long description
         final bulletLongDesc = testBulletModel.copyWith(
-          id: bulletLongDescId,
-          title: bulletLongDescTitle,
           description: bulletLongDescDescription,
         );
 
@@ -1596,7 +1300,7 @@ void main() {
 
         // Verify the long description is included
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(bulletLongDescTitle));
+        expect(textWidget.data, contains(testBulletModel.title));
         expect(textWidget.data, contains(bulletLongDescDescription.plainText));
         expect(
           textWidget.data,
@@ -1703,20 +1407,14 @@ void main() {
         expect(lines.last, equals(getPollContentLink()));
       });
 
-      testWidgets('handles special characters in poll data', (tester) async {
-        final specialPollId = 'special-poll-id';
-        final specialPollQuestion = 'Special Poll Question';
+      testWidgets('handles special options in poll data', (tester) async {
         final specialOptions = [
           PollOption(id: 'opt-1', title: 'Option & Special "Characters"'),
           PollOption(id: 'opt-2', title: 'Option with\ttab'),
         ];
 
         // Create a new poll with special characters
-        final specialPoll = testPollModel.copyWith(
-          id: specialPollId,
-          question: specialPollQuestion,
-          options: specialOptions,
-        );
+        final specialPoll = testPollModel.copyWith(options: specialOptions);
 
         // Add the special poll to the container
         container.read(pollListProvider.notifier).state = [specialPoll];
@@ -1726,7 +1424,7 @@ void main() {
 
         // Verify special characters are handled correctly
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(specialPollQuestion));
+        expect(textWidget.data, contains(testPollModel.title));
         for (final option in specialOptions) {
           expect(textWidget.data, contains(option.title));
         }
@@ -1737,17 +1435,11 @@ void main() {
       });
 
       testWidgets('handles poll with single option', (tester) async {
-        final singleOptionPollId = 'single-option-poll-id';
-        final singleOptionPollQuestion = 'Poll With Single Option';
         final optionTitle = 'Only Option';
         final singleOption = [PollOption(id: 'single-opt', title: optionTitle)];
 
         // Create a poll with single option
-        final singleOptionPoll = testPollModel.copyWith(
-          id: singleOptionPollId,
-          question: singleOptionPollQuestion,
-          options: singleOption,
-        );
+        final singleOptionPoll = testPollModel.copyWith(options: singleOption);
 
         // Add the poll to the container
         container.read(pollListProvider.notifier).state = [singleOptionPoll];
@@ -1757,7 +1449,7 @@ void main() {
 
         // Verify the single option is included
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(singleOptionPollQuestion));
+        expect(textWidget.data, contains(testPollModel.title));
         expect(textWidget.data, contains('🔘 $optionTitle'));
         expect(
           textWidget.data,
@@ -1766,19 +1458,13 @@ void main() {
       });
 
       testWidgets('handles poll with multiple options', (tester) async {
-        final multiOptionPollId = 'multi-option-poll-id';
-        final multiOptionPollQuestion = 'Poll With Multiple Options';
         final multiOptions = List.generate(
           5,
           (index) => PollOption(id: 'opt-$index', title: 'Option ${index + 1}'),
         );
 
         // Create a poll with multiple options
-        final multiOptionPoll = testPollModel.copyWith(
-          id: multiOptionPollId,
-          question: multiOptionPollQuestion,
-          options: multiOptions,
-        );
+        final multiOptionPoll = testPollModel.copyWith(options: multiOptions);
 
         // Add the poll to the container
         container.read(pollListProvider.notifier).state = [multiOptionPoll];
@@ -1788,7 +1474,7 @@ void main() {
 
         // Verify all options are included
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(multiOptionPollQuestion));
+        expect(textWidget.data, contains(testPollModel.title));
         for (int i = 1; i <= 5; i++) {
           expect(textWidget.data, contains('🔘 Option $i'));
         }

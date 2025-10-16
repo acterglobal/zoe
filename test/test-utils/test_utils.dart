@@ -4,6 +4,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/features/users/models/user_model.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 extension WidgetTesterExtension on WidgetTester {
@@ -118,13 +120,24 @@ Future<void> initSharePlatformMethodCallHandler({VoidCallback? onShare}) async {
 /// Initializes haptic feedback method call handler for testing
 void initHapticFeedbackMethodCallHandler() {
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-      .setMockMethodCallHandler(
-    const MethodChannel('flutter/haptic'),
-    (MethodCall methodCall) async {
-      if (methodCall.method == 'HapticFeedback.lightImpact') {
-        return null;
-      }
-      throw MissingPluginException('No implementation found for method ${methodCall.method}');
-    },
-  );
+      .setMockMethodCallHandler(const MethodChannel('flutter/haptic'), (
+        MethodCall methodCall,
+      ) async {
+        if (methodCall.method == 'HapticFeedback.lightImpact') {
+          return null;
+        }
+        throw MissingPluginException(
+          'No implementation found for method ${methodCall.method}',
+        );
+      });
+}
+
+// Get a user by index from the user list
+UserModel getUserByIndex(ProviderContainer container, {int index = 0}) {
+  final userList = container.read(userListProvider);
+  if (userList.isEmpty) fail('User list is empty');
+  if (index < 0 || index >= userList.length) {
+    fail('User index is out of bounds');
+  }
+  return userList[index];
 }
