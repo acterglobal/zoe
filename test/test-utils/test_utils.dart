@@ -65,9 +65,11 @@ extension WidgetTesterExtension on WidgetTester {
     required ProviderContainer container,
     required String buttonText,
     required Function(BuildContext, WidgetRef) onPressed,
+    GoRouter? router,
   }) async {
     await pumpMaterialWidgetWithProviderScope(
       container: container,
+      router: router,
       child: Consumer(
         builder: (context, ref, child) => ElevatedButton(
           onPressed: () => onPressed(context, ref),
@@ -98,4 +100,18 @@ Future<void> initSharePlatformMethodCallHandler({VoidCallback? onShare}) async {
         if (call.method == 'share') onShare?.call();
         return null;
       });
+}
+
+/// Initializes haptic feedback method call handler for testing
+void initHapticFeedbackMethodCallHandler() {
+  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+      .setMockMethodCallHandler(
+    const MethodChannel('flutter/haptic'),
+    (MethodCall methodCall) async {
+      if (methodCall.method == 'HapticFeedback.lightImpact') {
+        return null;
+      }
+      throw MissingPluginException('No implementation found for method ${methodCall.method}');
+    },
+  );
 }
