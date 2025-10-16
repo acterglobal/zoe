@@ -12,21 +12,17 @@ import 'package:zoe/features/polls/widgets/poll_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
 import '../../../test-utils/test_utils.dart';
-import '../notifiers/mock_poll_notifier.dart';
 
 void main() {
   group('PollWidget Tests', () {
     late ProviderContainer container;
-    late MockPollListNotifier mockNotifier;
     late PollModel testPoll;
 
     setUp(() {
       testPoll = polls.first;
-      mockNotifier = MockPollListNotifier();
 
       container = ProviderContainer.test(
         overrides: [
-          pollListProvider.overrideWith(() => mockNotifier),
           pollProvider(testPoll.id).overrideWith((ref) => testPoll),
           loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
           editContentIdProvider.overrideWith((ref) => null),
@@ -70,7 +66,6 @@ void main() {
       testWidgets('returns SizedBox.shrink when poll is null', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider('non-existent-poll').overrideWith((ref) => null),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
@@ -113,7 +108,6 @@ void main() {
       testWidgets('shows delete button when editing', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(testPoll.id).overrideWith((ref) => testPoll),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => testPoll.id),
@@ -142,7 +136,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(draftPoll.id).overrideWith((ref) => draftPoll),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
@@ -165,7 +158,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(activePoll.id).overrideWith((ref) => activePoll),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
@@ -185,7 +177,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(draftPoll.id).overrideWith((ref) => draftPoll),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => draftPoll.id),
@@ -210,7 +201,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(activePoll.id).overrideWith((ref) => activePoll),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
@@ -230,7 +220,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(draftPoll.id).overrideWith((ref) => draftPoll),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
@@ -265,7 +254,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(completedPoll.id).overrideWith((ref) => completedPoll),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
@@ -285,7 +273,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(draftPoll.id).overrideWith((ref) => draftPoll),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
@@ -308,7 +295,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(activePoll.id).overrideWith((ref) => activePoll),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
@@ -330,7 +316,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(pollWithNoOptions.id).overrideWith((ref) => pollWithNoOptions),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
@@ -352,7 +337,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(pollWithSingleOption.id).overrideWith((ref) => pollWithSingleOption),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => pollWithSingleOption.id),
@@ -372,7 +356,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(multipleChoicePoll.id).overrideWith((ref) => multipleChoicePoll),
             loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),

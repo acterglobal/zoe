@@ -14,19 +14,15 @@ import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
 
 import '../../../test-utils/mock_searchValue.dart';
 import '../../../test-utils/test_utils.dart';
-import '../notifiers/mock_poll_notifier.dart';
 
 void main() {
   group('PollsListScreen Tests', () {
     late ProviderContainer container;
-    late MockPollListNotifier mockNotifier;
 
     setUp(() {
-      mockNotifier = MockPollListNotifier();
 
       container = ProviderContainer.test(
         overrides: [
-          pollListProvider.overrideWith(() => mockNotifier),
           searchValueProvider.overrideWith(MockSearchValue.new),
         ],
       );
@@ -93,7 +89,6 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => MockPollListNotifier()),
             notActivePollListProvider.overrideWithValue([draftPoll]),
             activePollListProvider.overrideWithValue([activePoll]),
             completedPollListProvider.overrideWithValue([]),
@@ -124,7 +119,6 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => MockPollListNotifier()),
             notActivePollListProvider.overrideWithValue([draftPoll]),
             activePollListProvider.overrideWithValue([activePoll]),
             completedPollListProvider.overrideWithValue([]),
@@ -155,7 +149,6 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => MockPollListNotifier()),
             notActivePollListProvider.overrideWithValue([draftPoll]),
             activePollListProvider.overrideWithValue([]),
             completedPollListProvider.overrideWithValue([completedPoll]),
@@ -178,7 +171,6 @@ void main() {
         // Create container with empty poll lists
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => MockPollListNotifier()),
             notActivePollListProvider.overrideWithValue([]),
             activePollListProvider.overrideWithValue([]),
             completedPollListProvider.overrideWithValue([]),

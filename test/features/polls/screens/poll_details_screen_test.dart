@@ -15,24 +15,19 @@ import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 import 'package:zoe/features/polls/widgets/poll_widget.dart';
-
 import '../../../test-utils/mock_searchValue.dart';
 import '../../../test-utils/test_utils.dart';
-import '../notifiers/mock_poll_notifier.dart';
 
 void main() {
   group('PollDetailsScreen Tests', () {
     late ProviderContainer container;
-    late MockPollListNotifier mockNotifier;
     late PollModel testPoll;
 
     setUp(() {
       testPoll = polls.first;
-      mockNotifier = MockPollListNotifier();
 
       container = ProviderContainer.test(
         overrides: [
-          pollListProvider.overrideWith(() => mockNotifier),
           pollProvider(testPoll.id).overrideWith((ref) => testPoll),
           editContentIdProvider.overrideWith((ref) => null),
           searchValueProvider.overrideWith(MockSearchValue.new),
@@ -110,12 +105,11 @@ void main() {
         expect(fabWidget.sheetId, equals(testPoll.sheetId));
       });
     });
-
+  
     group('Empty State', () {
       testWidgets('renders empty state when poll is null', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider('non-existent-poll').overrideWith((ref) => null),
             editContentIdProvider.overrideWith((ref) => null),
             searchValueProvider.overrideWith(MockSearchValue.new),
@@ -139,7 +133,6 @@ void main() {
       testWidgets('empty state has correct message and icon', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider('non-existent-poll').overrideWith((ref) => null),
             editContentIdProvider.overrideWith((ref) => null),
             searchValueProvider.overrideWith(MockSearchValue.new),
@@ -162,7 +155,6 @@ void main() {
       testWidgets('renders editing state correctly', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(testPoll.id).overrideWith((ref) => testPoll),
             editContentIdProvider.overrideWith((ref) => testPoll.id),
             searchValueProvider.overrideWith(MockSearchValue.new),
@@ -194,7 +186,6 @@ void main() {
       testWidgets('shows correct editing state in poll widget', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(testPoll.id).overrideWith((ref) => testPoll),
             editContentIdProvider.overrideWith((ref) => testPoll.id),
             searchValueProvider.overrideWith(MockSearchValue.new),
@@ -303,7 +294,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(draftPoll.id).overrideWith((ref) => draftPoll),
             editContentIdProvider.overrideWith((ref) => null),
             searchValueProvider.overrideWith(MockSearchValue.new),
@@ -327,7 +317,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(completedPoll.id).overrideWith((ref) => completedPoll),
             editContentIdProvider.overrideWith((ref) => null),
             searchValueProvider.overrideWith(MockSearchValue.new),
@@ -351,7 +340,6 @@ void main() {
         
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(activePoll.id).overrideWith((ref) => activePoll),
             editContentIdProvider.overrideWith((ref) => null),
             searchValueProvider.overrideWith(MockSearchValue.new),

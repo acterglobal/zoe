@@ -18,23 +18,19 @@ import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/features/users/widgets/user_list_widget.dart';
 
 import '../../../test-utils/test_utils.dart';
-import '../notifiers/mock_poll_notifier.dart';
 
 void main() {
   group('PollResultsScreen Tests', () {
     late ProviderContainer container;
-    late MockPollListNotifier mockNotifier;
     late PollModel testPoll;
     late List<UserModel> testUsers;
 
     setUp(() {
       testPoll = polls.first;
       testUsers = userList.take(3).toList();
-      mockNotifier = MockPollListNotifier();
 
       container = ProviderContainer.test(
         overrides: [
-          pollListProvider.overrideWith(() => mockNotifier),
           pollProvider(testPoll.id).overrideWith((ref) => testPoll),
           usersBySheetIdProvider(testPoll.sheetId).overrideWithValue(testUsers),
           pollVotedMembersProvider(testPoll.id).overrideWithValue(testUsers.take(2).toList()),
@@ -117,7 +113,6 @@ void main() {
       testWidgets('renders empty state when poll is null', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider('non-existent-poll').overrideWith((ref) => null),
             usersBySheetIdProvider(testPoll.sheetId).overrideWithValue(testUsers),
             pollVotedMembersProvider(testPoll.id).overrideWithValue([]),
@@ -180,7 +175,6 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(pollWithVotes.id).overrideWith((ref) => pollWithVotes),
             usersBySheetIdProvider(pollWithVotes.sheetId).overrideWithValue(testUsers),
             pollVotedMembersProvider(pollWithVotes.id).overrideWithValue(testUsers),
@@ -202,7 +196,8 @@ void main() {
         await createWidgetUnderTest(tester: tester, pollId: testPoll.id);
 
         // Should find member count text
-        expect(find.textContaining('${testUsers.length}'), findsOneWidget);
+        final expectedMemberText = '${testUsers.take(2).length} of ${testUsers.length} members voted';
+        expect(find.text(expectedMemberText), findsOneWidget);
       });
 
       testWidgets('displays correct voted members count', (tester) async {
@@ -316,7 +311,6 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(pollWithNoVotes.id).overrideWith((ref) => pollWithNoVotes),
             usersBySheetIdProvider(pollWithNoVotes.sheetId).overrideWithValue(testUsers),
             pollVotedMembersProvider(pollWithNoVotes.id).overrideWithValue([]),
@@ -341,7 +335,6 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(pollWithSingleVote.id).overrideWith((ref) => pollWithSingleVote),
             usersBySheetIdProvider(pollWithSingleVote.sheetId).overrideWithValue(testUsers),
             pollVotedMembersProvider(pollWithSingleVote.id).overrideWithValue([testUsers.first]),
@@ -370,7 +363,6 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(pollWithMultipleVotes.id).overrideWith((ref) => pollWithMultipleVotes),
             usersBySheetIdProvider(pollWithMultipleVotes.sheetId).overrideWithValue(testUsers),
             pollVotedMembersProvider(pollWithMultipleVotes.id).overrideWithValue(testUsers),
@@ -429,7 +421,6 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            pollListProvider.overrideWith(() => mockNotifier),
             pollProvider(pollWithMaxVotes.id).overrideWith((ref) => pollWithMaxVotes),
             usersBySheetIdProvider(pollWithMaxVotes.sheetId).overrideWithValue(testUsers),
             pollVotedMembersProvider(pollWithMaxVotes.id).overrideWithValue(testUsers),

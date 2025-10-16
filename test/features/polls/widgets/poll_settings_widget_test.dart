@@ -5,23 +5,17 @@ import 'package:zoe/features/polls/data/polls.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_settings_widget.dart';
-
 import '../../../test-utils/test_utils.dart';
-import '../notifiers/mock_poll_notifier.dart';
 
 void main() {
   group('Poll Settings Widget Tests', () {
     late ProviderContainer container;
     late PollModel testPoll;
-    late MockPollListNotifier mockNotifier;
 
     setUp(() {
       testPoll = polls.first;
-      mockNotifier = MockPollListNotifier();
 
-      container = ProviderContainer.test(
-        overrides: [pollListProvider.overrideWith(() => mockNotifier)],
-      );
+      container = ProviderContainer.test();
     });
 
     Future<void> createWidgetUnderTest({
@@ -130,9 +124,7 @@ void main() {
         expect(text.style?.color, isA<Color>());
       });
 
-      testWidgets('handles tap gesture and calls notifier', (tester) async {
-        mockNotifier.reset();
-
+      testWidgets('handles tap gesture and updates poll state', (tester) async {
         await createWidgetUnderTest(
           tester: tester,
           widget: Consumer(
@@ -141,6 +133,12 @@ void main() {
           ),
         );
 
+        // Verify initial state - poll should not have startDate set
+        final initialPoll = container.read(pollListProvider).firstWhere(
+          (poll) => poll.id == testPoll.id,
+        );
+        expect(initialPoll.startDate, isNotNull);
+
         // Tap the widget
         await tester.tap(find.byType(GestureDetector), warnIfMissed: false);
         await tester.pump();
@@ -148,12 +146,12 @@ void main() {
         // Widget should still be present after tap
         expect(find.byType(GestureDetector), findsOneWidget);
 
-        // Verify notifier method was called
-        expect(mockNotifier.methodCalls, contains('startPoll'));
-        expect(
-          mockNotifier.methodArguments.first['pollId'],
-          equals(testPoll.id),
+        // Verify poll state was updated (startDate should be set to current time)
+        final updatedPoll = container.read(pollListProvider).firstWhere(
+          (poll) => poll.id == testPoll.id,
         );
+        expect(updatedPoll.startDate, isNotNull);
+        expect(updatedPoll.startDate!.isAfter(initialPoll.startDate!), isTrue);
       });
     });
 
@@ -199,9 +197,7 @@ void main() {
         expect(text.style?.fontWeight, FontWeight.w600);
       });
 
-      testWidgets('handles tap gesture and calls notifier', (tester) async {
-        mockNotifier.reset();
-
+      testWidgets('handles tap gesture and updates poll state', (tester) async {
         await createWidgetUnderTest(
           tester: tester,
           widget: Consumer(
@@ -210,6 +206,12 @@ void main() {
           ),
         );
 
+        // Verify initial state - poll should not have endDate set
+        final initialPoll = container.read(pollListProvider).firstWhere(
+          (poll) => poll.id == testPoll.id,
+        );
+        expect(initialPoll.endDate, isNull);
+
         // Tap the widget
         await tester.tap(find.byType(GestureDetector), warnIfMissed: false);
         await tester.pump();
@@ -217,12 +219,12 @@ void main() {
         // Widget should still be present after tap
         expect(find.byType(GestureDetector), findsOneWidget);
 
-        // Verify notifier method was called
-        expect(mockNotifier.methodCalls, contains('endPoll'));
-        expect(
-          mockNotifier.methodArguments.first['pollId'],
-          equals(testPoll.id),
+        // Verify poll state was updated (endDate should be set)
+        final updatedPoll = container.read(pollListProvider).firstWhere(
+          (poll) => poll.id == testPoll.id,
         );
+        expect(updatedPoll.endDate, isNotNull);
+        expect(updatedPoll.endDate!.isAfter(initialPoll.startDate!), isTrue);
       });
     });
 
@@ -278,11 +280,9 @@ void main() {
         expect(find.byType(Text), findsNWidgets(2));
       });
 
-      testWidgets('handles tap gestures on both options and calls notifier', (
+      testWidgets('handles tap gestures on both options and updates poll state', (
         tester,
       ) async {
-        mockNotifier.reset();
-
         await createWidgetUnderTest(
           tester: tester,
           widget: Consumer(
@@ -291,14 +291,26 @@ void main() {
           ),
         );
 
-        // Tap on first GestureDetector
+        // Verify initial state
+        final initialPoll = container.read(pollListProvider).firstWhere(
+          (poll) => poll.id == testPoll.id,
+        );
+        final initialMultipleChoice = initialPoll.isMultipleChoice;
+
+        // Tap on first GestureDetector (single choice)
         await tester.tap(
           find.byType(GestureDetector).first,
           warnIfMissed: false,
         );
         await tester.pump();
 
-        // Tap on second GestureDetector
+        // Verify state changed after first tap
+        final afterFirstTap = container.read(pollListProvider).firstWhere(
+          (poll) => poll.id == testPoll.id,
+        );
+        expect(afterFirstTap.isMultipleChoice, !initialMultipleChoice);
+
+        // Tap on second GestureDetector (multiple choice)
         await tester.tap(
           find.byType(GestureDetector).last,
           warnIfMissed: false,
@@ -309,19 +321,11 @@ void main() {
         expect(find.byType(Row), findsNWidgets(3));
         expect(find.byType(GestureDetector), findsNWidgets(2));
 
-        // Verify notifier method was called twice
-        expect(
-          mockNotifier.methodCalls
-              .where((call) => call == 'togglePollMultipleChoice')
-              .length,
-          equals(2),
+        // Verify state changed back after second tap
+        final afterSecondTap = container.read(pollListProvider).firstWhere(
+          (poll) => poll.id == testPoll.id,
         );
-        expect(
-          mockNotifier.methodArguments.every(
-            (args) => args['pollId'] == testPoll.id,
-          ),
-          isTrue,
-        );
+        expect(afterSecondTap.isMultipleChoice, initialMultipleChoice);
       });
     });
     group('Widget Integration', () {

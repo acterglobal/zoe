@@ -9,38 +9,15 @@ import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import '../../../test-utils/test_utils.dart';
 import '../../../test-utils/mock_gorouter.dart';
-import '../notifiers/mock_poll_notifier.dart';
-
-// Test widget that provides WidgetRef
-class TestWidgetWithRef extends ConsumerWidget {
-  final Widget child;
-  final Function(BuildContext context, WidgetRef ref) onTap;
-
-  const TestWidgetWithRef({
-    super.key,
-    required this.child,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
-      onPressed: () => onTap(context, ref),
-      child: child,
-    );
-  }
-}
 
 void main() {
   group('PollActions Tests', () {
     late ProviderContainer container;
-    late MockPollListNotifier mockNotifier;
     late PollModel testPoll;
     late MockGoRouter mockGoRouter;
 
     setUp(() {
       testPoll = polls.first;
-      mockNotifier = MockPollListNotifier();
       mockGoRouter = MockGoRouter();
 
       // Set up mock methods
@@ -49,7 +26,6 @@ void main() {
 
       container = ProviderContainer.test(
         overrides: [
-          pollListProvider.overrideWith(() => mockNotifier),
           pollProvider(testPoll.id).overrideWith((ref) => testPoll),
           editContentIdProvider.overrideWith((ref) => null),
         ],
@@ -58,12 +34,11 @@ void main() {
 
     group('copyPoll', () {
       testWidgets('copies poll content to clipboard', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.copyPoll(context, ref, testPoll.id),
-            child: const Text('Copy Poll'),
-          ),
+        await tester.pumpActionsWidget(
           container: container,
+          buttonText: 'Copy Poll',
+          onPressed: (context, ref) =>
+              PollActions.copyPoll(context, ref, testPoll.id),
         );
 
         // Tap the button to trigger copy action
@@ -75,12 +50,11 @@ void main() {
       });
 
       testWidgets('shows snackbar after copying', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.copyPoll(context, ref, testPoll.id),
-            child: const Text('Copy Poll'),
-          ),
+        await tester.pumpActionsWidget(
           container: container,
+          buttonText: 'Copy Poll',
+          onPressed: (context, ref) =>
+              PollActions.copyPoll(context, ref, testPoll.id),
         );
 
         // Tap the button to trigger copy action
@@ -118,12 +92,10 @@ void main() {
 
     group('editPoll', () {
       testWidgets('enables edit mode for poll', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.editPoll(ref, testPoll.id),
-            child: const Text('Edit Poll'),
-          ),
+        await tester.pumpActionsWidget(
           container: container,
+          buttonText: 'Edit Poll',
+          onPressed: (context, ref) => PollActions.editPoll(ref, testPoll.id),
         );
 
         // Tap the button to trigger edit action
@@ -136,12 +108,10 @@ void main() {
       });
 
       testWidgets('sets correct poll ID in edit provider', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.editPoll(ref, testPoll.id),
-            child: const Text('Edit Poll'),
-          ),
+        await tester.pumpActionsWidget(
           container: container,
+          buttonText: 'Edit Poll',
+          onPressed: (context, ref) => PollActions.editPoll(ref, testPoll.id),
         );
 
         // Tap the button to trigger edit action
@@ -156,11 +126,14 @@ void main() {
 
     group('deletePoll', () {
       testWidgets('deletes poll from provider', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.deletePoll(context, ref, testPoll.id),
-            child: const Text('Delete Poll'),
-          ),
+        // Verify poll exists initially
+        final initialPolls = container.read(pollListProvider);
+        expect(initialPolls.any((poll) => poll.id == testPoll.id), isTrue);
+
+        await tester.pumpActionsWidget(
+          buttonText: 'Delete Poll',
+          onPressed: (context, ref) =>
+              PollActions.deletePoll(context, ref, testPoll.id),
           container: container,
         );
 
@@ -168,17 +141,17 @@ void main() {
         await tester.tap(find.text('Delete Poll'));
         await tester.pumpAndSettle();
 
-        // Verify deletePoll was called on the notifier
-        expect(mockNotifier.methodCalls, contains('deletePoll'));
-        expect(mockNotifier.methodArguments.first['pollId'], equals(testPoll.id));
+        // Verify poll was deleted from provider
+        final updatedPolls = container.read(pollListProvider);
+        expect(updatedPolls.any((poll) => poll.id == testPoll.id), isFalse);
+        expect(updatedPolls.length, equals(initialPolls.length - 1));
       });
 
       testWidgets('shows snackbar after deletion', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.deletePoll(context, ref, testPoll.id),
-            child: const Text('Delete Poll'),
-          ),
+        await tester.pumpActionsWidget(
+          buttonText: 'Delete Poll',
+          onPressed: (context, ref) =>
+              PollActions.deletePoll(context, ref, testPoll.id),
           container: container,
         );
 
@@ -193,16 +166,16 @@ void main() {
     });
 
     group('showPollMenu', () {
-      testWidgets('shows poll menu with all items when not editing', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => showPollMenu(
-              context: context,
-              ref: ref,
-              isEditing: false,
-              pollId: testPoll.id,
-            ),
-            child: const Text('Show Menu'),
+      testWidgets('shows poll menu with all items when not editing', (
+        tester,
+      ) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showPollMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            pollId: testPoll.id,
           ),
           container: container,
           router: mockGoRouter,
@@ -213,22 +186,23 @@ void main() {
         await tester.pumpAndSettle();
 
         // Verify menu items are rendered (copy, share, edit, delete)
-        expect(find.text('Copy'), findsOneWidget);
+        // Note: These strings should match the L10n strings in app_en.arb
+        expect(find.text('Copy poll content'), findsOneWidget);
         expect(find.text('Share'), findsOneWidget);
         expect(find.text('Edit'), findsOneWidget);
         expect(find.text('Delete'), findsOneWidget);
       });
 
-      testWidgets('shows poll menu without edit item when editing', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => showPollMenu(
-              context: context,
-              ref: ref,
-              isEditing: true,
-              pollId: testPoll.id,
-            ),
-            child: const Text('Show Menu'),
+      testWidgets('shows poll menu without edit item when editing', (
+        tester,
+      ) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showPollMenu(
+            context: context,
+            ref: ref,
+            isEditing: true,
+            pollId: testPoll.id,
           ),
           container: container,
           router: mockGoRouter,
@@ -239,22 +213,21 @@ void main() {
         await tester.pumpAndSettle();
 
         // Verify menu items are rendered (copy, share, delete - no edit)
-        expect(find.text('Copy'), findsOneWidget);
+        // Note: These strings should match the L10n strings in app_en.arb
+        expect(find.text('Copy poll content'), findsOneWidget);
         expect(find.text('Share'), findsOneWidget);
         expect(find.text('Delete'), findsOneWidget);
         expect(find.text('Edit'), findsNothing);
       });
 
       testWidgets('handles copy menu item tap correctly', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => showPollMenu(
-              context: context,
-              ref: ref,
-              isEditing: false,
-              pollId: testPoll.id,
-            ),
-            child: const Text('Show Menu'),
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showPollMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            pollId: testPoll.id,
           ),
           container: container,
           router: mockGoRouter,
@@ -265,7 +238,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Tap the copy menu item
-        await tester.tap(find.text('Copy'));
+        await tester.tap(find.text('Copy poll content'));
         await tester.pumpAndSettle();
 
         // Verify snackbar is shown with correct message (indicates copy action was executed)
@@ -274,15 +247,13 @@ void main() {
       });
 
       testWidgets('handles edit menu item tap correctly', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => showPollMenu(
-              context: context,
-              ref: ref,
-              isEditing: false,
-              pollId: testPoll.id,
-            ),
-            child: const Text('Show Menu'),
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showPollMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            pollId: testPoll.id,
           ),
           container: container,
           router: mockGoRouter,
@@ -302,15 +273,17 @@ void main() {
       });
 
       testWidgets('handles delete menu item tap correctly', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => showPollMenu(
-              context: context,
-              ref: ref,
-              isEditing: false,
-              pollId: testPoll.id,
-            ),
-            child: const Text('Show Menu'),
+        // Verify poll exists initially
+        final initialPolls = container.read(pollListProvider);
+        expect(initialPolls.any((poll) => poll.id == testPoll.id), isTrue);
+
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showPollMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            pollId: testPoll.id,
           ),
           container: container,
           router: mockGoRouter,
@@ -324,25 +297,24 @@ void main() {
         await tester.tap(find.text('Delete'));
         await tester.pumpAndSettle();
 
-        // Verify deletePoll was called on the notifier
-        expect(mockNotifier.methodCalls, contains('deletePoll'));
-        expect(mockNotifier.methodArguments.first['pollId'], equals(testPoll.id));
-        
+        // Verify poll was deleted from provider
+        final updatedPolls = container.read(pollListProvider);
+        expect(updatedPolls.any((poll) => poll.id == testPoll.id), isFalse);
+        expect(updatedPolls.length, equals(initialPolls.length - 1));
+
         // Verify snackbar is shown with correct message
         expect(find.byType(SnackBar), findsOneWidget);
         expect(find.text('Poll deleted'), findsOneWidget);
       });
 
       testWidgets('handles share menu item tap correctly', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => showPollMenu(
-              context: context,
-              ref: ref,
-              isEditing: false,
-              pollId: testPoll.id,
-            ),
-            child: const Text('Show Menu'),
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showPollMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            pollId: testPoll.id,
           ),
           container: container,
           router: mockGoRouter,
@@ -361,15 +333,13 @@ void main() {
       });
 
       testWidgets('menu can be dismissed by tapping outside', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => showPollMenu(
-              context: context,
-              ref: ref,
-              isEditing: false,
-              pollId: testPoll.id,
-            ),
-            child: const Text('Show Menu'),
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showPollMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            pollId: testPoll.id,
           ),
           container: container,
           router: mockGoRouter,
@@ -380,27 +350,27 @@ void main() {
         await tester.pumpAndSettle();
 
         // Verify menu is shown
-        expect(find.text('Copy'), findsOneWidget);
+        expect(find.text('Copy poll content'), findsOneWidget);
 
         // Tap outside the menu to dismiss it
         await tester.tapAt(const Offset(10, 10));
         await tester.pumpAndSettle();
 
         // Verify menu is dismissed
-        expect(find.text('Copy'), findsNothing);
+        expect(find.text('Copy poll content'), findsNothing);
       });
 
-      testWidgets('shows correct menu items with detail screen flag', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => showPollMenu(
-              context: context,
-              ref: ref,
-              isEditing: false,
-              pollId: testPoll.id,
-              isDetailScreen: true,
-            ),
-            child: const Text('Show Menu'),
+      testWidgets('shows correct menu items with detail screen flag', (
+        tester,
+      ) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showPollMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            pollId: testPoll.id,
+            isDetailScreen: true,
           ),
           container: container,
           router: mockGoRouter,
@@ -411,7 +381,8 @@ void main() {
         await tester.pumpAndSettle();
 
         // Verify all menu items are present
-        expect(find.text('Copy'), findsOneWidget);
+        // Note: These strings should match the L10n strings in app_en.arb
+        expect(find.text('Copy poll content'), findsOneWidget);
         expect(find.text('Share'), findsOneWidget);
         expect(find.text('Edit'), findsOneWidget);
         expect(find.text('Delete'), findsOneWidget);
@@ -420,11 +391,10 @@ void main() {
 
     group('Integration Tests', () {
       testWidgets('copy action works with real providers', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.copyPoll(context, ref, testPoll.id),
-            child: const Text('Copy'),
-          ),
+        await tester.pumpActionsWidget(
+          buttonText: 'Copy',
+          onPressed: (context, ref) =>
+              PollActions.copyPoll(context, ref, testPoll.id),
           container: container,
         );
 
@@ -437,11 +407,9 @@ void main() {
       });
 
       testWidgets('edit action works with real providers', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.editPoll(ref, testPoll.id),
-            child: const Text('Edit'),
-          ),
+        await tester.pumpActionsWidget(
+          buttonText: 'Edit',
+          onPressed: (context, ref) => PollActions.editPoll(ref, testPoll.id),
           container: container,
         );
 
@@ -455,11 +423,14 @@ void main() {
       });
 
       testWidgets('delete action works with real providers', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.deletePoll(context, ref, testPoll.id),
-            child: const Text('Delete'),
-          ),
+        // Verify poll exists initially
+        final initialPolls = container.read(pollListProvider);
+        expect(initialPolls.any((poll) => poll.id == testPoll.id), isTrue);
+
+        await tester.pumpActionsWidget(
+          buttonText: 'Delete',
+          onPressed: (context, ref) =>
+              PollActions.deletePoll(context, ref, testPoll.id),
           container: container,
         );
 
@@ -467,8 +438,10 @@ void main() {
         await tester.tap(find.text('Delete'));
         await tester.pumpAndSettle();
 
-        // Verify delete was called
-        expect(mockNotifier.methodCalls, contains('deletePoll'));
+        // Verify poll was deleted from provider
+        final updatedPolls = container.read(pollListProvider);
+        expect(updatedPolls.any((poll) => poll.id == testPoll.id), isFalse);
+        expect(updatedPolls.length, equals(initialPolls.length - 1));
       });
     });
 
@@ -476,11 +449,10 @@ void main() {
       testWidgets('handles invalid poll ID gracefully', (tester) async {
         const invalidPollId = 'invalid-poll-id';
 
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.copyPoll(context, ref, invalidPollId),
-            child: const Text('Copy Invalid'),
-          ),
+        await tester.pumpActionsWidget(
+          buttonText: 'Copy Invalid',
+          onPressed: (context, ref) =>
+              PollActions.copyPoll(context, ref, invalidPollId),
           container: container,
         );
 
@@ -495,11 +467,9 @@ void main() {
       testWidgets('handles empty poll ID', (tester) async {
         const emptyPollId = '';
 
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.editPoll(ref, emptyPollId),
-            child: const Text('Edit Empty'),
-          ),
+        await tester.pumpActionsWidget(
+          buttonText: 'Edit Empty',
+          onPressed: (context, ref) => PollActions.editPoll(ref, emptyPollId),
           container: container,
         );
 
@@ -518,11 +488,9 @@ void main() {
         // Initial state should be null
         expect(container.read(editContentIdProvider), isNull);
 
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.editPoll(ref, testPoll.id),
-            child: const Text('Edit'),
-          ),
+        await tester.pumpActionsWidget(
+          buttonText: 'Edit',
+          onPressed: (context, ref) => PollActions.editPoll(ref, testPoll.id),
           container: container,
         );
 
@@ -534,15 +502,15 @@ void main() {
         expect(container.read(editContentIdProvider), equals(testPoll.id));
       });
 
-      testWidgets('delete poll calls notifier method', (tester) async {
-        // Reset mock
-        mockNotifier.reset();
+      testWidgets('delete poll updates provider state', (tester) async {
+        // Verify poll exists initially
+        final initialPolls = container.read(pollListProvider);
+        expect(initialPolls.any((poll) => poll.id == testPoll.id), isTrue);
 
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => PollActions.deletePoll(context, ref, testPoll.id),
-            child: const Text('Delete'),
-          ),
+        await tester.pumpActionsWidget(
+          buttonText: 'Delete',
+          onPressed: (context, ref) =>
+              PollActions.deletePoll(context, ref, testPoll.id),
           container: container,
         );
 
@@ -550,24 +518,24 @@ void main() {
         await tester.tap(find.text('Delete'));
         await tester.pumpAndSettle();
 
-        // Verify method was called
-        expect(mockNotifier.methodCalls, contains('deletePoll'));
-        expect(mockNotifier.methodArguments.length, equals(1));
-        expect(mockNotifier.methodArguments.first['pollId'], equals(testPoll.id));
+        // Verify poll was deleted from provider
+        final updatedPolls = container.read(pollListProvider);
+        expect(updatedPolls.any((poll) => poll.id == testPoll.id), isFalse);
+        expect(updatedPolls.length, equals(initialPolls.length - 1));
       });
     });
 
     group('Menu Item Configuration', () {
-      testWidgets('menu items are configured correctly for non-editing state', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => showPollMenu(
-              context: context,
-              ref: ref,
-              isEditing: false,
-              pollId: testPoll.id,
-            ),
-            child: const Text('Menu'),
+      testWidgets('menu items are configured correctly for non-editing state', (
+        tester,
+      ) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Menu',
+          onPressed: (context, ref) => showPollMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            pollId: testPoll.id,
           ),
           container: container,
         );
@@ -580,16 +548,16 @@ void main() {
         expect(find.text('Menu'), findsOneWidget);
       });
 
-      testWidgets('menu items are configured correctly for editing state', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: TestWidgetWithRef(
-            onTap: (context, ref) => showPollMenu(
-              context: context,
-              ref: ref,
-              isEditing: true,
-              pollId: testPoll.id,
-            ),
-            child: const Text('Menu'),
+      testWidgets('menu items are configured correctly for editing state', (
+        tester,
+      ) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Menu',
+          onPressed: (context, ref) => showPollMenu(
+            context: context,
+            ref: ref,
+            isEditing: true,
+            pollId: testPoll.id,
           ),
           container: container,
         );
