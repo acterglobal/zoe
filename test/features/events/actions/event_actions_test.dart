@@ -7,6 +7,7 @@ import 'package:zoe/features/events/actions/event_actions.dart';
 import 'package:zoe/features/events/data/event_list.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
+import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import '../../../test-utils/test_utils.dart';
 import '../../../test-utils/mock_gorouter.dart';
 
@@ -81,6 +82,7 @@ void main() {
 
         // Verify the action was called
         expect(find.text('Share Event'), findsAtLeastNWidgets(1));
+        expect(find.byType(ShareItemsBottomSheet), findsOneWidget);
       });
     });
 
