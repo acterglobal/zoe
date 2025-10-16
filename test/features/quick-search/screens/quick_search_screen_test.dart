@@ -18,12 +18,8 @@ import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_list_widget.dart';
+import '../../../test-utils/mock_searchValue.dart';
 import '../../../test-utils/test_utils.dart';
-
-class MockSearchValue extends SearchValue {
-  @override
-  String build() => '';
-}
 
 void main() {
   late ProviderContainer container;
@@ -59,7 +55,12 @@ void main() {
       expect(
         find.descendant(
           of: find.byType(ZoeAppBar),
-          matching: find.text(WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen).search),
+          matching: find.text(
+            WidgetTesterExtension.getL10n(
+              tester,
+              byType: QuickSearchScreen,
+            ).search,
+          ),
         ),
         findsOneWidget,
       );
@@ -86,8 +87,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
-      
+      final lang = WidgetTesterExtension.getL10n(
+        tester,
+        byType: QuickSearchScreen,
+      );
+
       // Tap on Sheets tab
       await tester.tap(find.text(lang.sheets));
       await tester.pumpAndSettle();
@@ -108,8 +112,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
-      
+      final lang = WidgetTesterExtension.getL10n(
+        tester,
+        byType: QuickSearchScreen,
+      );
+
       // Tap on Events tab
       await tester.tap(find.text(lang.events));
       await tester.pumpAndSettle();
@@ -130,8 +137,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
-      
+      final lang = WidgetTesterExtension.getL10n(
+        tester,
+        byType: QuickSearchScreen,
+      );
+
       // Tap on Tasks tab
       await tester.tap(find.text(lang.tasks));
       await tester.pumpAndSettle();
@@ -152,8 +162,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
-      
+      final lang = WidgetTesterExtension.getL10n(
+        tester,
+        byType: QuickSearchScreen,
+      );
+
       // Tap on Links tab
       await tester.tap(find.text(lang.links));
       await tester.pumpAndSettle();
@@ -167,15 +180,20 @@ void main() {
       expect(find.byType(PollListWidget), findsNothing);
     });
 
-    testWidgets('filters sections correctly for documents filter', (tester) async {
+    testWidgets('filters sections correctly for documents filter', (
+      tester,
+    ) async {
       await tester.pumpMaterialWidgetWithProviderScope(
         child: const QuickSearchScreen(),
         container: container,
       );
       await tester.pumpAndSettle();
 
-      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
-      
+      final lang = WidgetTesterExtension.getL10n(
+        tester,
+        byType: QuickSearchScreen,
+      );
+
       // Find and tap Documents tab
       final documentsTab = find.text(lang.documents);
       await tester.dragUntilVisible(
@@ -196,7 +214,9 @@ void main() {
       expect(find.byType(PollListWidget), findsNothing);
     });
 
-    testWidgets('maintains filter selection after search text changes', (tester) async {
+    testWidgets('maintains filter selection after search text changes', (
+      tester,
+    ) async {
       await tester.pumpMaterialWidgetWithProviderScope(
         child: const QuickSearchScreen(),
         container: container,
@@ -204,7 +224,10 @@ void main() {
       await tester.pumpAndSettle();
 
       // Select sheets filter
-      final lang = WidgetTesterExtension.getL10n(tester, byType: QuickSearchScreen);
+      final lang = WidgetTesterExtension.getL10n(
+        tester,
+        byType: QuickSearchScreen,
+      );
       await tester.tap(find.text(lang.sheets));
       await tester.pumpAndSettle();
 
@@ -226,7 +249,7 @@ void main() {
         child: const QuickSearchScreen(),
         container: container,
       );
-      
+
       // Wait for post frame callback
       await tester.pumpAndSettle();
 
@@ -241,14 +264,16 @@ void main() {
       );
 
       // Get the state
-      final state = tester.state<ConsumerState<QuickSearchScreen>>(find.byType(QuickSearchScreen));
-      
+      final state = tester.state<ConsumerState<QuickSearchScreen>>(
+        find.byType(QuickSearchScreen),
+      );
+
       // Keep a reference to the controller
       final controller = (state as dynamic).searchController;
 
       // Dispose the widget
       await tester.pumpWidget(const SizedBox());
-      
+
       // Verify the controller is disposed
       expect(controller.dispose, throwsFlutterError);
     });
