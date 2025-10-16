@@ -87,21 +87,6 @@ void main() {
     });
 
     group('editEvent', () {
-      testWidgets('enables edit mode for event', (tester) async {
-        await tester.pumpActionsWidget(
-          container: container,
-          buttonText: 'Edit Event',
-          onPressed: (context, ref) => EventActions.editEvent(ref, testEvent.id),
-        );
-
-        // Tap the button to trigger edit action
-        await tester.tap(find.text('Edit Event'));
-        await tester.pumpAndSettle();
-
-        // Verify edit mode is enabled
-        final editContentId = container.read(editContentIdProvider);
-        expect(editContentId, equals(testEvent.id));
-      });
 
       testWidgets('sets correct event ID in edit provider', (tester) async {
         await tester.pumpActionsWidget(
@@ -326,6 +311,7 @@ void main() {
 
         // Verify the action was called (share bottom sheet might not settle)
         expect(find.text('Share'), findsAtLeastNWidgets(1));
+        expect(find.byType(ShareItemsBottomSheet), findsOneWidget);
       });
 
       testWidgets('menu can be dismissed by tapping outside', (tester) async {
