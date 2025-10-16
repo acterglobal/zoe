@@ -69,16 +69,10 @@ void main() {
 
     group('sharePoll', () {
       testWidgets('shows share bottom sheet', (tester) async {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          child: Builder(
-            builder: (context) {
-              return ElevatedButton(
-                onPressed: () => PollActions.sharePoll(context, testPoll.id),
-                child: const Text('Share Poll'),
-              );
-            },
-          ),
+        await tester.pumpActionsWidget(
           container: container,
+          buttonText: 'Share Poll',
+          onPressed: (context, ref) => PollActions.sharePoll(context, testPoll.id),
         );
 
         // Tap the button to trigger share action

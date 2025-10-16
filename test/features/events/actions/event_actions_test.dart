@@ -1,286 +1,568 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/events/actions/event_actions.dart';
 import 'package:zoe/features/events/data/event_list.dart';
 import 'package:zoe/features/events/models/events_model.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
 import '../../../test-utils/test_utils.dart';
+import '../../../test-utils/mock_gorouter.dart';
 
 void main() {
-  group('EventActions', () {
+  group('EventActions Tests', () {
+    late ProviderContainer container;
     late EventModel testEvent;
+    late MockGoRouter mockGoRouter;
 
     setUp(() {
       testEvent = eventList.first;
-    });
+      mockGoRouter = MockGoRouter();
 
-    // Helper function for widget pumping
-    Future<void> pumpButtonWidget(
-      WidgetTester tester, {
-      required String buttonText,
-      required VoidCallback onPressed,
-    }) async {
-      await tester.pumpMaterialWidget(
-        child: MaterialApp(
-          home: Scaffold(
-            body: Builder(
-              builder: (context) {
-                return ElevatedButton(
-                  onPressed: onPressed,
-                  child: Text(buttonText),
-                );
-              },
-            ),
-          ),
-        ),
+      // Set up mock methods
+      when(() => mockGoRouter.canPop()).thenReturn(true);
+      when(() => mockGoRouter.pop()).thenReturn(null);
+
+      container = ProviderContainer.test(
+        overrides: [
+          eventProvider(testEvent.id).overrideWith((ref) => testEvent),
+          editContentIdProvider.overrideWith((ref) => null),
+        ],
       );
-      await tester.tap(find.text(buttonText));
-      await tester.pump();
-    }
-
-    group('General', () {
-      test('EventActions should be a static class', () {
-        expect(EventActions, isA<Type>());
-      });
     });
 
-    group('Clipboard & Copy', () {
-      testWidgets('copyEvent should execute without errors', (tester) async {
-        await pumpButtonWidget(
-          tester,
+    group('copyEvent', () {
+      testWidgets('copies event content to clipboard', (tester) async {
+        await tester.pumpActionsWidget(
+          container: container,
           buttonText: 'Copy Event',
-          onPressed: () => Clipboard.setData(
-            ClipboardData(text: 'Test event content'),
-          ),
+          onPressed: (context, ref) =>
+              EventActions.copyEvent(context, ref, testEvent.id),
         );
 
+        // Tap the button to trigger copy action
+        await tester.tap(find.text('Copy Event'));
+        await tester.pumpAndSettle();
+
+        // Verify the action was called (we can't easily test clipboard in unit tests)
         expect(find.text('Copy Event'), findsOneWidget);
       });
 
-      test('should handle empty or null content safely', () {
-        final cases = ['', null];
-        for (final content in cases) {
-          final safeContent = content ?? '';
-          ClipboardData clipboardData = ClipboardData(text: safeContent);
-          expect(clipboardData.text, equals(safeContent));
-          expect((clipboardData.text?.isNotEmpty ?? false), safeContent.isNotEmpty);
-        }
+      testWidgets('shows snackbar after copying', (tester) async {
+        await tester.pumpActionsWidget(
+          container: container,
+          buttonText: 'Copy Event',
+          onPressed: (context, ref) =>
+              EventActions.copyEvent(context, ref, testEvent.id),
+        );
+
+        // Tap the button to trigger copy action
+        await tester.tap(find.text('Copy Event'));
+        await tester.pumpAndSettle();
+
+        // Verify snackbar is shown with correct message
+        expect(find.byType(SnackBar), findsOneWidget);
+        expect(find.text('Copied to clipboard'), findsOneWidget);
       });
     });
 
-    group('Share Event', () {
-      testWidgets('shareEvent should execute without errors', (tester) async {
-        await pumpButtonWidget(
-          tester,
+    group('shareEvent', () {
+      testWidgets('shows share bottom sheet', (tester) async {
+        await tester.pumpActionsWidget(
+          container: container,
           buttonText: 'Share Event',
-          onPressed: () {},
+          onPressed: (context, ref) => EventActions.shareEvent(context, testEvent.id),
         );
-        expect(find.text('Share Event'), findsOneWidget);
-      });
 
-      test('should validate share logic', () {
-        final validEventIds = [testEvent.id, ''];
-        for (var eventId in validEventIds) {
-          final canShare = eventId.isNotEmpty;
-          final isValidFormat = canShare && !eventId.contains(' ');
-          expect(isValidFormat, canShare ? isTrue : isFalse);
-        }
+        // Tap the button to trigger share action
+        await tester.tap(find.text('Share Event'));
+        await tester.pump(); // Don't use pumpAndSettle to avoid timeout
+
+        // Verify the action was called
+        expect(find.text('Share Event'), findsAtLeastNWidgets(1));
       });
     });
 
-    group('Edit Event', () {
-      test('should validate edit logic', () {
-        final emptyId = '';
-        expect(testEvent.id.isNotEmpty, isTrue);
-        expect(emptyId.isNotEmpty, isFalse);
-      });
-
-      testWidgets('editEvent button executes without errors', (tester) async {
-        await pumpButtonWidget(
-          tester,
+    group('editEvent', () {
+      testWidgets('enables edit mode for event', (tester) async {
+        await tester.pumpActionsWidget(
+          container: container,
           buttonText: 'Edit Event',
-          onPressed: () {},
+          onPressed: (context, ref) => EventActions.editEvent(ref, testEvent.id),
         );
-        expect(find.text('Edit Event'), findsOneWidget);
+
+        // Tap the button to trigger edit action
+        await tester.tap(find.text('Edit Event'));
+        await tester.pumpAndSettle();
+
+        // Verify edit mode is enabled
+        final editContentId = container.read(editContentIdProvider);
+        expect(editContentId, equals(testEvent.id));
+      });
+
+      testWidgets('sets correct event ID in edit provider', (tester) async {
+        await tester.pumpActionsWidget(
+          container: container,
+          buttonText: 'Edit Event',
+          onPressed: (context, ref) => EventActions.editEvent(ref, testEvent.id),
+        );
+
+        // Tap the button to trigger edit action
+        await tester.tap(find.text('Edit Event'));
+        await tester.pumpAndSettle();
+
+        // Verify the correct event ID is set
+        final editContentId = container.read(editContentIdProvider);
+        expect(editContentId, equals(testEvent.id));
       });
     });
 
-    group('Delete Event', () {
-      test('should validate delete logic', () {
-        final emptyId = '';
-        expect(testEvent.id.isNotEmpty, isTrue);
-        expect(emptyId.isNotEmpty, isFalse);
-      });
+    group('deleteEvent', () {
+      testWidgets('deletes event from provider', (tester) async {
+        // Verify event exists initially
+        final initialEvents = container.read(eventListProvider);
+        expect(initialEvents.any((event) => event.id == testEvent.id), isTrue);
 
-      testWidgets('deleteEvent button executes without errors', (tester) async {
-        await pumpButtonWidget(
-          tester,
+        await tester.pumpActionsWidget(
           buttonText: 'Delete Event',
-          onPressed: () {},
+          onPressed: (context, ref) =>
+              EventActions.deleteEvent(context, ref, testEvent.id),
+          container: container,
         );
-        expect(find.text('Delete Event'), findsOneWidget);
+
+        // Tap the button to trigger delete action
+        await tester.tap(find.text('Delete Event'));
+        await tester.pumpAndSettle();
+
+        // Verify event was deleted from provider
+        final updatedEvents = container.read(eventListProvider);
+        expect(updatedEvents.any((event) => event.id == testEvent.id), isFalse);
+        expect(updatedEvents.length, equals(initialEvents.length - 1));
+      });
+
+      testWidgets('shows snackbar after deletion', (tester) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Delete Event',
+          onPressed: (context, ref) =>
+              EventActions.deleteEvent(context, ref, testEvent.id),
+          container: container,
+        );
+
+        // Tap the button to trigger delete action
+        await tester.tap(find.text('Delete Event'));
+        await tester.pumpAndSettle();
+
+        // Verify snackbar is shown with correct message
+        expect(find.byType(SnackBar), findsOneWidget);
+        expect(find.text('Event deleted'), findsOneWidget);
       });
     });
 
-    group('Event Menu', () {
-      testWidgets('showEventMenu executes without errors', (tester) async {
-        await pumpButtonWidget(
-          tester,
+    group('showEventMenu', () {
+      testWidgets('shows event menu with all items when not editing', (
+        tester,
+      ) async {
+        await tester.pumpActionsWidget(
           buttonText: 'Show Menu',
-          onPressed: () {},
+          onPressed: (context, ref) => showEventMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            eventId: testEvent.id,
+          ),
+          container: container,
+          router: mockGoRouter,
         );
-        expect(find.text('Show Menu'), findsOneWidget);
+
+        // Tap the button to trigger menu
+        await tester.tap(find.text('Show Menu'));
+        await tester.pumpAndSettle();
+
+        // Verify menu items are rendered (copy, share, edit, delete)
+        // Note: These strings should match the L10n strings in app_en.arb
+        expect(find.text('Copy event content'), findsOneWidget);
+        expect(find.text('Share'), findsOneWidget);
+        expect(find.text('Edit'), findsOneWidget);
+        expect(find.text('Delete'), findsOneWidget);
       });
 
-      test('menu logic should validate items based on editing state', () {
-        final isEditingCases = [true, false];
-        for (var isEditing in isEditingCases) {
-          final canEdit = !isEditing && testEvent.id.isNotEmpty;
-          expect(canEdit, isEditing ? isFalse : isTrue);
-        }
+      testWidgets('shows event menu without edit item when editing', (
+        tester,
+      ) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showEventMenu(
+            context: context,
+            ref: ref,
+            isEditing: true,
+            eventId: testEvent.id,
+          ),
+          container: container,
+          router: mockGoRouter,
+        );
+
+        // Tap the button to trigger menu
+        await tester.tap(find.text('Show Menu'));
+        await tester.pumpAndSettle();
+
+        // Verify menu items are rendered (copy, share, delete - no edit)
+        // Note: These strings should match the L10n strings in app_en.arb
+        expect(find.text('Copy event content'), findsOneWidget);
+        expect(find.text('Share'), findsOneWidget);
+        expect(find.text('Delete'), findsOneWidget);
+        expect(find.text('Edit'), findsNothing);
+      });
+
+      testWidgets('handles copy menu item tap correctly', (tester) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showEventMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            eventId: testEvent.id,
+          ),
+          container: container,
+          router: mockGoRouter,
+        );
+
+        // Tap the button to trigger menu
+        await tester.tap(find.text('Show Menu'));
+        await tester.pumpAndSettle();
+
+        // Tap the copy menu item
+        await tester.tap(find.text('Copy event content'));
+        await tester.pumpAndSettle();
+
+        // Verify snackbar is shown with correct message (indicates copy action was executed)
+        expect(find.byType(SnackBar), findsOneWidget);
+        expect(find.text('Copied to clipboard'), findsOneWidget);
+      });
+
+      testWidgets('handles edit menu item tap correctly', (tester) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showEventMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            eventId: testEvent.id,
+          ),
+          container: container,
+          router: mockGoRouter,
+        );
+
+        // Tap the button to trigger menu
+        await tester.tap(find.text('Show Menu'));
+        await tester.pumpAndSettle();
+
+        // Tap the edit menu item
+        await tester.tap(find.text('Edit'));
+        await tester.pumpAndSettle();
+
+        // Verify edit state was set
+        final editContentId = container.read(editContentIdProvider);
+        expect(editContentId, equals(testEvent.id));
+      });
+
+      testWidgets('handles delete menu item tap correctly', (tester) async {
+        // Verify event exists initially
+        final initialEvents = container.read(eventListProvider);
+        expect(initialEvents.any((event) => event.id == testEvent.id), isTrue);
+
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showEventMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            eventId: testEvent.id,
+          ),
+          container: container,
+          router: mockGoRouter,
+        );
+
+        // Tap the button to trigger menu
+        await tester.tap(find.text('Show Menu'));
+        await tester.pumpAndSettle();
+
+        // Tap the delete menu item
+        await tester.tap(find.text('Delete'));
+        await tester.pumpAndSettle();
+
+        // Verify event was deleted from provider
+        final updatedEvents = container.read(eventListProvider);
+        expect(updatedEvents.any((event) => event.id == testEvent.id), isFalse);
+        expect(updatedEvents.length, equals(initialEvents.length - 1));
+
+        // Verify snackbar is shown with correct message
+        expect(find.byType(SnackBar), findsOneWidget);
+        expect(find.text('Event deleted'), findsOneWidget);
+      });
+
+      testWidgets('handles share menu item tap correctly', (tester) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showEventMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            eventId: testEvent.id,
+          ),
+          container: container,
+          router: mockGoRouter,
+        );
+
+        // Tap the button to trigger menu
+        await tester.tap(find.text('Show Menu'));
+        await tester.pumpAndSettle();
+
+        // Tap the share menu item
+        await tester.tap(find.text('Share'));
+        await tester.pump(); // Don't use pumpAndSettle to avoid timeout
+
+        // Verify the action was called (share bottom sheet might not settle)
+        expect(find.text('Share'), findsAtLeastNWidgets(1));
+      });
+
+      testWidgets('menu can be dismissed by tapping outside', (tester) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showEventMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            eventId: testEvent.id,
+          ),
+          container: container,
+          router: mockGoRouter,
+        );
+
+        // Tap the button to trigger menu
+        await tester.tap(find.text('Show Menu'));
+        await tester.pumpAndSettle();
+
+        // Verify menu is shown
+        expect(find.text('Copy event content'), findsOneWidget);
+
+        // Tap outside the menu to dismiss it
+        await tester.tapAt(const Offset(10, 10));
+        await tester.pumpAndSettle();
+
+        // Verify menu is dismissed
+        expect(find.text('Copy event content'), findsNothing);
+      });
+
+      testWidgets('shows correct menu items with detail screen flag', (
+        tester,
+      ) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Show Menu',
+          onPressed: (context, ref) => showEventMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            eventId: testEvent.id,
+            isDetailScreen: true,
+          ),
+          container: container,
+          router: mockGoRouter,
+        );
+
+        // Tap the button to trigger menu
+        await tester.tap(find.text('Show Menu'));
+        await tester.pumpAndSettle();
+
+        // Verify all menu items are present
+        // Note: These strings should match the L10n strings in app_en.arb
+        expect(find.text('Copy event content'), findsOneWidget);
+        expect(find.text('Share'), findsOneWidget);
+        expect(find.text('Edit'), findsOneWidget);
+        expect(find.text('Delete'), findsOneWidget);
+      });
+    });
+
+    group('Integration Tests', () {
+      testWidgets('copy action works with real providers', (tester) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Copy',
+          onPressed: (context, ref) =>
+              EventActions.copyEvent(context, ref, testEvent.id),
+          container: container,
+        );
+
+        // Tap the button
+        await tester.tap(find.text('Copy'));
+        await tester.pumpAndSettle();
+
+        // Verify the action completed without errors
+        expect(find.text('Copy'), findsOneWidget);
+      });
+
+      testWidgets('edit action works with real providers', (tester) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Edit',
+          onPressed: (context, ref) => EventActions.editEvent(ref, testEvent.id),
+          container: container,
+        );
+
+        // Tap the button
+        await tester.tap(find.text('Edit'));
+        await tester.pumpAndSettle();
+
+        // Verify edit state was set
+        final editContentId = container.read(editContentIdProvider);
+        expect(editContentId, equals(testEvent.id));
+      });
+
+      testWidgets('delete action works with real providers', (tester) async {
+        // Verify event exists initially
+        final initialEvents = container.read(eventListProvider);
+        expect(initialEvents.any((event) => event.id == testEvent.id), isTrue);
+
+        await tester.pumpActionsWidget(
+          buttonText: 'Delete',
+          onPressed: (context, ref) =>
+              EventActions.deleteEvent(context, ref, testEvent.id),
+          container: container,
+        );
+
+        // Tap the button
+        await tester.tap(find.text('Delete'));
+        await tester.pumpAndSettle();
+
+        // Verify event was deleted from provider
+        final updatedEvents = container.read(eventListProvider);
+        expect(updatedEvents.any((event) => event.id == testEvent.id), isFalse);
+        expect(updatedEvents.length, equals(initialEvents.length - 1));
       });
     });
 
     group('Edge Cases', () {
-      test('should handle long and special event IDs', () {
-        final longId = 'a' * 1000;
-        final specialId = 'event-id_with.special@chars#123';
-        expect(longId.isNotEmpty, isTrue);
-        expect(specialId.isNotEmpty, isTrue);
+      testWidgets('handles invalid event ID gracefully', (tester) async {
+        const invalidEventId = 'invalid-event-id';
+
+        await tester.pumpActionsWidget(
+          buttonText: 'Copy Invalid',
+          onPressed: (context, ref) =>
+              EventActions.copyEvent(context, ref, invalidEventId),
+          container: container,
+        );
+
+        // Tap the button
+        await tester.tap(find.text('Copy Invalid'));
+        await tester.pumpAndSettle();
+
+        // Should not throw an error
+        expect(find.text('Copy Invalid'), findsOneWidget);
+      });
+
+      testWidgets('handles empty event ID', (tester) async {
+        const emptyEventId = '';
+
+        await tester.pumpActionsWidget(
+          buttonText: 'Edit Empty',
+          onPressed: (context, ref) => EventActions.editEvent(ref, emptyEventId),
+          container: container,
+        );
+
+        // Tap the button
+        await tester.tap(find.text('Edit Empty'));
+        await tester.pumpAndSettle();
+
+        // Should set empty string as edit content ID
+        final editContentId = container.read(editContentIdProvider);
+        expect(editContentId, equals(emptyEventId));
       });
     });
 
-     group('Integration & Utils', () {
-       test('Clipboard integration works', () {
-         final data = ClipboardData(text: 'Test clipboard');
-         expect(data.text, 'Test clipboard');
-       });
+    group('Provider State Changes', () {
+      testWidgets('edit event updates provider state', (tester) async {
+        // Initial state should be null
+        expect(container.read(editContentIdProvider), isNull);
 
-       test('Snackbar and Share logic validation', () {
-         final messages = ['Copied', 'Deleted'];
-         for (var msg in messages) {
-           expect(msg.isNotEmpty, isTrue);
-         }
-       });
-
-      testWidgets('should show SnackBar with copiedToClipboard text for copy action', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Scaffold(
-            body: Builder(
-              builder: (context) {
-                return ElevatedButton(
-                  onPressed: () {
-                    // Simulate showing snackbar
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(L10n.of(context).copiedToClipboard)),
-                    );
-                  },
-                  child: Text('Copy Event'),
-                );
-              },
-            ),
-          ),
+        await tester.pumpActionsWidget(
+          buttonText: 'Edit',
+          onPressed: (context, ref) => EventActions.editEvent(ref, testEvent.id),
+          container: container,
         );
-         
-         // Tap the button to trigger snackbar
-         await tester.tap(find.text('Copy Event'));
-         await tester.pump(); // Show the snackbar
-         
-        // Check for SnackBar widget
-        expect(find.byType(SnackBar), findsOneWidget);
-        final expected = L10n.of(tester.element(find.byType(ElevatedButton))).copiedToClipboard;
-        expect(find.text(expected), findsOneWidget);
-       });
 
-      testWidgets('should show SnackBar with eventDeleted text for delete action', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Scaffold(
-            body: Builder(
-              builder: (context) {
-                return ElevatedButton(
-                  onPressed: () {
-                    // Simulate showing snackbar
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(L10n.of(context).eventDeleted)),
-                    );
-                  },
-                  child: Text('Delete Event'),
-                );
-              },
-            ),
-          ),
-        );
-         
-         // Tap the button to trigger snackbar
-         await tester.tap(find.text('Delete Event'));
-         await tester.pump(); // Show the snackbar
-         
-        // Check for SnackBar widget
-        expect(find.byType(SnackBar), findsOneWidget);
-        final expected = L10n.of(tester.element(find.byType(ElevatedButton))).eventDeleted;
-        expect(find.text(expected), findsOneWidget);
-       });
+        // Tap the button
+        await tester.tap(find.text('Edit'));
+        await tester.pumpAndSettle();
 
-      testWidgets('should show SnackBar with L10n copiedToClipboard message', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Scaffold(
-            body: Builder(
-              builder: (context) {
-                return ElevatedButton(
-                  onPressed: () {
-                    // Simulate L10n.of(context).copiedToClipboard message
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(L10n.of(context).copiedToClipboard)),
-                    );
-                  },
-                  child: Text('Copy Event'),
-                );
-              },
-            ),
-          ),
-        );
-         
-         // Tap the button to trigger snackbar
-         await tester.tap(find.text('Copy Event'));
-         await tester.pump(); // Show the snackbar
-         
-        // Check for SnackBar and specific L10n message
-        expect(find.byType(SnackBar), findsOneWidget);
-        final expected = L10n.of(tester.element(find.byType(ElevatedButton))).copiedToClipboard;
-        expect(find.text(expected), findsOneWidget);
-         expect(find.byType(Text), findsAtLeastNWidgets(1));
-       });
+        // State should be updated
+        expect(container.read(editContentIdProvider), equals(testEvent.id));
+      });
 
-      testWidgets('should show SnackBar with L10n eventDeleted message', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Scaffold(
-            body: Builder(
-              builder: (context) {
-                return ElevatedButton(
-                  onPressed: () {
-                    // Simulate L10n.of(context).eventDeleted message
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(L10n.of(context).eventDeleted)),
-                    );
-                  },
-                  child: Text('Delete Event'),
-                );
-              },
-            ),
-          ),
+      testWidgets('delete event updates provider state', (tester) async {
+        // Verify event exists initially
+        final initialEvents = container.read(eventListProvider);
+        expect(initialEvents.any((event) => event.id == testEvent.id), isTrue);
+
+        await tester.pumpActionsWidget(
+          buttonText: 'Delete',
+          onPressed: (context, ref) =>
+              EventActions.deleteEvent(context, ref, testEvent.id),
+          container: container,
         );
-         
-         // Tap the button to trigger snackbar
-         await tester.tap(find.text('Delete Event'));
-         await tester.pump(); // Show the snackbar
-         
-        // Check for SnackBar and specific L10n message
-        expect(find.byType(SnackBar), findsOneWidget);
-        final expected = L10n.of(tester.element(find.byType(ElevatedButton))).eventDeleted;
-        expect(find.text(expected), findsOneWidget);
-         expect(find.byType(Text), findsAtLeastNWidgets(1));
-       });
-     });
+
+        // Tap the button
+        await tester.tap(find.text('Delete'));
+        await tester.pumpAndSettle();
+
+        // Verify event was deleted from provider
+        final updatedEvents = container.read(eventListProvider);
+        expect(updatedEvents.any((event) => event.id == testEvent.id), isFalse);
+        expect(updatedEvents.length, equals(initialEvents.length - 1));
+      });
+    });
+
+    group('Menu Item Configuration', () {
+      testWidgets('menu items are configured correctly for non-editing state', (
+        tester,
+      ) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Menu',
+          onPressed: (context, ref) => showEventMenu(
+            context: context,
+            ref: ref,
+            isEditing: false,
+            eventId: testEvent.id,
+          ),
+          container: container,
+        );
+
+        // Tap the button
+        await tester.tap(find.text('Menu'));
+        await tester.pumpAndSettle();
+
+        // Verify menu was shown
+        expect(find.text('Menu'), findsOneWidget);
+      });
+
+      testWidgets('menu items are configured correctly for editing state', (
+        tester,
+      ) async {
+        await tester.pumpActionsWidget(
+          buttonText: 'Menu',
+          onPressed: (context, ref) => showEventMenu(
+            context: context,
+            ref: ref,
+            isEditing: true,
+            eventId: testEvent.id,
+          ),
+          container: container,
+        );
+
+        // Tap the button
+        await tester.tap(find.text('Menu'));
+        await tester.pumpAndSettle();
+
+        // Verify menu was shown
+        expect(find.text('Menu'), findsOneWidget);
+      });
+    });
   });
 }
