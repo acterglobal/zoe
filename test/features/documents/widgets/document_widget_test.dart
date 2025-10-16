@@ -24,12 +24,22 @@ void main() {
 
     tearDown(() => container.dispose());
 
-    Future<void> pumpWidget(
+    Future<void> pumpDocumentWidget(
       WidgetTester tester, {
-      required DocumentWidget widget,
+      required String documentId,
+      bool isEditing = false,
+      bool isVertical = false,
+      bool showSheetName = false,
     }) async {
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: Scaffold(body: widget),
+        child: Scaffold(
+          body: DocumentWidget(
+            documentId: documentId,
+            isEditing: isEditing,
+            isVertical: isVertical,
+            showSheetName: showSheetName,
+          ),
+        ),
         container: container,
         router: mockGoRouter,
       );
@@ -37,9 +47,10 @@ void main() {
 
     group('Basic Rendering', () {
       testWidgets('renders correctly with valid document', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(documentId: testDocument.id, isEditing: false),
+          documentId: testDocument.id,
+          isEditing: false,
         );
 
         expect(find.byType(DocumentWidget), findsOneWidget);
@@ -47,9 +58,10 @@ void main() {
       });
 
       testWidgets('renders SizedBox.shrink when document is null', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(documentId: 'invalid-id', isEditing: false),
+          documentId: 'invalid-id',
+          isEditing: false,
         );
 
         expect(find.byType(SizedBox), findsWidgets);
@@ -58,9 +70,11 @@ void main() {
 
     group('Layout Variants', () {
       testWidgets('renders thumbnail layout when isVertical = false', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(documentId: testDocument.id, isEditing: false, isVertical: false),
+          documentId: testDocument.id,
+          isEditing: false,
+          isVertical: false,
         );
 
         expect(find.byType(Stack), findsAtLeastNWidgets(1));
@@ -73,9 +87,11 @@ void main() {
       });
 
       testWidgets('renders vertical layout when isVertical = true', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(documentId: testDocument.id, isEditing: false, isVertical: true),
+          documentId: testDocument.id,
+          isEditing: false,
+          isVertical: true,
         );
 
         expect(find.byType(ListTile), findsOneWidget);
@@ -86,9 +102,11 @@ void main() {
 
     group('Editing Mode', () {
       testWidgets('shows delete button when isEditing = true', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(documentId: testDocument.id, isEditing: true, isVertical: false),
+          documentId: testDocument.id,
+          isEditing: true,
+          isVertical: false,
         );
 
         expect(find.byIcon(Icons.close_rounded), findsOneWidget);
@@ -96,9 +114,11 @@ void main() {
       });
 
       testWidgets('hides delete button when isEditing = false', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(documentId: testDocument.id, isEditing: false, isVertical: false),
+          documentId: testDocument.id,
+          isEditing: false,
+          isVertical: false,
         );
 
         expect(find.byIcon(Icons.close_rounded), findsNothing);
@@ -107,28 +127,24 @@ void main() {
 
     group('sheet Name', () {
       testWidgets('shows sheet name when showSheetName = true', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(
-            documentId: testDocument.id,
-            isEditing: false,
-            isVertical: true,
-            showSheetName: true,
-          ),
+          documentId: testDocument.id,
+          isEditing: false,
+          isVertical: true,
+          showSheetName: true,
         );
 
         expect(find.byType(DisplaySheetNameWidget), findsOneWidget);
       });
 
       testWidgets('hides sheet name when showSheetName = false', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(
-            documentId: testDocument.id,
-            isEditing: false,
-            isVertical: true,
-            showSheetName: false,
-          ),
+          documentId: testDocument.id,
+          isEditing: false,
+          isVertical: true,
+          showSheetName: false,
         );
 
         expect(find.byType(DisplaySheetNameWidget), findsNothing);
@@ -137,9 +153,11 @@ void main() {
 
     group(' Content & Styling', () {
       testWidgets('displays title correctly in vertical layout', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(documentId: testDocument.id, isEditing: false, isVertical: true),
+          documentId: testDocument.id,
+          isEditing: false,
+          isVertical: true,
         );
 
         expect(find.text(testDocument.title), findsOneWidget);
@@ -147,9 +165,11 @@ void main() {
       });
 
       testWidgets('displays file type badge in thumbnail layout', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(documentId: testDocument.id, isEditing: false, isVertical: false),
+          documentId: testDocument.id,
+          isEditing: false,
+          isVertical: false,
         );
 
         final fileType = testDocument.filePath.split('.').last.toUpperCase();
@@ -158,9 +178,11 @@ void main() {
       });
 
       testWidgets('applies proper ListTile styling in vertical layout', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(documentId: testDocument.id, isEditing: false, isVertical: true),
+          documentId: testDocument.id,
+          isEditing: false,
+          isVertical: true,
         );
 
         final tile = tester.widget<ListTile>(find.byType(ListTile));
@@ -172,9 +194,11 @@ void main() {
       });
 
       testWidgets('uses correct icon size, radius, and color', (tester) async {
-        await pumpWidget(
+        await pumpDocumentWidget(
           tester,
-          widget: DocumentWidget(documentId: testDocument.id, isEditing: false, isVertical: false),
+          documentId: testDocument.id,
+          isEditing: false,
+          isVertical: false,
         );
 
         final styledIcon = tester.widget<StyledIconContainer>(find.byType(StyledIconContainer));
@@ -191,9 +215,11 @@ void main() {
             .toList();
 
         for (final doc in docTypes) {
-          await pumpWidget(
+          await pumpDocumentWidget(
             tester,
-            widget: DocumentWidget(documentId: doc.id, isEditing: false, isVertical: true),
+            documentId: doc.id,
+            isEditing: false,
+            isVertical: true,
           );
 
           expect(find.byType(DocumentWidget), findsOneWidget);

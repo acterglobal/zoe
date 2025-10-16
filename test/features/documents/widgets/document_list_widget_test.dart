@@ -10,7 +10,7 @@ import '../../../test-utils/mock_gorouter.dart';
 import '../../../test-utils/test_utils.dart';
 
 void main() {
-  group('🧾 DocumentListWidget Tests', () {
+  group('DocumentListWidget Tests', () {
     late ProviderContainer container;
     late MockGoRouter mockGoRouter;
     late Provider<List<DocumentModel>> documentsProvider;
@@ -21,65 +21,62 @@ void main() {
       documentsProvider = Provider<List<DocumentModel>>((ref) => []);
     });
 
-    Future<void> pumpWidget(
+    Future<void> pumpDocumentListWidget(
       WidgetTester tester, {
-      required Widget child,
-      ProviderContainer? testContainer,
+      bool isEditing = false,
+      bool isVertical = false,
+      bool showSectionHeader = false,
+      int? maxItems,
+      Widget? emptyState,
+      List<DocumentModel>? documents,
     }) async {
+      final testContainer = documents != null
+          ? ProviderContainer.test(
+              overrides: [documentsProvider.overrideWith((ref) => documents)],
+            )
+          : container;
+
       await tester.pumpMaterialWidgetWithProviderScope(
-        child: Scaffold(body: child),
-        container: testContainer ?? container,
+        container: testContainer,
         router: mockGoRouter,
+        child: Scaffold(
+          body: DocumentListWidget(
+            documentsProvider: documentsProvider,
+            isEditing: isEditing,
+            isVertical: isVertical,
+            showSectionHeader: showSectionHeader,
+            maxItems: maxItems,
+            emptyState: emptyState ?? const SizedBox.shrink(),
+          ),
+        ),
       );
     }
 
-    ProviderContainer createContainerWithDocs(List<DocumentModel> docs) {
-      return ProviderContainer.test(
-        overrides: [documentsProvider.overrideWith((ref) => docs)],
-      );
-    }
-
-    group('📄 Empty State', () {
+    group('Empty State', () {
       testWidgets('renders custom empty state', (tester) async {
         const customEmptyState = Text('No documents found');
 
-        await pumpWidget(
+        await pumpDocumentListWidget(
           tester,
-          child: DocumentListWidget(
-            documentsProvider: documentsProvider,
-            isEditing: false,
-            emptyState: customEmptyState,
-          ),
+          emptyState: customEmptyState,
         );
 
         expect(find.text('No documents found'), findsOneWidget);
       });
 
       testWidgets('renders default empty state when not provided', (tester) async {
-        await pumpWidget(
-          tester,
-          child: DocumentListWidget(
-            documentsProvider: documentsProvider,
-            isEditing: false,
-          ),
-        );
-
+        await pumpDocumentListWidget(tester);
         expect(find.byType(SizedBox), findsWidgets);
       });
     });
 
-    group('📂 Document Rendering', () {
+    group('Document Rendering', () {
       testWidgets('renders documents when list is not empty', (tester) async {
         final docs = documentList.take(2).toList();
-        final testContainer = createContainerWithDocs(docs);
 
-        await pumpWidget(
+        await pumpDocumentListWidget(
           tester,
-          child: DocumentListWidget(
-            documentsProvider: documentsProvider,
-            isEditing: false,
-          ),
-          testContainer: testContainer,
+          documents: docs,
         );
 
         expect(find.byType(DocumentWidget), findsNWidgets(2));
@@ -87,16 +84,11 @@ void main() {
 
       testWidgets('limits documents when maxItems is specified', (tester) async {
         final docs = documentList.take(5).toList();
-        final testContainer = createContainerWithDocs(docs);
 
-        await pumpWidget(
+        await pumpDocumentListWidget(
           tester,
-          child: DocumentListWidget(
-            documentsProvider: documentsProvider,
-            isEditing: false,
-            maxItems: 3,
-          ),
-          testContainer: testContainer,
+          documents: docs,
+          maxItems: 3,
         );
 
         expect(find.byType(DocumentWidget), findsNWidgets(3));
@@ -104,16 +96,10 @@ void main() {
 
       testWidgets('renders all documents when maxItems is null', (tester) async {
         final docs = documentList.take(3).toList();
-        final testContainer = createContainerWithDocs(docs);
 
-        await pumpWidget(
+        await pumpDocumentListWidget(
           tester,
-          child: DocumentListWidget(
-            documentsProvider: documentsProvider,
-            isEditing: false,
-            maxItems: null,
-          ),
-          testContainer: testContainer,
+          documents: docs,
         );
 
         expect(find.byType(DocumentWidget), findsNWidgets(3));
@@ -123,16 +109,11 @@ void main() {
     group('Layout Behavior', () {
       testWidgets('renders vertical layout when isVertical is true', (tester) async {
         final docs = documentList.take(1).toList();
-        final testContainer = createContainerWithDocs(docs);
 
-        await pumpWidget(
+        await pumpDocumentListWidget(
           tester,
-          child: DocumentListWidget(
-            documentsProvider: documentsProvider,
-            isEditing: false,
-            isVertical: true,
-          ),
-          testContainer: testContainer,
+          documents: docs,
+          isVertical: true,
         );
 
         expect(find.byType(SingleChildScrollView), findsOneWidget);
@@ -141,16 +122,11 @@ void main() {
 
       testWidgets('renders horizontal layout when isVertical is false', (tester) async {
         final docs = documentList.take(1).toList();
-        final testContainer = createContainerWithDocs(docs);
 
-        await pumpWidget(
+        await pumpDocumentListWidget(
           tester,
-          child: DocumentListWidget(
-            documentsProvider: documentsProvider,
-            isEditing: false,
-            isVertical: false,
-          ),
-          testContainer: testContainer,
+          documents: docs,
+          isVertical: false,
         );
 
         expect(find.byType(SingleChildScrollView), findsNothing);
@@ -159,34 +135,25 @@ void main() {
 
       testWidgets('shows section header when showSectionHeader is true', (tester) async {
         final docs = documentList.take(1).toList();
-        final testContainer = createContainerWithDocs(docs);
 
-        await pumpWidget(
+        await pumpDocumentListWidget(
           tester,
-          child: DocumentListWidget(
-            documentsProvider: documentsProvider,
-            isEditing: false,
-            showSectionHeader: true,
-          ),
-          testContainer: testContainer,
+          documents: docs,
+          showSectionHeader: true,
         );
 
         expect(find.byType(Column), findsWidgets);
       });
     });
 
-    group(' Editing Mode', () {
+    group('Editing Mode', () {
       testWidgets('passes isEditing = true to DocumentWidget', (tester) async {
         final docs = documentList.take(1).toList();
-        final testContainer = createContainerWithDocs(docs);
 
-        await pumpWidget(
+        await pumpDocumentListWidget(
           tester,
-          child: DocumentListWidget(
-            documentsProvider: documentsProvider,
-            isEditing: true,
-          ),
-          testContainer: testContainer,
+          documents: docs,
+          isEditing: true,
         );
 
         final documentWidget = tester.widget<DocumentWidget>(find.byType(DocumentWidget));
