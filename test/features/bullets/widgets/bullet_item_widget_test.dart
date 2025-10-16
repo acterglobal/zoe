@@ -30,7 +30,7 @@ void main() {
     container = ProviderContainer.test();
 
     // Get the test bullet
-    testBulletModel = getBulletModelByIndex(container, 0);
+    testBulletModel = getBulletByIndex(container);
   });
 
   // Pump bullet item widget// Pump bullet item widget

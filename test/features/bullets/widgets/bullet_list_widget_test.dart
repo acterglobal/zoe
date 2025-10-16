@@ -225,7 +225,7 @@ void main() {
 
       testWidgets('updates when bullets are modified', (tester) async {
         // Get the first bullet
-        final testFirstBullet = getBulletModelByIndex(container, 0);
+        final testFirstBullet = getBulletByIndex(container);
         final bulletId = testFirstBullet.id;
         final originalTitle = testFirstBullet.title;
         final updatedTitle = 'Updated Title';
@@ -259,7 +259,7 @@ void main() {
 
       testWidgets('updates when bullets are deleted', (tester) async {
         // Get the first bullet
-        final testFirstBullet = getBulletModelByIndex(container, 0);
+        final testFirstBullet = getBulletByIndex(container);
         final bulletId = testFirstBullet.id;
         final bulletToDelete = testFirstBullet.title;
 
