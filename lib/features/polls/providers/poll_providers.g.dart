@@ -44,7 +44,7 @@ final class PollListProvider
   }
 }
 
-String _$pollListHash() => r'8293d61ab788f710570c415a7f0ccca3fda7986c';
+String _$pollListHash() => r'ecd26f25a9f2ded61448d1a50185948a87720ae2';
 
 /// Main poll list provider with all poll management functionality
 

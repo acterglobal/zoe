@@ -65,9 +65,11 @@ extension WidgetTesterExtension on WidgetTester {
     required ProviderContainer container,
     required String buttonText,
     required Function(BuildContext, WidgetRef) onPressed,
+    GoRouter? router,
   }) async {
     await pumpMaterialWidgetWithProviderScope(
       container: container,
+      router: router,
       child: Consumer(
         builder: (context, ref, child) => ElevatedButton(
           onPressed: () => onPressed(context, ref),
