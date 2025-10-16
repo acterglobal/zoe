@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/events/data/event_list.dart';
@@ -60,15 +61,14 @@ void main() {
       });
 
       testWidgets('shows empty state when no events', (tester) async {
-        const emptyWidget = Text('No events found!');
         await pumpWidget(
           tester,
           events: [],
-          emptyState: emptyWidget,
+          emptyState: const EmptyStateWidget(message: 'No events found!'),
         );
 
         expect(find.byType(ListView), findsNothing);
-        expect(find.text('No events found!'), findsOneWidget);
+        expect(find.text(L10n.of(tester.element(find.byType(EmptyStateWidget))).noEventsFound), findsOneWidget);
       });
 
       testWidgets('shows default empty state when no events', (tester) async {
