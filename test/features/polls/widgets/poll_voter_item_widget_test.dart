@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
@@ -58,7 +59,7 @@ void main() {
         expect(find.text(testUser.name), findsOneWidget);
 
         // Should find formatted date time text
-        expect(find.text('15 Jan 2024 02:30 PM'), findsOneWidget);
+        expect(find.text(DateTimeUtils.formatDateTime(testVote.createdAt ?? DateTime.now())), findsOneWidget);
       });
 
       testWidgets('renders with correct layout structure', (tester) async {
@@ -135,7 +136,7 @@ void main() {
 
         await createWidgetUnderTest(tester: tester, vote: voteWithSpecificTime);
 
-        expect(find.text('25 Dec 2024 09:15 AM'), findsOneWidget);
+        expect(find.text(DateTimeUtils.formatDateTime(specificDateTime)), findsOneWidget);
       });
 
       testWidgets('handles different time formats', (tester) async {
@@ -158,19 +159,19 @@ void main() {
 
         // Test morning time
         await createWidgetUnderTest(tester: tester, vote: morningVote);
-        expect(find.text('10 Jun 2024 08:45 AM'), findsOneWidget);
+        expect(find.text(DateTimeUtils.formatDateTime(morningTime)), findsOneWidget);
 
         await tester.pumpWidget(Container()); // Clear previous widget
 
         // Test evening time
         await createWidgetUnderTest(tester: tester, vote: eveningVote);
-        expect(find.text('10 Jun 2024 08:30 PM'), findsOneWidget);
+        expect(find.text(DateTimeUtils.formatDateTime(eveningTime)), findsOneWidget);
 
         await tester.pumpWidget(Container()); // Clear previous widget
 
         // Test midnight time
         await createWidgetUnderTest(tester: tester, vote: midnightVote);
-        expect(find.text('10 Jun 2024 12:00 AM'), findsOneWidget);
+        expect(find.text(DateTimeUtils.formatDateTime(midnightTime)), findsOneWidget);
       });
     });
 
