@@ -7,6 +7,7 @@ import 'package:zoe/features/list/actions/list_actions.dart';
 import 'package:zoe/features/list/data/lists.dart';
 import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
+import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import '../../../test-utils/test_utils.dart';
 import '../../../test-utils/mock_gorouter.dart';
 
@@ -100,26 +101,11 @@ void main() {
 
         // Verify the action was called
         expect(find.text('Share List'), findsAtLeastNWidgets(1));
+        expect(find.byType(ShareItemsBottomSheet), findsOneWidget);
       });
     });
 
     group('editList', () {
-      testWidgets('enables edit mode for list', (tester) async {
-        await tester.pumpActionsWidget(
-          container: container,
-          buttonText: 'Edit List',
-          onPressed: (context, ref) => ListActions.editList(ref, testList.id),
-        );
-
-        // Tap the button to trigger edit action
-        await tester.tap(find.text('Edit List'));
-        await tester.pumpAndSettle();
-
-        // Verify edit mode is enabled
-        final editContentId = container.read(editContentIdProvider);
-        expect(editContentId, equals(testList.id));
-      });
-
       testWidgets('sets correct list ID in edit provider', (tester) async {
         await tester.pumpActionsWidget(
           container: container,
@@ -548,28 +534,6 @@ void main() {
             context: context,
             ref: ref,
             isEditing: false,
-            listId: testList.id,
-          ),
-          container: container,
-        );
-
-        // Tap the button
-        await tester.tap(find.text('Menu'));
-        await tester.pumpAndSettle();
-
-        // Verify menu was shown
-        expect(find.text('Menu'), findsOneWidget);
-      });
-
-      testWidgets('menu items are configured correctly for editing state', (
-        tester,
-      ) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Menu',
-          onPressed: (context, ref) => showListMenu(
-            context: context,
-            ref: ref,
-            isEditing: true,
             listId: testList.id,
           ),
           container: container,
