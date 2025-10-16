@@ -167,16 +167,10 @@ void main() {
 
       testWidgets('includes tasks in preview', (tester) async {
         final taskList = testList.copyWith(listType: ContentType.task);
-        final taskId = 'task-1';
-        final taskTitle = 'Task 1';
 
         // Create tasks for the list
         final taskContent = getTaskByIndex(container);
-        final task = taskContent.copyWith(
-          id: taskId,
-          title: taskTitle,
-          parentId: taskList.id,
-        );
+        final task = taskContent.copyWith(parentId: taskList.id);
 
         container.read(listsProvider.notifier).state = [taskList];
         container.read(taskListProvider.notifier).state = [task];
@@ -214,16 +208,10 @@ void main() {
 
       testWidgets('includes bullets in preview', (tester) async {
         final bulletList = testList.copyWith(listType: ContentType.bullet);
-        final bulletId = 'bullet-1';
-        final bulletTitle = 'Bullet 1';
 
         // Create bullets for the list
         final bulletContent = getBulletByIndex(container);
-        final bullet = bulletContent.copyWith(
-          id: bulletId,
-          title: bulletTitle,
-          parentId: bulletList.id,
-        );
+        final bullet = bulletContent.copyWith(parentId: bulletList.id);
 
         container.read(listsProvider.notifier).state = [bulletList];
         container.read(bulletListProvider.notifier).state = [bullet];
@@ -266,10 +254,11 @@ void main() {
       testWidgets('includes assigned users in preview when present', (
         tester,
       ) async {
-        final testTask = getTaskByIndex(container, index: 0);
-        final taskWithUsers = testTask.copyWith(
-          assignedUsers: ['user_1', 'user_2'],
-        );
+        final user1 = getUserByIndex(container);
+        final user2 = getUserByIndex(container, index: 1);
+        final assignedUsers = [user1.id, user2.id];
+
+        final taskWithUsers = testTask.copyWith(assignedUsers: assignedUsers);
         container.read(taskListProvider.notifier).state = [taskWithUsers];
 
         await pumpShareItemsBottomSheet(tester, parentId: taskWithUsers.id);
@@ -361,6 +350,7 @@ void main() {
         );
 
         // Verify poll options are displayed with radio button emoji
+        expect(find.textContaining(testPollWithOptions.title), findsWidgets);
         for (final option in testPollWithOptions.options) {
           expect(find.textContaining('🔘 ${option.title}'), findsWidgets);
         }
