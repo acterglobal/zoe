@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/features/events/models/events_model.dart';
@@ -229,16 +228,7 @@ void main() {
 
       testWidgets('should call haptic feedback on button tap', (WidgetTester tester) async {
         // Mock haptic feedback
-        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-            .setMockMethodCallHandler(
-          const MethodChannel('flutter/haptic'),
-          (MethodCall methodCall) async {
-            if (methodCall.method == 'HapticFeedback.lightImpact') {
-              return null;
-            }
-            throw MissingPluginException('No implementation found for method ${methodCall.method}');
-          },
-        );
+        initHapticFeedbackMethodCallHandler();
 
         await tester.pumpMaterialWidgetWithProviderScope(
           container: container,
