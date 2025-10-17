@@ -19,9 +19,7 @@ void main() {
     late ListModel testList;
 
     setUp(() {
-      container = ProviderContainer.test(
-        overrides: [],
-      );
+      container = ProviderContainer.test();
       
       testList = getListByIndex(container);
       
@@ -35,45 +33,33 @@ void main() {
 
     Future<void> pumpListWidget(
       WidgetTester tester, {
-      required String listId,
+      String? listId,
       bool isEditing = false,
       ListModel? customList,
     }) async {
-      ListModel? listToUse;
+      final effectiveListId = listId ?? testList.id;
       
-      if (customList != null) {
-        listToUse = customList;
-      } else {
-        try {
-          listToUse = lists.firstWhere((l) => l.id == listId);
-        } catch (e) {
-          // For invalid list IDs, listToUse will remain null
-          listToUse = null;
-        }
-      }
+      final listToUse = customList ?? 
+          lists.cast<ListModel?>().firstWhere(
+            (l) => l?.id == effectiveListId, 
+            orElse: () => null,
+          );
 
       final container = ProviderContainer(
         overrides: [
-          if (listToUse != null)
-            listItemProvider(listId).overrideWith((ref) => listToUse!),
+          listItemProvider(effectiveListId).overrideWith((ref) => listToUse),
           editContentIdProvider.overrideWith(
-            (ref) => isEditing ? listId : null,
+            (ref) => isEditing ? effectiveListId : null,
           ),
         ],
       );
 
-      // If list is null, don't render ListWidget at all
-      if (listToUse == null) {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          container: container,
-          child: const SizedBox.shrink(),
-        );
-      } else {
-        await tester.pumpMaterialWidgetWithProviderScope(
-          container: container,
-          child: ListWidget(listId: listId),
-        );
-      }
+      await tester.pumpMaterialWidgetWithProviderScope(
+        container: container,
+        child: listToUse != null 
+            ? ListWidget(listId: effectiveListId)
+            : const SizedBox.shrink(),
+      );
     }
 
     ListModel createList({
@@ -113,7 +99,7 @@ void main() {
 
     group('Rendering', () {
       testWidgets('renders widget with valid list ID', (tester) async {
-        await pumpListWidget(tester, listId: testList.id);
+        await pumpListWidget(tester);
 
         expect(find.byType(ListWidget), findsOneWidget);
         expect(find.byType(Padding), findsWidgets);
@@ -127,7 +113,7 @@ void main() {
       });
 
       testWidgets('renders main components', (tester) async {
-        await pumpListWidget(tester, listId: testList.id);
+        await pumpListWidget(tester);
 
         expect(find.byType(EmojiWidget), findsWidgets);
         expect(find.byType(ZoeInlineTextEditWidget), findsWidgets);
@@ -138,23 +124,23 @@ void main() {
 
     group('Edit Mode', () {
       testWidgets('shows delete button when editing', (tester) async {
-        await pumpListWidget(tester, listId: testList.id, isEditing: true);
+        await pumpListWidget(tester, isEditing: true);
         expect(find.byType(ZoeDeleteButtonWidget), findsOneWidget);
       });
 
       testWidgets('hides delete button when not editing', (tester) async {
-        await pumpListWidget(tester, listId: testList.id, isEditing: false);
+        await pumpListWidget(tester, isEditing: false);
         expect(find.byType(ZoeDeleteButtonWidget), findsNothing);
       });
 
       testWidgets('shows add button when editing', (tester) async {
-        await pumpListWidget(tester, listId: testList.id, isEditing: true);
+        await pumpListWidget(tester, isEditing: true);
         expect(find.byIcon(Icons.add), findsOneWidget);
         expect(find.text('Add item'), findsOneWidget);
       });
 
       testWidgets('hides add button when not editing', (tester) async {
-        await pumpListWidget(tester, listId: testList.id, isEditing: false);
+        await pumpListWidget(tester, isEditing: false);
         expect(find.byIcon(Icons.add), findsNothing);
         expect(find.text('Add item'), findsNothing);
       });
@@ -174,7 +160,7 @@ void main() {
       for (var type in types) {
         testWidgets('renders correctly for $type type', (tester) async {
           final custom = createList(type: type);
-          await pumpListWidget(tester, listId: testList.id, customList: custom);
+          await pumpListWidget(tester, customList: custom);
           expect(find.byType(ListWidget), findsOneWidget);
         });
       }
@@ -182,14 +168,14 @@ void main() {
 
     group('Title & Emoji', () {
       testWidgets('displays correct title', (tester) async {
-        await pumpListWidget(tester, listId: testList.id);
+        await pumpListWidget(tester);
         final titleWidget = findTitleWidget(tester, testList.title);
         expect(titleWidget, isNotNull);
         expect(titleWidget!.text, testList.title);
       });
 
       testWidgets('displays emoji correctly', (tester) async {
-        await pumpListWidget(tester, listId: testList.id);
+        await pumpListWidget(tester);
         final emojiWidget = findEmojiWidget(tester, testList.emoji ?? '🔸');
         expect(emojiWidget, isNotNull);
         expect(emojiWidget!.emoji, testList.emoji ?? '🔸');
@@ -207,14 +193,14 @@ void main() {
         final custom = createList(
           title: 'A very long title that should not overflow',
         );
-        await pumpListWidget(tester, listId: testList.id, customList: custom);
+        await pumpListWidget(tester, customList: custom);
         expect(find.byType(ListWidget), findsOneWidget);
         expect(find.byType(ZoeInlineTextEditWidget), findsWidgets);
       });
 
       testWidgets('handles empty title', (tester) async {
         final custom = createList(title: '');
-        await pumpListWidget(tester, listId: testList.id, customList: custom);
+        await pumpListWidget(tester, customList: custom);
         expect(find.byType(ListWidget), findsOneWidget);
         expect(find.byType(ZoeInlineTextEditWidget), findsWidgets);
       });
@@ -223,14 +209,14 @@ void main() {
         final custom = createList(
           title: 'Special chars: !@#\$%^&*()_+-=[]{}|;:,.<>?',
         );
-        await pumpListWidget(tester, listId: testList.id, customList: custom);
+        await pumpListWidget(tester, customList: custom);
         expect(find.byType(ListWidget), findsOneWidget);
         expect(find.byType(ZoeInlineTextEditWidget), findsWidgets);
       });
 
       testWidgets('handles unicode emoji in title', (tester) async {
         final custom = createList(title: 'Title with emoji 🎉🚀✨');
-        await pumpListWidget(tester, listId: testList.id, customList: custom);
+        await pumpListWidget(tester, customList: custom);
         expect(find.byType(ListWidget), findsOneWidget);
         expect(find.byType(ZoeInlineTextEditWidget), findsWidgets);
       });
