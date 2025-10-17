@@ -38,8 +38,6 @@ void main() {
         expect(packageInfo.packageName, equals('com.test.app'));
         expect(packageInfo.version, equals('1.0.0'));
         expect(packageInfo.buildNumber, equals('1'));
-
-        overrideContainer.dispose();
       });
     });
 
@@ -65,7 +63,6 @@ void main() {
         final version = overrideContainer.read(appVersionProvider);
         expect(version, equals('2.1.0'));
 
-        overrideContainer.dispose();
       });
 
       test('returns loading state initially', () {
@@ -85,7 +82,6 @@ void main() {
         final version = overrideContainer.read(appVersionProvider);
         expect(version, equals(testVersion));
 
-        overrideContainer.dispose();
       });
     });
 
@@ -111,7 +107,6 @@ void main() {
         final appName = overrideContainer.read(appNameProvider);
         expect(appName, equals('My Test App'));
 
-        overrideContainer.dispose();
       });
 
       test('returns loading state initially', () {
@@ -131,7 +126,6 @@ void main() {
         final appName = overrideContainer.read(appNameProvider);
         expect(appName, equals(testAppName));
 
-        overrideContainer.dispose();
       });
     });
 
@@ -157,7 +151,6 @@ void main() {
         final buildNumber = overrideContainer.read(buildNumberProvider);
         expect(buildNumber, equals('42'));
 
-        overrideContainer.dispose();
       });
 
       test('returns loading state initially', () {
@@ -177,7 +170,6 @@ void main() {
         final buildNumber = overrideContainer.read(buildNumberProvider);
         expect(buildNumber, equals(testBuildNumber));
 
-        overrideContainer.dispose();
       });
     });
 
@@ -203,7 +195,6 @@ void main() {
         final packageName = overrideContainer.read(packageNameProvider);
         expect(packageName, equals('com.example.myapp'));
 
-        overrideContainer.dispose();
       });
 
       test('returns loading state initially', () {
@@ -223,7 +214,6 @@ void main() {
         final packageName = overrideContainer.read(packageNameProvider);
         expect(packageName, equals(testPackageName));
 
-        overrideContainer.dispose();
       });
     });
   });
