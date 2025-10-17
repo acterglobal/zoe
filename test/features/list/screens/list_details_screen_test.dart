@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/features/list/data/lists.dart';
 import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/list/screens/list_details_screen.dart';
@@ -16,13 +15,25 @@ import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import '../../../test-utils/test_utils.dart';
+import '../utils/list_utils.dart';
 
 void main() {
   group('ListDetailsScreen', () {
+    late ProviderContainer container;
     late ListModel testList;
 
     setUp(() {
-      testList = lists.first;
+      container = ProviderContainer.test(
+        overrides: [
+          editContentIdProvider.overrideWith((ref) => null),
+        ],
+      );
+      testList = getListByIndex(container);
+      container = ProviderContainer.test(
+        overrides: [
+          listItemProvider(testList.id).overrideWith((ref) => testList),
+        ],
+      );
     });
 
     Future<ProviderContainer> pumpScreen(

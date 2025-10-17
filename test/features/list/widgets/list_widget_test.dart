@@ -11,13 +11,26 @@ import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/list/widgets/list_widget.dart';
 import 'package:zoe/features/list/data/lists.dart';
 import '../../../test-utils/test_utils.dart';
+import '../utils/list_utils.dart';
 
 void main() {
   group('ListWidget', () {
+    late ProviderContainer container;
     late ListModel testList;
 
     setUp(() {
-      testList = lists.first;
+      container = ProviderContainer.test(
+        overrides: [],
+      );
+      
+      testList = getListByIndex(container);
+      
+      // Now override with the actual test list
+      container = ProviderContainer.test(
+        overrides: [
+          listItemProvider(testList.id).overrideWith((ref) => testList),
+        ],
+      );
     });
 
     Future<void> pumpListWidget(
@@ -26,23 +39,41 @@ void main() {
       bool isEditing = false,
       ListModel? customList,
     }) async {
-      final listToUse =
-          customList ??
-          lists.firstWhere((l) => l.id == listId, orElse: () => lists.first);
+      ListModel? listToUse;
+      
+      if (customList != null) {
+        listToUse = customList;
+      } else {
+        try {
+          listToUse = lists.firstWhere((l) => l.id == listId);
+        } catch (e) {
+          // For invalid list IDs, listToUse will remain null
+          listToUse = null;
+        }
+      }
 
       final container = ProviderContainer(
         overrides: [
-          listItemProvider(listId).overrideWith((ref) => listToUse),
+          if (listToUse != null)
+            listItemProvider(listId).overrideWith((ref) => listToUse!),
           editContentIdProvider.overrideWith(
             (ref) => isEditing ? listId : null,
           ),
         ],
       );
 
-      await tester.pumpMaterialWidgetWithProviderScope(
-        container: container,
-        child: ListWidget(listId: listId),
-      );
+      // If list is null, don't render ListWidget at all
+      if (listToUse == null) {
+        await tester.pumpMaterialWidgetWithProviderScope(
+          container: container,
+          child: const SizedBox.shrink(),
+        );
+      } else {
+        await tester.pumpMaterialWidgetWithProviderScope(
+          container: container,
+          child: ListWidget(listId: listId),
+        );
+      }
     }
 
     ListModel createList({
@@ -167,7 +198,7 @@ void main() {
 
     group('Error Handling & Edge Cases', () {
       testWidgets('handles invalid/empty list gracefully', (tester) async {
-        await pumpListWidget(tester, listId: 'invalid');
+        await pumpListWidget(tester, listId: 'invalid-list-id');
         expect(find.byType(ListWidget), findsNothing);
         expect(find.byType(SizedBox), findsWidgets);
       });

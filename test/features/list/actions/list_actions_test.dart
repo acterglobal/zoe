@@ -4,12 +4,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/list/actions/list_actions.dart';
-import 'package:zoe/features/list/data/lists.dart';
 import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../test-utils/test_utils.dart';
 import '../../../test-utils/mock_gorouter.dart';
+import '../utils/list_utils.dart';
+
+// Helper function to get l10n strings in tests
+L10n getL10n(WidgetTester tester) {
+  return WidgetTesterExtension.getL10n(tester, byType: Consumer);
+}
 
 void main() {
   group('ListActions Tests', () {
@@ -18,7 +24,6 @@ void main() {
     late MockGoRouter mockGoRouter;
 
     setUp(() {
-      testList = lists.first;
       mockGoRouter = MockGoRouter();
 
       // Set up mock methods
@@ -27,8 +32,16 @@ void main() {
 
       container = ProviderContainer.test(
         overrides: [
-          listItemProvider(testList.id).overrideWith((ref) => testList),
           editContentIdProvider.overrideWith((ref) => null),
+        ],
+      );
+      
+      testList = getListByIndex(container);
+      
+      // Now override with the actual test list
+      container = ProviderContainer.test(
+        overrides: [
+          listItemProvider(testList.id).overrideWith((ref) => testList),
         ],
       );
     });
@@ -64,7 +77,7 @@ void main() {
 
         // Verify snackbar is shown with correct message
         expect(find.byType(SnackBar), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).copiedToClipboard), findsOneWidget);
+        expect(find.text(getL10n(tester).copiedToClipboard), findsOneWidget);
       });
 
       testWidgets('handles invalid list ID gracefully', (tester) async {
@@ -160,7 +173,7 @@ void main() {
 
         // Verify snackbar is shown with correct message
         expect(find.byType(SnackBar), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).listDeleted), findsOneWidget);
+        expect(find.text(getL10n(tester).listDeleted), findsOneWidget);
       });
     });
 
@@ -186,10 +199,10 @@ void main() {
 
         // Verify menu items are rendered (copy, share, edit, delete)
         // Using l10n strings from app_en.arb
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).copyListContent), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).shareThisList), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).editThisList), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).deleteThisList), findsOneWidget);
+        expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
+        expect(find.text(getL10n(tester).shareThisList), findsOneWidget);
+        expect(find.text(getL10n(tester).editThisList), findsOneWidget);
+        expect(find.text(getL10n(tester).deleteThisList), findsOneWidget);
       });
 
       testWidgets('shows list menu without edit item when editing', (
@@ -213,10 +226,10 @@ void main() {
 
         // Verify menu items are rendered (copy, share, delete - no edit)
         // Using l10n strings from app_en.arb
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).copyListContent), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).shareThisList), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).deleteThisList), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).editThisList), findsNothing);
+        expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
+        expect(find.text(getL10n(tester).shareThisList), findsOneWidget);
+        expect(find.text(getL10n(tester).deleteThisList), findsOneWidget);
+        expect(find.text(getL10n(tester).editThisList), findsNothing);
       });
 
       testWidgets('handles copy menu item tap correctly', (tester) async {
@@ -237,12 +250,12 @@ void main() {
         await tester.pumpAndSettle();
 
         // Tap the copy menu item
-        await tester.tap(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).copyListContent));
+        await tester.tap(find.text(getL10n(tester).copyListContent));
         await tester.pumpAndSettle();
 
         // Verify snackbar is shown with correct message (indicates copy action was executed)
         expect(find.byType(SnackBar), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).copiedToClipboard), findsOneWidget);
+        expect(find.text(getL10n(tester).copiedToClipboard), findsOneWidget);
       });
 
       testWidgets('handles edit menu item tap correctly', (tester) async {
@@ -263,7 +276,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Tap the edit menu item
-        await tester.tap(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).editThisList));
+        await tester.tap(find.text(getL10n(tester).editThisList));
         await tester.pumpAndSettle();
 
         // Verify edit state was set
@@ -293,7 +306,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Tap the delete menu item
-        await tester.tap(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).deleteThisList));
+        await tester.tap(find.text(getL10n(tester).deleteThisList));
         await tester.pumpAndSettle();
 
         // Verify list was deleted from provider
@@ -303,7 +316,7 @@ void main() {
 
         // Verify snackbar is shown with correct message
         expect(find.byType(SnackBar), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).listDeleted), findsOneWidget);
+        expect(find.text(getL10n(tester).listDeleted), findsOneWidget);
       });
 
       testWidgets('handles share menu item tap correctly', (tester) async {
@@ -324,11 +337,11 @@ void main() {
         await tester.pumpAndSettle();
 
         // Tap the share menu item
-        await tester.tap(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).shareThisList));
+        await tester.tap(find.text(getL10n(tester).shareThisList));
         await tester.pump(); // Don't use pumpAndSettle to avoid timeout
 
         // Verify the action was called (share bottom sheet might not settle)
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).shareThisList), findsAtLeastNWidgets(1));
+        expect(find.text(getL10n(tester).shareThisList), findsAtLeastNWidgets(1));
       });
 
       testWidgets('menu can be dismissed by tapping outside', (tester) async {
@@ -349,14 +362,14 @@ void main() {
         await tester.pumpAndSettle();
 
         // Verify menu is shown
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).copyListContent), findsOneWidget);
+        expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
 
         // Tap outside the menu to dismiss it
         await tester.tapAt(const Offset(10, 10));
         await tester.pumpAndSettle();
 
         // Verify menu is dismissed
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).copyListContent), findsNothing);
+        expect(find.text(getL10n(tester).copyListContent), findsNothing);
       });
 
       testWidgets('shows correct menu items with detail screen flag', (
@@ -381,10 +394,10 @@ void main() {
 
         // Verify all menu items are present
         // Using l10n strings from app_en.arb
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).copyListContent), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).shareThisList), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).editThisList), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).deleteThisList), findsOneWidget);
+        expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
+        expect(find.text(getL10n(tester).shareThisList), findsOneWidget);
+        expect(find.text(getL10n(tester).editThisList), findsOneWidget);
+        expect(find.text(getL10n(tester).deleteThisList), findsOneWidget);
       });
     });
 
@@ -570,7 +583,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Tap the delete menu item
-        await tester.tap(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).deleteThisList));
+        await tester.tap(find.text(getL10n(tester).deleteThisList));
         await tester.pumpAndSettle();
 
         // Verify list was deleted from provider
@@ -579,7 +592,7 @@ void main() {
 
         // Verify snackbar is shown with correct message
         expect(find.byType(SnackBar), findsOneWidget);
-        expect(find.text(WidgetTesterExtension.getL10n(tester, byType: Consumer).listDeleted), findsOneWidget);
+        expect(find.text(getL10n(tester).listDeleted), findsOneWidget);
       });
     });
   });

@@ -6,18 +6,19 @@ import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import '../../../test-utils/mock_searchValue.dart';
+import '../utils/list_utils.dart';
 
 void main() {
   group('List Providers Tests', () {
     late ProviderContainer container;
     late ListModel testList;
-
+  
     setUp(() {
-      testList = lists.first;
-
       container = ProviderContainer.test(
         overrides: [searchValueProvider.overrideWith(MockSearchValue.new)],
       );
+      
+      testList = getListByIndex(container);
     });
 
     group('ListList Provider', () {
