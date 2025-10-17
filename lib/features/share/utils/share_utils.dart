@@ -11,10 +11,10 @@ import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
 class ShareUtils {
-  static final String _linkPrefixUrl = 'https://hellozoe.app';
+  static final String linkPrefixUrl = 'https://hellozoe.app';
 
   static String getLinkPrefixUrl(String endpoint) {
-    return '🔗 $_linkPrefixUrl/$endpoint';
+    return '🔗 $linkPrefixUrl/$endpoint';
   }
 
   // Sheet

@@ -61,20 +61,33 @@ extension WidgetTesterExtension on WidgetTester {
     );
   }
 
-  Future<void> pumpActionsWidget({
+  Future<void> pumpConsumerWidget({
     required ProviderContainer container,
-    required String buttonText,
-    required Function(BuildContext, WidgetRef) onPressed,
+    required Function(BuildContext context, WidgetRef ref, Widget? child)
+    builder,
     GoRouter? router,
   }) async {
     await pumpMaterialWidgetWithProviderScope(
       container: container,
       router: router,
       child: Consumer(
-        builder: (context, ref, child) => ElevatedButton(
-          onPressed: () => onPressed(context, ref),
-          child: Text(buttonText),
-        ),
+        builder: (context, ref, child) => builder(context, ref, child),
+      ),
+    );
+  }
+
+  Future<void> pumpActionsWidget({
+    required ProviderContainer container,
+    required String buttonText,
+    required Function(BuildContext, WidgetRef) onPressed,
+    GoRouter? router,
+  }) async {
+    await pumpConsumerWidget(
+      container: container,
+      router: router,
+      builder: (context, ref, child) => ElevatedButton(
+        onPressed: () => onPressed(context, ref),
+        child: Text(buttonText),
       ),
     );
   }
@@ -105,13 +118,14 @@ Future<void> initSharePlatformMethodCallHandler({VoidCallback? onShare}) async {
 /// Initializes haptic feedback method call handler for testing
 void initHapticFeedbackMethodCallHandler() {
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-      .setMockMethodCallHandler(
-    const MethodChannel('flutter/haptic'),
-    (MethodCall methodCall) async {
-      if (methodCall.method == 'HapticFeedback.lightImpact') {
-        return null;
-      }
-      throw MissingPluginException('No implementation found for method ${methodCall.method}');
-    },
-  );
+      .setMockMethodCallHandler(const MethodChannel('flutter/haptic'), (
+        MethodCall methodCall,
+      ) async {
+        if (methodCall.method == 'HapticFeedback.lightImpact') {
+          return null;
+        }
+        throw MissingPluginException(
+          'No implementation found for method ${methodCall.method}',
+        );
+      });
 }

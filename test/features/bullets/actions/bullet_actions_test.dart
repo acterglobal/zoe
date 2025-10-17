@@ -20,7 +20,7 @@ void main() {
     container = ProviderContainer.test();
 
     // Get the first bullet model
-    testFirstBullet = getBulletModelByIndex(container, 0);
+    testFirstBullet = getBulletByIndex(container);
   });
 
   // Pump actions widget
@@ -177,7 +177,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [editContentIdProvider.overrideWith((ref) => null)],
         );
-        testSecondBullet = getBulletModelByIndex(container, 1);
+        testSecondBullet = getBulletByIndex(container, index: 1);
       });
 
       Future<void> pumpEditActionsWidget(
@@ -345,9 +345,9 @@ void main() {
         tester,
       ) async {
         // Add multiple bullets
-        final testFirstBullet = getBulletModelByIndex(container, 0);
+        final testFirstBullet = getBulletByIndex(container);
         final bulletId1 = testFirstBullet.id;
-        final testSecondBullet = getBulletModelByIndex(container, 1);
+        final testSecondBullet = getBulletByIndex(container, index: 1);
         final bulletId2 = testSecondBullet.id;
 
         // Verify both bullets exist
@@ -372,9 +372,9 @@ void main() {
       testWidgets('delete action updates bullet focus correctly', (
         tester,
       ) async {
-        final testFirstBullet = getBulletModelByIndex(container, 0);
+        final testFirstBullet = getBulletByIndex(container);
         final firstBulletId = testFirstBullet.id;
-        final testSecondBullet = getBulletModelByIndex(container, 1);
+        final testSecondBullet = getBulletByIndex(container, index: 1);
         final secondBulletId = testSecondBullet.id;
 
         // Set focus to first bullet
