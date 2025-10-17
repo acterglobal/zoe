@@ -7,13 +7,13 @@ import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 
 void main() {
+  late ProviderContainer container;
+
+  setUp(() {
+    container = ProviderContainer.test();
+  });
+
   group('UserList Provider', () {
-    late ProviderContainer container;
-
-    setUp(() {
-      container = ProviderContainer();
-    });
-
     test('initial state returns userList from data', () {
       final userList = container.read(userListProvider);
       expect(userList, equals(userList));
@@ -131,11 +131,6 @@ void main() {
   });
 
   group('getUserById Provider', () {
-    late ProviderContainer container;
-
-    setUp(() {
-      container = ProviderContainer();
-    });
 
     test('returns user when found', () {
       final userList = container.read(userListProvider);
@@ -157,11 +152,6 @@ void main() {
   });
 
   group('userIdsFromUserModels Provider', () {
-    late ProviderContainer container;
-
-    setUp(() {
-      container = ProviderContainer();
-    });
 
     test('returns list of user IDs from user models', () {
       final userList = container.read(userListProvider);
@@ -186,11 +176,6 @@ void main() {
   });
 
   group('userDisplayName Provider', () {
-    late ProviderContainer container;
-
-    setUp(() {
-      container = ProviderContainer();
-    });
 
     test('provider exists and can be read', () {
       final userList = container.read(userListProvider);
@@ -220,11 +205,6 @@ void main() {
   });
 
   group('userListSearch Provider', () {
-    late ProviderContainer container;
-
-    setUp(() {
-      container = ProviderContainer();
-    });
 
     test('returns all users when search term is empty', () {
       final result = container.read(userListSearchProvider(''));
@@ -256,11 +236,6 @@ void main() {
   });
 
   group('usersBySheetId Provider', () {
-    late ProviderContainer container;
-
-    setUp(() {
-      container = ProviderContainer();
-    });
 
     test('returns users for valid sheet', () {
       // Create a mock sheet with some users
@@ -304,11 +279,6 @@ void main() {
   });
 
   group('sheetUserCount Provider', () {
-    late ProviderContainer container;
-
-    setUp(() {
-      container = ProviderContainer();
-    });
 
     test('returns correct count for sheet with users', () {
       // Create a mock sheet with some users
@@ -350,11 +320,6 @@ void main() {
   });
 
   group('Provider Integration Tests', () {
-    late ProviderContainer container;
-
-    setUp(() {
-      container = ProviderContainer();
-    });
 
     test('user list updates trigger dependent providers', () {
       final initialUserList = container.read(userListProvider);
@@ -413,12 +378,6 @@ void main() {
   });
 
   group('Edge Cases and Error Handling', () {
-    late ProviderContainer container;
-
-    setUp(() {
-      container = ProviderContainer();
-    });
-
 
     test('handles empty user list gracefully', () {
       // Clear all users

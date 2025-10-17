@@ -18,7 +18,7 @@ void main() {
     late UserModel testUser3;
 
     setUp(() {
-      container = ProviderContainer();
+      container = ProviderContainer.test();
       testUser1 = getUserByIndex(container, index: 0);
       testUser2 = getUserByIndex(container, index: 1);
       testUser3 = getUserByIndex(container, index: 2);
