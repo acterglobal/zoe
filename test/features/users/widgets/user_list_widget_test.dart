@@ -127,15 +127,16 @@ void main() {
         await pumpUserListWidget(tester, userIds: testUserIds);
 
         final paddings = tester.widgetList<Padding>(find.byType(Padding));
+        const expectedPadding = EdgeInsets.only(left: 20, right: 5, top: 10, bottom: 10);
         final headerPadding = paddings.firstWhere(
           (p) =>
               p.padding ==
-              const EdgeInsets.only(left: 20, right: 5, top: 10, bottom: 10),
+              expectedPadding,
           orElse: () => paddings.first,
         );
         expect(
           headerPadding.padding,
-          const EdgeInsets.only(left: 20, right: 5, top: 10, bottom: 10),
+          expectedPadding,
         );
       });
 
