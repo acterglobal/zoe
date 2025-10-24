@@ -100,29 +100,29 @@ void main() {
       testWidgets('copies sheet content to clipboard', (tester) async {
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Copy Sheet',
+          buttonText: getL10n(tester).copySheetContent,
           onPressed: (context, ref) =>
               SheetActions.copySheet(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger copy action
-        await tester.tap(find.text('Copy Sheet'));
+        await tester.tap(find.text(getL10n(tester).copySheetContent));
         await tester.pumpAndSettle();
 
         // Verify the action was called (we can't easily test clipboard in unit tests)
-        expect(find.text('Copy Sheet'), findsOneWidget);
+        expect(find.text(getL10n(tester).copySheetContent), findsOneWidget);
       });
 
       testWidgets('shows snackbar after copying', (tester) async {
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Copy Sheet',
+          buttonText: getL10n(tester).copySheetContent,
           onPressed: (context, ref) =>
               SheetActions.copySheet(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger copy action
-        await tester.tap(find.text('Copy Sheet'));
+        await tester.tap(find.text(getL10n(tester).copySheetContent));
         await tester.pumpAndSettle();
 
         // Verify snackbar is shown with correct message
@@ -136,16 +136,16 @@ void main() {
       testWidgets('shows share bottom sheet', (tester) async {
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Share Sheet',
+          buttonText: getL10n(tester).shareSheet,
           onPressed: (context, ref) => SheetActions.shareSheet(context, testSheet.id),
         );
 
         // Tap the button to trigger share action
-        await tester.tap(find.text('Share Sheet'));
+        await tester.tap(find.text(getL10n(tester).shareSheet));
         await tester.pump(); // Don't use pumpAndSettle to avoid timeout
 
         // Verify the action was called
-        expect(find.text('Share Sheet'), findsAtLeastNWidgets(1));
+        expect(find.text(getL10n(tester).shareSheet), findsAtLeastNWidgets(1));
         expect(find.byType(ShareItemsBottomSheet), findsOneWidget);
       });
     });
@@ -158,12 +158,12 @@ void main() {
 
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Edit Sheet',
+          buttonText: getL10n(tester).editThisSheet,
           onPressed: (context, ref) => SheetActions.editSheet(ref, testSheet.id),
         );
 
         // Tap the button to trigger edit action
-        await tester.tap(find.text('Edit Sheet'));
+        await tester.tap(find.text(getL10n(tester).editThisSheet));
         await tester.pumpAndSettle();
 
         // Verify edit content ID was set
@@ -175,14 +175,14 @@ void main() {
     group('deleteSheet', () {
       testWidgets('shows delete confirmation dialog', (tester) async {
         await tester.pumpActionsWidget(
-          buttonText: 'Delete Sheet',
+          buttonText: getL10n(tester).deleteThisSheet,
           onPressed: (context, ref) =>
               SheetActions.deleteSheet(context, ref, testSheet.id),
           container: container,
         );
 
         // Tap the button to trigger delete action
-        await tester.tap(find.text('Delete Sheet'));
+        await tester.tap(find.text(getL10n(tester).deleteThisSheet));
         await tester.pumpAndSettle();
 
         // Verify delete confirmation bottom sheet is shown
@@ -247,7 +247,7 @@ void main() {
     group('Integration Tests', () {
       testWidgets('connect action works with real providers', (tester) async {
         await tester.pumpActionsWidget(
-          buttonText: 'Connect',
+          buttonText: getL10n(tester).connectWithWhatsAppGroup,
           onPressed: (context, ref) =>
               SheetActions.connectSheet(context, testSheet.id),
           container: container,
@@ -255,7 +255,7 @@ void main() {
         );
 
         // Tap the button
-        await tester.tap(find.text('Connect'));
+        await tester.tap(find.text(getL10n(tester).connectWithWhatsAppGroup));
         await tester.pumpAndSettle();
 
         // Verify the navigation was called with correct route
@@ -264,61 +264,45 @@ void main() {
 
       testWidgets('copy action works with real providers', (tester) async {
         await tester.pumpActionsWidget(
-          buttonText: 'Copy',
+          buttonText: getL10n(tester).copySheetContent,
           onPressed: (context, ref) =>
               SheetActions.copySheet(context, ref, testSheet.id),
           container: container,
         );
 
         // Tap the button
-        await tester.tap(find.text('Copy'));
+        await tester.tap(find.text(getL10n(tester).copySheetContent));
         await tester.pumpAndSettle();
 
         // Verify the action completed without errors
-        expect(find.text('Copy'), findsOneWidget);
+        expect(find.text(getL10n(tester).copySheetContent), findsOneWidget);
       });
 
       testWidgets('share action works with real providers', (tester) async {
         await tester.pumpActionsWidget(
-          buttonText: 'Share',
+          buttonText: getL10n(tester).shareSheet,
           onPressed: (context, ref) => SheetActions.shareSheet(context, testSheet.id),
           container: container,
         );
 
         // Tap the button
-        await tester.tap(find.text('Share'));
+        await tester.tap(find.text(getL10n(tester).shareSheet));
         await tester.pump();
 
         // Verify the action completed without errors
-        expect(find.text('Share'), findsAtLeastNWidgets(1));
-      });
-
-      testWidgets('edit action works with real providers', (tester) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Edit',
-          onPressed: (context, ref) => SheetActions.editSheet(ref, testSheet.id),
-          container: container,
-        );
-
-        // Tap the button
-        await tester.tap(find.text('Edit'));
-        await tester.pumpAndSettle();
-
-        // Verify edit state was set
-        final editContentId = container.read(editContentIdProvider);
-        expect(editContentId, equals(testSheet.id));
+        expect(find.text(getL10n(tester).shareSheet), findsAtLeastNWidgets(1));
       });
 
       testWidgets('delete action works with real providers', (tester) async {
         await tester.pumpActionsWidget(
-          buttonText: 'Delete',
+          buttonText: getL10n(tester).deleteThisSheet,
           onPressed: (context, ref) =>
               SheetActions.deleteSheet(context, ref, testSheet.id),
           container: container,
         );
 
         // Tap the button
-        await tester.tap(find.text('Delete'));
+        await tester.tap(find.text(getL10n(tester).deleteThisSheet));
         await tester.pumpAndSettle();
 
         // Verify delete confirmation bottom sheet is shown

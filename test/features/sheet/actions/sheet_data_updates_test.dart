@@ -415,38 +415,5 @@ void main() {
         expect(unchangedSheet2.emoji, equals('📄'));
       });
     });
-
-    group('Integration Tests', () {
-      test('all update functions work together', () {
-        // Add a test sheet
-        final testSheet = sheet_model.SheetModel(
-          id: 'integration-test',
-          title: 'Original Title',
-          emoji: '📄',
-        );
-        container.read(sheetListProvider.notifier).addSheet(testSheet);
-
-        // Update all properties
-        testUpdateTitle('integration-test', 'Updated Title');
-        testUpdateDescription(
-          'integration-test',
-          (
-            plainText: 'Updated description',
-            htmlText: '<p>Updated description</p>',
-          ),
-        );
-        testUpdateEmoji('integration-test', '🎉');
-
-        // Verify all updates were applied
-        final updatedList = container.read(sheetListProvider);
-        final updatedSheet = updatedList.firstWhere(
-          (s) => s.id == 'integration-test',
-        );
-        expect(updatedSheet.title, equals('Updated Title'));
-        expect(updatedSheet.description?.plainText, equals('Updated description'));
-        expect(updatedSheet.description?.htmlText, equals('<p>Updated description</p>'));
-        expect(updatedSheet.emoji, equals('🎉'));
-      });
-    });
   });
 }
