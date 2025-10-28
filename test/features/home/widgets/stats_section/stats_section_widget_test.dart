@@ -10,6 +10,7 @@ import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/home/widgets/stats_section/stats_section_widget.dart';
 import 'package:zoe/features/home/widgets/stats_section/stats_widget.dart';
+import 'package:zoe/features/link/data/link_list.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
@@ -19,10 +20,13 @@ import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-
 import '../../../../test-utils/mock_gorouter.dart';
-import '../../../../test-utils/mock_models.dart';
 import '../../../../test-utils/test_utils.dart';
+import '../../../documents/utils/document_utils.dart';
+import '../../../events/utils/event_utils.dart';
+import '../../../polls/utils/poll_utils.dart';
+import '../../../sheet/utils/sheet_utils.dart';
+import '../../../task/utils/task_utils.dart';
 
 void main() {
   group('StatsSectionWidget', () {
@@ -201,27 +205,14 @@ void main() {
       });
 
       testWidgets('updates counts when provider data changes', (tester) async {
-        // Mock data
-        final mockSheets = [MockSheetModel(), MockSheetModel()];
-        final mockEvents = [MockEventModel()];
-        final mockTasks = [MockTaskModel(), MockTaskModel(), MockTaskModel()];
-        final mockLinks = [MockLinkModel()];
-        final mockDocs = [MockDocumentModel(), MockDocumentModel()];
-        final mockPolls = [
-          MockPollModel(),
-          MockPollModel(),
-          MockPollModel(),
-          MockPollModel(),
-        ];
-
         container = ProviderContainer.test(
           overrides: [
-            sheetListProvider.overrideWithValue(mockSheets),
-            eventListProvider.overrideWithValue(mockEvents),
-            taskListProvider.overrideWithValue(mockTasks),
-            linkListProvider.overrideWithValue(mockLinks),
-            documentListProvider.overrideWithValue(mockDocs),
-            pollListProvider.overrideWithValue(mockPolls),
+            sheetListProvider.overrideWithValue([getSheetByIndex(container), getSheetByIndex(container,index: 1)]),
+            eventListProvider.overrideWithValue([getEventByIndex(container)]),
+            taskListProvider.overrideWithValue([getTaskByIndex(container), getTaskByIndex(container,index: 1), getTaskByIndex(container,index: 2)]),
+            linkListProvider.overrideWithValue([linkList.first]),
+            documentListProvider.overrideWithValue([getDocumentByIndex(container), getDocumentByIndex(container,index: 1)]),
+            pollListProvider.overrideWithValue([getPollByIndex(container), getPollByIndex(container,index: 1), getPollByIndex(container,index: 2), getPollByIndex(container,index: 3)]),
           ],
         );
 

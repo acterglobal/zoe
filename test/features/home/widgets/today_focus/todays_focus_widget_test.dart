@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
@@ -9,15 +8,18 @@ import 'package:zoe/features/events/widgets/event_widget.dart';
 import 'package:zoe/features/home/widgets/section_header/section_header_widget.dart';
 import 'package:zoe/features/home/widgets/today_focus/todays_focus_widget.dart';
 import 'package:zoe/features/home/widgets/today_focus/todays_item_widget.dart';
+import 'package:zoe/features/polls/data/polls.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_widget.dart';
+import 'package:zoe/features/task/data/tasks.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/task/widgets/task_item_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-import '../../../../test-utils/mock_models.dart';
 import '../../../../test-utils/test_utils.dart';
+import '../../../events/utils/event_utils.dart';
+import '../../../task/utils/task_utils.dart';
 
 void main() {
   group('TodaysFocusWidget', () {
@@ -30,8 +32,18 @@ void main() {
     Future<void> pumpTodaysFocusWidget(WidgetTester tester) async {
       await tester.pumpMaterialWidgetWithProviderScope(
         container: container,
-        child: const TodaysFocusWidget(),
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: 1200,
+            width: 800,
+            child: const TodaysFocusWidget(),
+          ),
+        ),
       );
+      // Allow the test screen to be taller
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.physicalSize = const Size(800, 1200);
+      addTearDown(tester.view.resetPhysicalSize);
     }
 
     L10n getL10n(WidgetTester tester) =>
@@ -53,8 +65,11 @@ void main() {
 
         await pumpTodaysFocusWidget(tester);
 
-        expect(find.byType(SizedBox), findsOneWidget);
-        final sizedBox = tester.widget<SizedBox>(find.byType(SizedBox).first);
+        // Find the shrink-sized SizedBox from the empty state
+        final sizedBoxes = find.byType(SizedBox);
+        final shrinkBox = sizedBoxes.at(1); // The second one is the shrink
+        expect(shrinkBox, findsOneWidget);
+        final sizedBox = tester.widget<SizedBox>(shrinkBox);
         expect(sizedBox.width, equals(0));
         expect(sizedBox.height, equals(0));
       });
@@ -64,11 +79,9 @@ void main() {
       testWidgets('renders with proper structure when data exists', (
         tester,
       ) async {
-        final mockEvent = MockEventModel();
-        when(() => mockEvent.id).thenReturn('event1');
         container = ProviderContainer.test(
           overrides: [
-            todaysEventsProvider.overrideWithValue([mockEvent]),
+            todaysEventsProvider.overrideWithValue([getEventByIndex(container)]),
             todaysTasksProvider.overrideWithValue(<TaskModel>[]),
             activePollsWithPendingResponseProvider.overrideWithValue(
               <PollModel>[],
@@ -84,11 +97,9 @@ void main() {
       });
 
       testWidgets('renders section header correctly', (tester) async {
-        final mockEvent = MockEventModel();
-        when(() => mockEvent.id).thenReturn('event1');
         container = ProviderContainer.test(
           overrides: [
-            todaysEventsProvider.overrideWithValue([mockEvent]),
+            todaysEventsProvider.overrideWithValue([getEventByIndex(container)]),
             todaysTasksProvider.overrideWithValue(<TaskModel>[]),
             activePollsWithPendingResponseProvider.overrideWithValue(
               <PollModel>[],
@@ -108,13 +119,9 @@ void main() {
 
     group('Events Section', () {
       testWidgets('renders events section when events exist', (tester) async {
-        final mockEvent1 = MockEventModel();
-        final mockEvent2 = MockEventModel();
-        when(() => mockEvent1.id).thenReturn('event1');
-        when(() => mockEvent2.id).thenReturn('event2');
         container = ProviderContainer.test(
           overrides: [
-            todaysEventsProvider.overrideWithValue([mockEvent1, mockEvent2]),
+            todaysEventsProvider.overrideWithValue([getEventByIndex(container),getEventByIndex(container, index: 1)]),
             todaysTasksProvider.overrideWithValue(<TaskModel>[]),
             activePollsWithPendingResponseProvider.overrideWithValue(
               <PollModel>[],
@@ -131,11 +138,9 @@ void main() {
       testWidgets('renders events section with correct properties', (
         tester,
       ) async {
-        final mockEvent = MockEventModel();
-        when(() => mockEvent.id).thenReturn('event1');
         container = ProviderContainer.test(
           overrides: [
-            todaysEventsProvider.overrideWithValue([mockEvent]),
+            todaysEventsProvider.overrideWithValue([getEventByIndex(container)]),
             todaysTasksProvider.overrideWithValue(<TaskModel>[]),
             activePollsWithPendingResponseProvider.overrideWithValue(
               <PollModel>[],
@@ -157,11 +162,9 @@ void main() {
       testWidgets('renders event widgets with correct properties', (
         tester,
       ) async {
-        final mockEvent = MockEventModel();
-        when(() => mockEvent.id).thenReturn('event1');
         container = ProviderContainer.test(
           overrides: [
-            todaysEventsProvider.overrideWithValue([mockEvent]),
+            todaysEventsProvider.overrideWithValue([getEventByIndex(container)]),
             todaysTasksProvider.overrideWithValue(<TaskModel>[]),
             activePollsWithPendingResponseProvider.overrideWithValue(
               <PollModel>[],
@@ -174,7 +177,7 @@ void main() {
         final eventWidget = tester.widget<EventWidget>(
           find.byType(EventWidget),
         );
-        expect(eventWidget.eventId, equals('event1'));
+        expect(eventWidget.eventId, equals('event-1'));
         expect(
           eventWidget.margin,
           equals(const EdgeInsets.only(top: 3, bottom: 3)),
@@ -184,14 +187,10 @@ void main() {
 
     group('Tasks Section', () {
       testWidgets('renders tasks section when tasks exist', (tester) async {
-        final mockTask1 = MockTaskModel();
-        final mockTask2 = MockTaskModel();
-        when(() => mockTask1.id).thenReturn('task1');
-        when(() => mockTask2.id).thenReturn('task2');
         container = ProviderContainer.test(
           overrides: [
             todaysEventsProvider.overrideWithValue(<EventModel>[]),
-            todaysTasksProvider.overrideWithValue([mockTask1, mockTask2]),
+            todaysTasksProvider.overrideWithValue([getTaskByIndex(container), getTaskByIndex(container, index: 1)]),
             activePollsWithPendingResponseProvider.overrideWithValue(
               <PollModel>[],
             ),
@@ -207,12 +206,10 @@ void main() {
       testWidgets('renders tasks section with correct properties', (
         tester,
       ) async {
-        final mockTask = MockTaskModel();
-        when(() => mockTask.id).thenReturn('task1');
         container = ProviderContainer.test(
           overrides: [
             todaysEventsProvider.overrideWithValue(<EventModel>[]),
-            todaysTasksProvider.overrideWithValue([mockTask]),
+            todaysTasksProvider.overrideWithValue([tasks.first]),
             activePollsWithPendingResponseProvider.overrideWithValue(
               <PollModel>[],
             ),
@@ -233,12 +230,10 @@ void main() {
       testWidgets('renders task widgets with correct properties', (
         tester,
       ) async {
-        final mockTask = MockTaskModel();
-        when(() => mockTask.id).thenReturn('task1');
         container = ProviderContainer.test(
           overrides: [
             todaysEventsProvider.overrideWithValue(<EventModel>[]),
-            todaysTasksProvider.overrideWithValue([mockTask]),
+            todaysTasksProvider.overrideWithValue([tasks.first]),
             activePollsWithPendingResponseProvider.overrideWithValue(
               <PollModel>[],
             ),
@@ -248,24 +243,20 @@ void main() {
         await pumpTodaysFocusWidget(tester);
 
         final taskWidget = tester.widget<TaskWidget>(find.byType(TaskWidget));
-        expect(taskWidget.taskId, equals('task1'));
+        expect(taskWidget.taskId, equals('task-1'));
         expect(taskWidget.isEditing, equals(false));
       });
     });
 
     group('Polls Section', () {
       testWidgets('renders polls section when polls exist', (tester) async {
-        final mockPoll1 = MockPollModel();
-        final mockPoll2 = MockPollModel();
-        when(() => mockPoll1.id).thenReturn('poll1');
-        when(() => mockPoll2.id).thenReturn('poll2');
         container = ProviderContainer.test(
           overrides: [
             todaysEventsProvider.overrideWithValue(<EventModel>[]),
             todaysTasksProvider.overrideWithValue(<TaskModel>[]),
             activePollsWithPendingResponseProvider.overrideWithValue([
-              mockPoll1,
-              mockPoll2,
+              polls.first,
+              polls[1],
             ]),
           ],
         );
@@ -279,14 +270,12 @@ void main() {
       testWidgets('renders polls section with correct properties', (
         tester,
       ) async {
-        final mockPoll = MockPollModel();
-        when(() => mockPoll.id).thenReturn('poll1');
         container = ProviderContainer.test(
           overrides: [
             todaysEventsProvider.overrideWithValue(<EventModel>[]),
             todaysTasksProvider.overrideWithValue(<TaskModel>[]),
             activePollsWithPendingResponseProvider.overrideWithValue([
-              mockPoll,
+              polls.first,
             ]),
           ],
         );
@@ -305,14 +294,12 @@ void main() {
       testWidgets('renders poll widgets with correct properties', (
         tester,
       ) async {
-        final mockPoll = MockPollModel();
-        when(() => mockPoll.id).thenReturn('poll1');
         container = ProviderContainer.test(
           overrides: [
             todaysEventsProvider.overrideWithValue(<EventModel>[]),
             todaysTasksProvider.overrideWithValue(<TaskModel>[]),
             activePollsWithPendingResponseProvider.overrideWithValue([
-              mockPoll,
+              polls.first,
             ]),
           ],
         );
@@ -320,24 +307,18 @@ void main() {
         await pumpTodaysFocusWidget(tester);
 
         final pollWidget = tester.widget<PollWidget>(find.byType(PollWidget));
-        expect(pollWidget.pollId, equals('poll1'));
+        expect(pollWidget.pollId, equals('poll-1'));
       });
     });
 
     group('Multiple Sections', () {
       testWidgets('renders all sections when all data exists', (tester) async {
-        final mockEvent = MockEventModel();
-        final mockTask = MockTaskModel();
-        final mockPoll = MockPollModel();
-        when(() => mockEvent.id).thenReturn('event1');
-        when(() => mockTask.id).thenReturn('task1');
-        when(() => mockPoll.id).thenReturn('poll1');
         container = ProviderContainer.test(
           overrides: [
-            todaysEventsProvider.overrideWithValue([mockEvent]),
-            todaysTasksProvider.overrideWithValue([mockTask]),
+            todaysEventsProvider.overrideWithValue([getEventByIndex(container)]),
+            todaysTasksProvider.overrideWithValue([getTaskByIndex(container)]),
             activePollsWithPendingResponseProvider.overrideWithValue([
-              mockPoll,
+              polls.first,
             ]),
           ],
         );
@@ -351,14 +332,10 @@ void main() {
       });
 
       testWidgets('renders correct spacing between sections', (tester) async {
-        final mockEvent = MockEventModel();
-        final mockTask = MockTaskModel();
-        when(() => mockEvent.id).thenReturn('event1');
-        when(() => mockTask.id).thenReturn('task1');
         container = ProviderContainer.test(
           overrides: [
-            todaysEventsProvider.overrideWithValue([mockEvent]),
-            todaysTasksProvider.overrideWithValue([mockTask]),
+            todaysEventsProvider.overrideWithValue([getEventByIndex(container)]),
+            todaysTasksProvider.overrideWithValue([getTaskByIndex(container)]),
             activePollsWithPendingResponseProvider.overrideWithValue(
               <PollModel>[],
             ),
@@ -375,18 +352,12 @@ void main() {
 
     group('Localization', () {
       testWidgets('displays localized titles correctly', (tester) async {
-        final mockEvent = MockEventModel();
-        final mockTask = MockTaskModel();
-        final mockPoll = MockPollModel();
-        when(() => mockEvent.id).thenReturn('event1');
-        when(() => mockTask.id).thenReturn('task1');
-        when(() => mockPoll.id).thenReturn('poll1');
         container = ProviderContainer.test(
           overrides: [
-            todaysEventsProvider.overrideWithValue([mockEvent]),
-            todaysTasksProvider.overrideWithValue([mockTask]),
+            todaysEventsProvider.overrideWithValue([getEventByIndex(container)]),
+            todaysTasksProvider.overrideWithValue([getTaskByIndex(container)]),
             activePollsWithPendingResponseProvider.overrideWithValue([
-              mockPoll,
+              polls.first,
             ]),
           ],
         );
@@ -403,18 +374,12 @@ void main() {
 
     group('Color Scheme', () {
       testWidgets('uses correct colors for each section', (tester) async {
-        final mockEvent = MockEventModel();
-        final mockTask = MockTaskModel();
-        final mockPoll = MockPollModel();
-        when(() => mockEvent.id).thenReturn('event1');
-        when(() => mockTask.id).thenReturn('task1');
-        when(() => mockPoll.id).thenReturn('poll1');
         container = ProviderContainer.test(
           overrides: [
-            todaysEventsProvider.overrideWithValue([mockEvent]),
-            todaysTasksProvider.overrideWithValue([mockTask]),
+            todaysEventsProvider.overrideWithValue([getEventByIndex(container)]),
+            todaysTasksProvider.overrideWithValue([getTaskByIndex(container)]),
             activePollsWithPendingResponseProvider.overrideWithValue([
-              mockPoll,
+              polls.first,
             ]),
           ],
         );
@@ -434,11 +399,9 @@ void main() {
 
     group('Accessibility', () {
       testWidgets('has proper semantic structure', (tester) async {
-        final mockEvent = MockEventModel();
-        when(() => mockEvent.id).thenReturn('event1');
         container = ProviderContainer.test(
           overrides: [
-            todaysEventsProvider.overrideWithValue([mockEvent]),
+            todaysEventsProvider.overrideWithValue([getEventByIndex(container)]),
             todaysTasksProvider.overrideWithValue(<TaskModel>[]),
             activePollsWithPendingResponseProvider.overrideWithValue(
               <PollModel>[],
@@ -455,11 +418,9 @@ void main() {
       });
 
       testWidgets('text is properly rendered', (tester) async {
-        final mockEvent = MockEventModel();
-        when(() => mockEvent.id).thenReturn('event1');
         container = ProviderContainer.test(
           overrides: [
-            todaysEventsProvider.overrideWithValue([mockEvent]),
+            todaysEventsProvider.overrideWithValue([getEventByIndex(container)]),
             todaysTasksProvider.overrideWithValue(<TaskModel>[]),
             activePollsWithPendingResponseProvider.overrideWithValue(
               <PollModel>[],
