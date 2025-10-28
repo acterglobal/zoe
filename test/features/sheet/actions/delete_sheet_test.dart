@@ -5,6 +5,7 @@ import 'package:zoe/features/sheet/actions/delete_sheet.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
+import 'package:zoe/l10n/generated/l10n_en.dart';
 import '../../../test-utils/test_utils.dart';
 import '../utils/sheet_utils.dart';
 
@@ -13,6 +14,9 @@ void main() {
     late ProviderContainer container;
     late SheetModel testSheet;
 
+    // Create a static L10n instance for use before pumping widgets
+    final L10n staticL10n = L10nEn();
+
     setUp(() {
       container = ProviderContainer.test();
       testSheet = getSheetByIndex(container);
@@ -20,7 +24,12 @@ void main() {
 
     // Helper function to get L10n strings in tests
     L10n getL10n(WidgetTester tester) {
-      return WidgetTesterExtension.getL10n(tester, byType: Consumer);
+      try {
+        return WidgetTesterExtension.getL10n(tester, byType: Consumer);
+      } catch (e) {
+        // If widget tree hasn't been built yet, return the static instance
+        return staticL10n;
+      }
     }
 
     group('showDeleteSheetConfirmation', () {
@@ -29,13 +38,13 @@ void main() {
       ) async {
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Delete Sheet',
+          buttonText: getL10n(tester).deleteSheetButton,
           onPressed: (context, ref) =>
               showDeleteSheetConfirmation(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger delete confirmation
-        await tester.tap(find.text('Delete Sheet'));
+        await tester.tap(find.text(getL10n(tester).deleteSheetButton));
         await tester.pumpAndSettle();
 
         // Verify delete confirmation bottom sheet is shown
@@ -47,13 +56,13 @@ void main() {
       ) async {
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Delete Sheet',
+          buttonText: getL10n(tester).deleteSheetButton,
           onPressed: (context, ref) =>
               showDeleteSheetConfirmation(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger delete confirmation
-        await tester.tap(find.text('Delete Sheet'));
+        await tester.tap(find.text(getL10n(tester).deleteSheetButton));
         await tester.pumpAndSettle();
 
         // Verify sheet information is displayed
@@ -69,7 +78,7 @@ void main() {
       ) async {
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Delete Sheet',
+          buttonText: getL10n(tester).deleteSheetButton,
           onPressed: (context, ref) =>
               showDeleteSheetConfirmation(context, ref, testSheet.id),
         );
@@ -80,7 +89,7 @@ void main() {
 
         // Verify L10n strings are displayed
         final l10n = getL10n(tester);
-        expect(find.text(l10n.deleteSheet), findsAtLeastNWidgets(1));
+        expect(find.text(l10n.deleteSheetButton), findsAtLeastNWidgets(1));
         expect(find.text(l10n.thisActionCannotBeUndone), findsOneWidget);
         expect(
           find.byType(ElevatedButton),
@@ -127,13 +136,13 @@ void main() {
       testWidgets('renders all UI elements correctly', (tester) async {
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Delete Sheet',
+          buttonText: getL10n(tester).deleteSheetButton,
           onPressed: (context, ref) =>
               showDeleteSheetConfirmation(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger delete confirmation
-        await tester.tap(find.text('Delete Sheet'));
+        await tester.tap(find.text(getL10n(tester).deleteSheetButton));
         await tester.pumpAndSettle();
 
         // Verify all UI elements are present
@@ -158,13 +167,13 @@ void main() {
       testWidgets('displays warning icon and message', (tester) async {
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Delete Sheet',
+          buttonText: getL10n(tester).deleteSheetButton,
           onPressed: (context, ref) =>
               showDeleteSheetConfirmation(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger delete confirmation
-        await tester.tap(find.text('Delete Sheet'));
+        await tester.tap(find.text(getL10n(tester).deleteSheetButton));
         await tester.pumpAndSettle();
 
         // Verify warning elements
@@ -183,13 +192,13 @@ void main() {
       ) async {
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Delete Sheet',
+          buttonText: getL10n(tester).deleteSheetButton,
           onPressed: (context, ref) =>
               showDeleteSheetConfirmation(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger delete confirmation
-        await tester.tap(find.text('Delete Sheet'));
+        await tester.tap(find.text(getL10n(tester).deleteSheetButton));
         await tester.pumpAndSettle();
 
         // Verify sheet info is displayed
@@ -263,13 +272,13 @@ void main() {
       testWidgets('cancel button closes bottom sheet', (tester) async {
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Delete Sheet',
+          buttonText: getL10n(tester).deleteSheetButton,
           onPressed: (context, ref) =>
               showDeleteSheetConfirmation(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger delete confirmation
-        await tester.tap(find.text('Delete Sheet'));
+        await tester.tap(find.text(getL10n(tester).deleteSheetButton));
         await tester.pumpAndSettle();
 
         // Verify bottom sheet is shown
@@ -291,13 +300,13 @@ void main() {
 
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Delete Sheet',
+          buttonText: getL10n(tester).deleteSheetButton,
           onPressed: (context, ref) =>
               showDeleteSheetConfirmation(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger delete confirmation
-        await tester.tap(find.text('Delete Sheet'));
+        await tester.tap(find.text(getL10n(tester).deleteSheetButton));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(ElevatedButton).last);
@@ -314,13 +323,13 @@ void main() {
       ) async {
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Delete Sheet',
+          buttonText: getL10n(tester).deleteSheetButton,
           onPressed: (context, ref) =>
               showDeleteSheetConfirmation(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger delete confirmation
-        await tester.tap(find.text('Delete Sheet'));
+        await tester.tap(find.text(getL10n(tester).deleteSheetButton));
         await tester.pumpAndSettle();
 
         // Verify bottom sheet is shown
@@ -345,13 +354,13 @@ void main() {
 
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Delete',
+          buttonText: getL10n(tester).delete,
           onPressed: (context, ref) =>
               showDeleteSheetConfirmation(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger delete confirmation
-        await tester.tap(find.text('Delete'));
+        await tester.tap(find.text(getL10n(tester).delete));
         await tester.pumpAndSettle();
 
         // Verify bottom sheet is shown
@@ -377,13 +386,13 @@ void main() {
 
         await tester.pumpActionsWidget(
           container: container,
-          buttonText: 'Delete Sheet',
+          buttonText: getL10n(tester).deleteSheetButton,
           onPressed: (context, ref) =>
               showDeleteSheetConfirmation(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger delete confirmation
-        await tester.tap(find.text('Delete Sheet'));
+        await tester.tap(find.text(getL10n(tester).deleteSheetButton));
         await tester.pumpAndSettle();
 
         // Verify bottom sheet is shown
