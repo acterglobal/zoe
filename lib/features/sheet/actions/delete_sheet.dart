@@ -16,7 +16,7 @@ void showDeleteSheetConfirmation(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    builder: (context) => _DeleteSheetBottomSheet(
+    builder: (context) => DeleteSheetBottomSheet(
       sheetTitle: sheet.title,
       sheetEmoji: sheet.emoji,
       onConfirm: () {
@@ -29,13 +29,13 @@ void showDeleteSheetConfirmation(
   );
 }
 
-class _DeleteSheetBottomSheet extends StatelessWidget {
+class DeleteSheetBottomSheet extends StatelessWidget {
   final String sheetTitle;
   final String sheetEmoji;
   final VoidCallback onConfirm;
   final VoidCallback onCancel;
 
-  const _DeleteSheetBottomSheet({
+  const DeleteSheetBottomSheet({super.key, 
     required this.sheetTitle,
     required this.sheetEmoji,
     required this.onConfirm,
