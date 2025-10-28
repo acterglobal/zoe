@@ -21,6 +21,8 @@ void main() {
       mockGoRouter = MockGoRouter();
     });
 
+    List<LinkModel> getLinkList() => container.read(linkListProvider);
+
     Future<void> pumpLinkListWidget(
       WidgetTester tester, {
       bool isEditing = false,
@@ -50,7 +52,7 @@ void main() {
         tester,
       ) async {
         // Clear all links
-        final allLinks = container.read(linkListProvider);
+        final allLinks = getLinkList();
         for (final link in allLinks) {
           container.read(linkListProvider.notifier).deleteLink(link.id);
         }
@@ -182,7 +184,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // The provider should have been updated even if the new item isn't visible
-        final providerCount = container.read(linkListProvider).length;
+        final providerCount = getLinkList().length;
         expect(providerCount, greaterThan(initialCount));
       });
 

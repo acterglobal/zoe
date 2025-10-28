@@ -7,6 +7,7 @@ import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../test-utils/test_utils.dart';
+import '../utils/link_utils.dart';
 
 // Helper function to get l10n strings in tests
 L10n getL10n(WidgetTester tester) {
@@ -30,15 +31,15 @@ Future<void> pumpLinkActionsWidget({
 void main() {
   late ProviderContainer container;
   late LinkModel testFirstLink;
+  late LinkModel testSecondLink;
 
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
 
     // Create the container
     container = ProviderContainer.test();
-
-    // Get the first link model
-    testFirstLink = container.read(linkProvider('link-1'))!;
+    testFirstLink = getLinkByIndex(container, index: 0);
+    testSecondLink = getLinkByIndex(container, index: 1);
   });
 
   group('LinkActions', () {
@@ -46,21 +47,19 @@ void main() {
       final buttonText = 'Copy';
 
       test('copies link content to clipboard correctly', () {
-        // Arrange
-        final linkContent = container.read(linkProvider('link-1'));
-        expect(linkContent, isNotNull);
+        expect(testFirstLink, isNotNull);
 
         // Act & Assert - Verify the clipboard content structure
         final buffer = StringBuffer();
 
         // Add emoji and title
-        if (linkContent!.emoji != null) {
-          buffer.write('${linkContent.emoji} ');
+        if (testFirstLink.emoji != null) {
+          buffer.write('${testFirstLink.emoji} ');
         }
-        buffer.write(linkContent.title);
+        buffer.write(testFirstLink.title);
         // Add url
-        if (linkContent.url.isNotEmpty) {
-          buffer.write('\n\n${linkContent.url}');
+        if (testFirstLink.url.isNotEmpty) {
+          buffer.write('\n\n${testFirstLink.url}');
         }
 
         final clipboardContent = buffer.toString();
@@ -69,7 +68,6 @@ void main() {
         expect(clipboardContent, contains('📚'));
         expect(clipboardContent, contains('Zoe Official Documentation'));
         expect(clipboardContent, contains('https://docs.hellozoe.app'));
-
       });
 
       testWidgets('copies link content to clipboard shows snackbar', (
@@ -124,23 +122,21 @@ void main() {
       });
 
       test('handles null link content correctly', () {
-        // Arrange & Act
-        final linkContent = container.read(linkProvider(''));
-
-        // Assert
-        expect(linkContent, isNull);
+        // Arrange & Act - Test with out of bounds index
+        // Assert - Should fail when trying to get link with invalid index
+        expect(() => getLinkByIndex(container, index: 999), throwsA(isA<TestFailure>()));
       });
     });
 
     group('Edit Link Action', () {
       final buttonText = 'Edit';
-      late LinkModel testSecondLink;
 
       setUp(() {
         container = ProviderContainer.test(
           overrides: [editContentIdProvider.overrideWith((ref) => null)],
         );
-        testSecondLink = container.read(linkProvider('link-2'))!;
+        testFirstLink = getLinkByIndex(container, index: 0);
+        testSecondLink = getLinkByIndex(container, index: 1);
       });
 
       testWidgets('sets edit content id when edit action is triggered', (
@@ -258,11 +254,10 @@ void main() {
           expect(container.read(editContentIdProvider), equals(linkId));
 
           // Verify link data is unchanged
-          final linkBeforeEdit = container.read(linkProvider(linkId));
-          expect(linkBeforeEdit, isNotNull);
-          expect(linkBeforeEdit?.title, equals(originalTitle));
-          expect(linkBeforeEdit?.url, equals(originalUrl));
-          expect(linkBeforeEdit?.id, equals(linkId));
+          final linkBeforeEdit = getLinkByIndex(container, index: 0);
+          expect(linkBeforeEdit.title, equals(originalTitle));
+          expect(linkBeforeEdit.url, equals(originalUrl));
+          expect(linkBeforeEdit.id, equals(linkId));
 
           // Update the link title
           final linkNotifier = container.read(linkListProvider.notifier);
@@ -270,11 +265,10 @@ void main() {
           linkNotifier.updateLinkUrl(linkId, updatedUrl);
 
           // Verify link data is updated
-          final linkAfterEdit = container.read(linkProvider(linkId));
-          expect(linkAfterEdit, isNotNull);
-          expect(linkAfterEdit?.title, equals(updatedTitle));
-          expect(linkAfterEdit?.url, equals(updatedUrl));
-          expect(linkAfterEdit?.id, equals(linkId));
+          final linkAfterEdit = getLinkByIndex(container, index: 0);
+          expect(linkAfterEdit.title, equals(updatedTitle));
+          expect(linkAfterEdit.url, equals(updatedUrl));
+          expect(linkAfterEdit.id, equals(linkId));
         },
       );
     });
@@ -301,8 +295,8 @@ void main() {
         final linkId = testFirstLink.id;
 
         // Verify link exists
-        final linkBeforeDelete = container.read(linkProvider(linkId));
-        expect(linkBeforeDelete, isNotNull);
+        final linkBeforeDelete = getLinkByIndex(container, index: 0);
+        expect(linkBeforeDelete.id, equals(linkId));
 
         // Pump the widget with the link content
         await pumpDeleteActionsWidget(tester, linkId: linkId);
@@ -311,9 +305,9 @@ void main() {
         await tester.tap(find.text(buttonText));
         await tester.pumpAndSettle();
 
-        // Verify link is deleted
-        final linkAfterDelete = container.read(linkProvider(linkId));
-        expect(linkAfterDelete, isNull);
+        // Verify link is deleted - should now be at index 0 (was index 1)
+        final linkAfterDelete = getLinkByIndex(container, index: 0);
+        expect(linkAfterDelete.id, isNot(equals(linkId)));
 
         // Verify snackbar is shown with correct message (indicating delete completed)
         expect(find.byType(SnackBar), findsOneWidget);
@@ -323,17 +317,17 @@ void main() {
       testWidgets('deletes correct link when multiple links exist', (
         tester,
       ) async {
-        // Get multiple links
-        final testFirstLink = container.read(linkProvider('link-1'))!;
-        final linkId1 = testFirstLink.id;
-        final testSecondLink = container.read(linkProvider('link-2'))!;
-        final linkId2 = testSecondLink.id;
+        // Get multiple links using helper function
+        final firstLink = getLinkByIndex(container, index: 0);
+        final secondLink = getLinkByIndex(container, index: 1);
+        final linkId1 = firstLink.id;
+        final linkId2 = secondLink.id;
 
         // Verify both links exist
-        final linkBeforeDelete1 = container.read(linkProvider(linkId1));
-        expect(linkBeforeDelete1, isNotNull);
-        final linkBeforeDelete2 = container.read(linkProvider(linkId2));
-        expect(linkBeforeDelete2, isNotNull);
+        final linkBeforeDelete1 = getLinkByIndex(container, index: 0);
+        expect(linkBeforeDelete1.id, equals(linkId1));
+        final linkBeforeDelete2 = getLinkByIndex(container, index: 1);
+        expect(linkBeforeDelete2.id, equals(linkId2));
 
         // Delete first link
         await pumpDeleteActionsWidget(tester, linkId: linkId1);
@@ -341,11 +335,9 @@ void main() {
         await tester.tap(find.text(buttonText));
         await tester.pumpAndSettle();
 
-        // Verify only first link is deleted
-        final linkAfterDelete1 = container.read(linkProvider(linkId1));
-        expect(linkAfterDelete1, isNull);
-        final linkAfterDelete2 = container.read(linkProvider(linkId2));
-        expect(linkAfterDelete2, isNotNull);
+        // Verify only first link is deleted - second link should now be at index 0
+        final linkAfterDelete = getLinkByIndex(container, index: 0);
+        expect(linkAfterDelete.id, equals(linkId2));
       });
     });
 
@@ -363,12 +355,14 @@ void main() {
         );
 
         container.read(linkListProvider.notifier).addLink(linkWithEmptyUrl);
-        final linkContent = container.read(linkProvider('link-empty-url'));
-        expect(linkContent, isNotNull);
+        // Find the newly added link by searching through the list
+        final linkList = container.read(linkListProvider);
+        final linkContent = linkList.firstWhere((link) => link.id == 'link-empty-url');
+        expect(linkContent.id, equals('link-empty-url'));
 
         // Act
         final buffer = StringBuffer();
-        if (linkContent!.emoji != null) {
+        if (linkContent.emoji != null) {
           buffer.write('${linkContent.emoji} ');
         }
         buffer.write(linkContent.title);
@@ -397,12 +391,14 @@ void main() {
         );
 
         container.read(linkListProvider.notifier).addLink(linkWithOnlyEmoji);
-        final linkContent = container.read(linkProvider('link-emoji-only'));
-        expect(linkContent, isNotNull);
+        // Find the newly added link by searching through the list
+        final linkList = container.read(linkListProvider);
+        final linkContent = linkList.firstWhere((link) => link.id == 'link-emoji-only');
+        expect(linkContent.id, equals('link-emoji-only'));
 
         // Act
         final buffer = StringBuffer();
-        if (linkContent!.emoji != null) {
+        if (linkContent.emoji != null) {
           buffer.write('${linkContent.emoji} ');
         }
         buffer.write(linkContent.title);

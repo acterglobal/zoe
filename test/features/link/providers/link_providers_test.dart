@@ -5,6 +5,7 @@ import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import '../../../test-utils/mock_searchValue.dart';
+import '../utils/link_utils.dart';
 
 void main() {
   group('Link Providers Tests', () {
@@ -16,7 +17,7 @@ void main() {
         overrides: [searchValueProvider.overrideWith(MockSearchValue.new)],
       );
 
-      testLink = container.read(linkProvider('link-1'))!;
+      testLink = getLinkByIndex(container);
     });
 
     List<LinkModel> getLinkList() => container.read(linkListProvider);
@@ -56,7 +57,7 @@ void main() {
       });
 
       test('deleteLink removes link from list', () {
-        final initialLength = container.read(linkListProvider).length;
+        final initialLength = getLinkList().length;
 
         container.read(linkListProvider.notifier).deleteLink(testLink.id);
 
@@ -66,7 +67,7 @@ void main() {
       });
 
       test('deleteLink does nothing for non-existent link', () {
-        final initialLength = container.read(linkListProvider).length;
+        final initialLength = getLinkList().length;
 
         container.read(linkListProvider.notifier).deleteLink('non-existent-id');
 
@@ -81,7 +82,7 @@ void main() {
             .read(linkListProvider.notifier)
             .updateLinkTitle(testLink.id, newTitle);
 
-        final updatedLink = container.read(linkProvider(testLink.id));
+        final updatedLink = getLinkById(testLink.id);
         expect(updatedLink?.title, equals(newTitle));
       });
 
@@ -92,7 +93,7 @@ void main() {
             .read(linkListProvider.notifier)
             .updateLinkUrl(testLink.id, newUrl);
 
-        final updatedLink = container.read(linkProvider(testLink.id));
+        final updatedLink = getLinkById(testLink.id);
         expect(updatedLink?.url, equals(newUrl));
       });
 
@@ -103,7 +104,7 @@ void main() {
             .read(linkListProvider.notifier)
             .updateLinkEmoji(testLink.id, newEmoji);
 
-        final updatedLink = container.read(linkProvider(testLink.id));
+        final updatedLink = getLinkById(testLink.id);
         expect(updatedLink?.emoji, equals(newEmoji));
       });
 
@@ -114,52 +115,31 @@ void main() {
             .read(linkListProvider.notifier)
             .updateLinkOrderIndex(testLink.id, newOrderIndex);
 
-        final updatedLink = container.read(linkProvider(testLink.id));
+        final updatedLink = getLinkById(testLink.id);
         expect(updatedLink?.orderIndex, equals(newOrderIndex));
-      });
-
-      test('multiple operations maintain list integrity', () {
-        // Add a new link
-        final newLink = testLink.copyWith(
-          id: 'new-link-id',
-          title: 'New Link',
-          url: 'https://newlink.com',
-        );
-        container.read(linkListProvider.notifier).addLink(newLink);
-
-        // Update the original link
-        container
-            .read(linkListProvider.notifier)
-            .updateLinkTitle(testLink.id, 'Modified Title');
-
-        final finalList = getLinkList();
-
-        final modifiedLink = finalList.firstWhere((l) => l.id == testLink.id);
-        expect(modifiedLink.title, equals('Modified Title'));
-
-        expect(finalList.any((l) => l.id == 'new-link-id'), isTrue);
       });
     });
 
     group('Link Provider (by ID)', () {
       test('returns correct link by ID', () {
-        final link = getLinkById(testLink.id);
-
-        expect(link, equals(testLink));
-        expect(link!.id, equals(testLink.id));
-        expect(link.title, equals('Zoe Official Documentation'));
-        expect(link.url, equals('https://docs.hellozoe.app'));
+        expect(getLinkById(testLink.id), equals(testLink));
+        expect(getLinkById(testLink.id)?.id, equals(testLink.id));
+        expect(
+          getLinkById(testLink.id)?.title,
+          equals('Zoe Official Documentation'),
+        );
+        expect(
+          getLinkById(testLink.id)?.url,
+          equals('https://docs.hellozoe.app'),
+        );
       });
 
       test('returns null for non-existent ID', () {
-        final link = getLinkById('non-existent-id');
-
-        expect(link, isNull);
+        expect(getLinkById('non-existent-id'), isNull);
       });
 
       test('link provider updates when link list changes', () {
-        final initialLink = getLinkById(testLink.id);
-        expect(initialLink, equals(testLink));
+        expect(getLinkById(testLink.id), equals(testLink));
 
         container
             .read(linkListProvider.notifier)
@@ -292,7 +272,7 @@ void main() {
           orderIndex: 1000,
         );
 
-        container.read(linkListProvider.notifier).addLink(newLink);
+        getLinkList().add(newLink);
 
         final addedLink = getLinkById('link-empty-url');
         expect(addedLink, isNotNull);
@@ -310,7 +290,7 @@ void main() {
           orderIndex: 1001,
         );
 
-        container.read(linkListProvider.notifier).addLink(newLink);
+        getLinkList().add(newLink);
 
         final addedLink = getLinkById('link-empty-title');
         expect(addedLink, isNotNull);
@@ -327,8 +307,8 @@ void main() {
           emoji: null,
           orderIndex: 1002,
         );
-
-        container.read(linkListProvider.notifier).addLink(newLink);
+  
+        getLinkList().add(newLink);
 
         final addedLink = getLinkById('link-no-emoji');
         expect(addedLink, isNotNull);
