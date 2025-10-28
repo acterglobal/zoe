@@ -2,6 +2,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/widgets/emoji_picker/emoji_picker_config.dart';
+import '../../../../test-utils/test_utils.dart';
 
 void main() {
   group('EmojiSearchState', () {
@@ -124,12 +125,12 @@ void main() {
     });
 
     testWidgets('buildConfig creates valid Config', (tester) async {
-      await tester.pumpWidget(const MaterialApp(home: _TestWidget()));
+      await tester.pumpMaterialWidget(child: const SizedBox());
 
       await tester.pumpAndSettle();
 
-      final context = tester.element(find.byType(_TestWidget));
-      
+      final context = tester.element(find.byType(SizedBox));
+
       final config = EmojiPickerConfigBuilder.buildConfig(
         context,
         controller,
@@ -146,12 +147,12 @@ void main() {
     testWidgets('buildConfig emoji text style has correct fontSize', (
       tester,
     ) async {
-      await tester.pumpWidget(const MaterialApp(home: _TestWidget()));
+      await tester.pumpMaterialWidget(child: const SizedBox());
 
       await tester.pumpAndSettle();
 
-      final context = tester.element(find.byType(_TestWidget));
-      
+      final context = tester.element(find.byType(SizedBox));
+
       final config = EmojiPickerConfigBuilder.buildConfig(
         context,
         controller,
@@ -165,12 +166,12 @@ void main() {
     testWidgets('buildConfig emoji view has correct dimensions', (
       tester,
     ) async {
-      await tester.pumpWidget(const MaterialApp(home: _TestWidget()));
+      await tester.pumpMaterialWidget(child: const SizedBox());
 
       await tester.pumpAndSettle();
 
-      final context = tester.element(find.byType(_TestWidget));
-      
+      final context = tester.element(find.byType(SizedBox));
+
       final config = EmojiPickerConfigBuilder.buildConfig(
         context,
         controller,
@@ -191,12 +192,12 @@ void main() {
     testWidgets('buildConfig category view has correct configuration', (
       tester,
     ) async {
-      await tester.pumpWidget(const MaterialApp(home: _TestWidget()));
+      await tester.pumpMaterialWidget(child: const SizedBox());
 
       await tester.pumpAndSettle();
 
-      final context = tester.element(find.byType(_TestWidget));
-      
+      final context = tester.element(find.byType(SizedBox));
+
       final config = EmojiPickerConfigBuilder.buildConfig(
         context,
         controller,
@@ -218,13 +219,13 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(theme: ThemeData.light(), home: const _TestWidget()),
+        MaterialApp(theme: ThemeData.light(), home: const SizedBox()),
       );
 
       await tester.pumpAndSettle();
 
-      final context = tester.element(find.byType(_TestWidget));
-     
+      final context = tester.element(find.byType(SizedBox));
+
       final config = EmojiPickerConfigBuilder.buildConfig(
         context,
         controller,
@@ -240,13 +241,14 @@ void main() {
     testWidgets(
       'buildConfig creates valid configs with different controllers',
       (tester) async {
-        await tester.pumpWidget(
-          MaterialApp(theme: ThemeData.light(), home: const _TestWidget()),
+        await tester.pumpMaterialWidget(
+          child: const SizedBox(),
+          theme: ThemeData.light(),
         );
 
         await tester.pumpAndSettle();
 
-        final context = tester.element(find.byType(_TestWidget));
+        final context = tester.element(find.byType(SizedBox));
         final controller2 = TextEditingController();
 
         final config1 = EmojiPickerConfigBuilder.buildConfig(
@@ -279,13 +281,4 @@ void main() {
       },
     );
   });
-}
-
-class _TestWidget extends StatelessWidget {
-  const _TestWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: SizedBox());
-  }
 }
