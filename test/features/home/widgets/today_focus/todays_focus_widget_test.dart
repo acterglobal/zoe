@@ -19,6 +19,7 @@ import 'package:zoe/features/task/widgets/task_item_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../../test-utils/test_utils.dart';
 import '../../../events/utils/event_utils.dart';
+import '../../../polls/utils/poll_utils.dart';
 import '../../../task/utils/task_utils.dart';
 
 void main() {
@@ -41,7 +42,6 @@ void main() {
         ),
       );
       // Allow the test screen to be taller
-      tester.view.physicalSize = const Size(800, 1200);
       tester.view.physicalSize = const Size(800, 1200);
       addTearDown(tester.view.resetPhysicalSize);
     }
@@ -177,7 +177,7 @@ void main() {
         final eventWidget = tester.widget<EventWidget>(
           find.byType(EventWidget),
         );
-        expect(eventWidget.eventId, equals('event-1'));
+        expect(eventWidget.eventId, equals(getEventByIndex(container).id));
         expect(
           eventWidget.margin,
           equals(const EdgeInsets.only(top: 3, bottom: 3)),
@@ -243,7 +243,7 @@ void main() {
         await pumpTodaysFocusWidget(tester);
 
         final taskWidget = tester.widget<TaskWidget>(find.byType(TaskWidget));
-        expect(taskWidget.taskId, equals('task-1'));
+        expect(taskWidget.taskId, equals(getTaskByIndex(container).id));
         expect(taskWidget.isEditing, equals(false));
       });
     });
@@ -299,7 +299,7 @@ void main() {
             todaysEventsProvider.overrideWithValue(<EventModel>[]),
             todaysTasksProvider.overrideWithValue(<TaskModel>[]),
             activePollsWithPendingResponseProvider.overrideWithValue([
-              polls.first,
+              getPollByIndex(container),
             ]),
           ],
         );
@@ -307,7 +307,7 @@ void main() {
         await pumpTodaysFocusWidget(tester);
 
         final pollWidget = tester.widget<PollWidget>(find.byType(PollWidget));
-        expect(pollWidget.pollId, equals('poll-1'));
+        expect(pollWidget.pollId, equals(getPollByIndex(container).id));
       });
     });
 
