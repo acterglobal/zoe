@@ -170,104 +170,84 @@ void main() {
 
     group('getFeatureSecondaryColor', () {
       testWidgets('returns secondary color for organize feature', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('organize', context);
-              
-              expect(secondaryColor, isA<Color>());
-              
-              return Container();
-            },
-          ),
+        await pumpWithTheme(
+          tester,
+          (context) {
+            final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('organize', context);
+            expect(secondaryColor, isA<Color>());
+            return Container();
+          },
         );
       });
 
       testWidgets('returns secondary color for plan feature', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('plan', context);
-              
-              expect(secondaryColor, isA<Color>());
-              
-              return Container();
-            },
-          ),
+        await pumpWithTheme(
+          tester,
+          (context) {
+            final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('plan', context);
+            expect(secondaryColor, isA<Color>());
+            return Container();
+          },
         );
       });
 
       testWidgets('returns secondary color for create feature', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('create', context);
-              
-              expect(secondaryColor, isA<Color>());
-              
-              return Container();
-            },
-          ),
+        await pumpWithTheme(
+          tester,
+            (context) {
+            final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('create', context);
+            expect(secondaryColor, isA<Color>());
+            return Container();
+          },
         );
       });
 
       testWidgets('returns secondary color for settings feature', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('settings', context);
-              
-              expect(secondaryColor, isA<Color>());
-              
-              return Container();
-            },
-          ),
+        await pumpWithTheme(
+          tester,
+          (context) {
+            final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('settings', context);
+            expect(secondaryColor, isA<Color>());
+            return Container();
+          },
         );
       });
 
       testWidgets('returns secondary color for profile feature', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('profile', context);
-              
-              expect(secondaryColor, isA<Color>());
-              
-              return Container();
-            },
-          ),
+        await pumpWithTheme(
+          tester,
+          (context) {
+            final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('profile', context);
+            expect(secondaryColor, isA<Color>());
+            return Container();
+          },
         );
       });
 
       testWidgets('returns secondary color for unknown feature', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('unknown', context);
-              
-              expect(secondaryColor, isA<Color>());
-              
-              return Container();
-            },
-          ),
+        await pumpWithTheme(
+          tester,
+          (context) {
+            final secondaryColor = FeatureColorsUtils.getFeatureSecondaryColor('unknown', context);
+            expect(secondaryColor, isA<Color>());
+            return Container();
+          },
         );
       });
 
       testWidgets('handles case insensitive feature names', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              final color1 = FeatureColorsUtils.getFeatureSecondaryColor('ORGANIZE', context);
-              final color2 = FeatureColorsUtils.getFeatureSecondaryColor('Organize', context);
-              final color3 = FeatureColorsUtils.getFeatureSecondaryColor('organize', context);
-              
-              expect(color1, isA<Color>());
-              expect(color2, isA<Color>());
-              expect(color3, isA<Color>());
-              
-              return Container();
-            },
-          ),
+        await pumpWithTheme(
+          tester,
+          (context) {
+            final color1 = FeatureColorsUtils.getFeatureSecondaryColor('ORGANIZE', context);
+            final color2 = FeatureColorsUtils.getFeatureSecondaryColor('Organize', context);
+            final color3 = FeatureColorsUtils.getFeatureSecondaryColor('organize', context);
+            
+            expect(color1, isA<Color>());
+            expect(color2, isA<Color>());
+            expect(color3, isA<Color>());
+            return Container();
+          },
         );
       });
     });

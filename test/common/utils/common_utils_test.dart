@@ -4,6 +4,23 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import '../../test-utils/test_utils.dart';
 
+/// Helper function to pump a widget with a BuildContext
+Future<void> pumpWithContext(
+  WidgetTester tester, 
+  void Function(BuildContext) testCallback, {
+  ThemeData? theme,
+}) {
+  return tester.pumpMaterialWidget(
+    child: Builder(
+      builder: (context) {
+        testCallback(context);
+        return Container();
+      },
+    ),
+    theme: theme,
+  );
+}
+
 void main() {
   group('CommonUtils', () {
 
@@ -50,13 +67,9 @@ void main() {
     group('isDesktop', () {
       testWidgets('returns true for desktop platforms', (tester) async {
         for (final platform in CommonUtils.desktopPlatforms) {
-          await tester.pumpMaterialWidget(
-            child: Builder(
-              builder: (context) {
-                expect(CommonUtils.isDesktop(context), isTrue);
-                return Container();
-              },
-            ),
+          await pumpWithContext(
+            tester,
+            (context) => expect(CommonUtils.isDesktop(context), isTrue),
             theme: ThemeData(platform: platform),
           );
         }
@@ -65,13 +78,9 @@ void main() {
       testWidgets('returns false for mobile platforms', (tester) async {
         const mobile = [TargetPlatform.android, TargetPlatform.iOS];
         for (final platform in mobile) {
-          await tester.pumpMaterialWidget(
-            child: Builder(
-              builder: (context) {
-                expect(CommonUtils.isDesktop(context), isFalse);
-                return Container();
-              },
-            ),
+          await pumpWithContext(
+            tester,
+            (context) => expect(CommonUtils.isDesktop(context), isFalse),
             theme: ThemeData(platform: platform),
           );
         }
@@ -144,15 +153,13 @@ void main() {
     group('showSnackBar', () {
       testWidgets('displays message correctly', (tester) async {
         const message = 'Snack message';
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                CommonUtils.showSnackBar(context, message);
-              });
-              return Container();
-            },
-          ),
+        await pumpWithContext(
+          tester,
+          (context) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              CommonUtils.showSnackBar(context, message);
+            });
+          },
         );
         await tester.pump();
         expect(find.text(message), findsOneWidget);
@@ -160,15 +167,13 @@ void main() {
       });
 
       testWidgets('handles empty message gracefully', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                CommonUtils.showSnackBar(context, '');
-              });
-              return Container();
-            },
-          ),
+        await pumpWithContext(
+          tester,
+          (context) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              CommonUtils.showSnackBar(context, '');
+            });
+          },
         );
         await tester.pump();
         expect(find.byType(SnackBar), findsOneWidget);
@@ -183,15 +188,13 @@ void main() {
 
     group('findAncestorWidgetOfExactType', () {
       testWidgets('finds Scaffold ancestor', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              final ancestor =
-                  CommonUtils.findAncestorWidgetOfExactType<Scaffold>(context);
-              expect(ancestor, isA<Scaffold>());
-              return Container();
-            },
-          ),
+        await pumpWithContext(
+          tester,
+          (context) {
+            final ancestor =
+                CommonUtils.findAncestorWidgetOfExactType<Scaffold>(context);
+            expect(ancestor, isA<Scaffold>());
+          },
         );
       });
 
@@ -199,7 +202,7 @@ void main() {
         await tester.pumpMaterialWidget(
           child: Builder(
             builder: (context) {
-              return Column(
+              return Column( 
                 children: [
                   Builder(builder: (context) {
                     final col =
@@ -217,13 +220,9 @@ void main() {
 
     group('isKeyboardOpen', () {
       testWidgets('returns false when closed', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              expect(CommonUtils.isKeyboardOpen(context), isFalse);
-              return Container();
-            },
-          ),
+        await pumpWithContext(
+          tester,
+          (context) => expect(CommonUtils.isKeyboardOpen(context), isFalse),
         );
       });
 
@@ -270,43 +269,37 @@ void main() {
 
     group('openUrl', () {
       testWidgets('returns false for invalid and empty URLs', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              CommonUtils.openUrl('invalid', context).then((v) => expect(v, isFalse));
-              CommonUtils.openUrl('', context).then((v) => expect(v, isFalse));
-              return Container();
-            },
-          ),
+        await pumpWithContext(
+          tester,
+          (context) {
+            CommonUtils.openUrl('invalid', context).then((v) => expect(v, isFalse));
+            CommonUtils.openUrl('', context).then((v) => expect(v, isFalse));
+          },
         );
       });
 
       testWidgets('handles valid URLs safely', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              CommonUtils.openUrl('https://example.com', context)
-                  .then((v) => expect(v, isA<bool>()));
-              return Container();
-            },
-          ),
+        await pumpWithContext(
+          tester,
+          (context) {
+            CommonUtils.openUrl('https://example.com', context)
+                .then((v) => expect(v, isA<bool>()));
+          },
         );
       });
 
       testWidgets('handles different launch modes', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              CommonUtils.openUrl('https://example.com', context,
-                      mode: LaunchMode.externalApplication)
-                  .then((v) => expect(v, isA<bool>()));
+        await pumpWithContext(
+          tester,
+          (context) {
+            CommonUtils.openUrl('https://example.com', context,
+                    mode: LaunchMode.externalApplication)
+                .then((v) => expect(v, isA<bool>()));
 
-              CommonUtils.openUrl('https://example.com', context,
-                      mode: LaunchMode.platformDefault)
-                  .then((v) => expect(v, isA<bool>()));
-              return Container();
-            },
-          ),
+            CommonUtils.openUrl('https://example.com', context,
+                    mode: LaunchMode.platformDefault)
+                .then((v) => expect(v, isA<bool>()));
+          },
         );
       });
     });
@@ -329,24 +322,22 @@ void main() {
       });
 
       testWidgets('integration of all methods in widget', (tester) async {
-        await tester.pumpMaterialWidget(
-          child: Builder(
-            builder: (context) {
-              final id = CommonUtils.generateRandomId();
-              expect(id, isNotEmpty);
+        await pumpWithContext(
+          tester,
+          (context) {
+            final id = CommonUtils.generateRandomId();
+            expect(id, isNotEmpty);
 
-              expect(CommonUtils.isDesktop(context), isA<bool>());
-              expect(CommonUtils.getUrlWithProtocol('example.com'),
-                  equals('https://example.com'));
+            expect(CommonUtils.isDesktop(context), isA<bool>());
+            expect(CommonUtils.getUrlWithProtocol('example.com'),
+                equals('https://example.com'));
 
-              final color =
-                  CommonUtils().getRandomColorFromName('Integration User');
-              expect(color, isA<Color>());
+            final color =
+                CommonUtils().getRandomColorFromName('Integration User');
+            expect(color, isA<Color>());
 
-              expect(CommonUtils.isKeyboardOpen(context), isA<bool>());
-              return Container();
-            },
-          ),
+            expect(CommonUtils.isKeyboardOpen(context), isA<bool>());
+          },
         );
       });
 
