@@ -28,7 +28,7 @@ final bulletList = [
       htmlText:
           '<p>Mix and match different content types within a single sheet to create the perfect workspace for your needs</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   BulletModel(
     id: 'bullet-item-3',
@@ -100,7 +100,7 @@ final bulletList = [
       htmlText:
           '<p>Clear titles and descriptions help you find information quickly and provide context for future reference</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   BulletModel(
     id: 'bullet-item-8',
@@ -142,7 +142,7 @@ final bulletList = [
       htmlText:
           '<p>Icons serve as visual cues that make navigation faster and more intuitive</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   BulletModel(
     id: 'bullet-item-11',
@@ -186,7 +186,7 @@ final bulletList = [
       htmlText:
           '<p>Use tasks and events to plan your week and track your progress</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   BulletModel(
     id: 'bullet-item-14',
@@ -243,7 +243,7 @@ final bulletList = [
       htmlText:
           '<p>Guys, check this out! This <strong>travel meme</strong> is literally us planning this trip 😂</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   BulletModel(
     id: 'bullet-item-18',
@@ -314,7 +314,7 @@ final bulletList = [
       htmlText:
           '<p>This <strong>Christmas meme</strong> is so relatable! It\'s exactly how we\'re planning this party 😂</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   BulletModel(
     id: 'bullet-item-23',
@@ -371,7 +371,7 @@ final bulletList = [
       htmlText:
           '<p>I have tasks in <strong>5 different apps</strong> and I can\'t keep track of anything. There has to be a better way!</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   BulletModel(
     id: 'bullet-item-32',
@@ -442,7 +442,7 @@ final bulletList = [
       htmlText:
           '<p><strong>Panic questions everywhere</strong>! Food stall coordination, guest list management, stage management - everything is scattered and chaotic!</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   BulletModel(
     id: 'bullet-item-42',

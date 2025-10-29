@@ -18,7 +18,7 @@ final eventList = [
     createdBy: 'user_1',
     rsvpResponses: {
       'user_1': RsvpStatus.yes,
-      'user_2': RsvpStatus.yes,
+      'user_3': RsvpStatus.yes,
     },
   ),
   EventModel(
@@ -38,7 +38,6 @@ final eventList = [
     createdBy: 'user_1',
     rsvpResponses: {
       'user_1': RsvpStatus.yes,
-      'user_2': RsvpStatus.no,
       'user_3': RsvpStatus.maybe,
       'user_4': RsvpStatus.yes,
     },
@@ -60,7 +59,6 @@ final eventList = [
     createdBy: 'user_1',
     rsvpResponses: {
       'user_1': RsvpStatus.yes,
-      'user_2': RsvpStatus.yes,
       'user_3': RsvpStatus.maybe,
       'user_4': RsvpStatus.yes,
     },
@@ -79,10 +77,9 @@ final eventList = [
     ),
     startDate: DateTime.now().add(const Duration(days: 2)),
     endDate: DateTime.now().add(const Duration(days: 2, hours: 1)),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
     rsvpResponses: {
       'user_1': RsvpStatus.yes,
-      'user_2': RsvpStatus.yes,
       'user_3': RsvpStatus.yes,
       'user_4': RsvpStatus.maybe,
       'user_5': RsvpStatus.yes,
@@ -105,7 +102,6 @@ final eventList = [
     createdBy: 'user_4',
     rsvpResponses: {
       'user_1': RsvpStatus.yes,
-      'user_2': RsvpStatus.yes,
       'user_3': RsvpStatus.yes,
       'user_4': RsvpStatus.yes,
       'user_5': RsvpStatus.yes,
@@ -130,7 +126,6 @@ final eventList = [
     createdBy: 'user_3',
     rsvpResponses: {
       'user_1': RsvpStatus.yes,
-      'user_2': RsvpStatus.yes,
       'user_3': RsvpStatus.yes,
       'user_4': RsvpStatus.yes,
       'user_5': RsvpStatus.maybe,

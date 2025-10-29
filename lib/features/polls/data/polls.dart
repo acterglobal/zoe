@@ -14,7 +14,6 @@ final polls = [
         id: 'option-1-2',
         title: 'Event planning and scheduling',
         votes: [
-          Vote(userId: 'user_2'),
           Vote(userId: 'user_3'),
         ],
       ),
@@ -22,7 +21,7 @@ final polls = [
       PollOption(id: 'option-1-4', title: 'Link and resource sharing'),
     ],
     isMultipleChoice: false,
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   PollModel(
     id: 'poll-2',
@@ -40,7 +39,6 @@ final polls = [
         title: 'Orange slices',
         votes: [
           Vote(userId: 'user_1'),
-          Vote(userId: 'user_2'),
           Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
           Vote(userId: 'user_5'),
@@ -75,11 +73,6 @@ final polls = [
         votes: [
           Vote(
             userId: 'user_1',
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          ),
-          Vote(
-            userId: 'user_2',
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
           ),
@@ -127,7 +120,7 @@ final polls = [
         id: 'option-3-2',
         title: 'Delhi, India',
         votes: [
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
         ],
       ),
@@ -172,7 +165,7 @@ final polls = [
         id: 'option-2b-2',
         title: 'Airbnb - Home-like experience',
         votes: [
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
           Vote(userId: 'user_6'),
         ],
@@ -195,7 +188,7 @@ final polls = [
       ),
     ],
     isMultipleChoice: false,
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   PollModel(
     id: 'poll-3b',
@@ -218,13 +211,13 @@ final polls = [
         id: 'option-3b-2',
         title: 'Evening flights - relaxed morning, arrive at night',
         votes: [
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
         ],
       ),
     ],
     isMultipleChoice: false,
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   PollModel(
     id: 'poll-4',
@@ -248,7 +241,7 @@ final polls = [
         id: 'option-4-2',
         title: 'Hall - More space for everyone',
         votes: [
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
         ],
       ),
@@ -288,7 +281,7 @@ final polls = [
         id: 'option-4b-2',
         title: 'Buffet style with variety',
         votes: [
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
           Vote(userId: 'user_6'),
         ],
@@ -335,7 +328,7 @@ final polls = [
         id: 'option-6-2',
         title: 'Slack - Organized channels and threads',
         votes: [
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
           Vote(userId: 'user_6'),
         ],
@@ -345,7 +338,7 @@ final polls = [
         title: 'Discord - Voice and text combined',
         votes: [
           Vote(userId: 'user_1'),
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
         ],
       ),
@@ -384,7 +377,7 @@ final polls = [
         id: 'option-6b-2',
         title: 'Bi-weekly - Every two weeks',
         votes: [
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
           Vote(userId: 'user_6'),
         ],
@@ -432,7 +425,7 @@ final polls = [
         id: 'option-8-2',
         title: 'Outdoor venue with natural lighting',
         votes: [
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
           Vote(userId: 'user_6'),
         ],
@@ -442,7 +435,7 @@ final polls = [
         title: 'Mixed indoor-outdoor hybrid space',
         votes: [
           Vote(userId: 'user_1'),
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
           Vote(userId: 'user_8'),
         ],
       ),
@@ -458,7 +451,7 @@ final polls = [
       ),
     ],
     isMultipleChoice: true,
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   PollModel(
     id: 'poll-8b',
@@ -481,7 +474,7 @@ final polls = [
         id: 'option-8b-2',
         title: 'Traditional and classical art',
         votes: [
-          Vote(userId: 'user_2'),
+          Vote(userId: 'user_3'),
           Vote(userId: 'user_4'),
           Vote(userId: 'user_6'),
         ],
