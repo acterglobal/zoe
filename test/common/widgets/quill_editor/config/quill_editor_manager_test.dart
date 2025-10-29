@@ -8,26 +8,12 @@ void main() {
 
   late QuillEditorManager manager;
 
-  Widget _wrapWithMaterial({required Widget child}) {
+  Widget wrapWithMaterial({required Widget child}) {
     return MaterialApp(
       theme: ThemeData.light(),
       home: Scaffold(body: child),
     );
   }
-
-  setUp(() {
-    // fresh instance per test
-  });
-
-  tearDown(() {
-    try {
-      if (manager.state != QuillEditorState.disposed) {
-        manager.dispose();
-      }
-    } catch (_) {
-      // ignore if already disposed or not initialized
-    }
-  });
 
   group('Initialization', () {
     test('creates manager with default settings', () async {
@@ -143,7 +129,6 @@ void main() {
     });
   });
 
-
   group('Read-Only Mode', () {
     test('toggles read-only state', () async {
       manager = QuillEditorManager();
@@ -165,19 +150,22 @@ void main() {
       expect(called, isTrue);
     });
 
-    test('onFocusChanged registered but not triggered without widget tree', () async {
-      QuillController? controller;
-      FocusNode? node;
-      manager = QuillEditorManager(
-        onFocusChanged: (c, n) {
-          controller = c;
-          node = n;
-        },
-      );
-      await manager.initialize();
-      expect(controller, isNull);
-      expect(node, isNull);
-    });
+    test(
+      'onFocusChanged registered but not triggered without widget tree',
+      () async {
+        QuillController? controller;
+        FocusNode? node;
+        manager = QuillEditorManager(
+          onFocusChanged: (c, n) {
+            controller = c;
+            node = n;
+          },
+        );
+        await manager.initialize();
+        expect(controller, isNull);
+        expect(node, isNull);
+      },
+    );
 
     test('does not trigger after disposal', () async {
       int count = 0;
@@ -204,7 +192,7 @@ void main() {
       await manager.initialize();
       manager.dispose();
       expect(manager.state, QuillEditorState.disposed);
-      
+
       // Attempting to dispose again may throw an error due to QuillController limitation
       // This is expected behavior - the manager should remain in disposed state
       try {
@@ -218,34 +206,37 @@ void main() {
     });
   });
 
-
   group('Text Style Configuration', () {
     test('getDefaultStyles returns valid styles', () async {
       manager = QuillEditorManager();
       await manager.initialize();
 
-      final builder = Builder(builder: (context) {
-        final styles = manager.getDefaultStyles(context);
-        expect(styles.paragraph, isNotNull);
-        expect(styles.code, isNotNull);
-        return const SizedBox();
-      });
+      final builder = Builder(
+        builder: (context) {
+          final styles = manager.getDefaultStyles(context);
+          expect(styles.paragraph, isNotNull);
+          expect(styles.code, isNotNull);
+          return const SizedBox();
+        },
+      );
 
-      _wrapWithMaterial(child: builder);
+      wrapWithMaterial(child: builder);
     });
 
     test('getDefaultTextStyle returns valid style', () async {
       manager = QuillEditorManager();
       await manager.initialize();
 
-      final builder = Builder(builder: (context) {
-        final textStyle = manager.getDefaultTextStyle(context);
-        expect(textStyle.fontSize, isNotNull);
-        expect(textStyle.color, isNotNull);
-        return const SizedBox();
-      });
+      final builder = Builder(
+        builder: (context) {
+          final textStyle = manager.getDefaultTextStyle(context);
+          expect(textStyle.fontSize, isNotNull);
+          expect(textStyle.color, isNotNull);
+          return const SizedBox();
+        },
+      );
 
-      _wrapWithMaterial(child: builder);
+      wrapWithMaterial(child: builder);
     });
 
     test('uses custom text style if provided', () async {
@@ -253,13 +244,15 @@ void main() {
       manager = QuillEditorManager(textStyle: style);
       await manager.initialize();
 
-      final builder = Builder(builder: (context) {
-        final textStyle = manager.getDefaultTextStyle(context);
-        expect(textStyle, isNotNull);
-        return const SizedBox();
-      });
+      final builder = Builder(
+        builder: (context) {
+          final textStyle = manager.getDefaultTextStyle(context);
+          expect(textStyle, isNotNull);
+          return const SizedBox();
+        },
+      );
 
-      _wrapWithMaterial(child: builder);
+      wrapWithMaterial(child: builder);
     });
   });
 
@@ -298,7 +291,6 @@ void main() {
       expect(manager.state, QuillEditorState.disposed);
     });
   });
-
 
   group('Edge Cases', () {
     test('handles null and empty content', () async {
