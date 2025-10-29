@@ -16,7 +16,7 @@ final tasks = [
     isCompleted: true,
     dueDate: DateTime.now().add(const Duration(minutes: 15)),
     createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_2', 'user_3'],
+    assignedUsers: ['user_1', 'user_3'],
   ),
   TaskModel(
     id: 'task-2',
@@ -34,7 +34,6 @@ final tasks = [
     dueDate: DateTime.now().add(const Duration(minutes: 30)),
     createdBy: 'user_1',
     assignedUsers: [
-      'user_2',
       'user_3',
       'user_4',
       'user_5',
@@ -60,7 +59,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(hours: 1)),
     createdBy: 'user_1',
-    assignedUsers: ['user_2', 'user_3'],
+    assignedUsers: ['user_3'],
   ),
   TaskModel(
     id: 'task-4',
@@ -77,7 +76,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(hours: 2)),
     createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_2', 'user_3'],
+    assignedUsers: ['user_1', 'user_3'],
   ),
   TaskModel(
     id: 'task-5',
@@ -110,8 +109,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(hours: 6)),
-    createdBy: 'user_2',
-    assignedUsers: ['user_1', 'user_2'],
+    createdBy: 'user_3',
+    assignedUsers: ['user_1'],
   ),
   TaskModel(
     id: 'task-7',
@@ -162,7 +161,7 @@ final tasks = [
     isCompleted: true,
     dueDate: DateTime.now().add(const Duration(days: 1)),
     createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_2', 'user_3'],
+    assignedUsers: ['user_1', 'user_3'],
   ),
   // Trip Planning Tasks
   TaskModel(
@@ -179,8 +178,8 @@ final tasks = [
     ),
     isCompleted: true,
     dueDate: DateTime.now().add(const Duration(days: 5)),
-    createdBy: 'user_2',
-    assignedUsers: ['user_2', 'user_3'],
+    createdBy: 'user_3',
+    assignedUsers: ['user_3'],
   ),
   TaskModel(
     id: 'trip-task-2',
@@ -231,7 +230,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 6)),
     createdBy: 'user_4',
-    assignedUsers: ['user_1', 'user_2', 'user_3', 'user_4'],
+    assignedUsers: ['user_1', 'user_3', 'user_4'],
   ),
   // Christmas Planning Tasks
   TaskModel(
@@ -266,7 +265,7 @@ final tasks = [
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 5)),
     createdBy: 'user_1',
-    assignedUsers: ['user_1', 'user_2', 'user_4'],
+    assignedUsers: ['user_1', 'user_3', 'user_4'],
   ),
   TaskModel(
     id: 'christmas-task-3',
@@ -282,8 +281,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 4)),
-    createdBy: 'user_2',
-    assignedUsers: ['user_2', 'user_3'],
+    createdBy: 'user_3',
+    assignedUsers: ['user_3'],
   ),
   TaskModel(
     id: 'christmas-task-4',
@@ -334,8 +333,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
-    createdBy: 'user_2',
-    assignedUsers: ['user_2', 'user_4', 'user_7'],
+    createdBy: 'user_3',
+    assignedUsers: ['user_3', 'user_4', 'user_7'],
   ),
   TaskModel(
     id: 'community-task-3',
@@ -403,8 +402,8 @@ final tasks = [
     ),
     isCompleted: false,
     dueDate: DateTime.now().add(const Duration(days: 3)),
-    createdBy: 'user_2',
-    assignedUsers: ['user_2', 'user_4', 'user_6'],
+    createdBy: 'user_3',
+    assignedUsers: ['user_3', 'user_4', 'user_6'],
   ),
   TaskModel(
     id: 'exhibition-task-3',

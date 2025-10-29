@@ -43,7 +43,7 @@ final textList = [
       htmlText:
           '<p>Zoe offers four powerful content block types to help you organize information effectively:</p><br><br><p><strong>📝 Text Blocks:</strong> Perfect for notes, ideas, documentation, and detailed explanations. Supports both plain text and rich HTML formatting.</p><br><br><p><strong>✅ Task Lists:</strong> Organize your to-dos with descriptions, due dates, and completion tracking. Great for project management and personal productivity.</p><br><br><p><strong>📅 Event Blocks:</strong> Schedule meetings, deadlines, and important dates with start and end times. Keep track of your calendar within your workspace.</p><br><br><p><strong>📋 List Blocks:</strong> Create bulleted lists, numbered lists, or simple collections. Perfect for organizing ideas, features, or any structured information.</p><br><br><p>Each content type is designed to work together, so you can mix and match them within a single sheet to create the perfect workspace for your needs.</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   TextModel(
     sheetId: 'sheet-1',
@@ -58,7 +58,7 @@ final textList = [
       htmlText:
           '<p>Here are some pro tips to help you make the most of Zoe:</p><br><br><p><strong>🎯 Start Small:</strong> Begin with one sheet and gradually add content as you get comfortable with the interface.</p><br><br><p><strong>📱 Use Icons:</strong> Choose meaningful icons for your sheets - they help you quickly identify different workspaces at a glance.</p><br><br><p><strong>📝 Be Descriptive:</strong> Add detailed descriptions to tasks and content blocks. Future you will thank you for the context!</p><br><br><p><strong>🔄 Stay Organized:</strong> Use the ordering system to arrange content logically within your sheets.</p><br><br><p><strong>⚡ Quick Actions:</strong> Look for quick action buttons and shortcuts throughout the interface to speed up your workflow.</p><br><br><p><strong>🏠 Home Dashboard:</strong> Your home screen shows all your sheets - use it as your central command center.</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   // Trip Planning Text Content
   TextModel(
@@ -90,7 +90,7 @@ final textList = [
       htmlText:
           '<p>Ho ho ho! Time to spread <strong>Christmas cheer</strong>! 🎅</p><br><p>This is our magical workshop for creating the most wonderful Christmas celebration ever. From planning the perfect party to coordinating festive activities, we\'re making this holiday season unforgettable.</p><br><br><p><strong>🗳️ Vote</strong> on venue and celebration preferences</p><br><p><strong>🎅 Track</strong> party preparation tasks and deadlines</p><br><p><strong>📅 Schedule</strong> planning meetings and festive events</p><br><p><strong>💬 Share</strong> Christmas ideas, memes, and holiday spirit</p><br><p><strong>🔗 Store</strong> booking confirmations and party resources</p><br><p><strong>📋 Keep</strong> all documents organized and accessible</p><br><br><p>Let\'s deck the halls and make this Christmas absolutely magical! ✨🎁</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   // Community Organization Text Content
   TextModel(
@@ -106,7 +106,7 @@ final textList = [
       htmlText:
           '<p>Your <strong>command center for community management</strong>! 📱</p><br><p>This workspace helps you organize 100+ notifications and scattered tools. From organizing chat groups to tracking important clients, coordinating events, and managing tasks - bring everything together in one place.</p><br><br><p><strong>🗳️ Vote</strong> on community management challenges</p><br><p><strong>👥 Track</strong> community tasks and coordination efforts</p><br><p><strong>📅 Schedule</strong> community meetings and events</p><br><p><strong>💬 Share</strong> frustrations, solutions, and success stories</p><br><p><strong>🔗 Store</strong> community tools and resources</p><br><p><strong>📄 Keep</strong> all community documents organized</p><br><br><p>Transform community chaos into seamless coordination! 🎯✨</p>',
     ),
-    createdBy: 'user_2',
+    createdBy: 'user_3',
   ),
   // Exhibition Planning Text Content
   TextModel(
