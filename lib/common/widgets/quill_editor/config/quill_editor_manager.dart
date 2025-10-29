@@ -186,16 +186,17 @@ class QuillEditorManager {
   /// Check if the manager is initialized
   bool get isInitialized => _state == QuillEditorState.initialized;
 
+  /// Get current state
+  QuillEditorState get state => _state;
+
   /// Get default styles for code blocks and other elements
   DefaultStyles getDefaultStyles(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    final themeBasedStyle =
-        _widgetTextStyle?.copyWith(
+    final themeBasedStyle = _widgetTextStyle?.copyWith(
           color: colorScheme.onSurface.withValues(alpha: 0.87),
-          fontSize:
-              _widgetTextStyle.fontSize ?? textTheme.bodyMedium?.fontSize ?? 14,
+          fontSize: _widgetTextStyle.fontSize ?? textTheme.bodyMedium?.fontSize ?? 14,
         ) ??
         TextStyle(
           fontSize: textTheme.bodyMedium?.fontSize ?? 14,
@@ -246,10 +247,8 @@ class QuillEditorManager {
 
     return _widgetTextStyle?.copyWith(
           color: colorScheme.onSurface.withValues(alpha: 0.87),
-          fontSize:
-              _widgetTextStyle.fontSize ?? textTheme.bodyMedium?.fontSize ?? 14,
-          height:
-              _widgetTextStyle.height ?? textTheme.bodyMedium?.height ?? 1.6,
+          fontSize: _widgetTextStyle.fontSize ?? textTheme.bodyMedium?.fontSize ?? 14,
+          height: _widgetTextStyle.height ?? textTheme.bodyMedium?.height ?? 1.6,
         ) ??
         defaultStyle;
   }
