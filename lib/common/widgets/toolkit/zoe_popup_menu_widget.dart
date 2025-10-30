@@ -156,7 +156,7 @@ class ZoeCommonMenuItems {
   /// Add cover image menu item
   static ZoePopupMenuItem addCoverImage({
     VoidCallback? onTapAddCoverImage,
-    String title = 'Add Cover Image',
+    String title = 'Add cover image',
     String subtitle = 'Add a cover image for this sheet',
   }) => ZoePopupMenuItem(
     id: 'add_cover_image',
@@ -169,7 +169,7 @@ class ZoeCommonMenuItems {
   /// Update cover image menu item
   static ZoePopupMenuItem updateCoverImage({
     VoidCallback? onTapUpdateCoverImage,
-    String title = 'Update Cover Image',
+    String title = 'Update cover image',
     String subtitle = 'Update the cover image for this sheet',
   }) => ZoePopupMenuItem(
     id: 'update_cover_image',
@@ -182,7 +182,7 @@ class ZoeCommonMenuItems {
   /// Remove cover image menu item
   static ZoePopupMenuItem removeCoverImage({
     VoidCallback? onTapRemoveCoverImage,
-    String title = 'Remove Cover Image',
+    String title = 'Remove cover image',
     String subtitle = 'Remove the cover image for this sheet',
   }) => ZoePopupMenuItem(
     id: 'remove_cover_image',
