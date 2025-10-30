@@ -5,6 +5,8 @@ import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/features/task/data/tasks.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'task_providers.g.dart';
 
@@ -236,10 +238,20 @@ List<TaskModel> allTasks(Ref ref) {
 List<TaskModel> taskListSearch(Ref ref) {
   final searchValue = ref.watch(searchValueProvider);
   final allTasks = ref.watch(allTasksProvider);
-  if (searchValue.isEmpty) return allTasks;
-  return allTasks.where((task) {
-    return task.title.toLowerCase().contains(searchValue.toLowerCase());
-  }).toList();
+  final currentUserId = ref.watch(loggedInUserProvider).value;
+
+  if (currentUserId == null || currentUserId.isEmpty) return [];
+
+  final memberTasks = allTasks.where((t) {
+    final sheet = ref.watch(sheetProvider(t.sheetId));
+    return sheet?.users.contains(currentUserId) == true;
+  });
+
+  if (searchValue.isEmpty) return memberTasks.toList();
+  return memberTasks
+      .where((task) =>
+          task.title.toLowerCase().contains(searchValue.toLowerCase()))
+      .toList();
 }
 
 /// Provider for a single task by ID

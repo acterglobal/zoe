@@ -319,6 +319,8 @@
     "@share": {},
     "join": "Join",
     "@join": {},
+    "joinSheet": "Join Sheet",
+    "@joinSheet": {},
     "joinedSheet": "You have joined the sheet",
     "@joinedSheet": {},
     "shareThisContent": "Share this content",
