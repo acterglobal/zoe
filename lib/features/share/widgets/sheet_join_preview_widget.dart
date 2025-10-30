@@ -57,7 +57,7 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
                 onTap: (emoji) {},
               ),
               const SizedBox(width: 8),
-              Text(sheet.title, style: theme.textTheme.bodyMedium),
+              Expanded(child: Text(sheet.title, style: theme.textTheme.bodyMedium)),
             ],
           ),
           Text(
