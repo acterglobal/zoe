@@ -8,6 +8,7 @@ import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
+import 'package:zoe/features/share/widgets/sheet_share_preview_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 void showShareItemsBottomSheet({
@@ -30,6 +31,7 @@ void showShareItemsBottomSheet({
 class ShareItemsBottomSheet extends ConsumerWidget {
   final String parentId;
   final bool isSheet;
+
   const ShareItemsBottomSheet({
     super.key,
     required this.parentId,
@@ -57,7 +59,13 @@ class ShareItemsBottomSheet extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 20),
-          _buildContentPreview(context, contentText),
+          if (isSheet)
+            SheetSharePreviewWidget(
+              parentId: parentId,
+              contentText: contentText,
+            )
+          else
+            _buildContentPreview(context, contentText),
           const SizedBox(height: 20),
           _buildShareButton(context, contentText),
           const SizedBox(height: 20),
