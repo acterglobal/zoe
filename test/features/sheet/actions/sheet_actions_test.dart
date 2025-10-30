@@ -239,7 +239,7 @@ void main() {
 
         // Verify the action was called without errors
         expect(find.byType(MediaSelectionBottomSheetWidget), findsOneWidget);
-        expect(find.text(getL10n(tester).takePhotoOrVideo), findsOneWidget);
+        expect(find.text(getL10n(tester).camera), findsOneWidget);
       });
 
       testWidgets('handles gallery selection', (tester) async {
