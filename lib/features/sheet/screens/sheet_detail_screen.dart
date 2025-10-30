@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
@@ -29,36 +30,13 @@ class SheetDetailScreen extends ConsumerWidget {
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(
-            title: L10n.of(context).sheet,
-            actions: [
-              const SizedBox(width: 10),
-              ContentMenuButton(
-                onTap: (context) => showSheetMenu(
-                  context: context,
-                  ref: ref,
-                  isEditing: isEditing,
-                  sheetId: sheetId,
-                ),
-              ),
-            ],
-          ),
-        ),
-        body: Column(
+        body: Stack(
           children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  _buildBody(context, ref, isEditing),
-                  buildQuillEditorPositionedToolbar(
-                    context,
-                    ref,
-                    isEditing: isEditing,
-                  ),
-                ],
-              ),
+            _buildSliverBody(context, ref, isEditing),
+            buildQuillEditorPositionedToolbar(
+              context,
+              ref,
+              isEditing: isEditing,
             ),
           ],
         ),
@@ -70,22 +48,82 @@ class SheetDetailScreen extends ConsumerWidget {
     );
   }
 
-  /// Builds the main body
-  Widget _buildBody(BuildContext context, WidgetRef ref, bool isEditing) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSheetHeader(context, ref, isEditing),
-          const SizedBox(height: 16),
-          ContentWidget(
-            parentId: sheetId,
-            sheetId: sheetId,
-            showSheetName: false,
+  /// Builds the sliver body
+  Widget _buildSliverBody(BuildContext context, WidgetRef ref, bool isEditing) {
+    return CustomScrollView(
+      slivers: [
+        _buildSliverAppBar(context, ref, isEditing),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+              _buildContentBody(context, ref, isEditing),
+            ]),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Applies the cover image to the sliver app bar
+  Widget _buildSliverAppBar(
+    BuildContext context,
+    WidgetRef ref,
+    bool isEditing,
+  ) {
+    final sheet = ref.watch(sheetProvider(sheetId));
+    final coverImageUrl = sheet?.coverImageUrl;
+    final hasCoverImage = coverImageUrl != null;
+
+    return SliverAppBar(
+      expandedHeight: hasCoverImage ? 200 : kToolbarHeight,
+      collapsedHeight: kToolbarHeight,
+      automaticallyImplyLeading: false,
+      title: ZoeAppBar(
+        title: L10n.of(context).sheet,
+        actions: [
+          const SizedBox(width: 10),
+          ContentMenuButton(
+            onTap: (context) => showSheetMenu(
+              context: context,
+              ref: ref,
+              hasCoverImage: hasCoverImage,
+              isEditing: isEditing,
+              sheetId: sheetId,
+            ),
           ),
         ],
       ),
+      elevation: 0,
+      flexibleSpace: hasCoverImage
+          ? FlexibleSpaceBar(
+              background: CachedNetworkImage(
+                imageUrl: coverImageUrl,
+                fit: BoxFit.cover,
+              ),
+            )
+          : null,
+    );
+  }
+
+  /// Builds the content body
+  Widget _buildContentBody(
+    BuildContext context,
+    WidgetRef ref,
+    bool isEditing,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 10),
+        _buildSheetHeader(context, ref, isEditing),
+        const SizedBox(height: 16),
+        ContentWidget(
+          parentId: sheetId,
+          sheetId: sheetId,
+          showSheetName: false,
+        ),
+      ],
     );
   }
 
