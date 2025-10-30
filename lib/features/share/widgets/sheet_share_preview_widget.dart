@@ -72,62 +72,47 @@ class SheetSharePreviewWidget extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
 
-            // Row 1: Events, Tasks, Links
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    context: context,
-                    icon: Icons.event_rounded,
-                    label: L10n.of(context).events,
-                    count: sheetEvents.length,
-                    subtitle: todayEvents.isNotEmpty
-                        ? '${todayEvents.length} ${L10n.of(context).today}'
-                        : null,
-                    color: AppColors.secondaryColor,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: _buildStatCard(
-                    context: context,
-                    icon: Icons.task_alt_rounded,
-                    label: L10n.of(context).tasks,
-                    count: sheetTasks.length,
-                    subtitle: todayTasks.isNotEmpty
-                        ? '${todayTasks.length} ${L10n.of(context).dueToday}'
-                        : null,
-                    color: AppColors.successColor,
-                  ),
-                ),
-              ],
+            // Row 1: Events, Tasks
+            _buildStatCard(
+              context: context,
+              icon: Icons.event_rounded,
+              label: L10n.of(context).events,
+              count: sheetEvents.length,
+              subtitle: todayEvents.isNotEmpty
+                  ? '${todayEvents.length} ${L10n.of(context).today}'
+                  : null,
+              color: AppColors.secondaryColor,
             ),
 
-            const SizedBox(height: 6),
+            const SizedBox(width: 6),
+
+            _buildStatCard(
+              context: context,
+              icon: Icons.task_alt_rounded,
+              label: L10n.of(context).tasks,
+              count: sheetTasks.length,
+              subtitle: todayTasks.isNotEmpty
+                  ? '${todayTasks.length} ${L10n.of(context).dueToday}'
+                  : null,
+              color: AppColors.successColor,
+            ),
 
             // Row 2: Documents and Polls
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    context: context,
-                    icon: Icons.insert_drive_file_rounded,
-                    label: L10n.of(context).documents,
-                    count: sheetDocuments.length,
-                    color: AppColors.brightOrangeColor,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: _buildStatCard(
-                    context: context,
-                    icon: Icons.poll_rounded,
-                    label: L10n.of(context).polls,
-                    count: sheetPolls.length,
-                    color: AppColors.brightMagentaColor,
-                  ),
-                ),
-              ],
+            _buildStatCard(
+              context: context,
+              icon: Icons.insert_drive_file_rounded,
+              label: L10n.of(context).documents,
+              count: sheetDocuments.length,
+              color: AppColors.brightOrangeColor,
+            ),
+
+            const SizedBox(width: 6),
+            _buildStatCard(
+              context: context,
+              icon: Icons.poll_rounded,
+              label: L10n.of(context).polls,
+              count: sheetPolls.length,
+              color: AppColors.brightMagentaColor,
             ),
           ],
         ],
@@ -145,56 +130,49 @@ class SheetSharePreviewWidget extends ConsumerWidget {
   }) {
     final theme = Theme.of(context);
 
-    return GlassyContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      borderRadius: BorderRadius.circular(10),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          StyledIconContainer(
-            icon: icon,
-            primaryColor: color,
-            iconSize: 14,
-            size: 20,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  label,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontSize: 11,
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        StyledIconContainer(
+          icon: icon,
+          primaryColor: color,
+          iconSize: 14,
+          size: 20,
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Row(
+            children: [
+              Text(
+                label,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
-                if (subtitle != null)
-                  Text(
-                    subtitle,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 9,
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(width: 4),
+              if (subtitle != null)
+                Text(
+                  '($subtitle)',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
-          const SizedBox(width: 4),
-          Text(
-            count.toString(),
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: color,
-              fontSize: 18,
-            ),
+        ),
+        const SizedBox(width: 4),
+        Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.15),
+            border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
+            shape: BoxShape.circle,
           ),
-        ],
-      ),
+          child: Text(count.toString(), style: theme.textTheme.labelSmall),
+        ),
+      ],
     );
   }
 }
