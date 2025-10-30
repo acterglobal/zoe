@@ -539,5 +539,8 @@
     "editThisTask": "Edit this task",
     "deleteThisTask": "Delete this task",
     "dueDate": "Due Date",
-    "date": "Date"
+    "date": "Date",
+    "addCoverImage": "Add cover image",
+    "updateCoverImage": "Update cover image",
+    "removeCoverImage": "Remove cover image"
 }

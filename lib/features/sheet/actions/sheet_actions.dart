@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/document_selection_bottom_sheet.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
@@ -16,6 +17,7 @@ void showSheetMenu({
   required BuildContext context,
   required WidgetRef ref,
   required bool isEditing,
+  bool hasCoverImage = false,
   required String sheetId,
 }) {
   final menuItems = [
@@ -23,6 +25,23 @@ void showSheetMenu({
       onTapConnect: () => SheetActions.connectSheet(context, sheetId),
       subtitle: L10n.of(context).connectWithWhatsAppGroup,
     ),
+    if (hasCoverImage) ...[
+      ZoeCommonMenuItems.updateCoverImage(
+        onTapUpdateCoverImage: () =>
+            SheetActions.updateCoverImage(context, ref, sheetId),
+        subtitle: L10n.of(context).updateCoverImage,
+      ),
+      ZoeCommonMenuItems.removeCoverImage(
+        onTapRemoveCoverImage: () =>
+            SheetActions.removeCoverImage(context, ref, sheetId),
+        subtitle: L10n.of(context).removeCoverImage,
+      ),
+    ] else
+      ZoeCommonMenuItems.addCoverImage(
+        onTapAddCoverImage: () =>
+            SheetActions.addCoverImage(context, ref, sheetId),
+        subtitle: L10n.of(context).addCoverImage,
+      ),
     ZoeCommonMenuItems.copy(
       onTapCopy: () => SheetActions.copySheet(context, ref, sheetId),
       subtitle: L10n.of(context).copySheetContent,
@@ -53,6 +72,34 @@ class SheetActions {
       AppRoutes.whatsappGroupConnect.route.replaceAll(':sheetId', sheetId),
     );
   }
+
+  /// Adds the cover image for the specified sheet content
+  static void addCoverImage(
+    BuildContext context,
+    WidgetRef ref,
+    String sheetId,
+  ) {
+    showFileSelectionBottomSheet(
+      context,
+      onTapCamera: () => {},
+      onTapGallery: () => {},
+      onTapFileChooser: () => {},
+    );
+  }
+
+  /// Updates the cover image for the specified sheet content
+  static void updateCoverImage(
+    BuildContext context,
+    WidgetRef ref,
+    String sheetId,
+  ) {}
+
+  /// Removes the cover image for the specified sheet content
+  static void removeCoverImage(
+    BuildContext context,
+    WidgetRef ref,
+    String sheetId,
+  ) {}
 
   /// Copies sheet content to clipboard
   static void copySheet(BuildContext context, WidgetRef ref, String sheetId) {
