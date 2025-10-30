@@ -28,7 +28,6 @@ class SheetSharePreviewWidget extends ConsumerWidget {
     final sheet = ref.watch(sheetProvider(parentId));
     if (sheet == null) return const SizedBox.shrink();
 
-    // Get all content filtered by sheetId
     final eventList = ref.watch(eventListProvider);
     final taskList = ref.watch(taskListProvider);
     final linkList = ref.watch(linkListProvider);
@@ -71,8 +70,6 @@ class SheetSharePreviewWidget extends ConsumerWidget {
               color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
             ),
             const SizedBox(height: 16),
-
-            // Row 1: Events, Tasks
             _buildStatCard(
               context: context,
               icon: Icons.event_rounded,
@@ -83,9 +80,6 @@ class SheetSharePreviewWidget extends ConsumerWidget {
                   : null,
               color: AppColors.secondaryColor,
             ),
-
-            const SizedBox(width: 6),
-
             _buildStatCard(
               context: context,
               icon: Icons.task_alt_rounded,
@@ -96,8 +90,6 @@ class SheetSharePreviewWidget extends ConsumerWidget {
                   : null,
               color: AppColors.successColor,
             ),
-
-            // Row 2: Documents and Polls
             _buildStatCard(
               context: context,
               icon: Icons.insert_drive_file_rounded,
@@ -105,8 +97,6 @@ class SheetSharePreviewWidget extends ConsumerWidget {
               count: sheetDocuments.length,
               color: AppColors.brightOrangeColor,
             ),
-
-            const SizedBox(width: 6),
             _buildStatCard(
               context: context,
               icon: Icons.poll_rounded,
@@ -148,8 +138,6 @@ class SheetSharePreviewWidget extends ConsumerWidget {
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(width: 4),
               if (subtitle != null)
@@ -162,7 +150,6 @@ class SheetSharePreviewWidget extends ConsumerWidget {
             ],
           ),
         ),
-        const SizedBox(width: 4),
         Container(
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(

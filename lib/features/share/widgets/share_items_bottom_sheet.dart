@@ -46,32 +46,30 @@ class ShareItemsBottomSheet extends ConsumerWidget {
 
     return MaxWidthWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              _getShareTitle(context, ref),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            _getShareTitle(context, ref),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
-            const SizedBox(height: 20),
-            if (isSheet)
-              SheetSharePreviewWidget(
-                parentId: parentId,
-                contentText: contentText,
-              )
-            else
-              _buildContentPreview(context, contentText),
-            const SizedBox(height: 20),
-            _buildShareButton(context, contentText),
-            const SizedBox(height: 20),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+          if (isSheet)
+            SheetSharePreviewWidget(
+              parentId: parentId,
+              contentText: contentText,
+            )
+          else
+            _buildContentPreview(context, contentText),
+          const SizedBox(height: 20),
+          _buildShareButton(context, contentText),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
