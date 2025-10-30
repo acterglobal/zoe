@@ -42,13 +42,15 @@ class ShareItemsBottomSheet extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ShareItemsBottomSheet> createState() => _ShareItemsBottomSheetState();
+  ConsumerState<ShareItemsBottomSheet> createState() =>
+      _ShareItemsBottomSheetState();
 }
 
 class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
   bool _justJoined = false;
 
   String get parentId => widget.parentId;
+
   bool get isSheet => widget.isSheet;
 
   @override
@@ -159,7 +161,11 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
     );
   }
 
-  Widget _buildAnimatedPrimaryButton(BuildContext context, WidgetRef ref, String contentText) {
+  Widget _buildAnimatedPrimaryButton(
+    BuildContext context,
+    WidgetRef ref,
+    String contentText,
+  ) {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 250),
       switchInCurve: Curves.easeOutBack,
@@ -175,50 +181,50 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
     );
   }
 
-  Widget _buildPrimaryButton(BuildContext context, WidgetRef ref, String contentText) {
+  Widget _buildPrimaryButton(
+    BuildContext context,
+    WidgetRef ref,
+    String contentText,
+  ) {
     final currentUserId = ref.watch(loggedInUserProvider).value;
     final usersInSheet = ref.watch(listOfUsersBySheetIdProvider(parentId));
     final isMember =
-        currentUserId != null && currentUserId.isNotEmpty && usersInSheet.contains(currentUserId);
+        currentUserId != null &&
+        usersInSheet.contains(currentUserId);
 
     if (_justJoined) {
-      return KeyedSubtree(
-        key: const ValueKey('joined'),
-        child: ZoePrimaryButton(
-          onPressed: () {},
-          icon: Icons.check_circle_rounded,
-          text: L10n.of(context).joinedSheet,
-        ),
+      return ZoePrimaryButton(
+        onPressed: () {},
+        icon: Icons.check_circle_rounded,
+        text: L10n.of(context).joinedSheet,
       );
     }
 
-    if (!isMember && currentUserId != null && currentUserId.isNotEmpty && isSheet) {
-      return KeyedSubtree(
-        key: const ValueKey('join'),
-        child: ZoePrimaryButton(
-          onPressed: () {
-            ref.read(sheetListProvider.notifier).addUserToSheet(parentId, currentUserId);
-            CommonUtils.showSnackBar(context, L10n.of(context).joinedSheet);
-            setState(() => _justJoined = true);
-            unawaited(Future.delayed(const Duration(milliseconds: 900), () {
+    if (!isMember && currentUserId != null && isSheet) {
+      return ZoePrimaryButton(
+        onPressed: () {
+          ref
+              .read(sheetListProvider.notifier)
+              .addUserToSheet(parentId, currentUserId);
+          CommonUtils.showSnackBar(context, L10n.of(context).joinedSheet);
+          setState(() => _justJoined = true);
+          unawaited(
+            Future.delayed(const Duration(milliseconds: 900), () {
               if (!mounted) return;
               setState(() => _justJoined = false);
-            }));
-          },
-          icon: Icons.person_add_rounded,
-          text: L10n.of(context).join,
-        ),
+            }),
+          );
+        },
+        icon: Icons.person_add_rounded,
+        text: L10n.of(context).join,
       );
     }
 
-    return KeyedSubtree(
-      key: const ValueKey('share'),
-      child: ZoePrimaryButton(
-        onPressed: () =>
-            CommonUtils.shareText(contentText, subject: L10n.of(context).share),
-        icon: Icons.share_rounded,
-        text: L10n.of(context).share,
-      ),
+    return ZoePrimaryButton(
+      onPressed: () =>
+          CommonUtils.shareText(contentText, subject: L10n.of(context).share),
+      icon: Icons.share_rounded,
+      text: L10n.of(context).share,
     );
   }
 }
