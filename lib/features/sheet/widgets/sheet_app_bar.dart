@@ -23,7 +23,7 @@ class SheetAppBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final sheet = ref.watch(sheetProvider(sheetId));
     final coverImageUrl = sheet?.coverImageUrl;
-    final hasCoverImage = coverImageUrl != null;
+    final hasCoverImage = coverImageUrl != null && coverImageUrl.isNotEmpty;
     final isNetworkImage = coverImageUrl?.startsWith('http') ?? false;
 
     return SliverAppBar(
@@ -61,7 +61,12 @@ class SheetAppBar extends ConsumerWidget {
   }
 
   Widget _buildFileCoverImage(String coverImageUrl) {
-    return Image.file(File(coverImageUrl), fit: BoxFit.cover);
+    return Image.file(
+      File(coverImageUrl),
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) =>
+          const Icon(Icons.broken_image_rounded, size: 80),
+    );
   }
 
   Widget _buildNetworkCoverImage(String coverImageUrl) {
@@ -70,7 +75,7 @@ class SheetAppBar extends ConsumerWidget {
       fit: BoxFit.cover,
       placeholder: (_, _) => const Center(child: CircularProgressIndicator()),
       errorWidget: (_, _, _) =>
-          const Icon(Icons.image_not_supported_outlined, size: 80),
+          const Icon(Icons.broken_image_rounded, size: 80),
     );
   }
 }
