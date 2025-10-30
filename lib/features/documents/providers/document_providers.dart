@@ -3,6 +3,8 @@ import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/documents/data/document_data.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'document_providers.g.dart';
 
@@ -86,12 +88,19 @@ List<DocumentModel> documentListByParent(Ref ref, String parentId) {
 /// Provider for searching documents
 @riverpod
 List<DocumentModel> documentListSearch(Ref ref) {
-  final documentList = ref.watch(documentListProvider);
+  final allDocuments = ref.watch(documentListProvider);
   final searchValue = ref.watch(searchValueProvider);
-  
-  if (searchValue.isEmpty) return documentList;
-  
-  return documentList
+  final currentUserId = ref.watch(loggedInUserProvider).value;
+
+  if (currentUserId == null || currentUserId.isEmpty) return [];
+
+  final memberDocs = allDocuments.where((d) {
+    final sheet = ref.watch(sheetProvider(d.sheetId));
+    return sheet?.users.contains(currentUserId) == true;
+  });
+
+  if (searchValue.isEmpty) return memberDocs.toList();
+  return memberDocs
       .where((d) => d.title.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
 }

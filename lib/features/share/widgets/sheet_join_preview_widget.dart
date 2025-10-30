@@ -7,6 +7,21 @@ import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
+void showJoinSheetBottomSheet({
+  required BuildContext context,
+  required String parentId,
+}) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    showDragHandle: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) => SheetJoinPreviewWidget(parentId: parentId),
+  );
+}
+
 class SheetJoinPreviewWidget extends ConsumerWidget {
   final String parentId;
 

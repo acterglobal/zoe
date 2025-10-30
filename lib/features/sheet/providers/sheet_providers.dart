@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/sheet/data/sheet_data.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'sheet_providers.g.dart';
 
@@ -47,12 +48,7 @@ class SheetList extends _$SheetList {
     state = [
       for (final sheet in state)
         if (sheet.id == sheetId)
-          sheet.copyWith(
-            users: {
-              ...sheet.users,
-              userId,
-            }.toList(),
-          )
+          sheet.copyWith(users: {...sheet.users, userId}.toList())
         else
           sheet,
     ];
@@ -62,10 +58,17 @@ class SheetList extends _$SheetList {
 /// Provider for searching sheets
 @riverpod
 List<SheetModel> sheetListSearch(Ref ref) {
-  final sheetList = ref.watch(sheetListProvider);
+  final allSheets = ref.watch(sheetListProvider);
   final searchValue = ref.watch(searchValueProvider);
-  if (searchValue.isEmpty) return sheetList;
-  return sheetList
+  final currentUserId = ref.watch(loggedInUserProvider).value;
+
+  // If no user, show nothing
+  if (currentUserId == null || currentUserId.isEmpty) return [];
+
+  // Filter by membership first
+  final memberSheets = allSheets.where((s) => s.users.contains(currentUserId));
+  if (searchValue.isEmpty) return memberSheets.toList();
+  return memberSheets
       .where((s) => s.title.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
 }

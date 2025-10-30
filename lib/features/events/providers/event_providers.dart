@@ -4,6 +4,7 @@ import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/features/events/data/event_list.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'event_providers.g.dart';
@@ -141,8 +142,18 @@ List<EventModel> allEvents(Ref ref) {
 List<EventModel> eventListSearch(Ref ref) {
   final searchValue = ref.watch(searchValueProvider);
   final allEvents = ref.watch(allEventsProvider);
-  if (searchValue.isEmpty) return allEvents;
-  return allEvents
+  final currentUserId = ref.watch(loggedInUserProvider).value;
+
+  if (currentUserId == null || currentUserId.isEmpty) return [];
+
+  // Filter events by membership of current user in the event's sheet
+  final memberEvents = allEvents.where((e) {
+    final sheet = ref.watch(sheetProvider(e.sheetId));
+    return sheet?.users.contains(currentUserId) == true;
+  });
+
+  if (searchValue.isEmpty) return memberEvents.toList();
+  return memberEvents
       .where((e) => e.title.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
 }
