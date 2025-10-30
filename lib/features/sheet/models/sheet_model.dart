@@ -51,7 +51,7 @@ class SheetModel {
       id: id ?? this.id,
       emoji: emoji ?? this.emoji,
       title: title ?? this.title,
-      coverImageUrl: coverImageUrl ?? this.coverImageUrl,
+      coverImageUrl: coverImageUrl,
       description: description ?? this.description,
       color: color ?? this.color,
       createdBy: createdBy ?? this.createdBy,

@@ -1,13 +1,11 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/utils/file_utils.dart';
-import 'package:zoe/common/widgets/document_selection_bottom_sheet.dart';
+import 'package:zoe/common/widgets/media_selection_bottom_sheet.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -18,103 +16,93 @@ void selectDocumentSource(
   String listId,
   String sheetId,
 ) {
-  showFileSelectionBottomSheet(
+  showMediaSelectionBottomSheet(
     context,
-    onTapCamera: () =>
-        _handleDocumentCameraSelection(context, ref, listId, sheetId),
-    onTapGallery: () =>
-        _handleDocumentGallerySelection(context, ref, listId, sheetId),
-    onTapFileChooser: () =>
-        _handleDocumentFileChooserSelection(context, ref, listId, sheetId),
+    allowMultiple: true,
+    onTapCamera: (image) =>
+        _handleDocumentCameraSelection(context, ref, image, listId, sheetId),
+    onTapGallery: (images) =>
+        _handleDocumentGallerySelection(context, ref, images, listId, sheetId),
+    onTapFileChooser: (files) => _handleDocumentFileChooserSelection(
+      context,
+      ref,
+      files,
+      listId,
+      sheetId,
+    ),
   );
 }
 
 Future<void> _handleDocumentCameraSelection(
   BuildContext context,
   WidgetRef ref,
+  XFile image,
   String listId,
   String sheetId,
 ) async {
-  final picker = ImagePicker();
-  final image = await picker.pickImage(
-    source: ImageSource.camera,
-    imageQuality: 80,
-  );
-
-  if (image != null) {
-    ref
-        .read(documentListProvider.notifier)
-        .addDocument(
-          parentId: listId,
-          sheetId: sheetId,
-          title: 'Camera_${DateTime.now().millisecondsSinceEpoch}.jpg',
-          filePath: image.path,
-        );
-
-    if (context.mounted) {
-      CommonUtils.showSnackBar(
-        context,
-        L10n.of(context).photoCapturedAndAddedSuccessfully,
+  ref
+      .read(documentListProvider.notifier)
+      .addDocument(
+        parentId: listId,
+        sheetId: sheetId,
+        title: 'Camera_${DateTime.now().millisecondsSinceEpoch}.jpg',
+        filePath: image.path,
       );
-    }
+
+  if (context.mounted) {
+    CommonUtils.showSnackBar(
+      context,
+      L10n.of(context).photoCapturedAndAddedSuccessfully,
+    );
   }
 }
 
 Future<void> _handleDocumentGallerySelection(
   BuildContext context,
   WidgetRef ref,
+  List<XFile> images,
   String listId,
   String sheetId,
 ) async {
-  final picker = ImagePicker();
-  final images = await picker.pickMultiImage(imageQuality: 80);
-
-  if (images.isNotEmpty) {
-    for (final img in images) {
-      ref
-          .read(documentListProvider.notifier)
-          .addDocument(
-            parentId: listId,
-            sheetId: sheetId,
-            title: img.name,
-            filePath: img.path,
-          );
-    }
-    if (context.mounted) {
-      CommonUtils.showSnackBar(
-        context,
-        L10n.of(context).photosAddedSuccessfully(images.length),
-      );
-    }
+  for (final img in images) {
+    ref
+        .read(documentListProvider.notifier)
+        .addDocument(
+          parentId: listId,
+          sheetId: sheetId,
+          title: img.name,
+          filePath: img.path,
+        );
   }
+  if (!context.mounted) return;
+  CommonUtils.showSnackBar(
+    context,
+    L10n.of(context).photosAddedSuccessfully(images.length),
+  );
 }
 
 Future<void> _handleDocumentFileChooserSelection(
   BuildContext context,
   WidgetRef ref,
+  List<XFile> files,
   String listId,
   String sheetId,
 ) async {
-  final result = await FilePicker.platform.pickFiles(allowMultiple: true);
-
-  if (result != null && result.files.isNotEmpty) {
-    for (final file in result.files) {
-      ref
-          .read(documentListProvider.notifier)
-          .addDocument(
-            parentId: listId,
-            sheetId: sheetId,
-            title: file.name,
-            filePath: file.path ?? '',
-          );
-    }
-    if (context.mounted) {
-      CommonUtils.showSnackBar(
-        context,
-        L10n.of(context).filesAddedSuccessfully(result.files.length),
-      );
-    }
+  for (final file in files) {
+    ref
+        .read(documentListProvider.notifier)
+        .addDocument(
+          parentId: listId,
+          sheetId: sheetId,
+          title: file.name,
+          filePath: file.path,
+        );
   }
+  if (!context.mounted) return;
+  CommonUtils.showSnackBar(
+    context,
+    L10n.of(context).filesAddedSuccessfully(files.length),
+  );
 }
 
 Color getFileTypeColor(String filePath) {

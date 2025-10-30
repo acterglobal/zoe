@@ -26,6 +26,16 @@ class SheetList extends _$SheetList {
     ];
   }
 
+  void updateSheetCoverImage(String sheetId, String? coverImageUrl) {
+    state = [
+      for (final sheet in state)
+        if (sheet.id == sheetId)
+          sheet.copyWith(coverImageUrl: coverImageUrl)
+        else
+          sheet,
+    ];
+  }
+
   void updateSheetDescription(String sheetId, Description description) {
     state = [
       for (final sheet in state)

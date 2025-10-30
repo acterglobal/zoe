@@ -1,13 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
@@ -15,6 +12,7 @@ import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/sheet/actions/sheet_actions.dart';
 import 'package:zoe/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_app_bar.dart';
 import 'package:zoe/features/users/widgets/user_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -52,7 +50,7 @@ class SheetDetailScreen extends ConsumerWidget {
   Widget _buildSliverBody(BuildContext context, WidgetRef ref, bool isEditing) {
     return CustomScrollView(
       slivers: [
-        _buildSliverAppBar(context, ref, isEditing),
+        SheetAppBar(sheetId: sheetId, isEditing: isEditing),
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           sliver: SliverList(
@@ -62,47 +60,6 @@ class SheetDetailScreen extends ConsumerWidget {
           ),
         ),
       ],
-    );
-  }
-
-  /// Applies the cover image to the sliver app bar
-  Widget _buildSliverAppBar(
-    BuildContext context,
-    WidgetRef ref,
-    bool isEditing,
-  ) {
-    final sheet = ref.watch(sheetProvider(sheetId));
-    final coverImageUrl = sheet?.coverImageUrl;
-    final hasCoverImage = coverImageUrl != null;
-
-    return SliverAppBar(
-      expandedHeight: hasCoverImage ? 200 : kToolbarHeight,
-      collapsedHeight: kToolbarHeight,
-      automaticallyImplyLeading: false,
-      title: ZoeAppBar(
-        title: L10n.of(context).sheet,
-        actions: [
-          const SizedBox(width: 10),
-          ContentMenuButton(
-            onTap: (context) => showSheetMenu(
-              context: context,
-              ref: ref,
-              hasCoverImage: hasCoverImage,
-              isEditing: isEditing,
-              sheetId: sheetId,
-            ),
-          ),
-        ],
-      ),
-      elevation: 0,
-      flexibleSpace: hasCoverImage
-          ? FlexibleSpaceBar(
-              background: CachedNetworkImage(
-                imageUrl: coverImageUrl,
-                fit: BoxFit.cover,
-              ),
-            )
-          : null,
     );
   }
 

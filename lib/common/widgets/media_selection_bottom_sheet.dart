@@ -1,4 +1,6 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
@@ -6,13 +8,14 @@ import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows a bottom sheet for selecting document source
-void showFileSelectionBottomSheet(
+Future<void> showMediaSelectionBottomSheet(
   BuildContext context, {
-  required VoidCallback onTapCamera,
-  required VoidCallback onTapGallery,
-  VoidCallback? onTapFileChooser,
-}) {
-  showModalBottomSheet(
+  bool allowMultiple = false,
+  required Function(XFile) onTapCamera,
+  required Function(List<XFile>) onTapGallery,
+  Function(List<XFile>)? onTapFileChooser,
+}) async {
+  await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Theme.of(context).colorScheme.surface,
@@ -22,7 +25,8 @@ void showFileSelectionBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
-    builder: (context) => DocumentSelectionBottomSheetWidget(
+    builder: (context) => MediaSelectionBottomSheetWidget(
+      allowMultiple: allowMultiple,
       onTapCamera: onTapCamera,
       onTapGallery: onTapGallery,
       onTapFileChooser: onTapFileChooser,
@@ -30,17 +34,47 @@ void showFileSelectionBottomSheet(
   );
 }
 
-class DocumentSelectionBottomSheetWidget extends StatelessWidget {
-  final VoidCallback onTapCamera;
-  final VoidCallback onTapGallery;
-  final VoidCallback? onTapFileChooser;
+class MediaSelectionBottomSheetWidget extends StatelessWidget {
+  final bool allowMultiple;
+  final Function(XFile) onTapCamera;
+  final Function(List<XFile>) onTapGallery;
+  final Function(List<XFile>)? onTapFileChooser;
 
-  const DocumentSelectionBottomSheetWidget({
+  const MediaSelectionBottomSheetWidget({
     super.key,
+    this.allowMultiple = false,
     required this.onTapCamera,
     required this.onTapGallery,
     required this.onTapFileChooser,
   });
+
+  Future<void> _onTapCamera(BuildContext context) async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 80,
+    );
+
+    if (image != null) onTapCamera(image);
+    if (context.mounted) Navigator.of(context).pop();
+  }
+
+  Future<void> _onTapGallery(BuildContext context) async {
+    final picker = ImagePicker();
+    final images = await picker.pickMultiImage(imageQuality: 80);
+    if (images.isNotEmpty) onTapGallery(images);
+    if (context.mounted) Navigator.of(context).pop();
+  }
+
+  Future<void> _onTapFileChooser(BuildContext context) async {
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: allowMultiple,
+    );
+    if (result != null && result.files.isNotEmpty) {
+      onTapFileChooser!(result.files.map((file) => file.xFile).toList());
+    }
+    if (context.mounted) Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,16 +109,13 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
           if (!CommonUtils.isDesktop(context)) ...[
             const SizedBox(height: 32),
             _buildOptionButton(
-            context,
-            icon: Icons.camera_alt_rounded,
-            title: l10n.camera,
-            subtitle: l10n.takePhotoOrVideo,
-            color: AppColors.brightOrangeColor,
-            onTap: () {
-              Navigator.of(context).pop();
-              onTapCamera();
-            },
-          ),
+              context,
+              icon: Icons.camera_alt_rounded,
+              title: l10n.camera,
+              subtitle: l10n.takePhotoOrVideo,
+              color: AppColors.brightOrangeColor,
+              onTap: () => _onTapCamera(context),
+            ),
           ],
           const SizedBox(height: 16),
           _buildOptionButton(
@@ -93,10 +124,7 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
             title: l10n.photoGallery,
             subtitle: l10n.selectFromGallery,
             color: AppColors.successColor,
-            onTap: () {
-              Navigator.of(context).pop();
-              onTapGallery();
-            },
+            onTap: () => _onTapGallery(context),
           ),
           const SizedBox(height: 16),
           if (onTapFileChooser != null)
@@ -106,10 +134,7 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
               title: l10n.filePicker,
               subtitle: l10n.browseFiles,
               color: AppColors.secondaryColor,
-              onTap: () {
-                Navigator.of(context).pop();
-                onTapFileChooser!();
-              },
+              onTap: () => _onTapFileChooser(context),
             ),
           const SizedBox(height: 16),
         ],
@@ -126,7 +151,7 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     final theme = Theme.of(context);
-    
+
     return GestureDetector(
       onTap: onTap,
       child: GlassyContainer(
@@ -147,15 +172,9 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.titleMedium
-                  ),
+                  Text(title, style: theme.textTheme.titleMedium),
                   const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: theme.textTheme.bodySmall,
-                  ),
+                  Text(subtitle, style: theme.textTheme.bodySmall),
                 ],
               ),
             ),
