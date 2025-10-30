@@ -6,7 +6,6 @@ import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
-import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
@@ -30,14 +29,13 @@ class SheetSharePreviewWidget extends ConsumerWidget {
 
     final eventList = ref.watch(eventListProvider);
     final taskList = ref.watch(taskListProvider);
-    final linkList = ref.watch(linkListProvider);
+
     final documentList = ref.watch(documentListProvider);
     final pollList = ref.watch(pollListProvider);
 
     // Filter by sheetId
     final sheetEvents = eventList.where((e) => e.sheetId == parentId).toList();
     final sheetTasks = taskList.where((t) => t.sheetId == parentId).toList();
-    final sheetLinks = linkList.where((l) => l.sheetId == parentId).toList();
     final sheetDocuments = documentList
         .where((d) => d.sheetId == parentId)
         .toList();
@@ -51,7 +49,7 @@ class SheetSharePreviewWidget extends ConsumerWidget {
       padding: const EdgeInsets.all(16),
       blurRadius: 0,
       borderRadius: BorderRadius.circular(12),
-      child: Column(
+      child: SingleChildScrollView(child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Sheet Title and Description
@@ -60,7 +58,6 @@ class SheetSharePreviewWidget extends ConsumerWidget {
           // Statistics Section
           if (sheetEvents.isNotEmpty ||
               sheetTasks.isNotEmpty ||
-              sheetLinks.isNotEmpty ||
               sheetDocuments.isNotEmpty ||
               sheetPolls.isNotEmpty) ...[
             const SizedBox(height: 20),
@@ -105,7 +102,8 @@ class SheetSharePreviewWidget extends ConsumerWidget {
               color: AppColors.brightMagentaColor,
             ),
           ],
-        ],
+          ],
+        ),
       ),
     );
   }
