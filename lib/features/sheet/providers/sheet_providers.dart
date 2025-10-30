@@ -42,6 +42,21 @@ class SheetList extends _$SheetList {
         if (sheet.id == sheetId) sheet.copyWith(emoji: emoji) else sheet,
     ];
   }
+
+  void addUserToSheet(String sheetId, String userId) {
+    state = [
+      for (final sheet in state)
+        if (sheet.id == sheetId)
+          sheet.copyWith(
+            users: {
+              ...sheet.users,
+              userId,
+            }.toList(),
+          )
+        else
+          sheet,
+    ];
+  }
 }
 
 /// Provider for searching sheets

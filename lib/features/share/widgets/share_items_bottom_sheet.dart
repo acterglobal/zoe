@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
@@ -9,6 +10,8 @@ import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/sheet_share_preview_widget.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 void showShareItemsBottomSheet({
@@ -28,7 +31,7 @@ void showShareItemsBottomSheet({
   );
 }
 
-class ShareItemsBottomSheet extends ConsumerWidget {
+class ShareItemsBottomSheet extends ConsumerStatefulWidget {
   final String parentId;
   final bool isSheet;
 
@@ -39,7 +42,17 @@ class ShareItemsBottomSheet extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ShareItemsBottomSheet> createState() => _ShareItemsBottomSheetState();
+}
+
+class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
+  bool _justJoined = false;
+
+  String get parentId => widget.parentId;
+  bool get isSheet => widget.isSheet;
+
+  @override
+  Widget build(BuildContext context) {
     final contentText = isSheet
         ? ShareUtils.getSheetShareMessage(ref: ref, parentId: parentId)
         : _getContentShareMessage(ref);
@@ -67,7 +80,7 @@ class ShareItemsBottomSheet extends ConsumerWidget {
           else
             _buildContentPreview(context, contentText),
           const SizedBox(height: 20),
-          _buildShareButton(context, contentText),
+          _buildAnimatedPrimaryButton(context, ref, contentText),
           const SizedBox(height: 20),
         ],
       ),
@@ -146,12 +159,66 @@ class ShareItemsBottomSheet extends ConsumerWidget {
     );
   }
 
-  Widget _buildShareButton(BuildContext context, String contentText) {
-    return ZoePrimaryButton(
-      onPressed: () =>
-          CommonUtils.shareText(contentText, subject: L10n.of(context).share),
-      icon: Icons.share_rounded,
-      text: L10n.of(context).share,
+  Widget _buildAnimatedPrimaryButton(BuildContext context, WidgetRef ref, String contentText) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 250),
+      switchInCurve: Curves.easeOutBack,
+      switchOutCurve: Curves.easeIn,
+      transitionBuilder: (child, animation) => FadeTransition(
+        opacity: animation,
+        child: ScaleTransition(
+          scale: Tween<double>(begin: 0.95, end: 1).animate(animation),
+          child: child,
+        ),
+      ),
+      child: _buildPrimaryButton(context, ref, contentText),
+    );
+  }
+
+  Widget _buildPrimaryButton(BuildContext context, WidgetRef ref, String contentText) {
+    final currentUserId = ref.watch(loggedInUserProvider).value;
+    final usersInSheet = ref.watch(listOfUsersBySheetIdProvider(parentId));
+    final isMember =
+        currentUserId != null && currentUserId.isNotEmpty && usersInSheet.contains(currentUserId);
+
+    if (_justJoined) {
+      return KeyedSubtree(
+        key: const ValueKey('joined'),
+        child: ZoePrimaryButton(
+          onPressed: () {},
+          icon: Icons.check_circle_rounded,
+          text: L10n.of(context).joinedSheet,
+        ),
+      );
+    }
+
+    if (!isMember && currentUserId != null && currentUserId.isNotEmpty && isSheet) {
+      return KeyedSubtree(
+        key: const ValueKey('join'),
+        child: ZoePrimaryButton(
+          onPressed: () {
+            ref.read(sheetListProvider.notifier).addUserToSheet(parentId, currentUserId);
+            CommonUtils.showSnackBar(context, L10n.of(context).joinedSheet);
+            setState(() => _justJoined = true);
+            unawaited(Future.delayed(const Duration(milliseconds: 900), () {
+              if (!mounted) return;
+              setState(() => _justJoined = false);
+            }));
+          },
+          icon: Icons.person_add_rounded,
+          text: L10n.of(context).join,
+        ),
+      );
+    }
+
+    return KeyedSubtree(
+      key: const ValueKey('share'),
+      child: ZoePrimaryButton(
+        onPressed: () =>
+            CommonUtils.shareText(contentText, subject: L10n.of(context).share),
+        icon: Icons.share_rounded,
+        text: L10n.of(context).share,
+      ),
     );
   }
 }
