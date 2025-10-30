@@ -81,9 +81,12 @@ class SheetActions {
     WidgetRef ref,
     String sheetId,
   ) async {
+    final l10n = L10n.of(context);
     XFile? selectedImage;
     await showMediaSelectionBottomSheet(
       context,
+      title: l10n.selectSheetCoverImage,
+      subtitle: l10n.chooseAMediaFile,
       onTapCamera: (image) => selectedImage = image,
       onTapGallery: (images) => selectedImage = images.first,
     );

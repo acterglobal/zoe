@@ -10,6 +10,8 @@ import 'package:zoe/l10n/generated/l10n.dart';
 /// Shows a bottom sheet for selecting document source
 Future<void> showMediaSelectionBottomSheet(
   BuildContext context, {
+  String? title,
+  String? subtitle,
   bool allowMultiple = false,
   required Function(XFile) onTapCamera,
   required Function(List<XFile>) onTapGallery,
@@ -26,6 +28,8 @@ Future<void> showMediaSelectionBottomSheet(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
     builder: (context) => MediaSelectionBottomSheetWidget(
+      title: title,
+      subtitle: subtitle,
       allowMultiple: allowMultiple,
       onTapCamera: onTapCamera,
       onTapGallery: onTapGallery,
@@ -35,6 +39,8 @@ Future<void> showMediaSelectionBottomSheet(
 }
 
 class MediaSelectionBottomSheetWidget extends StatelessWidget {
+  final String? title;
+  final String? subtitle;
   final bool allowMultiple;
   final Function(XFile) onTapCamera;
   final Function(List<XFile>) onTapGallery;
@@ -42,6 +48,8 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
 
   const MediaSelectionBottomSheetWidget({
     super.key,
+    this.title,
+    this.subtitle,
     this.allowMultiple = false,
     required this.onTapCamera,
     required this.onTapGallery,
@@ -80,6 +88,9 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
+    final titleText = title ?? l10n.selectMedia;
+    final subtitleText = subtitle ?? l10n.chooseAMediaFile;
+
     return Padding(
       padding: EdgeInsets.only(
         left: 16.0,
@@ -91,7 +102,7 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            l10n.selectDocument,
+            titleText,
             style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w600,
               color: theme.colorScheme.onSurface,
@@ -100,7 +111,7 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            l10n.chooseHowToAddDocument,
+            subtitleText,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),

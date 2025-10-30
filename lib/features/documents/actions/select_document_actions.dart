@@ -16,8 +16,12 @@ void selectDocumentSource(
   String listId,
   String sheetId,
 ) {
+  final l10n = L10n.of(context);
+  
   showMediaSelectionBottomSheet(
     context,
+    title: l10n.selectDocument,
+    subtitle: l10n.chooseHowToAddDocument,
     allowMultiple: true,
     onTapCamera: (image) =>
         _handleDocumentCameraSelection(context, ref, image, listId, sheetId),
