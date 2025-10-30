@@ -55,7 +55,7 @@ class SheetSharePreviewWidget extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Sheet Title and Description
-          Text(contentText, style: Theme.of(context).textTheme.bodyMedium),
+          Text(contentText, style: theme.textTheme.bodyMedium),
 
           // Statistics Section
           if (sheetEvents.isNotEmpty ||
