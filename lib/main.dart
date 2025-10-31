@@ -31,8 +31,7 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     final language = ref.watch(appLocaleProvider);
 
-    return DeepLinkInitializer(
-      child: MaterialApp.router(
+    return MaterialApp.router(
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
@@ -44,8 +43,11 @@ class MyApp extends ConsumerWidget {
         ...L10n.localizationsDelegates,
         FlutterQuillLocalizations.delegate,
       ],
-      supportedLocales: L10n.supportedLocales,
+      builder: (context, child) => DeepLinkInitializer(
+        child: child ?? SizedBox.shrink(),
       ),
+      supportedLocales: L10n.supportedLocales,
+    
     );
   }
 }
