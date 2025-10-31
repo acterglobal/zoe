@@ -95,33 +95,49 @@ class EventList extends _$EventList {
   }
 }
 
-/// Provider for today's events
+/// Provider for events filtered by membership (current user must be a member of the sheet)
+@riverpod
+List<EventModel> eventsList(Ref ref) {
+  final allEvents = ref.watch(eventListProvider);
+  final currentUserId = ref.watch(loggedInUserProvider).value;
+
+  // If no user, show nothing
+  if (currentUserId == null || currentUserId.isEmpty) return [];
+
+  // Filter events by membership of current user in the event's sheet
+  return allEvents.where((e) {
+    final sheet = ref.watch(sheetProvider(e.sheetId));
+    return sheet?.users.contains(currentUserId) == true;
+  }).toList();
+}
+
+/// Provider for today's events (filtered by membership)
 @riverpod
 List<EventModel> todaysEvents(Ref ref) {
-  final allEvents = ref.watch(eventListProvider);
-  final todayEvents = allEvents.where((event) {
+  final events = ref.watch(eventsListProvider);
+  final todayEvents = events.where((event) {
     return event.startDate.isToday;
   }).toList();
   todayEvents.sort((a, b) => a.startDate.compareTo(b.startDate));
   return todayEvents;
 }
 
-/// Provider for upcoming events
+/// Provider for upcoming events (filtered by membership)
 @riverpod
 List<EventModel> upcomingEvents(Ref ref) {
-  final eventList = ref.watch(eventListProvider);
-  final upcomingEvents = eventList.where((event) {
+  final events = ref.watch(eventsListProvider);
+  final upcomingEvents = events.where((event) {
     return event.startDate.isAfter(DateTime.now()) && !event.startDate.isToday;
   }).toList();
   upcomingEvents.sort((a, b) => a.startDate.compareTo(b.startDate));
   return upcomingEvents;
 }
 
-/// Provider for past events
+/// Provider for past events (filtered by membership)
 @riverpod 
 List<EventModel> pastEvents(Ref ref) {
-  final eventList = ref.watch(eventListProvider);
-  final pastEvents = eventList.where((event) {
+  final events = ref.watch(eventsListProvider);
+  final pastEvents = events.where((event) {
     return event.startDate.isBefore(DateTime.now()) && !event.startDate.isToday;
   }).toList();
   pastEvents.sort((a, b) => b.startDate.compareTo(a.startDate));
@@ -141,19 +157,10 @@ List<EventModel> allEvents(Ref ref) {
 @riverpod
 List<EventModel> eventListSearch(Ref ref) {
   final searchValue = ref.watch(searchValueProvider);
-  final allEvents = ref.watch(allEventsProvider);
-  final currentUserId = ref.watch(loggedInUserProvider).value;
+  final events = ref.watch(eventsListProvider);
 
-  if (currentUserId == null || currentUserId.isEmpty) return [];
-
-  // Filter events by membership of current user in the event's sheet
-  final memberEvents = allEvents.where((e) {
-    final sheet = ref.watch(sheetProvider(e.sheetId));
-    return sheet?.users.contains(currentUserId) == true;
-  });
-
-  if (searchValue.isEmpty) return memberEvents.toList();
-  return memberEvents
+  if (searchValue.isEmpty) return events;
+  return events
       .where((e) => e.title.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
 }

@@ -27,11 +27,11 @@ class SheetSharePreviewWidget extends ConsumerWidget {
     final sheet = ref.watch(sheetProvider(parentId));
     if (sheet == null) return const SizedBox.shrink();
 
-    final eventList = ref.watch(eventListProvider);
-    final taskList = ref.watch(taskListProvider);
+    final eventList = ref.watch(eventsListProvider);
+    final taskList = ref.watch(tasksListProvider);
 
     final documentList = ref.watch(documentListProvider);
-    final pollList = ref.watch(pollListProvider);
+    final pollList = ref.watch(pollsListProvider);
 
     // Filter by sheetId
     final sheetEvents = eventList.where((e) => e.sheetId == parentId).toList();

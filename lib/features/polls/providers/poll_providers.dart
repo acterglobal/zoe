@@ -193,43 +193,51 @@ PollModel? poll(Ref ref, String pollId) {
   return pollList.where((p) => p.id == pollId).firstOrNull;
 }
 
-/// Provider for not active polls (drafts)
+/// Provider for polls filtered by membership (current user must be a member of the sheet)
+@riverpod
+List<PollModel> pollsList(Ref ref) {
+  final allPolls = ref.watch(pollListProvider);
+  final currentUserId = ref.watch(loggedInUserProvider).value;
+
+  // If no user, show nothing
+  if (currentUserId == null || currentUserId.isEmpty) return [];
+
+  // Filter polls by membership of current user in the poll's sheet
+  return allPolls.where((p) {
+    final sheet = ref.watch(sheetProvider(p.sheetId));
+    return sheet?.users.contains(currentUserId) == true;
+  }).toList();
+}
+
+/// Provider for not active polls (drafts) (filtered by membership)
 @riverpod
 List<PollModel> notActivePollList(Ref ref) {
-  final pollList = ref.watch(pollListProvider);
-  return pollList.where((p) => PollUtils.isDraft(p)).toList();
+  final polls = ref.watch(pollsListProvider);
+  return polls.where((p) => PollUtils.isDraft(p)).toList();
 }
 
-/// Provider for active polls
+/// Provider for active polls (filtered by membership)
 @riverpod
 List<PollModel> activePollList(Ref ref) {
-  final pollList = ref.watch(pollListProvider);
-  return pollList.where((p) => PollUtils.isActive(p)).toList();
+  final polls = ref.watch(pollsListProvider);
+  return polls.where((p) => PollUtils.isActive(p)).toList();
 }
 
-/// Provider for completed polls
+/// Provider for completed polls (filtered by membership)
 @riverpod
 List<PollModel> completedPollList(Ref ref) {
-  final pollList = ref.watch(pollListProvider);
-  return pollList.where((p) => PollUtils.isCompleted(p)).toList();
+  final polls = ref.watch(pollsListProvider);
+  return polls.where((p) => PollUtils.isCompleted(p)).toList();
 }
 
 /// Provider for searching polls
 @riverpod
 List<PollModel> pollListSearch(Ref ref) {
-  final allPolls = ref.watch(pollListProvider);
   final searchValue = ref.watch(searchValueProvider);
-  final currentUserId = ref.watch(loggedInUserProvider).value;
+  final polls = ref.watch(pollsListProvider);
 
-  if (currentUserId == null || currentUserId.isEmpty) return [];
-
-  final memberPolls = allPolls.where((p) {
-    final sheet = ref.watch(sheetProvider(p.sheetId));
-    return sheet?.users.contains(currentUserId) == true;
-  });
-
-  if (searchValue.isEmpty) return memberPolls.toList();
-  return memberPolls
+  if (searchValue.isEmpty) return polls;
+  return polls
       .where((poll) =>
           poll.question.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
@@ -257,7 +265,7 @@ List<UserModel> pollVotedMembers(Ref ref, String pollId) {
   }).toList();
 }
 
-/// Provider for active polls with pending response from current user
+/// Provider for active polls with pending response from current user (filtered by membership)
 @riverpod
 class ActivePollsWithPendingResponse extends _$ActivePollsWithPendingResponse {
   @override

@@ -22,7 +22,7 @@ class DrawerSheetListWidget extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SheetListWidget(
-              sheetsProvider: sheetListProvider,
+              sheetsProvider: sheetsListProvider,
               shrinkWrap: false,
               isCompact: true,
             ),
