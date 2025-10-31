@@ -82,6 +82,9 @@ dependencies:
   # Emoji picker
   emoji_picker_flutter: ^4.3.0
 
+  # Cached network image
+  cached_network_image: ^3.4.1
+
   # Video player
   video_player: ^2.10.0
 

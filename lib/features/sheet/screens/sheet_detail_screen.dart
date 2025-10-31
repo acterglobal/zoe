@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
-import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
-import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
@@ -14,6 +12,7 @@ import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/sheet/actions/sheet_actions.dart';
 import 'package:zoe/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 import 'package:zoe/features/users/widgets/user_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -104,19 +103,12 @@ class SheetDetailScreen extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            EmojiWidget(
-              isEditing: isEditing,
-              emoji: sheet.emoji,
-              size: 32,
-              onTap: (emoji) {
-                showCustomEmojiPicker(
-                  context,
-                  ref,
-                  onEmojiSelected: (emoji) {
-                    updateSheetEmoji(ref, sheetId, emoji);
-                  },
-                );
-              },
+            SheetAvatarWidget(
+              sheetId: sheetId,
+              isWithBackground: false,
+              iconSize: 40,
+              imageSize: 46,
+              emojiSize: 32,
             ),
             const SizedBox(width: 4),
             Expanded(
