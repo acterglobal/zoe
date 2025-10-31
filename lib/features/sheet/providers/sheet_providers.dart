@@ -55,20 +55,27 @@ class SheetList extends _$SheetList {
   }
 }
 
-/// Provider for searching sheets
+/// Provider for sheets filtered by membership (current user must be a member)
 @riverpod
-List<SheetModel> sheetListSearch(Ref ref) {
+List<SheetModel> sheetsList(Ref ref) {
   final allSheets = ref.watch(sheetListProvider);
-  final searchValue = ref.watch(searchValueProvider);
   final currentUserId = ref.watch(loggedInUserProvider).value;
 
   // If no user, show nothing
   if (currentUserId == null || currentUserId.isEmpty) return [];
 
-  // Filter by membership first
-  final memberSheets = allSheets.where((s) => s.users.contains(currentUserId));
-  if (searchValue.isEmpty) return memberSheets.toList();
-  return memberSheets
+  // Filter by membership
+  return allSheets.where((s) => s.users.contains(currentUserId)).toList();
+}
+
+/// Provider for searching sheets
+@riverpod
+List<SheetModel> sheetListSearch(Ref ref) {
+  final sheets = ref.watch(sheetsListProvider);
+  final searchValue = ref.watch(searchValueProvider);
+
+  if (searchValue.isEmpty) return sheets;
+  return sheets
       .where((s) => s.title.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
 }
@@ -94,9 +101,9 @@ bool sheetExists(Ref ref, String sheetId) {
   return sheet != null;
 }
 
-/// Provider for sheets sorted by title
+/// Provider for sheets sorted by title (filtered by membership)
 @riverpod
 List<SheetModel> sortedSheets(Ref ref) {
-  final sheets = ref.watch(sheetListProvider);
+  final sheets = ref.watch(sheetsListProvider);
   return [...sheets]..sort((a, b) => a.title.compareTo(b.title));
 }

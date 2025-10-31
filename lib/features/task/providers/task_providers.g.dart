@@ -67,18 +67,65 @@ abstract class _$TaskList extends $Notifier<List<TaskModel>> {
   }
 }
 
-/// Provider for today's tasks
+/// Provider for tasks filtered by membership (current user must be a member of the sheet)
+
+@ProviderFor(tasksList)
+const tasksListProvider = TasksListProvider._();
+
+/// Provider for tasks filtered by membership (current user must be a member of the sheet)
+
+final class TasksListProvider
+    extends
+        $FunctionalProvider<List<TaskModel>, List<TaskModel>, List<TaskModel>>
+    with $Provider<List<TaskModel>> {
+  /// Provider for tasks filtered by membership (current user must be a member of the sheet)
+  const TasksListProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'tasksListProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$tasksListHash();
+
+  @$internal
+  @override
+  $ProviderElement<List<TaskModel>> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  List<TaskModel> create(Ref ref) {
+    return tasksList(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<TaskModel> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<TaskModel>>(value),
+    );
+  }
+}
+
+String _$tasksListHash() => r'4e86e7b22e827c80f4455f6bdc1ff534cc6bca2e';
+
+/// Provider for today's tasks (filtered by membership)
 
 @ProviderFor(todaysTasks)
 const todaysTasksProvider = TodaysTasksProvider._();
 
-/// Provider for today's tasks
+/// Provider for today's tasks (filtered by membership)
 
 final class TodaysTasksProvider
     extends
         $FunctionalProvider<List<TaskModel>, List<TaskModel>, List<TaskModel>>
     with $Provider<List<TaskModel>> {
-  /// Provider for today's tasks
+  /// Provider for today's tasks (filtered by membership)
   const TodaysTasksProvider._()
     : super(
         from: null,
@@ -112,20 +159,20 @@ final class TodaysTasksProvider
   }
 }
 
-String _$todaysTasksHash() => r'c2ae780fb4c316d01bb7eef148cd7d90e128c11c';
+String _$todaysTasksHash() => r'68097ec59cd1e1af81de1a3d35f8d5ec55292b98';
 
-/// Provider for upcoming tasks
+/// Provider for upcoming tasks (filtered by membership)
 
 @ProviderFor(upcomingTasks)
 const upcomingTasksProvider = UpcomingTasksProvider._();
 
-/// Provider for upcoming tasks
+/// Provider for upcoming tasks (filtered by membership)
 
 final class UpcomingTasksProvider
     extends
         $FunctionalProvider<List<TaskModel>, List<TaskModel>, List<TaskModel>>
     with $Provider<List<TaskModel>> {
-  /// Provider for upcoming tasks
+  /// Provider for upcoming tasks (filtered by membership)
   const UpcomingTasksProvider._()
     : super(
         from: null,
@@ -159,20 +206,20 @@ final class UpcomingTasksProvider
   }
 }
 
-String _$upcomingTasksHash() => r'cd3f9932ae55fc918d28ff7fedbd91c2ac06c3fc';
+String _$upcomingTasksHash() => r'fd366cace44a681d0d748222a39921fb687abff8';
 
-/// Provider for past due tasks
+/// Provider for past due tasks (filtered by membership)
 
 @ProviderFor(pastDueTasks)
 const pastDueTasksProvider = PastDueTasksProvider._();
 
-/// Provider for past due tasks
+/// Provider for past due tasks (filtered by membership)
 
 final class PastDueTasksProvider
     extends
         $FunctionalProvider<List<TaskModel>, List<TaskModel>, List<TaskModel>>
     with $Provider<List<TaskModel>> {
-  /// Provider for past due tasks
+  /// Provider for past due tasks (filtered by membership)
   const PastDueTasksProvider._()
     : super(
         from: null,
@@ -206,7 +253,7 @@ final class PastDueTasksProvider
   }
 }
 
-String _$pastDueTasksHash() => r'a7c6e245a8e0d9dade9752e0fca3e62ee0c92f60';
+String _$pastDueTasksHash() => r'2de67586d2e7852b9a5667289155f36fab9a4cdc';
 
 /// Provider for all tasks combined
 
@@ -300,7 +347,7 @@ final class TaskListSearchProvider
   }
 }
 
-String _$taskListSearchHash() => r'ac932baa09db3ab0581c98d15773b11f203de0a3';
+String _$taskListSearchHash() => r'40752bcca43bae7b3c91656d0c15d4c4c2a549b0';
 
 /// Provider for a single task by ID
 
@@ -620,17 +667,17 @@ abstract class _$TaskFocus extends $Notifier<String?> {
   }
 }
 
-/// Provider for completed tasks count
+/// Provider for completed tasks count (filtered by membership)
 
 @ProviderFor(completedTasksCount)
 const completedTasksCountProvider = CompletedTasksCountProvider._();
 
-/// Provider for completed tasks count
+/// Provider for completed tasks count (filtered by membership)
 
 final class CompletedTasksCountProvider
     extends $FunctionalProvider<int, int, int>
     with $Provider<int> {
-  /// Provider for completed tasks count
+  /// Provider for completed tasks count (filtered by membership)
   const CompletedTasksCountProvider._()
     : super(
         from: null,
@@ -665,7 +712,7 @@ final class CompletedTasksCountProvider
 }
 
 String _$completedTasksCountHash() =>
-    r'c7c6fed3d6dd0f093d06aefbe0b576f5e9aa6d20';
+    r'cd64fb6197124da4eeb8ef96e067eb44fb9667ae';
 
 /// Provider for tasks due today count
 
@@ -714,16 +761,16 @@ final class TasksDueTodayCountProvider
 String _$tasksDueTodayCountHash() =>
     r'df4c44cb2699bcae846c05363e23e5ced64abe00';
 
-/// Provider for overdue tasks count
+/// Provider for overdue tasks count (filtered by membership)
 
 @ProviderFor(overdueTasksCount)
 const overdueTasksCountProvider = OverdueTasksCountProvider._();
 
-/// Provider for overdue tasks count
+/// Provider for overdue tasks count (filtered by membership)
 
 final class OverdueTasksCountProvider extends $FunctionalProvider<int, int, int>
     with $Provider<int> {
-  /// Provider for overdue tasks count
+  /// Provider for overdue tasks count (filtered by membership)
   const OverdueTasksCountProvider._()
     : super(
         from: null,
