@@ -153,18 +153,65 @@ final class PollFamily extends $Family
   String toString() => r'pollProvider';
 }
 
-/// Provider for not active polls (drafts)
+/// Provider for polls filtered by membership (current user must be a member of the sheet)
+
+@ProviderFor(memberPolls)
+const memberPollsProvider = MemberPollsProvider._();
+
+/// Provider for polls filtered by membership (current user must be a member of the sheet)
+
+final class MemberPollsProvider
+    extends
+        $FunctionalProvider<List<PollModel>, List<PollModel>, List<PollModel>>
+    with $Provider<List<PollModel>> {
+  /// Provider for polls filtered by membership (current user must be a member of the sheet)
+  const MemberPollsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'memberPollsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$memberPollsHash();
+
+  @$internal
+  @override
+  $ProviderElement<List<PollModel>> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  List<PollModel> create(Ref ref) {
+    return memberPolls(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<PollModel> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<PollModel>>(value),
+    );
+  }
+}
+
+String _$memberPollsHash() => r'6dee624b70a1361e63be2b677f10f9d133d1cc94';
+
+/// Provider for not active polls (drafts) (filtered by membership)
 
 @ProviderFor(notActivePollList)
 const notActivePollListProvider = NotActivePollListProvider._();
 
-/// Provider for not active polls (drafts)
+/// Provider for not active polls (drafts) (filtered by membership)
 
 final class NotActivePollListProvider
     extends
         $FunctionalProvider<List<PollModel>, List<PollModel>, List<PollModel>>
     with $Provider<List<PollModel>> {
-  /// Provider for not active polls (drafts)
+  /// Provider for not active polls (drafts) (filtered by membership)
   const NotActivePollListProvider._()
     : super(
         from: null,
@@ -198,20 +245,20 @@ final class NotActivePollListProvider
   }
 }
 
-String _$notActivePollListHash() => r'689724c8c6227dde86d2ba9fd76d937c0411639e';
+String _$notActivePollListHash() => r'3754d2a6a2f875f3b7b7f3785c2a207c8d88eb05';
 
-/// Provider for active polls
+/// Provider for active polls (filtered by membership)
 
 @ProviderFor(activePollList)
 const activePollListProvider = ActivePollListProvider._();
 
-/// Provider for active polls
+/// Provider for active polls (filtered by membership)
 
 final class ActivePollListProvider
     extends
         $FunctionalProvider<List<PollModel>, List<PollModel>, List<PollModel>>
     with $Provider<List<PollModel>> {
-  /// Provider for active polls
+  /// Provider for active polls (filtered by membership)
   const ActivePollListProvider._()
     : super(
         from: null,
@@ -245,20 +292,20 @@ final class ActivePollListProvider
   }
 }
 
-String _$activePollListHash() => r'0d1bbfe4e9329601075f2325b1674dc522f36bc6';
+String _$activePollListHash() => r'2987838bc8c50290b01cc1ae037b88b98ab84ea1';
 
-/// Provider for completed polls
+/// Provider for completed polls (filtered by membership)
 
 @ProviderFor(completedPollList)
 const completedPollListProvider = CompletedPollListProvider._();
 
-/// Provider for completed polls
+/// Provider for completed polls (filtered by membership)
 
 final class CompletedPollListProvider
     extends
         $FunctionalProvider<List<PollModel>, List<PollModel>, List<PollModel>>
     with $Provider<List<PollModel>> {
-  /// Provider for completed polls
+  /// Provider for completed polls (filtered by membership)
   const CompletedPollListProvider._()
     : super(
         from: null,
@@ -292,7 +339,7 @@ final class CompletedPollListProvider
   }
 }
 
-String _$completedPollListHash() => r'7c35aae47f517cbb1920ee35d6d33e18fcc82367';
+String _$completedPollListHash() => r'71778c2e6c9829b290cf4bb69b6585b8e6327e4c';
 
 /// Provider for searching polls
 
@@ -339,7 +386,7 @@ final class PollListSearchProvider
   }
 }
 
-String _$pollListSearchHash() => r'ef7761a038ad8aa4ff3c5d35d7b7d9ed38239c60';
+String _$pollListSearchHash() => r'a60973c4b52d80feefb4021a5ebf7a01b50bc079';
 
 /// Provider for polls filtered by parent ID
 
@@ -515,16 +562,16 @@ final class PollVotedMembersFamily extends $Family
   String toString() => r'pollVotedMembersProvider';
 }
 
-/// Provider for active polls with pending response from current user
+/// Provider for active polls with pending response from current user (filtered by membership)
 
 @ProviderFor(ActivePollsWithPendingResponse)
 const activePollsWithPendingResponseProvider =
     ActivePollsWithPendingResponseProvider._();
 
-/// Provider for active polls with pending response from current user
+/// Provider for active polls with pending response from current user (filtered by membership)
 final class ActivePollsWithPendingResponseProvider
     extends $NotifierProvider<ActivePollsWithPendingResponse, List<PollModel>> {
-  /// Provider for active polls with pending response from current user
+  /// Provider for active polls with pending response from current user (filtered by membership)
   const ActivePollsWithPendingResponseProvider._()
     : super(
         from: null,
@@ -555,7 +602,7 @@ final class ActivePollsWithPendingResponseProvider
 String _$activePollsWithPendingResponseHash() =>
     r'd5d9f5fd04ce4361771949b5905025f22d07dce3';
 
-/// Provider for active polls with pending response from current user
+/// Provider for active polls with pending response from current user (filtered by membership)
 
 abstract class _$ActivePollsWithPendingResponse
     extends $Notifier<List<PollModel>> {

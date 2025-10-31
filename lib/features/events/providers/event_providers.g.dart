@@ -67,12 +67,63 @@ abstract class _$EventList extends $Notifier<List<EventModel>> {
   }
 }
 
-/// Provider for today's events
+/// Provider for events filtered by membership (current user must be a member of the sheet)
+
+@ProviderFor(memberEvents)
+const memberEventsProvider = MemberEventsProvider._();
+
+/// Provider for events filtered by membership (current user must be a member of the sheet)
+
+final class MemberEventsProvider
+    extends
+        $FunctionalProvider<
+          List<EventModel>,
+          List<EventModel>,
+          List<EventModel>
+        >
+    with $Provider<List<EventModel>> {
+  /// Provider for events filtered by membership (current user must be a member of the sheet)
+  const MemberEventsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'memberEventsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$memberEventsHash();
+
+  @$internal
+  @override
+  $ProviderElement<List<EventModel>> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  List<EventModel> create(Ref ref) {
+    return memberEvents(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<EventModel> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<EventModel>>(value),
+    );
+  }
+}
+
+String _$memberEventsHash() => r'da431e89d38c6efbdb99f63afca10d55068e7670';
+
+/// Provider for today's events (filtered by membership)
 
 @ProviderFor(todaysEvents)
 const todaysEventsProvider = TodaysEventsProvider._();
 
-/// Provider for today's events
+/// Provider for today's events (filtered by membership)
 
 final class TodaysEventsProvider
     extends
@@ -82,7 +133,7 @@ final class TodaysEventsProvider
           List<EventModel>
         >
     with $Provider<List<EventModel>> {
-  /// Provider for today's events
+  /// Provider for today's events (filtered by membership)
   const TodaysEventsProvider._()
     : super(
         from: null,
@@ -116,14 +167,14 @@ final class TodaysEventsProvider
   }
 }
 
-String _$todaysEventsHash() => r'50f0b4b68dce146dd2210fe5bd6123fea842db30';
+String _$todaysEventsHash() => r'61a35edba94f44a0450b17374354846f09a87ff0';
 
-/// Provider for upcoming events
+/// Provider for upcoming events (filtered by membership)
 
 @ProviderFor(upcomingEvents)
 const upcomingEventsProvider = UpcomingEventsProvider._();
 
-/// Provider for upcoming events
+/// Provider for upcoming events (filtered by membership)
 
 final class UpcomingEventsProvider
     extends
@@ -133,7 +184,7 @@ final class UpcomingEventsProvider
           List<EventModel>
         >
     with $Provider<List<EventModel>> {
-  /// Provider for upcoming events
+  /// Provider for upcoming events (filtered by membership)
   const UpcomingEventsProvider._()
     : super(
         from: null,
@@ -167,14 +218,14 @@ final class UpcomingEventsProvider
   }
 }
 
-String _$upcomingEventsHash() => r'bc4422dfb94c03a964e1f16893e3d82cfea74a83';
+String _$upcomingEventsHash() => r'1eb39caf9944c8ac638a5b0f05322db7f1fed88c';
 
-/// Provider for past events
+/// Provider for past events (filtered by membership)
 
 @ProviderFor(pastEvents)
 const pastEventsProvider = PastEventsProvider._();
 
-/// Provider for past events
+/// Provider for past events (filtered by membership)
 
 final class PastEventsProvider
     extends
@@ -184,7 +235,7 @@ final class PastEventsProvider
           List<EventModel>
         >
     with $Provider<List<EventModel>> {
-  /// Provider for past events
+  /// Provider for past events (filtered by membership)
   const PastEventsProvider._()
     : super(
         from: null,
@@ -218,7 +269,7 @@ final class PastEventsProvider
   }
 }
 
-String _$pastEventsHash() => r'32d48239cf90395bde538ce10ae16cfaac6d2b67';
+String _$pastEventsHash() => r'f67584d8f573c5c82d2be2b9106983163ed26ce0';
 
 /// Provider for all events combined
 
@@ -320,7 +371,7 @@ final class EventListSearchProvider
   }
 }
 
-String _$eventListSearchHash() => r'b5d68bcbfe7e9970dd860e4f3293cd6ac92e52bd';
+String _$eventListSearchHash() => r'339fe7841ac5888e8ea5e3c1ef0a4d5b76a8d036';
 
 /// Provider for a single event by ID
 

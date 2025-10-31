@@ -44,7 +44,7 @@ final class SheetListProvider
   }
 }
 
-String _$sheetListHash() => r'6c182f09d49daefa107bed59fc9dd2f7cacc83b4';
+String _$sheetListHash() => r'7e58ebc74c9335414fa2a424e8b3d25058215047';
 
 /// Main sheet list provider with all sheet management functionality
 
@@ -66,6 +66,57 @@ abstract class _$SheetList extends $Notifier<List<SheetModel>> {
     element.handleValue(ref, created);
   }
 }
+
+/// Provider for sheets filtered by membership (current user must be a member)
+
+@ProviderFor(memberSheets)
+const memberSheetsProvider = MemberSheetsProvider._();
+
+/// Provider for sheets filtered by membership (current user must be a member)
+
+final class MemberSheetsProvider
+    extends
+        $FunctionalProvider<
+          List<SheetModel>,
+          List<SheetModel>,
+          List<SheetModel>
+        >
+    with $Provider<List<SheetModel>> {
+  /// Provider for sheets filtered by membership (current user must be a member)
+  const MemberSheetsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'memberSheetsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$memberSheetsHash();
+
+  @$internal
+  @override
+  $ProviderElement<List<SheetModel>> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  List<SheetModel> create(Ref ref) {
+    return memberSheets(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<SheetModel> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<SheetModel>>(value),
+    );
+  }
+}
+
+String _$memberSheetsHash() => r'e9a6d9392eddcc85a6d08b5d4ae4735df0caa708';
 
 /// Provider for searching sheets
 
@@ -116,7 +167,7 @@ final class SheetListSearchProvider
   }
 }
 
-String _$sheetListSearchHash() => r'd37734fe1c371af41d74481e2e288d99b235c245';
+String _$sheetListSearchHash() => r'478be6cdb1287c4be6d3c1b9414ec3589ce33808';
 
 /// Provider for a single sheet by ID
 
@@ -376,12 +427,12 @@ final class SheetExistsFamily extends $Family
   String toString() => r'sheetExistsProvider';
 }
 
-/// Provider for sheets sorted by title
+/// Provider for sheets sorted by title (filtered by membership)
 
 @ProviderFor(sortedSheets)
 const sortedSheetsProvider = SortedSheetsProvider._();
 
-/// Provider for sheets sorted by title
+/// Provider for sheets sorted by title (filtered by membership)
 
 final class SortedSheetsProvider
     extends
@@ -391,7 +442,7 @@ final class SortedSheetsProvider
           List<SheetModel>
         >
     with $Provider<List<SheetModel>> {
-  /// Provider for sheets sorted by title
+  /// Provider for sheets sorted by title (filtered by membership)
   const SortedSheetsProvider._()
     : super(
         from: null,
@@ -425,4 +476,4 @@ final class SortedSheetsProvider
   }
 }
 
-String _$sortedSheetsHash() => r'aae31f7ba341c156247c9ad7f23dee5de23a74a4';
+String _$sortedSheetsHash() => r'9905b55fb79aca05f96d8fd43f849b157d985a47';
