@@ -5,6 +5,8 @@ final sheetList = [
   SheetModel(
     id: 'sheet-1',
     title: 'Getting Started Guide',
+    coverImageUrl:
+        'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_1280.jpg',
     emoji: '🚀',
     color: const Color(0xFF6366F1), // Indigo
     description: (
@@ -19,6 +21,8 @@ final sheetList = [
   SheetModel(
     id: 'sheet-2',
     title: 'Planning a Trip',
+    coverImageUrl:
+        'https://static.vecteezy.com/system/resources/thumbnails/070/038/514/small/a-traveler-prepares-for-an-exciting-vacation-holding-a-passport-and-tickets-while-contemplating-their-next-adventure-a-bright-yellow-suitcase-stands-ready-for-the-journey-ahead-photo.jpg',
     emoji: '✈️',
     color: const Color(0xFF10B981), // Emerald
     description: (
@@ -33,6 +37,8 @@ final sheetList = [
   SheetModel(
     id: 'sheet-3',
     title: 'Christmas Time for Joy & Celebrations',
+    coverImageUrl:
+        'https://img.freepik.com/free-vector/merry-christmas-happy-new-year-background-with-realistic-gifts-composition_1361-3582.jpg?semt=ais_hybrid&w=740&q=80',
     emoji: '🎄',
     color: const Color(0xFFDC2626), // Red
     description: (
@@ -56,14 +62,7 @@ final sheetList = [
           '<p>Your <strong>one-stop solution for community management</strong>! This workspace helps you organize 100+ notifications, scattered tools, and important clients. From organizing chat groups to tracking important clients, event planning, and task management - bring everything together so you never miss what matters.</p>',
     ),
     createdBy: 'user_1',
-    users: [
-      'user_1',
-      'user_3',
-      'user_4',
-      'user_5',
-      'user_6',
-      'user_7',
-    ],
+    users: ['user_1', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7'],
   ),
   SheetModel(
     id: 'sheet-5',

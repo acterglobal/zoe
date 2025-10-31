@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zoe/common/widgets/document_selection_bottom_sheet.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:zoe/common/widgets/media_selection_bottom_sheet.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 
@@ -9,14 +10,14 @@ import '../../test-utils/test_utils.dart';
 /// Test utilities for DocumentSelectionBottomSheetWidget tests
 class DocumentSelectionBottomSheetTestUtils {
   /// Creates a test wrapper for the DocumentSelectionBottomSheetWidget
-  static DocumentSelectionBottomSheetWidget createTestWidget({
-    VoidCallback? onTapCamera,
-    VoidCallback? onTapGallery,
-    VoidCallback? onTapFileChooser,
+  static MediaSelectionBottomSheetWidget createTestWidget({
+    Function(XFile)? onTapCamera,
+    Function(List<XFile>)? onTapGallery,
+    Function(List<XFile>)? onTapFileChooser,
   }) {
-    return DocumentSelectionBottomSheetWidget(
-      onTapCamera: onTapCamera ?? () {},
-      onTapGallery: onTapGallery ?? () {},
+    return MediaSelectionBottomSheetWidget(
+      onTapCamera: onTapCamera ?? (image) {},
+      onTapGallery: onTapGallery ?? (images) {},
       onTapFileChooser: onTapFileChooser,
     );
   }
@@ -38,7 +39,7 @@ void main() {
       (tester) async {
         await tester.pumpMaterialWidget(
           child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
-            onTapFileChooser: () {},
+            onTapFileChooser: (files) {},
           ),
         );
 
@@ -64,7 +65,7 @@ void main() {
     testWidgets('applies correct styling to option buttons', (tester) async {
       await tester.pumpMaterialWidget(
         child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
-          onTapFileChooser: () {},
+          onTapFileChooser: (files) {},
         ),
       );
 
@@ -78,7 +79,7 @@ void main() {
     testWidgets('renders chevron icons in option buttons', (tester) async {
       await tester.pumpMaterialWidget(
         child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
-          onTapFileChooser: () {},
+          onTapFileChooser: (files) {},
         ),
       );
 
@@ -94,7 +95,7 @@ void main() {
       );
 
       // Verify widget renders without errors
-      expect(find.byType(DocumentSelectionBottomSheetWidget), findsOneWidget);
+      expect(find.byType(MediaSelectionBottomSheetWidget), findsOneWidget);
       expect(find.byIcon(Icons.photo_library_rounded), findsOneWidget);
     });
 
@@ -113,12 +114,12 @@ void main() {
 
         await tester.pumpMaterialWidget(
           child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
-            onTapFileChooser: () {},
+            onTapFileChooser: (files) {},
           ),
         );
 
         // Verify widget renders correctly
-        expect(find.byType(DocumentSelectionBottomSheetWidget), findsOneWidget);
+        expect(find.byType(MediaSelectionBottomSheetWidget), findsOneWidget);
         expect(find.byIcon(Icons.photo_library_rounded), findsOneWidget);
       }
     });
@@ -126,13 +127,13 @@ void main() {
     testWidgets('handles empty callbacks', (tester) async {
       await tester.pumpMaterialWidget(
         child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
-          onTapGallery: () {},
-          onTapFileChooser: () {},
+          onTapGallery: (images) {},
+          onTapFileChooser: (files) {},
         ),
       );
 
       // Verify widget renders without errors
-      expect(find.byType(DocumentSelectionBottomSheetWidget), findsOneWidget);
+      expect(find.byType(MediaSelectionBottomSheetWidget), findsOneWidget);
       expect(find.byIcon(Icons.photo_library_rounded), findsOneWidget);
       expect(find.byIcon(Icons.folder_open_rounded), findsOneWidget);
     });
@@ -145,7 +146,7 @@ void main() {
       // Verify localized title is displayed
       final l10n = WidgetTesterExtension.getL10n(
         tester,
-        byType: DocumentSelectionBottomSheetWidget,
+        byType: MediaSelectionBottomSheetWidget,
       );
       expect(find.text(l10n.selectDocument), findsOneWidget);
     });
@@ -158,7 +159,7 @@ void main() {
       // Verify localized subtitle is displayed
       final l10n = WidgetTesterExtension.getL10n(
         tester,
-        byType: DocumentSelectionBottomSheetWidget,
+        byType: MediaSelectionBottomSheetWidget,
       );
       expect(find.text(l10n.chooseHowToAddDocument), findsOneWidget);
     });
@@ -171,7 +172,7 @@ void main() {
       // Verify localized photo gallery text is displayed
       final l10n = WidgetTesterExtension.getL10n(
         tester,
-        byType: DocumentSelectionBottomSheetWidget,
+        byType: MediaSelectionBottomSheetWidget,
       );
       expect(find.text(l10n.photoGallery), findsOneWidget);
       expect(find.text(l10n.selectFromGallery), findsOneWidget);
@@ -182,14 +183,14 @@ void main() {
     ) async {
       await tester.pumpMaterialWidget(
         child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
-          onTapFileChooser: () {},
+          onTapFileChooser: (files) {},
         ),
       );
 
       // Verify localized file chooser text is displayed
       final l10n = WidgetTesterExtension.getL10n(
         tester,
-        byType: DocumentSelectionBottomSheetWidget,
+        byType: MediaSelectionBottomSheetWidget,
       );
       expect(find.text(l10n.filePicker), findsOneWidget);
       expect(find.text(l10n.browseFiles), findsOneWidget);
@@ -207,7 +208,7 @@ void main() {
       // Verify localized file chooser text is not displayed
       final l10n = WidgetTesterExtension.getL10n(
         tester,
-        byType: DocumentSelectionBottomSheetWidget,
+        byType: MediaSelectionBottomSheetWidget,
       );
       expect(find.text(l10n.filePicker), findsNothing);
       expect(find.text(l10n.browseFiles), findsNothing);
@@ -222,20 +223,20 @@ void main() {
 
       // Note: Camera option is conditionally rendered based on CommonUtils.isDesktop(context)
       // In test environment, we can't easily mock this, so we just verify the widget renders
-      expect(find.byType(DocumentSelectionBottomSheetWidget), findsOneWidget);
+      expect(find.byType(MediaSelectionBottomSheetWidget), findsOneWidget);
     });
 
     testWidgets('displays all required localized elements', (tester) async {
       await tester.pumpMaterialWidget(
         child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
-          onTapFileChooser: () {},
+          onTapFileChooser: (files) {},
         ),
       );
 
       // Verify all required localized elements are present
       final l10n = WidgetTesterExtension.getL10n(
         tester,
-        byType: DocumentSelectionBottomSheetWidget,
+        byType: MediaSelectionBottomSheetWidget,
       );
 
       expect(find.text(l10n.selectDocument), findsOneWidget);
