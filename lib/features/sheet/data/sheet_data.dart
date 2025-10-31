@@ -97,7 +97,6 @@ final sheetList = [
     title: 'School Fundraiser Success Hub',
     sheetAvatar: SheetAvatar(
       image: 'https://cdn-icons-png.flaticon.com/512/11800/11800900.png',
-      //'https://e7.pngegg.com/pngimages/757/272/png-clipart-square-academic-cap-graduation-ceremony-academic-dress-graduation-hat-angle-hat.png',
       color: const Color(0xFFDC2626), // Red
     ),
     description: (
