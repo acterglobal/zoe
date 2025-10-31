@@ -155,29 +155,29 @@ final class PollFamily extends $Family
 
 /// Provider for polls filtered by membership (current user must be a member of the sheet)
 
-@ProviderFor(memberPolls)
-const memberPollsProvider = MemberPollsProvider._();
+@ProviderFor(pollsList)
+const pollsListProvider = PollsListProvider._();
 
 /// Provider for polls filtered by membership (current user must be a member of the sheet)
 
-final class MemberPollsProvider
+final class PollsListProvider
     extends
         $FunctionalProvider<List<PollModel>, List<PollModel>, List<PollModel>>
     with $Provider<List<PollModel>> {
   /// Provider for polls filtered by membership (current user must be a member of the sheet)
-  const MemberPollsProvider._()
+  const PollsListProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'memberPollsProvider',
+        name: r'pollsListProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$memberPollsHash();
+  String debugGetCreateSourceHash() => _$pollsListHash();
 
   @$internal
   @override
@@ -186,7 +186,7 @@ final class MemberPollsProvider
 
   @override
   List<PollModel> create(Ref ref) {
-    return memberPolls(ref);
+    return pollsList(ref);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -198,7 +198,7 @@ final class MemberPollsProvider
   }
 }
 
-String _$memberPollsHash() => r'6dee624b70a1361e63be2b677f10f9d133d1cc94';
+String _$pollsListHash() => r'ebba5677089fbf59070902756ac2fa07d98d245c';
 
 /// Provider for not active polls (drafts) (filtered by membership)
 
@@ -245,7 +245,7 @@ final class NotActivePollListProvider
   }
 }
 
-String _$notActivePollListHash() => r'3754d2a6a2f875f3b7b7f3785c2a207c8d88eb05';
+String _$notActivePollListHash() => r'59c2d4576751446af175d9e0d027517f2d6b7a4d';
 
 /// Provider for active polls (filtered by membership)
 
@@ -292,7 +292,7 @@ final class ActivePollListProvider
   }
 }
 
-String _$activePollListHash() => r'2987838bc8c50290b01cc1ae037b88b98ab84ea1';
+String _$activePollListHash() => r'4cff1602c3ecd9448809dac5b8c55d71e5d751f1';
 
 /// Provider for completed polls (filtered by membership)
 
@@ -339,7 +339,7 @@ final class CompletedPollListProvider
   }
 }
 
-String _$completedPollListHash() => r'71778c2e6c9829b290cf4bb69b6585b8e6327e4c';
+String _$completedPollListHash() => r'c7fec916fdef2c70acd42e39873d56e9a3cf86c6';
 
 /// Provider for searching polls
 
@@ -386,7 +386,7 @@ final class PollListSearchProvider
   }
 }
 
-String _$pollListSearchHash() => r'a60973c4b52d80feefb4021a5ebf7a01b50bc079';
+String _$pollListSearchHash() => r'd19195d93c43fa62669d2701657e98f151d2aa72';
 
 /// Provider for polls filtered by parent ID
 

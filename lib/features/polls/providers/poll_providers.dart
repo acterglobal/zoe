@@ -195,7 +195,7 @@ PollModel? poll(Ref ref, String pollId) {
 
 /// Provider for polls filtered by membership (current user must be a member of the sheet)
 @riverpod
-List<PollModel> memberPolls(Ref ref) {
+List<PollModel> pollsList(Ref ref) {
   final allPolls = ref.watch(pollListProvider);
   final currentUserId = ref.watch(loggedInUserProvider).value;
 
@@ -212,32 +212,32 @@ List<PollModel> memberPolls(Ref ref) {
 /// Provider for not active polls (drafts) (filtered by membership)
 @riverpod
 List<PollModel> notActivePollList(Ref ref) {
-  final memberPolls = ref.watch(memberPollsProvider);
-  return memberPolls.where((p) => PollUtils.isDraft(p)).toList();
+  final polls = ref.watch(pollsListProvider);
+  return polls.where((p) => PollUtils.isDraft(p)).toList();
 }
 
 /// Provider for active polls (filtered by membership)
 @riverpod
 List<PollModel> activePollList(Ref ref) {
-  final memberPolls = ref.watch(memberPollsProvider);
-  return memberPolls.where((p) => PollUtils.isActive(p)).toList();
+  final polls = ref.watch(pollsListProvider);
+  return polls.where((p) => PollUtils.isActive(p)).toList();
 }
 
 /// Provider for completed polls (filtered by membership)
 @riverpod
 List<PollModel> completedPollList(Ref ref) {
-  final memberPolls = ref.watch(memberPollsProvider);
-  return memberPolls.where((p) => PollUtils.isCompleted(p)).toList();
+  final polls = ref.watch(pollsListProvider);
+  return polls.where((p) => PollUtils.isCompleted(p)).toList();
 }
 
 /// Provider for searching polls
 @riverpod
 List<PollModel> pollListSearch(Ref ref) {
   final searchValue = ref.watch(searchValueProvider);
-  final memberPolls = ref.watch(memberPollsProvider);
+  final polls = ref.watch(pollsListProvider);
 
-  if (searchValue.isEmpty) return memberPolls;
-  return memberPolls
+  if (searchValue.isEmpty) return polls;
+  return polls
       .where((poll) =>
           poll.question.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();

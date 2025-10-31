@@ -57,7 +57,7 @@ class SheetList extends _$SheetList {
 
 /// Provider for sheets filtered by membership (current user must be a member)
 @riverpod
-List<SheetModel> memberSheets(Ref ref) {
+List<SheetModel> sheetsList(Ref ref) {
   final allSheets = ref.watch(sheetListProvider);
   final currentUserId = ref.watch(loggedInUserProvider).value;
 
@@ -71,11 +71,11 @@ List<SheetModel> memberSheets(Ref ref) {
 /// Provider for searching sheets
 @riverpod
 List<SheetModel> sheetListSearch(Ref ref) {
-  final memberSheets = ref.watch(memberSheetsProvider);
+  final sheets = ref.watch(sheetsListProvider);
   final searchValue = ref.watch(searchValueProvider);
 
-  if (searchValue.isEmpty) return memberSheets;
-  return memberSheets
+  if (searchValue.isEmpty) return sheets;
+  return sheets
       .where((s) => s.title.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
 }
@@ -104,6 +104,6 @@ bool sheetExists(Ref ref, String sheetId) {
 /// Provider for sheets sorted by title (filtered by membership)
 @riverpod
 List<SheetModel> sortedSheets(Ref ref) {
-  final sheets = ref.watch(memberSheetsProvider);
+  final sheets = ref.watch(sheetsListProvider);
   return [...sheets]..sort((a, b) => a.title.compareTo(b.title));
 }

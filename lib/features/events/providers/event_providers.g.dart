@@ -69,12 +69,12 @@ abstract class _$EventList extends $Notifier<List<EventModel>> {
 
 /// Provider for events filtered by membership (current user must be a member of the sheet)
 
-@ProviderFor(memberEvents)
-const memberEventsProvider = MemberEventsProvider._();
+@ProviderFor(eventsList)
+const eventsListProvider = EventsListProvider._();
 
 /// Provider for events filtered by membership (current user must be a member of the sheet)
 
-final class MemberEventsProvider
+final class EventsListProvider
     extends
         $FunctionalProvider<
           List<EventModel>,
@@ -83,19 +83,19 @@ final class MemberEventsProvider
         >
     with $Provider<List<EventModel>> {
   /// Provider for events filtered by membership (current user must be a member of the sheet)
-  const MemberEventsProvider._()
+  const EventsListProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'memberEventsProvider',
+        name: r'eventsListProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$memberEventsHash();
+  String debugGetCreateSourceHash() => _$eventsListHash();
 
   @$internal
   @override
@@ -104,7 +104,7 @@ final class MemberEventsProvider
 
   @override
   List<EventModel> create(Ref ref) {
-    return memberEvents(ref);
+    return eventsList(ref);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -116,7 +116,7 @@ final class MemberEventsProvider
   }
 }
 
-String _$memberEventsHash() => r'da431e89d38c6efbdb99f63afca10d55068e7670';
+String _$eventsListHash() => r'792e9ff68aac24ba14a1f59453c8faf31e64b831';
 
 /// Provider for today's events (filtered by membership)
 
@@ -167,7 +167,7 @@ final class TodaysEventsProvider
   }
 }
 
-String _$todaysEventsHash() => r'61a35edba94f44a0450b17374354846f09a87ff0';
+String _$todaysEventsHash() => r'c46bc7e837196a451fb55ea36cc39bc7ea17c310';
 
 /// Provider for upcoming events (filtered by membership)
 
@@ -218,7 +218,7 @@ final class UpcomingEventsProvider
   }
 }
 
-String _$upcomingEventsHash() => r'1eb39caf9944c8ac638a5b0f05322db7f1fed88c';
+String _$upcomingEventsHash() => r'bd47be818827b51c43dca1ab817ec376d1135114';
 
 /// Provider for past events (filtered by membership)
 
@@ -269,7 +269,7 @@ final class PastEventsProvider
   }
 }
 
-String _$pastEventsHash() => r'f67584d8f573c5c82d2be2b9106983163ed26ce0';
+String _$pastEventsHash() => r'6be588c85739df644e97902af639d30f048c513e';
 
 /// Provider for all events combined
 
@@ -371,7 +371,7 @@ final class EventListSearchProvider
   }
 }
 
-String _$eventListSearchHash() => r'339fe7841ac5888e8ea5e3c1ef0a4d5b76a8d036';
+String _$eventListSearchHash() => r'1f768930426078e291ce2f73c90e85e4c3ac6bc2';
 
 /// Provider for a single event by ID
 

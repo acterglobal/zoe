@@ -97,7 +97,7 @@ class EventList extends _$EventList {
 
 /// Provider for events filtered by membership (current user must be a member of the sheet)
 @riverpod
-List<EventModel> memberEvents(Ref ref) {
+List<EventModel> eventsList(Ref ref) {
   final allEvents = ref.watch(eventListProvider);
   final currentUserId = ref.watch(loggedInUserProvider).value;
 
@@ -114,8 +114,8 @@ List<EventModel> memberEvents(Ref ref) {
 /// Provider for today's events (filtered by membership)
 @riverpod
 List<EventModel> todaysEvents(Ref ref) {
-  final memberEvents = ref.watch(memberEventsProvider);
-  final todayEvents = memberEvents.where((event) {
+  final events = ref.watch(eventsListProvider);
+  final todayEvents = events.where((event) {
     return event.startDate.isToday;
   }).toList();
   todayEvents.sort((a, b) => a.startDate.compareTo(b.startDate));
@@ -125,8 +125,8 @@ List<EventModel> todaysEvents(Ref ref) {
 /// Provider for upcoming events (filtered by membership)
 @riverpod
 List<EventModel> upcomingEvents(Ref ref) {
-  final memberEvents = ref.watch(memberEventsProvider);
-  final upcomingEvents = memberEvents.where((event) {
+  final events = ref.watch(eventsListProvider);
+  final upcomingEvents = events.where((event) {
     return event.startDate.isAfter(DateTime.now()) && !event.startDate.isToday;
   }).toList();
   upcomingEvents.sort((a, b) => a.startDate.compareTo(b.startDate));
@@ -136,8 +136,8 @@ List<EventModel> upcomingEvents(Ref ref) {
 /// Provider for past events (filtered by membership)
 @riverpod 
 List<EventModel> pastEvents(Ref ref) {
-  final memberEvents = ref.watch(memberEventsProvider);
-  final pastEvents = memberEvents.where((event) {
+  final events = ref.watch(eventsListProvider);
+  final pastEvents = events.where((event) {
     return event.startDate.isBefore(DateTime.now()) && !event.startDate.isToday;
   }).toList();
   pastEvents.sort((a, b) => b.startDate.compareTo(a.startDate));
@@ -157,10 +157,10 @@ List<EventModel> allEvents(Ref ref) {
 @riverpod
 List<EventModel> eventListSearch(Ref ref) {
   final searchValue = ref.watch(searchValueProvider);
-  final memberEvents = ref.watch(memberEventsProvider);
+  final events = ref.watch(eventsListProvider);
 
-  if (searchValue.isEmpty) return memberEvents;
-  return memberEvents
+  if (searchValue.isEmpty) return events;
+  return events
       .where((e) => e.title.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
 }

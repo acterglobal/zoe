@@ -156,7 +156,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         const SizedBox(height: 16),
         SheetListWidget(
-          sheetsProvider: memberSheetsProvider,
+          sheetsProvider: sheetsListProvider,
           shrinkWrap: true,
           maxItems: 3,
         ),
