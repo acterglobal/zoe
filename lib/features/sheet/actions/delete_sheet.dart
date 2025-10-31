@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows a confirmation bottom sheet for deleting a sheet
@@ -17,8 +19,7 @@ void showDeleteSheetConfirmation(
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     builder: (context) => DeleteSheetBottomSheet(
-      sheetTitle: sheet.title,
-      sheetEmoji: sheet.emoji,
+      sheet: sheet,
       onConfirm: () {
         ref.read(sheetListProvider.notifier).deleteSheet(sheetId);
         Navigator.of(context).pop();
@@ -30,14 +31,12 @@ void showDeleteSheetConfirmation(
 }
 
 class DeleteSheetBottomSheet extends StatelessWidget {
-  final String sheetTitle;
-  final String sheetEmoji;
+  final SheetModel sheet;
   final VoidCallback onConfirm;
   final VoidCallback onCancel;
 
   const DeleteSheetBottomSheet({super.key, 
-    required this.sheetTitle,
-    required this.sheetEmoji,
+    required this.sheet,
     required this.onConfirm,
     required this.onCancel,
   });
@@ -129,34 +128,14 @@ class DeleteSheetBottomSheet extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          sheetEmoji,
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                      ),
-                    ),
+                    SheetAvatarWidget(sheetId: sheet.id),
                     const SizedBox(width: 12),
                     Flexible(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            sheetTitle,
+                            sheet.title,
                             style: Theme.of(context).textTheme.titleSmall
                                 ?.copyWith(
                                   fontWeight: FontWeight.w600,

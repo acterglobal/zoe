@@ -7,7 +7,6 @@ typedef Description = ({String? plainText, String? htmlText});
 
 class SheetModel {
   final String id;
-  final String emoji;
   final SheetAvatar sheetAvatar;
   final String title;
   final Description? description;
@@ -19,7 +18,6 @@ class SheetModel {
 
   SheetModel({
     String? id,
-    String? emoji,
     SheetAvatar? sheetAvatar,
     String? title,
     this.description,
@@ -29,7 +27,6 @@ class SheetModel {
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : id = id ?? CommonUtils.generateRandomId(),
-       emoji = emoji ?? '📄',
        sheetAvatar = sheetAvatar ?? SheetAvatar(),
        title = title ?? 'Untitled',
        createdBy = createdBy ?? CommonUtils.generateRandomId(),
@@ -51,7 +48,6 @@ class SheetModel {
   }) {
     return SheetModel(
       id: id ?? this.id,
-      emoji: emoji ?? this.emoji,
       sheetAvatar: sheetAvatar ?? this.sheetAvatar,
       title: title ?? this.title,
       description: description ?? this.description,

@@ -6,7 +6,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-1',
     title: 'Getting Started Guide',
-    emoji: '🚀',
     sheetAvatar: SheetAvatar(
       icon: Icons.book,
       color: const Color(0xFF6366F1), // Indigo
@@ -23,7 +22,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-2',
     title: 'Planning a Trip',
-    emoji: '✈️',
     sheetAvatar: SheetAvatar(
       emoji: '✈️',
       color: const Color(0xFF10B981), // Emerald
@@ -40,7 +38,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-3',
     title: 'Christmas Time for Joy & Celebrations',
-    emoji: '🎄',
     sheetAvatar: SheetAvatar(
       image: 'https://cdn-icons-png.flaticon.com/512/9193/9193628.png',
       color: const Color(0xFFDC2626), // Red
@@ -57,7 +54,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-4',
     title: 'Community Organization Hub',
-    emoji: '🏘️',
     sheetAvatar: SheetAvatar(
       emoji: '🏘️',
       color: const Color(0xFF059669), // Emerald
@@ -74,7 +70,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-5',
     title: 'Exhibition Planning Hub',
-    emoji: '🎨',
     sheetAvatar: SheetAvatar(
       icon: Icons.color_lens_outlined,
       color: const Color(0xFF1E40AF), // Blue
@@ -100,7 +95,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-6',
     title: 'School Fundraiser Success Hub',
-    emoji: '🎓',
     sheetAvatar: SheetAvatar(
       image: 'https://cdn-icons-png.flaticon.com/512/11800/11800900.png',
       //'https://e7.pngegg.com/pngimages/757/272/png-clipart-square-academic-cap-graduation-ceremony-academic-dress-graduation-hat-angle-hat.png',
@@ -129,7 +123,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-7',
     title: 'BBQ Planning Paradise',
-    emoji: '🔥',
     sheetAvatar: SheetAvatar(
       icon: Icons.fireplace_outlined,
       color: const Color(0xFFEA580C), // Orange
@@ -157,7 +150,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-8',
     title: 'University Hangout Hub',
-    emoji: '🎓',
     sheetAvatar: SheetAvatar(
       emoji: '🎓',
       color: const Color(0xFF7C3AED), // Purple
@@ -174,7 +166,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-9',
     title: 'Book Club Paradise',
-    emoji: '📚',
     sheetAvatar: SheetAvatar(
       image: 'https://cdn-icons-png.flaticon.com/512/5078/5078755.png',
       color: const Color(0xFF059669), // Green
@@ -200,7 +191,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-10',
     title: 'Softball Club BBQ Party Hub',
-    emoji: '⚾',
     sheetAvatar: SheetAvatar(
       icon: Icons.sports_baseball_outlined,
       color: const Color(0xFFDC2626), // Red
@@ -228,7 +218,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-11',
     title: 'Bachelorette Party Paradise',
-    emoji: '💃',
     sheetAvatar: SheetAvatar(
       emoji: '💃',
       color: const Color(0xFFEC4899), // Pink
@@ -245,7 +234,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-12',
     title: 'Church Summer Fest 2026 Hub',
-    emoji: '⛪',
     sheetAvatar: SheetAvatar(
       emoji: '⛪',
       color: const Color(0xFF059669), // Green
@@ -271,7 +259,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-13',
     title: 'PTA Bake Sale Success Hub',
-    emoji: '🧁',
     sheetAvatar: SheetAvatar(
       icon: Icons.bakery_dining_outlined,
       color: const Color(0xFFDC2626), // Red
@@ -299,7 +286,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-14',
     title: 'Halloween Planning Spectacular Hub',
-    emoji: '🎃',
     sheetAvatar: SheetAvatar(
       image: 'https://cdn-icons-png.flaticon.com/512/12420/12420664.png',
       color: const Color(0xFF7C2D12), // Dark orange/brown
@@ -327,7 +313,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-15',
     title: 'Summer Camp Sign-ups Success Hub',
-    emoji: '🏕️',
     sheetAvatar: SheetAvatar(
       emoji: '🏕️',
       color: const Color(0xFF059669), // Green
@@ -355,7 +340,6 @@ final sheetList = [
   SheetModel(
     id: 'sheet-16',
     title: 'Thanksgiving Will Not Be Terrible',
-    emoji: '🍽️',
     sheetAvatar: SheetAvatar(
       icon: Icons.restaurant_outlined,
       color: const Color(0xFFEA580C), // Orange
