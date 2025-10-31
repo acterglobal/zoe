@@ -17,12 +17,12 @@ class StatsSectionWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sheetList = ref.watch(sheetListProvider);
-    final eventList = ref.watch(eventListProvider);
-    final taskList = ref.watch(taskListProvider);
+    final sheetList = ref.watch(sheetsListProvider);
+    final eventList = ref.watch(eventsListProvider);
+    final taskList = ref.watch(tasksListProvider);
     final linkList = ref.watch(linkListProvider);
     final documentList = ref.watch(documentListProvider);
-    final pollList = ref.watch(pollListProvider);
+    final pollList = ref.watch(pollsListProvider);
     return Column(
       children: [
         // Top row: Sheets and Events
