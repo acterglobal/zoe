@@ -106,6 +106,7 @@ class SheetDetailScreen extends ConsumerWidget {
             SheetAvatarWidget(
               sheetId: sheetId,
               isWithBackground: false,
+              padding: EdgeInsets.only(top: 3, right: 6),
               iconSize: 40,
               imageSize: 46,
               emojiSize: 32,

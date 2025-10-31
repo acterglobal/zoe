@@ -9,6 +9,7 @@ class SheetAvatarWidget extends ConsumerWidget {
   final String sheetId;
   final bool isWithBackground;
   final bool isCompact;
+  final EdgeInsetsGeometry? padding;
   final double? size;
   final double? iconSize;
   final double? imageSize;
@@ -19,6 +20,7 @@ class SheetAvatarWidget extends ConsumerWidget {
     required this.sheetId,
     this.isWithBackground = true,
     this.isCompact = false,
+    this.padding,
     this.size,
     this.iconSize,
     this.imageSize,
@@ -31,9 +33,7 @@ class SheetAvatarWidget extends ConsumerWidget {
     if (sheet == null) return const SizedBox.shrink();
 
     return Padding(
-      padding: isWithBackground
-          ? EdgeInsets.zero
-          : EdgeInsets.only(top: 3, right: 6),
+      padding: padding ?? EdgeInsets.zero,
       child: _buildBackground(context, sheet),
     );
   }
