@@ -9,6 +9,7 @@ import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe_native/zoe_native.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'core/deeplink/deep_link_initializer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,8 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     final language = ref.watch(appLocaleProvider);
 
-    return MaterialApp.router(
+    return DeepLinkInitializer(
+      child: MaterialApp.router(
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
@@ -43,6 +45,7 @@ class MyApp extends ConsumerWidget {
         FlutterQuillLocalizations.delegate,
       ],
       supportedLocales: L10n.supportedLocales,
+      ),
     );
   }
 }

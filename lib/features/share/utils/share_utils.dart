@@ -12,9 +12,14 @@ import 'package:zoe/features/users/providers/user_providers.dart';
 
 class ShareUtils {
   static final String linkPrefixUrl = 'https://hellozoe.app';
+  static final String appLinkScheme = 'zoe';
 
   static String getLinkPrefixUrl(String endpoint) {
     return '🔗 $linkPrefixUrl/$endpoint';
+  }
+
+  static String getAppLinkUrl(String endpoint) {
+    return '🔗 $appLinkScheme://$endpoint';
   }
 
   // Sheet
@@ -38,8 +43,8 @@ class ShareUtils {
       buffer.write('\n\n$description');
     }
 
-    // Link
-    final link = getLinkPrefixUrl('sheet/$parentId');
+    // Link (custom scheme so it opens the app directly)
+    final link = getAppLinkUrl('sheet/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -69,7 +74,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('text-block/$parentId');
+    final link = getAppLinkUrl('text-block/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -109,7 +114,7 @@ class ShareUtils {
     buffer.write('\n\n🕓 End\n$endDateString');
 
     // Link
-    final link = getLinkPrefixUrl('event/$parentId');
+    final link = getAppLinkUrl('event/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -158,7 +163,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('list/$parentId');
+    final link = getAppLinkUrl('list/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -200,7 +205,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('task/$parentId');
+    final link = getAppLinkUrl('task/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -227,7 +232,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('bullet/$parentId');
+    final link = getAppLinkUrl('bullet/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -254,7 +259,7 @@ class ShareUtils {
     buffer.write('\n\n${options.map((e) => '🔘 ${e.title}').join('\n')}');
 
     // Link
-    final link = getLinkPrefixUrl('poll/$parentId');
+    final link = getAppLinkUrl('poll/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
