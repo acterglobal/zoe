@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart' as sheet_model;
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 
@@ -33,7 +34,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'title-test-sheet',
           title: 'Original Title',
-          emoji: '📝',
+          sheetAvatar: SheetAvatar(emoji: '📝'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -46,7 +47,7 @@ void main() {
           (s) => s.id == 'title-test-sheet',
         );
         expect(updatedSheet.title, equals('Updated Title'));
-        expect(updatedSheet.emoji, equals('📝')); // Other properties unchanged
+        expect(updatedSheet.sheetAvatar.emoji, equals('📝')); // Other properties unchanged
       });
 
       test('handles empty title', () {
@@ -54,7 +55,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'empty-title-test',
           title: 'Original Title',
-          emoji: '📝',
+          sheetAvatar: SheetAvatar(emoji: '📝'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -74,7 +75,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'special-title-test',
           title: 'Original Title',
-          emoji: '📝',
+          sheetAvatar: SheetAvatar(emoji: '📝'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -95,7 +96,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'long-title-test',
           title: 'Original Title',
-          emoji: '📝',
+          sheetAvatar: SheetAvatar(emoji: '📝'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -117,12 +118,12 @@ void main() {
         final sheet1 = sheet_model.SheetModel(
           id: 'sheet1',
           title: 'Sheet 1',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         final sheet2 = sheet_model.SheetModel(
           id: 'sheet2',
           title: 'Sheet 2',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         container.read(sheetListProvider.notifier).addSheet(sheet1);
         container.read(sheetListProvider.notifier).addSheet(sheet2);
@@ -146,7 +147,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'desc-test-sheet',
           title: 'Description Test',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -178,7 +179,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'null-plain-test',
           title: 'Null Plain Test',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -203,7 +204,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'null-html-test',
           title: 'Null HTML Test',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -228,7 +229,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'both-null-test',
           title: 'Both Null Test',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -253,7 +254,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'special-desc-test',
           title: 'Special Desc Test',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -284,12 +285,12 @@ void main() {
         final sheet1 = sheet_model.SheetModel(
           id: 'desc-sheet1',
           title: 'Desc Sheet 1',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         final sheet2 = sheet_model.SheetModel(
           id: 'desc-sheet2',
           title: 'Desc Sheet 2',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         container.read(sheetListProvider.notifier).addSheet(sheet1);
         container.read(sheetListProvider.notifier).addSheet(sheet2);
@@ -331,7 +332,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'emoji-test-sheet',
           title: 'Emoji Test',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -343,7 +344,7 @@ void main() {
         final updatedSheet = updatedList.firstWhere(
           (s) => s.id == 'emoji-test-sheet',
         );
-        expect(updatedSheet.emoji, equals('🎉'));
+        expect(updatedSheet.sheetAvatar.emoji, equals('🎉'));
         expect(updatedSheet.title, equals('Emoji Test')); // Other properties unchanged
       });
 
@@ -352,7 +353,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'empty-emoji-test',
           title: 'Empty Emoji Test',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -364,7 +365,7 @@ void main() {
         final updatedSheet = updatedList.firstWhere(
           (s) => s.id == 'empty-emoji-test',
         );
-        expect(updatedSheet.emoji, equals(''));
+        expect(updatedSheet.sheetAvatar.emoji, equals(''));
       });
 
       test('handles special characters in emoji', () {
@@ -372,7 +373,7 @@ void main() {
         final testSheet = sheet_model.SheetModel(
           id: 'special-emoji-test',
           title: 'Special Emoji Test',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         container.read(sheetListProvider.notifier).addSheet(testSheet);
 
@@ -385,7 +386,7 @@ void main() {
         final updatedSheet = updatedList.firstWhere(
           (s) => s.id == 'special-emoji-test',
         );
-        expect(updatedSheet.emoji, equals(specialEmoji));
+        expect(updatedSheet.sheetAvatar.emoji, equals(specialEmoji));
       });
 
       test('does not affect other sheets', () {
@@ -393,12 +394,12 @@ void main() {
         final sheet1 = sheet_model.SheetModel(
           id: 'emoji-sheet1',
           title: 'Emoji Sheet 1',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         final sheet2 = sheet_model.SheetModel(
           id: 'emoji-sheet2',
           title: 'Emoji Sheet 2',
-          emoji: '📄',
+          sheetAvatar: SheetAvatar(emoji: '📄'),
         );
         container.read(sheetListProvider.notifier).addSheet(sheet1);
         container.read(sheetListProvider.notifier).addSheet(sheet2);
@@ -411,8 +412,8 @@ void main() {
         final updatedSheet1 = updatedList.firstWhere((s) => s.id == 'emoji-sheet1');
         final unchangedSheet2 = updatedList.firstWhere((s) => s.id == 'emoji-sheet2');
 
-        expect(updatedSheet1.emoji, equals('🎉'));
-        expect(unchangedSheet2.emoji, equals('📄'));
+        expect(updatedSheet1.sheetAvatar.emoji, equals('🎉'));
+        expect(unchangedSheet2.sheetAvatar.emoji, equals('📄'));
       });
     });
   });

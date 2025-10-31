@@ -85,7 +85,6 @@ void main() {
 
         // Verify sheet title is in the preview
         expect(find.textContaining(testSheet.title), findsWidgets);
-        expect(find.textContaining(testSheet.emoji), findsWidgets);
       });
     });
 

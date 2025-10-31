@@ -40,7 +40,10 @@ class SheetList extends _$SheetList {
   void updateSheetEmoji(String sheetId, String emoji) {
     state = [
       for (final sheet in state)
-        if (sheet.id == sheetId) sheet.copyWith(emoji: emoji) else sheet,
+        if (sheet.id == sheetId)
+          sheet.copyWith(sheetAvatar: sheet.sheetAvatar.copyWith(emoji: emoji))
+        else
+          sheet,
     ];
   }
 

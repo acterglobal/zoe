@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/features/sheet/actions/delete_sheet.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/l10n/generated/l10n_en.dart';
 import '../../../test-utils/test_utils.dart';
@@ -67,7 +68,6 @@ void main() {
 
         // Verify sheet information is displayed
         expect(find.text(testSheet.title), findsOneWidget);
-        expect(find.text(testSheet.emoji), findsOneWidget);
 
         final l10n = getL10n(tester);
         expect(find.text(l10n.sheet), findsOneWidget);
@@ -203,7 +203,7 @@ void main() {
 
         // Verify sheet info is displayed
         expect(find.text(testSheet.title), findsOneWidget);
-        expect(find.text(testSheet.emoji), findsOneWidget);
+        expect(find.byType(SheetAvatarWidget), findsOneWidget);
 
         final l10n = getL10n(tester);
         expect(find.text(l10n.sheet), findsOneWidget);

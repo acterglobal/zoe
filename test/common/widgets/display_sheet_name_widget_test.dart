@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 
@@ -17,7 +18,7 @@ class DisplaySheetNameWidgetTestUtils {
   }) {
     return SheetModel(
       id: id ?? 'test-sheet-id',
-      emoji: emoji ?? '📄',
+      sheetAvatar: SheetAvatar(emoji: emoji ?? '📄'),
       title: title ?? 'Test Sheet',
     );
   }
@@ -55,7 +56,7 @@ void main() {
       // Verify widget is rendered
       expect(find.byType(DisplaySheetNameWidget), findsOneWidget);
       expect(find.byType(Flexible), findsOneWidget);
-      expect(find.byType(Text), findsOneWidget);
+      expect(find.byType(Text), findsNWidgets(2));
     });
 
     testWidgets('displays sheet name and emoji correctly', (tester) async {
@@ -78,7 +79,8 @@ void main() {
       );
 
       // Verify sheet name and emoji are displayed
-      expect(find.text('📊 Analytics Sheet'), findsOneWidget);
+      expect(find.text('📊'), findsOneWidget);
+      expect(find.text('Analytics Sheet'), findsOneWidget);
     });
 
     testWidgets('handles null sheet gracefully', (tester) async {
@@ -142,7 +144,8 @@ void main() {
       );
 
       // Verify emoji is displayed
-      expect(find.text('📊 Test Sheet'), findsOneWidget);
+      expect(find.text('📊'), findsOneWidget);
+      expect(find.text('Test Sheet'), findsOneWidget);
     });
 
     testWidgets('handles empty title', (tester) async {
@@ -165,7 +168,8 @@ void main() {
       );
 
       // Verify empty title is handled
-      expect(find.text('📄 '), findsOneWidget);
+      expect(find.text('📄'), findsOneWidget);
+      expect(find.text(''), findsOneWidget);
     });
 
     testWidgets('handles empty emoji', (tester) async {
@@ -188,7 +192,8 @@ void main() {
       );
 
       // Verify empty emoji is handled
-      expect(find.text(' Test Sheet'), findsOneWidget);
+      expect(find.text(''), findsOneWidget);
+      expect(find.text('Test Sheet'), findsOneWidget);
     });
 
     testWidgets('handles multiple sheets in provider', (tester) async {
@@ -221,7 +226,8 @@ void main() {
       );
 
       // Verify correct sheet is displayed
-      expect(find.text('📝 Notes'), findsOneWidget);
+      expect(find.text('📝'), findsOneWidget);
+      expect(find.text('Notes'), findsOneWidget);
     });
 
     testWidgets('handles sheet ID not found in provider', (tester) async {
