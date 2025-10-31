@@ -6,6 +6,7 @@ import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 
 part 'poll_providers.g.dart';
 
@@ -216,12 +217,22 @@ List<PollModel> completedPollList(Ref ref) {
 /// Provider for searching polls
 @riverpod
 List<PollModel> pollListSearch(Ref ref) {
-  final pollList = ref.watch(pollListProvider);
+  final allPolls = ref.watch(pollListProvider);
   final searchValue = ref.watch(searchValueProvider);
-  if (searchValue.isEmpty) return pollList;
-  return pollList.where((poll) {
-    return poll.question.toLowerCase().contains(searchValue.toLowerCase());
-  }).toList();
+  final currentUserId = ref.watch(loggedInUserProvider).value;
+
+  if (currentUserId == null || currentUserId.isEmpty) return [];
+
+  final memberPolls = allPolls.where((p) {
+    final sheet = ref.watch(sheetProvider(p.sheetId));
+    return sheet?.users.contains(currentUserId) == true;
+  });
+
+  if (searchValue.isEmpty) return memberPolls.toList();
+  return memberPolls
+      .where((poll) =>
+          poll.question.toLowerCase().contains(searchValue.toLowerCase()))
+      .toList();
 }
 
 /// Provider for polls filtered by parent ID
