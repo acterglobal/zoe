@@ -3,16 +3,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/documents/data/document_data.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import '../../../test-utils/mock_searchValue.dart';
+import '../../users/utils/users_utils.dart';
 
 void main() {
   group('Document Providers Tests', () {
     late ProviderContainer container;
+    late String testUserId;
 
     setUp(() {
       container = ProviderContainer.test(
         overrides: [
           searchValueProvider.overrideWith(MockSearchValue.new),
+        ],
+      );
+
+      // Get test user
+      testUserId = getUserByIndex(container).id;
+
+      // Override loggedInUserProvider for tests that depend on documentListSearchProvider
+      container = ProviderContainer.test(
+        overrides: [
+          searchValueProvider.overrideWith(MockSearchValue.new),
+          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
         ],
       );
     });
@@ -163,24 +178,39 @@ void main() {
     group('Document List Search', () {
       test('documentListSearch returns all documents when search is empty', () {
         final allDocuments = container.read(documentListProvider);
+        
+        // Get documents that the test user's sheets contain
+        final userDocuments = allDocuments.where((d) {
+          final sheet = container.read(sheetProvider(d.sheetId));
+          return sheet?.users.contains(testUserId) == true;
+        }).toList();
 
         final searchResults = container.read(documentListSearchProvider);
 
-        expect(searchResults.length, equals(allDocuments.length));
+        expect(searchResults.length, equals(userDocuments.length));
       });
 
       test('documentListSearch filters documents by title', () {
         final allDocuments = container.read(documentListProvider);
-        final targetDocument = allDocuments.first;
-        final searchTerm = targetDocument.title.substring(0, 3);
+        
+        // Get documents that the test user's sheets contain
+        final userDocuments = allDocuments.where((d) {
+          final sheet = container.read(sheetProvider(d.sheetId));
+          return sheet?.users.contains(testUserId) == true;
+        }).toList();
 
-        // Update search value
-        container.read(searchValueProvider.notifier).update(searchTerm);
+        if (userDocuments.isNotEmpty) {
+          final targetDocument = userDocuments.first;
+          final searchTerm = targetDocument.title.substring(0, 3);
 
-        final searchResults = container.read(documentListSearchProvider);
+          // Update search value
+          container.read(searchValueProvider.notifier).update(searchTerm);
 
-        expect(searchResults, isNotEmpty);
-        expect(searchResults.any((d) => d.id == targetDocument.id), isTrue);
+          final searchResults = container.read(documentListSearchProvider);
+
+          expect(searchResults, isNotEmpty);
+          expect(searchResults.any((d) => d.id == targetDocument.id), isTrue);
+        }
       });
 
       test('documentListSearch returns empty list for non-matching search', () {

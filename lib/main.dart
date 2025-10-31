@@ -9,6 +9,7 @@ import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe_native/zoe_native.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'core/deeplink/deep_link_initializer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +43,11 @@ class MyApp extends ConsumerWidget {
         ...L10n.localizationsDelegates,
         FlutterQuillLocalizations.delegate,
       ],
+      builder: (context, child) => DeepLinkInitializer(
+        child: child ?? SizedBox.shrink(),
+      ),
       supportedLocales: L10n.supportedLocales,
+    
     );
   }
 }
