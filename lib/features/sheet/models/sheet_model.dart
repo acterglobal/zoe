@@ -36,7 +36,6 @@ class SheetModel {
 
   SheetModel copyWith({
     String? id,
-    String? emoji,
     SheetAvatar? sheetAvatar,
     String? title,
     Description? description,
