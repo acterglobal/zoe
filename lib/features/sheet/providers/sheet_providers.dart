@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/sheet/data/sheet_data.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'sheet_providers.g.dart';
 
@@ -12,7 +13,13 @@ class SheetList extends _$SheetList {
   List<SheetModel> build() => sheetList;
 
   void addSheet(SheetModel sheet) {
-    state = [...state, sheet];
+    final currentUserId = ref.read(loggedInUserProvider).value;
+  
+    if (currentUserId != null && currentUserId.isNotEmpty) {
+      state = [...state, sheet.copyWith(users: [currentUserId], createdBy: currentUserId)];
+    } else {
+      state = [...state, sheet];
+    }
   }
 
   void deleteSheet(String sheetId) {
@@ -52,15 +59,39 @@ class SheetList extends _$SheetList {
         if (sheet.id == sheetId) sheet.copyWith(emoji: emoji) else sheet,
     ];
   }
+
+  void addUserToSheet(String sheetId, String userId) {
+    state = [
+      for (final sheet in state)
+        if (sheet.id == sheetId)
+          sheet.copyWith(users: {...sheet.users, userId}.toList())
+        else
+          sheet,
+    ];
+  }
+}
+
+/// Provider for sheets filtered by membership (current user must be a member)
+@riverpod
+List<SheetModel> sheetsList(Ref ref) {
+  final allSheets = ref.watch(sheetListProvider);
+  final currentUserId = ref.watch(loggedInUserProvider).value;
+
+  // If no user, show nothing
+  if (currentUserId == null || currentUserId.isEmpty) return [];
+
+  // Filter by membership
+  return allSheets.where((s) => s.users.contains(currentUserId)).toList();
 }
 
 /// Provider for searching sheets
 @riverpod
 List<SheetModel> sheetListSearch(Ref ref) {
-  final sheetList = ref.watch(sheetListProvider);
+  final sheets = ref.watch(sheetsListProvider);
   final searchValue = ref.watch(searchValueProvider);
-  if (searchValue.isEmpty) return sheetList;
-  return sheetList
+
+  if (searchValue.isEmpty) return sheets;
+  return sheets
       .where((s) => s.title.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
 }
@@ -86,9 +117,9 @@ bool sheetExists(Ref ref, String sheetId) {
   return sheet != null;
 }
 
-/// Provider for sheets sorted by title
+/// Provider for sheets sorted by title (filtered by membership)
 @riverpod
 List<SheetModel> sortedSheets(Ref ref) {
-  final sheets = ref.watch(sheetListProvider);
+  final sheets = ref.watch(sheetsListProvider);
   return [...sheets]..sort((a, b) => a.title.compareTo(b.title));
 }

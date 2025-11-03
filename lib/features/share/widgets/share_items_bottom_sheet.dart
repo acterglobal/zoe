@@ -35,7 +35,7 @@ class ShareItemsBottomSheet extends ConsumerWidget {
   const ShareItemsBottomSheet({
     super.key,
     required this.parentId,
-    this.isSheet = false,
+    required this.isSheet,
   });
 
   @override
