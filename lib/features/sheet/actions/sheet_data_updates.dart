@@ -39,3 +39,8 @@ void updateSheetIconAndColor(
       .read(sheetListProvider.notifier)
       .updateSheetIconAndColor(sheetId, icon, color);
 }
+
+/// Updates the icon and color of the sheet
+void updateSheetAvatarImage(WidgetRef ref, String sheetId, String image) {
+  ref.read(sheetListProvider.notifier).updateSheetAvatarImage(sheetId, image);
+}

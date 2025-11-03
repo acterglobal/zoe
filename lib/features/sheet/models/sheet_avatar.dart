@@ -7,12 +7,7 @@ class SheetAvatar {
   final String? emoji;
   final Color? color;
 
-  SheetAvatar({
-    this.icon = ZoeIcon.file,
-    this.image,
-    this.emoji,
-    this.color,
-  });
+  SheetAvatar({this.icon = ZoeIcon.file, this.image, this.emoji, this.color});
 
   SheetAvatar copyWith({
     ZoeIcon? icon,
@@ -22,9 +17,9 @@ class SheetAvatar {
   }) {
     return SheetAvatar(
       icon: icon ?? this.icon,
-      image: image ?? this.image,
-      emoji: emoji ?? this.emoji,
-      color: color ?? this.color,
+      image: image,
+      emoji: emoji,
+      color: color,
     );
   }
 }

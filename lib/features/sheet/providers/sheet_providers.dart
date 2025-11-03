@@ -16,9 +16,12 @@ class SheetList extends _$SheetList {
 
   void addSheet(SheetModel sheet) {
     final currentUserId = ref.read(loggedInUserProvider).value;
-  
+
     if (currentUserId != null && currentUserId.isNotEmpty) {
-      state = [...state, sheet.copyWith(users: [currentUserId], createdBy: currentUserId)];
+      state = [
+        ...state,
+        sheet.copyWith(users: [currentUserId], createdBy: currentUserId),
+      ];
     } else {
       state = [...state, sheet];
     }
@@ -62,6 +65,16 @@ class SheetList extends _$SheetList {
           sheet.copyWith(
             sheetAvatar: sheet.sheetAvatar.copyWith(icon: icon, color: color),
           )
+        else
+          sheet,
+    ];
+  }
+
+  void updateSheetAvatarImage(String sheetId, String image) {
+    state = [
+      for (final sheet in state)
+        if (sheet.id == sheetId)
+          sheet.copyWith(sheetAvatar: sheet.sheetAvatar.copyWith(image: image))
         else
           sheet,
     ];

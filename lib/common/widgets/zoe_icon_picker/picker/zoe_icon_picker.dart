@@ -8,21 +8,21 @@ import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class ZoeIconPicker extends ConsumerStatefulWidget {
-  final Color selectedColor;
-  final ZoeIcon selectedIcon;
+  final Color? selectedColor;
+  final ZoeIcon? selectedIcon;
   final Function(Color, ZoeIcon)? onIconSelection;
 
   const ZoeIconPicker({
     super.key,
-    required this.selectedColor,
-    required this.selectedIcon,
+    this.selectedColor,
+    this.selectedIcon,
     this.onIconSelection,
   });
 
   static Future<void> show({
     required BuildContext context,
-    required final Color selectedColor,
-    required final ZoeIcon selectedIcon,
+    final Color? selectedColor,
+    final ZoeIcon? selectedIcon,
     final Function(Color, ZoeIcon)? onIconSelection,
   }) async => await showModalBottomSheet(
     showDragHandle: true,
@@ -43,15 +43,21 @@ class ZoeIconPicker extends ConsumerStatefulWidget {
 
 class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
   final searchController = TextEditingController();
-  final ValueNotifier<Color> selectedColor = ValueNotifier(Colors.blueGrey);
-  final ValueNotifier<ZoeIcon> selectedIcon = ValueNotifier(ZoeIcon.list);
+  final ValueNotifier<Color> selectedColor = ValueNotifier(
+    iconPickerColors.first,
+  );
+  final ValueNotifier<ZoeIcon> selectedIcon = ValueNotifier(ZoeIcon.file);
   final ValueNotifier<List<ZoeIcon>> zoeIconList = ValueNotifier(
     ZoeIcon.values,
   );
 
   void _setWidgetValues() {
-    selectedColor.value = widget.selectedColor;
-    selectedIcon.value = widget.selectedIcon;
+    if (widget.selectedColor != null) {
+      selectedColor.value = widget.selectedColor!;
+    }
+    if (widget.selectedIcon != null) {
+      selectedIcon.value = widget.selectedIcon!;
+    }
   }
 
   @override
