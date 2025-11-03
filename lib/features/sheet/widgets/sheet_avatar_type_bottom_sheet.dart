@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/bottom_sheet_option_widget.dart';
+import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/picker/zoe_icon_picker.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
-import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class SheetAvatarTypeBottomSheet extends ConsumerWidget {
@@ -31,9 +32,7 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
       selectedColor: Colors.blueGrey,
       selectedIcon: ZoeIcon.list,
       onIconSelection: (color, icon) {
-        ref
-            .read(sheetListProvider.notifier)
-            .updateSheetIconAndColor(sheetId, icon, color);
+        updateSheetIconAndColor(ref, sheetId, icon, color);
         if (context.mounted) context.pop();
       },
     );
@@ -41,7 +40,16 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
 
   void selectImage(BuildContext context, WidgetRef ref) {}
 
-  void selectEmoji(BuildContext context, WidgetRef ref) {}
+  void selectEmoji(BuildContext context, WidgetRef ref) {
+    showCustomEmojiPicker(
+      context,
+      ref,
+      onEmojiSelected: (emoji) {
+        updateSheetEmoji(ref, sheetId, emoji);
+        if (context.mounted) context.pop();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
