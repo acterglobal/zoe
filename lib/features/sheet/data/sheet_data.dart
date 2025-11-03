@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 
@@ -7,7 +8,7 @@ final sheetList = [
     id: 'sheet-1',
     title: 'Getting Started Guide',
     sheetAvatar: SheetAvatar(
-      icon: Icons.book,
+      icon: ZoeIcon.book,
       color: const Color(0xFF6366F1), // Indigo
     ),
     description: (
@@ -71,7 +72,7 @@ final sheetList = [
     id: 'sheet-5',
     title: 'Exhibition Planning Hub',
     sheetAvatar: SheetAvatar(
-      icon: Icons.color_lens_outlined,
+      icon: ZoeIcon.palette,
       color: const Color(0xFF1E40AF), // Blue
     ),
     description: (
@@ -123,7 +124,7 @@ final sheetList = [
     id: 'sheet-7',
     title: 'BBQ Planning Paradise',
     sheetAvatar: SheetAvatar(
-      icon: Icons.fireplace_outlined,
+      icon: ZoeIcon.fire,
       color: const Color(0xFFEA580C), // Orange
     ),
     description: (
@@ -191,7 +192,7 @@ final sheetList = [
     id: 'sheet-10',
     title: 'Softball Club BBQ Party Hub',
     sheetAvatar: SheetAvatar(
-      icon: Icons.sports_baseball_outlined,
+      icon: ZoeIcon.baseball,
       color: const Color(0xFFDC2626), // Red
     ),
     description: (
@@ -259,7 +260,7 @@ final sheetList = [
     id: 'sheet-13',
     title: 'PTA Bake Sale Success Hub',
     sheetAvatar: SheetAvatar(
-      icon: Icons.bakery_dining_outlined,
+      icon: ZoeIcon.bread,
       color: const Color(0xFFDC2626), // Red
     ),
     description: (
@@ -340,7 +341,7 @@ final sheetList = [
     id: 'sheet-16',
     title: 'Thanksgiving Will Not Be Terrible',
     sheetAvatar: SheetAvatar(
-      icon: Icons.restaurant_outlined,
+      icon: ZoeIcon.forkKnife,
       color: const Color(0xFFEA580C), // Orange
     ),
     description: (

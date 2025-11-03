@@ -545,5 +545,17 @@
     "editThisTask": "Edit this task",
     "deleteThisTask": "Delete this task",
     "dueDate": "Due Date",
-    "date": "Date"
+    "date": "Date",
+    "select": "Select",
+    "selectColor": "Select color",
+    "selectIcon": "Select icon",
+    "noIconsFound": "No icons found",
+    "selectSheetAvatarType": "Select sheet avatar type",
+    "chooseSheetAvatarType": "Choose sheet avatar type for your sheet",
+    "icon": "Icon",
+    "chooseIconDescription": "Choose icon for sheet avatar",
+    "image": "Image",
+    "chooseImageDescription": "Choose image for sheet avatar",
+    "emoji": "Emoji",
+    "chooseEmojiDescription":"Choose emoji for sheet avatar"
 }

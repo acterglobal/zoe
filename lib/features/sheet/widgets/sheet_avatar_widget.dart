@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/styled_content_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_network_local_image_view.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_type_bottom_sheet.dart';
 
 class SheetAvatarWidget extends ConsumerWidget {
   final String sheetId;
@@ -31,10 +33,16 @@ class SheetAvatarWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final sheet = ref.watch(sheetProvider(sheetId));
     if (sheet == null) return const SizedBox.shrink();
+    final isEditing = ref.watch(editContentIdProvider) == sheetId;
 
-    return Padding(
-      padding: padding ?? EdgeInsets.zero,
-      child: _buildBackground(context, sheet),
+    return GestureDetector(
+      onTap: isEditing
+          ? () => SheetAvatarTypeBottomSheet.show(context, sheetId)
+          : null,
+      child: Padding(
+        padding: padding ?? EdgeInsets.zero,
+        child: _buildBackground(context, sheet),
+      ),
     );
   }
 
@@ -92,7 +100,7 @@ class SheetAvatarWidget extends ConsumerWidget {
         sheet.sheetAvatar.color ?? theme.colorScheme.primary;
 
     return Icon(
-      sheet.sheetAvatar.icon,
+      sheet.sheetAvatar.icon.data,
       size: effectiveIconSize,
       color: effectiveIconColor,
     );

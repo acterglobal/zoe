@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zoe/common/utils/common_utils.dart';
-import 'package:zoe/common/widgets/glassy_container_widget.dart';
-import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
+import 'package:zoe/common/widgets/bottom_sheet_option_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -74,21 +73,19 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
           ),
           if (!CommonUtils.isDesktop(context)) ...[
             const SizedBox(height: 32),
-            _buildOptionButton(
-            context,
-            icon: Icons.camera_alt_rounded,
-            title: l10n.camera,
-            subtitle: l10n.takePhotoOrVideo,
-            color: AppColors.brightOrangeColor,
-            onTap: () {
-              Navigator.of(context).pop();
-              onTapCamera();
-            },
-          ),
+            BottomSheetOptionWidget(
+              icon: Icons.camera_alt_rounded,
+              title: l10n.camera,
+              subtitle: l10n.takePhotoOrVideo,
+              color: AppColors.brightOrangeColor,
+              onTap: () {
+                Navigator.of(context).pop();
+                onTapCamera();
+              },
+            ),
           ],
           const SizedBox(height: 16),
-          _buildOptionButton(
-            context,
+          BottomSheetOptionWidget(
             icon: Icons.photo_library_rounded,
             title: l10n.photoGallery,
             subtitle: l10n.selectFromGallery,
@@ -100,8 +97,7 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           if (onTapFileChooser != null)
-            _buildOptionButton(
-              context,
+            BottomSheetOptionWidget(
               icon: Icons.folder_open_rounded,
               title: l10n.filePicker,
               subtitle: l10n.browseFiles,
@@ -113,59 +109,6 @@ class DocumentSelectionBottomSheetWidget extends StatelessWidget {
             ),
           const SizedBox(height: 16),
         ],
-      ),
-    );
-  }
-
-  Widget _buildOptionButton(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    final theme = Theme.of(context);
-    
-    return GestureDetector(
-      onTap: onTap,
-      child: GlassyContainer(
-        padding: const EdgeInsets.all(10),
-        borderRadius: BorderRadius.circular(16),
-        borderOpacity: 0.1,
-        shadowOpacity: 0.05,
-        child: Row(
-          children: [
-            StyledIconContainer(
-              icon: icon,
-              size: 52,
-              primaryColor: color,
-              borderRadius: BorderRadius.circular(24),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.titleMedium
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              Icons.chevron_right_rounded,
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-              size: 24,
-            ),
-          ],
-        ),
       ),
     );
   }
