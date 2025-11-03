@@ -2,257 +2,248 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
-import 'package:zoe/features/sheet/models/sheet_avatar.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_network_local_image_view.dart';
+import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 
+import '../../features/sheet/utils/sheet_utils.dart';
 import '../../test-utils/test_utils.dart';
 
-/// Test utilities for DisplaySheetNameWidget tests
-class DisplaySheetNameWidgetTestUtils {
-  /// Creates a test sheet model
-  static SheetModel createTestSheet({
-    String? id,
-    String? emoji,
-    String? title,
-  }) {
-    return SheetModel(
-      id: id ?? 'test-sheet-id',
-      sheetAvatar: SheetAvatar(emoji: emoji ?? '📄'),
-      title: title ?? 'Test Sheet',
-    );
-  }
-
-  /// Creates a test wrapper for the DisplaySheetNameWidget
-  static Widget createTestWidget({
-    required String sheetId,
-    List<SheetModel>? sheets,
-  }) {
-    return Row(children: [DisplaySheetNameWidget(sheetId: sheetId)]);
-  }
-}
-
 void main() {
-  group('DisplaySheetNameWidget Tests -', () {
-    testWidgets('renders with valid sheet', (tester) async {
-      final testSheet = DisplaySheetNameWidgetTestUtils.createTestSheet(
-        id: 'test-sheet-1',
-        emoji: '📊',
-        title: 'Analytics Sheet',
-      );
+  late ProviderContainer container;
 
+  setUp(() {
+    container = ProviderContainer.test();
+  });
+
+  group('DisplaySheetNameWidget Tests -', () {
+    late SheetModel testSheet;
+
+    setUp(() {
+      testSheet = getSheetByIndex(container);
+      container = ProviderContainer(
+        overrides: [
+          sheetListProvider.overrideWithValue([testSheet]),
+        ],
+      );
+    });
+
+    Future<void> pumpDisplaySheetNameWidget(
+      WidgetTester tester, {
+      ProviderContainer? testContainer,
+      String? sheetId,
+    }) async {
       await tester.pumpMaterialWidgetWithProviderScope(
-        container: ProviderContainer(
-          overrides: [
-            sheetListProvider.overrideWithValue([testSheet]),
-          ],
-        ),
-        child: DisplaySheetNameWidgetTestUtils.createTestWidget(
-          sheetId: 'test-sheet-1',
-          sheets: [testSheet],
+        container: testContainer ?? container,
+        child: Row(
+          children: [DisplaySheetNameWidget(sheetId: sheetId ?? testSheet.id)],
         ),
       );
+    }
+
+    testWidgets('renders with required properties', (tester) async {
+      await pumpDisplaySheetNameWidget(tester);
 
       // Verify widget is rendered
       expect(find.byType(DisplaySheetNameWidget), findsOneWidget);
       expect(find.byType(Flexible), findsOneWidget);
-      expect(find.byType(Text), findsNWidgets(2));
+      expect(find.byType(Row), findsAtLeastNWidgets(1));
+      expect(find.byType(SheetAvatarWidget), findsOneWidget);
+      expect(find.byType(SizedBox), findsAtLeastNWidgets(1));
+      expect(find.byType(Expanded), findsOneWidget);
+      expect(find.byType(Text), findsAtLeastNWidgets(1)); // Sheet title text
     });
 
-    testWidgets('displays sheet name and emoji correctly', (tester) async {
-      final testSheet = DisplaySheetNameWidgetTestUtils.createTestSheet(
-        id: 'test-sheet-1',
-        emoji: '📊',
-        title: 'Analytics Sheet',
-      );
+    testWidgets('displays sheet name and avatar correctly', (tester) async {
+      await pumpDisplaySheetNameWidget(tester);
 
-      await tester.pumpMaterialWidgetWithProviderScope(
-        container: ProviderContainer(
-          overrides: [
-            sheetListProvider.overrideWithValue([testSheet]),
-          ],
-        ),
-        child: DisplaySheetNameWidgetTestUtils.createTestWidget(
-          sheetId: 'test-sheet-1',
-          sheets: [testSheet],
-        ),
-      );
+      // Verify sheet name is displayed
+      expect(find.text(testSheet.title), findsOneWidget);
 
-      // Verify sheet name and emoji are displayed
-      expect(find.text('📊'), findsOneWidget);
-      expect(find.text('Analytics Sheet'), findsOneWidget);
+      // Verify SheetAvatarWidget is present with correct properties
+      final sheetAvatarWidget = tester.widget<SheetAvatarWidget>(
+        find.byType(SheetAvatarWidget),
+      );
+      expect(sheetAvatarWidget.sheetId, equals(testSheet.id));
+      expect(sheetAvatarWidget.size, equals(20));
+      expect(sheetAvatarWidget.iconSize, equals(12));
+      expect(sheetAvatarWidget.imageSize, equals(12));
+      expect(sheetAvatarWidget.emojiSize, equals(10));
+
+      // Verify emoji is displayed within SheetAvatarWidget
+      if (testSheet.sheetAvatar.emoji != null) {
+        expect(find.text(testSheet.sheetAvatar.emoji!), findsOneWidget);
+      } else if (testSheet.sheetAvatar.image != null) {
+        expect(find.byType(ZoeNetworkLocalImageView), findsOneWidget);
+      } else {
+        expect(find.byType(Icon), findsOneWidget);
+      }
     });
 
     testWidgets('handles null sheet gracefully', (tester) async {
-      await tester.pumpMaterialWidgetWithProviderScope(
-        container: ProviderContainer(
-          overrides: [sheetListProvider.overrideWithValue([])],
-        ),
-        child: DisplaySheetNameWidgetTestUtils.createTestWidget(
-          sheetId: 'non-existent-sheet',
-          sheets: [],
-        ),
-      );
+      await pumpDisplaySheetNameWidget(tester, sheetId: 'non-existent-sheet');
 
       // Verify widget renders but shows nothing (SizedBox.shrink)
       expect(find.byType(DisplaySheetNameWidget), findsOneWidget);
       expect(find.byType(SizedBox), findsOneWidget);
+      expect(find.byType(SheetAvatarWidget), findsNothing);
       expect(find.byType(Text), findsNothing);
     });
 
     testWidgets('wraps content in Flexible widget', (tester) async {
-      final testSheet = DisplaySheetNameWidgetTestUtils.createTestSheet(
-        id: 'test-sheet-1',
-        emoji: '📊',
-        title: 'Analytics Sheet',
-      );
-
-      await tester.pumpMaterialWidgetWithProviderScope(
-        container: ProviderContainer(
-          overrides: [
-            sheetListProvider.overrideWithValue([testSheet]),
-          ],
-        ),
-        child: DisplaySheetNameWidgetTestUtils.createTestWidget(
-          sheetId: 'test-sheet-1',
-          sheets: [testSheet],
-        ),
-      );
+      await pumpDisplaySheetNameWidget(tester);
 
       // Verify Flexible wrapper
       final flexible = tester.widget<Flexible>(find.byType(Flexible));
       expect(flexible, isNotNull);
+
+      // Verify Row is inside Flexible with correct properties
+      // Find the Row that's a direct child of Flexible
+      final flexibleWidget = tester.widget<Flexible>(find.byType(Flexible));
+      final row = flexibleWidget.child as Row;
+      expect(row.mainAxisSize, equals(MainAxisSize.min));
     });
 
-    testWidgets('handles different emoji types', (tester) async {
-      final testSheet = DisplaySheetNameWidgetTestUtils.createTestSheet(
-        id: 'test-sheet-1',
-        emoji: '📊',
-        title: 'Test Sheet',
-      );
+    testWidgets('handles different avatar types', (tester) async {
+      await pumpDisplaySheetNameWidget(tester);
 
-      await tester.pumpMaterialWidgetWithProviderScope(
-        container: ProviderContainer(
-          overrides: [
-            sheetListProvider.overrideWithValue([testSheet]),
-          ],
-        ),
-        child: DisplaySheetNameWidgetTestUtils.createTestWidget(
-          sheetId: 'test-sheet-1',
-          sheets: [testSheet],
-        ),
-      );
-
-      // Verify emoji is displayed
-      expect(find.text('📊'), findsOneWidget);
-      expect(find.text('Test Sheet'), findsOneWidget);
+      // Verify avatar is displayed through SheetAvatarWidget
+      expect(find.byType(SheetAvatarWidget), findsOneWidget);
+      if (testSheet.sheetAvatar.emoji != null) {
+        expect(find.text(testSheet.sheetAvatar.emoji!), findsOneWidget);
+      } else if (testSheet.sheetAvatar.image != null) {
+        expect(find.byType(ZoeNetworkLocalImageView), findsOneWidget);
+      } else {
+        expect(find.byType(Icon), findsOneWidget);
+      }
+      expect(find.text(testSheet.title), findsOneWidget);
     });
 
     testWidgets('handles empty title', (tester) async {
-      final testSheet = DisplaySheetNameWidgetTestUtils.createTestSheet(
-        id: 'test-sheet-1',
-        emoji: '📄',
+      final emptyTitleSheet = testSheet.copyWith(
         title: '',
+        sheetAvatar: testSheet.sheetAvatar.copyWith(emoji: '📄'),
       );
 
-      await tester.pumpMaterialWidgetWithProviderScope(
-        container: ProviderContainer(
+      await pumpDisplaySheetNameWidget(
+        tester,
+        testContainer: ProviderContainer(
           overrides: [
-            sheetListProvider.overrideWithValue([testSheet]),
+            sheetListProvider.overrideWithValue([emptyTitleSheet]),
           ],
         ),
-        child: DisplaySheetNameWidgetTestUtils.createTestWidget(
-          sheetId: 'test-sheet-1',
-          sheets: [testSheet],
-        ),
+        sheetId: emptyTitleSheet.id,
       );
 
       // Verify empty title is handled
       expect(find.text('📄'), findsOneWidget);
       expect(find.text(''), findsOneWidget);
+      expect(find.byType(SheetAvatarWidget), findsOneWidget);
     });
 
     testWidgets('handles empty emoji', (tester) async {
-      final testSheet = DisplaySheetNameWidgetTestUtils.createTestSheet(
-        id: 'test-sheet-1',
-        emoji: '',
-        title: 'Test Sheet',
+      final emptyEmojiSheet = testSheet.copyWith(
+        sheetAvatar: testSheet.sheetAvatar.copyWith(emoji: null),
       );
 
-      await tester.pumpMaterialWidgetWithProviderScope(
-        container: ProviderContainer(
+      await pumpDisplaySheetNameWidget(
+        tester,
+        testContainer: ProviderContainer(
           overrides: [
-            sheetListProvider.overrideWithValue([testSheet]),
+            sheetListProvider.overrideWithValue([emptyEmojiSheet]),
           ],
         ),
-        child: DisplaySheetNameWidgetTestUtils.createTestWidget(
-          sheetId: 'test-sheet-1',
-          sheets: [testSheet],
-        ),
+        sheetId: emptyEmojiSheet.id,
       );
 
-      // Verify empty emoji is handled
-      expect(find.text(''), findsOneWidget);
-      expect(find.text('Test Sheet'), findsOneWidget);
+      // Verify empty emoji is handled - SheetAvatarWidget will show default icon
+      expect(find.text(testSheet.title), findsOneWidget);
+      expect(find.byType(SheetAvatarWidget), findsOneWidget);
+      if (testSheet.sheetAvatar.image != null) {
+        expect(find.byType(ZoeNetworkLocalImageView), findsOneWidget);
+      } else {
+        expect(find.byType(Icon), findsOneWidget);
+      }
     });
 
     testWidgets('handles multiple sheets in provider', (tester) async {
       final sheets = [
-        DisplaySheetNameWidgetTestUtils.createTestSheet(
+        testSheet.copyWith(
           id: 'sheet-1',
-          emoji: '📊',
-          title: 'Analytics',
+          sheetAvatar: testSheet.sheetAvatar.copyWith(emoji: '📊'),
         ),
-        DisplaySheetNameWidgetTestUtils.createTestSheet(
+        testSheet.copyWith(
           id: 'sheet-2',
-          emoji: '📝',
-          title: 'Notes',
+          sheetAvatar: testSheet.sheetAvatar.copyWith(
+            image: 'https://via.placeholder.com/150',
+          ),
         ),
-        DisplaySheetNameWidgetTestUtils.createTestSheet(
+        testSheet.copyWith(
           id: 'sheet-3',
-          emoji: '📋',
-          title: 'Tasks',
+          sheetAvatar: testSheet.sheetAvatar.copyWith(icon: ZoeIcon.file),
         ),
       ];
 
-      await tester.pumpMaterialWidgetWithProviderScope(
-        container: ProviderContainer(
+      await pumpDisplaySheetNameWidget(
+        tester,
+        testContainer: ProviderContainer(
           overrides: [sheetListProvider.overrideWithValue(sheets)],
         ),
-        child: DisplaySheetNameWidgetTestUtils.createTestWidget(
-          sheetId: 'sheet-2',
-          sheets: sheets,
-        ),
+        sheetId: 'sheet-2',
       );
 
-      // Verify correct sheet is displayed
-      expect(find.text('📝'), findsOneWidget);
-      expect(find.text('Notes'), findsOneWidget);
+      // Verify correct sheet is displayed (sheet-2 should have image)
+      expect(find.text(testSheet.title), findsOneWidget);
+      expect(find.byType(SheetAvatarWidget), findsOneWidget);
+      // Sheet-2 has an image, so should show ZoeNetworkLocalImageView
+      expect(find.byType(ZoeNetworkLocalImageView), findsOneWidget);
     });
 
     testWidgets('handles sheet ID not found in provider', (tester) async {
-      final sheets = [
-        DisplaySheetNameWidgetTestUtils.createTestSheet(
-          id: 'sheet-1',
-          emoji: '📊',
-          title: 'Analytics',
-        ),
-      ];
-
-      await tester.pumpMaterialWidgetWithProviderScope(
-        container: ProviderContainer(
-          overrides: [sheetListProvider.overrideWithValue(sheets)],
-        ),
-        child: DisplaySheetNameWidgetTestUtils.createTestWidget(
-          sheetId: 'non-existent-sheet',
-          sheets: sheets,
-        ),
+      // Create a provider with only the existing testSheet, but try to access a different ID
+      await pumpDisplaySheetNameWidget(
+        tester,
+        sheetId: 'non-existent-sheet-id', // Try to access non-existent ID
       );
 
-      // Verify widget renders but shows nothing
+      // Verify widget renders but shows nothing (SizedBox.shrink)
       expect(find.byType(DisplaySheetNameWidget), findsOneWidget);
-      expect(find.byType(SizedBox), findsOneWidget);
+      expect(
+        find.byType(SizedBox),
+        findsAtLeastNWidgets(1),
+      ); // May have multiple SizedBox widgets
+      expect(find.byType(SheetAvatarWidget), findsNothing);
       expect(find.byType(Text), findsNothing);
+    });
+
+    testWidgets('applies correct text style to title', (tester) async {
+      await pumpDisplaySheetNameWidget(tester);
+
+      // Get the theme from the context
+      final BuildContext context = tester.element(
+        find.byType(DisplaySheetNameWidget),
+      );
+      final theme = Theme.of(context);
+
+      // Verify title uses bodySmall text style
+      final titleText = tester.widget<Text>(find.text(testSheet.title));
+      expect(titleText.style, equals(theme.textTheme.bodySmall));
+    });
+
+    testWidgets('applies correct spacing between avatar and title', (
+      tester,
+    ) async {
+      await pumpDisplaySheetNameWidget(tester);
+
+      // Verify SizedBox with correct width is present
+      final sizedBoxes = tester.widgetList<SizedBox>(find.byType(SizedBox));
+      final spacingSizedBox = sizedBoxes.firstWhere(
+        (sizedBox) => sizedBox.width == 4,
+        orElse: () => throw Exception('SizedBox with width 4 not found'),
+      );
+      expect(spacingSizedBox.width, equals(4));
     });
   });
 }
