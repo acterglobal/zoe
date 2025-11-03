@@ -16,9 +16,7 @@ class SheetList extends _$SheetList {
     final currentUserId = ref.read(loggedInUserProvider).value;
   
     if (currentUserId != null && currentUserId.isNotEmpty) {
-      // Create a new sheet with the current user in users list and as creator
-      final users = <String>{...sheet.users, currentUserId};
-      state = [...state, sheet.copyWith(users: users.toList(), createdBy: currentUserId)];
+      state = [...state, sheet.copyWith(users: [currentUserId], createdBy: currentUserId)];
     } else {
       state = [...state, sheet];
     }
