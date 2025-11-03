@@ -13,7 +13,13 @@ class SheetList extends _$SheetList {
   List<SheetModel> build() => sheetList;
 
   void addSheet(SheetModel sheet) {
-    state = [...state, sheet];
+    final currentUserId = ref.read(loggedInUserProvider).value;
+  
+    if (currentUserId != null && currentUserId.isNotEmpty) {
+      state = [...state, sheet.copyWith(users: [currentUserId], createdBy: currentUserId)];
+    } else {
+      state = [...state, sheet];
+    }
   }
 
   void deleteSheet(String sheetId) {
