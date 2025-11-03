@@ -20,13 +20,7 @@ void main() {
     setUp(() {
       testPoll = polls.first;
 
-      container = ProviderContainer.test(
-        overrides: [
-          searchValueProvider.overrideWith(MockSearchValue.new),
-          currentUserProvider.overrideWith((ref) => Future.value(null)),
-          usersBySheetIdProvider('sheet-1').overrideWith((ref) => []),
-        ],
-      );
+      container = ProviderContainer.test();
 
       // Get test users
       testUserId = getUserByIndex(container).id;
