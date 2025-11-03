@@ -34,6 +34,12 @@ void main() {
     testSheet = getSheetByIndex(container);
     testSheetId = testSheet.id;
     testUserId = getUserByIndex(container).id;
+
+    container = ProviderContainer.test(
+      overrides: [
+        loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+      ],
+    );
   });
 
   Future<void> pumpSheetJoinPreviewWidget(
@@ -53,16 +59,10 @@ void main() {
       testWidgets('renders correctly with valid sheet and logged in user', (
         tester,
       ) async {
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-          ],
-        );
-
+      
         await pumpSheetJoinPreviewWidget(
           tester,
           parentId: testSheetId,
-          testContainer: testContainer,
         );
 
         // Verify MaxWidthWidget is present
@@ -106,32 +106,18 @@ void main() {
 
     group('Sheet Content Display', () {
       testWidgets('displays sheet title correctly', (tester) async {
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-          ],
-        );
-
         await pumpSheetJoinPreviewWidget(
           tester,
           parentId: testSheetId,
-          testContainer: testContainer,
         );
 
         expect(find.text(testSheet.title), findsOneWidget);
       });
 
       testWidgets('displays sheet emoji correctly', (tester) async {
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-          ],
-        );
-
         await pumpSheetJoinPreviewWidget(
           tester,
           parentId: testSheetId,
-          testContainer: testContainer,
         );
 
         final emojiWidget = tester.widget<EmojiWidget>(
@@ -153,7 +139,6 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithDesc],
             ),
@@ -178,7 +163,6 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithoutDesc],
             ),
@@ -201,16 +185,9 @@ void main() {
       testWidgets('displays join button with correct icon and text', (
         tester,
       ) async {
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-          ],
-        );
-
         await pumpSheetJoinPreviewWidget(
           tester,
           parentId: testSheetId,
-          testContainer: testContainer,
         );
 
         final joinButton = tester.widget<ZoePrimaryButton>(
@@ -229,16 +206,9 @@ void main() {
       testWidgets('join button adds user to sheet and navigates', (
         tester,
       ) async {
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-          ],
-        );
-
         await pumpSheetJoinPreviewWidget(
           tester,
           parentId: testSheetId,
-          testContainer: testContainer,
         );
 
         // Tap join button
@@ -247,7 +217,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Verify user was added to sheet (or was already there)
-        final updatedSheet = testContainer.read(sheetProvider(testSheetId));
+        final updatedSheet = container.read(sheetProvider(testSheetId));
         expect(updatedSheet?.users.contains(testUserId), isTrue);
 
         // Verify navigation was called
@@ -257,16 +227,9 @@ void main() {
       testWidgets('join button pops navigator before pushing', (tester) async {
         when(() => mockGoRouter.canPop()).thenReturn(true);
 
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-          ],
-        );
-
         await pumpSheetJoinPreviewWidget(
           tester,
           parentId: testSheetId,
-          testContainer: testContainer,
         );
 
         final joinButton = find.byType(ZoePrimaryButton);
@@ -281,16 +244,9 @@ void main() {
 
     group('Widget Structure', () {
       testWidgets('has correct widget hierarchy', (tester) async {
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-          ],
-        );
-
         await pumpSheetJoinPreviewWidget(
           tester,
           parentId: testSheetId,
-          testContainer: testContainer,
         );
 
         // Verify MaxWidthWidget structure
@@ -320,16 +276,9 @@ void main() {
       });
 
       testWidgets('title has correct styling', (tester) async {
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-          ],
-        );
-
         await pumpSheetJoinPreviewWidget(
           tester,
           parentId: testSheetId,
-          testContainer: testContainer,
         );
 
         final l10n = WidgetTesterExtension.getL10n(
@@ -349,7 +298,6 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithEmptyTitle],
             ),
@@ -374,7 +322,6 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithEmptyEmoji],
             ),
