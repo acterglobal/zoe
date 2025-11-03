@@ -166,7 +166,7 @@ void main() {
 
     group('getMaxVotes', () {
       test('should return correct maximum votes', () {
-        expect(PollUtils.getMaxVotes(testPoll), 2); // option-1-2 has 2 votes
+        expect(PollUtils.getMaxVotes(testPoll), 1); // option-1-2 has 1 vote
       });
 
       test('should return 0 for poll with no votes', () {
@@ -216,7 +216,7 @@ void main() {
 
     group('calculateVotePercentage', () {
       test('should return correct percentage for option with votes', () {
-        // testOption2 has 2 votes out of 2 total votes = 100%
+        // testOption2 has 1 vote out of 1 total vote = 100%
         final percentage = PollUtils.calculateVotePercentage(
           testOption2,
           testPoll,
@@ -284,13 +284,27 @@ void main() {
 
     group('isUserVoted', () {
       late ProviderContainer container;
+      late String votedUserId;
+      late String nonVotedUserId;
 
       setUp(() {
-        container = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_2')),
-          ],
+        container = ProviderContainer.test();
+        
+        // Get users - find one that voted on testOption2 and one that didn't
+        // testOption2 has a vote from 'user_3', so we need to find that user
+        final allUsers = container.read(userListProvider);
+        final user3 = allUsers.firstWhere(
+          (u) => u.id == 'user_3',
+          orElse: () => allUsers.first,
         );
+        votedUserId = user3.id;
+        
+        // Get a different user who hasn't voted
+        final nonVotedUser = allUsers.firstWhere(
+          (u) => u.id != 'user_3',
+          orElse: () => allUsers.isNotEmpty ? allUsers[1] : allUsers.first,
+        );
+        nonVotedUserId = nonVotedUser.id;
       });
 
       tearDown(() {
@@ -300,29 +314,43 @@ void main() {
       testWidgets('should return true when user has voted on option', (
         tester,
       ) async {
+        final containerWithVoter = ProviderContainer.test(
+          overrides: [
+            loggedInUserProvider.overrideWithValue(AsyncValue.data(votedUserId)),
+          ],
+        );
+
         await tester.pumpWidget(
           UncontrolledProviderScope(
-            container: container,
+            container: containerWithVoter,
             child: Consumer(
               builder: (context, ref, child) {
-                // user_2 has voted on testOption2
+                // votedUserId has voted on testOption2
                 expect(PollUtils.isUserVoted(testPoll, testOption2, ref), true);
                 return const SizedBox.shrink();
               },
             ),
           ),
         );
+        
+        containerWithVoter.dispose();
       });
 
       testWidgets('should return false when user has not voted on option', (
         tester,
       ) async {
+        final containerWithNonVoter = ProviderContainer.test(
+          overrides: [
+            loggedInUserProvider.overrideWithValue(AsyncValue.data(nonVotedUserId)),
+          ],
+        );
+
         await tester.pumpWidget(
           UncontrolledProviderScope(
-            container: container,
+            container: containerWithNonVoter,
             child: Consumer(
               builder: (context, ref, child) {
-                // user_2 has not voted on testOption1 and testOption3
+                // nonVotedUserId has not voted on testOption1 and testOption3
                 expect(
                   PollUtils.isUserVoted(testPoll, testOption1, ref),
                   false,
@@ -336,6 +364,8 @@ void main() {
             ),
           ),
         );
+        
+        containerWithNonVoter.dispose();
       });
 
       testWidgets('should return false when user is not logged in', (

@@ -17,6 +17,7 @@ import 'package:zoe/features/sheet/screens/sheet_detail_screen.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../test-utils/mock_gorouter.dart';
 import '../../../test-utils/test_utils.dart';
+import '../../users/utils/users_utils.dart';
 import '../utils/sheet_utils.dart';
 
 void main() {
@@ -385,18 +386,31 @@ void main() {
       });
 
       testWidgets('handles users count display', (tester) async {
+        // Get actual user IDs from test data
+        final user1 = getUserByIndex(container).id;
+        final user2 = getUserByIndex(container, index: 1).id;
+        final user3 = getUserByIndex(container, index: 2).id;
+        
         final testCases = [
-          (['user1'], '1'),
-          (['user1', 'user2'], '2'),
-          (['user1', 'user2', 'user3'], '3'),
+          ([user1], '1'),
+          ([user1, user2], '2'),
+          ([user1, user2, user3], '3'),
         ];
 
         for (final (users, expectedCount) in testCases) {
-          final sheetWithUsers = testSheet.copyWith(users: users);
+          // Create a new sheet with unique ID to avoid conflicts
+          final sheetWithUsers = testSheet.copyWith(
+            id: '${testSheet.id}-users-${users.length}',
+            users: users,
+          );
           container.read(sheetListProvider.notifier).addSheet(sheetWithUsers);
           
           await pumpSheetDetailScreen(tester, sheetId: sheetWithUsers.id);
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 100));
           
+          // Verify the users count is displayed
+          // The text will be something like "1 user" or "2 users"
           expect(find.textContaining(expectedCount), findsAtLeastNWidgets(1));
           expect(tester.takeException(), isNull);
         }

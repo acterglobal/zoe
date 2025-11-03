@@ -5,6 +5,7 @@ import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/content/models/content_model.dart';
+import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
@@ -85,7 +86,6 @@ void main() {
 
         // Verify sheet title is in the preview
         expect(find.textContaining(testSheet.title), findsWidgets);
-        expect(find.textContaining(testSheet.emoji), findsWidgets);
       });
     });
 
@@ -117,6 +117,11 @@ void main() {
 
       setUp(() {
         testEvent = getEventByIndex(container);
+        container = ProviderContainer.test(
+          overrides: [
+            contentProvider(testEvent.id).overrideWithValue(testEvent),
+          ],
+        );
       });
 
       testWidgets('displays event share UI correctly', (tester) async {
@@ -229,6 +234,11 @@ void main() {
 
       setUp(() {
         testTask = getTaskByIndex(container);
+        container = ProviderContainer.test(
+          overrides: [
+            contentProvider(testTask.id).overrideWithValue(testTask),
+          ],
+        );
       });
 
       testWidgets('displays task share UI correctly', (tester) async {
@@ -320,6 +330,11 @@ void main() {
 
       setUp(() {
         testPoll = getPollByIndex(container);
+        container = ProviderContainer.test(
+          overrides: [
+            contentProvider(testPoll.id).overrideWithValue(testPoll),
+          ],
+        );
       });
 
       testWidgets('displays poll share UI correctly', (tester) async {

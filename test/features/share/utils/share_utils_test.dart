@@ -98,7 +98,7 @@ void main() {
       }
 
       String getSheetShareLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/sheet/${parentId ?? testSheetModel.id}';
+        return '🔗 ${ShareUtils.appLinkScheme}://sheet/${parentId ?? testSheetModel.id}';
       }
 
       testWidgets('generates correct share message for sheet with all fields', (
@@ -239,7 +239,7 @@ void main() {
       }
 
       String getTextContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/text-block/${parentId ?? testTextModel.id}';
+        return '🔗 ${ShareUtils.appLinkScheme}://text-block/${parentId ?? testTextModel.id}';
       }
 
       testWidgets('generates correct share message for text with all fields', (
@@ -389,7 +389,7 @@ void main() {
       }
 
       String getEventContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/event/${parentId ?? testEventModel.id}';
+        return '🔗 ${ShareUtils.appLinkScheme}://event/${parentId ?? testEventModel.id}';
       }
 
       testWidgets('generates correct share message for event with all fields', (
@@ -580,7 +580,7 @@ void main() {
       }
 
       String getListContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/list/${parentId ?? testListModel.id}';
+        return '🔗 ${ShareUtils.appLinkScheme}://list/${parentId ?? testListModel.id}';
       }
 
       testWidgets('generates correct share message for list with all fields', (
@@ -903,7 +903,7 @@ void main() {
       }
 
       String getTaskContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/task/${parentId ?? testTaskModel.id}';
+        return '🔗 ${ShareUtils.appLinkScheme}://task/${parentId ?? testTaskModel.id}';
       }
 
       testWidgets('generates correct share message for task with all fields', (
@@ -1174,7 +1174,7 @@ void main() {
       }
 
       String getBulletContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/bullet/${parentId ?? testBulletModel.id}';
+        return '🔗 ${ShareUtils.appLinkScheme}://bullet/${parentId ?? testBulletModel.id}';
       }
 
       testWidgets(
@@ -1333,7 +1333,7 @@ void main() {
       }
 
       String getPollContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/poll/${parentId ?? testPollModel.id}';
+        return '🔗 ${ShareUtils.appLinkScheme}://poll/${parentId ?? testPollModel.id}';
       }
 
       testWidgets('generates correct share message for poll with all fields', (
