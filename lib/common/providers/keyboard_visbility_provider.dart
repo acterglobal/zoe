@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,7 +10,6 @@ Stream<bool> keyboardVisible(Ref ref) async* {
   yield keyboardVisibilityController.isVisible;
 
   await for (final keyboardState in keyboardVisibilityController.onChange) {
-    debugPrint('keyboard visibility changed to: $keyboardState');
     yield keyboardState;
   }
 }
