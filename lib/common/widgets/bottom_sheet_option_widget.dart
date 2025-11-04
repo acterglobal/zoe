@@ -22,41 +22,39 @@ class BottomSheetOptionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return GestureDetector(
+    return GlassyContainer(
       onTap: onTap,
-      child: GlassyContainer(
-        padding: const EdgeInsets.all(10),
-        borderRadius: BorderRadius.circular(16),
-        borderOpacity: 0.1,
-        shadowOpacity: 0.05,
-        child: Row(
-          children: [
-            StyledIconContainer(
-              icon: icon,
-              size: 52,
-              primaryColor: color,
-              borderRadius: BorderRadius.circular(24),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: theme.textTheme.titleMedium),
-                  if (subtitle != null) ...[
-                    const SizedBox(height: 4),
-                    Text(subtitle!, style: theme.textTheme.bodySmall),
-                  ],
+      padding: const EdgeInsets.all(10),
+      borderRadius: BorderRadius.circular(16),
+      borderOpacity: 0.1,
+      shadowOpacity: 0.05,
+      child: Row(
+        children: [
+          StyledIconContainer(
+            icon: icon,
+            size: 52,
+            primaryColor: color,
+            borderRadius: BorderRadius.circular(24),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: theme.textTheme.titleMedium),
+                if (subtitle != null) ...[
+                  const SizedBox(height: 4),
+                  Text(subtitle!, style: theme.textTheme.bodySmall),
                 ],
-              ),
+              ],
             ),
-            Icon(
-              Icons.chevron_right_rounded,
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-              size: 24,
-            ),
-          ],
-        ),
+          ),
+          Icon(
+            Icons.chevron_right_rounded,
+            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+            size: 24,
+          ),
+        ],
       ),
     );
   }
