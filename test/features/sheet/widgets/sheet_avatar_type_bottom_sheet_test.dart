@@ -13,8 +13,12 @@ import '../utils/sheet_utils.dart';
 
 void main() {
   late ProviderContainer container;
+  late SheetModel testSheet;
 
-  setUp(() => container = ProviderContainer.test());
+  setUp(() {
+    container = ProviderContainer.test();
+    testSheet = getSheetByIndex(container);
+  });
 
   Future<void> pumpSheetAvatarTypeBottomSheet(
     WidgetTester tester, {
@@ -57,12 +61,6 @@ void main() {
   }
 
   group('SheetAvatarTypeBottomSheet Widget Tests', () {
-    late SheetModel testSheet;
-
-    setUp(() {
-      testSheet = getSheetByIndex(container);
-    });
-
     group('Basic Rendering Tests', () {
       testWidgets('renders correctly with all required elements', (
         tester,

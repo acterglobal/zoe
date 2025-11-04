@@ -581,13 +581,6 @@ enum ZoeIcon {
   //ICON ACCESS METHODS
   static ZoeIcon? iconFor(String? name) => ZoeIcon.values.asNameMap()[name];
 
-  static ZoeIcon iconForTask(String? name) => iconFor(name) ?? ZoeIcon.list;
-
-  static ZoeIcon iconForCategories(String? name) =>
-      iconFor(name) ?? ZoeIcon.list;
-
-  static ZoeIcon iconForPin(String? name) => iconFor(name) ?? ZoeIcon.pin;
-
   //ENUM DECLARATION
   final IconData data;
 

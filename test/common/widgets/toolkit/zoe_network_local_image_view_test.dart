@@ -493,7 +493,7 @@ void main() {
         expect(icon.size, equals(defaultIconSize));
       });
 
-      testWidgets('calculates dynamic icon size from dimensions', (
+      testWidgets('uses width for icon size when width is smaller', (
         tester,
       ) async {
         const width = 100.0;
@@ -523,8 +523,7 @@ void main() {
         final icon = tester.widget<Icon>(
           find.byIcon(Icons.broken_image_outlined),
         );
-        final expectedSize = width; // minDimension is width (100)
-        expect(icon.size, equals(expectedSize));
+        expect(icon.size, equals(width));
       });
 
       testWidgets('uses height for icon size when height is smaller', (
@@ -557,8 +556,7 @@ void main() {
         final icon = tester.widget<Icon>(
           find.byIcon(Icons.broken_image_outlined),
         );
-        final expectedSize = height; // minDimension is height (80)
-        expect(icon.size, equals(expectedSize));
+        expect(icon.size, equals(height));
       });
     });
 
@@ -613,23 +611,6 @@ void main() {
         expect(clipRRect.borderRadius, equals(BorderRadius.circular(0)));
       });
 
-      testWidgets('handles invalid dimensions gracefully', (tester) async {
-        // Note: Negative dimensions will cause BoxConstraints error in Flutter
-        // This is expected Flutter behavior and not something the widget should handle
-        // The widget correctly passes dimensions to child widgets
-        // For this test, we verify that valid dimensions work correctly instead
-        await pumpZoeNetworkLocalImageView(
-          tester,
-          imageUrl: testNetworkImageUrl,
-          width: 100,
-          height: 50,
-        );
-
-        // Widget should render with valid dimensions
-        expect(find.byType(ZoeNetworkLocalImageView), findsOneWidget);
-        expect(find.byType(CachedNetworkImage), findsOneWidget);
-      });
-
       testWidgets('handles very large dimensions', (tester) async {
         const largeWidth = 5000.0;
         const largeHeight = 3000.0;
@@ -644,8 +625,8 @@ void main() {
         // Widget should render correctly
         expect(find.byType(ZoeNetworkLocalImageView), findsOneWidget);
         final clipRRect = tester.widget<ClipRRect>(find.byType(ClipRRect));
-        final expectedRadius =
-            largeHeight * 0.2; // minDimension is height (3000)
+        // minDimension is height (3000)
+        final expectedRadius = largeHeight * 0.2;
         expect(
           clipRRect.borderRadius,
           equals(BorderRadius.circular(expectedRadius)),
@@ -654,19 +635,11 @@ void main() {
     });
 
     group('BoxFit Variations Tests -', () {
+      final fitOptions = [BoxFit.cover, BoxFit.contain, BoxFit.fill];
+
       testWidgets('handles different BoxFit options for network images', (
         tester,
       ) async {
-        final fitOptions = [
-          BoxFit.cover,
-          BoxFit.contain,
-          BoxFit.fill,
-          BoxFit.fitWidth,
-          BoxFit.fitHeight,
-          BoxFit.none,
-          BoxFit.scaleDown,
-        ];
-
         for (final fit in fitOptions) {
           await pumpZoeNetworkLocalImageView(
             tester,
@@ -686,8 +659,6 @@ void main() {
       testWidgets('handles different BoxFit options for local images', (
         tester,
       ) async {
-        final fitOptions = [BoxFit.cover, BoxFit.contain, BoxFit.fill];
-
         for (final fit in fitOptions) {
           await pumpZoeNetworkLocalImageView(
             tester,

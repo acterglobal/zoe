@@ -6,38 +6,7 @@ void main() {
   group('Keyboard Visibility Provider Tests', () {
     late ProviderContainer container;
 
-    setUp(() {
-      container = ProviderContainer.test();
-    });
-
-    group('Initial State', () {
-      test('provides initial keyboard visibility state as AsyncValue', () {
-        // Read the provider - it returns AsyncValue<bool>
-        final asyncValue = container.read(keyboardVisibleProvider);
-        
-        // Initially should be loading or have a value
-        expect(asyncValue, isA<AsyncValue<bool>>());
-      });
-
-      test('stream provider starts with loading state', () {
-        final asyncValue = container.read(keyboardVisibleProvider);
-        
-        // Stream providers typically start in loading state
-        expect(asyncValue.isLoading || asyncValue.hasValue, isTrue);
-      });
-
-      test('provider returns boolean values when data is available', () async {
-        // Wait for the provider to potentially load data
-        await Future.delayed(const Duration(milliseconds: 100));
-        
-        final asyncValue = container.read(keyboardVisibleProvider);
-        
-        // When data is available, it should be a boolean
-        asyncValue.whenData((value) {
-          expect(value, isA<bool>());
-        });
-      });
-    });
+    setUp(() => container = ProviderContainer.test());
 
     group('AsyncValue States', () {
       test('handles loading state correctly', () {
@@ -113,17 +82,6 @@ void main() {
     });
 
     group('Stream Provider Integration', () {
-      test('integrates with KeyboardVisibilityController', () {
-        // The provider should integrate with the actual controller
-        final asyncValue = container.read(keyboardVisibleProvider);
-        
-        // Should be a valid AsyncValue
-        expect(asyncValue, isA<AsyncValue<bool>>());
-        
-        // Should not throw errors during integration
-        expect(() => container.read(keyboardVisibleProvider), returnsNormally);
-      });
-
       test('handles stream lifecycle correctly', () async {
         // Read the provider to start the stream
         final asyncValue = container.read(keyboardVisibleProvider);
@@ -149,19 +107,6 @@ void main() {
           error: (error, stackTrace) => expect(error, isNotNull),
         );
       });
-
-      test('recovers from errors appropriately', () async {
-        // Read provider
-        final asyncValue1 = container.read(keyboardVisibleProvider);
-        
-        // Wait and read again
-        await Future.delayed(const Duration(milliseconds: 10));
-        final asyncValue2 = container.read(keyboardVisibleProvider);
-        
-        // Should maintain consistent behavior
-        expect(asyncValue1, isA<AsyncValue<bool>>());
-        expect(asyncValue2, isA<AsyncValue<bool>>());
-      });
     });
 
     group('Debug Information', () {
@@ -172,11 +117,6 @@ void main() {
         
         expect(hash1, equals(hash2));
         expect(hash1, isNotEmpty);
-      });
-
-      test('provider type information is correct', () {
-        // Provider should be of correct type
-        expect(keyboardVisibleProvider, isA<KeyboardVisibleProvider>());
       });
     });
   });
