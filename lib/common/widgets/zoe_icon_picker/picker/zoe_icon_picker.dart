@@ -37,6 +37,11 @@ class ZoeIconPicker extends ConsumerStatefulWidget {
     ),
   );
 
+  // Keys
+  static const iconPreviewKey = 'icon-preview';
+  static const colorPickerKey = 'color-picker';
+  static const iconPickerKey = 'icon-picker';
+
   @override
   ConsumerState<ZoeIconPicker> createState() => _ZoeIconPickerState();
 }
@@ -125,7 +130,12 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
             return Center(
               child: Container(
                 padding: const EdgeInsets.all(16),
-                child: Icon(zoeIcon.data, size: 100, color: color),
+                child: Icon(
+                  key: Key(ZoeIconPicker.iconPreviewKey),
+                  zoeIcon.data,
+                  size: 100,
+                  color: color,
+                ),
               ),
             );
           },
@@ -157,6 +167,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
       valueListenable: selectedColor,
       builder: (context, color, child) {
         return InkWell(
+          key: Key('${ZoeIconPicker.colorPickerKey}-$index'),
           borderRadius: BorderRadius.circular(100),
           onTap: () => selectedColor.value = colorItem,
           child: Container(
@@ -229,6 +240,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
       valueListenable: selectedIcon,
       builder: (context, zoeIcon, child) {
         return InkWell(
+          key: Key('${ZoeIconPicker.iconPickerKey}-$index'),
           borderRadius: BorderRadius.circular(100),
           onTap: () => selectedIcon.value = zoeIconItem,
           child: Container(
