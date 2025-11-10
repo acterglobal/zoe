@@ -31,6 +31,8 @@ class SheetAppBar extends ConsumerWidget {
       automaticallyImplyLeading: false,
       title: _buildTitle(context, ref, hasCoverImage),
       elevation: 0,
+      pinned: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       flexibleSpace: hasCoverImage
           ? FlexibleSpaceBar(
               background: isNetworkImage
