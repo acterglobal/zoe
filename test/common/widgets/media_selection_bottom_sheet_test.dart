@@ -7,9 +7,9 @@ import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 
 import '../../test-utils/test_utils.dart';
 
-/// Test utilities for DocumentSelectionBottomSheetWidget tests
-class DocumentSelectionBottomSheetTestUtils {
-  /// Creates a test wrapper for the DocumentSelectionBottomSheetWidget
+/// Test utilities for MediaSelectionBottomSheetWidget tests
+class MediaSelectionBottomSheetTestUtils {
+  /// Creates a test wrapper for the MediaSelectionBottomSheetWidget
   static MediaSelectionBottomSheetWidget createTestWidget({
     Function(XFile)? onTapCamera,
     Function(List<XFile>)? onTapGallery,
@@ -26,10 +26,10 @@ class DocumentSelectionBottomSheetTestUtils {
 }
 
 void main() {
-  group('DocumentSelectionBottomSheetWidget Tests -', () {
+  group('MediaSelectionBottomSheetWidget Tests -', () {
     testWidgets('renders photo gallery option', (tester) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(),
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(),
       );
 
       // Verify photo gallery option is rendered
@@ -40,7 +40,7 @@ void main() {
       'renders file chooser option when onTapFileChooser is provided',
       (tester) async {
         await tester.pumpMaterialWidget(
-          child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
+          child: MediaSelectionBottomSheetTestUtils.createTestWidget(
             onTapFileChooser: (files) {},
           ),
         );
@@ -54,7 +54,7 @@ void main() {
       'does not render file chooser option when onTapFileChooser is null',
       (tester) async {
         await tester.pumpMaterialWidget(
-          child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
+          child: MediaSelectionBottomSheetTestUtils.createTestWidget(
             onTapFileChooser: null,
           ),
         );
@@ -66,7 +66,7 @@ void main() {
 
     testWidgets('applies correct styling to option buttons', (tester) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(
           onTapFileChooser: (files) {},
         ),
       );
@@ -80,7 +80,7 @@ void main() {
 
     testWidgets('renders chevron icons in option buttons', (tester) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(
           onTapFileChooser: (files) {},
         ),
       );
@@ -91,7 +91,7 @@ void main() {
 
     testWidgets('handles null callbacks gracefully', (tester) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(
           onTapFileChooser: null,
         ),
       );
@@ -115,7 +115,7 @@ void main() {
         tester.view.devicePixelRatio = 1.0;
 
         await tester.pumpMaterialWidget(
-          child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
+          child: MediaSelectionBottomSheetTestUtils.createTestWidget(
             onTapFileChooser: (files) {},
           ),
         );
@@ -128,7 +128,7 @@ void main() {
 
     testWidgets('handles empty callbacks', (tester) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(
           onTapGallery: (images) {},
           onTapFileChooser: (files) {},
         ),
@@ -142,7 +142,7 @@ void main() {
 
     testWidgets('displays localized title text', (tester) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(),
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(),
       );
 
       // Verify localized title is displayed
@@ -150,12 +150,12 @@ void main() {
         tester,
         byType: MediaSelectionBottomSheetWidget,
       );
-      expect(find.text(l10n.selectDocument), findsOneWidget);
+      expect(find.text(l10n.selectMedia), findsOneWidget);
     });
 
     testWidgets('displays localized subtitle text', (tester) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(),
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(),
       );
 
       // Verify localized subtitle is displayed
@@ -163,12 +163,12 @@ void main() {
         tester,
         byType: MediaSelectionBottomSheetWidget,
       );
-      expect(find.text(l10n.chooseHowToAddDocument), findsOneWidget);
+      expect(find.text(l10n.chooseAMediaFile), findsOneWidget);
     });
 
     testWidgets('displays localized photo gallery text', (tester) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(),
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(),
       );
 
       // Verify localized photo gallery text is displayed
@@ -184,7 +184,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(
           onTapFileChooser: (files) {},
         ),
       );
@@ -202,7 +202,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(
           onTapFileChooser: null,
         ),
       );
@@ -220,7 +220,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(),
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(),
       );
 
       // Note: Camera option is conditionally rendered based on CommonUtils.isDesktop(context)
@@ -230,7 +230,7 @@ void main() {
 
     testWidgets('displays all required localized elements', (tester) async {
       await tester.pumpMaterialWidget(
-        child: DocumentSelectionBottomSheetTestUtils.createTestWidget(
+        child: MediaSelectionBottomSheetTestUtils.createTestWidget(
           onTapFileChooser: (files) {},
         ),
       );
@@ -241,8 +241,8 @@ void main() {
         byType: MediaSelectionBottomSheetWidget,
       );
 
-      expect(find.text(l10n.selectDocument), findsOneWidget);
-      expect(find.text(l10n.chooseHowToAddDocument), findsOneWidget);
+      expect(find.text(l10n.selectMedia), findsOneWidget);
+      expect(find.text(l10n.chooseAMediaFile), findsOneWidget);
       expect(find.text(l10n.photoGallery), findsOneWidget);
       expect(find.text(l10n.selectFromGallery), findsOneWidget);
       expect(find.text(l10n.filePicker), findsOneWidget);
