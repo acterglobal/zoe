@@ -61,39 +61,53 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
   });
 
   Future<void> _onTapCamera(BuildContext context) async {
-    final picker = ImagePicker();
-    final image = await picker.pickImage(
-      source: ImageSource.camera,
-      imageQuality: imageQuality,
-    );
-
-    if (image != null) onTapCamera(image);
-    if (context.mounted) Navigator.of(context).pop();
+    try {
+      final picker = ImagePicker();
+      final image = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: imageQuality,
+      );
+      if (image != null) onTapCamera(image);
+    } catch (e) {
+      debugPrint('Error picking image from camera: $e');
+    } finally {
+      if (context.mounted) Navigator.of(context).pop();
+    }
   }
 
   Future<void> _onTapGallery(BuildContext context) async {
-    final picker = ImagePicker();
-    if (allowMultiple) {
-      final images = await picker.pickMultiImage(imageQuality: imageQuality);
-      if (images.isNotEmpty) onTapGallery(images);
-    } else {
-      final image = await picker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: imageQuality,
-      );
-      if (image != null) onTapGallery([image]);
+    try {
+      final picker = ImagePicker();
+      if (allowMultiple) {
+        final images = await picker.pickMultiImage(imageQuality: imageQuality);
+        if (images.isNotEmpty) onTapGallery(images);
+      } else {
+        final image = await picker.pickImage(
+          source: ImageSource.gallery,
+          imageQuality: imageQuality,
+        );
+        if (image != null) onTapGallery([image]);
+      }
+    } catch (e) {
+      debugPrint('Error picking image from gallery: $e');
+    } finally {
+      if (context.mounted) Navigator.of(context).pop();
     }
-    if (context.mounted) Navigator.of(context).pop();
   }
 
   Future<void> _onTapFileChooser(BuildContext context) async {
-    final result = await FilePicker.platform.pickFiles(
-      allowMultiple: allowMultiple,
-    );
-    if (result != null && result.files.isNotEmpty) {
-      onTapFileChooser!(result.files.map((file) => file.xFile).toList());
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        allowMultiple: allowMultiple,
+      );
+      if (result != null && result.files.isNotEmpty) {
+        onTapFileChooser!(result.files.map((file) => file.xFile).toList());
+      }
+    } catch (e) {
+      debugPrint('Error picking file: $e');
+    } finally {
+      if (context.mounted) Navigator.of(context).pop();
     }
-    if (context.mounted) Navigator.of(context).pop();
   }
 
   @override
