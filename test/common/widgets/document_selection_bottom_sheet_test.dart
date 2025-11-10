@@ -16,6 +16,8 @@ class DocumentSelectionBottomSheetTestUtils {
     Function(List<XFile>)? onTapFileChooser,
   }) {
     return MediaSelectionBottomSheetWidget(
+      allowMultiple: false,
+      imageQuality: 80,
       onTapCamera: onTapCamera ?? (image) {},
       onTapGallery: onTapGallery ?? (images) {},
       onTapFileChooser: onTapFileChooser,
