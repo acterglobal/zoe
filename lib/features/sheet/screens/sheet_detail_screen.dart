@@ -55,30 +55,16 @@ class SheetDetailScreen extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           sliver: SliverList(
             delegate: SliverChildListDelegate([
-              _buildContentBody(context, ref, isEditing),
+              const SizedBox(height: 10),
+              _buildSheetHeader(context, ref, isEditing),
+              const SizedBox(height: 16),
+              ContentWidget(
+                parentId: sheetId,
+                sheetId: sheetId,
+                showSheetName: false,
+              ),
             ]),
           ),
-        ),
-      ],
-    );
-  }
-
-  /// Builds the content body
-  Widget _buildContentBody(
-    BuildContext context,
-    WidgetRef ref,
-    bool isEditing,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 10),
-        _buildSheetHeader(context, ref, isEditing),
-        const SizedBox(height: 16),
-        ContentWidget(
-          parentId: sheetId,
-          sheetId: sheetId,
-          showSheetName: false,
         ),
       ],
     );
@@ -148,7 +134,8 @@ class SheetDetailScreen extends ConsumerWidget {
           isEditing: isEditing,
           description: sheet.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'sheet-description-$sheetId', // Add unique editor ID
+          editorId: 'sheet-description-$sheetId',
+          // Add unique editor ID
           onContentChanged: (description) => Future.microtask(
             () => updateSheetDescription(ref, sheetId, description),
           ),
