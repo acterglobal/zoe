@@ -86,7 +86,11 @@ void main() {
       testWidgets('displays icon when sheet has icon avatar', (tester) async {
         final sheetIcon = ZoeIcon.car;
         final iconSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(icon: sheetIcon, color: Colors.blue),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: sheetIcon.name,
+            color: Colors.blue,
+          ),
         );
 
         await pumpSheetAvatarWidget(
@@ -103,7 +107,7 @@ void main() {
       testWidgets('displays emoji when sheet has emoji avatar', (tester) async {
         final sheetEmoji = '🎉';
         final emojiSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(emoji: sheetEmoji),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: sheetEmoji),
         );
 
         await pumpSheetAvatarWidget(
@@ -118,7 +122,7 @@ void main() {
       testWidgets('displays image when sheet has image avatar', (tester) async {
         final sheetImage = 'https://example.com/image.png';
         final imageSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(image: sheetImage),
+          sheetAvatar: SheetAvatar(type: AvatarType.image, data: sheetImage),
         );
 
         await pumpSheetAvatarWidget(
@@ -131,41 +135,6 @@ void main() {
           find.byType(ZoeNetworkLocalImageView),
         );
         expect(image.imageUrl, equals(sheetImage));
-      });
-
-      testWidgets('prioritizes image over emoji and icon', (tester) async {
-        final mixedSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(
-            image: 'https://example.com/image.png',
-            emoji: '🎉',
-            icon: ZoeIcon.car,
-          ),
-        );
-
-        await pumpSheetAvatarWidget(
-          tester,
-          sheetOverride: mixedSheet,
-          sheetId: mixedSheet.id,
-        );
-
-        expect(find.byType(ZoeNetworkLocalImageView), findsOneWidget);
-        expect(find.text('🎉'), findsNothing);
-        expect(find.byType(Icon), findsNothing);
-      });
-
-      testWidgets('prioritizes emoji over icon when no image', (tester) async {
-        final mixedSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(emoji: '🎉', icon: ZoeIcon.car),
-        );
-
-        await pumpSheetAvatarWidget(
-          tester,
-          sheetOverride: mixedSheet,
-          sheetId: mixedSheet.id,
-        );
-
-        expect(find.text('🎉'), findsOneWidget);
-        expect(find.byType(Icon), findsNothing);
       });
     });
 
@@ -190,7 +159,11 @@ void main() {
 
       testWidgets('background uses correct size and color', (tester) async {
         final coloredSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(icon: ZoeIcon.car, color: Colors.red),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.car.name,
+            color: Colors.red,
+          ),
         );
 
         await pumpSheetAvatarWidget(
@@ -210,7 +183,10 @@ void main() {
     group('Compact Mode Tests', () {
       testWidgets('uses compact sizes when isCompact is true', (tester) async {
         final iconSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(icon: ZoeIcon.car),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.car.name,
+          ),
         );
 
         await pumpSheetAvatarWidget(
@@ -228,7 +204,10 @@ void main() {
         tester,
       ) async {
         final iconSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(icon: ZoeIcon.car),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.car.name,
+          ),
         );
 
         await pumpSheetAvatarWidget(
@@ -257,7 +236,7 @@ void main() {
 
       testWidgets('compact mode affects emoji size', (tester) async {
         final emojiSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(emoji: '🎉'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🎉'),
         );
 
         await pumpSheetAvatarWidget(
@@ -273,7 +252,10 @@ void main() {
 
       testWidgets('compact mode affects image size', (tester) async {
         final imageSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(image: 'https://example.com/image.png'),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.image,
+            data: 'https://example.com/image.png',
+          ),
         );
 
         await pumpSheetAvatarWidget(
@@ -303,7 +285,10 @@ void main() {
 
       testWidgets('uses custom iconSize when provided', (tester) async {
         final iconSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(icon: ZoeIcon.car),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.car.name,
+          ),
         );
 
         await pumpSheetAvatarWidget(
@@ -319,7 +304,10 @@ void main() {
 
       testWidgets('uses custom imageSize when provided', (tester) async {
         final imageSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(image: 'https://example.com/image.png'),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.image,
+            data: 'https://example.com/image.png',
+          ),
         );
 
         await pumpSheetAvatarWidget(
@@ -338,7 +326,7 @@ void main() {
 
       testWidgets('uses custom emojiSize when provided', (tester) async {
         final emojiSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(emoji: '🎉'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🎉'),
         );
 
         await pumpSheetAvatarWidget(
@@ -356,7 +344,11 @@ void main() {
     group('Color Tests', () {
       testWidgets('uses sheet avatar color when provided', (tester) async {
         final coloredSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(icon: ZoeIcon.car, color: Colors.green),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.car.name,
+            color: Colors.green,
+          ),
         );
 
         await pumpSheetAvatarWidget(
@@ -373,7 +365,10 @@ void main() {
         tester,
       ) async {
         final iconSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(icon: ZoeIcon.car),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.car.name,
+          ),
         );
 
         await pumpSheetAvatarWidget(
@@ -389,7 +384,11 @@ void main() {
 
       testWidgets('background uses sheet color when provided', (tester) async {
         final coloredSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(icon: ZoeIcon.car, color: Colors.purple),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.car.name,
+            color: Colors.purple,
+          ),
         );
 
         await pumpSheetAvatarWidget(
@@ -490,7 +489,11 @@ void main() {
     group('Widget Integration Tests', () {
       testWidgets('all components render together correctly', (tester) async {
         final iconSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(icon: ZoeIcon.car, color: Colors.blue),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.car.name,
+            color: Colors.blue,
+          ),
         );
 
         await pumpSheetAvatarWidget(
@@ -507,7 +510,10 @@ void main() {
 
       testWidgets('widget handles icon avatar types correctly', (tester) async {
         final iconSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(icon: ZoeIcon.book),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.book.name,
+          ),
         );
         await pumpSheetAvatarWidget(
           tester,
@@ -521,7 +527,10 @@ void main() {
         tester,
       ) async {
         final imageSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(image: 'https://example.com/image.png'),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.image,
+            data: 'https://example.com/image.png',
+          ),
         );
         await pumpSheetAvatarWidget(
           tester,
@@ -535,7 +544,7 @@ void main() {
         tester,
       ) async {
         final emojiSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(emoji: '🎉'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🎉'),
         );
         await pumpSheetAvatarWidget(
           tester,

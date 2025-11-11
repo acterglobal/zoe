@@ -270,7 +270,11 @@ void main() {
       testWidgets('works with sheet that has icon avatar', (tester) async {
         final iconSheet = testSheet.copyWith(
           title: 'Icon Sheet',
-          sheetAvatar: SheetAvatar(icon: ZoeIcon.car, color: Colors.blue),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.car.name,
+            color: Colors.blue,
+          ),
         );
 
         await pumpSheetAvatarTypeBottomSheet(tester, sheetId: iconSheet.id);
@@ -281,7 +285,10 @@ void main() {
       testWidgets('works with sheet that has image avatar', (tester) async {
         final imageSheet = testSheet.copyWith(
           title: 'Image Sheet',
-          sheetAvatar: SheetAvatar(image: 'https://example.com/image.png'),
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.image,
+            data: 'https://example.com/image.png',
+          ),
         );
 
         await pumpSheetAvatarTypeBottomSheet(tester, sheetId: imageSheet.id);
@@ -292,7 +299,7 @@ void main() {
       testWidgets('works with sheet that has emoji avatar', (tester) async {
         final emojiSheet = testSheet.copyWith(
           title: 'Emoji Sheet',
-          sheetAvatar: SheetAvatar(emoji: '🎉'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🎉'),
         );
 
         await pumpSheetAvatarTypeBottomSheet(tester, sheetId: emojiSheet.id);

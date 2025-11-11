@@ -271,7 +271,7 @@ void main() {
 
       testWidgets('handles different emoji sizes', (tester) async {
         final emojiSheet = testSheet.copyWith(
-          sheetAvatar: SheetAvatar(emoji: '🔥'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🔥'),
         );
         container = ProviderContainer.test(
           overrides: [
@@ -280,7 +280,7 @@ void main() {
         );
 
         await pumpSheetListItemWidget(tester);
-        
+
         expect(find.byType(SheetAvatarWidget), findsOneWidget);
         expect(find.text('🔥'), findsOneWidget);
       });

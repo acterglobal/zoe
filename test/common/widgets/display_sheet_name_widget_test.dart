@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/widgets/display_sheet_name_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_network_local_image_view.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
@@ -73,9 +74,9 @@ void main() {
       expect(sheetAvatarWidget.emojiSize, equals(10));
 
       // Verify emoji is displayed within SheetAvatarWidget
-      if (testSheet.sheetAvatar.emoji != null) {
-        expect(find.text(testSheet.sheetAvatar.emoji!), findsOneWidget);
-      } else if (testSheet.sheetAvatar.image != null) {
+      if (testSheet.sheetAvatar.type == AvatarType.emoji) {
+        expect(find.text(testSheet.sheetAvatar.data), findsOneWidget);
+      } else if (testSheet.sheetAvatar.type == AvatarType.image) {
         expect(find.byType(ZoeNetworkLocalImageView), findsOneWidget);
       } else {
         expect(find.byType(Icon), findsOneWidget);
@@ -111,9 +112,9 @@ void main() {
 
       // Verify avatar is displayed through SheetAvatarWidget
       expect(find.byType(SheetAvatarWidget), findsOneWidget);
-      if (testSheet.sheetAvatar.emoji != null) {
-        expect(find.text(testSheet.sheetAvatar.emoji!), findsOneWidget);
-      } else if (testSheet.sheetAvatar.image != null) {
+      if (testSheet.sheetAvatar.type == AvatarType.emoji) {
+        expect(find.text(testSheet.sheetAvatar.data), findsOneWidget);
+      } else if (testSheet.sheetAvatar.type == AvatarType.image) {
         expect(find.byType(ZoeNetworkLocalImageView), findsOneWidget);
       } else {
         expect(find.byType(Icon), findsOneWidget);
@@ -124,7 +125,10 @@ void main() {
     testWidgets('handles empty title', (tester) async {
       final emptyTitleSheet = testSheet.copyWith(
         title: '',
-        sheetAvatar: testSheet.sheetAvatar.copyWith(emoji: '📄'),
+        sheetAvatar: testSheet.sheetAvatar.copyWith(
+          type: AvatarType.emoji,
+          data: '📄',
+        ),
       );
 
       await pumpDisplaySheetNameWidget(
@@ -143,46 +147,28 @@ void main() {
       expect(find.byType(SheetAvatarWidget), findsOneWidget);
     });
 
-    testWidgets('handles empty emoji', (tester) async {
-      final emptyEmojiSheet = testSheet.copyWith(
-        sheetAvatar: testSheet.sheetAvatar.copyWith(emoji: null),
-      );
-
-      await pumpDisplaySheetNameWidget(
-        tester,
-        testContainer: ProviderContainer(
-          overrides: [
-            sheetListProvider.overrideWithValue([emptyEmojiSheet]),
-          ],
-        ),
-        sheetId: emptyEmojiSheet.id,
-      );
-
-      // Verify empty emoji is handled - SheetAvatarWidget will show default icon
-      expect(find.text(testSheet.title), findsOneWidget);
-      expect(find.byType(SheetAvatarWidget), findsOneWidget);
-      if (testSheet.sheetAvatar.image != null) {
-        expect(find.byType(ZoeNetworkLocalImageView), findsOneWidget);
-      } else {
-        expect(find.byType(Icon), findsOneWidget);
-      }
-    });
-
     testWidgets('handles multiple sheets in provider', (tester) async {
       final sheets = [
         testSheet.copyWith(
           id: 'sheet-1',
-          sheetAvatar: testSheet.sheetAvatar.copyWith(emoji: '📊'),
+          sheetAvatar: testSheet.sheetAvatar.copyWith(
+            type: AvatarType.emoji,
+            data: '📊',
+          ),
         ),
         testSheet.copyWith(
           id: 'sheet-2',
           sheetAvatar: testSheet.sheetAvatar.copyWith(
-            image: 'https://via.placeholder.com/150',
+            type: AvatarType.image,
+            data: 'https://via.placeholder.com/150',
           ),
         ),
         testSheet.copyWith(
           id: 'sheet-3',
-          sheetAvatar: testSheet.sheetAvatar.copyWith(icon: ZoeIcon.file),
+          sheetAvatar: testSheet.sheetAvatar.copyWith(
+            type: AvatarType.icon,
+            data: ZoeIcon.file.name,
+          ),
         ),
       ];
 
