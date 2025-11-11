@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/providers/keyboard_visbility_provider.dart';
+import 'package:zoe/common/providers/keyboard_visibility_provider.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/models/color_data.dart';
@@ -72,9 +72,25 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _setWidgetValues();
+  void dispose() {
+    searchController.dispose();
+    selectedColor.dispose();
+    selectedIcon.dispose();
+    zoeIconList.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant ZoeIconPicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedColor != null &&
+        widget.selectedColor != oldWidget.selectedColor) {
+      selectedColor.value = widget.selectedColor!;
+    }
+    if (widget.selectedIcon != null &&
+        widget.selectedIcon != oldWidget.selectedIcon) {
+      selectedIcon.value = widget.selectedIcon!;
+    }
   }
 
   @override

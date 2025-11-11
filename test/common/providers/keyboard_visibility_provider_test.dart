@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zoe/common/providers/keyboard_visbility_provider.dart';
+import 'package:zoe/common/providers/keyboard_visibility_provider.dart';
 
 void main() {
   group('Keyboard Visibility Provider Tests', () {

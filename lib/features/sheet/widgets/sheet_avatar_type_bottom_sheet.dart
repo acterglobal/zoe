@@ -30,7 +30,7 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
   }
 
   void selectIcon(BuildContext context, WidgetRef ref) {
-    final sheet = ref.watch(sheetProvider(sheetId));
+    final sheet = ref.read(sheetProvider(sheetId));
     if (sheet == null) return;
     ZoeIconPicker.show(
       context: context,

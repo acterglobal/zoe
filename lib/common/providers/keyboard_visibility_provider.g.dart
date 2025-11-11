@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'keyboard_visbility_provider.dart';
+part of 'keyboard_visibility_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator

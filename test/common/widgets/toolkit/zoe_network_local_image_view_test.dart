@@ -317,13 +317,12 @@ void main() {
           );
 
           // Verify CircularProgressIndicator has default padding
-          final progressIndicator = tester.widget<CircularProgressIndicator>(
-            find.byType(CircularProgressIndicator),
+          final paddingFinder = find.ancestor(
+            of: find.byType(CircularProgressIndicator),
+            matching: find.byType(Padding),
           );
-          expect(
-            progressIndicator.padding,
-            equals(EdgeInsets.all(defaultPadding)),
-          );
+          final paddingWidget = tester.widget<Padding>(paddingFinder);
+          expect(paddingWidget.padding, equals(EdgeInsets.all(defaultPadding)));
         },
       );
 
@@ -353,14 +352,13 @@ void main() {
         );
 
         // Verify dynamic padding is calculated
-        final progressIndicator = tester.widget<CircularProgressIndicator>(
-          find.byType(CircularProgressIndicator),
+        final paddingFinder = find.ancestor(
+          of: find.byType(CircularProgressIndicator),
+          matching: find.byType(Padding),
         );
+        final paddingWidget = tester.widget<Padding>(paddingFinder);
         final expectedPadding = height * 0.3; // minDimension is height (80)
-        expect(
-          progressIndicator.padding,
-          equals(EdgeInsets.all(expectedPadding)),
-        );
+        expect(paddingWidget.padding, equals(EdgeInsets.all(expectedPadding)));
       });
 
       testWidgets('placeholder has correct strokeWidth', (tester) async {
