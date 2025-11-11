@@ -11,7 +11,6 @@ import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/qr_scan_bottom_sheet.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_floating_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
-import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/home/widgets/app_bar/connection_status_indicator.dart';
 import 'package:zoe/features/home/widgets/section_header/section_header_widget.dart';
@@ -21,40 +20,20 @@ import 'package:zoe/features/home/widgets/welcome_section/welcome_section_widget
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
-import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends ConsumerState<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _setLoginUser();
-  }
-
-  Future<void> _setLoginUser() async {
-    final isUserLoggedIn = await ref.read(isUserLoggedInProvider.future);
-    if (!isUserLoggedIn) {
-      final prefsService = PreferencesService();
-      await prefsService.setLoginUserId('user_1');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AnimatedBackgroundWidget(
       backgroundOpacity: 0.2,
       child: Scaffold(
         appBar: _buildAppBar(context),
         drawer: const HamburgerDrawerWidget(),
-        floatingActionButton: _buildFloatingActionButton(),
-        body: _buildBody(),
+        floatingActionButton: _buildFloatingActionButton(context, ref),
+        body: _buildBody(context),
       ),
     );
   }
@@ -78,13 +57,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       actions: [
         const ConnectionStatusWidget(),
-        if (Platform.isAndroid || Platform.isIOS) _buildQrScanButton(),
-        _buildSearchButton(),
+        if (Platform.isAndroid || Platform.isIOS) _buildQrScanButton(context),
+        _buildSearchButton(context),
       ],
     );
   }
 
-  Widget _buildSearchButton() {
+  Widget _buildSearchButton(BuildContext context) {
     return ZoeIconButtonWidget(
       icon: Icons.search_outlined,
       onTap: () {
@@ -93,7 +72,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildQrScanButton() {
+  Widget _buildQrScanButton(BuildContext context) {
     return Row(
       children: [
         ZoeIconButtonWidget(
@@ -113,7 +92,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return SafeArea(
       child: Center(
         child: MaxWidthWidget(
@@ -126,7 +105,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const StatsSectionWidget(),
               const TodaysFocusWidget(),
               const SizedBox(height: 32),
-              _buildSheetsSection(),
+              _buildSheetsSection(context),
             ],
           ),
         ),
@@ -134,7 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildFloatingActionButton() {
+  Widget _buildFloatingActionButton(BuildContext context, WidgetRef ref) {
     return ZoeFloatingActionButton(
       icon: Icons.add_rounded,
       onPressed: () async {
@@ -146,7 +125,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildSheetsSection() {
+  Widget _buildSheetsSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
