@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -50,12 +50,7 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
           const SizedBox(height: 20),
           Row(
             children: [
-              EmojiWidget(
-                emoji: sheet.emoji,
-                size: 24,
-                isEditing: false,
-                onTap: (emoji) {},
-              ),
+              SheetAvatarWidget(sheetId: sheet.id),
               const SizedBox(width: 8),
               Expanded(child: Text(sheet.title, style: theme.textTheme.bodyMedium)),
             ],
