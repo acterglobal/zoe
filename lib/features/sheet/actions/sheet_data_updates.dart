@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 
@@ -23,24 +23,20 @@ void updateSheetDescription(
   ));
 }
 
-/// Updates the emoji of the sheet
-void updateSheetEmoji(WidgetRef ref, String sheetId, String emoji) {
-  ref.read(sheetListProvider.notifier).updateSheetEmoji(sheetId, emoji);
-}
-
-/// Updates the icon and color of the sheet
-void updateSheetIconAndColor(
-  WidgetRef ref,
-  String sheetId,
-  ZoeIcon icon,
-  Color color,
-) {
+/// Updates the sheet icon, image and emoji
+void updateSheetAvatar({
+  required WidgetRef ref,
+  required String sheetId,
+  required AvatarType type,
+  required String data,
+  Color? color,
+}) {
   ref
       .read(sheetListProvider.notifier)
-      .updateSheetIconAndColor(sheetId, icon, color);
-}
-
-/// Updates the icon and color of the sheet
-void updateSheetAvatarImage(WidgetRef ref, String sheetId, String image) {
-  ref.read(sheetListProvider.notifier).updateSheetAvatarImage(sheetId, image);
+      .updateSheetAvatar(
+        sheetId: sheetId,
+        type: type,
+        data: data,
+        color: color,
+      );
 }

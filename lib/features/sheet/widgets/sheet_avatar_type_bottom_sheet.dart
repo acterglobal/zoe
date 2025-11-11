@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/bottom_sheet_option_widget.dart';
 import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 import 'package:zoe/common/widgets/media_selection_bottom_sheet.dart';
+import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/picker/zoe_icon_picker.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/sheet/actions/sheet_data_updates.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -29,12 +31,19 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
 
   void selectIcon(BuildContext context, WidgetRef ref) {
     final sheet = ref.watch(sheetProvider(sheetId));
+    if (sheet == null) return;
     ZoeIconPicker.show(
       context: context,
-      selectedColor: sheet?.sheetAvatar.color,
-      selectedIcon: sheet?.sheetAvatar.icon,
+      selectedColor: sheet.sheetAvatar.color,
+      selectedIcon: ZoeIcon.iconFor(sheet.sheetAvatar.data),
       onIconSelection: (color, icon) {
-        updateSheetIconAndColor(ref, sheetId, icon, color);
+        updateSheetAvatar(
+          ref: ref,
+          sheetId: sheetId,
+          type: AvatarType.icon,
+          data: icon.name,
+          color: color,
+        );
         if (context.mounted) context.pop();
       },
     );
@@ -48,12 +57,22 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
       title: l10n.selectSheetAvatarImage,
       subtitle: l10n.chooseSheetAvatarImage,
       onTapCamera: (image) {
-        updateSheetAvatarImage(ref, sheetId, image.path);
+        updateSheetAvatar(
+          ref: ref,
+          sheetId: sheetId,
+          type: AvatarType.image,
+          data: image.path,
+        );
         if (context.mounted) context.pop();
       },
       onTapGallery: (images) {
         if (images.isNotEmpty) {
-          updateSheetAvatarImage(ref, sheetId, images.first.path);
+          updateSheetAvatar(
+            ref: ref,
+            sheetId: sheetId,
+            type: AvatarType.image,
+            data: images.first.path,
+          );
           if (context.mounted) context.pop();
         }
       },
@@ -65,7 +84,12 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
       context,
       ref,
       onEmojiSelected: (emoji) {
-        updateSheetEmoji(ref, sheetId, emoji);
+        updateSheetAvatar(
+          ref: ref,
+          sheetId: sheetId,
+          type: AvatarType.emoji,
+          data: emoji,
+        );
         if (context.mounted) context.pop();
       },
     );

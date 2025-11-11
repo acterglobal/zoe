@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
 import 'package:zoe/features/sheet/data/sheet_data.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
@@ -58,33 +59,22 @@ class SheetList extends _$SheetList {
     ];
   }
 
-  void updateSheetEmoji(String sheetId, String emoji) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(sheetAvatar: sheet.sheetAvatar.copyWith(emoji: emoji))
-        else
-          sheet,
-    ];
-  }
-
-  void updateSheetIconAndColor(String sheetId, ZoeIcon icon, Color color) {
+  void updateSheetAvatar({
+    required String sheetId,
+    required AvatarType type,
+    required String data,
+    Color? color,
+  }) {
     state = [
       for (final sheet in state)
         if (sheet.id == sheetId)
           sheet.copyWith(
-            sheetAvatar: sheet.sheetAvatar.copyWith(icon: icon, color: color),
+            sheetAvatar: sheet.sheetAvatar.copyWith(
+              type: type,
+              data: data,
+              color: color,
+            ),
           )
-        else
-          sheet,
-    ];
-  }
-
-  void updateSheetAvatarImage(String sheetId, String image) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(sheetAvatar: sheet.sheetAvatar.copyWith(image: image))
         else
           sheet,
     ];

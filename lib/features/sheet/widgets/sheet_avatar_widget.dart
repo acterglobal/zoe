@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/styled_content_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_network_local_image_view.dart';
+import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_avatar_type_bottom_sheet.dart';
@@ -67,12 +69,13 @@ class SheetAvatarWidget extends ConsumerWidget {
   }
 
   Widget _buildAvatar(BuildContext context, SheetModel sheet) {
-    if (sheet.sheetAvatar.image != null) {
-      return _buildImage(context, sheet);
-    } else if (sheet.sheetAvatar.emoji != null) {
-      return _buildEmoji(context, sheet);
-    } else {
-      return _buildIcon(context, sheet);
+    switch (sheet.sheetAvatar.type) {
+      case AvatarType.image:
+        return _buildImage(context, sheet);
+      case AvatarType.emoji:
+        return _buildEmoji(context, sheet);
+      case AvatarType.icon:
+        return _buildIcon(context, sheet);
     }
   }
 
@@ -80,7 +83,7 @@ class SheetAvatarWidget extends ConsumerWidget {
     final double effectiveSize = imageSize ?? (isCompact ? 24 : 40);
     final double placeholderIconSize = isCompact ? 24 : 40;
     return ZoeNetworkLocalImageView(
-      imageUrl: sheet.sheetAvatar.image!,
+      imageUrl: sheet.sheetAvatar.data,
       height: effectiveSize,
       width: effectiveSize,
       placeholderIconSize: placeholderIconSize,
@@ -90,7 +93,7 @@ class SheetAvatarWidget extends ConsumerWidget {
   Widget _buildEmoji(BuildContext context, SheetModel sheet) {
     final effectiveEmojiSize = emojiSize ?? (isCompact ? 18 : 32);
     return Text(
-      sheet.sheetAvatar.emoji!,
+      sheet.sheetAvatar.data,
       style: TextStyle(fontSize: effectiveEmojiSize),
     );
   }
@@ -100,11 +103,8 @@ class SheetAvatarWidget extends ConsumerWidget {
     final effectiveIconSize = iconSize ?? (isCompact ? 24 : 34);
     final effectiveIconColor =
         sheet.sheetAvatar.color ?? theme.colorScheme.primary;
+    final icon = ZoeIcon.iconFor(sheet.sheetAvatar.data);
 
-    return Icon(
-      sheet.sheetAvatar.icon.data,
-      size: effectiveIconSize,
-      color: effectiveIconColor,
-    );
+    return Icon(icon?.data, size: effectiveIconSize, color: effectiveIconColor);
   }
 }

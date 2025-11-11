@@ -8,7 +8,8 @@ final sheetList = [
     id: 'sheet-1',
     title: 'Getting Started Guide',
     sheetAvatar: SheetAvatar(
-      icon: ZoeIcon.book,
+      type: AvatarType.icon,
+      data: ZoeIcon.book.name,
       color: const Color(0xFF6366F1), // Indigo
     ),
     coverImageUrl:
@@ -26,7 +27,8 @@ final sheetList = [
     id: 'sheet-2',
     title: 'Planning a Trip',
     sheetAvatar: SheetAvatar(
-      emoji: '✈️',
+      type: AvatarType.emoji,
+      data: '✈️',
       color: const Color(0xFF10B981), // Emerald
     ),
     coverImageUrl:
@@ -44,7 +46,8 @@ final sheetList = [
     id: 'sheet-3',
     title: 'Christmas Time for Joy & Celebrations',
     sheetAvatar: SheetAvatar(
-      image: 'https://cdn-icons-png.flaticon.com/512/9193/9193628.png',
+      type: AvatarType.image,
+      data: 'https://cdn-icons-png.flaticon.com/512/9193/9193628.png',
       color: const Color(0xFFDC2626), // Red
     ),
     coverImageUrl:
@@ -62,7 +65,8 @@ final sheetList = [
     id: 'sheet-4',
     title: 'Community Organization Hub',
     sheetAvatar: SheetAvatar(
-      emoji: '🏘️',
+      type: AvatarType.emoji,
+      data: '🏘️',
       color: const Color(0xFF059669), // Emerald
     ),
     description: (
@@ -78,7 +82,8 @@ final sheetList = [
     id: 'sheet-5',
     title: 'Exhibition Planning Hub',
     sheetAvatar: SheetAvatar(
-      icon: ZoeIcon.palette,
+      type: AvatarType.icon,
+      data: ZoeIcon.palette.name,
       color: const Color(0xFF1E40AF), // Blue
     ),
     description: (
@@ -103,7 +108,8 @@ final sheetList = [
     id: 'sheet-6',
     title: 'School Fundraiser Success Hub',
     sheetAvatar: SheetAvatar(
-      image: 'https://cdn-icons-png.flaticon.com/512/11800/11800900.png',
+      type: AvatarType.image,
+      data: 'https://cdn-icons-png.flaticon.com/512/11800/11800900.png',
       color: const Color(0xFFDC2626), // Red
     ),
     description: (
@@ -130,7 +136,8 @@ final sheetList = [
     id: 'sheet-7',
     title: 'BBQ Planning Paradise',
     sheetAvatar: SheetAvatar(
-      icon: ZoeIcon.fire,
+      type: AvatarType.icon,
+      data: ZoeIcon.fire.name,
       color: const Color(0xFFEA580C), // Orange
     ),
     description: (
@@ -157,7 +164,8 @@ final sheetList = [
     id: 'sheet-8',
     title: 'University Hangout Hub',
     sheetAvatar: SheetAvatar(
-      emoji: '🎓',
+      type: AvatarType.emoji,
+      data: '🎓',
       color: const Color(0xFF7C3AED), // Purple
     ),
     description: (
@@ -173,7 +181,8 @@ final sheetList = [
     id: 'sheet-9',
     title: 'Book Club Paradise',
     sheetAvatar: SheetAvatar(
-      image: 'https://cdn-icons-png.flaticon.com/512/5078/5078755.png',
+      type: AvatarType.image,
+      data: 'https://cdn-icons-png.flaticon.com/512/5078/5078755.png',
       color: const Color(0xFF059669), // Green
     ),
     description: (
@@ -198,7 +207,8 @@ final sheetList = [
     id: 'sheet-10',
     title: 'Softball Club BBQ Party Hub',
     sheetAvatar: SheetAvatar(
-      icon: ZoeIcon.baseball,
+      type: AvatarType.icon,
+      data: ZoeIcon.baseball.name,
       color: const Color(0xFFDC2626), // Red
     ),
     description: (
@@ -225,7 +235,8 @@ final sheetList = [
     id: 'sheet-11',
     title: 'Bachelorette Party Paradise',
     sheetAvatar: SheetAvatar(
-      emoji: '💃',
+      type: AvatarType.emoji,
+      data: '💃',
       color: const Color(0xFFEC4899), // Pink
     ),
     description: (
@@ -241,7 +252,8 @@ final sheetList = [
     id: 'sheet-12',
     title: 'Church Summer Fest 2026 Hub',
     sheetAvatar: SheetAvatar(
-      emoji: '⛪',
+      type: AvatarType.emoji,
+      data: '⛪',
       color: const Color(0xFF059669), // Green
     ),
     description: (
@@ -266,7 +278,8 @@ final sheetList = [
     id: 'sheet-13',
     title: 'PTA Bake Sale Success Hub',
     sheetAvatar: SheetAvatar(
-      icon: ZoeIcon.bread,
+      type: AvatarType.icon,
+      data: ZoeIcon.bread.name,
       color: const Color(0xFFDC2626), // Red
     ),
     description: (
@@ -293,7 +306,8 @@ final sheetList = [
     id: 'sheet-14',
     title: 'Halloween Planning Spectacular Hub',
     sheetAvatar: SheetAvatar(
-      image: 'https://cdn-icons-png.flaticon.com/512/12420/12420664.png',
+      type: AvatarType.image,
+      data: 'https://cdn-icons-png.flaticon.com/512/12420/12420664.png',
       color: const Color(0xFF7C2D12), // Dark orange/brown
     ),
     description: (
@@ -320,7 +334,8 @@ final sheetList = [
     id: 'sheet-15',
     title: 'Summer Camp Sign-ups Success Hub',
     sheetAvatar: SheetAvatar(
-      emoji: '🏕️',
+      type: AvatarType.emoji,
+      data: '🏕️',
       color: const Color(0xFF059669), // Green
     ),
     description: (
@@ -347,7 +362,8 @@ final sheetList = [
     id: 'sheet-16',
     title: 'Thanksgiving Will Not Be Terrible',
     sheetAvatar: SheetAvatar(
-      icon: ZoeIcon.forkKnife,
+      type: AvatarType.icon,
+      data: ZoeIcon.forkKnife.name,
       color: const Color(0xFFEA580C), // Orange
     ),
     description: (
