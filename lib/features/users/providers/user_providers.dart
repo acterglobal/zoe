@@ -38,25 +38,28 @@ class UserList extends _$UserList {
 /// Provider to check if a user is logged in
 @riverpod
 Future<bool> isUserLoggedIn(Ref ref) async {
-  final userId = await PreferencesService().getLoginUserId();
+  final userId = await ref.watch(loggedInUserProvider.future);
   return userId != null && userId.isNotEmpty;
 }
 
 /// Provider for the logged-in user ID
 @riverpod
 Future<String?> loggedInUser(Ref ref) async {
-  final userId = await PreferencesService().getLoginUserId();
-  return userId;
+  final defaultUser = 'user_1';
+  final prefsService = PreferencesService();
+  final userId = await prefsService.getLoginUserId();
+  if (userId == null || userId.isEmpty) {
+    await prefsService.setLoginUserId(defaultUser);
+  }
+  return userId ?? defaultUser;
 }
 
 /// Provider for the current user model
 @riverpod
 Future<UserModel?> currentUser(Ref ref) async {
-  final userId = await PreferencesService().getLoginUserId();
-  if (userId == null || userId.isEmpty) return null;
-
-  final userList = ref.watch(userListProvider);
-  return userList.where((u) => u.id == userId).firstOrNull;
+  final userId = await ref.watch(loggedInUserProvider.future);
+  if (userId == null) return null;
+  return ref.watch(getUserByIdProvider(userId));
 }
 
 /// Provider for users in a specific sheet
