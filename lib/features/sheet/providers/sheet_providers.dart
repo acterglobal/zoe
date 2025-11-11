@@ -43,7 +43,10 @@ class SheetList extends _$SheetList {
     state = [
       for (final sheet in state)
         if (sheet.id == sheetId)
-          sheet.copyWith(coverImageUrl: coverImageUrl)
+          if (coverImageUrl == null)
+            sheet.removeCoverImage()
+          else
+            sheet.copyWith(coverImageUrl: coverImageUrl)
         else
           sheet,
     ];
