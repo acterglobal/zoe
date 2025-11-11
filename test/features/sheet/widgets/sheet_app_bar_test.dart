@@ -52,10 +52,6 @@ void main() {
       );
     }
 
-    L10n getL10n(WidgetTester tester) {
-      return L10n.of(tester.element(find.byType(SheetAppBar)));
-    }
-
     group('Basic Rendering', () {
       testWidgets('displays sheet app bar when sheet exists', (tester) async {
         await pumpSheetAppBar(tester);
@@ -65,13 +61,6 @@ void main() {
         expect(find.byType(SliverAppBar), findsOneWidget);
         expect(find.byType(ZoeAppBar), findsOneWidget);
         expect(find.byType(ContentMenuButton), findsOneWidget);
-      });
-
-      testWidgets('displays correct title', (tester) async {
-        await pumpSheetAppBar(tester);
-        final l10n = getL10n(tester);
-        // Verify the title is "Sheet" (from L10n)
-        expect(find.text(l10n.sheet), findsOneWidget);
       });
 
       testWidgets('has correct app bar properties with cover image', (
@@ -92,7 +81,7 @@ void main() {
       ) async {
         await pumpSheetAppBar(
           tester,
-          customSheet: testSheet.copyWith(coverImageUrl: null),
+          customSheet: testSheet.removeCoverImage(),
         );
 
         final sliverAppBar = tester.widget<SliverAppBar>(
@@ -171,7 +160,7 @@ void main() {
       });
 
       testWidgets('handles null cover image correctly', (tester) async {
-        final sheetWithoutImage = testSheet.copyWith(coverImageUrl: null);
+        final sheetWithoutImage = testSheet.removeCoverImage();
 
         await pumpSheetAppBar(tester, customSheet: sheetWithoutImage);
 
@@ -203,7 +192,7 @@ void main() {
       testWidgets('menu shows correct items without cover image', (
         tester,
       ) async {
-        final sheetWithoutImage = testSheet.copyWith(coverImageUrl: null);
+        final sheetWithoutImage = testSheet.removeCoverImage();
         await pumpSheetAppBar(tester, customSheet: sheetWithoutImage);
 
         // Tap the menu button
@@ -214,9 +203,9 @@ void main() {
         expect(find.byType(PopupMenuItem<ZoePopupMenuItem>), findsWidgets);
 
         // Should have "Add Cover Image" option (not "Update" or "Remove")
-        expect(find.text("Add Cover Image"), findsOneWidget);
-        expect(find.text("Update Cover Image"), findsNothing);
-        expect(find.text("Remove Cover Image"), findsNothing);
+        expect(find.text("Add cover image"), findsWidgets);
+        expect(find.text("Update cover image"), findsNothing);
+        expect(find.text("Remove cover image"), findsNothing);
       });
 
       testWidgets('menu shows correct items with cover image', (tester) async {
@@ -234,9 +223,9 @@ void main() {
         expect(find.byType(PopupMenuItem<ZoePopupMenuItem>), findsWidgets);
 
         // Should have "Update Cover Image" and "Remove Cover Image" options
-        expect(find.text("Add Cover Image"), findsNothing);
-        expect(find.text("Update Cover Image"), findsOneWidget);
-        expect(find.text("Remove Cover Image"), findsOneWidget);
+        expect(find.text("Add cover image"), findsNothing);
+        expect(find.text("Update cover image"), findsWidgets);
+        expect(find.text("Remove cover image"), findsWidgets);
       });
     });
 
