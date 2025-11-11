@@ -9,6 +9,7 @@ class SheetModel {
   final String id;
   final SheetAvatar sheetAvatar;
   final String title;
+  final String? coverImageUrl;
   final Description? description;
   final Color? color;
   final String createdBy;
@@ -20,6 +21,7 @@ class SheetModel {
     String? id,
     SheetAvatar? sheetAvatar,
     String? title,
+    this.coverImageUrl,
     this.description,
     this.color,
     String? createdBy,
@@ -38,6 +40,7 @@ class SheetModel {
     String? id,
     SheetAvatar? sheetAvatar,
     String? title,
+    String? coverImageUrl,
     Description? description,
     Color? color,
     String? createdBy,
@@ -49,6 +52,7 @@ class SheetModel {
       id: id ?? this.id,
       sheetAvatar: sheetAvatar ?? this.sheetAvatar,
       title: title ?? this.title,
+      coverImageUrl: coverImageUrl,
       description: description ?? this.description,
       color: color ?? this.color,
       createdBy: createdBy ?? this.createdBy,

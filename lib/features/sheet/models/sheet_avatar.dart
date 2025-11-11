@@ -22,4 +22,18 @@ class SheetAvatar {
       color: color,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SheetAvatar &&
+          runtimeType == other.runtimeType &&
+          icon == other.icon &&
+          image == other.image &&
+          emoji == other.emoji &&
+          color == other.color;
+
+  @override
+  int get hashCode =>
+      icon.hashCode ^ image.hashCode ^ emoji.hashCode ^ color.hashCode;
 }

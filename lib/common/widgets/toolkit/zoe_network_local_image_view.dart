@@ -9,6 +9,7 @@ class ZoeNetworkLocalImageView extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final double borderRadius;
+  final double placeholderIconSize;
 
   const ZoeNetworkLocalImageView({
     super.key,
@@ -17,6 +18,7 @@ class ZoeNetworkLocalImageView extends StatelessWidget {
     this.height,
     this.fit = BoxFit.cover,
     this.borderRadius = 15,
+    this.placeholderIconSize = 28,
   });
 
   @override
@@ -27,8 +29,8 @@ class ZoeNetworkLocalImageView extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(dynamicBorderRadius),
       child: isNetworkImage
-          ? _buildNetworkImage(imageUrl)
-          : _buildLocalImage(imageUrl),
+          ? _buildNetworkImage(context, imageUrl)
+          : _buildLocalImage(context, imageUrl),
     );
   }
 
@@ -40,59 +42,45 @@ class ZoeNetworkLocalImageView extends StatelessWidget {
     return minDimension * 0.2;
   }
 
-  Widget _buildNetworkImage(String imageUrl) {
+  Widget _buildNetworkImage(BuildContext context, String imageUrl) {
     return CachedNetworkImage(
       imageUrl: imageUrl,
       width: width,
       height: height,
       fit: fit,
-      placeholder: (_, _) => _buildPlaceholderImage(),
-      errorWidget: (_, _, _) => _buildErrorImage(),
+      placeholder: (_, _) => _buildPlaceholderImage(context),
+      errorWidget: (_, _, _) => _buildErrorImage(context),
     );
   }
 
-  Widget _buildLocalImage(String imageUrl) {
+  Widget _buildLocalImage(BuildContext context, String imageUrl) {
     return Image.file(
       File(imageUrl),
       width: width,
       height: height,
       fit: fit,
-      errorBuilder: (_, _, _) => _buildErrorImage(),
+      errorBuilder: (_, _, _) => _buildErrorImage(context),
     );
   }
 
-  double _calculatePadding() {
-    // If both height and width are null, use fixed padding
-    if (height == null || width == null) return 12;
-    // Use the smaller dimension to calculate dynamic padding
-    final minDimension = height! < width! ? height! : width!;
-    return minDimension * 0.3;
-  }
-
-  Widget _buildPlaceholderImage() {
-    final double padding = _calculatePadding();
+  Widget _buildPlaceholderImage(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Center(
-      child: CircularProgressIndicator(
-        padding: EdgeInsets.all(padding),
-        strokeWidth: 2.5,
+      child: Icon(
+        Icons.image_outlined,
+        color: colorScheme.onPrimary.withValues(alpha: .4),
+        size: placeholderIconSize,
       ),
     );
   }
 
-  double _calculateIconSize() {
-    // If both height and width are null, use fixed padding
-    if (height == null || width == null) return 28;
-    // Use the smaller dimension to calculate dynamic padding
-    return height! < width! ? height! : width!;
-  }
-
-  Widget _buildErrorImage() {
-    final double iconSize = _calculateIconSize();
+  Widget _buildErrorImage(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Center(
       child: Icon(
         Icons.broken_image_outlined,
-        size: iconSize,
-        color: Colors.red,
+        size: placeholderIconSize,
+        color: colorScheme.error,
       ),
     );
   }

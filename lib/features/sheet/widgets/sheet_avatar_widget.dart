@@ -78,10 +78,12 @@ class SheetAvatarWidget extends ConsumerWidget {
 
   Widget _buildImage(BuildContext context, SheetModel sheet) {
     final double effectiveSize = imageSize ?? (isCompact ? 24 : 40);
+    final double placeholderIconSize = isCompact ? 24 : 40;
     return ZoeNetworkLocalImageView(
       imageUrl: sheet.sheetAvatar.image!,
       height: effectiveSize,
       width: effectiveSize,
+      placeholderIconSize: placeholderIconSize,
     );
   }
 

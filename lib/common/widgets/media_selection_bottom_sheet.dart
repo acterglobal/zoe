@@ -12,6 +12,7 @@ Future<void> showMediaSelectionBottomSheet(
   String? title,
   String? subtitle,
   bool allowMultiple = false,
+  int imageQuality = 80,
   required Function(XFile) onTapCamera,
   required Function(List<XFile>) onTapGallery,
   Function(List<XFile>)? onTapFileChooser,
@@ -30,6 +31,7 @@ Future<void> showMediaSelectionBottomSheet(
       title: title,
       subtitle: subtitle,
       allowMultiple: allowMultiple,
+      imageQuality: imageQuality,
       onTapCamera: onTapCamera,
       onTapGallery: onTapGallery,
       onTapFileChooser: onTapFileChooser,
@@ -41,6 +43,7 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
   final String? title;
   final String? subtitle;
   final bool allowMultiple;
+  final int imageQuality;
   final Function(XFile) onTapCamera;
   final Function(List<XFile>) onTapGallery;
   final Function(List<XFile>)? onTapFileChooser;
@@ -49,38 +52,61 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
     super.key,
     this.title,
     this.subtitle,
-    this.allowMultiple = false,
+    required this.allowMultiple,
+    required this.imageQuality,
     required this.onTapCamera,
     required this.onTapGallery,
     required this.onTapFileChooser,
   });
 
   Future<void> _onTapCamera(BuildContext context) async {
-    final picker = ImagePicker();
-    final image = await picker.pickImage(
-      source: ImageSource.camera,
-      imageQuality: 80,
-    );
-
-    if (image != null) onTapCamera(image);
-    if (context.mounted) Navigator.of(context).pop();
+    try {
+      final picker = ImagePicker();
+      final image = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: imageQuality,
+      );
+      if (image != null) onTapCamera(image);
+    } catch (e) {
+      debugPrint('Error picking image from camera: $e');
+    } finally {
+      if (context.mounted) Navigator.of(context).pop();
+    }
   }
 
   Future<void> _onTapGallery(BuildContext context) async {
-    final picker = ImagePicker();
-    final images = await picker.pickMultiImage(imageQuality: 80);
-    if (images.isNotEmpty) onTapGallery(images);
-    if (context.mounted) Navigator.of(context).pop();
+    try {
+      final picker = ImagePicker();
+      if (allowMultiple) {
+        final images = await picker.pickMultiImage(imageQuality: imageQuality);
+        if (images.isNotEmpty) onTapGallery(images);
+      } else {
+        final image = await picker.pickImage(
+          source: ImageSource.gallery,
+          imageQuality: imageQuality,
+        );
+        if (image != null) onTapGallery([image]);
+      }
+    } catch (e) {
+      debugPrint('Error picking image from gallery: $e');
+    } finally {
+      if (context.mounted) Navigator.of(context).pop();
+    }
   }
 
   Future<void> _onTapFileChooser(BuildContext context) async {
-    final result = await FilePicker.platform.pickFiles(
-      allowMultiple: allowMultiple,
-    );
-    if (result != null && result.files.isNotEmpty) {
-      onTapFileChooser!(result.files.map((file) => file.xFile).toList());
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        allowMultiple: allowMultiple,
+      );
+      if (result != null && result.files.isNotEmpty) {
+        onTapFileChooser!(result.files.map((file) => file.xFile).toList());
+      }
+    } catch (e) {
+      debugPrint('Error picking file: $e');
+    } finally {
+      if (context.mounted) Navigator.of(context).pop();
     }
-    if (context.mounted) Navigator.of(context).pop();
   }
 
   @override

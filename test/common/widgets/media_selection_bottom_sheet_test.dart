@@ -35,6 +35,7 @@ void main() {
           title: title,
           subtitle: subtitle,
           allowMultiple: allowMultiple,
+          imageQuality: 80,
           onTapCamera: onTapCamera ?? (XFile file) {},
           onTapGallery: onTapGallery ?? (List<XFile> files) {},
           onTapFileChooser: onTapFileChooser,

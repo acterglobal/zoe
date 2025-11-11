@@ -11,6 +11,8 @@ final sheetList = [
       icon: ZoeIcon.book,
       color: const Color(0xFF6366F1), // Indigo
     ),
+    coverImageUrl:
+        'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_1280.jpg',
     description: (
       plainText:
           'Your complete introduction to Zoe! This interactive guide walks you through all features, includes hands-on tasks to practice with, and provides tips for organizing your digital workspace effectively. Perfect for new users to get up and running quickly.',
@@ -27,6 +29,8 @@ final sheetList = [
       emoji: '✈️',
       color: const Color(0xFF10B981), // Emerald
     ),
+    coverImageUrl:
+        'https://static.vecteezy.com/system/resources/thumbnails/070/038/514/small/a-traveler-prepares-for-an-exciting-vacation-holding-a-passport-and-tickets-while-contemplating-their-next-adventure-a-bright-yellow-suitcase-stands-ready-for-the-journey-ahead-photo.jpg',
     description: (
       plainText:
           'Our epic trip planning workspace! From  choosing the perfect destination to coordinating all the fun details. Use polls to decide on destinations, tasks to track preparations, events to schedule activities, and share all the important links and resources.',
@@ -43,6 +47,8 @@ final sheetList = [
       image: 'https://cdn-icons-png.flaticon.com/512/9193/9193628.png',
       color: const Color(0xFFDC2626), // Red
     ),
+    coverImageUrl:
+        'https://img.freepik.com/free-vector/merry-christmas-happy-new-year-background-with-realistic-gifts-composition_1361-3582.jpg?semt=ais_hybrid&w=740&q=80',
     description: (
       plainText:
           'Our festive Christmas celebration workspace! From planning the perfect party to coordinating all the holiday fun. Use polls to decide on venues, tasks to track preparations, events to schedule activities, and share all the Christmas cheer and memes.',
