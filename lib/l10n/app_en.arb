@@ -545,5 +545,12 @@
     "editThisTask": "Edit this task",
     "deleteThisTask": "Delete this task",
     "dueDate": "Due Date",
-    "date": "Date"
+    "date": "Date",
+    "addCoverImage": "Add cover image",
+    "updateCoverImage": "Update cover image",
+    "removeCoverImage": "Remove cover image",
+    "selectMedia": "Select media",
+    "chooseAMediaFile": "Choose a media file from your device",
+    "selectSheetCoverImage": "Select sheet cover image",
+    "chooseAheetCoverImage": "Choose a sheet cover image from your device"
 }
