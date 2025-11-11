@@ -14,9 +14,12 @@ class SheetList extends _$SheetList {
 
   void addSheet(SheetModel sheet) {
     final currentUserId = ref.read(loggedInUserProvider).value;
-  
+
     if (currentUserId != null && currentUserId.isNotEmpty) {
-      state = [...state, sheet.copyWith(users: [currentUserId], createdBy: currentUserId)];
+      state = [
+        ...state,
+        sheet.copyWith(users: [currentUserId], createdBy: currentUserId),
+      ];
     } else {
       state = [...state, sheet];
     }
@@ -77,14 +80,15 @@ class SheetList extends _$SheetList {
 /// Provider for sheets filtered by membership (current user must be a member)
 @riverpod
 List<SheetModel> sheetsList(Ref ref) {
-  final allSheets = ref.watch(sheetListProvider);
+  return ref.watch(sheetListProvider);
+  /*final allSheets = ref.watch(sheetListProvider);
   final currentUserId = ref.watch(loggedInUserProvider).value;
 
   // If no user, show nothing
   if (currentUserId == null || currentUserId.isEmpty) return [];
 
   // Filter by membership
-  return allSheets.where((s) => s.users.contains(currentUserId)).toList();
+  return allSheets.where((s) => s.users.contains(currentUserId)).toList();*/
 }
 
 /// Provider for searching sheets
