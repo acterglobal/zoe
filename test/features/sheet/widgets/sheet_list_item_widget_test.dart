@@ -5,8 +5,10 @@ import 'package:mocktail/mocktail.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_content_container_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart' as sheet_model;
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_item_widget.dart';
 import '../../../test-utils/test_utils.dart';
 import '../../../test-utils/mock_gorouter.dart';
@@ -72,7 +74,7 @@ void main() {
 
         // Verify emoji container
         expect(find.byType(StyledContentContainer), findsOneWidget);
-        expect(find.text(testSheet.emoji), findsOneWidget);
+        expect(find.byType(SheetAvatarWidget), findsOneWidget);
 
         // Verify content section
         expect(find.text(testSheet.title), findsOneWidget);
@@ -268,7 +270,9 @@ void main() {
       });
 
       testWidgets('handles different emoji sizes', (tester) async {
-        final emojiSheet = testSheet.copyWith(emoji: '🔥');
+        final emojiSheet = testSheet.copyWith(
+          sheetAvatar: SheetAvatar(emoji: '🔥'),
+        );
         container = ProviderContainer.test(
           overrides: [
             sheetProvider(testSheet.id).overrideWith((ref) => emojiSheet),
@@ -276,7 +280,8 @@ void main() {
         );
 
         await pumpSheetListItemWidget(tester);
-
+        
+        expect(find.byType(SheetAvatarWidget), findsOneWidget);
         expect(find.text('🔥'), findsOneWidget);
       });
     });

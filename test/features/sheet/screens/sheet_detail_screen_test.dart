@@ -14,6 +14,7 @@ import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/screens/sheet_detail_screen.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../test-utils/mock_gorouter.dart';
 import '../../../test-utils/test_utils.dart';
@@ -31,7 +32,7 @@ void main() {
       container = ProviderContainer.test();
       testSheet = getSheetByIndex(container);
       testSheetId = testSheet.id;
-      
+
       mockGoRouter = MockGoRouter();
       when(() => mockGoRouter.canPop()).thenReturn(true);
       when(() => mockGoRouter.pop()).thenReturn(null);
@@ -48,7 +49,7 @@ void main() {
       } else {
         container.read(editContentIdProvider.notifier).state = null;
       }
-      
+
       await tester.pumpMaterialWidgetWithProviderScope(
         container: container,
         child: SheetDetailScreen(sheetId: sheetId ?? testSheetId),
@@ -59,7 +60,7 @@ void main() {
     L10n getL10n(WidgetTester tester) {
       return L10n.of(tester.element(find.byType(SheetDetailScreen)));
     }
-    
+
     group('Widget Construction', () {
       testWidgets('creates widget with required sheetId', (tester) async {
         final widget = SheetDetailScreen(sheetId: testSheetId);
@@ -143,7 +144,7 @@ void main() {
         expect(sheet, isNotNull);
         expect(sheet!.id, equals(testSheetId));
         expect(sheet.title, isNotEmpty);
-        expect(sheet.emoji, isNotEmpty);
+        expect(find.byType(SheetAvatarWidget), findsOneWidget);
       });
 
       testWidgets('watches listOfUsersBySheetIdProvider for user data', (tester) async {
@@ -173,7 +174,7 @@ void main() {
       testWidgets('updates widget properties based on editing state', (tester) async {
         // Test non-editing state
         await pumpSheetDetailScreen(tester, isEditing: false);
-        
+
         final titleWidget = tester.widget<ZoeInlineTextEditWidget>(
           find.byType(ZoeInlineTextEditWidget).first,
         );
@@ -212,13 +213,12 @@ void main() {
           // Special characters
           testSheet.copyWith(
             title: 'Title with émojis 🚀 and spëcial chars',
-            emoji: '🚀',
           ),
         ];
 
         for (final sheet in testCases) {
           container.read(sheetListProvider.notifier).addSheet(sheet);
-          
+
           await pumpSheetDetailScreen(tester, sheetId: sheet.id);
           expect(tester.takeException(), isNull);
         }
@@ -229,18 +229,17 @@ void main() {
       testWidgets('validates sheet model structure', (tester) async {
         expect(testSheet.id, isNotEmpty);
         expect(testSheet.title, isNotEmpty);
-        expect(testSheet.emoji, isNotEmpty);
         expect(testSheet.createdBy, isNotEmpty);
         expect(testSheet.createdAt, isA<DateTime>());
         expect(testSheet.updatedAt, isA<DateTime>());
         expect(testSheet.users, isA<List<String>>());
-        
+
         // Validate users list structure
         for (final user in testSheet.users) {
           expect(user, isA<String>());
           expect(user, isNotEmpty);
         }
-        
+
         // Validate description if present
         if (testSheet.description != null) {
           expect(testSheet.description!.plainText, isA<String>());
@@ -254,7 +253,7 @@ void main() {
         final widget1 = SheetDetailScreen(sheetId: testSheetId);
         final widget2 = SheetDetailScreen(sheetId: testSheetId);
         final widget3 = SheetDetailScreen(sheetId: 'different-id');
-        
+
         expect(widget1.sheetId, equals(widget2.sheetId));
         expect(widget1.sheetId, isNot(equals(widget3.sheetId)));
       });
@@ -268,46 +267,26 @@ void main() {
         expect(find.byType(NotebookPaperBackgroundWidget), findsOneWidget);
         expect(find.byType(Stack), findsAtLeastNWidgets(1));
         expect(find.byType(Expanded), findsAtLeastNWidgets(1));
-        
+
         // AppBar components
         expect(find.byType(ZoeAppBar), findsOneWidget);
         expect(find.byType(ContentMenuButton), findsOneWidget);
-        
+
         // Content components
         expect(find.byType(EmojiWidget), findsAtLeastNWidgets(1));
         expect(find.byType(ZoeInlineTextEditWidget), findsAtLeastNWidgets(1));
         expect(find.byType(ZoeHtmlTextEditWidget), findsAtLeastNWidgets(1));
         expect(find.byType(ContentWidget), findsOneWidget);
-      
       });
     });
-    
+
     group('User Interactions', () {
-      testWidgets('emoji widget tap calls showCustomEmojiPicker', (tester) async {
+      testWidgets('shows sheet avatar widget', (tester) async {
         await pumpSheetDetailScreen(tester);
 
         // Find the emoji widget in the sheet header (should be the first one in the main content)
-        final emojiWidgets = find.byType(EmojiWidget);
-        expect(emojiWidgets, findsAtLeastNWidgets(1));
-        
-        // Get the first emoji widget (should be the sheet header emoji)
-        final emojiWidget = emojiWidgets.first;
-        
-        // Verify emoji widget properties
-        final widget = tester.widget<EmojiWidget>(emojiWidget);
-        expect(widget.emoji, isNotEmpty);
-        expect(widget.size, equals(32));
-        expect(widget.onTap, isNotNull);
-        
-        // Tap on emoji widget - should call showCustomEmojiPicker
-        await tester.tap(emojiWidget);
-        await tester.pump();
-        
-        // The tap should not throw an error, indicating showCustomEmojiPicker was called
-        expect(tester.takeException(), isNull);
-        
-        // Verify that the emoji widget is still present (no crash)
-        expect(find.byType(EmojiWidget), findsAtLeastNWidgets(1));
+        final sheetAvatarWidget = find.byType(SheetAvatarWidget);
+        expect(sheetAvatarWidget, findsAtLeastNWidgets(1));
       });
 
       testWidgets('content menu button tap shows sheet menu', (tester) async {
@@ -331,22 +310,22 @@ void main() {
       testWidgets('users count widget tap shows user list', (tester) async {
         final sheetWithUsers = testSheet.copyWith(users: ['user1', 'user2']);
         container.read(sheetListProvider.notifier).addSheet(sheetWithUsers);
-        
+
         await pumpSheetDetailScreen(tester, sheetId: sheetWithUsers.id);
 
         // Verify users count is displayed
         expect(find.textContaining('2'), findsAtLeastNWidgets(1));
-        
+
         // Find and tap the users count widget
         final usersCountWidget = find.byType(GestureDetector).first;
         expect(usersCountWidget, findsOneWidget);
-        
+
         await tester.tap(usersCountWidget);
         await tester.pump();
-        
+
         // The tap should not throw an error, indicating showModalBottomSheet was called
         expect(tester.takeException(), isNull);
-        
+
         // Verify that the users count widget is still present (no crash)
         expect(find.textContaining('2'), findsAtLeastNWidgets(1));
       });
@@ -369,7 +348,7 @@ void main() {
         expect(find.text(l10n.deleteThisSheet), findsOneWidget);
       });
     });
-    
+
     group('Content Display', () {
       testWidgets('displays sheet content correctly', (tester) async {
         await pumpSheetDetailScreen(tester);
@@ -382,7 +361,7 @@ void main() {
 
         // Verify sheet data is displayed
         expect(find.textContaining(testSheet.title), findsAtLeastNWidgets(1));
-        expect(find.textContaining(testSheet.emoji), findsAtLeastNWidgets(1));
+        expect(find.byType(SheetAvatarWidget), findsOneWidget);
       });
 
       testWidgets('handles users count display', (tester) async {
@@ -390,7 +369,7 @@ void main() {
         final user1 = getUserByIndex(container).id;
         final user2 = getUserByIndex(container, index: 1).id;
         final user3 = getUserByIndex(container, index: 2).id;
-        
+
         final testCases = [
           ([user1], '1'),
           ([user1, user2], '2'),
@@ -404,11 +383,11 @@ void main() {
             users: users,
           );
           container.read(sheetListProvider.notifier).addSheet(sheetWithUsers);
-          
+
           await pumpSheetDetailScreen(tester, sheetId: sheetWithUsers.id);
           await tester.pump();
           await tester.pump(const Duration(milliseconds: 100));
-          
+
           // Verify the users count is displayed
           // The text will be something like "1 user" or "2 users"
           expect(find.textContaining(expectedCount), findsAtLeastNWidgets(1));

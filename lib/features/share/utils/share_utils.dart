@@ -31,12 +31,11 @@ class ShareUtils {
     final sheet = ref.watch(sheetProvider(parentId));
     if (sheet == null) return buffer.toString();
 
-    final emoji = sheet.emoji;
     final title = sheet.title;
     final description = sheet.description?.plainText;
 
-    // Emoji and title
-    buffer.write('$emoji $title');
+    // Title
+    buffer.write(title);
 
     // Description
     if (description != null && description.isNotEmpty) {

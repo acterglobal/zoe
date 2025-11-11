@@ -1,13 +1,15 @@
 import 'dart:ui';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 
 /// Description with both plain text and HTML support
 typedef Description = ({String? plainText, String? htmlText});
 
 class SheetModel {
   final String id;
-  final String emoji;
+  final SheetAvatar sheetAvatar;
   final String title;
+  final String? coverImageUrl;
   final Description? description;
   final Color? color;
   final String createdBy;
@@ -17,8 +19,9 @@ class SheetModel {
 
   SheetModel({
     String? id,
-    String? emoji,
+    SheetAvatar? sheetAvatar,
     String? title,
+    this.coverImageUrl,
     this.description,
     this.color,
     String? createdBy,
@@ -26,7 +29,7 @@ class SheetModel {
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : id = id ?? CommonUtils.generateRandomId(),
-       emoji = emoji ?? '📄',
+       sheetAvatar = sheetAvatar ?? SheetAvatar(),
        title = title ?? 'Untitled',
        createdBy = createdBy ?? CommonUtils.generateRandomId(),
        users = users ?? [],
@@ -35,8 +38,9 @@ class SheetModel {
 
   SheetModel copyWith({
     String? id,
-    String? emoji,
+    SheetAvatar? sheetAvatar,
     String? title,
+    String? coverImageUrl,
     Description? description,
     Color? color,
     String? createdBy,
@@ -46,8 +50,9 @@ class SheetModel {
   }) {
     return SheetModel(
       id: id ?? this.id,
-      emoji: emoji ?? this.emoji,
+      sheetAvatar: sheetAvatar ?? this.sheetAvatar,
       title: title ?? this.title,
+      coverImageUrl: coverImageUrl,
       description: description ?? this.description,
       color: color ?? this.color,
       createdBy: createdBy ?? this.createdBy,

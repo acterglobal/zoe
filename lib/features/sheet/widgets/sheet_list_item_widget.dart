@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
-import 'package:zoe/common/widgets/styled_content_container_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 
 class SheetListItemWidget extends ConsumerWidget {
   final String sheetId;
@@ -48,7 +48,7 @@ class SheetListItemWidget extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          _buildEmojiContainer(sheet.emoji, sheet.color, theme),
+          SheetAvatarWidget(sheetId: sheet.id, isCompact: isCompact),
           const SizedBox(width: 16),
           Expanded(child: _buildContentSection(sheet, theme)),
           const SizedBox(width: 12),
@@ -72,7 +72,7 @@ class SheetListItemWidget extends ConsumerWidget {
       padding: const EdgeInsets.all(12),
       child: Row(
         children: [
-          _buildEmojiContainer(sheet.emoji, sheet.color, theme),
+          SheetAvatarWidget(sheetId: sheet.id, isCompact: isCompact),
           const SizedBox(width: 16),
           Expanded(child: _buildContentSection(sheet, theme)),
           const SizedBox(width: 12),
@@ -83,17 +83,6 @@ class SheetListItemWidget extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildEmojiContainer(String emoji, Color? color, ThemeData theme) {
-    return StyledContentContainer(
-      size: isCompact ? 34 : 56,
-      primaryColor: color ?? theme.colorScheme.primary,
-      backgroundOpacity: 0.1,
-      borderOpacity: 0.10,
-      shadowOpacity: 0.06,
-      child: Text(emoji, style: TextStyle(fontSize: isCompact ? 18 : 24)),
     );
   }
 

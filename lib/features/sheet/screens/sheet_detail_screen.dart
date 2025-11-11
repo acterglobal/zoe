@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/common/widgets/content_menu_button.dart';
-import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
-import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/common/widgets/quill_editor/widgets/quill_editor_positioned_toolbar_widget.dart';
@@ -14,6 +10,8 @@ import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/sheet/actions/sheet_actions.dart';
 import 'package:zoe/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_app_bar.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 import 'package:zoe/features/users/widgets/user_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -29,36 +27,13 @@ class SheetDetailScreen extends ConsumerWidget {
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: ZoeAppBar(
-            title: L10n.of(context).sheet,
-            actions: [
-              const SizedBox(width: 10),
-              ContentMenuButton(
-                onTap: (context) => showSheetMenu(
-                  context: context,
-                  ref: ref,
-                  isEditing: isEditing,
-                  sheetId: sheetId,
-                ),
-              ),
-            ],
-          ),
-        ),
-        body: Column(
+        body: Stack(
           children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  _buildBody(context, ref, isEditing),
-                  buildQuillEditorPositionedToolbar(
-                    context,
-                    ref,
-                    isEditing: isEditing,
-                  ),
-                ],
-              ),
+            _buildSliverBody(context, ref, isEditing),
+            buildQuillEditorPositionedToolbar(
+              context,
+              ref,
+              isEditing: isEditing,
             ),
           ],
         ),
@@ -70,22 +45,27 @@ class SheetDetailScreen extends ConsumerWidget {
     );
   }
 
-  /// Builds the main body
-  Widget _buildBody(BuildContext context, WidgetRef ref, bool isEditing) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSheetHeader(context, ref, isEditing),
-          const SizedBox(height: 16),
-          ContentWidget(
-            parentId: sheetId,
-            sheetId: sheetId,
-            showSheetName: false,
+  /// Builds the sliver body
+  Widget _buildSliverBody(BuildContext context, WidgetRef ref, bool isEditing) {
+    return CustomScrollView(
+      slivers: [
+        SheetAppBar(sheetId: sheetId, isEditing: isEditing),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+              const SizedBox(height: 10),
+              _buildSheetHeader(context, ref, isEditing),
+              const SizedBox(height: 16),
+              ContentWidget(
+                parentId: sheetId,
+                sheetId: sheetId,
+                showSheetName: false,
+              ),
+            ]),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -104,19 +84,13 @@ class SheetDetailScreen extends ConsumerWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            EmojiWidget(
-              isEditing: isEditing,
-              emoji: sheet.emoji,
-              size: 32,
-              onTap: (emoji) {
-                showCustomEmojiPicker(
-                  context,
-                  ref,
-                  onEmojiSelected: (emoji) {
-                    updateSheetEmoji(ref, sheetId, emoji);
-                  },
-                );
-              },
+            SheetAvatarWidget(
+              sheetId: sheetId,
+              isWithBackground: false,
+              padding: EdgeInsets.only(top: 3, right: 6),
+              iconSize: 40,
+              imageSize: 46,
+              emojiSize: 32,
             ),
             const SizedBox(width: 4),
             Expanded(
@@ -153,7 +127,7 @@ class SheetDetailScreen extends ConsumerWidget {
           isEditing: isEditing,
           description: sheet.description,
           textStyle: Theme.of(context).textTheme.bodyLarge,
-          editorId: 'sheet-description-$sheetId', // Add unique editor ID
+          editorId: 'sheet-description-$sheetId',
           onContentChanged: (description) => Future.microtask(
             () => updateSheetDescription(ref, sheetId, description),
           ),

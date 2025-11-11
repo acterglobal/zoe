@@ -107,7 +107,6 @@ void main() {
         await pumpSheetShareUtilsWidget(tester);
 
         // Verify the message contains all expected elements
-        expect(find.textContaining(testSheetModel.emoji), findsOneWidget);
         expect(find.textContaining(testSheetModel.title), findsOneWidget);
         if (testSheetModel.description?.plainText != null) {
           expect(
@@ -133,10 +132,7 @@ void main() {
 
         // Verify the message starts with emoji and title
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(
-          textWidget.data,
-          startsWith('${testSheetModel.emoji} ${testSheetModel.title}'),
-        );
+        expect(textWidget.data, startsWith(testSheetModel.title));
       });
 
       testWidgets('includes description when present', (tester) async {
@@ -172,10 +168,7 @@ void main() {
         ); // At least emoji+title and link
 
         // First line should be emoji + title
-        expect(
-          lines.first,
-          equals('${testSheetModel.emoji} ${testSheetModel.title}'),
-        );
+        expect(lines.first, equals(testSheetModel.title));
 
         // Last line should be the link
         expect(lines.last, equals(getSheetShareLink()));
@@ -184,7 +177,6 @@ void main() {
       testWidgets('handles special in sheet data', (tester) async {
         final specialSheetId = 'special-sheet-id';
         final specialSheetTitle = 'Special Sheet';
-        final specialSheetEmoji = '🧪';
         final specialSheetDescription = (
           plainText: 'Line 1\nLine 2\tTabbed',
           htmlText: null,
@@ -194,7 +186,6 @@ void main() {
         final specialSheet = testSheetModel.copyWith(
           id: specialSheetId,
           title: specialSheetTitle,
-          emoji: specialSheetEmoji,
           description: specialSheetDescription,
         );
 
@@ -206,7 +197,6 @@ void main() {
 
         // Verify special characters are handled correctly
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains(specialSheetEmoji));
         expect(textWidget.data, contains(specialSheetTitle));
         expect(textWidget.data, contains(specialSheetDescription.plainText));
         expect(
