@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 import 'package:zoe/features/share/widgets/sheet_join_preview_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import '../../../test-utils/mock_gorouter.dart';
@@ -78,7 +78,7 @@ void main() {
 
         // Verify sheet title and emoji are displayed
         expect(find.text(testSheet.title), findsOneWidget);
-        expect(find.byType(EmojiWidget), findsOneWidget);
+        expect(find.byType(SheetAvatarWidget), findsOneWidget);
 
         // Verify join button is displayed
         expect(find.byType(ZoePrimaryButton), findsOneWidget);
@@ -116,17 +116,28 @@ void main() {
       });
 
       testWidgets('displays sheet emoji correctly', (tester) async {
+        final sheetWithEmoji = testSheet.copyWith(
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📘'),
+        );
+
+        final testContainer = ProviderContainer.test(
+          overrides: [
+            sheetListProvider.overrideWith(
+              () => SheetList()..state = [sheetWithEmoji],
+            ),
+            sheetProvider(testSheetId).overrideWith((ref) => sheetWithEmoji),
+          ],
+        );
+
         await pumpSheetJoinPreviewWidget(
           tester,
           parentId: testSheetId,
+          testContainer: testContainer,
         );
 
-        final emojiWidget = tester.widget<EmojiWidget>(
-          find.byType(EmojiWidget),
-        );
-        expect(emojiWidget.emoji, equals(testSheet.sheetAvatar.data));
-        expect(emojiWidget.size, equals(24));
-        expect(emojiWidget.isEditing, equals(false));
+        // Avatar widget should be present and emoji text rendered
+        expect(find.byType(SheetAvatarWidget), findsOneWidget);
+        expect(find.text('📘'), findsOneWidget);
       });
 
       testWidgets('displays sheet description when present', (tester) async {
@@ -266,8 +277,8 @@ void main() {
         // Verify Row with emoji and title
         expect(find.byType(Row), findsWidgets);
 
-        // Verify EmojiWidget
-        expect(find.byType(EmojiWidget), findsOneWidget);
+        // Verify SheetAvatarWidget
+        expect(find.byType(SheetAvatarWidget), findsOneWidget);
 
         // Verify join button
         expect(find.byType(ZoePrimaryButton), findsOneWidget);
@@ -340,7 +351,7 @@ void main() {
 
         // Widget should still render
         expect(find.byType(MaxWidthWidget), findsOneWidget);
-        expect(find.byType(EmojiWidget), findsOneWidget);
+        expect(find.byType(SheetAvatarWidget), findsOneWidget);
       });
     });
   });

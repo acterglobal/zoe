@@ -106,9 +106,11 @@ void main() {
       testWidgets('renders AppBar with correct configuration', (tester) async {
         await pumpSheetDetailScreen(tester);
 
-        final appBar = tester.widget<AppBar>(find.byType(AppBar));
-        expect(appBar.automaticallyImplyLeading, isFalse);
-        expect(appBar.backgroundColor, isNull);
+        final sliverAppBar =
+            tester.widget<SliverAppBar>(find.byType(SliverAppBar));
+        expect(sliverAppBar.automaticallyImplyLeading, isFalse);
+        final theme = Theme.of(tester.element(find.byType(SheetDetailScreen)));
+        expect(sliverAppBar.backgroundColor, equals(theme.colorScheme.surface));
         expect(find.byType(ZoeAppBar), findsOneWidget);
         expect(find.byType(ContentMenuButton), findsOneWidget);
       });
@@ -226,7 +228,10 @@ void main() {
 
           await pumpSheetDetailScreen(tester, sheetId: sheet.id);
           expect(tester.takeException(), isNull);
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 100));
         }
+        await tester.pump();
       });
     });
 
@@ -317,9 +322,12 @@ void main() {
         container.read(sheetListProvider.notifier).addSheet(sheetWithUsers);
 
         await pumpSheetDetailScreen(tester, sheetId: sheetWithUsers.id);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
 
         // Verify users count is displayed
-        expect(find.textContaining('2'), findsAtLeastNWidgets(1));
+        final l10n = getL10n(tester);
+        expect(find.text('2 ${l10n.users}'), findsAtLeastNWidgets(1));
 
         // Find and tap the users count widget
         final usersCountWidget = find.byType(GestureDetector).first;
@@ -327,12 +335,14 @@ void main() {
 
         await tester.tap(usersCountWidget);
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
 
         // The tap should not throw an error, indicating showModalBottomSheet was called
         expect(tester.takeException(), isNull);
 
         // Verify that the users count widget is still present (no crash)
-        expect(find.textContaining('2'), findsAtLeastNWidgets(1));
+        expect(find.text('2 ${l10n.users}'), findsAtLeastNWidgets(1));
+        await tester.pump();
       });
 
       testWidgets('title widget long press shows sheet menu', (tester) async {
@@ -430,13 +440,9 @@ void main() {
       testWidgets('has correct padding and spacing', (tester) async {
         await pumpSheetDetailScreen(tester);
 
-        final singleChildScrollView = tester.widget<SingleChildScrollView>(
-          find.byType(SingleChildScrollView).first,
-        );
-        expect(
-          singleChildScrollView.padding,
-          equals(EdgeInsets.symmetric(horizontal: 24)),
-        );
+        final sliverPadding =
+            tester.widget<SliverPadding>(find.byType(SliverPadding).first);
+        expect(sliverPadding.padding, equals(EdgeInsets.symmetric(horizontal: 24)));
         expect(find.byType(SizedBox), findsAtLeastNWidgets(1));
       });
     });
