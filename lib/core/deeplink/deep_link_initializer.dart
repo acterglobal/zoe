@@ -7,6 +7,8 @@ import 'package:logging/logging.dart';
 import 'package:zoe/core/routing/app_router.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/share/widgets/sheet_join_preview_widget.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 
 final _logger = Logger('DeepLinkInitializer');
 
@@ -104,16 +106,21 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
       Future.delayed(const Duration(milliseconds: 600), () {
         if (!mounted) return;
 
-        final context = router.routerDelegate.navigatorKey.currentContext;
-        if (context == null || !context.mounted) {
-          _logger.severe('Context unavailable for showing join dialog', sheetId);
-          return;
-        }
+        final currentUserId = ref.read(loggedInUserProvider).value;
+        final sheet = ref.read(sheetProvider(sheetId));
+        
+        final isMember = currentUserId != null && currentUserId.isNotEmpty &&
+            sheet != null &&
+            sheet.users.contains(currentUserId);
 
-        showJoinSheetBottomSheet(
-          context: context,
-          parentId: sheetId,
-        );
+        if (!isMember) {
+          showJoinSheetBottomSheet(
+            context: context,
+            parentId: sheetId,
+          );
+        } else {
+          router.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheetId));
+        }
       });
     } catch (error) {
       _logger.severe('Error navigating or showing join sheet', error);
