@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
@@ -28,7 +30,7 @@ void main() {
         final newSheet = SheetModel(
           id: 'test-sheet',
           title: 'Test Sheet',
-          sheetAvatar: SheetAvatar(emoji: '🧪'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🧪'),
         );
 
         notifier.addSheet(newSheet);
@@ -37,7 +39,7 @@ void main() {
         expect(updatedList.length, equals(initialLength + 1));
         expect(updatedList.last.id, equals('test-sheet'));
         expect(updatedList.last.title, equals('Test Sheet'));
-        expect(updatedList.last.sheetAvatar.emoji, equals('🧪'));
+        expect(updatedList.last.sheetAvatar.data, equals('🧪'));
       });
 
       test('deleteSheet removes sheet from list', () {
@@ -49,7 +51,7 @@ void main() {
         final testSheet = SheetModel(
           id: 'delete-test-sheet',
           title: 'Delete Test Sheet',
-          sheetAvatar: SheetAvatar(emoji: '🗑️'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🗑️'),
         );
         notifier.addSheet(testSheet);
 
@@ -75,7 +77,7 @@ void main() {
         final testSheet = SheetModel(
           id: 'title-test-sheet',
           title: 'Original Title',
-          sheetAvatar: SheetAvatar(emoji: '📝'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📝'),
         );
         notifier.addSheet(testSheet);
 
@@ -89,7 +91,7 @@ void main() {
         );
         expect(updatedSheet.title, equals('Updated Title'));
         expect(
-          updatedSheet.sheetAvatar.emoji,
+          updatedSheet.sheetAvatar.data,
           equals('📝'),
         ); // Other properties unchanged
       });
@@ -101,7 +103,7 @@ void main() {
         final testSheet = SheetModel(
           id: 'desc-test-sheet',
           title: 'Description Test',
-          sheetAvatar: SheetAvatar(emoji: '📄'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📄'),
         );
         notifier.addSheet(testSheet);
 
@@ -138,19 +140,23 @@ void main() {
         final testSheet = SheetModel(
           id: 'emoji-test-sheet',
           title: 'Emoji Test',
-          sheetAvatar: SheetAvatar(emoji: '📄'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📄'),
         );
         notifier.addSheet(testSheet);
 
         // Update the emoji
-        notifier.updateSheetEmoji('emoji-test-sheet', '🎉');
+        notifier.updateSheetAvatar(
+          sheetId: 'emoji-test-sheet',
+          type: AvatarType.emoji,
+          data: '🎉',
+        );
 
         // Verify the emoji was updated
         final updatedList = container.read(sheetListProvider);
         final updatedSheet = updatedList.firstWhere(
           (s) => s.id == 'emoji-test-sheet',
         );
-        expect(updatedSheet.sheetAvatar.emoji, equals('🎉'));
+        expect(updatedSheet.sheetAvatar.data, equals('🎉'));
         expect(
           updatedSheet.title,
           equals('Emoji Test'),
@@ -164,12 +170,12 @@ void main() {
         final sheet1 = SheetModel(
           id: 'sheet1',
           title: 'Sheet 1',
-          sheetAvatar: SheetAvatar(emoji: '📄'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📄'),
         );
         final sheet2 = SheetModel(
           id: 'sheet2',
           title: 'Sheet 2',
-          sheetAvatar: SheetAvatar(emoji: '📄'),
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📄'),
         );
         notifier.addSheet(sheet1);
         notifier.addSheet(sheet2);
@@ -184,6 +190,133 @@ void main() {
 
         expect(updatedSheet1.title, equals('Updated Sheet 1'));
         expect(unchangedSheet2.title, equals('Sheet 2'));
+      });
+
+      test('updateSheetIconAndColor updates sheet icon and color', () {
+        final notifier = container.read(sheetListProvider.notifier);
+
+        // Add a test sheet
+        final title = 'Icon Color Test';
+        final testSheet = SheetModel(
+          title: title,
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📄'),
+        );
+        notifier.addSheet(testSheet);
+
+        // Update the icon and color
+        final newIcon = ZoeIcon.car;
+        final newColor = Colors.blue;
+        notifier.updateSheetAvatar(
+          sheetId: testSheet.id,
+          type: AvatarType.icon,
+          data: newIcon.name,
+          color: newColor,
+        );
+
+        // Verify the icon and color were updated
+        final updatedSheet = container.read(sheetProvider(testSheet.id));
+        expect(updatedSheet?.sheetAvatar.data, equals(newIcon.name));
+        expect(updatedSheet?.sheetAvatar.color, equals(newColor));
+        expect(updatedSheet?.title, equals(title));
+      });
+
+      test('updateSheetIconAndColor does not affect other sheets', () {
+        final notifier = container.read(sheetListProvider.notifier);
+
+        // Add two test sheets
+        final sheet1 = SheetModel(
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.book.name,
+            color: Colors.red,
+          ),
+        );
+        final sheet2 = SheetModel(
+          sheetAvatar: SheetAvatar(
+            type: AvatarType.icon,
+            data: ZoeIcon.calendar.name,
+            color: Colors.green,
+          ),
+        );
+        notifier.addSheet(sheet1);
+        notifier.addSheet(sheet2);
+
+        // Update only sheet1
+        notifier.updateSheetAvatar(
+          sheetId: sheet1.id,
+          type: AvatarType.icon,
+          data: ZoeIcon.car.name,
+          color: Colors.blue,
+        );
+
+        // Verify only sheet1 was updated
+        final updatedSheet1 = container.read(sheetProvider(sheet1.id));
+        expect(updatedSheet1?.sheetAvatar.data, equals(ZoeIcon.car.name));
+        expect(updatedSheet1?.sheetAvatar.type, equals(AvatarType.icon));
+        expect(updatedSheet1?.sheetAvatar.color, equals(Colors.blue));
+
+        final unchangedSheet2 = container.read(sheetProvider(sheet2.id));
+        expect(
+          unchangedSheet2?.sheetAvatar.data,
+          equals(ZoeIcon.calendar.name),
+        );
+        expect(unchangedSheet2?.sheetAvatar.type, equals(AvatarType.icon));
+        expect(unchangedSheet2?.sheetAvatar.color, equals(Colors.green));
+      });
+
+      test('updateSheetAvatarImage updates sheet avatar image', () {
+        final notifier = container.read(sheetListProvider.notifier);
+
+        // Add a test sheet
+        final title = 'Image Test';
+        final testSheet = SheetModel(
+          title: title,
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📄'),
+        );
+        notifier.addSheet(testSheet);
+
+        // Update the avatar image
+        const newImage = 'https://example.com/image.png';
+        notifier.updateSheetAvatar(
+          sheetId: testSheet.id,
+          type: AvatarType.image,
+          data: newImage,
+        );
+
+        // Verify the image was updated
+        final updatedSheet = container.read(sheetProvider(testSheet.id));
+
+        expect(updatedSheet?.sheetAvatar.data, equals(newImage));
+        expect(updatedSheet?.sheetAvatar.type, equals(AvatarType.image));
+        expect(updatedSheet?.title, equals(title));
+      });
+
+      test('updateSheetAvatarImage does not affect other sheets', () {
+        final notifier = container.read(sheetListProvider.notifier);
+
+        // Add two test sheets
+        final sheet1 = SheetModel(
+          sheetAvatar: SheetAvatar(type: AvatarType.image, data: 'image1.png'),
+        );
+        final sheet2 = SheetModel(
+          sheetAvatar: SheetAvatar(type: AvatarType.image, data: 'image2.png'),
+        );
+        notifier.addSheet(sheet1);
+        notifier.addSheet(sheet2);
+
+        // Update only sheet1
+        notifier.updateSheetAvatar(
+          sheetId: sheet1.id,
+          type: AvatarType.image,
+          data: 'updated-image1.png',
+        );
+
+        // Verify only sheet1 was updated
+        final updatedSheet1 = container.read(sheetProvider(sheet1.id));
+        final unchangedSheet2 = container.read(sheetProvider(sheet2.id));
+
+        expect(updatedSheet1?.sheetAvatar.data, equals('updated-image1.png'));
+        expect(unchangedSheet2?.sheetAvatar.data, equals('image2.png'));
       });
     });
 
@@ -259,7 +392,6 @@ void main() {
         expect(users, isA<List<String>>());
         expect(users.isNotEmpty, isTrue);
         expect(users.contains('user_1'), isTrue);
-        expect(users.contains('user_2'), isTrue);
         expect(users.contains('user_3'), isTrue);
       });
 

@@ -52,13 +52,28 @@ class SheetModel {
       id: id ?? this.id,
       sheetAvatar: sheetAvatar ?? this.sheetAvatar,
       title: title ?? this.title,
-      coverImageUrl: coverImageUrl,
+      coverImageUrl: coverImageUrl ?? this.coverImageUrl,
       description: description ?? this.description,
       color: color ?? this.color,
       createdBy: createdBy ?? this.createdBy,
       users: users ?? this.users,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
+    );
+  }
+
+  SheetModel removeCoverImage() {
+    return SheetModel(
+      id: id,
+      sheetAvatar: sheetAvatar,
+      title: title,
+      coverImageUrl: null,
+      description: description,
+      color: color,
+      createdBy: createdBy,
+      users: users,
+      createdAt: createdAt,
+      updatedAt: DateTime.now(),
     );
   }
 }
