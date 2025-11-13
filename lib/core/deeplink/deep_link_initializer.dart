@@ -108,11 +108,15 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
 
         final currentUserId = ref.read(loggedInUserProvider).value;
         final sheet = ref.read(sheetProvider(sheetId));
-        
+
         final isMember = currentUserId != null && currentUserId.isNotEmpty &&
             sheet != null &&
             sheet.users.contains(currentUserId);
-
+        final context = router.routerDelegate.navigatorKey.currentContext;
+        if (context == null || !context.mounted) {
+          _logger.severe('Context unavailable for showing join dialog', sheetId);
+          return;
+        }
         if (!isMember) {
           showJoinSheetBottomSheet(
             context: context,
