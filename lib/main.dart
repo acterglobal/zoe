@@ -13,7 +13,14 @@ import 'core/deeplink/deep_link_initializer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await RustLib.init();
+
+  // Initialize Rust with error handling
+  try {
+    await RustLib.init();
+  } catch (e) {
+    debugPrint('Error initializing Rust: $e');
+  }
+
   initStorage(
     appleKeychainAppGroupName: 'global.acter.zoe',
   ); // FIXME: needs to be changed to env vars from built
@@ -43,11 +50,9 @@ class MyApp extends ConsumerWidget {
         ...L10n.localizationsDelegates,
         FlutterQuillLocalizations.delegate,
       ],
-      builder: (context, child) => DeepLinkInitializer(
-        child: child ?? SizedBox.shrink(),
-      ),
+      builder: (context, child) =>
+          DeepLinkInitializer(child: child ?? SizedBox.shrink()),
       supportedLocales: L10n.supportedLocales,
-    
     );
   }
 }

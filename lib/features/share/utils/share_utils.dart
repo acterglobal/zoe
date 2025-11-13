@@ -12,14 +12,9 @@ import 'package:zoe/features/users/providers/user_providers.dart';
 
 class ShareUtils {
   static final String linkPrefixUrl = 'https://hellozoe.app';
-  static final String appLinkScheme = 'zoe';
 
   static String getLinkPrefixUrl(String endpoint) {
     return '🔗 $linkPrefixUrl/$endpoint';
-  }
-
-  static String getAppLinkUrl(String endpoint) {
-    return '🔗 $appLinkScheme://$endpoint';
   }
 
   // Sheet
@@ -43,7 +38,7 @@ class ShareUtils {
     }
 
     // Link (custom scheme so it opens the app directly)
-    final link = getAppLinkUrl('sheet/$parentId');
+    final link = getLinkPrefixUrl('sheet/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -73,7 +68,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getAppLinkUrl('text-block/$parentId');
+    final link = getLinkPrefixUrl('text-block/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -107,13 +102,13 @@ class ShareUtils {
     // Start date
     final startDateString = DateTimeUtils.formatDateTime(startDate);
     buffer.write('\n\n🕓 Start\n$startDateString');
-    
+
     // End date
     final endDateString = DateTimeUtils.formatDateTime(endDate);
     buffer.write('\n\n🕓 End\n$endDateString');
 
     // Link
-    final link = getAppLinkUrl('event/$parentId');
+    final link = getLinkPrefixUrl('event/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -162,7 +157,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getAppLinkUrl('list/$parentId');
+    final link = getLinkPrefixUrl('list/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -204,7 +199,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getAppLinkUrl('task/$parentId');
+    final link = getLinkPrefixUrl('task/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -231,7 +226,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getAppLinkUrl('bullet/$parentId');
+    final link = getLinkPrefixUrl('bullet/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -258,7 +253,7 @@ class ShareUtils {
     buffer.write('\n\n${options.map((e) => '🔘 ${e.title}').join('\n')}');
 
     // Link
-    final link = getAppLinkUrl('poll/$parentId');
+    final link = getLinkPrefixUrl('poll/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }

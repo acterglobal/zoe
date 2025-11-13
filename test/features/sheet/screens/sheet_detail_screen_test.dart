@@ -45,7 +45,8 @@ void main() {
       bool isEditing = false,
     }) async {
       if (isEditing) {
-        container.read(editContentIdProvider.notifier).state = sheetId ?? testSheetId;
+        container.read(editContentIdProvider.notifier).state =
+            sheetId ?? testSheetId;
       } else {
         container.read(editContentIdProvider.notifier).state = null;
       }
@@ -124,7 +125,9 @@ void main() {
     });
 
     group('Provider Integration', () {
-      testWidgets('watches editContentIdProvider for editing state', (tester) async {
+      testWidgets('watches editContentIdProvider for editing state', (
+        tester,
+      ) async {
         await pumpSheetDetailScreen(tester);
 
         // Initially not editing
@@ -147,7 +150,9 @@ void main() {
         expect(find.byType(SheetAvatarWidget), findsOneWidget);
       });
 
-      testWidgets('watches listOfUsersBySheetIdProvider for user data', (tester) async {
+      testWidgets('watches listOfUsersBySheetIdProvider for user data', (
+        tester,
+      ) async {
         await pumpSheetDetailScreen(tester);
 
         final users = container.read(listOfUsersBySheetIdProvider(testSheetId));
@@ -171,7 +176,9 @@ void main() {
         expect(tester.takeException(), isNull);
       });
 
-      testWidgets('updates widget properties based on editing state', (tester) async {
+      testWidgets('updates widget properties based on editing state', (
+        tester,
+      ) async {
         // Test non-editing state
         await pumpSheetDetailScreen(tester, isEditing: false);
 
@@ -182,18 +189,18 @@ void main() {
 
         // Test editing state
         await pumpSheetDetailScreen(tester, isEditing: true);
-        
+
         final editingTitleWidget = tester.widget<ZoeInlineTextEditWidget>(
           find.byType(ZoeInlineTextEditWidget).first,
         );
         expect(editingTitleWidget.isEditing, isTrue);
       });
     });
-    
+
     group('Error Handling', () {
       testWidgets('handles null sheet gracefully', (tester) async {
         final emptyContainer = ProviderContainer.test();
-        
+
         await tester.pumpMaterialWidgetWithProviderScope(
           container: emptyContainer,
           child: SheetDetailScreen(sheetId: 'non-existent-id'),
@@ -211,9 +218,7 @@ void main() {
           // Very long title
           testSheet.copyWith(title: 'A' * 1000),
           // Special characters
-          testSheet.copyWith(
-            title: 'Title with émojis 🚀 and spëcial chars',
-          ),
+          testSheet.copyWith(title: 'Title with émojis 🚀 and spëcial chars'),
         ];
 
         for (final sheet in testCases) {
@@ -354,7 +359,9 @@ void main() {
         await pumpSheetDetailScreen(tester);
 
         // Verify ContentWidget properties
-        final contentWidget = tester.widget<ContentWidget>(find.byType(ContentWidget));
+        final contentWidget = tester.widget<ContentWidget>(
+          find.byType(ContentWidget),
+        );
         expect(contentWidget.parentId, equals(testSheetId));
         expect(contentWidget.sheetId, equals(testSheetId));
         expect(contentWidget.showSheetName, isFalse);
@@ -395,7 +402,7 @@ void main() {
         }
       });
     });
-    
+
     group('Theme and Localization', () {
       testWidgets('applies correct styling and localization', (tester) async {
         await pumpSheetDetailScreen(tester);
@@ -410,7 +417,10 @@ void main() {
 
         // Verify theme colors
         final theme = Theme.of(tester.element(find.byType(SheetDetailScreen)));
-        expect(titleWidget.textStyle?.color, equals(theme.colorScheme.onSurface));
+        expect(
+          titleWidget.textStyle?.color,
+          equals(theme.colorScheme.onSurface),
+        );
 
         // Verify localization
         final l10n = getL10n(tester);
@@ -423,7 +433,10 @@ void main() {
         final singleChildScrollView = tester.widget<SingleChildScrollView>(
           find.byType(SingleChildScrollView).first,
         );
-        expect(singleChildScrollView.padding, equals(EdgeInsets.symmetric(horizontal: 24)));
+        expect(
+          singleChildScrollView.padding,
+          equals(EdgeInsets.symmetric(horizontal: 24)),
+        );
         expect(find.byType(SizedBox), findsAtLeastNWidgets(1));
       });
     });

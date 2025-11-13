@@ -54,24 +54,6 @@
                     android:scheme="https"
                     android:host="hellozoe.app" />
             </intent-filter>
-
-            <!-- Optional: support http as well if needed -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="http"
-                    android:host="hellozoe.app" />
-            </intent-filter>
-
-            <!-- Custom scheme fallback so links work without domain verification -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="zoe" />
-            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
