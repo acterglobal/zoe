@@ -552,5 +552,21 @@
     "selectMedia": "Select media",
     "chooseAMediaFile": "Choose a media file from your device",
     "selectSheetCoverImage": "Select sheet cover image",
-    "chooseAheetCoverImage": "Choose a sheet cover image from your device"
+    "chooseSheetCoverImage": "Choose a sheet cover image from your device",
+    "select": "Select",
+    "selectColor": "Select color",
+    "selectIcon": "Select icon",
+    "noIconsFound": "No icons found",
+    "selectSheetAvatarType": "Select sheet avatar type",
+    "chooseSheetAvatarType": "Choose sheet avatar type for your sheet",
+    "selectSheetAvatarImage": "Select sheet avatar image",
+    "chooseSheetAvatarImage": "Choose sheet avatar image for your sheet",
+    "icon": "Icon",
+    "chooseIconDescription": "Choose icon for sheet avatar",
+    "image": "Image",
+    "chooseImageDescription": "Choose image for sheet avatar",
+    "emoji": "Emoji",
+    "chooseEmojiDescription":"Choose emoji for sheet avatar",
+    "selectMedia": "Select media",
+    "chooseAMediaFile": "Choose a media file from your device"
 }

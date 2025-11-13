@@ -51,6 +51,7 @@ dependencies:
   
   # Icons
   icons_plus: ^5.0.0
+  phosphor_flutter: ^2.1.0
   
   # Localizations
   flutter_localizations:
@@ -59,6 +60,7 @@ dependencies:
   # Utils
   intl: ^0.20.2
   uuid: ^4.5.1
+  flutter_keyboard_visibility: ^6.0.0
   
   # File handling
   file_picker: ^10.3.2

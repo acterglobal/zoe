@@ -4,6 +4,7 @@ import 'package:zoe/l10n/generated/l10n.dart';
 class ZoeSearchBarWidget extends StatelessWidget {
   final TextEditingController controller;
   final Function(String) onChanged;
+  final Function()? onClear;
   final String? hintText;
   final EdgeInsetsGeometry? margin;
 
@@ -11,6 +12,7 @@ class ZoeSearchBarWidget extends StatelessWidget {
     super.key,
     required this.controller,
     required this.onChanged,
+    this.onClear,
     this.hintText,
     this.margin,
   });
@@ -67,6 +69,7 @@ class ZoeSearchBarWidget extends StatelessWidget {
       onTap: () {
         controller.clear();
         onChanged('');
+        onClear?.call();
       },
       child: Container(
         padding: const EdgeInsets.all(4),

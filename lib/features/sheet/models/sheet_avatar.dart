@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
 
+enum AvatarType { icon, image, emoji }
+
 class SheetAvatar {
-  final IconData icon;
-  final String? image;
-  final String? emoji;
+  final AvatarType type;
+  final String data;
   final Color? color;
 
   SheetAvatar({
-    this.icon = Icons.description_outlined,
-    this.image,
-    this.emoji,
+    this.type = AvatarType.icon,
+    this.data = 'file',
     this.color,
   });
 
-  SheetAvatar copyWith({
-    IconData? icon,
-    String? image,
-    String? emoji,
-    Color? color,
-  }) {
+  SheetAvatar copyWith({AvatarType? type, String? data, Color? color}) {
     return SheetAvatar(
-      icon: icon ?? this.icon,
-      image: image ?? this.image,
-      emoji: emoji ?? this.emoji,
-      color: color ?? this.color,
+      type: type ?? this.type,
+      data: data ?? this.data,
+      color: color,
     );
   }
 
@@ -32,12 +26,10 @@ class SheetAvatar {
       identical(this, other) ||
       other is SheetAvatar &&
           runtimeType == other.runtimeType &&
-          icon == other.icon &&
-          image == other.image &&
-          emoji == other.emoji &&
+          type == other.type &&
+          data == other.data &&
           color == other.color;
 
   @override
-  int get hashCode =>
-      icon.hashCode ^ image.hashCode ^ emoji.hashCode ^ color.hashCode;
+  int get hashCode => type.hashCode ^ data.hashCode ^ color.hashCode;
 }

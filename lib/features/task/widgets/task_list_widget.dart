@@ -51,8 +51,11 @@ class TaskListWidget extends ConsumerWidget {
     return _buildTaskList(context, ref, tasks);
   }
 
-  Widget _buildTaskList(BuildContext context, WidgetRef ref, List<TaskModel> tasks) {
-  
+  Widget _buildTaskList(
+    BuildContext context,
+    WidgetRef ref,
+    List<TaskModel> tasks,
+  ) {
     final itemCount = maxItems != null
         ? min(maxItems!, tasks.length)
         : tasks.length;
@@ -61,6 +64,7 @@ class TaskListWidget extends ConsumerWidget {
       shrinkWrap: shrinkWrap,
       physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
       itemCount: itemCount,
+      padding: const EdgeInsets.symmetric(vertical: 10),
       itemBuilder: (context, index) {
         final task = tasks[index];
         return GestureDetector(
