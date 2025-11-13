@@ -82,21 +82,17 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
   }
 
   String? _extractSheetId(Uri uri) {
-    final segments = uri.pathSegments;
-    if (segments.isEmpty) return null;
+    // Only support links of the form: https://hellozoe.app/sheet/<sheetId>
+    if (uri.scheme != 'https') return null;
+    if (uri.host.toLowerCase() != 'hellozoe.app') return null;
 
-    // Supported formats:
-    // - zoe://sheet/<sheetId>
-    // - https://hellozoe.app/sheet/<sheetId>
-    // - zoe://<sheetId>
-    if (segments.length >= 2 && segments.first == 'sheet') {
-      return segments[1];
-    } else if (segments.length >= 2) {
-      return segments.last;
-    } else if (segments.length == 1) {
-      return segments.first;
-    }
-    return null;
+    final segments = uri.pathSegments;
+    if (segments.length < 2) return null;
+    if (segments.first != 'sheet') return null;
+
+    final sheetId = segments[1];
+    if (sheetId.isEmpty) return null;
+    return sheetId;
   }
 
   void _navigateAndShowJoinSheet(String sheetId) {

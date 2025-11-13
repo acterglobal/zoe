@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/share/widgets/sheet_join_preview_widget.dart';
@@ -123,7 +124,7 @@ void main() {
         final emojiWidget = tester.widget<EmojiWidget>(
           find.byType(EmojiWidget),
         );
-        expect(emojiWidget.emoji, equals(testSheet.emoji));
+        expect(emojiWidget.emoji, equals(testSheet.sheetAvatar.data));
         expect(emojiWidget.size, equals(24));
         expect(emojiWidget.isEditing, equals(false));
       });
@@ -318,7 +319,7 @@ void main() {
       });
 
       testWidgets('handles sheet with empty emoji', (tester) async {
-        final sheetWithEmptyEmoji = testSheet.copyWith(emoji: '');
+        final sheetWithEmptyEmoji = testSheet.copyWith(sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: ''));
 
         final testContainer = ProviderContainer.test(
           overrides: [
