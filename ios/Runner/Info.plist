@@ -33,22 +33,6 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>Zoe needs access to your camera to allow you to take photos and videos for your notes, tasks, and other content.</string>
-	<key>NSDocumentsFolderUsageDescription</key>
-	<string>Zoe needs access to your documents folder to allow you to browse and select files.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Zoe needs access to your microphone to record audio when taking videos.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Zoe needs access to save photos and videos to your photo library.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Zoe needs access to your photo library to allow you to add images to your notes, tasks, and other content.</string>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	<key>UIFileSharingEnabled</key>
-	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -70,5 +54,31 @@
 	<true/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Zoe needs access to your photo library to allow you to add images to your notes, tasks, and other content.</string>
+    
+    <!-- Camera permissions -->
+    <key>NSCameraUsageDescription</key>
+    <string>Zoe needs access to your camera to allow you to take photos and videos for your notes, tasks, and other content.</string>
+    
+    <!-- Photo library add-only permission (iOS 11+) -->
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Zoe needs access to save photos and videos to your photo library.</string>
+    
+    <!-- Microphone permission for video recording -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Zoe needs access to your microphone to record audio when taking videos.</string>
+    
+    <!-- File access permissions -->
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>Zoe needs access to your documents folder to allow you to browse and select files.</string>
+    
+    <!-- File sharing capabilities -->
+    <key>UIFileSharingEnabled</key>
+    <true/>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
 </dict>
 </plist>

@@ -52,7 +52,7 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
           const SizedBox(height: 20),
           Row(
             children: [
-              SheetAvatarWidget(sheetId: sheet.id),
+              SheetAvatarWidget(sheetId: sheet.id,padding: const EdgeInsets.all(8)),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(sheet.title, style: theme.textTheme.bodyMedium),

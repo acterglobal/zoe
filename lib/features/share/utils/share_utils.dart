@@ -37,7 +37,7 @@ class ShareUtils {
       buffer.write('\n\n$description');
     }
 
-    // Link (custom scheme so it opens the app directly)
+    // Link
     final link = getLinkPrefixUrl('sheet/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
