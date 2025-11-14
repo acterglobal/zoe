@@ -8,7 +8,6 @@ import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_app_bar.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../test-utils/test_utils.dart';
 import '../utils/sheet_utils.dart';
 
