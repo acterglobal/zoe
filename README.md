@@ -23,71 +23,176 @@ A modern, joyful Flutter app for organizing thoughts, tasks, and ideas with beau
 
 ### Home & Navigation
 <div align="center">
-  <img src="screenshots/home-screen.png" alt="Home Screen" width="300"/>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/home-screen.png" alt="Home Screen Light" width="280"/></td>
+      <td><img src="screenshots/home-screen-dark.png" alt="Home Screen Dark" width="280"/></td>
+    </tr>
+  </table>
   <p><strong>Home Screen</strong> - Main dashboard with quick access to all sheets and content</p>
+  
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/drawer.png" alt="Navigation Drawer Light" width="280"/></td>
+      <td><img src="screenshots/drawer-dark.png" alt="Navigation Drawer Dark" width="280"/></td>
+    </tr>
+  </table>
+  <p><strong>Navigation Drawer</strong> - Quick access to all features and navigation options</p>
 </div>
 
 ### Sheets Management
 <div align="center">
-  <img src="screenshots/sheets-list.png" alt="Sheets List" width="300"/>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/sheet-list.png" alt="Sheets List Light" width="280"/></td>
+      <td><img src="screenshots/sheet-list-dark.png" alt="Sheets List Dark" width="280"/></td>
+    </tr>
+  </table>
   <p><strong>Sheets List</strong> - Organize your workspace with custom sheets, avatars, and cover images</p>
   
-  <img src="screenshots/sheet-detail.png" alt="Sheet Detail" width="300"/>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/sheet-detail.png" alt="Sheet Detail Light" width="280"/></td>
+      <td><img src="screenshots/sheet-detail-dark.png" alt="Sheet Detail Dark" width="280"/></td>
+    </tr>
+  </table>
   <p><strong>Sheet Detail</strong> - View and manage all content blocks within a sheet</p>
 </div>
 
 ### Content Types
 <div align="center">
-  <img src="screenshots/text-content.png" alt="Text Content" width="300"/>
-  <p><strong>Rich Text Editor</strong> - Create formatted text content with HTML support using Quill editor</p>
-  
-  <img src="screenshots/tasks.png" alt="Tasks" width="300"/>
-  <p><strong>Task Management</strong> - Assign tasks to team members with due dates and completion tracking</p>
-  
-  <img src="screenshots/events.png" alt="Events" width="300"/>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/events.png" alt="Events Light" width="280"/></td>
+      <td><img src="screenshots/events-dark.png" alt="Events Dark" width="280"/></td>
+    </tr>
+  </table>
   <p><strong>Event Scheduling</strong> - Plan and track events with start/end dates and detailed descriptions</p>
   
-  <img src="screenshots/polls.png" alt="Polls" width="300"/>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/polls.png" alt="Polls Light" width="280"/></td>
+      <td><img src="screenshots/polls-dark.png" alt="Polls Dark" width="280"/></td>
+    </tr>
+  </table>
   <p><strong>Interactive Polls</strong> - Create polls with multiple choice options and real-time voting</p>
   
-  <img src="screenshots/documents.png" alt="Documents" width="300"/>
-  <p><strong>Document Management</strong> - Upload and preview images, videos, audio files, and PDFs</p>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/poll-summary.png" alt="Poll Summary Light" width="280"/></td>
+      <td><img src="screenshots/poll-summary-dark.png" alt="Poll Summary Dark" width="280"/></td>
+    </tr>
+  </table>
+  <p><strong>Poll Results</strong> - View poll results with vote counts and percentages</p>
   
-  <img src="screenshots/links.png" alt="Links" width="300"/>
-  <p><strong>Link Organization</strong> - Save and organize URLs with titles, descriptions, and emoji icons</p>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/documents.png" alt="Documents Light" width="280"/></td>
+      <td><img src="screenshots/documents-dark.png" alt="Documents Dark" width="280"/></td>
+    </tr>
+  </table>
+  <p><strong>Document Management</strong> - Upload and preview images, videos, audio files, and PDFs</p>
 </div>
 
 ### Collaboration & Sharing
 <div align="center">
-  <img src="screenshots/share-sheet.png" alt="Share Sheet" width="300"/>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/sheet-share.png" alt="Share Sheet Light" width="280"/></td>
+      <td><img src="screenshots/sheet-share-dark.png" alt="Share Sheet Dark" width="280"/></td>
+    </tr>
+  </table>
   <p><strong>Share Sheet</strong> - Share sheets with team members via links with deep link support</p>
   
-  <img src="screenshots/task-assignment.png" alt="Task Assignment" width="300"/>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/task-assignment.png" alt="Task Assignment Light" width="280"/></td>
+      <td><img src="screenshots/task-assignment-dark.png" alt="Task Assignment Dark" width="280"/></td>
+    </tr>
+  </table>
   <p><strong>Task Assignment</strong> - Assign tasks to multiple team members with user selection</p>
 </div>
 
 ### Search & Discovery
 <div align="center">
-  <img src="screenshots/quick-search.png" alt="Quick Search" width="300"/>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/quick-search.png" alt="Quick Search Light" width="280"/></td>
+      <td><img src="screenshots/quick-search-dark.png" alt="Quick Search Dark" width="280"/></td>
+    </tr>
+  </table>
   <p><strong>Quick Search</strong> - Search across all content types with category filtering (Sheets, Events, Tasks, Links, Documents, Polls)</p>
 </div>
 
 ### Profile & Settings
 <div align="center">
-  <img src="screenshots/profile.png" alt="Profile" width="300"/>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/profile.png" alt="Profile Light" width="280"/></td>
+      <td><img src="screenshots/profile-dark.png" alt="Profile Dark" width="280"/></td>
+    </tr>
+  </table>
   <p><strong>User Profile</strong> - Customize your profile with avatar, name, and bio</p>
   
-  <img src="screenshots/settings.png" alt="Settings" width="300"/>
+  <table>
+    <tr>
+      <td align="center"><strong>Light Mode</strong></td>
+      <td align="center"><strong>Dark Mode</strong></td>
+    </tr>
+    <tr>
+      <td><img src="screenshots/settings.png" alt="Settings Light" width="280"/></td>
+      <td><img src="screenshots/settings-dark.png" alt="Settings Dark" width="280"/></td>
+    </tr>
+  </table>
   <p><strong>Settings</strong> - Manage theme (light/dark mode), language preferences, and app settings</p>
-</div>
-
-### UI/UX Features
-<div align="center">
-  <img src="screenshots/dark-mode.png" alt="Dark Mode" width="300"/>
-  <p><strong>Dark Mode</strong> - Beautiful dark theme with system preference detection</p>
-  
-  <img src="screenshots/bottom-sheets.png" alt="Bottom Sheets" width="300"/>
-  <p><strong>Modern UI Components</strong> - Smooth bottom sheets, animations, and intuitive interactions</p>
 </div>
 
 ## Architecture
