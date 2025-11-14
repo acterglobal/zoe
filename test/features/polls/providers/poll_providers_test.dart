@@ -7,20 +7,33 @@ import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import '../../../test-utils/mock_searchValue.dart';
+import '../../users/utils/users_utils.dart';
 
 void main() {
   group('Poll Providers Tests', () {
     late ProviderContainer container;
     late PollModel testPoll;
+    late String testUserId;
+    late String testUserId2;
+    late String testUserId3;
 
     setUp(() {
       testPoll = polls.first;
 
+      container = ProviderContainer.test();
+
+      // Get test users
+      testUserId = getUserByIndex(container).id;
+      testUserId2 = getUserByIndex(container, index: 1).id;
+      testUserId3 = getUserByIndex(container, index: 2).id;
+
+      // Override loggedInUserProvider for search tests that depend on pollsListProvider
       container = ProviderContainer.test(
         overrides: [
           searchValueProvider.overrideWith(MockSearchValue.new),
           currentUserProvider.overrideWith((ref) => Future.value(null)),
           usersBySheetIdProvider('sheet-1').overrideWith((ref) => []),
+          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
         ],
       );
     });
@@ -164,82 +177,126 @@ void main() {
 
     group('Voting Tests', () {
       test('voteOnPoll adds vote for single choice poll', () async {
-        const userId = 'user_1';
         final optionId = testPoll.options.first.id;
         final initialVotesCount = testPoll.options.first.votes.length;
 
-        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, optionId, userId);
+        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, optionId, testUserId);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         final updatedOption = updatedPoll?.options.firstWhere((o) => o.id == optionId);
         expect(updatedOption?.votes.length, equals(initialVotesCount + 1));
-        expect(updatedOption?.votes.any((v) => v.userId == userId), isTrue);
+        expect(updatedOption?.votes.any((v) => v.userId == testUserId), isTrue);
       });
 
       test('voteOnPoll removes vote if already voted (single choice)', () async {
-        const userId = 'user_2';
-        final optionId = testPoll.options.firstWhere((o) => o.votes.any((v) => v.userId == userId)).id;
-        final initialVotesCount = testPoll.options.firstWhere((o) => o.id == optionId).votes.length;
+        // Find an option that the test user has already voted on, or vote on one first
+        final optionId = testPoll.options.first.id;
+        
+        // First, ensure the user has voted on this option
+        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, optionId, testUserId2);
+        
+        // Get the vote count after first vote
+        final pollAfterFirstVote = container.read(pollProvider(testPoll.id));
+        final initialVotesCount = pollAfterFirstVote?.options.firstWhere((o) => o.id == optionId).votes.length ?? 0;
 
-        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, optionId, userId);
+        // Vote again to remove the vote
+        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, optionId, testUserId2);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         final updatedOption = updatedPoll?.options.firstWhere((o) => o.id == optionId);
         expect(updatedOption?.votes.length, equals(initialVotesCount - 1));
-        expect(updatedOption?.votes.any((v) => v.userId == userId), isFalse);
+        expect(updatedOption?.votes.any((v) => v.userId == testUserId2), isFalse);
       });
 
       test('voteOnPoll removes previous votes when voting on different option (single choice)', () async {
-        const userId = 'user_1';
         final firstOptionId = testPoll.options.first.id;
         final secondOptionId = testPoll.options[1].id;
 
         // Vote on first option
-        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, firstOptionId, userId);
+        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, firstOptionId, testUserId);
         
         // Vote on second option
-        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, secondOptionId, userId);
+        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, secondOptionId, testUserId);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         final firstOption = updatedPoll?.options.firstWhere((o) => o.id == firstOptionId);
         final secondOption = updatedPoll?.options.firstWhere((o) => o.id == secondOptionId);
         
-        expect(firstOption?.votes.any((v) => v.userId == userId), isFalse);
-        expect(secondOption?.votes.any((v) => v.userId == userId), isTrue);
+        expect(firstOption?.votes.any((v) => v.userId == testUserId), isFalse);
+        expect(secondOption?.votes.any((v) => v.userId == testUserId), isTrue);
       });
 
       test('voteOnPoll allows multiple votes for multiple choice poll', () async {
-        const userId = 'new_user'; // Use a user who hasn't voted yet
+        // Use a test user who hasn't voted yet
         final multipleChoicePoll = polls.firstWhere((p) => p.isMultipleChoice);
         final firstOptionId = multipleChoicePoll.options.first.id;
         final secondOptionId = multipleChoicePoll.options[1].id;
 
-        // Vote on first option
-        await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, firstOptionId, userId);
-        
-        // Vote on second option
-        await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, secondOptionId, userId);
+        // Check initial state and ensure we start with no votes from this user
+        final initialPoll = container.read(pollProvider(multipleChoicePoll.id));
+        final initialFirstOption = initialPoll?.options.firstWhere((o) => o.id == firstOptionId);
+        final initialSecondOption = initialPoll?.options.firstWhere((o) => o.id == secondOptionId);
+        final hadInitialVote1 = initialFirstOption?.votes.any((v) => v.userId == testUserId3) ?? false;
+        final hadInitialVote2 = initialSecondOption?.votes.any((v) => v.userId == testUserId3) ?? false;
+
+        // If user already has votes, remove them first to start clean
+        if (hadInitialVote1) {
+          await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, firstOptionId, testUserId3);
+        }
+        if (hadInitialVote2) {
+          await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, secondOptionId, testUserId3);
+        }
+
+        // Now vote on both options (should add votes)
+        await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, firstOptionId, testUserId3);
+        await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, secondOptionId, testUserId3);
 
         final updatedPoll = container.read(pollProvider(multipleChoicePoll.id));
         final firstOption = updatedPoll?.options.firstWhere((o) => o.id == firstOptionId);
         final secondOption = updatedPoll?.options.firstWhere((o) => o.id == secondOptionId);
         
-        expect(firstOption?.votes.any((v) => v.userId == userId), isTrue);
-        expect(secondOption?.votes.any((v) => v.userId == userId), isTrue);
+        // Verify both options have the vote
+        expect(firstOption?.votes.any((v) => v.userId == testUserId3), isTrue);
+        expect(secondOption?.votes.any((v) => v.userId == testUserId3), isTrue);
       });
 
       test('voteOnPoll removes vote from specific option in multiple choice poll', () async {
-        const userId = 'user_7';
         final multipleChoicePoll = polls.firstWhere((p) => p.isMultipleChoice);
-        final optionId = multipleChoicePoll.options.firstWhere((o) => o.votes.any((v) => v.userId == userId)).id;
-        final initialVotesCount = multipleChoicePoll.options.firstWhere((o) => o.id == optionId).votes.length;
+        final optionId = multipleChoicePoll.options.first.id;
+        
+        // Get initial state
+        final initialPoll = container.read(pollProvider(multipleChoicePoll.id));
+        final initialOption = initialPoll?.options.firstWhere((o) => o.id == optionId);
+        final initialVotesCount = initialOption?.votes.length ?? 0;
+        final hadInitialVote = initialOption?.votes.any((v) => v.userId == testUserId) ?? false;
 
-        await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, optionId, userId);
+        // Vote on the option (toggle behavior - if no vote, add; if vote exists, remove)
+        await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, optionId, testUserId);
+        
+        // Get state after first vote
+        final pollAfterFirstVote = container.read(pollProvider(multipleChoicePoll.id));
+        final optionAfterFirst = pollAfterFirstVote?.options.firstWhere((o) => o.id == optionId);
+        final votesAfterFirst = optionAfterFirst?.votes.length ?? 0;
+        final hasVoteAfterFirst = optionAfterFirst?.votes.any((v) => v.userId == testUserId) ?? false;
 
-        final updatedPoll = container.read(pollProvider(multipleChoicePoll.id));
-        final updatedOption = updatedPoll?.options.firstWhere((o) => o.id == optionId);
-        expect(updatedOption?.votes.length, equals(initialVotesCount - 1));
-        expect(updatedOption?.votes.any((v) => v.userId == userId), isFalse);
+        // Verify the toggle worked correctly
+        if (hadInitialVote) {
+          // If we had a vote, it should be removed
+          expect(votesAfterFirst, equals(initialVotesCount - 1));
+          expect(hasVoteAfterFirst, isFalse);
+        } else {
+          // If we didn't have a vote, it should be added
+          expect(votesAfterFirst, equals(initialVotesCount + 1));
+          expect(hasVoteAfterFirst, isTrue);
+          
+          // Now vote again to remove it
+          await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, optionId, testUserId);
+          
+          final finalPoll = container.read(pollProvider(multipleChoicePoll.id));
+          final finalOption = finalPoll?.options.firstWhere((o) => o.id == optionId);
+          expect(finalOption?.votes.length, equals(votesAfterFirst - 1));
+          expect(finalOption?.votes.any((v) => v.userId == testUserId), isFalse);
+        }
       });
     });
 

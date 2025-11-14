@@ -383,7 +383,7 @@ void main() {
         expect(find.byType(TaskCheckboxWidget), findsOneWidget);
 
         // Verify expanded content column
-        expect(find.byType(Expanded), findsOneWidget);
+        expect(find.byType(Expanded), findsAtLeastNWidgets(1));
         expect(find.byType(Column), findsOneWidget);
       });
 

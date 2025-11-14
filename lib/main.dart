@@ -9,10 +9,18 @@ import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe_native/zoe_native.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'core/deeplink/deep_link_initializer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await RustLib.init();
+
+  // Initialize Rust with error handling
+  try {
+    await RustLib.init();
+  } catch (e) {
+    debugPrint('Error initializing Rust: $e');
+  }
+
   initStorage(
     appleKeychainAppGroupName: 'global.acter.zoe',
   ); // FIXME: needs to be changed to env vars from built
@@ -42,6 +50,8 @@ class MyApp extends ConsumerWidget {
         ...L10n.localizationsDelegates,
         FlutterQuillLocalizations.delegate,
       ],
+      builder: (context, child) =>
+          DeepLinkInitializer(child: child ?? SizedBox.shrink()),
       supportedLocales: L10n.supportedLocales,
     );
   }

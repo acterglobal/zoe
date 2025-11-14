@@ -2,19 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/features/task/actions/task_actions.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import '../../../test-utils/test_utils.dart';
+import '../../users/utils/users_utils.dart';
 import '../utils/task_utils.dart';
 
 void main() {
   late ProviderContainer container;
   late TaskModel testFirstTask;
+  late String testUserId;
 
   setUp(() {
-    // Create the container
-    container = ProviderContainer.test();
+    // Create initial container to get test user
+    final initialContainer = ProviderContainer.test();
+    testUserId = getUserByIndex(initialContainer).id;
+
+    container = ProviderContainer.test(
+      overrides: [
+        loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+      ],
+    );
 
     // Get the first task model
     testFirstTask = getTaskByIndex(container);
@@ -81,6 +92,10 @@ void main() {
         // Verify bottom sheet is shown
         expect(find.byType(BottomSheet), findsOneWidget);
 
+        // Wait for the content to be rendered in the bottom sheet
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
+
         // Verify task title is displayed in the bottom sheet
         expect(find.textContaining(testFirstTask.title), findsOneWidget);
       });
@@ -125,17 +140,18 @@ void main() {
           // Verify bottom sheet is shown
           expect(find.byType(BottomSheet), findsOneWidget);
 
-          // Find and tap the share button inside the bottom sheet
-          // Look for the share text within the bottom sheet and tap on it
+          // Wait for the button to be rendered
+          await tester.pump(const Duration(milliseconds: 100));
+
           final shareButtonInSheet = find.descendant(
             of: find.byType(BottomSheet),
-            matching: find.text(buttonText),
+            matching: find.byType(ZoePrimaryButton),
           );
 
           expect(shareButtonInSheet, findsOneWidget);
           await tester.tap(shareButtonInSheet);
           await tester.pump();
-          await tester.pump(const Duration(milliseconds: 300));
+          await tester.pump(const Duration(milliseconds: 100));
 
           // Verify that the platform share method was called
           expect(isShareCalled, isTrue);
@@ -338,9 +354,7 @@ void main() {
         expect(taskAfterDelete2, isNotNull);
       });
 
-      testWidgets('delete action updates task focus correctly', (
-        tester,
-      ) async {
+      testWidgets('delete action updates task focus correctly', (tester) async {
         final testFirstTask = getTaskByIndex(container);
         final firstTaskId = testFirstTask.id;
         final testSecondTask = getTaskByIndex(container, index: 1);

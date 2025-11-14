@@ -145,11 +145,8 @@ void main() {
         // Set initial search value
         container.read(searchValueProvider.notifier).update('initial search');
         expect(container.read(searchValueProvider), equals('initial search'));
-
-        // Pump the screen - should invalidate search
         await pumpSheetListScreen(tester);
-        await tester.pump();
-        await tester.pumpAndSettle();
+        await tester.pump(const Duration(milliseconds: 100)); // Wait for async operations
 
         // The search should be reset after the screen initializes
         expect(container.read(searchValueProvider), isEmpty);

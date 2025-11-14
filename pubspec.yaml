@@ -72,6 +72,7 @@ dependencies:
   package_info_plus: ^8.3.1
   shared_preferences: ^2.5.3
   mobile_scanner: ^7.0.1
+  app_links: ^6.4.1
 
   # Quill editor
   flutter_quill:

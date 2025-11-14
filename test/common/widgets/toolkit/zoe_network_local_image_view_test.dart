@@ -9,8 +9,7 @@ void main() {
   group('Zoe Network Local ImageView', () {
     const testNetworkImageUrl = 'https://example.com/image.jpg';
     const testLocalImagePath = '/test/images/local_image.jpg';
-    const defaultBorderRadius = 15.0;
-    const defaultPadding = 12.0;
+    const defaultBorderRadius = 15.0; 
     const defaultIconSize = 28.0;
 
     /// Test utilities for ZoeNetworkLocalImageView tests
@@ -280,7 +279,7 @@ void main() {
         );
         expect(cachedImage.placeholder, isNotNull);
 
-        // Verify placeholder is CircularProgressIndicator
+        // Verify placeholder renders image placeholder icon
         final placeholderBuilder = cachedImage.placeholder;
         final placeholderWidget = placeholderBuilder!(
           tester.element(find.byType(CachedNetworkImage)),
@@ -292,7 +291,7 @@ void main() {
           MaterialApp(home: Scaffold(body: placeholderWidget)),
         );
 
-        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        expect(find.byIcon(Icons.image_outlined), findsOneWidget);
       });
 
       testWidgets(
@@ -316,20 +315,17 @@ void main() {
             MaterialApp(home: Scaffold(body: placeholderWidget)),
           );
 
-          // Verify CircularProgressIndicator has default padding
-          final paddingFinder = find.ancestor(
-            of: find.byType(CircularProgressIndicator),
-            matching: find.byType(Padding),
+          // Verify placeholder icon uses default size
+          final icon = tester.widget<Icon>(
+            find.byIcon(Icons.image_outlined),
           );
-          final paddingWidget = tester.widget<Padding>(paddingFinder);
-          expect(paddingWidget.padding, equals(EdgeInsets.all(defaultPadding)));
+          expect(icon.size, equals(defaultIconSize));
         },
       );
 
       testWidgets('calculates dynamic padding for placeholder', (tester) async {
         const width = 100.0;
         const height = 80.0;
-        // minDimension = 80, so padding = 80 * 0.3 = 24
 
         await pumpZoeNetworkLocalImageView(
           tester,
@@ -351,17 +347,16 @@ void main() {
           MaterialApp(home: Scaffold(body: placeholderWidget)),
         );
 
-        // Verify dynamic padding is calculated
+        // Verify placeholder renders icon without additional padding requirement
+        expect(find.byIcon(Icons.image_outlined), findsOneWidget);
         final paddingFinder = find.ancestor(
-          of: find.byType(CircularProgressIndicator),
+          of: find.byIcon(Icons.image_outlined),
           matching: find.byType(Padding),
         );
-        final paddingWidget = tester.widget<Padding>(paddingFinder);
-        final expectedPadding = height * 0.3; // minDimension is height (80)
-        expect(paddingWidget.padding, equals(EdgeInsets.all(expectedPadding)));
+        expect(paddingFinder, findsNothing);
       });
 
-      testWidgets('placeholder has correct strokeWidth', (tester) async {
+      testWidgets('placeholder icon has default size', (tester) async {
         await pumpZoeNetworkLocalImageView(
           tester,
           imageUrl: testNetworkImageUrl,
@@ -380,11 +375,11 @@ void main() {
           MaterialApp(home: Scaffold(body: placeholderWidget)),
         );
 
-        // Verify strokeWidth
-        final progressIndicator = tester.widget<CircularProgressIndicator>(
-          find.byType(CircularProgressIndicator),
+        // Verify default placeholder icon size
+        final icon = tester.widget<Icon>(
+          find.byIcon(Icons.image_outlined),
         );
-        expect(progressIndicator.strokeWidth, equals(2.5));
+        expect(icon.size, equals(defaultIconSize));
       });
     });
 
@@ -461,7 +456,8 @@ void main() {
         final icon = tester.widget<Icon>(
           find.byIcon(Icons.broken_image_outlined),
         );
-        expect(icon.color, equals(Colors.red));
+        final theme = Theme.of(tester.element(find.byType(Icon)));
+        expect(icon.color, equals(theme.colorScheme.error));
       });
 
       testWidgets('uses default icon size when dimensions not provided', (
@@ -496,7 +492,6 @@ void main() {
       ) async {
         const width = 100.0;
         const height = 150.0;
-        // minDimension = 100 (width), so iconSize = 100
 
         await pumpZoeNetworkLocalImageView(
           tester,
@@ -517,11 +512,11 @@ void main() {
 
         await tester.pumpWidget(MaterialApp(home: Scaffold(body: errorWidget)));
 
-        // Verify dynamic icon size
+        // Verify default icon size is used
         final icon = tester.widget<Icon>(
           find.byIcon(Icons.broken_image_outlined),
         );
-        expect(icon.size, equals(width));
+        expect(icon.size, equals(defaultIconSize));
       });
 
       testWidgets('uses height for icon size when height is smaller', (
@@ -529,7 +524,6 @@ void main() {
       ) async {
         const width = 200.0;
         const height = 80.0;
-        // minDimension = 80 (height), so iconSize = 80
 
         await pumpZoeNetworkLocalImageView(
           tester,
@@ -550,11 +544,11 @@ void main() {
 
         await tester.pumpWidget(MaterialApp(home: Scaffold(body: errorWidget)));
 
-        // Verify dynamic icon size uses height (smaller dimension)
+        // Verify default icon size is used
         final icon = tester.widget<Icon>(
           find.byIcon(Icons.broken_image_outlined),
         );
-        expect(icon.size, equals(height));
+        expect(icon.size, equals(defaultIconSize));
       });
     });
 

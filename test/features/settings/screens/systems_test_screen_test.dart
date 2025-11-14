@@ -43,11 +43,11 @@ void main() {
       child: const SystemsTestScreen(),
       container: container,
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
   }
 
   setUp(() {
-    container = ProviderContainer(
+    container = ProviderContainer.test(
       overrides: [
         clientProvider.overrideWith((ref) => Future.value(MockClient())),
         enhancedSystemsTestProvider.overrideWith(
@@ -57,14 +57,10 @@ void main() {
     );
   });
 
-  tearDown(() {
-    container.dispose();
-  });
-
   group('SystemsTestScreen', () {
     testWidgets('shows error state when loading fails', (tester) async {
       // Set error state
-      container = ProviderContainer(
+      container = ProviderContainer.test(
         overrides: [
           clientProvider.overrideWith((ref) => Future.value(MockClient())),
           enhancedSystemsTestProvider.overrideWith(
@@ -79,11 +75,20 @@ void main() {
       await pumpSystemsTestScreen(tester);
 
       // Verify error UI
-      expect(find.byIcon(Icons.error_outline), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (widget) {
+            if (widget is! Icon) return false;
+            return widget.icon == Icons.error_outline;
+          },
+        ),
+        findsOneWidget,
+      );
       expect(find.text('Failed to load client information'), findsOneWidget);
     });
 
     testWidgets('shows client info when data is available', (tester) async {
+      
       // Set success state with test data
       final clientInfo = ClientInfo(
         clientId: 'test-client-123',
@@ -103,7 +108,7 @@ void main() {
         isRunning: false,
       );
 
-      container = ProviderContainer(
+      container = ProviderContainer.test(
         overrides: [
           clientProvider.overrideWith((ref) => Future.value(MockClient())),
           enhancedSystemsTestProvider.overrideWith(

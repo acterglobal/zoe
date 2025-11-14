@@ -102,7 +102,7 @@ class ShareUtils {
     // Start date
     final startDateString = DateTimeUtils.formatDateTime(startDate);
     buffer.write('\n\n🕓 Start\n$startDateString');
-    
+
     // End date
     final endDateString = DateTimeUtils.formatDateTime(endDate);
     buffer.write('\n\n🕓 End\n$endDateString');
