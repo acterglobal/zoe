@@ -1,6 +1,6 @@
 # Zoe - Personal Workspace App
 
-A modern, joyful Flutter app for organizing thoughts, tasks, and ideas with beautiful simplicity. Built with a Notion-like structure featuring sheets and dynamic content blocks with collaboration capabilities.
+A modern, joyful Flutter app for organizing thoughts, tasks, and ideas with beautiful simplicity. Built with a Notion-like structure featuring sheets and dynamic content blocks.
 
 ## Features
 
@@ -288,17 +288,15 @@ The app follows a clean, modular architecture with separation of concerns:
 
 ## Future Enhancements
 
-- [ ] Cloud synchronization and backup
-- [ ] Real-time collaborative editing
-- [ ] Advanced export options (PDF, Markdown, JSON)
-- [ ] Custom themes and color schemes
-- [ ] Notification system for tasks and events
-- [ ] Calendar view for events
-- [ ] Advanced analytics and insights
-- [ ] Offline-first architecture with sync
-- [ ] Performance optimizations for large datasets
-- [ ] WhatsApp group integration enhancements
-- [ ] QR code generation for quick sharing
+- [ ] Cloud synchronization
+- [ ] Advanced text formatting (rich text editor)
+- [ ] File attachments and media support
+- [ ] Collaboration features
+- [ ] Custom themes and personalization
+- [ ] Advanced search functionality
+- [ ] Export options (PDF, Markdown)
+- [ ] Offline-first architecture
+- [ ] Performance optimizations
 
 ## Getting Started
 
