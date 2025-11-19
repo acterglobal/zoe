@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
+import 'package:zoe/common/widgets/animated_textfield_widget.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
@@ -11,20 +12,45 @@ import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-class SheetSharePreviewWidget extends ConsumerWidget {
+class SheetSharePreviewWidget extends ConsumerStatefulWidget {
   final String parentId;
   final String contentText;
+  final ValueChanged<String>? onMessageChanged;
 
   const SheetSharePreviewWidget({
     super.key,
     required this.parentId,
     required this.contentText,
+    this.onMessageChanged,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final sheet = ref.watch(sheetProvider(parentId));
+  ConsumerState<SheetSharePreviewWidget> createState() =>
+      _SheetSharePreviewWidgetState();
+}
+
+class _SheetSharePreviewWidgetState
+    extends ConsumerState<SheetSharePreviewWidget> {
+  late TextEditingController _messageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _messageController = TextEditingController();
+    _messageController.addListener(() {
+      widget.onMessageChanged?.call(_messageController.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final sheet = ref.watch(sheetProvider(widget.parentId));
     if (sheet == null) return const SizedBox.shrink();
 
     final eventList = ref.watch(eventsListProvider);
@@ -34,12 +60,18 @@ class SheetSharePreviewWidget extends ConsumerWidget {
     final pollList = ref.watch(pollsListProvider);
 
     // Filter by sheetId
-    final sheetEvents = eventList.where((e) => e.sheetId == parentId).toList();
-    final sheetTasks = taskList.where((t) => t.sheetId == parentId).toList();
-    final sheetDocuments = documentList
-        .where((d) => d.sheetId == parentId)
+    final sheetEvents = eventList
+        .where((e) => e.sheetId == widget.parentId)
         .toList();
-    final sheetPolls = pollList.where((p) => p.sheetId == parentId).toList();
+    final sheetTasks = taskList
+        .where((t) => t.sheetId == widget.parentId)
+        .toList();
+    final sheetDocuments = documentList
+        .where((d) => d.sheetId == widget.parentId)
+        .toList();
+    final sheetPolls = pollList
+        .where((p) => p.sheetId == widget.parentId)
+        .toList();
 
     // Filter today's events and tasks
     final todayEvents = sheetEvents.where((e) => e.startDate.isToday).toList();
@@ -49,59 +81,61 @@ class SheetSharePreviewWidget extends ConsumerWidget {
       padding: const EdgeInsets.all(16),
       blurRadius: 0,
       borderRadius: BorderRadius.circular(12),
-      child: SingleChildScrollView(child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Sheet Title and Description
-          Text(contentText, style: theme.textTheme.bodyMedium),
-
-          // Statistics Section
-          if (sheetEvents.isNotEmpty ||
-              sheetTasks.isNotEmpty ||
-              sheetDocuments.isNotEmpty ||
-              sheetPolls.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            Divider(
-              height: 1,
-              thickness: 1,
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Message Text Field
+            AnimatedTextField(
+              controller: _messageController,
+              hintText: L10n.of(context).addAMessage,
+              onErrorChanged: (error) {},
+              onSubmitted: () {},
+              maxLines: 3,
+              keyboardType: TextInputType.multiline,
+              autofocus: false,
             ),
             const SizedBox(height: 16),
-            _buildStatCard(
-              context: context,
-              icon: Icons.event_rounded,
-              label: L10n.of(context).events,
-              count: sheetEvents.length,
-              subtitle: todayEvents.isNotEmpty
-                  ? '${todayEvents.length} ${L10n.of(context).today}'
-                  : null,
-              color: AppColors.secondaryColor,
-            ),
-            _buildStatCard(
-              context: context,
-              icon: Icons.task_alt_rounded,
-              label: L10n.of(context).tasks,
-              count: sheetTasks.length,
-              subtitle: todayTasks.isNotEmpty
-                  ? '${todayTasks.length} ${L10n.of(context).dueToday}'
-                  : null,
-              color: AppColors.successColor,
-            ),
-            _buildStatCard(
-              context: context,
-              icon: Icons.insert_drive_file_rounded,
-              label: L10n.of(context).documents,
-              count: sheetDocuments.length,
-              color: AppColors.brightOrangeColor,
-            ),
-            _buildStatCard(
-              context: context,
-              icon: Icons.poll_rounded,
-              label: L10n.of(context).polls,
-              count: sheetPolls.length,
-              color: AppColors.brightMagentaColor,
-            ),
-          ],
+            // Statistics Section
+            if (sheetEvents.isNotEmpty ||
+                sheetTasks.isNotEmpty ||
+                sheetDocuments.isNotEmpty ||
+                sheetPolls.isNotEmpty) ...[
+              _buildStatCard(
+                context: context,
+                icon: Icons.event_rounded,
+                label: L10n.of(context).events,
+                count: sheetEvents.length,
+                subtitle: todayEvents.isNotEmpty
+                    ? '${todayEvents.length} ${L10n.of(context).today}'
+                    : null,
+                color: AppColors.secondaryColor,
+              ),
+              _buildStatCard(
+                context: context,
+                icon: Icons.task_alt_rounded,
+                label: L10n.of(context).tasks,
+                count: sheetTasks.length,
+                subtitle: todayTasks.isNotEmpty
+                    ? '${todayTasks.length} ${L10n.of(context).dueToday}'
+                    : null,
+                color: AppColors.successColor,
+              ),
+              _buildStatCard(
+                context: context,
+                icon: Icons.insert_drive_file_rounded,
+                label: L10n.of(context).documents,
+                count: sheetDocuments.length,
+                color: AppColors.brightOrangeColor,
+              ),
+              _buildStatCard(
+                context: context,
+                icon: Icons.poll_rounded,
+                label: L10n.of(context).polls,
+                count: sheetPolls.length,
+                color: AppColors.brightMagentaColor,
+              ),
+            ],
           ],
         ),
       ),

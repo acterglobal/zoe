@@ -9,6 +9,9 @@ import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/sheet_share_preview_widget.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 void showShareItemsBottomSheet({
@@ -23,12 +26,16 @@ void showShareItemsBottomSheet({
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
-    builder: (context) =>
-        ShareItemsBottomSheet(parentId: parentId, isSheet: isSheet),
+    builder: (context) => Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: ShareItemsBottomSheet(parentId: parentId, isSheet: isSheet),
+    ),
   );
 }
 
-class ShareItemsBottomSheet extends ConsumerWidget {
+class ShareItemsBottomSheet extends ConsumerStatefulWidget {
   final String parentId;
   final bool isSheet;
 
@@ -39,95 +46,135 @@ class ShareItemsBottomSheet extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final contentText = isSheet
-        ? ShareUtils.getSheetShareMessage(ref: ref, parentId: parentId)
+  ConsumerState<ShareItemsBottomSheet> createState() =>
+      _ShareItemsBottomSheetState();
+}
+
+class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
+  String _userMessage = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final contentText = widget.isSheet
+        ? () {
+            final currentUserAsync = ref.watch(currentUserProvider);
+            final currentUser = currentUserAsync.value;
+            final userName = currentUser?.name ?? '';
+            return ShareUtils.getSheetShareMessage(
+              ref: ref,
+              parentId: widget.parentId,
+              userName: userName.isNotEmpty ? userName : null,
+              userMessage: _userMessage.trim().isNotEmpty ? _userMessage : null,
+            );
+          }()
         : _getContentShareMessage(ref);
 
     return MaxWidthWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            _getShareTitle(context, ref),
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-          const SizedBox(height: 20),
-          if (isSheet)
-            SheetSharePreviewWidget(
-              parentId: parentId,
-              contentText: contentText,
-            )
-          else
-            _buildContentPreview(context, contentText),
-          const SizedBox(height: 20),
-          _buildShareButton(context, contentText),
-          const SizedBox(height: 20),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            widget.isSheet
+                ? _getSheetInfo(context, ref)
+                : Text(
+                    _getShareTitle(context, ref),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+            const SizedBox(height: 20),
+            if (widget.isSheet)
+              SheetSharePreviewWidget(
+                parentId: widget.parentId,
+                contentText: contentText,
+                onMessageChanged: (message) {
+                  setState(() {
+                    _userMessage = message;
+                  });
+                },
+              )
+            else
+              _buildContentPreview(context, contentText),
+            const SizedBox(height: 20),
+            _buildShareButton(context, contentText),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
 
+  Widget _getSheetInfo(BuildContext context, WidgetRef ref) {
+    final sheet = ref.watch(sheetProvider(widget.parentId));
+    if (sheet == null) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SheetAvatarWidget(sheetId: sheet.id, padding: const EdgeInsets.all(8)),
+        const SizedBox(height: 8),
+        Text(sheet.title, style: Theme.of(context).textTheme.bodyMedium),
+      ],
+    );
+  }
+
   String _getShareTitle(BuildContext context, WidgetRef ref) {
-    if (isSheet) return L10n.of(context).shareSheet;
-    final content = ref.watch(contentProvider(parentId));
+    final content = ref.watch(contentProvider(widget.parentId));
+    final l10n = L10n.of(context);
     return switch (content?.type) {
-      ContentType.text => L10n.of(context).shareText,
-      ContentType.event => L10n.of(context).shareEvent,
+      ContentType.text => l10n.shareText,
+      ContentType.event => l10n.shareEvent,
       ContentType.list => () {
-        final listModel = ref.watch(listItemProvider(parentId));
+        final listModel = ref.watch(listItemProvider(widget.parentId));
         return switch (listModel?.listType) {
-          ContentType.task => L10n.of(context).shareTaskList,
-          ContentType.bullet => L10n.of(context).shareBulletList,
-          _ => L10n.of(context).share,
+          ContentType.task => l10n.shareTaskList,
+          ContentType.bullet => l10n.shareBulletList,
+          _ => l10n.share,
         };
       }(),
-      ContentType.task => L10n.of(context).shareTask,
-      ContentType.bullet => L10n.of(context).shareBullet,
-      ContentType.poll => L10n.of(context).sharePoll,
-      _ => L10n.of(context).share,
+      ContentType.task => l10n.shareTask,
+      ContentType.bullet => l10n.shareBullet,
+      ContentType.poll => l10n.sharePoll,
+      _ => l10n.share,
     };
   }
 
   String _getContentShareMessage(WidgetRef ref) {
-    final content = ref.watch(contentProvider(parentId));
+    final content = ref.watch(contentProvider(widget.parentId));
     if (content == null) return '';
     switch (content.type) {
       case ContentType.text:
         return ShareUtils.getTextContentShareMessage(
           ref: ref,
-          parentId: parentId,
+          parentId: widget.parentId,
         );
       case ContentType.event:
         return ShareUtils.getEventContentShareMessage(
           ref: ref,
-          parentId: parentId,
+          parentId: widget.parentId,
         );
       case ContentType.list:
         return ShareUtils.getListContentShareMessage(
           ref: ref,
-          parentId: parentId,
+          parentId: widget.parentId,
         );
       case ContentType.task:
         return ShareUtils.getTaskContentShareMessage(
           ref: ref,
-          parentId: parentId,
+          parentId: widget.parentId,
         );
       case ContentType.bullet:
         return ShareUtils.getBulletContentShareMessage(
           ref: ref,
-          parentId: parentId,
+          parentId: widget.parentId,
         );
       case ContentType.poll:
         return ShareUtils.getPollContentShareMessage(
           ref: ref,
-          parentId: parentId,
+          parentId: widget.parentId,
         );
       case ContentType.document:
       case ContentType.link:
@@ -147,11 +194,27 @@ class ShareItemsBottomSheet extends ConsumerWidget {
   }
 
   Widget _buildShareButton(BuildContext context, String contentText) {
+    final l10n = L10n.of(context);
     return ZoePrimaryButton(
-      onPressed: () =>
-          CommonUtils.shareText(contentText, subject: L10n.of(context).share),
+      onPressed: () {
+        if (widget.isSheet) {
+          final currentUser = ref.read(currentUserProvider).value;
+          if (currentUser != null) {
+            final userName = currentUser.name;
+            ref
+                .read(sheetListProvider.notifier)
+                .updateSheetShareInfo(
+                  sheetId: widget.parentId,
+                  sharedBy: userName,
+                  message: _userMessage.trim().isNotEmpty ? _userMessage : null,
+                );
+          }
+        }else{
+          CommonUtils.shareText(contentText, subject: l10n.share);
+        }
+      },
       icon: Icons.share_rounded,
-      text: L10n.of(context).share,
-    );
-  }
+        text: l10n.share,
+      );
+    }
 }
