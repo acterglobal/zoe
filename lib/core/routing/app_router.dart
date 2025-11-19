@@ -32,6 +32,9 @@ import 'app_routes.dart';
 // Global navigator key for accessing the router
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
+// AppLinks provider for dependency injection (allows mocking in tests)
+final appLinksProvider = Provider<AppLinks>((ref) => AppLinks());
+
 // Router provider that always starts with welcome screen
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(

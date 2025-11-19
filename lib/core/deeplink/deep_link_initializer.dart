@@ -30,7 +30,7 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
   @override
   void initState() {
     super.initState();
-    _appLinks = AppLinks();
+    _appLinks = ref.read(appLinksProvider);
     _initializeDeepLinks();
   }
 
