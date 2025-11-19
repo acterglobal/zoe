@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_chip_widget.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
@@ -352,6 +354,294 @@ void main() {
         // Widget should still render
         expect(find.byType(MaxWidthWidget), findsOneWidget);
         expect(find.byType(SheetAvatarWidget), findsOneWidget);
+      });
+    });
+
+    group('Shared Info Card', () {
+      testWidgets('displays shared info card when sharedBy is present', (
+        tester,
+      ) async {
+        final sharingUser = getUserByIndex(container);
+        final sheetWithSharedBy = testSheet.copyWith(
+          sharedBy: sharingUser.name,
+        );
+
+        final testContainer = ProviderContainer.test(
+          overrides: [
+            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            sheetListProvider.overrideWith(
+              () => SheetList()..state = [sheetWithSharedBy],
+            ),
+            sheetProvider(testSheetId).overrideWith((ref) => sheetWithSharedBy),
+          ],
+        );
+
+        await pumpSheetJoinPreviewWidget(
+          tester,
+          parentId: testSheetId,
+          testContainer: testContainer,
+        );
+
+        // Verify GlassyContainer (shared info card) is displayed
+        expect(find.byType(GlassyContainer), findsOneWidget);
+
+        // Verify "Shared by" label is present
+        final l10n = WidgetTesterExtension.getL10n(
+          tester,
+          byType: SheetJoinPreviewWidget,
+        );
+        expect(find.textContaining(l10n.sharedBy), findsOneWidget);
+
+        // Verify user chip is displayed (since user exists in userList)
+        expect(find.byType(ZoeUserChipWidget), findsOneWidget);
+      });
+
+      testWidgets('displays shared info card when message is present', (
+        tester,
+      ) async {
+        const testMessage = 'Check out this amazing sheet!';
+        final sheetWithMessage = testSheet.copyWith(
+          message: testMessage,
+        );
+
+        final testContainer = ProviderContainer.test(
+          overrides: [
+            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            sheetListProvider.overrideWith(
+              () => SheetList()..state = [sheetWithMessage],
+            ),
+            sheetProvider(testSheetId).overrideWith((ref) => sheetWithMessage),
+          ],
+        );
+
+        await pumpSheetJoinPreviewWidget(
+          tester,
+          parentId: testSheetId,
+          testContainer: testContainer,
+        );
+
+        // Verify GlassyContainer (shared info card) is displayed
+        expect(find.byType(GlassyContainer), findsOneWidget);
+
+        // Verify message label and content are present
+        final l10n = WidgetTesterExtension.getL10n(
+          tester,
+          byType: SheetJoinPreviewWidget,
+        );
+        expect(find.textContaining(l10n.message), findsOneWidget);
+        expect(find.text(testMessage), findsOneWidget);
+      });
+
+      testWidgets('displays shared info card with both sharedBy and message', (
+        tester,
+      ) async {
+        final sharingUser = getUserByIndex(container);
+        const testMessage = 'This is a great sheet to collaborate on!';
+        final sheetWithBoth = testSheet.copyWith(
+          sharedBy: sharingUser.name,
+          message: testMessage,
+        );
+
+        final testContainer = ProviderContainer.test(
+          overrides: [
+            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            sheetListProvider.overrideWith(
+              () => SheetList()..state = [sheetWithBoth],
+            ),
+            sheetProvider(testSheetId).overrideWith((ref) => sheetWithBoth),
+          ],
+        );
+
+        await pumpSheetJoinPreviewWidget(
+          tester,
+          parentId: testSheetId,
+          testContainer: testContainer,
+        );
+
+        // Verify GlassyContainer (shared info card) is displayed
+        expect(find.byType(GlassyContainer), findsOneWidget);
+
+        // Verify both sharedBy and message are displayed
+        final l10n = WidgetTesterExtension.getL10n(
+          tester,
+          byType: SheetJoinPreviewWidget,
+        );
+        expect(find.textContaining(l10n.sharedBy), findsOneWidget);
+        expect(find.textContaining(l10n.message), findsOneWidget);
+        expect(find.text(testMessage), findsOneWidget);
+        expect(find.byType(ZoeUserChipWidget), findsOneWidget);
+      });
+
+      testWidgets('trims message whitespace when displaying', (tester) async {
+        const testMessage = '  Message with whitespace  ';
+        final sheetWithTrimmedMessage = testSheet.copyWith(
+          message: testMessage,
+        );
+
+        final testContainer = ProviderContainer.test(
+          overrides: [
+            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            sheetListProvider.overrideWith(
+              () => SheetList()..state = [sheetWithTrimmedMessage],
+            ),
+            sheetProvider(testSheetId).overrideWith((ref) => sheetWithTrimmedMessage),
+          ],
+        );
+
+        await pumpSheetJoinPreviewWidget(
+          tester,
+          parentId: testSheetId,
+          testContainer: testContainer,
+        );
+
+        // Verify trimmed message is displayed (not the original with whitespace)
+        expect(find.text(testMessage.trim()), findsOneWidget);
+        expect(find.text(testMessage), findsNothing);
+      });
+
+      testWidgets('does not display shared info card when both are empty', (
+        tester,
+      ) async {
+        final sheetWithoutSharedInfo = testSheet.copyWith(
+          sharedBy: null,
+          message: null,
+        );
+
+        final testContainer = ProviderContainer.test(
+          overrides: [
+            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            sheetListProvider.overrideWith(
+              () => SheetList()..state = [sheetWithoutSharedInfo],
+            ),
+            sheetProvider(testSheetId).overrideWith((ref) => sheetWithoutSharedInfo),
+          ],
+        );
+
+        await pumpSheetJoinPreviewWidget(
+          tester,
+          parentId: testSheetId,
+          testContainer: testContainer,
+        );
+
+        // Verify GlassyContainer (shared info card) is NOT displayed
+        expect(find.byType(GlassyContainer), findsNothing);
+      });
+
+      testWidgets('does not display shared info card when sharedBy is empty string', (
+        tester,
+      ) async {
+        final sheetWithEmptySharedBy = testSheet.copyWith(
+          sharedBy: '',
+          message: null,
+        );
+
+        final testContainer = ProviderContainer.test(
+          overrides: [
+            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            sheetListProvider.overrideWith(
+              () => SheetList()..state = [sheetWithEmptySharedBy],
+            ),
+            sheetProvider(testSheetId).overrideWith((ref) => sheetWithEmptySharedBy),
+          ],
+        );
+
+        await pumpSheetJoinPreviewWidget(
+          tester,
+          parentId: testSheetId,
+          testContainer: testContainer,
+        );
+
+        // Verify GlassyContainer (shared info card) is NOT displayed
+        expect(find.byType(GlassyContainer), findsNothing);
+      });
+
+      testWidgets('does not display shared info card when message is empty string', (
+        tester,
+      ) async {
+        final sheetWithEmptyMessage = testSheet.copyWith(
+          sharedBy: null,
+          message: '',
+        );
+
+        final testContainer = ProviderContainer.test(
+          overrides: [
+            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            sheetListProvider.overrideWith(
+              () => SheetList()..state = [sheetWithEmptyMessage],
+            ),
+            sheetProvider(testSheetId).overrideWith((ref) => sheetWithEmptyMessage),
+          ],
+        );
+
+        await pumpSheetJoinPreviewWidget(
+          tester,
+          parentId: testSheetId,
+          testContainer: testContainer,
+        );
+
+        // Verify GlassyContainer (shared info card) is NOT displayed
+        expect(find.byType(GlassyContainer), findsNothing);
+      });
+
+      testWidgets('does not display shared info card when message is only whitespace', (
+        tester,
+      ) async {
+        final sheetWithWhitespaceMessage = testSheet.copyWith(
+          sharedBy: null,
+          message: '   ',
+        );
+
+        final testContainer = ProviderContainer.test(
+          overrides: [
+            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            sheetListProvider.overrideWith(
+              () => SheetList()..state = [sheetWithWhitespaceMessage],
+            ),
+            sheetProvider(testSheetId).overrideWith((ref) => sheetWithWhitespaceMessage),
+          ],
+        );
+
+        await pumpSheetJoinPreviewWidget(
+          tester,
+          parentId: testSheetId,
+          testContainer: testContainer,
+        );
+
+        // Verify GlassyContainer (shared info card) is NOT displayed
+        expect(find.byType(GlassyContainer), findsNothing);
+      });
+
+      testWidgets('shared info card has correct styling', (tester) async {
+        final sharingUser = getUserByIndex(container);
+        const testMessage = 'Test message';
+        final sheetWithSharedInfo = testSheet.copyWith(
+          sharedBy: sharingUser.name,
+          message: testMessage,
+        );
+
+        final testContainer = ProviderContainer.test(
+          overrides: [
+            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            sheetListProvider.overrideWith(
+              () => SheetList()..state = [sheetWithSharedInfo],
+            ),
+            sheetProvider(testSheetId).overrideWith((ref) => sheetWithSharedInfo),
+          ],
+        );
+
+        await pumpSheetJoinPreviewWidget(
+          tester,
+          parentId: testSheetId,
+          testContainer: testContainer,
+        );
+
+        // Verify GlassyContainer properties
+        final glassyContainer = tester.widget<GlassyContainer>(
+          find.byType(GlassyContainer),
+        );
+        expect(glassyContainer.padding, equals(const EdgeInsets.all(12)));
+        expect(glassyContainer.blurRadius, equals(0));
+        expect(glassyContainer.borderRadius, equals(BorderRadius.circular(12)));
       });
     });
   });
