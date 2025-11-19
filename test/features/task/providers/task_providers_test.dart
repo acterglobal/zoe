@@ -437,9 +437,32 @@ void main() {
     });
 
     group('pastDueTasks Provider', () {
+      void createPastDueTask() {
+        final pastDate = DateTime.now().subtract(const Duration(days: 1));
+        container
+            .read(taskListProvider.notifier)
+            .updateTaskDueDate(testTask.id, pastDate);
+      }
+
       test('returns only past due tasks', () {
+        // Create a past-due task by updating an existing task's due date
+        createPastDueTask();
+
         final pastDueTasks = container.read(pastDueTasksProvider);
 
+        // Verify that at least one past-due task exists
+        expect(pastDueTasks.isNotEmpty, isTrue);
+
+        // Verify that the updated task is included in past-due tasks
+        final updatedTask = pastDueTasks.firstWhere(
+          (task) => task.id == testTask.id,
+          orElse: () => throw Exception(
+              'Updated past-due task with id "${testTask.id}" not found'),
+        );
+        expect(updatedTask.dueDate.isBefore(DateTime.now()), isTrue);
+        expect(updatedTask.dueDate.isToday, isFalse);
+
+        // Verify all returned tasks are past due
         for (final task in pastDueTasks) {
           expect(task.dueDate.isBefore(DateTime.now()), isTrue);
           expect(task.dueDate.isToday, isFalse);
@@ -447,13 +470,19 @@ void main() {
       });
 
       test('returns tasks sorted by due date (descending)', () {
+        // Create a past-due task by updating an existing task's due date
+        createPastDueTask();
+
         final pastDueTasks = container.read(pastDueTasksProvider);
 
-        for (int i = 0; i < pastDueTasks.length - 1; i++) {
-          expect(
-            pastDueTasks[i].dueDate.compareTo(pastDueTasks[i + 1].dueDate),
-            greaterThanOrEqualTo(0),
-          );
+        // Only test sorting if there are at least 2 tasks
+        if (pastDueTasks.length > 1) {
+          for (int i = 0; i < pastDueTasks.length - 1; i++) {
+            expect(
+              pastDueTasks[i].dueDate.compareTo(pastDueTasks[i + 1].dueDate),
+              greaterThanOrEqualTo(0),
+            );
+          }
         }
       });
     });
@@ -475,6 +504,9 @@ void main() {
     });
 
     group('taskListSearch Provider', () {
+
+      final searchTerm = testTask.title.substring(0, testTask.title.length < 5 ? testTask.title.length : 5).toUpperCase();
+
       test('returns all tasks when search is empty', () {
         container.read(searchValueProvider.notifier).update('');
 
@@ -486,8 +518,7 @@ void main() {
       });
 
       test('filters tasks by title when search has value', () {
-        // Use a part of the test task's title
-        final searchTerm = testTask.title.substring(0, 5).toLowerCase();
+       
         container.read(searchValueProvider.notifier).update(searchTerm);
 
         final searchResults = container.read(taskListSearchProvider);
@@ -498,7 +529,6 @@ void main() {
       });
 
       test('search is case insensitive', () {
-        final searchTerm = testTask.title.substring(0, 5).toUpperCase();
         container.read(searchValueProvider.notifier).update(searchTerm);
 
         final searchResults = container.read(taskListSearchProvider);
