@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,13 +16,11 @@ final _logger = Logger('DeepLinkInitializer');
 class DeepLinkInitializer extends ConsumerStatefulWidget {
   final Widget child;
 
-  const DeepLinkInitializer({
-    super.key,
-    required this.child,
-  });
+  const DeepLinkInitializer({super.key, required this.child});
 
   @override
-  ConsumerState<DeepLinkInitializer> createState() => _DeepLinkInitializerState();
+  ConsumerState<DeepLinkInitializer> createState() =>
+      _DeepLinkInitializerState();
 }
 
 class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
@@ -33,7 +30,7 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
   @override
   void initState() {
     super.initState();
-    _appLinks = AppLinks();
+    _appLinks = ref.read(appLinksProvider);
     _initializeDeepLinks();
   }
 
@@ -54,12 +51,9 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
   }
 
   void _listenToIncomingLinks() {
-    _linkSubscription = _appLinks.uriLinkStream.listen(
-      (uri) {
-        if (mounted) _handleUri(uri);
-      },
-      onError: (error) => _logger.severe('Error in link stream', error),
-    );
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      if (mounted) _handleUri(uri);
+    }, onError: (error) => _logger.severe('Error in link stream', error));
   }
 
   void _handleUri(Uri uri) {
@@ -70,13 +64,9 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
         return;
       }
 
-      // Delay slightly to ensure router is ready
-      Future.delayed(const Duration(milliseconds: 100), () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          _navigateAndShowJoinSheet(sheetId);
-        });
+        _navigateAndShowJoinSheet(sheetId);
       });
     } catch (error) {
       _logger.severe('Error handling URI: $uri', error);
@@ -102,26 +92,30 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
       final router = ref.read(routerProvider);
       router.go(AppRoutes.home.route);
 
-      // Wait for navigation to complete before showing the sheet
-      Future.delayed(const Duration(milliseconds: 600), () {
+      // Wait for navigation to complete before accessing context
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
 
         final currentUserId = ref.read(loggedInUserProvider).value;
         final sheet = ref.read(sheetProvider(sheetId));
 
-        final isMember = currentUserId != null && currentUserId.isNotEmpty &&
+        final isMember =
+            currentUserId != null &&
+            currentUserId.isNotEmpty &&
             sheet != null &&
             sheet.users.contains(currentUserId);
+
         final context = router.routerDelegate.navigatorKey.currentContext;
         if (context == null || !context.mounted) {
-          _logger.severe('Context unavailable for showing join dialog', sheetId);
+          _logger.severe(
+            'Context unavailable for showing join dialog',
+            sheetId,
+          );
           return;
         }
+
         if (!isMember) {
-          showJoinSheetBottomSheet(
-            context: context,
-            parentId: sheetId,
-          );
+          showJoinSheetBottomSheet(context: context, parentId: sheetId);
         } else {
           router.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheetId));
         }

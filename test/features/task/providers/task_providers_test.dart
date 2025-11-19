@@ -24,17 +24,17 @@ void main() {
       // Create mock preferences service
       mockPreferencesService = await mockGetLoginUserId();
 
-      container = ProviderContainer.test(
-        overrides: [
-          searchValueProvider.overrideWith(MockSearchValue.new),
-          preferencesServiceProvider.overrideWithValue(mockPreferencesService),
-        ],
-      );
+      testUserId = getUserByIndex(
+        ProviderContainer.test(
+          overrides: [
+            searchValueProvider.overrideWith(MockSearchValue.new),
+            preferencesServiceProvider.overrideWithValue(
+              mockPreferencesService,
+            ),
+          ],
+        ),
+      ).id;
 
-      // Get test user
-      testUserId = getUserByIndex(container).id;
-
-      // Override loggedInUserProvider for tests that depend on tasksListProvider
       container = ProviderContainer.test(
         overrides: [
           searchValueProvider.overrideWith(MockSearchValue.new),
@@ -45,7 +45,6 @@ void main() {
 
       testTask = getTaskByIndex(container);
     });
-
 
     group('TaskList Provider', () {
       test('initial state contains all tasks', () {
@@ -61,11 +60,9 @@ void main() {
 
         final initialLength = container.read(taskListProvider).length;
 
-        await container.read(taskListProvider.notifier).addTask(
-              title: title,
-              parentId: parentId,
-              sheetId: sheetId,
-            );
+        await container
+            .read(taskListProvider.notifier)
+            .addTask(title: title, parentId: parentId, sheetId: sheetId);
 
         final updatedList = container.read(taskListProvider);
         expect(updatedList.length, equals(initialLength + 1));
@@ -75,23 +72,28 @@ void main() {
         expect(updatedList.last.isCompleted, equals(false));
       });
 
-      test('addTask with orderIndex inserts task at specified position', () async {
-        const title = 'Task with order';
-        const parentId = 'list-tasks-1';
-        const sheetId = 'sheet-1';
-        const orderIndex = 0;
+      test(
+        'addTask with orderIndex inserts task at specified position',
+        () async {
+          const title = 'Task with order';
+          const parentId = 'list-tasks-1';
+          const sheetId = 'sheet-1';
+          const orderIndex = 0;
 
-        await container.read(taskListProvider.notifier).addTask(
-              title: title,
-              parentId: parentId,
-              sheetId: sheetId,
-              orderIndex: orderIndex,
-            );
+          await container
+              .read(taskListProvider.notifier)
+              .addTask(
+                title: title,
+                parentId: parentId,
+                sheetId: sheetId,
+                orderIndex: orderIndex,
+              );
 
-        final updatedList = container.read(taskListProvider);
-        final addedTask = updatedList.firstWhere((t) => t.title == title);
-        expect(addedTask.orderIndex, equals(orderIndex));
-      });
+          final updatedList = container.read(taskListProvider);
+          final addedTask = updatedList.firstWhere((t) => t.title == title);
+          expect(addedTask.orderIndex, equals(orderIndex));
+        },
+      );
 
       test('deleteTask removes task from list', () {
         final initialLength = container.read(taskListProvider).length;
@@ -202,10 +204,12 @@ void main() {
             .addAssignee(testTask.id, testUser2.id);
 
         final updatedTask = container.read(taskProvider(testTask.id));
-        expect(updatedTask?.assignedUsers.length, equals(initialAssignees.length + 1));
+        expect(
+          updatedTask?.assignedUsers.length,
+          equals(initialAssignees.length + 1),
+        );
         expect(updatedTask?.assignedUsers.contains(testUser2.id), isTrue);
       });
-
 
       test('removeAssignee removes user from task assignees', () {
         final initialAssignees = List<String>.from(testTask.assignedUsers);
@@ -225,7 +229,10 @@ void main() {
             .removeAssignee(testTask.id, assigneeToRemove);
 
         final updatedTask = container.read(taskProvider(testTask.id));
-        expect(updatedTask?.assignedUsers.length, equals(initialAssignees.length - 1));
+        expect(
+          updatedTask?.assignedUsers.length,
+          equals(initialAssignees.length - 1),
+        );
         expect(updatedTask?.assignedUsers.contains(assigneeToRemove), isFalse);
       });
 
@@ -238,36 +245,76 @@ void main() {
             .removeAssignee(testTask.id, nonExistentUserId);
 
         final updatedTask = container.read(taskProvider(testTask.id));
-        expect(updatedTask?.assignedUsers.length, equals(initialAssignees.length));
+        expect(
+          updatedTask?.assignedUsers.length,
+          equals(initialAssignees.length),
+        );
       });
 
-      test('getFocusTaskId returns next task when deleting first task', () {
-        final parentTasks = container
+      test('getFocusTaskId returns next task when deleting first task', () async {
+        final parentId = testTask.parentId;
+        final sheetId = testTask.sheetId;
+
+        // Ensure we have at least 2 tasks with the same parent
+        var parentTasks = container
             .read(taskListProvider)
-            .where((t) => t.parentId == testTask.parentId)
+            .where((t) => t.parentId == parentId)
             .toList()
           ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
 
-        if (parentTasks.length > 1) {
-          final firstTask = parentTasks.first;
-          final nextTask = parentTasks[1];
-
-          final focusTaskId = container
-              .read(taskListProvider.notifier)
-              .getFocusTaskId(firstTask.id);
-
-          expect(focusTaskId, equals(nextTask.id));
+        // Add tasks if needed
+        while (parentTasks.length < 2) {
+          await container.read(taskListProvider.notifier).addTask(
+            title: 'Setup Task ${parentTasks.length}',
+            parentId: parentId,
+            sheetId: sheetId,
+          );
+          // Refresh the list after adding
+          parentTasks = container
+              .read(taskListProvider)
+              .where((t) => t.parentId == parentId)
+              .toList()
+            ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
         }
+
+        final firstTask = parentTasks.first;
+        final nextTask = parentTasks[1];
+
+        final focusTaskId = container
+            .read(taskListProvider.notifier)
+            .getFocusTaskId(firstTask.id);
+
+        expect(focusTaskId, equals(nextTask.id));
       });
 
-      test('getFocusTaskId returns previous task when deleting middle task', () {
-        final parentTasks = container
-            .read(taskListProvider)
-            .where((t) => t.parentId == testTask.parentId)
-            .toList()
-          ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+      test(
+        'getFocusTaskId returns previous task when deleting middle task',
+        () async {
+          final parentId = testTask.parentId;
+          final sheetId = testTask.sheetId;
 
-        if (parentTasks.length > 2) {
+          // Ensure we have at least 3 tasks with the same parent
+          var parentTasks = container
+              .read(taskListProvider)
+              .where((t) => t.parentId == parentId)
+              .toList()
+            ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+
+          // Add tasks if needed
+          while (parentTasks.length < 3) {
+            await container.read(taskListProvider.notifier).addTask(
+              title: 'Setup Task ${parentTasks.length}',
+              parentId: parentId,
+              sheetId: sheetId,
+            );
+            // Refresh the list after adding
+            parentTasks = container
+                .read(taskListProvider)
+                .where((t) => t.parentId == parentId)
+                .toList()
+              ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+          }
+
           final middleTask = parentTasks[1];
           final previousTask = parentTasks[0];
 
@@ -276,26 +323,43 @@ void main() {
               .getFocusTaskId(middleTask.id);
 
           expect(focusTaskId, equals(previousTask.id));
-        }
-      });
+        },
+      );
 
-      test('getFocusTaskId returns previous task when deleting last task', () {
-        final parentTasks = container
+      test('getFocusTaskId returns previous task when deleting last task', () async {
+        final parentId = testTask.parentId;
+        final sheetId = testTask.sheetId;
+
+        // Ensure we have at least 2 tasks with the same parent
+        var parentTasks = container
             .read(taskListProvider)
-            .where((t) => t.parentId == testTask.parentId)
+            .where((t) => t.parentId == parentId)
             .toList()
           ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
 
-        if (parentTasks.length > 1) {
-          final lastTask = parentTasks.last;
-          final previousTask = parentTasks[parentTasks.length - 2];
-
-          final focusTaskId = container
-              .read(taskListProvider.notifier)
-              .getFocusTaskId(lastTask.id);
-
-          expect(focusTaskId, equals(previousTask.id));
+        // Add tasks if needed
+        while (parentTasks.length < 2) {
+          await container.read(taskListProvider.notifier).addTask(
+            title: 'Setup Task ${parentTasks.length}',
+            parentId: parentId,
+            sheetId: sheetId,
+          );
+          // Refresh the list after adding
+          parentTasks = container
+              .read(taskListProvider)
+              .where((t) => t.parentId == parentId)
+              .toList()
+            ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
         }
+
+        final lastTask = parentTasks.last;
+        final previousTask = parentTasks[parentTasks.length - 2];
+
+        final focusTaskId = container
+            .read(taskListProvider.notifier)
+            .getFocusTaskId(lastTask.id);
+
+        expect(focusTaskId, equals(previousTask.id));
       });
     });
 
@@ -317,7 +381,9 @@ void main() {
         final containerWithoutUser = ProviderContainer.test(
           overrides: [
             searchValueProvider.overrideWith(MockSearchValue.new),
-            preferencesServiceProvider.overrideWithValue(mockPreferencesService),
+            preferencesServiceProvider.overrideWithValue(
+              mockPreferencesService,
+            ),
             loggedInUserProvider.overrideWithValue(const AsyncValue.data(null)),
           ],
         );
@@ -401,7 +467,9 @@ void main() {
 
         expect(
           allTasks.length,
-          equals(todaysTasks.length + upcomingTasks.length + pastDueTasks.length),
+          equals(
+            todaysTasks.length + upcomingTasks.length + pastDueTasks.length,
+          ),
         );
       });
     });
@@ -483,7 +551,9 @@ void main() {
 
     group('taskByParent Provider', () {
       test('returns tasks filtered by parent ID', () {
-        final parentTasks = container.read(taskByParentProvider(testTask.parentId));
+        final parentTasks = container.read(
+          taskByParentProvider(testTask.parentId),
+        );
 
         for (final task in parentTasks) {
           expect(task.parentId, equals(testTask.parentId));
@@ -491,7 +561,9 @@ void main() {
       });
 
       test('returns tasks sorted by orderIndex', () {
-        final parentTasks = container.read(taskByParentProvider(testTask.parentId));
+        final parentTasks = container.read(
+          taskByParentProvider(testTask.parentId),
+        );
 
         for (int i = 0; i < parentTasks.length - 1; i++) {
           expect(
@@ -502,8 +574,9 @@ void main() {
       });
 
       test('returns empty list for non-existent parent', () {
-        final parentTasks =
-            container.read(taskByParentProvider('non-existent-parent-id'));
+        final parentTasks = container.read(
+          taskByParentProvider('non-existent-parent-id'),
+        );
 
         expect(parentTasks, isEmpty);
       });
@@ -518,23 +591,26 @@ void main() {
       });
 
       test('returns empty list when task does not exist', () {
-        final users =
-            container.read(listOfUsersByTaskIdProvider('non-existent-id'));
+        final users = container.read(
+          listOfUsersByTaskIdProvider('non-existent-id'),
+        );
 
         expect(users, isEmpty);
       });
 
       test('updates when task assignees change', () {
-        final initialUsers =
-            container.read(listOfUsersByTaskIdProvider(testTask.id));
+        final initialUsers = container.read(
+          listOfUsersByTaskIdProvider(testTask.id),
+        );
         final testUser2 = getUserByIndex(container, index: 1);
 
         container
             .read(taskListProvider.notifier)
             .addAssignee(testTask.id, testUser2.id);
 
-        final updatedUsers =
-            container.read(listOfUsersByTaskIdProvider(testTask.id));
+        final updatedUsers = container.read(
+          listOfUsersByTaskIdProvider(testTask.id),
+        );
         expect(updatedUsers.length, equals(initialUsers.length + 1));
         expect(updatedUsers.contains(testUser2.id), isTrue);
       });
@@ -603,6 +679,7 @@ void main() {
 
       test('updates when task due date changes to today', () {
         final initialCount = container.read(tasksDueTodayCountProvider);
+        final wasAlreadyDueToday = testTask.dueDate.isToday;
 
         // Update task due date to today
         container
@@ -611,8 +688,11 @@ void main() {
 
         final updatedCount = container.read(tasksDueTodayCountProvider);
 
-        // Count should increase if task wasn't due today before
-        expect(updatedCount, greaterThanOrEqualTo(initialCount));
+        if (wasAlreadyDueToday) {
+          expect(updatedCount, equals(initialCount));
+        } else {
+          expect(updatedCount, equals(initialCount + 1));
+        }
       });
     });
 
@@ -626,6 +706,7 @@ void main() {
 
       test('updates when task becomes overdue', () {
         final initialCount = container.read(overdueTasksCountProvider);
+        final wasAlreadyOverdue = testTask.dueDate.isBefore(DateTime.now()) && !testTask.dueDate.isToday;
 
         // Update task due date to past
         final pastDate = DateTime.now().subtract(const Duration(days: 1));
@@ -635,11 +716,12 @@ void main() {
 
         final updatedCount = container.read(overdueTasksCountProvider);
 
-        // Count should increase if task wasn't overdue before
-        expect(updatedCount, greaterThanOrEqualTo(initialCount));
+        if (wasAlreadyOverdue) {
+          expect(updatedCount, equals(initialCount));
+        } else {
+          expect(updatedCount, equals(initialCount + 1));
+        }
       });
     });
-
   });
 }
-

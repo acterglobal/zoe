@@ -162,14 +162,27 @@ void main() {
         );
 
         final filtered = container.read(eventListSearchProvider);
-        // eventListSearchProvider filters by logged-in user membership
+        // Get events that the test user's sheets contain
+        final userEvents = events.where((e) {
+          final sheet = container.read(sheetProvider(e.sheetId));
+          return sheet?.users.contains(testUserId) == true;
+        }).toList();
+
         // Check if firstEvent's sheet contains the test user
         final sheet = container.read(sheetProvider(firstEvent.sheetId));
         if (sheet?.users.contains(testUserId) == true) {
           expect(filtered.any((e) => e.id == firstEvent.id), isTrue);
         } else {
-          // If user doesn't have access, filtered list might not contain it
-          expect(filtered.isNotEmpty || filtered.isEmpty, isTrue);
+          // If user doesn't have access, assert that firstEvent is NOT in filtered
+          expect(filtered.any((e) => e.id == firstEvent.id), isFalse);
+          
+          // Assert that a visible event that matches the search query is in filtered
+          final visibleMatchingEvents = userEvents.where(
+            (e) => e.title.toLowerCase().contains(searchQuery),
+          ).toList();
+          if (visibleMatchingEvents.isNotEmpty) {
+            expect(filtered.any((e) => e.id == visibleMatchingEvents.first.id), isTrue);
+          }
         }
       });
 
@@ -303,13 +316,27 @@ void main() {
         );
 
         final filtered = searchScoped.read(eventListSearchProvider);
+        // Get events that the test user's sheets contain in searchScoped context
+        final userEventsInScope = eventList.where((e) {
+          final sheet = searchScoped.read(sheetProvider(e.sheetId));
+          return sheet?.users.contains(testUserId) == true;
+        }).toList();
+        
         // Check if first event's sheet contains the test user
         final firstSheet = searchScoped.read(sheetProvider(first.sheetId));
         if (firstSheet?.users.contains(testUserId) == true) {
           expect(filtered.any((e) => e.id == first.id), isTrue);
         } else {
-          // If user doesn't have access, check that filtered list works correctly
-          expect(filtered.isNotEmpty || filtered.isEmpty, isTrue);
+          // If user doesn't have access, assert that first is NOT in filtered
+          expect(filtered.any((e) => e.id == first.id), isFalse);
+          
+          // Assert that a visible event that matches the search query is in filtered
+          final visibleMatchingEvents = userEventsInScope.where(
+            (e) => e.title.toLowerCase().contains(query),
+          ).toList();
+          if (visibleMatchingEvents.isNotEmpty) {
+            expect(filtered.any((e) => e.id == visibleMatchingEvents.first.id), isTrue);
+          }
         }
       });
 

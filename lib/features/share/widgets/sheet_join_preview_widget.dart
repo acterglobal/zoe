@@ -52,7 +52,10 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
           const SizedBox(height: 20),
           Row(
             children: [
-              SheetAvatarWidget(sheetId: sheet.id,padding: const EdgeInsets.all(8)),
+              SheetAvatarWidget(
+                sheetId: sheet.id,
+                padding: const EdgeInsets.all(8),
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(sheet.title, style: theme.textTheme.bodyMedium),
@@ -77,12 +80,25 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
     final currentUserId = ref.watch(loggedInUserProvider).value;
     if (currentUserId == null) return const SizedBox.shrink();
     return ZoePrimaryButton(
-      onPressed: () {
-        ref
-            .read(sheetListProvider.notifier)
-            .addUserToSheet(parentId, currentUserId);
-        Navigator.of(context).pop();
-        context.push(AppRoutes.sheet.route.replaceAll(':sheetId', parentId));
+      onPressed: () async {
+        try {
+          await ref
+              .read(sheetListProvider.notifier)
+              .addUserToSheet(parentId, currentUserId);
+          if (context.mounted) {
+            Navigator.of(context).pop();
+            context.push(
+              AppRoutes.sheet.route.replaceAll(':sheetId', parentId),
+            );
+          }
+        } catch (e) {
+          if (context.mounted) {
+            // Show error to user
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('Failed to join sheet: $e')));
+          }
+        }
       },
       icon: Icons.person_add_rounded,
       text: L10n.of(context).join,
