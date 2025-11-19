@@ -206,15 +206,14 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
                 .updateSheetShareInfo(
                   sheetId: widget.parentId,
                   sharedBy: userName,
-                  message: _userMessage.trim().isNotEmpty ? _userMessage : null,
+                  message: _userMessage.trim().isNotEmpty ? _userMessage.trim() : null,
                 );
           }
-        }else{
-          CommonUtils.shareText(contentText, subject: l10n.share);
         }
+        CommonUtils.shareText(contentText, subject: l10n.share);
       },
       icon: Icons.share_rounded,
-        text: l10n.share,
-      );
-    }
+      text: l10n.share,
+    );
+  }
 }
