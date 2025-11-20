@@ -197,7 +197,7 @@ void main() {
         final sheetList = tester.widget<SheetListWidget>(
           find.byType(SheetListWidget),
         );
-        expect(sheetList.sheetsProvider, equals(sheetListProvider));
+        expect(sheetList.sheetsProvider, equals(sheetsListProvider));
         expect(sheetList.shrinkWrap, isTrue);
         expect(sheetList.maxItems, equals(3));
       });
@@ -260,17 +260,17 @@ void main() {
     });
 
     group('Provider Integration', () {
-      testWidgets('displays sheets from sheetListProvider', (tester) async {
+      testWidgets('displays sheets from sheetsListProvider', (tester) async {
         await pumpHomeScreen(tester);
 
-        // The SheetListWidget should receive data from sheetListProvider
+        // The SheetListWidget should receive data from sheetsListProvider
         expect(find.byType(SheetListWidget), findsOneWidget);
 
         final sheetList = tester.widget<SheetListWidget>(
           find.byType(SheetListWidget),
         );
 
-        expect(sheetList.sheetsProvider, equals(sheetListProvider));
+        expect(sheetList.sheetsProvider, equals(sheetsListProvider));
       });
 
       testWidgets('handles empty sheet list gracefully', (tester) async {

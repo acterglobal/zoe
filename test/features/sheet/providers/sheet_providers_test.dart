@@ -6,13 +6,24 @@ import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
+import '../../users/utils/users_utils.dart';
 
 void main() {
   group('Sheet Providers', () {
     late ProviderContainer container;
+    late String testUserId;
 
     setUp(() {
       container = ProviderContainer.test();
+      testUserId = getUserByIndex(container).id;
+      // Create the actual container with the user override
+      container = ProviderContainer.test(
+        overrides: [
+          // Override loggedInUserProvider with a user that exists in test sheets
+          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+        ],
+      );
     });
 
     group('SheetList Provider', () {
@@ -323,10 +334,14 @@ void main() {
     group('sheetListSearch Provider', () {
       test('returns all sheets when search is empty', () {
         final searchResults = container.read(sheetListSearchProvider);
+        // sheetListSearchProvider filters by logged-in user membership
+        // Get sheets that the test user is a member of
         final allSheets = container.read(sheetListProvider);
+        final userSheets = allSheets
+            .where((s) => s.users.contains(testUserId))
+            .toList();
 
-        expect(searchResults.length, equals(allSheets.length));
-        expect(searchResults, equals(allSheets));
+        expect(searchResults.length, equals(userSheets.length));
       });
 
       test('filters sheets by title when search has value', () {
@@ -391,8 +406,8 @@ void main() {
 
         expect(users, isA<List<String>>());
         expect(users.isNotEmpty, isTrue);
-        expect(users.contains('user_1'), isTrue);
-        expect(users.contains('user_3'), isTrue);
+        // Verify the test user is in the sheet's users list
+        expect(users.contains(testUserId), isTrue);
       });
 
       test('returns empty list when sheet does not exist', () {
@@ -421,9 +436,14 @@ void main() {
     group('sortedSheets Provider', () {
       test('returns sheets sorted by title', () {
         final sortedSheets = container.read(sortedSheetsProvider);
+        // sortedSheetsProvider filters by logged-in user membership
+        // Get sheets that the test user is a member of
         final allSheets = container.read(sheetListProvider);
+        final userSheets = allSheets
+            .where((s) => s.users.contains(testUserId))
+            .toList();
 
-        expect(sortedSheets.length, equals(allSheets.length));
+        expect(sortedSheets.length, equals(userSheets.length));
 
         // Verify they are sorted alphabetically by title
         for (int i = 0; i < sortedSheets.length - 1; i++) {

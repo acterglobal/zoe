@@ -83,7 +83,7 @@ class SheetList extends _$SheetList {
     ];
   }
 
-  void addUserToSheet(String sheetId, String userId) {
+  Future<void> addUserToSheet(String sheetId, String userId) async {
     state = [
       for (final sheet in state)
         if (sheet.id == sheetId)
