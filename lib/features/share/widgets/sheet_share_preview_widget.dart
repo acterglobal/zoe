@@ -77,6 +77,8 @@ class _SheetSharePreviewWidgetState
     final todayEvents = sheetEvents.where((e) => e.startDate.isToday).toList();
     final todayTasks = sheetTasks.where((t) => t.dueDate.isToday).toList();
 
+    final l10n = L10n.of(context);
+
     return GlassyContainer(
       padding: const EdgeInsets.all(16),
       blurRadius: 0,
@@ -88,7 +90,7 @@ class _SheetSharePreviewWidgetState
             // Message Text Field
             AnimatedTextField(
               controller: _messageController,
-              hintText: L10n.of(context).addAMessage,
+              hintText: l10n.addAMessage,
               onErrorChanged: (error) {},
               onSubmitted: () {},
               maxLines: 3,
@@ -104,34 +106,34 @@ class _SheetSharePreviewWidgetState
               _buildStatCard(
                 context: context,
                 icon: Icons.event_rounded,
-                label: L10n.of(context).events,
+                label: l10n.events,
                 count: sheetEvents.length,
                 subtitle: todayEvents.isNotEmpty
-                    ? '${todayEvents.length} ${L10n.of(context).today}'
+                    ? '${todayEvents.length} ${l10n.today}'
                     : null,
                 color: AppColors.secondaryColor,
               ),
               _buildStatCard(
                 context: context,
                 icon: Icons.task_alt_rounded,
-                label: L10n.of(context).tasks,
+                label: l10n.tasks,
                 count: sheetTasks.length,
                 subtitle: todayTasks.isNotEmpty
-                    ? '${todayTasks.length} ${L10n.of(context).dueToday}'
+                    ? '${todayTasks.length} ${l10n.dueToday}'
                     : null,
                 color: AppColors.successColor,
               ),
               _buildStatCard(
                 context: context,
                 icon: Icons.insert_drive_file_rounded,
-                label: L10n.of(context).documents,
+                label: l10n.documents,
                 count: sheetDocuments.length,
                 color: AppColors.brightOrangeColor,
               ),
               _buildStatCard(
                 context: context,
                 icon: Icons.poll_rounded,
-                label: L10n.of(context).polls,
+                label: l10n.polls,
                 count: sheetPolls.length,
                 color: AppColors.brightMagentaColor,
               ),

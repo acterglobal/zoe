@@ -110,9 +110,7 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
     if (!hasMessage && !hasSharedBy) return const SizedBox.shrink();
 
     // Try to find sharedBy user
-    final sharedByUser = hasSharedBy
-        ? userList.where((u) => u.name == sharedBy).firstOrNull
-        : null;
+    final sharedByUser = userList.where((u) => u.name == sharedBy).firstOrNull;
 
     return GlassyContainer(
       padding: const EdgeInsets.all(12),
@@ -133,17 +131,10 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
                 ),
                 const SizedBox(width: 4),
                 Flexible(
-                  child: sharedByUser != null
-                      ? ZoeUserChipWidget(
-                          user: sharedByUser,
-                          type: ZoeUserChipType.userNameWithAvatarChip,
-                        )
-                      : Text(
-                          sharedBy,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                  child: ZoeUserChipWidget(
+                    user: sharedByUser!,
+                    type: ZoeUserChipType.userNameWithAvatarChip,
+                  ),
                 ),
               ],
             ),

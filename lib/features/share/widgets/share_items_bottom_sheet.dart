@@ -55,6 +55,7 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final contentText = widget.isSheet
         ? () {
             final currentUserAsync = ref.watch(currentUserProvider);
@@ -81,9 +82,9 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
                 : Text(
                     _getShareTitle(context, ref),
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    style: theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.onSurface,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
             const SizedBox(height: 20),
@@ -206,7 +207,9 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
                 .updateSheetShareInfo(
                   sheetId: widget.parentId,
                   sharedBy: userName,
-                  message: _userMessage.trim().isNotEmpty ? _userMessage.trim() : null,
+                  message: _userMessage.trim().isNotEmpty
+                      ? _userMessage.trim()
+                      : null,
                 );
           }
         }
