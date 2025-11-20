@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 
+import '../../../test-utils/mock_gorouter.dart';
 import '../../../test-utils/test_utils.dart';
 
 /// Test utilities for ZoeAppBar widget tests
@@ -35,6 +38,12 @@ class ZoeAppBarTestUtils {
 }
 
 void main() {
+  late MockGoRouter mockGoRouter;
+
+  setUp(() {
+    mockGoRouter = MockGoRouter();
+  });
+
   group('ZoeAppBar Widget Tests -', () {
     testWidgets('renders with default properties', (tester) async {
       await tester.pumpMaterialWidget(
@@ -88,44 +97,55 @@ void main() {
       expect(backPressed, true);
     });
 
-    testWidgets('navigates back by default when no onBackPressed is provided', (
-      tester,
-    ) async {
-      // Setup a navigation stack
-      final navigatorKey = GlobalKey<NavigatorState>();
+    testWidgets('navigates back (pops) when canPop is true', (tester) async {
+      // ARRANGE: Stub the router to allow popping
+      when(() => mockGoRouter.canPop()).thenReturn(true);
+      when(() => mockGoRouter.pop()).thenReturn(null);
+
+      // Wrap ZoeAppBar in a router to provide context
       await tester.pumpWidget(
         MaterialApp(
-          navigatorKey: navigatorKey,
           home: Scaffold(
-            body: Builder(
-              builder: (context) => TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => Scaffold(body: ZoeAppBar()),
-                    ),
-                  );
-                },
-                child: Text('Push Route'),
-              ),
+            body: MockGoRouter.navigator(
+              router: mockGoRouter,
+              child: ZoeAppBarTestUtils.createTestWidget(),
             ),
           ),
         ),
       );
 
-      // Push new route
-      await tester.tap(find.text('Push Route'));
-      await tester.pumpAndSettle();
-
-      // Verify we're on the new route
-      expect(find.byType(ZoeAppBar), findsOneWidget);
-
-      // Tap back button
+      // ACT: Tap the back button
       await tester.tap(find.byType(ZoeIconButtonWidget));
       await tester.pumpAndSettle();
 
-      // Verify we navigated back
-      expect(find.byType(ZoeAppBar), findsNothing);
+      // ASSERT: Verify that pop() was called
+      verify(() => mockGoRouter.pop()).called(1);
+    });
+
+    testWidgets('navigates to home when canPop is false', (tester) async {
+      // ARRANGE: Stub the router to disallow popping and mock the `go` method
+      when(() => mockGoRouter.canPop()).thenReturn(false);
+      when(() => mockGoRouter.go(AppRoutes.home.route)).thenReturn(null);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MockGoRouter.navigator(
+              router: mockGoRouter,
+              child: ZoeAppBarTestUtils.createTestWidget(),
+            ),
+          ),
+        ),
+      );
+
+      // ACT: Tap the back button
+      await tester.tap(find.byType(ZoeIconButtonWidget));
+      await tester.pumpAndSettle();
+
+      // ASSERT: Verify that go('/home') was called
+      verify(() => mockGoRouter.go(AppRoutes.home.route)).called(1);
+      // Verify that pop() was NOT called
+      verifyNever(() => mockGoRouter.pop());
     });
 
     testWidgets('renders actions correctly', (tester) async {

@@ -6,11 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:zoe/core/deeplink/deep_link_initializer.dart';
 import 'package:zoe/core/routing/app_router.dart';
-import 'package:zoe/core/routing/app_routes.dart';
-import 'package:zoe/features/home/screens/home_screen.dart';
-import 'package:zoe/features/share/widgets/sheet_join_preview_widget.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
-import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import '../../features/sheet/utils/sheet_utils.dart';
 import '../../features/users/utils/users_utils.dart';
@@ -110,77 +106,6 @@ void main() {
         await pumpDeepLinkInitializer(tester);
         expect(find.text('Test Child'), findsOneWidget);
         expect(find.byType(DeepLinkInitializer), findsOneWidget);
-      });
-    });
-
-    group('URI Extraction', () {
-      test('extracts sheet ID from valid URI', () {
-        final uri = Uri.parse('https://hellozoe.app/sheet/test-sheet-id');
-        final initializer = _DeepLinkInitializerState();
-        final sheetId = initializer._extractSheetId(uri);
-        expect(sheetId, equals('test-sheet-id'));
-      });
-
-      test('returns null for non-https scheme', () {
-        final uri = Uri.parse('http://hellozoe.app/sheet/test-sheet-id');
-        final initializer = _DeepLinkInitializerState();
-        final sheetId = initializer._extractSheetId(uri);
-        expect(sheetId, isNull);
-      });
-
-      test('returns null for wrong host', () {
-        final uri = Uri.parse('https://example.com/sheet/test-sheet-id');
-        final initializer = _DeepLinkInitializerState();
-        final sheetId = initializer._extractSheetId(uri);
-        expect(sheetId, isNull);
-      });
-
-      test('returns null for wrong path prefix', () {
-        final uri = Uri.parse('https://hellozoe.app/wrong/test-sheet-id');
-        final initializer = _DeepLinkInitializerState();
-        final sheetId = initializer._extractSheetId(uri);
-        expect(sheetId, isNull);
-      });
-
-      test('returns null for insufficient path segments', () {
-        final uri = Uri.parse('https://hellozoe.app/sheet');
-        final initializer = _DeepLinkInitializerState();
-        final sheetId = initializer._extractSheetId(uri);
-        expect(sheetId, isNull);
-      });
-
-      test('returns null for empty sheet ID', () {
-        final uri = Uri.parse('https://hellozoe.app/sheet/');
-        final initializer = _DeepLinkInitializerState();
-        final sheetId = initializer._extractSheetId(uri);
-        expect(sheetId, isNull);
-      });
-
-      test('extracts sheet ID with additional path segments', () {
-        final uri = Uri.parse(
-          'https://hellozoe.app/sheet/test-sheet-id/extra/path',
-        );
-        final initializer = _DeepLinkInitializerState();
-        final sheetId = initializer._extractSheetId(uri);
-        expect(sheetId, equals('test-sheet-id'));
-      });
-
-      test('handles URI with query parameters', () {
-        final uri = Uri.parse(
-          'https://hellozoe.app/sheet/test-sheet-id?param=value',
-        );
-        final initializer = _DeepLinkInitializerState();
-        final sheetId = initializer._extractSheetId(uri);
-        expect(sheetId, equals('test-sheet-id'));
-      });
-
-      test('handles URI with fragment', () {
-        final uri = Uri.parse(
-          'https://hellozoe.app/sheet/test-sheet-id#fragment',
-        );
-        final initializer = _DeepLinkInitializerState();
-        final sheetId = initializer._extractSheetId(uri);
-        expect(sheetId, equals('test-sheet-id'));
       });
     });
 
@@ -327,24 +252,4 @@ void main() {
       });
     });
   });
-}
-
-/// Helper class to access private method for testing
-class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
-  @override
-  Widget build(BuildContext context) => widget.child;
-
-  // Expose private method for testing
-  String? _extractSheetId(Uri uri) {
-    if (uri.scheme != 'https') return null;
-    if (uri.host.toLowerCase() != 'hellozoe.app') return null;
-
-    final segments = uri.pathSegments;
-    if (segments.length < 2) return null;
-    if (segments.first != 'sheet') return null;
-
-    final sheetId = segments[1];
-    if (sheetId.isEmpty) return null;
-    return sheetId;
-  }
 }

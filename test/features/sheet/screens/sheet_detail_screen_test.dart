@@ -106,8 +106,9 @@ void main() {
       testWidgets('renders AppBar with correct configuration', (tester) async {
         await pumpSheetDetailScreen(tester);
 
-        final sliverAppBar =
-            tester.widget<SliverAppBar>(find.byType(SliverAppBar));
+        final sliverAppBar = tester.widget<SliverAppBar>(
+          find.byType(SliverAppBar),
+        );
         expect(sliverAppBar.automaticallyImplyLeading, isFalse);
         final theme = Theme.of(tester.element(find.byType(SheetDetailScreen)));
         expect(sliverAppBar.backgroundColor, equals(theme.colorScheme.surface));
@@ -306,7 +307,6 @@ void main() {
         final menuButton = find.byType(ContentMenuButton);
         await tester.tap(menuButton);
         await tester.pump();
-        await tester.pump(const Duration(milliseconds: 100));
 
         // Should show popup menu with sheet actions
         final l10n = getL10n(tester);
@@ -322,27 +322,31 @@ void main() {
         container.read(sheetListProvider.notifier).addSheet(sheetWithUsers);
 
         await pumpSheetDetailScreen(tester, sheetId: sheetWithUsers.id);
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 100));
 
-        // Verify users count is displayed
         final l10n = getL10n(tester);
-        expect(find.text('2 ${l10n.users}'), findsAtLeastNWidgets(1));
+        final usersCountText = '2 ${l10n.users}';
+        final usersCountFinder = find.text(usersCountText);
 
-        // Find and tap the users count widget
-        final usersCountWidget = find.byType(GestureDetector).first;
+        // Verify users count text is displayed
+        expect(usersCountFinder, findsOneWidget);
+
+        // Find the GestureDetector that is an ancestor of the text.
+        // This is a much safer way to find the tappable area.
+        final usersCountWidget = find.widgetWithText(
+          GestureDetector,
+          usersCountText,
+        );
         expect(usersCountWidget, findsOneWidget);
 
+        // ACT: Tap the specific widget
         await tester.tap(usersCountWidget);
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 100));
 
-        // The tap should not throw an error, indicating showModalBottomSheet was called
+        // ASSERT: Verify no crash occurred and the UI is still there.
+        // You would add an `expect` here to check if a user list dialog/modal appeared.
+        expect(find.text(usersCountText), findsOneWidget);
         expect(tester.takeException(), isNull);
-
-        // Verify that the users count widget is still present (no crash)
-        expect(find.text('2 ${l10n.users}'), findsAtLeastNWidgets(1));
-        await tester.pump();
       });
 
       testWidgets('title widget long press shows sheet menu', (tester) async {
@@ -440,9 +444,13 @@ void main() {
       testWidgets('has correct padding and spacing', (tester) async {
         await pumpSheetDetailScreen(tester);
 
-        final sliverPadding =
-            tester.widget<SliverPadding>(find.byType(SliverPadding).first);
-        expect(sliverPadding.padding, equals(EdgeInsets.symmetric(horizontal: 24)));
+        final sliverPadding = tester.widget<SliverPadding>(
+          find.byType(SliverPadding).first,
+        );
+        expect(
+          sliverPadding.padding,
+          equals(EdgeInsets.symmetric(horizontal: 24)),
+        );
         expect(find.byType(SizedBox), findsAtLeastNWidgets(1));
       });
     });
