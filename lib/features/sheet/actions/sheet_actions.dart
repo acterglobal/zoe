@@ -104,6 +104,17 @@ class SheetActions {
     String sheetId,
   ) {
     ref.read(sheetListProvider.notifier).updateSheetCoverImage(sheetId, null);
+    
+    // Set theme when removing cover image if theme is not already set
+    final sheet = ref.read(sheetProvider(sheetId));
+    if (sheet != null && sheet.theme == null) {
+      final theme = Theme.of(context);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+      ref.read(sheetListProvider.notifier).updateSheetTheme(
+            sheetId: sheetId,
+            primary: theme.colorScheme.primary,
+            secondary: theme.colorScheme.secondary,
+          );
+    }
   }
 
   /// Copies sheet content to clipboard

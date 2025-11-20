@@ -22,8 +22,14 @@ class SheetAppBar extends ConsumerWidget {
     final coverImageUrl = sheet?.coverImageUrl;
     final hasCoverImage = coverImageUrl != null && coverImageUrl.isNotEmpty;
 
+    final theme = Theme.of(context);
+    
+    // Use sheet theme if available, otherwise fall back to app theme
+    final primaryColor = sheet?.theme?.primary ?? theme.colorScheme.primary;
+    final secondaryColor = sheet?.theme?.secondary ?? theme.colorScheme.secondary;
+
     return SliverAppBar(
-      expandedHeight: hasCoverImage ? 200 : kToolbarHeight,
+      expandedHeight: hasCoverImage ? 200 : 120,
       collapsedHeight: kToolbarHeight,
       automaticallyImplyLeading: false,
       title: _buildTitle(context, ref, hasCoverImage),
@@ -39,7 +45,17 @@ class SheetAppBar extends ConsumerWidget {
                 placeholderIconSize: 120,
               ),
             )
-          : null,
+          : FlexibleSpaceBar(
+              background: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [primaryColor, secondaryColor],
+                  ),
+                ),
+              ),
+            ),
     );
   }
 

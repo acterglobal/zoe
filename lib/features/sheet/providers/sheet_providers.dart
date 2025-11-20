@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/sheet/data/sheet_data.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
@@ -17,6 +18,16 @@ class SheetList extends _$SheetList {
 
   void addSheet(SheetModel sheet) {
     final currentUserId = ref.read(loggedInUserProvider).value;
+
+    // Apply default theme if sheet doesn't have one
+    if (sheet.theme == null) {
+      sheet.copyWith(
+        theme: (
+          primary: AppColors.primaryColor,
+          secondary: AppColors.secondaryColor,
+        ),
+      );
+    }
 
     if (currentUserId != null && currentUserId.isNotEmpty) {
       state = [
@@ -88,6 +99,20 @@ class SheetList extends _$SheetList {
       for (final sheet in state)
         if (sheet.id == sheetId)
           sheet.copyWith(users: {...sheet.users, userId}.toList())
+        else
+          sheet,
+    ];
+  }
+
+  void updateSheetTheme({
+    required String sheetId,
+    required Color primary,
+    required Color secondary,
+  }) {
+    state = [
+      for (final sheet in state)
+        if (sheet.id == sheetId)
+          sheet.copyWith(theme: (primary: primary, secondary: secondary))
         else
           sheet,
     ];

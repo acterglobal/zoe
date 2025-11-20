@@ -40,3 +40,17 @@ void updateSheetAvatar({
         color: color,
       );
 }
+
+/// Updates the theme colors of the sheet
+void updateSheetTheme({
+  required WidgetRef ref,
+  required String sheetId,
+  required Color primary,
+  required Color secondary,
+}) {
+  ref.read(sheetListProvider.notifier).updateSheetTheme(
+        sheetId: sheetId,
+        primary: primary,
+        secondary: secondary,
+      );
+}
