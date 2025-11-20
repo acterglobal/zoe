@@ -119,7 +119,7 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (hasSharedBy) ...[
+          if (hasSharedBy && sharedByUser != null) ...[
             Row(
               children: [
                 Text(
@@ -132,7 +132,7 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
                 const SizedBox(width: 4),
                 Flexible(
                   child: ZoeUserChipWidget(
-                    user: sharedByUser!,
+                    user: sharedByUser,
                     type: ZoeUserChipType.userNameWithAvatarChip,
                   ),
                 ),
