@@ -79,6 +79,13 @@ UserModel? getUserById(Ref ref, String userId) {
   return userList.where((u) => u.id == userId).firstOrNull;
 }
 
+/// Provider for getting a user by name
+@riverpod
+UserModel? getUserByName(Ref ref, String name) {
+  final userList = ref.watch(userListProvider);
+  return userList.where((u) => u.name == name).firstOrNull;
+}
+
 /// Provider for getting user IDs from a list of UserModel objects
 @riverpod
 List<String> userIdsFromUserModels(Ref ref, List<UserModel> userModels) {

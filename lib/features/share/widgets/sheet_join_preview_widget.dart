@@ -101,10 +101,9 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
   ) {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
-    final userList = ref.watch(userListProvider);
 
     // Try to find sharedBy user
-    final sharedByUser = userList.where((u) => u.name == sharedBy).firstOrNull;
+    final sharedByUser = ref.watch(getUserByNameProvider(sharedBy ?? ''));
 
     final hasMessage = (message != null && message.trim().isNotEmpty);
     final hasSharedBy =
