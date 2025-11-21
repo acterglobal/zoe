@@ -73,6 +73,59 @@ void main() {
         final result = ShareUtils.getLinkPrefixUrl(endpoint);
         expect(result, equals('🔗 ${ShareUtils.linkPrefixUrl}/$endpoint'));
       });
+
+      test('getLinkPrefixUrl includes query parameters when provided', () {
+        const endpoint = 'sheet/test-id';
+        final queryParams = {'sharedBy': 'John Doe', 'message': 'Check this out'};
+        final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: queryParams);
+        
+        expect(result, contains('sharedBy=John+Doe'));
+        expect(result, contains('message=Check+this+out'));
+        expect(result, contains(endpoint));
+      });
+
+      test('getLinkPrefixUrl handles empty query params map', () {
+        const endpoint = 'sheet/test-id';
+        final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: {});
+        
+        // Should return link without query parameters
+        expect(result, equals('🔗 ${ShareUtils.linkPrefixUrl}/$endpoint'));
+      });
+
+      test('getLinkPrefixUrl handles null query params', () {
+        const endpoint = 'sheet/test-id';
+        final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: null);
+        
+        // Should return link without query parameters
+        expect(result, equals('🔗 ${ShareUtils.linkPrefixUrl}/$endpoint'));
+      });
+
+      test('getLinkPrefixUrl encodes query parameters correctly', () {
+        const endpoint = 'sheet/test-id';
+        final queryParams = {
+          'sharedBy': 'John Doe',
+          'message': 'Hello & Welcome!',
+        };
+        final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: queryParams);
+        
+        // Verify URL encoding
+        expect(result, contains('sharedBy=John+Doe'));
+        expect(result, contains('message=Hello+%26+Welcome%21'));
+      });
+
+      test('getLinkPrefixUrl handles multiple query parameters', () {
+        const endpoint = 'sheet/test-id';
+        final queryParams = {
+          'param1': 'value1',
+          'param2': 'value2',
+          'param3': 'value3',
+        };
+        final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: queryParams);
+        
+        expect(result, contains('param1=value1'));
+        expect(result, contains('param2=value2'));
+        expect(result, contains('param3=value3'));
+      });
     });
 
     group('Sheet Share Message', () {
@@ -85,6 +138,8 @@ void main() {
       Future<void> pumpSheetShareUtilsWidget(
         WidgetTester tester, {
         String? parentId,
+        String? userName,
+        String? userMessage,
       }) async {
         await tester.pumpConsumerWidget(
           container: container,
@@ -92,6 +147,8 @@ void main() {
             ShareUtils.getSheetShareMessage(
               ref: ref,
               parentId: parentId ?? testSheetModel.id,
+              userName: userName,
+              userMessage: userMessage,
             ),
           ),
         );
@@ -203,6 +260,162 @@ void main() {
           textWidget.data,
           contains(getSheetShareLink(parentId: specialSheet.id)),
         );
+      });
+
+      testWidgets('includes userName and userMessage as query parameters in link', (
+        tester,
+      ) async {
+        const userName = 'John Doe';
+        const userMessage = 'Check out this amazing sheet!';
+
+        await pumpSheetShareUtilsWidget(
+          tester,
+          userName: userName,
+          userMessage: userMessage,
+        );
+
+        // Verify userName and userMessage are included as query parameters in the link
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains('sharedBy=John+Doe'));
+        expect(textWidget.data, contains('message=Check+out+this+amazing+sheet%21'));
+      });
+
+      testWidgets('includes only userName query parameter when userMessage is null', (
+        tester,
+      ) async {
+        const userName = 'Jane Smith';
+
+        await pumpSheetShareUtilsWidget(
+          tester,
+          userName: userName,
+          userMessage: null,
+        );
+
+        // Verify userName is in link but userMessage is not
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains('sharedBy=Jane+Smith'));
+        expect(textWidget.data, isNot(contains('message=')));
+      });
+
+      testWidgets('includes only userMessage query parameter when userName is null', (
+        tester,
+      ) async {
+        const userMessage = 'This is a great sheet!';
+
+        await pumpSheetShareUtilsWidget(
+          tester,
+          userName: null,
+          userMessage: userMessage,
+        );
+
+        // Verify userMessage is in link but userName is not
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains('message=This+is+a+great+sheet%21'));
+        expect(textWidget.data, isNot(contains('sharedBy=')));
+      });
+
+
+      testWidgets('trims userMessage whitespace before adding to link', (
+        tester,
+      ) async {
+        const userName = 'John Doe';
+        const userMessage = '  Message with whitespace  ';
+
+        await pumpSheetShareUtilsWidget(
+          tester,
+          userName: userName,
+          userMessage: userMessage,
+        );
+
+        // Verify trimmed message is in the link (not the original with whitespace)
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, contains('message=Message+with+whitespace'));
+        expect(textWidget.data, isNot(contains('message=++Message+with+whitespace++')));
+      });
+
+      testWidgets('does not include query parameters when both are empty', (
+        tester,
+      ) async {
+        await pumpSheetShareUtilsWidget(
+          tester,
+          userName: null,
+          userMessage: null,
+        );
+
+        // Verify link does not contain query parameters
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final link = getSheetShareLink();
+        expect(textWidget.data, contains(link));
+        expect(textWidget.data, isNot(contains('?')));
+      });
+
+      testWidgets('does not include query parameters when userName is empty string', (
+        tester,
+      ) async {
+        await pumpSheetShareUtilsWidget(
+          tester,
+          userName: '',
+          userMessage: null,
+        );
+
+        // Verify link does not contain sharedBy parameter
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, isNot(contains('sharedBy=')));
+      });
+
+      testWidgets('does not include query parameters when userMessage is empty string', (
+        tester,
+      ) async {
+        await pumpSheetShareUtilsWidget(
+          tester,
+          userName: null,
+          userMessage: '',
+        );
+
+        // Verify link does not contain message parameter
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, isNot(contains('message=')));
+      });
+
+      testWidgets('does not include query parameters when userMessage is only whitespace', (
+        tester,
+      ) async {
+        await pumpSheetShareUtilsWidget(
+          tester,
+          userName: null,
+          userMessage: '   ',
+        );
+
+        // Verify link does not contain message parameter
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        expect(textWidget.data, isNot(contains('message=')));
+      });
+
+      testWidgets('maintains correct message structure with userName and userMessage', (
+        tester,
+      ) async {
+        const userName = 'John Doe';
+        const userMessage = 'Check this out!';
+
+        await pumpSheetShareUtilsWidget(
+          tester,
+          userName: userName,
+          userMessage: userMessage,
+        );
+
+        // Verify message structure: title, description (if any), link with query params
+        final textWidget = tester.widget<Text>(find.byType(Text));
+        final lines = textWidget.data!.split('\n');
+        
+        // Should have at least: title, link
+        expect(lines.length, greaterThanOrEqualTo(2));
+        
+        // Verify link contains query parameters
+        expect(textWidget.data, contains('sharedBy=John+Doe'));
+        expect(textWidget.data, contains('message=Check+this+out%21'));
+        
+        // Verify link is at the end
+        expect(textWidget.data, contains('🔗'));
       });
     });
 

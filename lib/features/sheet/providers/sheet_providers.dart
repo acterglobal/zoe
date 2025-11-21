@@ -92,6 +92,23 @@ class SheetList extends _$SheetList {
           sheet,
     ];
   }
+
+  void updateSheetShareInfo({
+    required String sheetId,
+    String? sharedBy,
+    String? message,
+  }) {
+    state = [
+      for (final sheet in state)
+        if (sheet.id == sheetId)
+          sheet.copyWith(
+            sharedBy: sharedBy,
+            message: message,
+          )
+        else
+          sheet,
+    ];
+  }
 }
 
 /// Provider for sheets filtered by membership (current user must be a member)

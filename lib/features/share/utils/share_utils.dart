@@ -5,6 +5,7 @@ import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
@@ -13,14 +14,24 @@ import 'package:zoe/features/users/providers/user_providers.dart';
 class ShareUtils {
   static final String linkPrefixUrl = 'https://hellozoe.app';
 
-  static String getLinkPrefixUrl(String endpoint) {
-    return '🔗 $linkPrefixUrl/$endpoint';
+  static String getLinkPrefixUrl(String endpoint, {Map<String, String>? queryParams}) {
+    final uri = Uri.parse('$linkPrefixUrl/$endpoint');
+    if (queryParams != null && queryParams.isNotEmpty) {
+      final uriWithParams = uri.replace(queryParameters: {
+        ...uri.queryParameters,
+        ...queryParams,
+      });
+      return '🔗 ${uriWithParams.toString()}';
+    }
+    return '🔗 ${uri.toString()}';
   }
 
   // Sheet
   static String getSheetShareMessage({
     required WidgetRef ref,
     required String parentId,
+    String? userName,
+    String? userMessage,
   }) {
     final buffer = StringBuffer();
     final sheet = ref.watch(sheetProvider(parentId));
@@ -28,6 +39,11 @@ class ShareUtils {
 
     final title = sheet.title;
     final description = sheet.description?.plainText;
+
+    // Sheet icon/emoji (only if emoji type)
+    if (sheet.sheetAvatar.type == AvatarType.emoji) {
+      buffer.write('${sheet.sheetAvatar.data} ');
+    }
 
     // Title
     buffer.write(title);
@@ -37,8 +53,15 @@ class ShareUtils {
       buffer.write('\n\n$description');
     }
 
-    // Link
-    final link = getLinkPrefixUrl('sheet/$parentId');
+    // Link with query parameters
+    final queryParams = <String, String>{};
+    if (userName != null && userName.isNotEmpty) {
+      queryParams['sharedBy'] = userName;
+    }
+    if (userMessage != null && userMessage.trim().isNotEmpty) {
+      queryParams['message'] = userMessage.trim();
+    }
+    final link = getLinkPrefixUrl('sheet/$parentId', queryParams: queryParams.isNotEmpty ? queryParams : null);
     buffer.write('\n\n$link');
     return buffer.toString();
   }

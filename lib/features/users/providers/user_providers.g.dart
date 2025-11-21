@@ -103,7 +103,7 @@ final class IsUserLoggedInProvider
   }
 }
 
-String _$isUserLoggedInHash() => r'70f3da99db35984ccc6497e21b10e11160997520';
+String _$isUserLoggedInHash() => r'a4dbd77b16ca64827d192c900291405218f70b0c';
 
 /// Provider for the logged-in user ID
 
@@ -141,7 +141,7 @@ final class LoggedInUserProvider
   }
 }
 
-String _$loggedInUserHash() => r'0e268bd84b1586b53c80691222de9e4ec65ed7e0';
+String _$loggedInUserHash() => r'6d1548801b458869d17fdab78778b1733c1668e5';
 
 /// Provider for the current user model
 
@@ -184,7 +184,7 @@ final class CurrentUserProvider
   }
 }
 
-String _$currentUserHash() => r'd4caef1bcbe53daa293a0c1eedea39fac9f0fa98';
+String _$currentUserHash() => r'7ec33880494c002ad1428c0c641e2287c754010f';
 
 /// Provider for users in a specific sheet
 
@@ -357,6 +357,92 @@ final class GetUserByIdFamily extends $Family
 
   @override
   String toString() => r'getUserByIdProvider';
+}
+
+/// Provider for getting a user by name
+
+@ProviderFor(getUserByName)
+const getUserByNameProvider = GetUserByNameFamily._();
+
+/// Provider for getting a user by name
+
+final class GetUserByNameProvider
+    extends $FunctionalProvider<UserModel?, UserModel?, UserModel?>
+    with $Provider<UserModel?> {
+  /// Provider for getting a user by name
+  const GetUserByNameProvider._({
+    required GetUserByNameFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'getUserByNameProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$getUserByNameHash();
+
+  @override
+  String toString() {
+    return r'getUserByNameProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<UserModel?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  UserModel? create(Ref ref) {
+    final argument = this.argument as String;
+    return getUserByName(ref, argument);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UserModel? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UserModel?>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetUserByNameProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$getUserByNameHash() => r'a42232953aef9f0e0776e5458de73e21901df49c';
+
+/// Provider for getting a user by name
+
+final class GetUserByNameFamily extends $Family
+    with $FunctionalFamilyOverride<UserModel?, String> {
+  const GetUserByNameFamily._()
+    : super(
+        retry: null,
+        name: r'getUserByNameProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provider for getting a user by name
+
+  GetUserByNameProvider call(String name) =>
+      GetUserByNameProvider._(argument: name, from: this);
+
+  @override
+  String toString() => r'getUserByNameProvider';
 }
 
 /// Provider for getting user IDs from a list of UserModel objects
