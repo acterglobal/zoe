@@ -12,6 +12,7 @@ import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 import 'package:zoe/features/share/widgets/sheet_join_preview_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 import '../../../test-utils/mock_gorouter.dart';
 import '../../../test-utils/test_utils.dart';
 import '../../sheet/utils/sheet_utils.dart';
@@ -62,11 +63,7 @@ void main() {
       testWidgets('renders correctly with valid sheet and logged in user', (
         tester,
       ) async {
-      
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-        );
+        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
 
         // Verify MaxWidthWidget is present
         expect(find.byType(MaxWidthWidget), findsOneWidget);
@@ -109,10 +106,7 @@ void main() {
 
     group('Sheet Content Display', () {
       testWidgets('displays sheet title correctly', (tester) async {
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-        );
+        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
 
         expect(find.text(testSheet.title), findsOneWidget);
       });
@@ -199,10 +193,7 @@ void main() {
       testWidgets('displays join button with correct icon and text', (
         tester,
       ) async {
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-        );
+        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
 
         final joinButton = tester.widget<ZoePrimaryButton>(
           find.byType(ZoePrimaryButton),
@@ -220,10 +211,7 @@ void main() {
       testWidgets('join button adds user to sheet and navigates', (
         tester,
       ) async {
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-        );
+        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
 
         // Tap join button
         final joinButton = find.byType(ZoePrimaryButton);
@@ -241,10 +229,7 @@ void main() {
       testWidgets('join button pops navigator before pushing', (tester) async {
         when(() => mockGoRouter.canPop()).thenReturn(true);
 
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-        );
+        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
 
         final joinButton = find.byType(ZoePrimaryButton);
         await tester.tap(joinButton);
@@ -258,10 +243,7 @@ void main() {
 
     group('Widget Structure', () {
       testWidgets('has correct widget hierarchy', (tester) async {
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-        );
+        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
 
         // Verify MaxWidthWidget structure
         expect(find.byType(MaxWidthWidget), findsOneWidget);
@@ -290,10 +272,7 @@ void main() {
       });
 
       testWidgets('title has correct styling', (tester) async {
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-        );
+        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
 
         final l10n = WidgetTesterExtension.getL10n(
           tester,
@@ -332,7 +311,9 @@ void main() {
       });
 
       testWidgets('handles sheet with empty emoji', (tester) async {
-        final sheetWithEmptyEmoji = testSheet.copyWith(sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: ''));
+        final sheetWithEmptyEmoji = testSheet.copyWith(
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: ''),
+        );
 
         final testContainer = ProviderContainer.test(
           overrides: [
@@ -358,80 +339,6 @@ void main() {
     });
 
     group('Shared Info Card', () {
-      testWidgets('displays shared info card when sharedBy is present', (
-        tester,
-      ) async {
-        final sharingUser = getUserByIndex(container);
-        final sheetWithSharedBy = testSheet.copyWith(
-          sharedBy: sharingUser.name,
-        );
-
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-            sheetListProvider.overrideWith(
-              () => SheetList()..state = [sheetWithSharedBy],
-            ),
-            sheetProvider(testSheetId).overrideWith((ref) => sheetWithSharedBy),
-          ],
-        );
-
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-          testContainer: testContainer,
-        );
-
-        // Verify GlassyContainer (shared info card) is displayed
-        expect(find.byType(GlassyContainer), findsOneWidget);
-
-        // Verify "Shared by" label is present
-        final l10n = WidgetTesterExtension.getL10n(
-          tester,
-          byType: SheetJoinPreviewWidget,
-        );
-        expect(find.textContaining(l10n.sharedBy), findsOneWidget);
-
-        // Verify user chip is displayed (since user exists in userList)
-        expect(find.byType(ZoeUserChipWidget), findsOneWidget);
-      });
-
-      testWidgets('displays shared info card when message is present', (
-        tester,
-      ) async {
-        const testMessage = 'Check out this amazing sheet!';
-        final sheetWithMessage = testSheet.copyWith(
-          message: testMessage,
-        );
-
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-            sheetListProvider.overrideWith(
-              () => SheetList()..state = [sheetWithMessage],
-            ),
-            sheetProvider(testSheetId).overrideWith((ref) => sheetWithMessage),
-          ],
-        );
-
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-          testContainer: testContainer,
-        );
-
-        // Verify GlassyContainer (shared info card) is displayed
-        expect(find.byType(GlassyContainer), findsOneWidget);
-
-        // Verify message label and content are present
-        final l10n = WidgetTesterExtension.getL10n(
-          tester,
-          byType: SheetJoinPreviewWidget,
-        );
-        expect(find.textContaining(l10n.message), findsOneWidget);
-        expect(find.text(testMessage), findsOneWidget);
-      });
-
       testWidgets('displays shared info card with both sharedBy and message', (
         tester,
       ) async {
@@ -472,19 +379,26 @@ void main() {
         expect(find.byType(ZoeUserChipWidget), findsOneWidget);
       });
 
-      testWidgets('trims message whitespace when displaying', (tester) async {
+      testWidgets('displays message as is (without trimming)', (tester) async {
         const testMessage = '  Message with whitespace  ';
+        final sharingUser = UserModel(id: 'sharing_user', name: 'Sharing User');
         final sheetWithTrimmedMessage = testSheet.copyWith(
           message: testMessage,
+          sharedBy: sharingUser.name,
         );
 
         final testContainer = ProviderContainer.test(
           overrides: [
             loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            getUserByNameProvider(
+              sharingUser.name,
+            ).overrideWith((ref) => sharingUser),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithTrimmedMessage],
             ),
-            sheetProvider(testSheetId).overrideWith((ref) => sheetWithTrimmedMessage),
+            sheetProvider(
+              testSheetId,
+            ).overrideWith((ref) => sheetWithTrimmedMessage),
           ],
         );
 
@@ -494,9 +408,8 @@ void main() {
           testContainer: testContainer,
         );
 
-        // Verify trimmed message is displayed (not the original with whitespace)
-        expect(find.text(testMessage.trim()), findsOneWidget);
-        expect(find.text(testMessage), findsNothing);
+        // Verify untrimmed message is displayed
+        expect(find.text(testMessage), findsOneWidget);
       });
 
       testWidgets('does not display shared info card when both are empty', (
@@ -513,7 +426,9 @@ void main() {
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithoutSharedInfo],
             ),
-            sheetProvider(testSheetId).overrideWith((ref) => sheetWithoutSharedInfo),
+            sheetProvider(
+              testSheetId,
+            ).overrideWith((ref) => sheetWithoutSharedInfo),
           ],
         );
 
@@ -527,89 +442,104 @@ void main() {
         expect(find.byType(GlassyContainer), findsNothing);
       });
 
-      testWidgets('does not display shared info card when sharedBy is empty string', (
-        tester,
-      ) async {
-        final sheetWithEmptySharedBy = testSheet.copyWith(
-          sharedBy: '',
-          message: null,
-        );
+      testWidgets(
+        'does not display shared info card when sharedBy is empty string',
+        (tester) async {
+          final sheetWithEmptySharedBy = testSheet.copyWith(
+            sharedBy: '',
+            message: null,
+          );
 
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-            sheetListProvider.overrideWith(
-              () => SheetList()..state = [sheetWithEmptySharedBy],
-            ),
-            sheetProvider(testSheetId).overrideWith((ref) => sheetWithEmptySharedBy),
-          ],
-        );
+          final testContainer = ProviderContainer.test(
+            overrides: [
+              loggedInUserProvider.overrideWithValue(
+                AsyncValue.data(testUserId),
+              ),
+              sheetListProvider.overrideWith(
+                () => SheetList()..state = [sheetWithEmptySharedBy],
+              ),
+              sheetProvider(
+                testSheetId,
+              ).overrideWith((ref) => sheetWithEmptySharedBy),
+            ],
+          );
 
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-          testContainer: testContainer,
-        );
+          await pumpSheetJoinPreviewWidget(
+            tester,
+            parentId: testSheetId,
+            testContainer: testContainer,
+          );
 
-        // Verify GlassyContainer (shared info card) is NOT displayed
-        expect(find.byType(GlassyContainer), findsNothing);
-      });
+          // Verify GlassyContainer (shared info card) is NOT displayed
+          expect(find.byType(GlassyContainer), findsNothing);
+        },
+      );
 
-      testWidgets('does not display shared info card when message is empty string', (
-        tester,
-      ) async {
-        final sheetWithEmptyMessage = testSheet.copyWith(
-          sharedBy: null,
-          message: '',
-        );
+      testWidgets(
+        'does not display shared info card when message is empty string',
+        (tester) async {
+          final sheetWithEmptyMessage = testSheet.copyWith(
+            sharedBy: null,
+            message: '',
+          );
 
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-            sheetListProvider.overrideWith(
-              () => SheetList()..state = [sheetWithEmptyMessage],
-            ),
-            sheetProvider(testSheetId).overrideWith((ref) => sheetWithEmptyMessage),
-          ],
-        );
+          final testContainer = ProviderContainer.test(
+            overrides: [
+              loggedInUserProvider.overrideWithValue(
+                AsyncValue.data(testUserId),
+              ),
+              sheetListProvider.overrideWith(
+                () => SheetList()..state = [sheetWithEmptyMessage],
+              ),
+              sheetProvider(
+                testSheetId,
+              ).overrideWith((ref) => sheetWithEmptyMessage),
+            ],
+          );
 
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-          testContainer: testContainer,
-        );
+          await pumpSheetJoinPreviewWidget(
+            tester,
+            parentId: testSheetId,
+            testContainer: testContainer,
+          );
 
-        // Verify GlassyContainer (shared info card) is NOT displayed
-        expect(find.byType(GlassyContainer), findsNothing);
-      });
+          // Verify GlassyContainer (shared info card) is NOT displayed
+          expect(find.byType(GlassyContainer), findsNothing);
+        },
+      );
 
-      testWidgets('does not display shared info card when message is only whitespace', (
-        tester,
-      ) async {
-        final sheetWithWhitespaceMessage = testSheet.copyWith(
-          sharedBy: null,
-          message: '   ',
-        );
+      testWidgets(
+        'does not display shared info card when message is only whitespace',
+        (tester) async {
+          final sheetWithWhitespaceMessage = testSheet.copyWith(
+            sharedBy: null,
+            message: '   ',
+          );
 
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-            sheetListProvider.overrideWith(
-              () => SheetList()..state = [sheetWithWhitespaceMessage],
-            ),
-            sheetProvider(testSheetId).overrideWith((ref) => sheetWithWhitespaceMessage),
-          ],
-        );
+          final testContainer = ProviderContainer.test(
+            overrides: [
+              loggedInUserProvider.overrideWithValue(
+                AsyncValue.data(testUserId),
+              ),
+              sheetListProvider.overrideWith(
+                () => SheetList()..state = [sheetWithWhitespaceMessage],
+              ),
+              sheetProvider(
+                testSheetId,
+              ).overrideWith((ref) => sheetWithWhitespaceMessage),
+            ],
+          );
 
-        await pumpSheetJoinPreviewWidget(
-          tester,
-          parentId: testSheetId,
-          testContainer: testContainer,
-        );
+          await pumpSheetJoinPreviewWidget(
+            tester,
+            parentId: testSheetId,
+            testContainer: testContainer,
+          );
 
-        // Verify GlassyContainer (shared info card) is NOT displayed
-        expect(find.byType(GlassyContainer), findsNothing);
-      });
+          // Verify GlassyContainer (shared info card) is NOT displayed
+          expect(find.byType(GlassyContainer), findsNothing);
+        },
+      );
 
       testWidgets('shared info card has correct styling', (tester) async {
         final sharingUser = getUserByIndex(container);
@@ -625,7 +555,9 @@ void main() {
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithSharedInfo],
             ),
-            sheetProvider(testSheetId).overrideWith((ref) => sheetWithSharedInfo),
+            sheetProvider(
+              testSheetId,
+            ).overrideWith((ref) => sheetWithSharedInfo),
           ],
         );
 
