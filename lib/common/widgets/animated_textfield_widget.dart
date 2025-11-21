@@ -130,9 +130,7 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
               if (widget.errorText != null) {
                 widget.onErrorChanged(null);
               }
-              if (widget.onTextChange != null) {
-                widget.controller.text = value;
-              }
+              widget.onTextChange?.call();
             },
             onSubmitted: (value) => widget.onSubmitted(),
           ),

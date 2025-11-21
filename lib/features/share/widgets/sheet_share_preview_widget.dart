@@ -91,8 +91,9 @@ class _SheetSharePreviewWidgetState
               onErrorChanged: (error) {},
               onSubmitted: () {},
               onTextChange: () {
-                if (widget.onMessageChanged != null) {
-                  widget.onMessageChanged;
+                final callback = widget.onMessageChanged;
+                if (callback != null) {
+                  callback(_messageController.text);
                 }
               },
               maxLines: 3,
