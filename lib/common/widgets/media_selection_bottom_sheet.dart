@@ -16,6 +16,7 @@ Future<void> showMediaSelectionBottomSheet(
   required Function(XFile) onTapCamera,
   required Function(List<XFile>) onTapGallery,
   Function(List<XFile>)? onTapFileChooser,
+  Function()? onTapRemoveImage,
 }) async {
   await showModalBottomSheet(
     context: context,
@@ -35,6 +36,7 @@ Future<void> showMediaSelectionBottomSheet(
       onTapCamera: onTapCamera,
       onTapGallery: onTapGallery,
       onTapFileChooser: onTapFileChooser,
+      onTapRemoveImage: onTapRemoveImage,
     ),
   );
 }
@@ -47,6 +49,7 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
   final Function(XFile) onTapCamera;
   final Function(List<XFile>) onTapGallery;
   final Function(List<XFile>)? onTapFileChooser;
+  final Function()? onTapRemoveImage;
 
   const MediaSelectionBottomSheetWidget({
     super.key,
@@ -57,6 +60,7 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
     required this.onTapCamera,
     required this.onTapGallery,
     required this.onTapFileChooser,
+    required this.onTapRemoveImage,
   });
 
   Future<void> _onTapCamera(BuildContext context) async {
@@ -104,6 +108,16 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
       }
     } catch (e) {
       debugPrint('Error picking file: $e');
+    } finally {
+      if (context.mounted) Navigator.of(context).pop();
+    }
+  }
+
+  Future<void> _onTapRemoveImage(BuildContext context) async {
+    try {
+      onTapRemoveImage!();
+    } catch (e) {
+      debugPrint('Error removing image: $e');
     } finally {
       if (context.mounted) Navigator.of(context).pop();
     }
@@ -169,6 +183,13 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
               color: AppColors.secondaryColor,
               onTap: () => _onTapFileChooser(context),
             ),
+            BottomSheetOptionWidget(
+            icon: Icons.delete,
+            title: l10n.removeImage,
+            subtitle: l10n.removeImageDescription,
+            color: AppColors.errorColor,
+            onTap: () => _onTapRemoveImage(context),
+          ),
           const SizedBox(height: 16),
         ],
       ),

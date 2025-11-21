@@ -23,39 +23,52 @@ class SheetAppBar extends ConsumerWidget {
     final hasCoverImage = coverImageUrl != null && coverImageUrl.isNotEmpty;
 
     final theme = Theme.of(context);
-    
+
     // Use sheet theme if available, otherwise fall back to app theme
     final primaryColor = sheet?.theme?.primary ?? theme.colorScheme.primary;
-    final secondaryColor = sheet?.theme?.secondary ?? theme.colorScheme.secondary;
+    final secondaryColor =
+        sheet?.theme?.secondary ?? theme.colorScheme.secondary;
 
     return SliverAppBar(
-      expandedHeight: hasCoverImage ? 200 : 120,
+      expandedHeight: 200,
       collapsedHeight: kToolbarHeight,
       automaticallyImplyLeading: false,
       title: _buildTitle(context, ref, hasCoverImage),
       elevation: 0,
       pinned: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
-      flexibleSpace: hasCoverImage
-          ? FlexibleSpaceBar(
-              background: ZoeNetworkLocalImageView(
-                imageUrl: coverImageUrl,
-                fit: BoxFit.cover,
-                borderRadius: 0,
-                placeholderIconSize: 120,
-              ),
-            )
-          : FlexibleSpaceBar(
-              background: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [primaryColor, secondaryColor],
+      flexibleSpace: FlexibleSpaceBar(
+        background: Stack(
+          fit: StackFit.expand,
+          children: [
+            hasCoverImage
+                ? ZoeNetworkLocalImageView(
+                    imageUrl: coverImageUrl,
+                    fit: BoxFit.cover,
+                    borderRadius: 0,
+                    placeholderIconSize: 120,
+                  )
+                : Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [primaryColor, secondaryColor],
+                      ),
+                    ),
                   ),
-                ),
+            Positioned(
+              bottom: 16,
+              right: 16,
+              child: ContentMenuButton(
+                icon: Icons.photo_library,
+                onTap: (context) =>
+                    SheetActions.addOrUpdateCoverImage(context, ref, sheetId),
               ),
             ),
+          ],
+        ),
+      ),
     );
   }
 

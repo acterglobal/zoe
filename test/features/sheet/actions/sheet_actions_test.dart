@@ -419,7 +419,7 @@ void main() {
         final l10n = getL10n(tester);
         expect(find.text(l10n.addCoverImage), findsOneWidget);
         expect(find.text(l10n.updateCoverImage), findsNothing);
-        expect(find.text(l10n.removeCoverImage), findsNothing);
+        expect(find.text(l10n.removeImage), findsNothing);
       });
 
       testWidgets(
@@ -444,7 +444,7 @@ void main() {
           // Verify update and remove cover image options are shown
           final l10n = getL10n(tester);
           expect(find.text(l10n.updateCoverImage), findsOneWidget);
-          expect(find.text(l10n.removeCoverImage), findsOneWidget);
+          expect(find.text(l10n.removeImage), findsOneWidget);
           expect(find.text(l10n.addCoverImage), findsNothing);
         },
       );
@@ -470,7 +470,7 @@ void main() {
         final l10n = getL10n(tester);
         expect(find.text(l10n.connectWithWhatsAppGroup), findsOneWidget);
         expect(find.text(l10n.updateCoverImage), findsOneWidget);
-        expect(find.text(l10n.removeCoverImage), findsOneWidget);
+        expect(find.text(l10n.removeImage), findsOneWidget);
         expect(find.text(l10n.copySheetContent), findsOneWidget);
         expect(find.text(l10n.shareThisSheet), findsOneWidget);
         expect(find.text(l10n.editThisSheet), findsOneWidget);
@@ -500,7 +500,7 @@ void main() {
         final l10n = getL10n(tester);
         expect(find.text(l10n.connectWithWhatsAppGroup), findsOneWidget);
         expect(find.text(l10n.updateCoverImage), findsOneWidget);
-        expect(find.text(l10n.removeCoverImage), findsOneWidget);
+        expect(find.text(l10n.removeImage), findsOneWidget);
         expect(find.text(l10n.copySheetContent), findsOneWidget);
         expect(find.text(l10n.shareThisSheet), findsOneWidget);
         expect(

@@ -33,11 +33,6 @@ void showSheetMenu({
             SheetActions.addOrUpdateCoverImage(context, ref, sheetId),
         subtitle: L10n.of(context).updateCoverImage,
       ),
-      ZoeCommonMenuItems.removeCoverImage(
-        onTapRemoveCoverImage: () =>
-            SheetActions.removeCoverImage(context, ref, sheetId),
-        subtitle: L10n.of(context).removeCoverImage,
-      ),
     ] else
       ZoeCommonMenuItems.addCoverImage(
         onTapAddCoverImage: () =>
@@ -89,11 +84,12 @@ class SheetActions {
       subtitle: l10n.chooseAMediaFile,
       onTapCamera: (image) => selectedImage = image,
       onTapGallery: (images) => selectedImage = images.first,
+      onTapRemoveImage: () => SheetActions.removeCoverImage(context, ref, sheetId),
     );
     if (selectedImage != null && context.mounted) {
       ref
           .read(sheetListProvider.notifier)
-          .updateSheetCoverImage(sheetId, selectedImage!.path);
+          .updateSheetCoverImage(sheetId, selectedImage!.path                                                                                               );
     }
   }
 

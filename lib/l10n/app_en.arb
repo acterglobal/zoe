@@ -548,7 +548,8 @@
     "date": "Date",
     "addCoverImage": "Add cover image",
     "updateCoverImage": "Update cover image",
-    "removeCoverImage": "Remove cover image",
+    "removeImage": "Remove image",
+    "removeImageDescription": "Remove existing image",
     "selectMedia": "Select media",
     "chooseAMediaFile": "Choose a media file from your device",
     "selectSheetCoverImage": "Select sheet cover image",
@@ -566,7 +567,5 @@
     "image": "Image",
     "chooseImageDescription": "Choose image for sheet avatar",
     "emoji": "Emoji",
-    "chooseEmojiDescription":"Choose emoji for sheet avatar",
-    "selectMedia": "Select media",
-    "chooseAMediaFile": "Choose a media file from your device"
+    "chooseEmojiDescription":"Choose emoji for sheet avatar"
 }
