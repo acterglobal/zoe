@@ -6,6 +6,7 @@ class AnimatedTextField extends StatefulWidget {
   final String hintText;
   final Function(String?) onErrorChanged;
   final VoidCallback onSubmitted;
+  final VoidCallback? onTextChange;
   final bool enabled;
   final bool readOnly;
   final bool autofocus;
@@ -19,6 +20,7 @@ class AnimatedTextField extends StatefulWidget {
     required this.hintText,
     required this.onErrorChanged,
     required this.onSubmitted,
+    this.onTextChange,
     this.enabled = true,
     this.readOnly = false,
     this.autofocus = true,
@@ -97,31 +99,25 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: colorScheme.primary,
-                  width: 1.5,
-                ),
+                borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: colorScheme.error,
-                  width: 1,
-                ),
+                borderSide: BorderSide(color: colorScheme.error, width: 1),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: colorScheme.error,
-                  width: 1,
-                ),
+                borderSide: BorderSide(color: colorScheme.error, width: 1),
               ),
               filled: true,
-              fillColor: colorScheme.surfaceContainerHighest
-                  .withValues(alpha: widget.enabled ? 0.1 : 0.05),
+              fillColor: colorScheme.surfaceContainerHighest.withValues(
+                alpha: widget.enabled ? 0.1 : 0.05,
+              ),
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: widget.maxLines != null && widget.maxLines! > 1 ? 12 : 16,
+                vertical: widget.maxLines != null && widget.maxLines! > 1
+                    ? 12
+                    : 16,
               ),
               errorText: widget.errorText,
             ),
@@ -133,6 +129,9 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
             onChanged: (value) {
               if (widget.errorText != null) {
                 widget.onErrorChanged(null);
+              }
+              if (widget.onTextChange != null) {
+                widget.controller.text = value;
               }
             },
             onSubmitted: (value) => widget.onSubmitted(),

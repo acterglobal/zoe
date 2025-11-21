@@ -103,14 +103,17 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
     final l10n = L10n.of(context);
     final userList = ref.watch(userListProvider);
 
+    // Try to find sharedBy user
+    final sharedByUser = userList.where((u) => u.name == sharedBy).firstOrNull;
+
     final hasMessage = (message != null && message.trim().isNotEmpty);
-    final hasSharedBy = (sharedBy != null && sharedBy.trim().isNotEmpty);
+    final hasSharedBy =
+        (sharedBy != null &&
+        sharedBy.trim().isNotEmpty &&
+        sharedByUser != null);
 
     // If nothing to show, no need to build card
     if (!hasMessage && !hasSharedBy) return const SizedBox.shrink();
-
-    // Try to find sharedBy user
-    final sharedByUser = userList.where((u) => u.name == sharedBy).firstOrNull;
 
     return GlassyContainer(
       padding: const EdgeInsets.all(12),
@@ -119,43 +122,39 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (hasSharedBy && sharedByUser != null) ...[
-            Row(
-              children: [
-                Text(
-                  '${l10n.sharedBy}: ',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                    fontWeight: FontWeight.w500,
-                  ),
+          Row(
+            children: [
+              Text(
+                '${l10n.sharedBy}: ',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                  fontWeight: FontWeight.w500,
                 ),
-                const SizedBox(width: 4),
-                Flexible(
-                  child: ZoeUserChipWidget(
-                    user: sharedByUser,
-                    type: ZoeUserChipType.userNameWithAvatarChip,
-                  ),
+              ),
+              const SizedBox(width: 4),
+              Flexible(
+                child: ZoeUserChipWidget(
+                  user: sharedByUser!,
+                  type: ZoeUserChipType.userNameWithAvatarChip,
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
 
-          if (hasMessage) ...[
-            const SizedBox(height: 12),
-            Text(
-              '${l10n.message}:',
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
+          const SizedBox(height: 12),
+          Text(
+            '${l10n.message}:',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
-            const SizedBox(height: 6),
-            Text(
-              message.trim(),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.9),
-              ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            message!,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.9),
             ),
-          ],
+          ),
         ],
       ),
     );
