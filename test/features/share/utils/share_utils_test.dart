@@ -46,13 +46,13 @@ void main() {
 
   group('Share Utils', () {
     group('Link Generation', () {
-      test('getLinkPrefixUrl returns correct format', () {
+      test('getLinkPostfixUrl returns correct format', () {
         const endpoint = 'test-endpoint';
-        final result = ShareUtils.getLinkPrefixUrl(endpoint);
+        final result = ShareUtils.getLinkPostfixUrl(endpoint);
         expect(result, equals('🔗 ${ShareUtils.baseUrl}/$endpoint'));
       });
 
-      test('getLinkPrefixUrl handles different endpoints', () {
+      test('getLinkPostfixUrl handles different endpoints', () {
         const endpoints = [
           'sheet/test-id',
           'text-block/test-id',
@@ -64,30 +64,30 @@ void main() {
         ];
 
         for (final endpoint in endpoints) {
-          final result = ShareUtils.getLinkPrefixUrl(endpoint);
+          final result = ShareUtils.getLinkPostfixUrl(endpoint);
           expect(result, equals('🔗 ${ShareUtils.baseUrl}/$endpoint'));
         }
       });
 
-      test('getLinkPrefixUrl handles empty endpoint', () {
+      test('getLinkPostfixUrl handles empty endpoint', () {
         const endpoint = '';
-        final result = ShareUtils.getLinkPrefixUrl(endpoint);
+        final result = ShareUtils.getLinkPostfixUrl(endpoint);
         expect(result, equals('🔗 ${ShareUtils.baseUrl}/'));
       });
 
-      test('getLinkPrefixUrl handles special characters in endpoint', () {
+      test('getLinkPostfixUrl handles special characters in endpoint', () {
         const endpoint = 'test-endpoint/with-special-chars';
-        final result = ShareUtils.getLinkPrefixUrl(endpoint);
+        final result = ShareUtils.getLinkPostfixUrl(endpoint);
         expect(result, equals('🔗 ${ShareUtils.baseUrl}/$endpoint'));
       });
 
-      test('getLinkPrefixUrl includes query parameters when provided', () {
+      test('getLinkPostfixUrl includes query parameters when provided', () {
         const endpoint = 'sheet/test-id';
         final queryParams = {
           'sharedBy': 'John Doe',
           'message': 'Check this out',
         };
-        final result = ShareUtils.getLinkPrefixUrl(
+        final result = ShareUtils.getLinkPostfixUrl(
           endpoint,
           queryParams: queryParams,
         );
@@ -97,29 +97,32 @@ void main() {
         expect(result, contains(endpoint));
       });
 
-      test('getLinkPrefixUrl handles empty query params map', () {
+      test('getLinkPostfixUrl handles empty query params map', () {
         const endpoint = 'sheet/test-id';
-        final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: {});
+        final result = ShareUtils.getLinkPostfixUrl(endpoint, queryParams: {});
 
         // Should return link without query parameters
         expect(result, equals('🔗 ${ShareUtils.baseUrl}/$endpoint'));
       });
 
-      test('getLinkPrefixUrl handles null query params', () {
+      test('getLinkPostfixUrl handles null query params', () {
         const endpoint = 'sheet/test-id';
-        final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: null);
+        final result = ShareUtils.getLinkPostfixUrl(
+          endpoint,
+          queryParams: null,
+        );
 
         // Should return link without query parameters
         expect(result, equals('🔗 ${ShareUtils.baseUrl}/$endpoint'));
       });
 
-      test('getLinkPrefixUrl encodes query parameters correctly', () {
+      test('getLinkPostfixUrl encodes query parameters correctly', () {
         const endpoint = 'sheet/test-id';
         final queryParams = {
           'sharedBy': 'John Doe',
           'message': 'Hello & Welcome!',
         };
-        final result = ShareUtils.getLinkPrefixUrl(
+        final result = ShareUtils.getLinkPostfixUrl(
           endpoint,
           queryParams: queryParams,
         );
@@ -129,14 +132,14 @@ void main() {
         expect(result, contains('message=Hello+%26+Welcome%21'));
       });
 
-      test('getLinkPrefixUrl handles multiple query parameters', () {
+      test('getLinkPostfixUrl handles multiple query parameters', () {
         const endpoint = 'sheet/test-id';
         final queryParams = {
           'param1': 'value1',
           'param2': 'value2',
           'param3': 'value3',
         };
-        final result = ShareUtils.getLinkPrefixUrl(
+        final result = ShareUtils.getLinkPostfixUrl(
           endpoint,
           queryParams: queryParams,
         );
@@ -502,7 +505,6 @@ void main() {
         expect(lines.first, equals(firstLine));
 
         // Last line should be the link
-        // Note: + is the correct encoding for spaces in query parameters
         expect(lines.last, equals(getTextContentLink()));
       });
 

@@ -33,13 +33,13 @@ class ShareUtils {
       queryParams['message'] = trimmedMessage;
     }
 
-    return getLinkPrefixUrl(
+    return getLinkPostfixUrl(
       'sheet/$sheetId',
       queryParams: queryParams.isNotEmpty ? queryParams : null,
     );
   }
 
-  static String getLinkPrefixUrl(
+  static String getLinkPostfixUrl(
     String endpoint, {
     Map<String, String>? queryParams,
   }) {
@@ -112,7 +112,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('text-block/$parentId');
+    final link = getLinkPostfixUrl('text-block/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -152,7 +152,7 @@ class ShareUtils {
     buffer.write('\n\n🕓 End\n$endDateString');
 
     // Link
-    final link = getLinkPrefixUrl('event/$parentId');
+    final link = getLinkPostfixUrl('event/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -201,7 +201,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('list/$parentId');
+    final link = getLinkPostfixUrl('list/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -243,7 +243,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('task/$parentId');
+    final link = getLinkPostfixUrl('task/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -270,7 +270,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('bullet/$parentId');
+    final link = getLinkPostfixUrl('bullet/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -297,7 +297,7 @@ class ShareUtils {
     buffer.write('\n\n${options.map((e) => '🔘 ${e.title}').join('\n')}');
 
     // Link
-    final link = getLinkPrefixUrl('poll/$parentId');
+    final link = getLinkPostfixUrl('poll/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
