@@ -542,6 +542,13 @@ void main() {
         container.read(sheetListProvider.notifier).addSheet(sheet1);
         container.read(sheetListProvider.notifier).addSheet(sheet2);
 
+        // Capture initial theme for sheet2
+        final initialList = container.read(sheetListProvider);
+        final initialSheet2 = initialList.firstWhere(
+          (s) => s.id == 'theme-sheet2',
+        );
+        final initialThemeSheet2 = initialSheet2.theme;
+
         // Update only sheet1 theme
         const primaryColor = Color(0xFFBB86FC);
         const secondaryColor = Color(0xFF03DAC6);
@@ -562,7 +569,7 @@ void main() {
 
         expect(updatedSheet1.theme?.primary, equals(primaryColor));
         expect(updatedSheet1.theme?.secondary, equals(secondaryColor));
-        expect(unchangedSheet2.theme, isNull);
+        expect(unchangedSheet2.theme, equals(initialThemeSheet2));
       });
 
       test('handles non-existent sheet ID gracefully', () {
