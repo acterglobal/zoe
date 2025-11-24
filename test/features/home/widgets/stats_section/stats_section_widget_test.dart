@@ -186,7 +186,7 @@ void main() {
       testWidgets('displays correct counts from providers', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            sheetListProvider.overrideWithValue(<SheetModel>[]),
+            sheetsListProvider.overrideWithValue(<SheetModel>[]),
             eventListProvider.overrideWithValue(<EventModel>[]),
             taskListProvider.overrideWithValue(<TaskModel>[]),
             linkListProvider.overrideWithValue(<LinkModel>[]),
@@ -205,23 +205,46 @@ void main() {
       });
 
       testWidgets('updates counts when provider data changes', (tester) async {
+        // Create a temporary container to get all data
+        final tempContainer = ProviderContainer.test();
+        final sheet1 = getSheetByIndex(tempContainer);
+        final sheet2 = getSheetByIndex(tempContainer, index: 1);
+        final event1 = getEventByIndex(tempContainer);
+        final task1 = getTaskByIndex(tempContainer);
+        final task2 = getTaskByIndex(tempContainer, index: 1);
+        final task3 = getTaskByIndex(tempContainer, index: 2);
+        final doc1 = getDocumentByIndex(tempContainer);
+        final doc2 = getDocumentByIndex(tempContainer, index: 1);
+        final poll1 = getPollByIndex(tempContainer);
+        final poll2 = getPollByIndex(tempContainer, index: 1);
+        final poll3 = getPollByIndex(tempContainer, index: 2);
+        final poll4 = getPollByIndex(tempContainer, index: 3);
+
         container = ProviderContainer.test(
           overrides: [
-            sheetListProvider.overrideWithValue([getSheetByIndex(container), getSheetByIndex(container,index: 1)]),
-            eventListProvider.overrideWithValue([getEventByIndex(container)]),
-            taskListProvider.overrideWithValue([getTaskByIndex(container), getTaskByIndex(container,index: 1), getTaskByIndex(container,index: 2)]),
+            sheetsListProvider.overrideWithValue([sheet1, sheet2]),
+            eventsListProvider.overrideWithValue([event1]),
+            tasksListProvider.overrideWithValue([task1, task2, task3]),
             linkListProvider.overrideWithValue([linkList.first]),
-            documentListProvider.overrideWithValue([getDocumentByIndex(container), getDocumentByIndex(container,index: 1)]),
-            pollListProvider.overrideWithValue([getPollByIndex(container), getPollByIndex(container,index: 1), getPollByIndex(container,index: 2), getPollByIndex(container,index: 3)]),
+            documentListProvider.overrideWithValue([doc1, doc2]),
+            pollsListProvider.overrideWithValue([poll1, poll2, poll3, poll4]),
           ],
         );
 
         await pumpStatsSectionWidget(tester);
 
-        final counts = tester
-            .widgetList<StatsWidget>(find.byType(StatsWidget))
-            .map((w) => w.count);
-        expect(counts, containsAll(['2', '1', '3', '1', '2', '4']));
+        final statsWidgets = tester.widgetList<StatsWidget>(find.byType(StatsWidget));
+        
+        // Get counts in the order they appear in the widget tree
+        final counts = statsWidgets.map((w) => w.count).toList();
+        
+        expect(counts.length, equals(6));
+        expect(counts[0], equals('2'));
+        expect(counts[1], equals('1'));
+        expect(counts[2], equals('3'));
+        expect(counts[3], equals('1'));
+        expect(counts[4], equals('2'));
+        expect(counts[5], equals('4'));
       });
     });
 
@@ -290,7 +313,7 @@ void main() {
       testWidgets('handles empty provider data gracefully', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            sheetListProvider.overrideWithValue(<SheetModel>[]),
+            sheetsListProvider.overrideWithValue(<SheetModel>[]),
             eventListProvider.overrideWithValue(<EventModel>[]),
             taskListProvider.overrideWithValue(<TaskModel>[]),
             linkListProvider.overrideWithValue(<LinkModel>[]),

@@ -18,6 +18,7 @@ import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../test-utils/mock_gorouter.dart';
 import '../../../test-utils/test_utils.dart';
+import '../../users/utils/users_utils.dart';
 import '../utils/sheet_utils.dart';
 
 void main() {
@@ -44,7 +45,8 @@ void main() {
       bool isEditing = false,
     }) async {
       if (isEditing) {
-        container.read(editContentIdProvider.notifier).state = sheetId ?? testSheetId;
+        container.read(editContentIdProvider.notifier).state =
+            sheetId ?? testSheetId;
       } else {
         container.read(editContentIdProvider.notifier).state = null;
       }
@@ -104,9 +106,12 @@ void main() {
       testWidgets('renders AppBar with correct configuration', (tester) async {
         await pumpSheetDetailScreen(tester);
 
-        final appBar = tester.widget<AppBar>(find.byType(AppBar));
-        expect(appBar.automaticallyImplyLeading, isFalse);
-        expect(appBar.backgroundColor, isNull);
+        final sliverAppBar = tester.widget<SliverAppBar>(
+          find.byType(SliverAppBar),
+        );
+        expect(sliverAppBar.automaticallyImplyLeading, isFalse);
+        final theme = Theme.of(tester.element(find.byType(SheetDetailScreen)));
+        expect(sliverAppBar.backgroundColor, equals(theme.colorScheme.surface));
         expect(find.byType(ZoeAppBar), findsOneWidget);
         expect(find.byType(ContentMenuButton), findsOneWidget);
       });
@@ -123,7 +128,9 @@ void main() {
     });
 
     group('Provider Integration', () {
-      testWidgets('watches editContentIdProvider for editing state', (tester) async {
+      testWidgets('watches editContentIdProvider for editing state', (
+        tester,
+      ) async {
         await pumpSheetDetailScreen(tester);
 
         // Initially not editing
@@ -146,7 +153,9 @@ void main() {
         expect(find.byType(SheetAvatarWidget), findsOneWidget);
       });
 
-      testWidgets('watches listOfUsersBySheetIdProvider for user data', (tester) async {
+      testWidgets('watches listOfUsersBySheetIdProvider for user data', (
+        tester,
+      ) async {
         await pumpSheetDetailScreen(tester);
 
         final users = container.read(listOfUsersBySheetIdProvider(testSheetId));
@@ -170,7 +179,9 @@ void main() {
         expect(tester.takeException(), isNull);
       });
 
-      testWidgets('updates widget properties based on editing state', (tester) async {
+      testWidgets('updates widget properties based on editing state', (
+        tester,
+      ) async {
         // Test non-editing state
         await pumpSheetDetailScreen(tester, isEditing: false);
 
@@ -210,9 +221,7 @@ void main() {
           // Very long title
           testSheet.copyWith(title: 'A' * 1000),
           // Special characters
-          testSheet.copyWith(
-            title: 'Title with émojis 🚀 and spëcial chars',
-          ),
+          testSheet.copyWith(title: 'Title with émojis 🚀 and spëcial chars'),
         ];
 
         for (final sheet in testCases) {
@@ -220,7 +229,10 @@ void main() {
 
           await pumpSheetDetailScreen(tester, sheetId: sheet.id);
           expect(tester.takeException(), isNull);
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 100));
         }
+        await tester.pump();
       });
     });
 
@@ -295,7 +307,6 @@ void main() {
         final menuButton = find.byType(ContentMenuButton);
         await tester.tap(menuButton);
         await tester.pump();
-        await tester.pump(const Duration(milliseconds: 100));
 
         // Should show popup menu with sheet actions
         final l10n = getL10n(tester);
@@ -312,21 +323,30 @@ void main() {
 
         await pumpSheetDetailScreen(tester, sheetId: sheetWithUsers.id);
 
-        // Verify users count is displayed
-        expect(find.textContaining('2'), findsAtLeastNWidgets(1));
+        final l10n = getL10n(tester);
+        final usersCountText = '2 ${l10n.users}';
+        final usersCountFinder = find.text(usersCountText);
 
-        // Find and tap the users count widget
-        final usersCountWidget = find.byType(GestureDetector).first;
+        // Verify users count text is displayed
+        expect(usersCountFinder, findsOneWidget);
+
+        // Find the GestureDetector that is an ancestor of the text.
+        // This is a much safer way to find the tappable area.
+        final usersCountWidget = find.widgetWithText(
+          GestureDetector,
+          usersCountText,
+        );
         expect(usersCountWidget, findsOneWidget);
 
+        // ACT: Tap the specific widget
         await tester.tap(usersCountWidget);
         await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
 
-        // The tap should not throw an error, indicating showModalBottomSheet was called
+        // ASSERT: Verify no crash occurred and the UI is still there.
+        // You would add an `expect` here to check if a user list dialog/modal appeared.
+        expect(find.text(usersCountText), findsOneWidget);
         expect(tester.takeException(), isNull);
-
-        // Verify that the users count widget is still present (no crash)
-        expect(find.textContaining('2'), findsAtLeastNWidgets(1));
       });
 
       testWidgets('title widget long press shows sheet menu', (tester) async {
@@ -353,7 +373,9 @@ void main() {
         await pumpSheetDetailScreen(tester);
 
         // Verify ContentWidget properties
-        final contentWidget = tester.widget<ContentWidget>(find.byType(ContentWidget));
+        final contentWidget = tester.widget<ContentWidget>(
+          find.byType(ContentWidget),
+        );
         expect(contentWidget.parentId, equals(testSheetId));
         expect(contentWidget.sheetId, equals(testSheetId));
         expect(contentWidget.showSheetName, isFalse);
@@ -364,20 +386,33 @@ void main() {
       });
 
       testWidgets('handles users count display', (tester) async {
+        // Get actual user IDs from test data
+        final user1 = getUserByIndex(container).id;
+        final user2 = getUserByIndex(container, index: 1).id;
+        final user3 = getUserByIndex(container, index: 2).id;
+
         final testCases = [
-          (['user1'], '1'),
-          (['user1', 'user2'], '2'),
-          (['user1', 'user2', 'user3'], '3'),
+          ([user1], '1'),
+          ([user1, user2], '2'),
+          ([user1, user2, user3], '3'),
         ];
 
         for (final (users, expectedCount) in testCases) {
-          final sheetWithUsers = testSheet.copyWith(users: users);
-        container.read(sheetListProvider.notifier).addSheet(sheetWithUsers);
+          // Create a new sheet with unique ID to avoid conflicts
+          final sheetWithUsers = testSheet.copyWith(
+            id: '${testSheet.id}-users-${users.length}',
+            users: users,
+          );
+          container.read(sheetListProvider.notifier).addSheet(sheetWithUsers);
 
-        await pumpSheetDetailScreen(tester, sheetId: sheetWithUsers.id);
+          await pumpSheetDetailScreen(tester, sheetId: sheetWithUsers.id);
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 100));
 
+          // Verify the users count is displayed
+          // The text will be something like "1 user" or "2 users"
           expect(find.textContaining(expectedCount), findsAtLeastNWidgets(1));
-        expect(tester.takeException(), isNull);
+          expect(tester.takeException(), isNull);
         }
       });
     });
@@ -396,7 +431,10 @@ void main() {
 
         // Verify theme colors
         final theme = Theme.of(tester.element(find.byType(SheetDetailScreen)));
-        expect(titleWidget.textStyle?.color, equals(theme.colorScheme.onSurface));
+        expect(
+          titleWidget.textStyle?.color,
+          equals(theme.colorScheme.onSurface),
+        );
 
         // Verify localization
         final l10n = getL10n(tester);
@@ -406,10 +444,13 @@ void main() {
       testWidgets('has correct padding and spacing', (tester) async {
         await pumpSheetDetailScreen(tester);
 
-        final singleChildScrollView = tester.widget<SingleChildScrollView>(
-          find.byType(SingleChildScrollView).first,
+        final sliverPadding = tester.widget<SliverPadding>(
+          find.byType(SliverPadding).first,
         );
-        expect(singleChildScrollView.padding, equals(EdgeInsets.symmetric(horizontal: 24)));
+        expect(
+          sliverPadding.padding,
+          equals(EdgeInsets.symmetric(horizontal: 24)),
+        );
         expect(find.byType(SizedBox), findsAtLeastNWidgets(1));
       });
     });
