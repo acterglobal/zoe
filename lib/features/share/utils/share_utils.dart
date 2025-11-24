@@ -19,11 +19,24 @@ class ShareUtils {
     String? sharedBy,
     String? message,
   ) {
-    final queryParams = <String, String>{
-      'sharedBy': sharedBy ?? '',
-      'message': message ?? '',
-    };
-    return getLinkPrefixUrl('sheet/$sheetId', queryParams: queryParams);
+    final queryParams = <String, String>{};
+
+    // Trim and add sharedBy if not empty
+    final trimmedSharedBy = sharedBy?.trim();
+    if (trimmedSharedBy != null && trimmedSharedBy.isNotEmpty) {
+      queryParams['sharedBy'] = trimmedSharedBy;
+    }
+
+    // Trim and add message if not empty
+    final trimmedMessage = message?.trim();
+    if (trimmedMessage != null && trimmedMessage.isNotEmpty) {
+      queryParams['message'] = trimmedMessage;
+    }
+
+    return getLinkPrefixUrl(
+      'sheet/$sheetId',
+      queryParams: queryParams.isNotEmpty ? queryParams : null,
+    );
   }
 
   static String getLinkPrefixUrl(

@@ -133,13 +133,9 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
   }
 
   String _getSheetShareMessage(WidgetRef ref) {
-    final currentUserAsync = ref.watch(currentUserProvider);
-    final currentUser = currentUserAsync.value;
-    final userName = currentUser?.name ?? '';
     return ShareUtils.getSheetShareMessage(
       ref: ref,
       parentId: widget.parentId,
-      userName: userName.isNotEmpty ? userName : null,
       userMessage: _userMessage.trim().isNotEmpty ? _userMessage : null,
     );
   }

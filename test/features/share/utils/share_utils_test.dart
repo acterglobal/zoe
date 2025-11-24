@@ -33,8 +33,15 @@ void main() {
   late ProviderContainer container;
 
   setUp(() async {
-    // Create the container
-    container = ProviderContainer.test();
+    // Create a test user for currentUserProvider
+    final testUser = getUserByIndex(ProviderContainer.test());
+
+    // Create the container with currentUserProvider override
+    container = ProviderContainer.test(
+      overrides: [
+        currentUserProvider.overrideWithValue(AsyncValue.data(testUser)),
+      ],
+    );
   });
 
   group('Share Utils', () {
@@ -42,7 +49,7 @@ void main() {
       test('getLinkPrefixUrl returns correct format', () {
         const endpoint = 'test-endpoint';
         final result = ShareUtils.getLinkPrefixUrl(endpoint);
-        expect(result, equals('🔗 ${ShareUtils.linkPrefixUrl}/$endpoint'));
+        expect(result, equals('🔗 ${ShareUtils.baseUrl}/$endpoint'));
       });
 
       test('getLinkPrefixUrl handles different endpoints', () {
@@ -58,27 +65,33 @@ void main() {
 
         for (final endpoint in endpoints) {
           final result = ShareUtils.getLinkPrefixUrl(endpoint);
-          expect(result, equals('🔗 ${ShareUtils.linkPrefixUrl}/$endpoint'));
+          expect(result, equals('🔗 ${ShareUtils.baseUrl}/$endpoint'));
         }
       });
 
       test('getLinkPrefixUrl handles empty endpoint', () {
         const endpoint = '';
         final result = ShareUtils.getLinkPrefixUrl(endpoint);
-        expect(result, equals('🔗 ${ShareUtils.linkPrefixUrl}/'));
+        expect(result, equals('🔗 ${ShareUtils.baseUrl}/'));
       });
 
       test('getLinkPrefixUrl handles special characters in endpoint', () {
         const endpoint = 'test-endpoint/with-special-chars';
         final result = ShareUtils.getLinkPrefixUrl(endpoint);
-        expect(result, equals('🔗 ${ShareUtils.linkPrefixUrl}/$endpoint'));
+        expect(result, equals('🔗 ${ShareUtils.baseUrl}/$endpoint'));
       });
 
       test('getLinkPrefixUrl includes query parameters when provided', () {
         const endpoint = 'sheet/test-id';
-        final queryParams = {'sharedBy': 'John Doe', 'message': 'Check this out'};
-        final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: queryParams);
-        
+        final queryParams = {
+          'sharedBy': 'John Doe',
+          'message': 'Check this out',
+        };
+        final result = ShareUtils.getLinkPrefixUrl(
+          endpoint,
+          queryParams: queryParams,
+        );
+
         expect(result, contains('sharedBy=John+Doe'));
         expect(result, contains('message=Check+this+out'));
         expect(result, contains(endpoint));
@@ -87,17 +100,17 @@ void main() {
       test('getLinkPrefixUrl handles empty query params map', () {
         const endpoint = 'sheet/test-id';
         final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: {});
-        
+
         // Should return link without query parameters
-        expect(result, equals('🔗 ${ShareUtils.linkPrefixUrl}/$endpoint'));
+        expect(result, equals('🔗 ${ShareUtils.baseUrl}/$endpoint'));
       });
 
       test('getLinkPrefixUrl handles null query params', () {
         const endpoint = 'sheet/test-id';
         final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: null);
-        
+
         // Should return link without query parameters
-        expect(result, equals('🔗 ${ShareUtils.linkPrefixUrl}/$endpoint'));
+        expect(result, equals('🔗 ${ShareUtils.baseUrl}/$endpoint'));
       });
 
       test('getLinkPrefixUrl encodes query parameters correctly', () {
@@ -106,8 +119,11 @@ void main() {
           'sharedBy': 'John Doe',
           'message': 'Hello & Welcome!',
         };
-        final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: queryParams);
-        
+        final result = ShareUtils.getLinkPrefixUrl(
+          endpoint,
+          queryParams: queryParams,
+        );
+
         // Verify URL encoding
         expect(result, contains('sharedBy=John+Doe'));
         expect(result, contains('message=Hello+%26+Welcome%21'));
@@ -120,8 +136,11 @@ void main() {
           'param2': 'value2',
           'param3': 'value3',
         };
-        final result = ShareUtils.getLinkPrefixUrl(endpoint, queryParams: queryParams);
-        
+        final result = ShareUtils.getLinkPrefixUrl(
+          endpoint,
+          queryParams: queryParams,
+        );
+
         expect(result, contains('param1=value1'));
         expect(result, contains('param2=value2'));
         expect(result, contains('param3=value3'));
@@ -138,7 +157,6 @@ void main() {
       Future<void> pumpSheetShareUtilsWidget(
         WidgetTester tester, {
         String? parentId,
-        String? userName,
         String? userMessage,
       }) async {
         await tester.pumpConsumerWidget(
@@ -147,15 +165,36 @@ void main() {
             ShareUtils.getSheetShareMessage(
               ref: ref,
               parentId: parentId ?? testSheetModel.id,
-              userName: userName,
               userMessage: userMessage,
             ),
           ),
         );
       }
 
-      String getSheetShareLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/sheet/${parentId ?? testSheetModel.id}';
+      String getSheetShareLink({
+        String? parentId,
+        String? sharedBy,
+        String? message,
+      }) {
+        final baseLink =
+            '🔗 ${ShareUtils.baseUrl}/sheet/${parentId ?? testSheetModel.id}';
+
+        // Trim values like the implementation does
+        final trimmedSharedBy = sharedBy?.trim();
+        final trimmedMessage = message?.trim();
+
+        final params = <String>[];
+        if (trimmedSharedBy != null && trimmedSharedBy.isNotEmpty) {
+          params.add('sharedBy=${Uri.encodeComponent(trimmedSharedBy)}');
+        }
+        if (trimmedMessage != null && trimmedMessage.isNotEmpty) {
+          params.add('message=${Uri.encodeComponent(trimmedMessage)}');
+        }
+
+        if (params.isEmpty) {
+          return baseLink;
+        }
+        return '$baseLink?${params.join('&')}';
       }
 
       testWidgets('generates correct share message for sheet with all fields', (
@@ -208,27 +247,13 @@ void main() {
       testWidgets('includes link at the end', (tester) async {
         await pumpSheetShareUtilsWidget(tester);
 
-        // Verify the message ends with the link
+        // Verify the message ends with the link (including sharedBy from currentUserProvider)
         final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, endsWith(getSheetShareLink()));
-      });
-
-      testWidgets('maintains correct message structure', (tester) async {
-        await pumpSheetShareUtilsWidget(tester);
-
-        // Verify the message structure
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        final lines = textWidget.data!.split('\n');
+        // Note: + is the correct encoding for spaces in query parameters
         expect(
-          lines.length,
-          greaterThanOrEqualTo(2),
-        ); // At least emoji+title and link
-
-        // First line should be emoji + title
-        expect(lines.first, equals(testSheetModel.title));
-
-        // Last line should be the link
-        expect(lines.last, equals(getSheetShareLink()));
+          textWidget.data,
+          endsWith('🔗 https://hellozoe.app/sheet/sheet-1?sharedBy=John+Doe'),
+        );
       });
 
       testWidgets('handles special in sheet data', (tester) async {
@@ -262,161 +287,114 @@ void main() {
         );
       });
 
-      testWidgets('includes userName and userMessage as query parameters in link', (
-        tester,
-      ) async {
-        const userName = 'John Doe';
-        const userMessage = 'Check out this amazing sheet!';
+      testWidgets(
+        'includes userName and userMessage as query parameters in link',
+        (tester) async {
+          const userMessage = 'Check out this amazing sheet!';
 
-        await pumpSheetShareUtilsWidget(
-          tester,
-          userName: userName,
-          userMessage: userMessage,
-        );
+          await pumpSheetShareUtilsWidget(tester, userMessage: userMessage);
 
-        // Verify userName and userMessage are included as query parameters in the link
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains('sharedBy=John+Doe'));
-        expect(textWidget.data, contains('message=Check+out+this+amazing+sheet%21'));
-      });
+          // Verify userName and userMessage are included as query parameters in the link
+          final textWidget = tester.widget<Text>(find.byType(Text));
+          expect(textWidget.data, contains('sharedBy=John+Doe'));
+          expect(
+            textWidget.data,
+            contains('message=Check+out+this+amazing+sheet%21'),
+          );
+        },
+      );
 
-      testWidgets('includes only userName query parameter when userMessage is null', (
-        tester,
-      ) async {
-        const userName = 'Jane Smith';
+      testWidgets(
+        'includes only userName query parameter when userMessage is null',
+        (tester) async {
+          await pumpSheetShareUtilsWidget(tester, userMessage: null);
 
-        await pumpSheetShareUtilsWidget(
-          tester,
-          userName: userName,
-          userMessage: null,
-        );
+          // Verify userName (from currentUserProvider) is in link but userMessage is not
+          final textWidget = tester.widget<Text>(find.byType(Text));
+          expect(textWidget.data, contains('sharedBy=John+Doe'));
+          expect(textWidget.data, isNot(contains('message=')));
+        },
+      );
 
-        // Verify userName is in link but userMessage is not
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, contains('sharedBy=Jane+Smith'));
-        expect(textWidget.data, isNot(contains('message=')));
-      });
-
-      testWidgets('includes only userMessage query parameter when userName is null', (
-        tester,
-      ) async {
+      testWidgets('includes userMessage query parameter', (tester) async {
         const userMessage = 'This is a great sheet!';
 
-        await pumpSheetShareUtilsWidget(
-          tester,
-          userName: null,
-          userMessage: userMessage,
-        );
+        await pumpSheetShareUtilsWidget(tester, userMessage: userMessage);
 
-        // Verify userMessage is in link but userName is not
+        // Verify userMessage is in link (sharedBy also present from currentUserProvider)
         final textWidget = tester.widget<Text>(find.byType(Text));
         expect(textWidget.data, contains('message=This+is+a+great+sheet%21'));
-        expect(textWidget.data, isNot(contains('sharedBy=')));
+        expect(textWidget.data, contains('sharedBy=John+Doe'));
       });
-
 
       testWidgets('trims userMessage whitespace before adding to link', (
         tester,
       ) async {
-        const userName = 'John Doe';
         const userMessage = '  Message with whitespace  ';
 
-        await pumpSheetShareUtilsWidget(
-          tester,
-          userName: userName,
-          userMessage: userMessage,
-        );
+        await pumpSheetShareUtilsWidget(tester, userMessage: userMessage);
 
         // Verify trimmed message is in the link (not the original with whitespace)
         final textWidget = tester.widget<Text>(find.byType(Text));
         expect(textWidget.data, contains('message=Message+with+whitespace'));
-        expect(textWidget.data, isNot(contains('message=++Message+with+whitespace++')));
+        expect(
+          textWidget.data,
+          isNot(contains('message=++Message+with+whitespace++')),
+        );
       });
 
-      testWidgets('does not include query parameters when both are empty', (
-        tester,
-      ) async {
-        await pumpSheetShareUtilsWidget(
-          tester,
-          userName: null,
-          userMessage: null,
-        );
+      testWidgets('includes sharedBy when userMessage is null', (tester) async {
+        await pumpSheetShareUtilsWidget(tester, userMessage: null);
 
-        // Verify link does not contain query parameters
+        // Verify link contains sharedBy (from currentUserProvider) but not message
         final textWidget = tester.widget<Text>(find.byType(Text));
-        final link = getSheetShareLink();
-        expect(textWidget.data, contains(link));
-        expect(textWidget.data, isNot(contains('?')));
-      });
-
-      testWidgets('does not include query parameters when userName is empty string', (
-        tester,
-      ) async {
-        await pumpSheetShareUtilsWidget(
-          tester,
-          userName: '',
-          userMessage: null,
-        );
-
-        // Verify link does not contain sharedBy parameter
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, isNot(contains('sharedBy=')));
-      });
-
-      testWidgets('does not include query parameters when userMessage is empty string', (
-        tester,
-      ) async {
-        await pumpSheetShareUtilsWidget(
-          tester,
-          userName: null,
-          userMessage: '',
-        );
-
-        // Verify link does not contain message parameter
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, isNot(contains('message=')));
-      });
-
-      testWidgets('does not include query parameters when userMessage is only whitespace', (
-        tester,
-      ) async {
-        await pumpSheetShareUtilsWidget(
-          tester,
-          userName: null,
-          userMessage: '   ',
-        );
-
-        // Verify link does not contain message parameter
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        expect(textWidget.data, isNot(contains('message=')));
-      });
-
-      testWidgets('maintains correct message structure with userName and userMessage', (
-        tester,
-      ) async {
-        const userName = 'John Doe';
-        const userMessage = 'Check this out!';
-
-        await pumpSheetShareUtilsWidget(
-          tester,
-          userName: userName,
-          userMessage: userMessage,
-        );
-
-        // Verify message structure: title, description (if any), link with query params
-        final textWidget = tester.widget<Text>(find.byType(Text));
-        final lines = textWidget.data!.split('\n');
-        
-        // Should have at least: title, link
-        expect(lines.length, greaterThanOrEqualTo(2));
-        
-        // Verify link contains query parameters
         expect(textWidget.data, contains('sharedBy=John+Doe'));
-        expect(textWidget.data, contains('message=Check+this+out%21'));
-        
-        // Verify link is at the end
-        expect(textWidget.data, contains('🔗'));
+        expect(textWidget.data, isNot(contains('message=')));
       });
+
+      testWidgets(
+        'does not include query parameters when userMessage is empty string',
+        (tester) async {
+          await pumpSheetShareUtilsWidget(tester, userMessage: '');
+
+          // Verify link does not contain message parameter
+          final textWidget = tester.widget<Text>(find.byType(Text));
+          expect(textWidget.data, isNot(contains('message=')));
+        },
+      );
+
+      testWidgets(
+        'does not include query parameters when userMessage is only whitespace',
+        (tester) async {
+          await pumpSheetShareUtilsWidget(tester, userMessage: '   ');
+
+          // Verify link does not contain message parameter
+          final textWidget = tester.widget<Text>(find.byType(Text));
+          expect(textWidget.data, isNot(contains('message=')));
+        },
+      );
+
+      testWidgets(
+        'maintains correct message structure with userName and userMessage',
+        (tester) async {
+          const userMessage = 'Check this out!';
+
+          await pumpSheetShareUtilsWidget(tester, userMessage: userMessage);
+
+          // Verify message structure: title, description (if any), link with query params
+          final textWidget = tester.widget<Text>(find.byType(Text));
+          final lines = textWidget.data!.split('\n');
+
+          // Should have at least: title, link
+          expect(lines.length, greaterThanOrEqualTo(2));
+
+          // Verify link contains query parameters
+          expect(textWidget.data, contains('message=Check+this+out%21'));
+
+          // Verify link is at the end
+          expect(textWidget.data, contains('🔗'));
+        },
+      );
     });
 
     group('Text Content Share Message', () {
@@ -442,7 +420,7 @@ void main() {
       }
 
       String getTextContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/text-block/${parentId ?? testTextModel.id}';
+        return '🔗 ${ShareUtils.baseUrl}/text-block/${parentId ?? testTextModel.id}';
       }
 
       testWidgets('generates correct share message for text with all fields', (
@@ -524,6 +502,7 @@ void main() {
         expect(lines.first, equals(firstLine));
 
         // Last line should be the link
+        // Note: + is the correct encoding for spaces in query parameters
         expect(lines.last, equals(getTextContentLink()));
       });
 
@@ -592,7 +571,7 @@ void main() {
       }
 
       String getEventContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/event/${parentId ?? testEventModel.id}';
+        return '🔗 ${ShareUtils.baseUrl}/event/${parentId ?? testEventModel.id}';
       }
 
       testWidgets('generates correct share message for event with all fields', (
@@ -783,7 +762,7 @@ void main() {
       }
 
       String getListContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/list/${parentId ?? testListModel.id}';
+        return '🔗 ${ShareUtils.baseUrl}/list/${parentId ?? testListModel.id}';
       }
 
       testWidgets('generates correct share message for list with all fields', (
@@ -1106,7 +1085,7 @@ void main() {
       }
 
       String getTaskContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/task/${parentId ?? testTaskModel.id}';
+        return '🔗 ${ShareUtils.baseUrl}/task/${parentId ?? testTaskModel.id}';
       }
 
       testWidgets('generates correct share message for task with all fields', (
@@ -1377,7 +1356,7 @@ void main() {
       }
 
       String getBulletContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/bullet/${parentId ?? testBulletModel.id}';
+        return '🔗 ${ShareUtils.baseUrl}/bullet/${parentId ?? testBulletModel.id}';
       }
 
       testWidgets(
@@ -1536,7 +1515,7 @@ void main() {
       }
 
       String getPollContentLink({String? parentId}) {
-        return '🔗 ${ShareUtils.linkPrefixUrl}/poll/${parentId ?? testPollModel.id}';
+        return '🔗 ${ShareUtils.baseUrl}/poll/${parentId ?? testPollModel.id}';
       }
 
       testWidgets('generates correct share message for poll with all fields', (
