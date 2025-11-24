@@ -50,6 +50,20 @@ void main() {
           );
     }
 
+    void testUpdateSheetTheme({
+      required String sheetId,
+      required Color primary,
+      required Color secondary,
+    }) {
+      container
+          .read(sheetListProvider.notifier)
+          .updateSheetTheme(
+            sheetId: sheetId,
+            primary: primary,
+            secondary: secondary,
+          );
+    }
+
     group('updateSheetTitle', () {
       test('updates sheet title successfully', () {
         // Add a test sheet first
@@ -478,6 +492,93 @@ void main() {
 
         expect(updatedSheet1.sheetAvatar.data, equals('🎉'));
         expect(unchangedSheet2.sheetAvatar.data, equals('📄'));
+      });
+    });
+
+    group('updateSheetTheme', () {
+      test('updates sheet theme successfully', () {
+        // Add a test sheet first
+        final testSheet = sheet_model.SheetModel(
+          id: 'theme-test-sheet',
+          title: 'Theme Test',
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🎨'),
+        );
+        container.read(sheetListProvider.notifier).addSheet(testSheet);
+
+        // Update the theme
+        const primaryColor = Color(0xFF6200EE);
+        const secondaryColor = Color(0xFF03DAC6);
+        testUpdateSheetTheme(
+          sheetId: 'theme-test-sheet',
+          primary: primaryColor,
+          secondary: secondaryColor,
+        );
+
+        // Verify the theme was updated
+        final updatedList = container.read(sheetListProvider);
+        final updatedSheet = updatedList.firstWhere(
+          (s) => s.id == 'theme-test-sheet',
+        );
+        expect(updatedSheet.theme?.primary, equals(primaryColor));
+        expect(updatedSheet.theme?.secondary, equals(secondaryColor));
+        expect(
+          updatedSheet.title,
+          equals('Theme Test'),
+        ); // Other properties unchanged
+      });
+
+      test('does not affect other sheets', () {
+        // Add two test sheets
+        final sheet1 = sheet_model.SheetModel(
+          id: 'theme-sheet1',
+          title: 'Theme Sheet 1',
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🎨'),
+        );
+        final sheet2 = sheet_model.SheetModel(
+          id: 'theme-sheet2',
+          title: 'Theme Sheet 2',
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🎨'),
+        );
+        container.read(sheetListProvider.notifier).addSheet(sheet1);
+        container.read(sheetListProvider.notifier).addSheet(sheet2);
+
+        // Update only sheet1 theme
+        const primaryColor = Color(0xFFBB86FC);
+        const secondaryColor = Color(0xFF03DAC6);
+        testUpdateSheetTheme(
+          sheetId: 'theme-sheet1',
+          primary: primaryColor,
+          secondary: secondaryColor,
+        );
+
+        // Verify only sheet1 was updated
+        final updatedList = container.read(sheetListProvider);
+        final updatedSheet1 = updatedList.firstWhere(
+          (s) => s.id == 'theme-sheet1',
+        );
+        final unchangedSheet2 = updatedList.firstWhere(
+          (s) => s.id == 'theme-sheet2',
+        );
+
+        expect(updatedSheet1.theme?.primary, equals(primaryColor));
+        expect(updatedSheet1.theme?.secondary, equals(secondaryColor));
+        expect(unchangedSheet2.theme, isNull);
+      });
+
+      test('handles non-existent sheet ID gracefully', () {
+        final initialLength = container.read(sheetListProvider).length;
+
+        // Try to update non-existent sheet
+        const primaryColor = Color(0xFF000000);
+        const secondaryColor = Color(0xFFFFFFFF);
+        testUpdateSheetTheme(
+          sheetId: 'non-existent-id',
+          primary: primaryColor,
+          secondary: secondaryColor,
+        );
+
+        // List should remain unchanged
+        expect(container.read(sheetListProvider).length, equals(initialLength));
       });
     });
   });

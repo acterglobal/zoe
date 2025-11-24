@@ -77,8 +77,8 @@ void main() {
         // Verify subtitle is displayed
         expect(find.text(l10n.chooseSheetAvatarType), findsOneWidget);
 
-        // Verify all three option widgets are present
-        expect(find.byType(BottomSheetOptionWidget), findsNWidgets(3));
+        // Verify all four option widgets are present (Icon, Image, Emoji, Remove Avatar)
+        expect(find.byType(BottomSheetOptionWidget), findsNWidgets(4));
       });
 
       testWidgets('displays icon option with correct properties', (
@@ -191,7 +191,7 @@ void main() {
 
         // Find all BottomSheetOptionWidget instances
         final optionWidgets = find.byType(BottomSheetOptionWidget);
-        expect(optionWidgets, findsNWidgets(3));
+        expect(optionWidgets, findsNWidgets(4));
 
         // Verify each option widget has an onTap callback
         for (final element in optionWidgets.evaluate()) {
@@ -332,6 +332,87 @@ void main() {
         ).viewInsets.bottom;
 
         expect(paddingValue.bottom, equals(viewInsets + 16.0));
+      });
+    });
+
+    group('Remove Avatar Tests', () {
+      testWidgets('displays remove avatar option', (tester) async {
+        await pumpSheetAvatarTypeBottomSheet(tester, sheetId: testSheet.id);
+
+        final l10n = getL10n(tester);
+        // Verify remove avatar option is displayed
+        expect(find.text(l10n.removeAvatar), findsOneWidget);
+        expect(find.text(l10n.removeAvatarDescription), findsOneWidget);
+        expect(find.byIcon(Icons.delete_outline_rounded), findsOneWidget);
+      });
+
+      testWidgets('remove avatar option has correct color', (tester) async {
+        await pumpSheetAvatarTypeBottomSheet(tester, sheetId: testSheet.id);
+
+        final optionWidgets = find
+            .byType(BottomSheetOptionWidget)
+            .evaluate()
+            .toList();
+        // Remove avatar is the 4th option (index 3)
+        final removeOption = optionWidgets[3].widget as BottomSheetOptionWidget;
+
+        expect(removeOption.icon, equals(Icons.delete_outline_rounded));
+        expect(removeOption.color, isNotNull);
+      });
+
+      testWidgets('remove avatar option is tappable', (tester) async {
+        await pumpSheetAvatarTypeBottomSheet(tester, sheetId: testSheet.id);
+
+        final l10n = getL10n(tester);
+        final removeAvatarOption = find.ancestor(
+          of: find.text(l10n.removeAvatar),
+          matching: find.byType(BottomSheetOptionWidget),
+        );
+
+        expect(removeAvatarOption, findsOneWidget);
+
+        // Verify it has an onTap callback
+        final widget = tester.widget<BottomSheetOptionWidget>(
+          removeAvatarOption,
+        );
+        expect(widget.onTap, isNotNull);
+      });
+
+      testWidgets('displays all 4 options including remove avatar', (
+        tester,
+      ) async {
+        await pumpSheetAvatarTypeBottomSheet(tester, sheetId: testSheet.id);
+
+        // Verify all four option widgets are present
+        expect(find.byType(BottomSheetOptionWidget), findsNWidgets(4));
+      });
+
+      testWidgets('remove avatar option is in correct order', (tester) async {
+        await pumpSheetAvatarTypeBottomSheet(tester, sheetId: testSheet.id);
+
+        final l10n = getL10n(tester);
+        final optionWidgets = find
+            .byType(BottomSheetOptionWidget)
+            .evaluate()
+            .toList();
+
+        // Verify order: Icon, Image, Emoji, Remove Avatar
+        expect(
+          (optionWidgets[0].widget as BottomSheetOptionWidget).title,
+          equals(l10n.icon),
+        );
+        expect(
+          (optionWidgets[1].widget as BottomSheetOptionWidget).title,
+          equals(l10n.image),
+        );
+        expect(
+          (optionWidgets[2].widget as BottomSheetOptionWidget).title,
+          equals(l10n.emoji),
+        );
+        expect(
+          (optionWidgets[3].widget as BottomSheetOptionWidget).title,
+          equals(l10n.removeAvatar),
+        );
       });
     });
   });

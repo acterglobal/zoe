@@ -2,31 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:zoe/features/profile/actions/select_profile_actions.dart';
-import 'package:zoe/features/profile/providers/image_picker_provider.dart';
+
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 import '../mock_data.dart';
 
-class MockImagePicker extends Mock implements ImagePicker {}
+class MockImagePickerPlatform extends Mock
+    with MockPlatformInterfaceMixin
+    implements ImagePickerPlatform {}
 
 class MockXFile extends Mock implements XFile {}
 
 void main() {
   late ProviderContainer container;
-  late MockImagePicker mockImagePicker;
+  late MockImagePickerPlatform mockImagePickerPlatform;
   late MockXFile mockImageFile;
   late UserModel testUser;
 
   setUpAll(() {
     registerFallbackValue(ImageSource.camera);
+    registerFallbackValue(ImagePickerOptions());
   });
 
   setUp(() {
-    mockImagePicker = MockImagePicker();
+    mockImagePickerPlatform = MockImagePickerPlatform();
+    ImagePickerPlatform.instance = mockImagePickerPlatform;
+
     mockImageFile = MockXFile();
     when(() => mockImageFile.path).thenReturn('/test/path/image.jpg');
 
@@ -36,7 +43,6 @@ void main() {
       overrides: [
         currentUserProvider.overrideWithValue(AsyncValue.data(testUser)),
         userListProvider.overrideWith(() => TestUserList([testUser])),
-        imagePickerProvider.overrideWithValue(mockImagePicker),
       ],
     );
   });
@@ -92,9 +98,9 @@ void main() {
     ) async {
       // Mock image picker to return our mock file
       when(
-        () => mockImagePicker.pickImage(
+        () => mockImagePickerPlatform.getImageFromSource(
           source: ImageSource.camera,
-          imageQuality: any(named: 'imageQuality'),
+          options: any(named: 'options'),
         ),
       ).thenAnswer((_) async => mockImageFile);
 
@@ -145,9 +151,9 @@ void main() {
     ) async {
       // Mock image picker to return our mock file
       when(
-        () => mockImagePicker.pickImage(
+        () => mockImagePickerPlatform.getImageFromSource(
           source: ImageSource.gallery,
-          imageQuality: any(named: 'imageQuality'),
+          options: any(named: 'options'),
         ),
       ).thenAnswer((_) async => mockImageFile);
 
@@ -196,9 +202,9 @@ void main() {
     testWidgets('handles image picker returning null', (tester) async {
       // Mock image picker to return null
       when(
-        () => mockImagePicker.pickImage(
+        () => mockImagePickerPlatform.getImageFromSource(
           source: any(named: 'source'),
-          imageQuality: any(named: 'imageQuality'),
+          options: any(named: 'options'),
         ),
       ).thenAnswer((_) async => null);
 
@@ -245,15 +251,14 @@ void main() {
         overrides: [
           currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
           userListProvider.overrideWith(() => TestUserList([testUser])),
-          imagePickerProvider.overrideWithValue(mockImagePicker),
         ],
       );
 
       // Mock image picker to return our mock file
       when(
-        () => mockImagePicker.pickImage(
+        () => mockImagePickerPlatform.getImageFromSource(
           source: any(named: 'source'),
-          imageQuality: any(named: 'imageQuality'),
+          options: any(named: 'options'),
         ),
       ).thenAnswer((_) async => mockImageFile);
 
@@ -283,5 +288,49 @@ void main() {
       expect(users.length, equals(1));
       expect(users.first.avatar, isNull);
     });
+
+    testWidgets(
+      'handles remove image selection and updates user avatar to null',
+      (tester) async {
+        // Set initial avatar
+        testUser = testUser.copyWith(avatar: '/existing/avatar.jpg');
+        container
+            .read(userListProvider.notifier)
+            .updateUser(testUser.id, testUser);
+
+        await tester.pumpWidget(
+          buildTestWidget(
+            container: container,
+            child: Consumer(
+              builder: (context, ref, _) {
+                return TextButton(
+                  onPressed: () =>
+                      selectProfileFileSource(context, testUser.id, ref),
+                  child: const Text('Select Profile'),
+                );
+              },
+            ),
+          ),
+        );
+
+        // Open bottom sheet
+        await tester.tap(find.text('Select Profile'));
+        await tester.pumpAndSettle();
+
+        // Verify remove option is present and select it
+        // Note: The text depends on l10n, assuming 'Remove image' based on typical arb file
+        // If l10n is mocked or different, this might need adjustment.
+        // Using find.byIcon(Icons.delete) is safer if text varies.
+        expect(find.byIcon(Icons.delete), findsOneWidget);
+        await tester.tap(find.byIcon(Icons.delete));
+        await tester.pumpAndSettle();
+
+        // Verify user was updated
+        final updatedUser = container
+            .read(userListProvider)
+            .firstWhere((user) => user.id == testUser.id);
+        expect(updatedUser.avatar, isNull);
+      },
+    );
   });
 }

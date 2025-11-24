@@ -6,13 +6,16 @@ import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 
 void main() {
   group('Sheet Providers', () {
     late ProviderContainer container;
 
     setUp(() {
-      container = ProviderContainer.test();
+      container = ProviderContainer.test(
+        overrides: [loggedInUserProvider.overrideWith((ref) => 'user_1')],
+      );
     });
 
     group('SheetList Provider', () {
@@ -317,6 +320,57 @@ void main() {
 
         expect(updatedSheet1?.sheetAvatar.data, equals('updated-image1.png'));
         expect(unchangedSheet2?.sheetAvatar.data, equals('image2.png'));
+      });
+
+      test('addSheet applies default theme if not provided', () {
+        final notifier = container.read(sheetListProvider.notifier);
+        final initialLength = container.read(sheetListProvider).length;
+
+        final newSheet = SheetModel(
+          id: 'no-theme-sheet',
+          title: 'No Theme Sheet',
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🎨'),
+          theme: null, // Explicitly null
+        );
+
+        notifier.addSheet(newSheet);
+
+        final updatedList = container.read(sheetListProvider);
+        expect(updatedList.length, equals(initialLength + 1));
+
+        final addedSheet = updatedList.firstWhere(
+          (s) => s.id == 'no-theme-sheet',
+        );
+        expect(addedSheet.theme, isNotNull);
+      });
+
+      test('updateSheetTheme updates sheet theme', () {
+        final notifier = container.read(sheetListProvider.notifier);
+
+        // Add a test sheet
+        final testSheet = SheetModel(
+          id: 'theme-update-sheet',
+          title: 'Theme Update Sheet',
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🎨'),
+        );
+        notifier.addSheet(testSheet);
+
+        // Update the theme
+        const newPrimary = Colors.purple;
+        const newSecondary = Colors.orange;
+
+        notifier.updateSheetTheme(
+          sheetId: 'theme-update-sheet',
+          primary: newPrimary,
+          secondary: newSecondary,
+        );
+
+        // Verify the theme was updated
+        final updatedSheet = container.read(
+          sheetProvider('theme-update-sheet'),
+        );
+        expect(updatedSheet?.theme?.primary, equals(newPrimary));
+        expect(updatedSheet?.theme?.secondary, equals(newSecondary));
       });
     });
 

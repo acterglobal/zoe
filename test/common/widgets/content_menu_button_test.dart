@@ -9,9 +9,10 @@ import '../../test-utils/test_utils.dart';
 class ContentMenuButtonTestUtils {
   /// Creates a test wrapper for the ContentMenuButton
   static ContentMenuButton createTestWidget({
+    IconData icon = Icons.more_vert_rounded,
     Function(BuildContext context)? onTap,
   }) {
-    return ContentMenuButton(onTap: onTap ?? (context) {});
+    return ContentMenuButton(onTap: onTap ?? (context) {}, icon: icon);
   }
 }
 
@@ -89,7 +90,7 @@ void main() {
       expect(find.byType(ContentMenuButton), findsOneWidget);
     });
 
-    testWidgets('uses correct icon', (tester) async {
+    testWidgets('uses correct default icon', (tester) async {
       await tester.pumpMaterialWidget(
         child: ContentMenuButtonTestUtils.createTestWidget(),
       );
@@ -99,6 +100,19 @@ void main() {
         find.byType(StyledIconContainer),
       );
       expect(styledIconContainer.icon, Icons.more_vert_rounded);
+    });
+
+    testWidgets('renders with custom icon', (tester) async {
+      const customIcon = Icons.settings;
+      await tester.pumpMaterialWidget(
+        child: ContentMenuButtonTestUtils.createTestWidget(icon: customIcon),
+      );
+
+      // Verify the custom icon is used
+      final styledIconContainer = tester.widget<StyledIconContainer>(
+        find.byType(StyledIconContainer),
+      );
+      expect(styledIconContainer.icon, customIcon);
     });
   });
 }
