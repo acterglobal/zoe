@@ -42,7 +42,7 @@ void updateSheetAvatar({
 }
 
 /// Updates the theme colors of the sheet
-void updateSheetTheme({
+void ({
   required WidgetRef ref,
   required String sheetId,
   required Color primary,
