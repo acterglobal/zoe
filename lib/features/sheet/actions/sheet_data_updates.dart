@@ -42,13 +42,15 @@ void updateSheetAvatar({
 }
 
 /// Updates the theme colors of the sheet
-void ({
-  required WidgetRef ref,
-  required String sheetId,
-  required Color primary,
-  required Color secondary,
-}) {
-  ref.read(sheetListProvider.notifier).updateSheetTheme(
+void updateSheetTheme(
+  WidgetRef ref,
+  String sheetId,
+  Color primary,
+  Color secondary,
+) {
+  ref
+      .read(sheetListProvider.notifier)
+      .updateSheetTheme(
         sheetId: sheetId,
         primary: primary,
         secondary: secondary,
