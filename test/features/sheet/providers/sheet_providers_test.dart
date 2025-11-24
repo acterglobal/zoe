@@ -8,13 +8,19 @@ import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
+import '../../users/utils/users_utils.dart';
+
 void main() {
   group('Sheet Providers', () {
     late ProviderContainer container;
+    late String testUserId;
 
     setUp(() {
+      container = ProviderContainer.test();
+
+      testUserId = getUserByIndex(container).id;
       container = ProviderContainer.test(
-        overrides: [loggedInUserProvider.overrideWith((ref) => 'user_1')],
+        overrides: [loggedInUserProvider.overrideWith((ref) => testUserId)],
       );
     });
 
