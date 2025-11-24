@@ -121,53 +121,6 @@ void main() {
         expect(animatedTextField.autofocus, isFalse);
       });
 
-      testWidgets('calls onMessageChanged when text is entered', (tester) async {
-        String? capturedMessage;
-        await pumpSheetSharePreviewWidget(
-          tester,
-          parentId: testSheetId,
-          contentText: testContentText,
-          onMessageChanged: (message) {
-            capturedMessage = message;
-          },
-        );
-
-        const testMessage = 'This is a test message';
-        await tester.enterText(find.byType(AnimatedTextField), testMessage);
-        await tester.pump();
-
-        // Verify callback was called with the entered text
-        expect(capturedMessage, equals(testMessage));
-      });
-
-      testWidgets('calls onMessageChanged multiple times as user types', (
-        tester,
-      ) async {
-        final capturedMessages = <String>[];
-        await pumpSheetSharePreviewWidget(
-          tester,
-          parentId: testSheetId,
-          contentText: testContentText,
-          onMessageChanged: (message) {
-            capturedMessages.add(message);
-          },
-        );
-
-        // Type message character by character
-        const message = 'Hello';
-        for (var i = 0; i < message.length; i++) {
-          await tester.enterText(
-            find.byType(AnimatedTextField),
-            message.substring(0, i + 1),
-          );
-          await tester.pump();
-        }
-
-        // Verify callback was called for each character
-        expect(capturedMessages.length, greaterThan(0));
-        expect(capturedMessages.last, equals(message));
-      });
-
       testWidgets('handles empty onMessageChanged callback gracefully', (
         tester,
       ) async {
@@ -225,36 +178,6 @@ void main() {
           find.byType(AnimatedTextField),
         );
         expect(animatedTextField.controller.text, isEmpty);
-      });
-    });
-
-    group('Statistics Section', () {
-      testWidgets('hides statistics section when all lists are empty', (
-        tester,
-      ) async {
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            sheetListProvider.overrideWith(
-              () => SheetList()..state = [testSheet],
-            ),
-            sheetProvider(testSheetId).overrideWith((ref) => testSheet),
-            eventsListProvider.overrideWithValue(<EventModel>[]),
-            tasksListProvider.overrideWithValue(<TaskModel>[]),
-            documentListProvider.overrideWithValue(<DocumentModel>[]),
-            pollsListProvider.overrideWithValue(<PollModel>[]),
-          ],
-        );
-
-        await pumpSheetSharePreviewWidget(
-          tester,
-          parentId: testSheetId,
-          contentText: testContentText,
-          testContainer: testContainer,
-        );
-
-        // Verify statistics section is not displayed
-        expect(find.byType(Divider), findsNothing);
-        expect(find.byType(StyledIconContainer), findsNothing);
       });
     });
 

@@ -45,6 +45,9 @@ void main() {
     container = ProviderContainer.test(
       overrides: [
         loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+        currentUserProvider.overrideWithValue(
+          AsyncValue.data(getUserByIndex(initialContainer)),
+        ),
       ],
     );
   });
@@ -61,10 +64,7 @@ void main() {
   }
 
   L10n getL10n(WidgetTester tester) {
-    return WidgetTesterExtension.getL10n(
-      tester,
-      byType: ShareItemsBottomSheet,
-    );
+    return WidgetTesterExtension.getL10n(tester, byType: ShareItemsBottomSheet);
   }
 
   group('Share Items Bottom Sheet Widget', () {
@@ -288,78 +288,80 @@ void main() {
         expect(textField.controller.text, equals(testMessage));
       });
 
-      testWidgets('calls updateSheetShareInfo with correct parameters when currentUser is not null', (
-        tester,
-      ) async {
-        bool isShareCalled = false;
-        await initSharePlatformMethodCallHandler(
-          onShare: () => isShareCalled = true,
-        );
+      testWidgets(
+        'calls updateSheetShareInfo with correct parameters when currentUser is not null',
+        (tester) async {
+          bool isShareCalled = false;
+          await initSharePlatformMethodCallHandler(
+            onShare: () => isShareCalled = true,
+          );
 
-        final currentUser = getUserByIndex(container);
-        
-        await pumpShareItemsBottomSheet(
-          tester,
-          parentId: testSheet.id,
-          isSheet: true,
-        );
+          final currentUser = getUserByIndex(container);
 
-        const testMessage = 'Test message with whitespace  ';
-        await tester.enterText(find.byType(AnimatedTextField), testMessage);
-        await tester.pump();
+          await pumpShareItemsBottomSheet(
+            tester,
+            parentId: testSheet.id,
+            isSheet: true,
+          );
 
-        // Tap share button
-        final shareButton = find.byType(ZoePrimaryButton);
-        await tester.tap(shareButton);
-        await tester.pump();
+          const testMessage = 'Test message with whitespace  ';
+          await tester.enterText(find.byType(AnimatedTextField), testMessage);
+          await tester.pump();
 
-        // Wait for state update to propagate
-        await tester.pump();
-        await tester.pump();
+          // Tap share button
+          final shareButton = find.byType(ZoePrimaryButton);
+          await tester.tap(shareButton);
+          await tester.pump();
 
-        // Verify updateSheetShareInfo was called with correct parameters
-        final updatedSheet = container.read(sheetProvider(testSheet.id));
-        expect(updatedSheet?.sharedBy, equals(currentUser.name));
-        expect(updatedSheet?.message, equals(testMessage.trim()));
-        expect(updatedSheet?.id, equals(testSheet.id));
-        
-        // Verify share was also called
-        expect(isShareCalled, isTrue);
-      });
+          // Wait for state update to propagate
+          await tester.pump();
+          await tester.pump();
 
-      testWidgets('calls updateSheetShareInfo with null message when message is empty', (
-        tester,
-      ) async {
-        bool isShareCalled = false;
-        await initSharePlatformMethodCallHandler(
-          onShare: () => isShareCalled = true,
-        );
+          // Verify updateSheetShareInfo was called with correct parameters
+          final updatedSheet = container.read(sheetProvider(testSheet.id));
+          expect(updatedSheet?.sharedBy, equals(currentUser.name));
+          expect(updatedSheet?.message, equals(testMessage.trim()));
+          expect(updatedSheet?.id, equals(testSheet.id));
 
-        final currentUser = getUserByIndex(container);
-        
-        await pumpShareItemsBottomSheet(
-          tester,
-          parentId: testSheet.id,
-          isSheet: true,
-        );
+          // Verify share was also called
+          expect(isShareCalled, isTrue);
+        },
+      );
 
-        // Don't enter any message
-        final shareButton = find.byType(ZoePrimaryButton);
-        await tester.tap(shareButton);
-        await tester.pump();
+      testWidgets(
+        'calls updateSheetShareInfo with null message when message is empty',
+        (tester) async {
+          bool isShareCalled = false;
+          await initSharePlatformMethodCallHandler(
+            onShare: () => isShareCalled = true,
+          );
 
-        // Wait for state update to propagate
-        await tester.pump();
-        await tester.pump();
+          final currentUser = getUserByIndex(container);
 
-        // Verify updateSheetShareInfo was called with null message
-        final updatedSheet = container.read(sheetProvider(testSheet.id));
-        expect(updatedSheet?.sharedBy, equals(currentUser.name));
-        expect(updatedSheet?.message, isNull);
-        
-        // Verify share was also called
-        expect(isShareCalled, isTrue);
-      });
+          await pumpShareItemsBottomSheet(
+            tester,
+            parentId: testSheet.id,
+            isSheet: true,
+          );
+
+          // Don't enter any message
+          final shareButton = find.byType(ZoePrimaryButton);
+          await tester.tap(shareButton);
+          await tester.pump();
+
+          // Wait for state update to propagate
+          await tester.pump();
+          await tester.pump();
+
+          // Verify updateSheetShareInfo was called with null message
+          final updatedSheet = container.read(sheetProvider(testSheet.id));
+          expect(updatedSheet?.sharedBy, equals(currentUser.name));
+          expect(updatedSheet?.message, isNull);
+
+          // Verify share was also called
+          expect(isShareCalled, isTrue);
+        },
+      );
 
       testWidgets('does not call updateSheetShareInfo when currentUser is null', (
         tester,
@@ -383,10 +385,7 @@ void main() {
 
         await tester.pumpMaterialWidgetWithProviderScope(
           container: testContainer,
-          child: ShareItemsBottomSheet(
-            parentId: testSheet.id,
-            isSheet: true,
-          ),
+          child: ShareItemsBottomSheet(parentId: testSheet.id, isSheet: true),
         );
 
         const testMessage = 'Test message';
@@ -406,7 +405,7 @@ void main() {
         final updatedSheet = testContainer.read(sheetProvider(testSheet.id));
         expect(updatedSheet?.sharedBy, equals(initialSharedBy));
         expect(updatedSheet?.message, equals(initialMessage));
-        
+
         // Verify share was still called (share functionality works without user)
         expect(isShareCalled, isTrue);
 
