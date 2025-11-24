@@ -23,7 +23,6 @@ void selectProfileFileSource(
     },
     onTapRemoveImage: () async {
       _updateUserAvatar(ref, userId, null);
-      if (context.mounted) Navigator.pop(context);
     },
   );
 }

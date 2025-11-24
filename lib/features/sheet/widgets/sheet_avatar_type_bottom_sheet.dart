@@ -95,6 +95,17 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
     );
   }
 
+  void removeAvatar(BuildContext context, WidgetRef ref) {
+    updateSheetAvatar(
+      ref: ref,
+      sheetId: sheetId,
+      type: AvatarType.icon,
+      data: 'file',
+      color: null,
+    );
+    if (context.mounted) context.pop();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
@@ -149,6 +160,14 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
             subtitle: l10n.chooseEmojiDescription,
             color: AppColors.secondaryColor,
             onTap: () => selectEmoji(context, ref),
+          ),
+          const SizedBox(height: 16),
+          BottomSheetOptionWidget(
+            icon: Icons.delete_outline_rounded,
+            title: l10n.removeAvatar,
+            subtitle: l10n.removeAvatarDescription,
+            color: AppColors.errorColor,
+            onTap: () => removeAvatar(context, ref),
           ),
           const SizedBox(height: 16),
         ],
