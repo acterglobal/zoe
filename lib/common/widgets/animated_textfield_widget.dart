@@ -6,7 +6,6 @@ class AnimatedTextField extends StatefulWidget {
   final String hintText;
   final Function(String?) onErrorChanged;
   final VoidCallback onSubmitted;
-  final VoidCallback? onTextChange;
   final bool enabled;
   final bool readOnly;
   final bool autofocus;
@@ -20,7 +19,6 @@ class AnimatedTextField extends StatefulWidget {
     required this.hintText,
     required this.onErrorChanged,
     required this.onSubmitted,
-    this.onTextChange,
     this.enabled = true,
     this.readOnly = false,
     this.autofocus = true,
@@ -130,7 +128,6 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
               if (widget.errorText != null) {
                 widget.onErrorChanged(null);
               }
-              widget.onTextChange?.call();
             },
             onSubmitted: (value) => widget.onSubmitted(),
           ),

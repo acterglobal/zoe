@@ -12,15 +12,29 @@ import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
 class ShareUtils {
-  static final String linkPrefixUrl = 'https://hellozoe.app';
+  static final String baseUrl = 'https://hellozoe.app';
 
-  static String getLinkPrefixUrl(String endpoint, {Map<String, String>? queryParams}) {
-    final uri = Uri.parse('$linkPrefixUrl/$endpoint');
+  static String getSheetDeepLinkUrl(
+    String sheetId,
+    String? sharedBy,
+    String? message,
+  ) {
+    final queryParams = <String, String>{
+      'sharedBy': sharedBy ?? '',
+      'message': message ?? '',
+    };
+    return getLinkPrefixUrl('sheet/$sheetId', queryParams: queryParams);
+  }
+
+  static String getLinkPrefixUrl(
+    String endpoint, {
+    Map<String, String>? queryParams,
+  }) {
+    final uri = Uri.parse('$baseUrl/$endpoint');
     if (queryParams != null && queryParams.isNotEmpty) {
-      final uriWithParams = uri.replace(queryParameters: {
-        ...uri.queryParameters,
-        ...queryParams,
-      });
+      final uriWithParams = uri.replace(
+        queryParameters: {...uri.queryParameters, ...queryParams},
+      );
       return '🔗 ${uriWithParams.toString()}';
     }
     return '🔗 ${uri.toString()}';
@@ -30,12 +44,13 @@ class ShareUtils {
   static String getSheetShareMessage({
     required WidgetRef ref,
     required String parentId,
-    String? userName,
     String? userMessage,
   }) {
     final buffer = StringBuffer();
     final sheet = ref.watch(sheetProvider(parentId));
     if (sheet == null) return buffer.toString();
+
+    final userName = ref.watch(currentUserProvider).value?.name;
 
     final title = sheet.title;
     final description = sheet.description?.plainText;
@@ -53,15 +68,8 @@ class ShareUtils {
       buffer.write('\n\n$description');
     }
 
-    // Link with query parameters
-    final queryParams = <String, String>{};
-    if (userName != null && userName.isNotEmpty) {
-      queryParams['sharedBy'] = userName;
-    }
-    if (userMessage != null && userMessage.trim().isNotEmpty) {
-      queryParams['message'] = userMessage.trim();
-    }
-    final link = getLinkPrefixUrl('sheet/$parentId', queryParams: queryParams.isNotEmpty ? queryParams : null);
+    final link = getSheetDeepLinkUrl(parentId, userName, userMessage);
+
     buffer.write('\n\n$link');
     return buffer.toString();
   }

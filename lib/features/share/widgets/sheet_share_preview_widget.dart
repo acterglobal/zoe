@@ -89,8 +89,7 @@ class _SheetSharePreviewWidgetState
               controller: _messageController,
               hintText: l10n.addAMessage,
               onErrorChanged: (error) {},
-              onSubmitted: () {},
-              onTextChange: () {
+              onSubmitted: () {
                 final callback = widget.onMessageChanged;
                 if (callback != null) {
                   callback(_messageController.text);
@@ -101,46 +100,40 @@ class _SheetSharePreviewWidgetState
               autofocus: false,
             ),
             const SizedBox(height: 16),
-            // Statistics Section
-            if (sheetEvents.isNotEmpty ||
-                sheetTasks.isNotEmpty ||
-                sheetDocuments.isNotEmpty ||
-                sheetPolls.isNotEmpty) ...[
-              _buildStatCard(
-                context: context,
-                icon: Icons.event_rounded,
-                label: l10n.events,
-                count: sheetEvents.length,
-                subtitle: todayEvents.isNotEmpty
-                    ? '${todayEvents.length} ${l10n.today}'
-                    : null,
-                color: AppColors.secondaryColor,
-              ),
-              _buildStatCard(
-                context: context,
-                icon: Icons.task_alt_rounded,
-                label: l10n.tasks,
-                count: sheetTasks.length,
-                subtitle: todayTasks.isNotEmpty
-                    ? '${todayTasks.length} ${l10n.dueToday}'
-                    : null,
-                color: AppColors.successColor,
-              ),
-              _buildStatCard(
-                context: context,
-                icon: Icons.insert_drive_file_rounded,
-                label: l10n.documents,
-                count: sheetDocuments.length,
-                color: AppColors.brightOrangeColor,
-              ),
-              _buildStatCard(
-                context: context,
-                icon: Icons.poll_rounded,
-                label: l10n.polls,
-                count: sheetPolls.length,
-                color: AppColors.brightMagentaColor,
-              ),
-            ],
+            _buildStatCard(
+              context: context,
+              icon: Icons.event_rounded,
+              label: l10n.events,
+              count: sheetEvents.length,
+              subtitle: todayEvents.isNotEmpty
+                  ? '${todayEvents.length} ${l10n.today}'
+                  : null,
+              color: AppColors.secondaryColor,
+            ),
+            _buildStatCard(
+              context: context,
+              icon: Icons.task_alt_rounded,
+              label: l10n.tasks,
+              count: sheetTasks.length,
+              subtitle: todayTasks.isNotEmpty
+                  ? '${todayTasks.length} ${l10n.dueToday}'
+                  : null,
+              color: AppColors.successColor,
+            ),
+            _buildStatCard(
+              context: context,
+              icon: Icons.insert_drive_file_rounded,
+              label: l10n.documents,
+              count: sheetDocuments.length,
+              color: AppColors.brightOrangeColor,
+            ),
+            _buildStatCard(
+              context: context,
+              icon: Icons.poll_rounded,
+              label: l10n.polls,
+              count: sheetPolls.length,
+              color: AppColors.brightMagentaColor,
+            ),
           ],
         ),
       ),
