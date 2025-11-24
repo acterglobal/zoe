@@ -11,7 +11,6 @@ import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/sheet/actions/delete_sheet.dart';
-import 'package:zoe/features/sheet/actions/sheet_data_updates.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -101,19 +100,14 @@ class SheetActions {
     WidgetRef ref,
     String sheetId,
   ) {
-    ref.read(sheetListProvider.notifier).updateSheetCoverImage(sheetId, null);
-
-    // Set theme when removing cover image if theme is not already set
-    final sheet = ref.read(sheetProvider(sheetId));
-    if (sheet != null && sheet.theme == null) {
-      final theme = Theme.of(context);
-      updateSheetTheme(
-        ref: ref,
-        sheetId: sheetId,
-        primary: theme.colorScheme.primary,
-        secondary: theme.colorScheme.secondary,
-      );
-    }
+    final theme = Theme.of(context);
+    final sheetListNotifier = ref.read(sheetListProvider.notifier);
+    sheetListNotifier.updateSheetCoverImage(sheetId, null);
+    sheetListNotifier.updateSheetTheme(
+      sheetId: sheetId,
+      primary: theme.colorScheme.primary,
+      secondary: theme.colorScheme.secondary,
+    );
   }
 
   /// Copies sheet content to clipboard
