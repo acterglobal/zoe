@@ -1,15 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_network_local_image_view.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_app_bar.dart';
-import '../../../test-utils/test_utils.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
+
 import '../utils/sheet_utils.dart';
 
 void main() {
@@ -40,13 +44,35 @@ void main() {
         );
       }
 
-      await tester.pumpMaterialWidgetWithProviderScope(
-        container: container,
-        child: Scaffold(
-          body: CustomScrollView(
-            slivers: [
-              SheetAppBar(sheetId: effectiveSheetId, isEditing: isEditing),
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp.router(
+            localizationsDelegates: const [
+              L10n.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
             ],
+            supportedLocales: L10n.supportedLocales,
+            routerConfig: GoRouter(
+              initialLocation: '/',
+              routes: [
+                GoRoute(
+                  path: '/',
+                  builder: (context, state) => Scaffold(
+                    body: CustomScrollView(
+                      slivers: [
+                        SheetAppBar(
+                          sheetId: effectiveSheetId,
+                          isEditing: isEditing,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -60,8 +86,10 @@ void main() {
         expect(find.byType(SheetAppBar), findsOneWidget);
         expect(find.byType(SliverAppBar), findsOneWidget);
         expect(find.byType(ZoeAppBar), findsOneWidget);
-        // Now there are 2 ContentMenuButtons: one in title, one in flexibleSpace
-        expect(find.byType(ContentMenuButton), findsNWidgets(2));
+        // Now there is 1 ContentMenuButton in title
+        expect(find.byType(ContentMenuButton), findsOneWidget);
+        // One ZoeIconButtonWidget in flexibleSpace (photo library)
+        expect(find.byType(ZoeIconButtonWidget), findsOneWidget);
       });
 
       testWidgets('has correct app bar properties with cover image', (
@@ -182,14 +210,10 @@ void main() {
       testWidgets('menu button is tappable', (tester) async {
         await pumpSheetAppBar(tester);
 
-        // Find the menu button in the title (not the photo library button)
+        // Find the menu button in the title
         final menuButton = find.descendant(
           of: find.byType(ZoeAppBar),
-          matching: find.byWidgetPredicate(
-            (widget) =>
-                widget is ContentMenuButton &&
-                widget.icon != Icons.photo_library,
-          ),
+          matching: find.byType(ContentMenuButton),
         );
         expect(menuButton, findsOneWidget);
 
@@ -199,61 +223,6 @@ void main() {
 
         // Verify popup menu is shown
         expect(find.byType(PopupMenuItem<ZoePopupMenuItem>), findsWidgets);
-      });
-
-      testWidgets('menu shows correct items without cover image', (
-        tester,
-      ) async {
-        final sheetWithoutImage = testSheet.removeCoverImage();
-        await pumpSheetAppBar(tester, customSheet: sheetWithoutImage);
-
-        // Tap the menu button in the title (not the photo library button)
-        final menuButton = find.descendant(
-          of: find.byType(ZoeAppBar),
-          matching: find.byWidgetPredicate(
-            (widget) =>
-                widget is ContentMenuButton &&
-                widget.icon != Icons.photo_library,
-          ),
-        );
-        await tester.tap(menuButton);
-        await tester.pump(const Duration(milliseconds: 100));
-
-        // Verify menu items are present
-        expect(find.byType(PopupMenuItem<ZoePopupMenuItem>), findsWidgets);
-
-        // Should have "Add Cover Image" option (not "Update" or "Remove")
-        expect(find.text("Add cover image"), findsWidgets);
-        expect(find.text("Update cover image"), findsNothing);
-        expect(find.text("Remove cover image"), findsNothing);
-      });
-
-      testWidgets('menu shows correct items with cover image', (tester) async {
-        final sheetWithImage = testSheet.copyWith(
-          coverImageUrl: 'https://example.com/image.jpg',
-        );
-
-        await pumpSheetAppBar(tester, customSheet: sheetWithImage);
-
-        // Tap the menu button in the title (not the photo library button)
-        final menuButton = find.descendant(
-          of: find.byType(ZoeAppBar),
-          matching: find.byWidgetPredicate(
-            (widget) =>
-                widget is ContentMenuButton &&
-                widget.icon != Icons.photo_library,
-          ),
-        );
-        await tester.tap(menuButton);
-        await tester.pump(const Duration(milliseconds: 100));
-
-        // Verify menu items are present
-        expect(find.byType(PopupMenuItem<ZoePopupMenuItem>), findsWidgets);
-
-        // The sheet menu should have "Update Cover Image" option
-        // "Remove cover image" is in the MediaSelectionBottomSheet, not the sheet menu
-        expect(find.text("Add cover image"), findsNothing);
-        expect(find.text("Update cover image"), findsWidgets);
       });
     });
 
@@ -360,8 +329,11 @@ void main() {
         expect(find.byType(SheetAppBar), findsOneWidget);
         expect(find.byType(SliverAppBar), findsOneWidget);
         expect(find.byType(ZoeAppBar), findsOneWidget);
-        // Now there are 2 ContentMenuButtons
-        expect(find.byType(ContentMenuButton), findsNWidgets(2));
+        expect(find.byType(ZoeAppBar), findsOneWidget);
+        // Now there is 1 ContentMenuButton
+        expect(find.byType(ContentMenuButton), findsOneWidget);
+        // ZoeIconButtonWidget in flexibleSpace
+        expect(find.byType(ZoeIconButtonWidget), findsOneWidget);
       });
 
       testWidgets('app bar actions are correctly positioned', (tester) async {
@@ -469,14 +441,14 @@ void main() {
       testWidgets('displays photo library button in flexibleSpace', (
         tester,
       ) async {
-        await pumpSheetAppBar(tester);
+        await pumpSheetAppBar(tester, isEditing: true);
 
         // Find the photo library button
         final photoButtonFinder = find.descendant(
           of: find.byType(FlexibleSpaceBar),
           matching: find.byWidgetPredicate(
             (widget) =>
-                widget is ContentMenuButton &&
+                widget is ZoeIconButtonWidget &&
                 widget.icon == Icons.photo_library,
           ),
         );
@@ -487,7 +459,7 @@ void main() {
       testWidgets('photo library button is positioned correctly', (
         tester,
       ) async {
-        await pumpSheetAppBar(tester);
+        await pumpSheetAppBar(tester, isEditing: true);
 
         // Find the Positioned widget containing the button
         final positionedFinder = find.descendant(
@@ -510,13 +482,17 @@ void main() {
           coverImageUrl: 'https://example.com/image.jpg',
         );
 
-        await pumpSheetAppBar(tester, customSheet: sheetWithImage);
+        await pumpSheetAppBar(
+          tester,
+          customSheet: sheetWithImage,
+          isEditing: true,
+        );
 
         final photoButtonFinder = find.descendant(
           of: find.byType(FlexibleSpaceBar),
           matching: find.byWidgetPredicate(
             (widget) =>
-                widget is ContentMenuButton &&
+                widget is ZoeIconButtonWidget &&
                 widget.icon == Icons.photo_library,
           ),
         );
@@ -528,13 +504,17 @@ void main() {
         tester,
       ) async {
         final sheetWithoutImage = testSheet.removeCoverImage();
-        await pumpSheetAppBar(tester, customSheet: sheetWithoutImage);
+        await pumpSheetAppBar(
+          tester,
+          customSheet: sheetWithoutImage,
+          isEditing: true,
+        );
 
         final photoButtonFinder = find.descendant(
           of: find.byType(FlexibleSpaceBar),
           matching: find.byWidgetPredicate(
             (widget) =>
-                widget is ContentMenuButton &&
+                widget is ZoeIconButtonWidget &&
                 widget.icon == Icons.photo_library,
           ),
         );
@@ -543,13 +523,13 @@ void main() {
       });
 
       testWidgets('photo library button is tappable', (tester) async {
-        await pumpSheetAppBar(tester);
+        await pumpSheetAppBar(tester, isEditing: true);
 
         final photoButtonFinder = find.descendant(
           of: find.byType(FlexibleSpaceBar),
           matching: find.byWidgetPredicate(
             (widget) =>
-                widget is ContentMenuButton &&
+                widget is ZoeIconButtonWidget &&
                 widget.icon == Icons.photo_library,
           ),
         );
@@ -558,7 +538,7 @@ void main() {
 
         // Tap the button
         await tester.tap(photoButtonFinder);
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         // Should not crash
         expect(tester.takeException(), isNull);

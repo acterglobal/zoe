@@ -182,16 +182,15 @@ void main() {
         // Tap share button
         final shareButton = find.byType(ZoePrimaryButton);
         await tester.tap(shareButton);
-        await tester.pump();
+
+        // Important: allow Riverpod to update state
+        await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
 
         // Verify share was called
         expect(isShareCalled, isTrue);
 
-        // Wait a bit for state update to propagate
-        await tester.pump();
-        await tester.pump();
-
-        // Verify sheet model was updated with sharedBy and message
+        // Verify sheet model was updated
         final updatedSheet = container.read(sheetProvider(testSheet.id));
         expect(updatedSheet?.sharedBy, equals(currentUser.name));
         expect(updatedSheet?.message, equals(testMessage));
@@ -311,11 +310,7 @@ void main() {
           // Tap share button
           final shareButton = find.byType(ZoePrimaryButton);
           await tester.tap(shareButton);
-          await tester.pump();
-
-          // Wait for state update to propagate
-          await tester.pump();
-          await tester.pump();
+          await tester.pumpAndSettle();
 
           // Verify updateSheetShareInfo was called with correct parameters
           final updatedSheet = container.read(sheetProvider(testSheet.id));

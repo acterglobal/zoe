@@ -277,8 +277,12 @@ void main() {
             child: Consumer(
               builder: (context, ref, _) {
                 return TextButton(
-                  onPressed: () =>
-                      selectProfileFileSource(context, testUser.id, ref),
+                  onPressed: () => selectProfileFileSource(
+                    context,
+                    testUser.id,
+                    ref,
+                    hasAvatar: true,
+                  ),
                   child: const Text('Select Profile'),
                 );
               },
