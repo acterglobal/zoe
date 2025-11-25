@@ -6,13 +6,11 @@ import '../../../../l10n/generated/l10n.dart';
 class ColorSelectorWidget extends StatelessWidget {
   final ValueChanged<Color> onColorChanged;
   final Color selectedColor;
-  final String? title;
 
   const ColorSelectorWidget({
     super.key,
     required this.onColorChanged,
     required this.selectedColor,
-    this.title,
   });
 
   static const colorPickerKey = 'color-picker';
@@ -22,7 +20,10 @@ class ColorSelectorWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title ?? L10n.of(context).selectColor),
+        Text(
+          L10n.of(context).selectColor,
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
         const SizedBox(height: 12),
         Wrap(children: _buildColorBoxes()),
       ],
@@ -48,7 +49,7 @@ class ColorSelectorWidget extends StatelessWidget {
         height: 40,
         width: 40,
         padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           color: colorItem,
           border: isSelected ? Border.all(color: Colors.white, width: 1) : null,

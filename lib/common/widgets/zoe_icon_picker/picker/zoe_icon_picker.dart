@@ -181,8 +181,11 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(L10n.of(context).selectIcon),
-        const SizedBox(height: 5),
+        Text(
+          L10n.of(context).selectIcon,
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        const SizedBox(height: 10),
         _buildSearchWidget(),
         const SizedBox(height: 5),
         Expanded(
@@ -224,7 +227,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
             height: 45,
             width: 45,
             alignment: Alignment.center,
-            margin: const EdgeInsets.all(8),
+            margin: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: Colors.white24,
               border: zoeIconItem == zoeIcon
