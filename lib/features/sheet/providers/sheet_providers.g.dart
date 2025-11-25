@@ -44,7 +44,7 @@ final class SheetListProvider
   }
 }
 
-String _$sheetListHash() => r'bf3cef19a3b95c2b3917468dff3308ee85636393';
+String _$sheetListHash() => r'31ae217bd28105f45406995e92c8128edb8ebc66';
 
 /// Main sheet list provider with all sheet management functionality
 

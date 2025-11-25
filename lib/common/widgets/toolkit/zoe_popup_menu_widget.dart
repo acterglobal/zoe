@@ -244,4 +244,17 @@ class ZoeCommonMenuItems {
     isDestructive: true,
     onTap: onTapDelete,
   );
+
+  /// Copy sheet menu item
+  static ZoePopupMenuItem chooseTheme({
+    VoidCallback? onTapChooseTheme,
+    String title = 'Choose theme',
+    String subtitle = 'Choose a theme for this sheet',
+  }) => ZoePopupMenuItem(
+    id: 'choose_theme',
+    icon: Icons.color_lens,
+    title: title,
+    subtitle: subtitle,
+    onTap: onTapChooseTheme,
+  );
 }

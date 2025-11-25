@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/choose_color_bottom_sheet.dart';
 import 'package:zoe/common/widgets/media_selection_bottom_sheet.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -26,6 +27,10 @@ void showSheetMenu({
     ZoeCommonMenuItems.connect(
       onTapConnect: () => SheetActions.connectSheet(context, sheetId),
       subtitle: L10n.of(context).connectWithWhatsAppGroup,
+    ),
+    ZoeCommonMenuItems.chooseTheme(
+      onTapChooseTheme: () => SheetActions.chooseTheme(context, ref, sheetId),
+      subtitle: L10n.of(context).chooseTheme,
     ),
     if (hasCoverImage) ...[
       ZoeCommonMenuItems.updateCoverImage(
@@ -138,5 +143,10 @@ class SheetActions {
   /// Deletes the specified sheet content
   static void deleteSheet(BuildContext context, WidgetRef ref, String sheetId) {
     showDeleteSheetConfirmation(context, ref, sheetId);
+  }
+
+  /// Chooses theme for the specified sheet content
+  static void chooseTheme(BuildContext context, WidgetRef ref, String sheetId) {
+    ChooseColorBottomSheet.show(context, sheetId: sheetId);
   }
 }

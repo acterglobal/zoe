@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/keyboard_visibility_provider.dart';
+import 'package:zoe/common/providers/selected_color_provider.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
-import 'package:zoe/common/widgets/zoe_icon_picker/models/color_data.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
+
+import '../widgets/color_selector_widget.dart';
 
 class ZoeIconPicker extends ConsumerStatefulWidget {
   final Color? selectedColor;
@@ -39,7 +41,6 @@ class ZoeIconPicker extends ConsumerStatefulWidget {
 
   // Keys
   static const iconPreviewKey = 'icon-preview';
-  static const colorPickerKey = 'color-picker';
   static const iconPickerKey = 'icon-picker';
 
   @override
@@ -48,9 +49,6 @@ class ZoeIconPicker extends ConsumerStatefulWidget {
 
 class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
   final searchController = TextEditingController();
-  final ValueNotifier<Color> selectedColor = ValueNotifier(
-    iconPickerColors.first,
-  );
   final ValueNotifier<ZoeIcon> selectedIcon = ValueNotifier(ZoeIcon.file);
   final ValueNotifier<List<ZoeIcon>> zoeIconList = ValueNotifier(
     ZoeIcon.values,
@@ -58,7 +56,12 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
 
   void _setWidgetValues() {
     if (widget.selectedColor != null) {
-      selectedColor.value = widget.selectedColor!;
+      // Update provider with the passed color
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref
+            .read(selectedColorProvider.notifier)
+            .setPrimaryColor(widget.selectedColor!);
+      });
     }
     if (widget.selectedIcon != null) {
       selectedIcon.value = widget.selectedIcon!;
@@ -74,7 +77,6 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
   @override
   void dispose() {
     searchController.dispose();
-    selectedColor.dispose();
     selectedIcon.dispose();
     zoeIconList.dispose();
     super.dispose();
@@ -85,7 +87,9 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
     super.didUpdateWidget(oldWidget);
     if (widget.selectedColor != null &&
         widget.selectedColor != oldWidget.selectedColor) {
-      selectedColor.value = widget.selectedColor!;
+      ref
+          .read(selectedColorProvider.notifier)
+          .setPrimaryColor(widget.selectedColor!);
     }
     if (widget.selectedIcon != null &&
         widget.selectedIcon != oldWidget.selectedIcon) {
@@ -104,10 +108,8 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
           Expanded(child: _buildIconSelector()),
           ZoePrimaryButton(
             onPressed: () {
-              widget.onIconSelection?.call(
-                selectedColor.value,
-                selectedIcon.value,
-              );
+              final currentColor = ref.read(selectedColorProvider).primaryColor;
+              widget.onIconSelection?.call(currentColor, selectedIcon.value);
               Navigator.pop(context);
             },
             text: L10n.of(context).select,
@@ -129,7 +131,14 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
               children: [
                 _buildIconPreviewUI(),
                 const SizedBox(height: 24),
-                _buildColorSelector(),
+                ColorSelectorWidget(
+                  onColorChanged: (newColor) {
+                    ref
+                        .read(selectedColorProvider.notifier)
+                        .setPrimaryColor(newColor);
+                  },
+                  selectedColor: ref.watch(selectedColorProvider).primaryColor,
+                ),
                 const SizedBox(height: 24),
               ],
             ),
@@ -137,66 +146,18 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
   }
 
   Widget _buildIconPreviewUI() {
-    return ValueListenableBuilder<Color>(
-      valueListenable: selectedColor,
-      builder: (context, color, child) {
-        return ValueListenableBuilder<ZoeIcon>(
-          valueListenable: selectedIcon,
-          builder: (context, zoeIcon, child) {
-            return Center(
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                child: Icon(
-                  key: Key(ZoeIconPicker.iconPreviewKey),
-                  zoeIcon.data,
-                  size: 100,
-                  color: color,
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  List<Widget> _buildColorBoxes() {
-    final iconColorWidgetsMap = iconPickerColors.asMap().map(
-      (index, color) => MapEntry(index, _buildColorBoxItem(color, index)),
-    );
-    return iconColorWidgetsMap.values.toList();
-  }
-
-  Widget _buildColorSelector() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(L10n.of(context).selectColor),
-        const SizedBox(height: 12),
-        Wrap(children: _buildColorBoxes()),
-      ],
-    );
-  }
-
-  Widget _buildColorBoxItem(Color colorItem, int index) {
-    return ValueListenableBuilder<Color>(
-      valueListenable: selectedColor,
-      builder: (context, color, child) {
-        return InkWell(
-          key: Key('${ZoeIconPicker.colorPickerKey}-$index'),
-          borderRadius: BorderRadius.circular(100),
-          onTap: () => selectedColor.value = colorItem,
+    final color = ref.watch(selectedColorProvider).primaryColor;
+    return ValueListenableBuilder<ZoeIcon>(
+      valueListenable: selectedIcon,
+      builder: (context, zoeIcon, child) {
+        return Center(
           child: Container(
-            height: 40,
-            width: 40,
             padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: colorItem,
-              border: colorItem == color
-                  ? Border.all(color: Colors.white, width: 1)
-                  : null,
-              borderRadius: const BorderRadius.all(Radius.circular(100)),
+            child: Icon(
+              key: Key(ZoeIconPicker.iconPreviewKey),
+              zoeIcon.data,
+              size: 100,
+              color: color,
             ),
           ),
         );
