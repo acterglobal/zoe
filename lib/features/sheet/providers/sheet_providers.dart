@@ -23,7 +23,7 @@ class SheetList extends _$SheetList {
     // Apply default theme if sheet doesn't have one
     if (newSheet.theme == null) {
       newSheet = newSheet.copyWith(
-        theme: (
+        theme: SheetTheme(
           primary: AppColors.primaryColor,
           secondary: AppColors.secondaryColor,
         ),
@@ -127,7 +127,9 @@ class SheetList extends _$SheetList {
     state = [
       for (final sheet in state)
         if (sheet.id == sheetId)
-          sheet.copyWith(theme: (primary: primary, secondary: secondary))
+          sheet.copyWith(
+            theme: SheetTheme(primary: primary, secondary: secondary),
+          )
         else
           sheet,
     ];

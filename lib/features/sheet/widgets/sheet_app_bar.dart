@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_network_local_image_view.dart';
 import 'package:zoe/features/sheet/actions/sheet_actions.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
@@ -18,58 +19,43 @@ class SheetAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return SliverAppBar(
+      expandedHeight: 200,
+      collapsedHeight: kToolbarHeight,
+      automaticallyImplyLeading: false,
+      title: _buildTitle(context, ref),
+      elevation: 0,
+      pinned: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      flexibleSpace: FlexibleSpaceBar(
+        background: _buildFlexibleBackground(context, ref),
+      ),
+    );
+  }
+
+  Widget _buildFlexibleBackground(BuildContext context, WidgetRef ref) {
     final sheet = ref.watch(sheetProvider(sheetId));
     final coverImageUrl = sheet?.coverImageUrl;
     final hasCoverImage = coverImageUrl != null && coverImageUrl.isNotEmpty;
 
     final theme = Theme.of(context);
-
     // Use sheet theme if available, otherwise fall back to app theme
     final primaryColor = sheet?.theme?.primary ?? theme.colorScheme.primary;
     final secondaryColor =
         sheet?.theme?.secondary ?? theme.colorScheme.secondary;
 
-    return SliverAppBar(
-      expandedHeight: 200,
-      collapsedHeight: kToolbarHeight,
-      automaticallyImplyLeading: false,
-      title: _buildTitle(context, ref, hasCoverImage),
-      elevation: 0,
-      pinned: true,
-      backgroundColor: theme.colorScheme.surface,
-      flexibleSpace: FlexibleSpaceBar(
-        background: _buildFlexibleBackground(
-          context,
-          hasCoverImage,
-          coverImageUrl,
-          primaryColor,
-          secondaryColor,
-          ref,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFlexibleBackground(
-    BuildContext context,
-    bool hasCoverImage,
-    String? coverImageUrl,
-    Color primaryColor,
-    Color secondaryColor,
-    WidgetRef ref,
-  ) {
     return Stack(
       fit: StackFit.expand,
       children: [
         hasCoverImage
             ? ZoeNetworkLocalImageView(
-                imageUrl: coverImageUrl!,
+                imageUrl: coverImageUrl,
                 borderRadius: 0,
                 fit: BoxFit.cover,
                 placeholderIconSize: 120,
               )
             : _buildColorGradient(primaryColor, secondaryColor),
-        if (isEditing) _buildCoverImageAction(ref, hasCoverImage),
+        if (isEditing) _buildCoverImageAction(context, ref, hasCoverImage),
       ],
     );
   }
@@ -86,23 +72,29 @@ class SheetAppBar extends ConsumerWidget {
     );
   }
 
-  Widget _buildCoverImageAction(WidgetRef ref, bool hasCoverImage) {
+  Widget _buildCoverImageAction(
+    BuildContext context,
+    WidgetRef ref,
+    bool hasCoverImage,
+  ) {
     return Positioned(
       bottom: 16,
       right: 16,
-      child: ContentMenuButton(
-        icon: Icons.photo_library,
-        onTap: (context) => SheetActions.addOrUpdateCoverImage(
+      child: ZoeIconButtonWidget(
+        onTap: () => SheetActions.addOrUpdateCoverImage(
           context,
           ref,
           sheetId,
           hasCoverImage,
         ),
+        icon: Icons.photo_library,
+        size: 22,
+        padding: 10,
       ),
     );
   }
 
-  Widget _buildTitle(BuildContext context, WidgetRef ref, bool hasCoverImage) {
+  Widget _buildTitle(BuildContext context, WidgetRef ref) {
     return ZoeAppBar(
       actions: [
         const SizedBox(width: 10),
@@ -110,7 +102,6 @@ class SheetAppBar extends ConsumerWidget {
           onTap: (context) => showSheetMenu(
             context: context,
             ref: ref,
-            hasCoverImage: hasCoverImage,
             isEditing: isEditing,
             sheetId: sheetId,
           ),

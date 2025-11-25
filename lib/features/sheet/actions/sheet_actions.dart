@@ -19,7 +19,6 @@ void showSheetMenu({
   required BuildContext context,
   required WidgetRef ref,
   required bool isEditing,
-  bool hasCoverImage = false,
   required String sheetId,
 }) {
   final menuItems = [

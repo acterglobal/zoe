@@ -5,8 +5,20 @@ import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 /// Description with both plain text and HTML support
 typedef Description = ({String? plainText, String? htmlText});
 
-/// Theme object with primary and secondary colors
-typedef SheetTheme = ({Color primary, Color secondary});
+/// Theme class with primary and secondary colors
+class SheetTheme {
+  final Color primary;
+  final Color secondary;
+
+  const SheetTheme({required this.primary, required this.secondary});
+
+  SheetTheme copyWith({Color? primary, Color? secondary}) {
+    return SheetTheme(
+      primary: primary ?? this.primary,
+      secondary: secondary ?? this.secondary,
+    );
+  }
+}
 
 class SheetModel {
   final String id;
