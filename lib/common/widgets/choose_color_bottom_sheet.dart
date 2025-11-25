@@ -33,14 +33,14 @@ class ChooseColorBottomSheet extends ConsumerStatefulWidget {
 
 class _ChooseColorBottomSheetState
     extends ConsumerState<ChooseColorBottomSheet> {
-  late Color _tempPrimaryColor;
+  late Color selectedColor;
 
   @override
   void initState() {
     super.initState();
     // Initialize with current sheet theme colors or defaults
     final sheet = ref.read(sheetProvider(widget.sheetId));
-    _tempPrimaryColor = sheet?.theme?.primary ?? iconPickerColors.first;
+    selectedColor = sheet?.theme?.primary ?? iconPickerColors.first;
   }
 
   @override
@@ -57,10 +57,10 @@ class _ChooseColorBottomSheetState
             ColorSelectorWidget(
               onColorChanged: (color) {
                 setState(() {
-                  _tempPrimaryColor = color;
+                  selectedColor = color;
                 });
               },
-              selectedColor: _tempPrimaryColor,
+              selectedColor: selectedColor,
             ),
             const SizedBox(height: 24),
 
@@ -78,7 +78,7 @@ class _ChooseColorBottomSheetState
         .read(sheetListProvider.notifier)
         .updateSheetTheme(
           sheetId: widget.sheetId,
-          primary: _tempPrimaryColor,
+          primary: selectedColor,
           secondary: AppColors.primaryColor.withValues(alpha: 0.3),
         );
     if (mounted) {
