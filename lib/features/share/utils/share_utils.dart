@@ -5,29 +5,73 @@ import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/list/providers/list_providers.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
 class ShareUtils {
-  static final String linkPrefixUrl = 'https://hellozoe.app';
+  static final String baseUrl = 'https://hellozoe.app';
 
-  static String getLinkPrefixUrl(String endpoint) {
-    return '🔗 $linkPrefixUrl/$endpoint';
+  static String getSheetDeepLinkUrl(
+    String sheetId,
+    String? sharedBy,
+    String? message,
+  ) {
+    final queryParams = <String, String>{};
+
+    // Trim and add sharedBy if not empty
+    final trimmedSharedBy = sharedBy?.trim();
+    if (trimmedSharedBy != null && trimmedSharedBy.isNotEmpty) {
+      queryParams['sharedBy'] = trimmedSharedBy;
+    }
+
+    // Trim and add message if not empty
+    final trimmedMessage = message?.trim();
+    if (trimmedMessage != null && trimmedMessage.isNotEmpty) {
+      queryParams['message'] = trimmedMessage;
+    }
+
+    return getLinkPostfixUrl(
+      'sheet/$sheetId',
+      queryParams: queryParams.isNotEmpty ? queryParams : null,
+    );
+  }
+
+  static String getLinkPostfixUrl(
+    String endpoint, {
+    Map<String, String>? queryParams,
+  }) {
+    final uri = Uri.parse('$baseUrl/$endpoint');
+    if (queryParams != null && queryParams.isNotEmpty) {
+      final uriWithParams = uri.replace(
+        queryParameters: {...uri.queryParameters, ...queryParams},
+      );
+      return '🔗 ${uriWithParams.toString()}';
+    }
+    return '🔗 ${uri.toString()}';
   }
 
   // Sheet
   static String getSheetShareMessage({
     required WidgetRef ref,
     required String parentId,
+    String? userMessage,
   }) {
     final buffer = StringBuffer();
     final sheet = ref.watch(sheetProvider(parentId));
     if (sheet == null) return buffer.toString();
 
+    final userName = ref.watch(currentUserProvider).value?.name;
+
     final title = sheet.title;
     final description = sheet.description?.plainText;
+
+    // Sheet icon/emoji (only if emoji type)
+    if (sheet.sheetAvatar.type == AvatarType.emoji) {
+      buffer.write('${sheet.sheetAvatar.data} ');
+    }
 
     // Title
     buffer.write(title);
@@ -37,8 +81,8 @@ class ShareUtils {
       buffer.write('\n\n$description');
     }
 
-    // Link
-    final link = getLinkPrefixUrl('sheet/$parentId');
+    final link = getSheetDeepLinkUrl(parentId, userName, userMessage);
+
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -68,7 +112,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('text-block/$parentId');
+    final link = getLinkPostfixUrl('text-block/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -108,7 +152,7 @@ class ShareUtils {
     buffer.write('\n\n🕓 End\n$endDateString');
 
     // Link
-    final link = getLinkPrefixUrl('event/$parentId');
+    final link = getLinkPostfixUrl('event/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -157,7 +201,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('list/$parentId');
+    final link = getLinkPostfixUrl('list/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -199,7 +243,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('task/$parentId');
+    final link = getLinkPostfixUrl('task/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -226,7 +270,7 @@ class ShareUtils {
     }
 
     // Link
-    final link = getLinkPrefixUrl('bullet/$parentId');
+    final link = getLinkPostfixUrl('bullet/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }
@@ -253,7 +297,7 @@ class ShareUtils {
     buffer.write('\n\n${options.map((e) => '🔘 ${e.title}').join('\n')}');
 
     // Link
-    final link = getLinkPrefixUrl('poll/$parentId');
+    final link = getLinkPostfixUrl('poll/$parentId');
     buffer.write('\n\n$link');
     return buffer.toString();
   }

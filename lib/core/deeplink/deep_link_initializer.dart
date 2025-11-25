@@ -64,9 +64,17 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
         return;
       }
 
+      // Extract query parameters
+      final sharedBy = uri.queryParameters['sharedBy'];
+      final message = uri.queryParameters['message'];
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
-        _navigateAndShowJoinSheet(sheetId);
+        _navigateAndShowJoinSheet(
+          sheetId,
+          sharedBy: sharedBy,
+          message: message,
+        );
       });
     } catch (error) {
       _logger.severe('Error handling URI: $uri', error);
@@ -87,7 +95,11 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
     return sheetId;
   }
 
-  void _navigateAndShowJoinSheet(String sheetId) {
+  void _navigateAndShowJoinSheet(
+    String sheetId, {
+    String? sharedBy,
+    String? message,
+  }) {
     try {
       final router = ref.read(routerProvider);
       router.go(AppRoutes.home.route);
@@ -112,6 +124,17 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
             sheetId,
           );
           return;
+        }
+
+        // Save sharedBy and message to sheet model
+        if (sharedBy != null || message != null) {
+          ref
+              .read(sheetListProvider.notifier)
+              .updateSheetShareInfo(
+                sheetId: sheetId,
+                sharedBy: sharedBy,
+                message: message,
+              );
         }
 
         if (!isMember) {

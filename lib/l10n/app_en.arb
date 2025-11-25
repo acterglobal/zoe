@@ -566,5 +566,11 @@
     "image": "Image",
     "chooseImageDescription": "Choose image for sheet avatar",
     "emoji": "Emoji",
-    "chooseEmojiDescription":"Choose emoji for sheet avatar"
+    "chooseEmojiDescription":"Choose emoji for sheet avatar",
+    "addAMessage": "Add a message...",
+    "@addAMessage": {},
+    "sharedBy": "Shared by",
+    "@sharedBy": {},
+    "message": "Message",
+    "@message": {}
 }
