@@ -153,32 +153,6 @@ class ZoeCommonMenuItems {
     onTap: onTapConnect,
   );
 
-  /// Add cover image menu item
-  static ZoePopupMenuItem addCoverImage({
-    VoidCallback? onTapAddCoverImage,
-    String title = 'Add cover image',
-    String subtitle = 'Add a cover image for this sheet',
-  }) => ZoePopupMenuItem(
-    id: 'add_cover_image',
-    icon: Icons.image_rounded,
-    title: title,
-    subtitle: subtitle,
-    onTap: onTapAddCoverImage,
-  );
-
-  /// Update cover image menu item
-  static ZoePopupMenuItem updateCoverImage({
-    VoidCallback? onTapUpdateCoverImage,
-    String title = 'Update cover image',
-    String subtitle = 'Update the cover image for this sheet',
-  }) => ZoePopupMenuItem(
-    id: 'update_cover_image',
-    icon: Icons.image_rounded,
-    title: title,
-    subtitle: subtitle,
-    onTap: onTapUpdateCoverImage,
-  );
-
   /// Remove cover image menu item
   static ZoePopupMenuItem removeCoverImage({
     VoidCallback? onTapRemoveCoverImage,

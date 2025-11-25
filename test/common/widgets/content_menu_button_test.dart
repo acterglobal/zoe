@@ -89,7 +89,7 @@ void main() {
       expect(find.byType(ContentMenuButton), findsOneWidget);
     });
 
-    testWidgets('uses correct icon', (tester) async {
+    testWidgets('uses correct default icon', (tester) async {
       await tester.pumpMaterialWidget(
         child: ContentMenuButtonTestUtils.createTestWidget(),
       );

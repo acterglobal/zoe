@@ -547,8 +547,9 @@
     "dueDate": "Due Date",
     "date": "Date",
     "addCoverImage": "Add cover image",
-    "updateCoverImage": "Update cover image",
-    "removeCoverImage": "Remove cover image",
+    "updateCoverImage": "Update cover image", 
+    "removeImage": "Remove Image",
+    "removeImageDescription": "Remove existing image",
     "selectMedia": "Select media",
     "chooseAMediaFile": "Choose a media file from your device",
     "selectSheetCoverImage": "Select sheet cover image",
@@ -572,5 +573,7 @@
     "sharedBy": "Shared by",
     "@sharedBy": {},
     "message": "Message",
-    "@message": {}
+    "@message": {},
+    "removeAvatar": "Remove Avatar",
+    "removeAvatarDescription": "Remove avatar and use default icon"
 }

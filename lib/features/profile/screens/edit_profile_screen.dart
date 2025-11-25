@@ -53,7 +53,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final userAsync = ref.watch(currentUserProvider);
     return userAsync.when(
       data: (user) {
-        if (user == null) return Center(child: Text(L10n.of(context).userNotFound));
+        if (user == null)
+          return Center(child: Text(L10n.of(context).userNotFound));
         return Scaffold(
           appBar: _buildAppBar(context, user),
           body: SafeArea(
@@ -180,6 +181,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       context,
       user.id,
       ref,
+      hasAvatar: user.avatar != null,
       onImageSelected: (path) {
         setState(() {
           _selectedAvatarPath = path;

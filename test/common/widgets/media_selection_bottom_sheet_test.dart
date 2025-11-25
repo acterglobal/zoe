@@ -29,6 +29,7 @@ void main() {
       Function(XFile)? onTapCamera,
       Function(List<XFile>)? onTapGallery,
       Function(List<XFile>)? onTapFileChooser,
+      Function()? onTapRemoveImage,
     }) async {
       await tester.pumpMaterialWidget(
         child: MediaSelectionBottomSheetWidget(
@@ -39,6 +40,7 @@ void main() {
           onTapCamera: onTapCamera ?? (XFile file) {},
           onTapGallery: onTapGallery ?? (List<XFile> files) {},
           onTapFileChooser: onTapFileChooser,
+          onTapRemoveImage: onTapRemoveImage,
         ),
       );
     }
@@ -116,6 +118,28 @@ void main() {
 
         // Verify file chooser option is not rendered
         expect(find.byIcon(Icons.folder_open_rounded), findsNothing);
+      });
+
+      testWidgets('renders remove image option when provided', (tester) async {
+        await pumpMediaSelectionBottomSheetWidget(
+          tester,
+          onTapRemoveImage: () {},
+        );
+
+        // Verify remove image option is rendered
+        expect(find.byIcon(Icons.delete), findsOneWidget);
+      });
+
+      testWidgets('does not render remove image option when null', (
+        tester,
+      ) async {
+        await pumpMediaSelectionBottomSheetWidget(
+          tester,
+          onTapRemoveImage: null,
+        );
+
+        // Verify remove image option is not rendered
+        expect(find.byIcon(Icons.delete), findsNothing);
       });
     });
 
@@ -379,6 +403,33 @@ void main() {
         expect(receivedFiles, isNotNull);
         expect(receivedFiles?.length, equals(0));
       });
+
+      testWidgets('calls onTapRemoveImage callback', (tester) async {
+        bool removeImageTapped = false;
+
+        await pumpMediaSelectionBottomSheetWidget(
+          tester,
+          onTapRemoveImage: () {
+            removeImageTapped = true;
+          },
+        );
+
+        // Verify the remove image option is present
+        final l10n = getL10n(tester);
+        expect(find.text(l10n.removeImage), findsOneWidget);
+        expect(find.byIcon(Icons.delete), findsOneWidget);
+
+        // Test the callback directly by simulating the result
+        final widget = tester.widget<MediaSelectionBottomSheetWidget>(
+          find.byType(MediaSelectionBottomSheetWidget),
+        );
+
+        // Simulate the callback being called
+        widget.onTapRemoveImage?.call();
+
+        // Verify callback was executed
+        expect(removeImageTapped, isTrue);
+      });
     });
 
     group('Localization Tests -', () {
@@ -386,10 +437,7 @@ void main() {
         await pumpMediaSelectionBottomSheetWidget(tester);
 
         // Verify localized title is displayed
-        final l10n = WidgetTesterExtension.getL10n(
-          tester,
-          byType: MediaSelectionBottomSheetWidget,
-        );
+        final l10n = getL10n(tester);
         expect(find.text(l10n.selectMedia), findsOneWidget);
       });
 
@@ -397,10 +445,7 @@ void main() {
         await pumpMediaSelectionBottomSheetWidget(tester);
 
         // Verify localized subtitle is displayed
-        final l10n = WidgetTesterExtension.getL10n(
-          tester,
-          byType: MediaSelectionBottomSheetWidget,
-        );
+        final l10n = getL10n(tester);
         expect(find.text(l10n.chooseAMediaFile), findsOneWidget);
       });
 
@@ -408,10 +453,7 @@ void main() {
         await pumpMediaSelectionBottomSheetWidget(tester);
 
         // Verify localized photo gallery text is displayed
-        final l10n = WidgetTesterExtension.getL10n(
-          tester,
-          byType: MediaSelectionBottomSheetWidget,
-        );
+        final l10n = getL10n(tester);
         expect(find.text(l10n.photoGallery), findsOneWidget);
         expect(find.text(l10n.selectFromGallery), findsOneWidget);
       });
@@ -425,10 +467,7 @@ void main() {
         );
 
         // Verify localized file chooser text is displayed
-        final l10n = WidgetTesterExtension.getL10n(
-          tester,
-          byType: MediaSelectionBottomSheetWidget,
-        );
+        final l10n = getL10n(tester);
         expect(find.text(l10n.filePicker), findsOneWidget);
         expect(find.text(l10n.browseFiles), findsOneWidget);
       });
@@ -442,12 +481,23 @@ void main() {
         );
 
         // Verify localized file chooser text is not displayed
-        final l10n = WidgetTesterExtension.getL10n(
-          tester,
-          byType: MediaSelectionBottomSheetWidget,
-        );
+        final l10n = getL10n(tester);
         expect(find.text(l10n.filePicker), findsNothing);
         expect(find.text(l10n.browseFiles), findsNothing);
+      });
+
+      testWidgets('displays localized remove image text when provided', (
+        tester,
+      ) async {
+        await pumpMediaSelectionBottomSheetWidget(
+          tester,
+          onTapRemoveImage: () {},
+        );
+
+        // Verify localized remove image text is displayed
+        final l10n = getL10n(tester);
+        expect(find.text(l10n.removeImage), findsOneWidget);
+        expect(find.text(l10n.removeImageDescription), findsOneWidget);
       });
 
       testWidgets('displays localized camera text when not desktop', (
@@ -474,10 +524,7 @@ void main() {
         final theme = Theme.of(context);
 
         // Find title and subtitle texts
-        final l10n = WidgetTesterExtension.getL10n(
-          tester,
-          byType: MediaSelectionBottomSheetWidget,
-        );
+        final l10n = getL10n(tester);
 
         // Verify title text style
         final titleText = tester.widget<Text>(find.text(l10n.selectMedia));
@@ -500,10 +547,7 @@ void main() {
       testWidgets('applies correct text alignment', (tester) async {
         await pumpMediaSelectionBottomSheetWidget(tester);
 
-        final l10n = WidgetTesterExtension.getL10n(
-          tester,
-          byType: MediaSelectionBottomSheetWidget,
-        );
+        final l10n = getL10n(tester);
 
         // Verify text alignment for title and subtitle
         final titleText = tester.widget<Text>(find.text(l10n.selectMedia));
@@ -732,10 +776,7 @@ void main() {
         expect(find.text(customTitle), findsOneWidget);
 
         // Verify default title is not used
-        final l10n = WidgetTesterExtension.getL10n(
-          tester,
-          byType: MediaSelectionBottomSheetWidget,
-        );
+        final l10n = getL10n(tester);
         expect(find.text(l10n.selectMedia), findsNothing);
       });
 
@@ -753,10 +794,7 @@ void main() {
         expect(find.text(customSubtitle), findsOneWidget);
 
         // Verify default subtitle is not used
-        final l10n = WidgetTesterExtension.getL10n(
-          tester,
-          byType: MediaSelectionBottomSheetWidget,
-        );
+        final l10n = getL10n(tester);
         expect(find.text(l10n.chooseAMediaFile), findsNothing);
       });
     });

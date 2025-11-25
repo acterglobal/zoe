@@ -16,6 +16,7 @@ Future<void> showMediaSelectionBottomSheet(
   required Function(XFile) onTapCamera,
   required Function(List<XFile>) onTapGallery,
   Function(List<XFile>)? onTapFileChooser,
+  Function()? onTapRemoveImage,
 }) async {
   await showModalBottomSheet(
     context: context,
@@ -35,6 +36,7 @@ Future<void> showMediaSelectionBottomSheet(
       onTapCamera: onTapCamera,
       onTapGallery: onTapGallery,
       onTapFileChooser: onTapFileChooser,
+      onTapRemoveImage: onTapRemoveImage,
     ),
   );
 }
@@ -47,6 +49,7 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
   final Function(XFile) onTapCamera;
   final Function(List<XFile>) onTapGallery;
   final Function(List<XFile>)? onTapFileChooser;
+  final Function()? onTapRemoveImage;
 
   const MediaSelectionBottomSheetWidget({
     super.key,
@@ -57,6 +60,7 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
     required this.onTapCamera,
     required this.onTapGallery,
     required this.onTapFileChooser,
+    required this.onTapRemoveImage,
   });
 
   Future<void> _onTapCamera(BuildContext context) async {
@@ -168,6 +172,14 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
               subtitle: l10n.browseFiles,
               color: AppColors.secondaryColor,
               onTap: () => _onTapFileChooser(context),
+            ),
+          if (onTapRemoveImage != null)
+            BottomSheetOptionWidget(
+              icon: Icons.delete,
+              title: l10n.removeImage,
+              subtitle: l10n.removeImageDescription,
+              color: AppColors.errorColor,
+              onTap: () => onTapRemoveImage!.call(),
             ),
           const SizedBox(height: 16),
         ],

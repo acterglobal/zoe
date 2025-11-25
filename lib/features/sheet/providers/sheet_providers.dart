@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/sheet/data/sheet_data.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
@@ -17,14 +18,25 @@ class SheetList extends _$SheetList {
 
   void addSheet(SheetModel sheet) {
     final currentUserId = ref.read(loggedInUserProvider).value;
+    var newSheet = sheet;
+
+    // Apply default theme if sheet doesn't have one
+    if (newSheet.theme == null) {
+      newSheet = newSheet.copyWith(
+        theme: SheetTheme(
+          primary: AppColors.primaryColor,
+          secondary: AppColors.secondaryColor,
+        ),
+      );
+    }
 
     if (currentUserId != null && currentUserId.isNotEmpty) {
       state = [
         ...state,
-        sheet.copyWith(users: [currentUserId], createdBy: currentUserId),
+        newSheet.copyWith(users: [currentUserId], createdBy: currentUserId),
       ];
     } else {
-      state = [...state, sheet];
+      state = [...state, newSheet];
     }
   }
 
@@ -101,9 +113,22 @@ class SheetList extends _$SheetList {
     state = [
       for (final sheet in state)
         if (sheet.id == sheetId)
+          sheet.copyWith(sharedBy: sharedBy, message: message)
+        else
+          sheet,
+    ];
+  }
+
+  void updateSheetTheme({
+    required String sheetId,
+    required Color primary,
+    required Color secondary,
+  }) {
+    state = [
+      for (final sheet in state)
+        if (sheet.id == sheetId)
           sheet.copyWith(
-            sharedBy: sharedBy,
-            message: message,
+            theme: SheetTheme(primary: primary, secondary: secondary),
           )
         else
           sheet,

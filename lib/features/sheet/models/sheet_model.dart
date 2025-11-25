@@ -5,6 +5,21 @@ import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 /// Description with both plain text and HTML support
 typedef Description = ({String? plainText, String? htmlText});
 
+/// Theme class with primary and secondary colors
+class SheetTheme {
+  final Color primary;
+  final Color secondary;
+
+  const SheetTheme({required this.primary, required this.secondary});
+
+  SheetTheme copyWith({Color? primary, Color? secondary}) {
+    return SheetTheme(
+      primary: primary ?? this.primary,
+      secondary: secondary ?? this.secondary,
+    );
+  }
+}
+
 class SheetModel {
   final String id;
   final SheetAvatar sheetAvatar;
@@ -12,6 +27,7 @@ class SheetModel {
   final String? coverImageUrl;
   final Description? description;
   final Color? color;
+  final SheetTheme? theme;
   final String createdBy;
   final List<String> users;
   final DateTime createdAt;
@@ -26,6 +42,7 @@ class SheetModel {
     this.coverImageUrl,
     this.description,
     this.color,
+    this.theme,
     String? createdBy,
     List<String>? users,
     DateTime? createdAt,
@@ -47,6 +64,7 @@ class SheetModel {
     String? coverImageUrl,
     Description? description,
     Color? color,
+    SheetTheme? theme,
     String? createdBy,
     List<String>? users,
     DateTime? createdAt,
@@ -61,6 +79,7 @@ class SheetModel {
       coverImageUrl: coverImageUrl ?? this.coverImageUrl,
       description: description ?? this.description,
       color: color ?? this.color,
+      theme: theme ?? this.theme,
       createdBy: createdBy ?? this.createdBy,
       users: users ?? this.users,
       createdAt: createdAt ?? this.createdAt,
@@ -78,6 +97,7 @@ class SheetModel {
       coverImageUrl: null,
       description: description,
       color: color,
+      theme: theme,
       createdBy: createdBy,
       users: users,
       createdAt: createdAt,
