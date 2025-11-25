@@ -20,6 +20,8 @@ class SheetModel {
   final List<String> users;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final String? sharedBy;
+  final String? message;
 
   SheetModel({
     String? id,
@@ -33,6 +35,8 @@ class SheetModel {
     List<String>? users,
     DateTime? createdAt,
     DateTime? updatedAt,
+    this.sharedBy,
+    this.message,
   }) : id = id ?? CommonUtils.generateRandomId(),
        sheetAvatar = sheetAvatar ?? SheetAvatar(),
        title = title ?? 'Untitled',
@@ -53,6 +57,8 @@ class SheetModel {
     List<String>? users,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? sharedBy,
+    String? message,
   }) {
     return SheetModel(
       id: id ?? this.id,
@@ -66,6 +72,8 @@ class SheetModel {
       users: users ?? this.users,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
+      sharedBy: sharedBy ?? this.sharedBy,
+      message: message ?? this.message,
     );
   }
 
@@ -82,6 +90,8 @@ class SheetModel {
       users: users,
       createdAt: createdAt,
       updatedAt: DateTime.now(),
+      sharedBy: sharedBy,
+      message: message,
     );
   }
 }

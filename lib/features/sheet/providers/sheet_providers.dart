@@ -105,6 +105,23 @@ class SheetList extends _$SheetList {
     ];
   }
 
+  void updateSheetShareInfo({
+    required String sheetId,
+    String? sharedBy,
+    String? message,
+  }) {
+    state = [
+      for (final sheet in state)
+        if (sheet.id == sheetId)
+          sheet.copyWith(
+            sharedBy: sharedBy,
+            message: message,
+          )
+        else
+          sheet,
+    ];
+  }
+
   void updateSheetTheme({
     required String sheetId,
     required Color primary,

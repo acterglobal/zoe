@@ -97,31 +97,25 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: colorScheme.primary,
-                  width: 1.5,
-                ),
+                borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: colorScheme.error,
-                  width: 1,
-                ),
+                borderSide: BorderSide(color: colorScheme.error, width: 1),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: colorScheme.error,
-                  width: 1,
-                ),
+                borderSide: BorderSide(color: colorScheme.error, width: 1),
               ),
               filled: true,
-              fillColor: colorScheme.surfaceContainerHighest
-                  .withValues(alpha: widget.enabled ? 0.1 : 0.05),
+              fillColor: colorScheme.surfaceContainerHighest.withValues(
+                alpha: widget.enabled ? 0.1 : 0.05,
+              ),
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: widget.maxLines != null && widget.maxLines! > 1 ? 12 : 16,
+                vertical: widget.maxLines != null && widget.maxLines! > 1
+                    ? 12
+                    : 16,
               ),
               errorText: widget.errorText,
             ),

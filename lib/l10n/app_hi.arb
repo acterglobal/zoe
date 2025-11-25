@@ -400,5 +400,11 @@
     "activePolls": "सक्रिय पोल्स",
     "@activePolls": {},
     "addedBy": "जोड़ा गया है :",
-    "@createdBy": {}
+    "@createdBy": {},
+    "addAMessage": "एक संदेश जोड़ें...",
+    "@addAMessage": {},
+    "sharedBy": "शेयर किया गया है",
+    "@sharedBy": {},
+    "message": "संदेश",
+    "@message": {}
 }

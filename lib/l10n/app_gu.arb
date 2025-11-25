@@ -400,6 +400,12 @@
     "activePolls": "સક્રિય પોલ્સ",
     "@activePolls": {},
     "addedBy": "ઉમેરવામાં આવ્યું છે :",
-    "@createdBy": {}
+    "@createdBy": {},
+    "addAMessage": "એક સંદેશ ઉમેરો...",
+    "@addAMessage": {},
+    "sharedBy": "શેર કરવામાં આવ્યું છે",
+    "@sharedBy": {},
+    "message": "સંદેશ",
+    "@message": {}
 
 }

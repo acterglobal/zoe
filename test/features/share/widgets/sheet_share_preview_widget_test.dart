@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zoe/common/widgets/animated_textfield_widget.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
@@ -41,12 +42,14 @@ void main() {
     required String parentId,
     required String contentText,
     ProviderContainer? testContainer,
+    ValueChanged<String>? onMessageChanged,
   }) async {
     await tester.pumpMaterialWidgetWithProviderScope(
       container: testContainer ?? container,
       child: SheetSharePreviewWidget(
         parentId: parentId,
         contentText: contentText,
+        onMessageChanged: (message) {},
       ),
     );
   }
@@ -63,8 +66,8 @@ void main() {
         // Verify GlassyContainer is present
         expect(find.byType(GlassyContainer), findsOneWidget);
 
-        // Verify contentText is displayed
-        expect(find.text(testContentText), findsOneWidget);
+        // Verify AnimatedTextField is present
+        expect(find.byType(AnimatedTextField), findsOneWidget);
       });
 
       testWidgets('returns SizedBox.shrink when sheet is null', (tester) async {
@@ -81,6 +84,7 @@ void main() {
           child: SheetSharePreviewWidget(
             parentId: 'non-existent-sheet',
             contentText: testContentText,
+            onMessageChanged: (message) {},
           ),
         );
 
@@ -91,47 +95,73 @@ void main() {
       });
     });
 
-    group('Content Text Display', () {
-      testWidgets('displays provided contentText', (tester) async {
-        const customContentText = 'Custom Sheet Description';
-
-        await pumpSheetSharePreviewWidget(
-          tester,
-          parentId: testSheetId,
-          contentText: customContentText,
-        );
-
-        expect(find.text(customContentText), findsOneWidget);
-      });
-    });
-
-    group('Statistics Section', () {
-      testWidgets('hides statistics section when all lists are empty', (
+    group('Message Input Field', () {
+      testWidgets('displays AnimatedTextField with correct properties', (
         tester,
       ) async {
-        final testContainer = ProviderContainer.test(
-          overrides: [
-            sheetListProvider.overrideWith(
-              () => SheetList()..state = [testSheet],
-            ),
-            sheetProvider(testSheetId).overrideWith((ref) => testSheet),
-            eventsListProvider.overrideWithValue(<EventModel>[]),
-            tasksListProvider.overrideWithValue(<TaskModel>[]),
-            documentListProvider.overrideWithValue(<DocumentModel>[]),
-            pollsListProvider.overrideWithValue(<PollModel>[]),
-          ],
-        );
-
         await pumpSheetSharePreviewWidget(
           tester,
           parentId: testSheetId,
           contentText: testContentText,
-          testContainer: testContainer,
         );
 
-        // Verify statistics section is not displayed
-        expect(find.byType(Divider), findsNothing);
-        expect(find.byType(StyledIconContainer), findsNothing);
+        // Verify AnimatedTextField is present
+        expect(find.byType(AnimatedTextField), findsOneWidget);
+
+        // Verify TextField properties
+        final animatedTextField = tester.widget<AnimatedTextField>(
+          find.byType(AnimatedTextField),
+        );
+        final l10n = WidgetTesterExtension.getL10n(
+          tester,
+          byType: SheetSharePreviewWidget,
+        );
+        expect(animatedTextField.hintText, equals(l10n.addAMessage));
+        expect(animatedTextField.maxLines, equals(3));
+        expect(animatedTextField.keyboardType, equals(TextInputType.multiline));
+        expect(animatedTextField.autofocus, isFalse);
+      });
+
+      testWidgets('updates controller text when user types', (tester) async {
+        await pumpSheetSharePreviewWidget(
+          tester,
+          parentId: testSheetId,
+          contentText: testContentText,
+          onMessageChanged: (message) {},
+        );
+
+        const testMessage = 'User typed message';
+        await tester.enterText(find.byType(AnimatedTextField), testMessage);
+        await tester.pump();
+
+        // Verify controller text is updated
+        final animatedTextField = tester.widget<AnimatedTextField>(
+          find.byType(AnimatedTextField),
+        );
+        expect(animatedTextField.controller.text, equals(testMessage));
+      });
+
+      testWidgets('clears text field when user clears input', (tester) async {
+        await pumpSheetSharePreviewWidget(
+          tester,
+          parentId: testSheetId,
+          contentText: testContentText,
+        );
+
+        // Enter text
+        const testMessage = 'Test message';
+        await tester.enterText(find.byType(AnimatedTextField), testMessage);
+        await tester.pump();
+
+        // Clear text
+        await tester.enterText(find.byType(AnimatedTextField), '');
+        await tester.pump();
+
+        // Verify controller text is empty
+        final animatedTextField = tester.widget<AnimatedTextField>(
+          find.byType(AnimatedTextField),
+        );
+        expect(animatedTextField.controller.text, isEmpty);
       });
     });
 
@@ -606,11 +636,6 @@ void main() {
           contentText: testContentText,
           testContainer: testContainer,
         );
-
-        testContainer.dispose();
-
-        // Statistics section should be displayed because events exist
-        expect(find.byType(Divider), findsOneWidget);
 
         final l10n = WidgetTesterExtension.getL10n(
           tester,

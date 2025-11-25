@@ -328,6 +328,142 @@ void main() {
         expect(unchangedSheet2?.sheetAvatar.data, equals('image2.png'));
       });
 
+      test('updateSheetShareInfo updates both sharedBy and message', () {
+        final notifier = container.read(sheetListProvider.notifier);
+
+        // Add a test sheet
+        final testSheet = SheetModel(
+          id: 'share-test-sheet',
+          title: 'Share Test Sheet',
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📤'),
+        );
+        notifier.addSheet(testSheet);
+
+        // Update share info
+        const sharedBy = 'John Doe';
+        const message = 'Check out this amazing sheet!';
+        notifier.updateSheetShareInfo(
+          sheetId: 'share-test-sheet',
+          sharedBy: sharedBy,
+          message: message,
+        );
+
+        // Verify the share info was updated
+        final updatedSheet = container.read(sheetProvider('share-test-sheet'));
+        expect(updatedSheet?.sharedBy, equals(sharedBy));
+        expect(updatedSheet?.message, equals(message));
+        expect(updatedSheet?.title, equals('Share Test Sheet')); // Other properties unchanged
+      });
+
+      test('updateSheetShareInfo updates only sharedBy when message is null', () {
+        final notifier = container.read(sheetListProvider.notifier);
+
+        // Add a test sheet
+        final testSheet = SheetModel(
+          id: 'share-by-test-sheet',
+          title: 'Share By Test',
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '👤'),
+        );
+        notifier.addSheet(testSheet);
+
+        // Update only sharedBy
+        const sharedBy = 'Jane Smith';
+        notifier.updateSheetShareInfo(
+          sheetId: 'share-by-test-sheet',
+          sharedBy: sharedBy,
+          message: null,
+        );
+
+        // Verify only sharedBy was updated
+        final updatedSheet = container.read(sheetProvider('share-by-test-sheet'));
+        expect(updatedSheet?.sharedBy, equals(sharedBy));
+        expect(updatedSheet?.message, isNull);
+      });
+
+      test('updateSheetShareInfo updates only message when sharedBy is null', () {
+        final notifier = container.read(sheetListProvider.notifier);
+
+        // Add a test sheet
+        final testSheet = SheetModel(
+          id: 'message-test-sheet',
+          title: 'Message Test',
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '💬'),
+        );
+        notifier.addSheet(testSheet);
+
+        // Update only message
+        const message = 'This is a great sheet to collaborate on!';
+        notifier.updateSheetShareInfo(
+          sheetId: 'message-test-sheet',
+          sharedBy: null,
+          message: message,
+        );
+
+        // Verify only message was updated
+        final updatedSheet = container.read(sheetProvider('message-test-sheet'));
+        expect(updatedSheet?.sharedBy, isNull);
+        expect(updatedSheet?.message, equals(message));
+      });
+
+      test('updateSheetShareInfo does not affect other sheets', () {
+        final notifier = container.read(sheetListProvider.notifier);
+
+        // Add two test sheets
+        final sheet1 = SheetModel(
+          id: 'share-sheet-1',
+          title: 'Sheet 1',
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📄'),
+        );
+        final sheet2 = SheetModel(
+          id: 'share-sheet-2',
+          title: 'Sheet 2',
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📄'),
+        );
+        notifier.addSheet(sheet1);
+        notifier.addSheet(sheet2);
+
+        // Update only sheet1
+        notifier.updateSheetShareInfo(
+          sheetId: 'share-sheet-1',
+          sharedBy: 'User 1',
+          message: 'Message 1',
+        );
+
+        // Verify only sheet1 was updated
+        final updatedSheet1 = container.read(sheetProvider('share-sheet-1'));
+        final unchangedSheet2 = container.read(sheetProvider('share-sheet-2'));
+
+        expect(updatedSheet1?.sharedBy, equals('User 1'));
+        expect(updatedSheet1?.message, equals('Message 1'));
+        expect(unchangedSheet2?.sharedBy, isNull);
+        expect(unchangedSheet2?.message, isNull);
+      });
+
+      test('updateSheetShareInfo handles empty string values', () {
+        final notifier = container.read(sheetListProvider.notifier);
+
+        // Add a test sheet
+        final testSheet = SheetModel(
+          id: 'empty-string-test-sheet',
+          title: 'Empty String Test',
+          sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '📝'),
+        );
+        notifier.addSheet(testSheet);
+
+        // Update with empty strings
+        notifier.updateSheetShareInfo(
+          sheetId: 'empty-string-test-sheet',
+          sharedBy: '',
+          message: '',
+        );
+
+        // Verify empty strings are stored (not null)
+        final updatedSheet = container.read(sheetProvider('empty-string-test-sheet'));
+        expect(updatedSheet?.sharedBy, equals(''));
+        expect(updatedSheet?.message, equals(''));
+      });
+
+
       test('addSheet applies default theme if not provided', () {
         final notifier = container.read(sheetListProvider.notifier);
         final initialLength = container.read(sheetListProvider).length;
