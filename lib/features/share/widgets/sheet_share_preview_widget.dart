@@ -15,13 +15,13 @@ import 'package:zoe/l10n/generated/l10n.dart';
 class SheetSharePreviewWidget extends ConsumerStatefulWidget {
   final String parentId;
   final String contentText;
-  final ValueChanged<String>? onMessageChanged;
+  final TextEditingController messageController;
 
   const SheetSharePreviewWidget({
     super.key,
     required this.parentId,
     required this.contentText,
-    this.onMessageChanged,
+    required this.messageController,
   });
 
   @override
@@ -31,20 +31,6 @@ class SheetSharePreviewWidget extends ConsumerStatefulWidget {
 
 class _SheetSharePreviewWidgetState
     extends ConsumerState<SheetSharePreviewWidget> {
-  late TextEditingController _messageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _messageController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _messageController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final sheet = ref.watch(sheetProvider(widget.parentId));
@@ -85,16 +71,12 @@ class _SheetSharePreviewWidgetState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Message Text Field
+            // Message Text Field
             AnimatedTextField(
-              controller: _messageController,
+              controller: widget.messageController,
               hintText: l10n.addAMessage,
               onErrorChanged: (error) {},
-              onSubmitted: () {
-                final callback = widget.onMessageChanged;
-                if (callback != null) {
-                  callback(_messageController.text);
-                }
-              },
+              onSubmitted: () {},
               maxLines: 3,
               keyboardType: TextInputType.multiline,
               autofocus: false,

@@ -47,7 +47,19 @@ class ShareItemsBottomSheet extends ConsumerStatefulWidget {
 }
 
 class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
-  String _userMessage = '';
+  late TextEditingController _messageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _messageController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,11 +94,7 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
             SheetSharePreviewWidget(
               parentId: widget.parentId,
               contentText: contentText,
-              onMessageChanged: (message) {
-                setState(() {
-                  _userMessage = message;
-                });
-              },
+              messageController: _messageController,
             )
           else
             _buildContentPreview(context, contentText),
@@ -136,7 +144,9 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
     return ShareUtils.getSheetShareMessage(
       ref: ref,
       parentId: widget.parentId,
-      userMessage: _userMessage.trim().isNotEmpty ? _userMessage : null,
+      userMessage: _messageController.text.trim().isNotEmpty
+          ? _messageController.text
+          : null,
     );
   }
 
@@ -204,8 +214,8 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
                 .updateSheetShareInfo(
                   sheetId: widget.parentId,
                   sharedBy: userName,
-                  message: _userMessage.trim().isNotEmpty
-                      ? _userMessage.trim()
+                  message: _messageController.text.trim().isNotEmpty
+                      ? _messageController.text.trim()
                       : null,
                 );
           }

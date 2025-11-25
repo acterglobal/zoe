@@ -42,14 +42,14 @@ void main() {
     required String parentId,
     required String contentText,
     ProviderContainer? testContainer,
-    ValueChanged<String>? onMessageChanged,
+    TextEditingController? messageController,
   }) async {
     await tester.pumpMaterialWidgetWithProviderScope(
       container: testContainer ?? container,
       child: SheetSharePreviewWidget(
         parentId: parentId,
         contentText: contentText,
-        onMessageChanged: onMessageChanged,
+        messageController: messageController ?? TextEditingController(),
       ),
     );
   }
@@ -84,6 +84,7 @@ void main() {
           child: SheetSharePreviewWidget(
             parentId: 'non-existent-sheet',
             contentText: testContentText,
+            messageController: TextEditingController(),
           ),
         );
 
@@ -121,29 +122,13 @@ void main() {
         expect(animatedTextField.autofocus, isFalse);
       });
 
-      testWidgets('handles empty onMessageChanged callback gracefully', (
-        tester,
-      ) async {
-        await pumpSheetSharePreviewWidget(
-          tester,
-          parentId: testSheetId,
-          contentText: testContentText,
-          onMessageChanged: null,
-        );
-
-        const testMessage = 'Test message';
-        await tester.enterText(find.byType(AnimatedTextField), testMessage);
-        await tester.pump();
-
-        // Should not throw error when callback is null
-        expect(find.byType(AnimatedTextField), findsOneWidget);
-      });
-
       testWidgets('updates controller text when user types', (tester) async {
+        final controller = TextEditingController();
         await pumpSheetSharePreviewWidget(
           tester,
           parentId: testSheetId,
           contentText: testContentText,
+          messageController: controller,
         );
 
         const testMessage = 'User typed message';
@@ -151,10 +136,7 @@ void main() {
         await tester.pump();
 
         // Verify controller text is updated
-        final animatedTextField = tester.widget<AnimatedTextField>(
-          find.byType(AnimatedTextField),
-        );
-        expect(animatedTextField.controller.text, equals(testMessage));
+        expect(controller.text, equals(testMessage));
       });
 
       testWidgets('clears text field when user clears input', (tester) async {
