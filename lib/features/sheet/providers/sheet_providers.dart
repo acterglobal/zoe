@@ -113,10 +113,7 @@ class SheetList extends _$SheetList {
     state = [
       for (final sheet in state)
         if (sheet.id == sheetId)
-          sheet.copyWith(
-            sharedBy: sharedBy,
-            message: message,
-          )
+          sheet.copyWith(sharedBy: sharedBy, message: message)
         else
           sheet,
     ];
