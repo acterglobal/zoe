@@ -20,7 +20,9 @@ void main() {
 
       testUserId = getUserByIndex(container).id;
       container = ProviderContainer.test(
-        overrides: [loggedInUserProvider.overrideWith((ref) => testUserId)],
+        overrides: [
+          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+        ],
       );
     });
 
