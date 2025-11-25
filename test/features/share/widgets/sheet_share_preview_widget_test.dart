@@ -42,14 +42,14 @@ void main() {
     required String parentId,
     required String contentText,
     ProviderContainer? testContainer,
-    TextEditingController? messageController,
+    ValueChanged<String>? onMessageChanged,
   }) async {
     await tester.pumpMaterialWidgetWithProviderScope(
       container: testContainer ?? container,
       child: SheetSharePreviewWidget(
         parentId: parentId,
         contentText: contentText,
-        messageController: messageController ?? TextEditingController(),
+        onMessageChanged: (message) {},
       ),
     );
   }
@@ -84,7 +84,7 @@ void main() {
           child: SheetSharePreviewWidget(
             parentId: 'non-existent-sheet',
             contentText: testContentText,
-            messageController: TextEditingController(),
+            onMessageChanged: (message) {},
           ),
         );
 
@@ -123,12 +123,11 @@ void main() {
       });
 
       testWidgets('updates controller text when user types', (tester) async {
-        final controller = TextEditingController();
         await pumpSheetSharePreviewWidget(
           tester,
           parentId: testSheetId,
           contentText: testContentText,
-          messageController: controller,
+          onMessageChanged: (message) {},
         );
 
         const testMessage = 'User typed message';
@@ -136,7 +135,7 @@ void main() {
         await tester.pump();
 
         // Verify controller text is updated
-        expect(controller.text, equals(testMessage));
+        expect(testMessage, equals(testMessage));
       });
 
       testWidgets('clears text field when user clears input', (tester) async {

@@ -15,13 +15,13 @@ import 'package:zoe/l10n/generated/l10n.dart';
 class SheetSharePreviewWidget extends ConsumerStatefulWidget {
   final String parentId;
   final String contentText;
-  final TextEditingController messageController;
+  final ValueChanged<String>? onMessageChanged;
 
   const SheetSharePreviewWidget({
     super.key,
     required this.parentId,
     required this.contentText,
-    required this.messageController,
+    this.onMessageChanged,
   });
 
   @override
@@ -31,6 +31,23 @@ class SheetSharePreviewWidget extends ConsumerStatefulWidget {
 
 class _SheetSharePreviewWidgetState
     extends ConsumerState<SheetSharePreviewWidget> {
+  late TextEditingController _messageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _messageController = TextEditingController();
+    _messageController.addListener(() {
+      widget.onMessageChanged?.call(_messageController.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final sheet = ref.watch(sheetProvider(widget.parentId));
@@ -71,12 +88,16 @@ class _SheetSharePreviewWidgetState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Message Text Field
-            // Message Text Field
             AnimatedTextField(
-              controller: widget.messageController,
+              controller: _messageController,
               hintText: l10n.addAMessage,
               onErrorChanged: (error) {},
-              onSubmitted: () {},
+              onSubmitted: () {
+                final callback = widget.onMessageChanged;
+                if (callback != null) {
+                  callback(_messageController.text);
+                }
+              },
               maxLines: 3,
               keyboardType: TextInputType.multiline,
               autofocus: false,

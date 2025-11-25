@@ -47,19 +47,7 @@ class ShareItemsBottomSheet extends ConsumerStatefulWidget {
 }
 
 class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
-  late TextEditingController _messageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _messageController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _messageController.dispose();
-    super.dispose();
-  }
+  String _userMessage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +82,11 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
             SheetSharePreviewWidget(
               parentId: widget.parentId,
               contentText: contentText,
-              messageController: _messageController,
+              onMessageChanged: (message) {
+                setState(() {
+                  _userMessage = message;
+                });
+              },
             )
           else
             _buildContentPreview(context, contentText),
@@ -144,9 +136,7 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
     return ShareUtils.getSheetShareMessage(
       ref: ref,
       parentId: widget.parentId,
-      userMessage: _messageController.text.trim().isNotEmpty
-          ? _messageController.text
-          : null,
+      userMessage: _userMessage.trim().isNotEmpty ? _userMessage : null,
     );
   }
 
@@ -206,6 +196,7 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
     return ZoePrimaryButton(
       onPressed: () async {
         if (widget.isSheet) {
+          // Try to get the current user; if not available, fallback to logged in user ID
           final currentUser = await ref.read(currentUserProvider.future);
           if (currentUser != null) {
             final userName = currentUser.name;
@@ -214,13 +205,16 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
                 .updateSheetShareInfo(
                   sheetId: widget.parentId,
                   sharedBy: userName,
-                  message: _messageController.text.trim().isNotEmpty
-                      ? _messageController.text.trim()
+                  message: _userMessage.trim().isNotEmpty
+                      ? _userMessage.trim()
                       : null,
                 );
           }
         }
         CommonUtils.shareText(contentText, subject: l10n.share);
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
       },
       icon: Icons.share_rounded,
       text: l10n.share,
