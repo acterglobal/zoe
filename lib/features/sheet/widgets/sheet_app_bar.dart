@@ -38,36 +38,63 @@ class SheetAppBar extends ConsumerWidget {
       pinned: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       flexibleSpace: FlexibleSpaceBar(
-        background: Stack(
-          fit: StackFit.expand,
-          children: [
-            hasCoverImage
-                ? ZoeNetworkLocalImageView(
-                    imageUrl: coverImageUrl,
-                    fit: BoxFit.cover,
-                    borderRadius: 0,
-                    placeholderIconSize: 120,
-                  )
-                : Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [primaryColor, secondaryColor],
-                      ),
-                    ),
-                  ),
-            Positioned(
-              bottom: 16,
-              right: 16,
-              child: ContentMenuButton(
-                icon: Icons.photo_library,
-                onTap: (context) =>
-                    SheetActions.addOrUpdateCoverImage(context, ref, sheetId),
-              ),
-            ),
-          ],
+        background: _buildFlexibleBackground(
+          context,
+          hasCoverImage,
+          coverImageUrl,
+          primaryColor,
+          secondaryColor,
+          ref,
         ),
+      ),
+    );
+  }
+
+  Widget _buildFlexibleBackground(
+    BuildContext context,
+    bool hasCoverImage,
+    String? coverImageUrl,
+    Color primaryColor,
+    Color secondaryColor,
+    WidgetRef ref,
+  ) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        hasCoverImage
+            ? ZoeNetworkLocalImageView(
+                imageUrl: coverImageUrl!,
+                borderRadius: 0,
+                fit: BoxFit.cover,
+                placeholderIconSize: 120,
+              )
+            : _buildColorGradient(primaryColor, secondaryColor),
+
+        _buildCoverImageAction(ref),
+      ],
+    );
+  }
+
+  Widget _buildColorGradient(Color primary, Color secondary) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [primary, secondary],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCoverImageAction(WidgetRef ref) {
+    return Positioned(
+      bottom: 16,
+      right: 16,
+      child: ContentMenuButton(
+        icon: Icons.photo_library,
+        onTap: (context) =>
+            SheetActions.addOrUpdateCoverImage(context, ref, sheetId),
       ),
     );
   }

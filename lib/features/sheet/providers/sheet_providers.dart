@@ -18,11 +18,11 @@ class SheetList extends _$SheetList {
 
   void addSheet(SheetModel sheet) {
     final currentUserId = ref.read(loggedInUserProvider).value;
-    var sheetToAdd = sheet;
+    var newSheet = sheet;
 
     // Apply default theme if sheet doesn't have one
-    if (sheetToAdd.theme == null) {
-      sheetToAdd = sheetToAdd.copyWith(
+    if (newSheet.theme == null) {
+      newSheet = newSheet.copyWith(
         theme: (
           primary: AppColors.primaryColor,
           secondary: AppColors.secondaryColor,
@@ -33,10 +33,10 @@ class SheetList extends _$SheetList {
     if (currentUserId != null && currentUserId.isNotEmpty) {
       state = [
         ...state,
-        sheetToAdd.copyWith(users: [currentUserId], createdBy: currentUserId),
+        newSheet.copyWith(users: [currentUserId], createdBy: currentUserId),
       ];
     } else {
-      state = [...state, sheetToAdd];
+      state = [...state, newSheet];
     }
   }
 
