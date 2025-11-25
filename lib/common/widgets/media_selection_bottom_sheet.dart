@@ -113,16 +113,6 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
     }
   }
 
-  Future<void> _onTapRemoveImage(BuildContext context) async {
-    try {
-      onTapRemoveImage!();
-    } catch (e) {
-      debugPrint('Error removing image: $e');
-    } finally {
-      if (context.mounted) Navigator.of(context).pop();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -189,7 +179,7 @@ class MediaSelectionBottomSheetWidget extends StatelessWidget {
               title: l10n.removeImage,
               subtitle: l10n.removeImageDescription,
               color: AppColors.errorColor,
-              onTap: () => _onTapRemoveImage(context),
+              onTap: () => onTapRemoveImage!.call(),
             ),
           const SizedBox(height: 16),
         ],

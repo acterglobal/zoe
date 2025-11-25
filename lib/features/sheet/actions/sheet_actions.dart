@@ -108,6 +108,7 @@ class SheetActions {
       primary: theme.colorScheme.primary,
       secondary: theme.colorScheme.secondary,
     );
+    Navigator.of(context).pop();
   }
 
   /// Copies sheet content to clipboard
