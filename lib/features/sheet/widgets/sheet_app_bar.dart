@@ -36,7 +36,7 @@ class SheetAppBar extends ConsumerWidget {
       title: _buildTitle(context, ref, hasCoverImage),
       elevation: 0,
       pinned: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: theme.colorScheme.surface,
       flexibleSpace: FlexibleSpaceBar(
         background: _buildFlexibleBackground(
           context,
@@ -69,8 +69,7 @@ class SheetAppBar extends ConsumerWidget {
                 placeholderIconSize: 120,
               )
             : _buildColorGradient(primaryColor, secondaryColor),
-
-        _buildCoverImageAction(ref),
+        if (isEditing) _buildCoverImageAction(ref, hasCoverImage),
       ],
     );
   }
@@ -87,14 +86,18 @@ class SheetAppBar extends ConsumerWidget {
     );
   }
 
-  Widget _buildCoverImageAction(WidgetRef ref) {
+  Widget _buildCoverImageAction(WidgetRef ref, bool hasCoverImage) {
     return Positioned(
       bottom: 16,
       right: 16,
       child: ContentMenuButton(
         icon: Icons.photo_library,
-        onTap: (context) =>
-            SheetActions.addOrUpdateCoverImage(context, ref, sheetId),
+        onTap: (context) => SheetActions.addOrUpdateCoverImage(
+          context,
+          ref,
+          sheetId,
+          hasCoverImage,
+        ),
       ),
     );
   }
