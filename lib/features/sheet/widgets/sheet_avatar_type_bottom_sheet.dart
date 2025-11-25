@@ -110,6 +110,7 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
+    final sheet = ref.watch(sheetProvider(sheetId));
 
     return Padding(
       padding: EdgeInsets.only(
@@ -162,14 +163,19 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
             onTap: () => selectEmoji(context, ref),
           ),
           const SizedBox(height: 16),
-          BottomSheetOptionWidget(
-            icon: Icons.delete_outline_rounded,
-            title: l10n.removeAvatar,
-            subtitle: l10n.removeAvatarDescription,
-            color: AppColors.errorColor,
-            onTap: () => removeAvatar(context, ref),
-          ),
-          const SizedBox(height: 16),
+          if (sheet != null &&
+              (sheet.sheetAvatar.type != AvatarType.icon ||
+                  sheet.sheetAvatar.data != 'file' ||
+                  sheet.sheetAvatar.color != null)) ...[
+            BottomSheetOptionWidget(
+              icon: Icons.delete_outline_rounded,
+              title: l10n.removeAvatar,
+              subtitle: l10n.removeAvatarDescription,
+              color: AppColors.errorColor,
+              onTap: () => removeAvatar(context, ref),
+            ),
+            const SizedBox(height: 16),
+          ],
         ],
       ),
     );
