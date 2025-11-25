@@ -135,7 +135,10 @@ void main() {
         await tester.pump();
 
         // Verify controller text is updated
-        expect(testMessage, equals(testMessage));
+        final animatedTextField = tester.widget<AnimatedTextField>(
+          find.byType(AnimatedTextField),
+        );
+        expect(animatedTextField.controller.text, equals(testMessage));
       });
 
       testWidgets('clears text field when user clears input', (tester) async {

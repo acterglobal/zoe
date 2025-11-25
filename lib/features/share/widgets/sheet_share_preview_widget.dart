@@ -37,9 +37,6 @@ class _SheetSharePreviewWidgetState
   void initState() {
     super.initState();
     _messageController = TextEditingController();
-    _messageController.addListener(() {
-      widget.onMessageChanged?.call(_messageController.text);
-    });
   }
 
   @override
