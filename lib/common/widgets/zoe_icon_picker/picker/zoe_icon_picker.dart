@@ -60,7 +60,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref
             .read(selectedColorProvider.notifier)
-            .setPrimaryColor(widget.selectedColor!);
+            .setColor(widget.selectedColor!);
       });
     }
     if (widget.selectedIcon != null) {
@@ -87,9 +87,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
     super.didUpdateWidget(oldWidget);
     if (widget.selectedColor != null &&
         widget.selectedColor != oldWidget.selectedColor) {
-      ref
-          .read(selectedColorProvider.notifier)
-          .setPrimaryColor(widget.selectedColor!);
+      ref.read(selectedColorProvider.notifier).setColor(widget.selectedColor!);
     }
     if (widget.selectedIcon != null &&
         widget.selectedIcon != oldWidget.selectedIcon) {
@@ -108,7 +106,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
           Expanded(child: _buildIconSelector()),
           ZoePrimaryButton(
             onPressed: () {
-              final currentColor = ref.read(selectedColorProvider).primaryColor;
+              final currentColor = ref.read(selectedColorProvider);
               widget.onIconSelection?.call(currentColor, selectedIcon.value);
               Navigator.pop(context);
             },
@@ -133,11 +131,9 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
                 const SizedBox(height: 24),
                 ColorSelectorWidget(
                   onColorChanged: (newColor) {
-                    ref
-                        .read(selectedColorProvider.notifier)
-                        .setPrimaryColor(newColor);
+                    ref.read(selectedColorProvider.notifier).setColor(newColor);
                   },
-                  selectedColor: ref.watch(selectedColorProvider).primaryColor,
+                  selectedColor: ref.watch(selectedColorProvider),
                 ),
                 const SizedBox(height: 24),
               ],
@@ -146,7 +142,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
   }
 
   Widget _buildIconPreviewUI() {
-    final color = ref.watch(selectedColorProvider).primaryColor;
+    final color = ref.watch(selectedColorProvider);
     return ValueListenableBuilder<ZoeIcon>(
       valueListenable: selectedIcon,
       builder: (context, zoeIcon, child) {

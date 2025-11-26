@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/providers/selected_color_provider.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/models/color_data.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/widgets/color_selector_widget.dart';
@@ -74,6 +75,7 @@ class _ChooseColorBottomSheetState
   }
 
   void _saveColors() {
+    // Update the sheet's theme
     ref
         .read(sheetListProvider.notifier)
         .updateSheetTheme(
@@ -81,6 +83,10 @@ class _ChooseColorBottomSheetState
           primary: selectedColor,
           secondary: AppColors.primaryColor.withValues(alpha: 0.3),
         );
+
+    // Also update the global selected color provider
+    ref.read(selectedColorProvider.notifier).setColor(selectedColor);
+
     if (mounted) {
       Navigator.pop(context);
     }

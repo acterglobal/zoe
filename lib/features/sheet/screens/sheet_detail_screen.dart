@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/providers/selected_color_provider.dart';
 import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -146,6 +147,10 @@ class SheetDetailScreen extends ConsumerWidget {
     final l10n = L10n.of(context);
     final userCount = usersInSheet.length;
 
+    // Use selected color from provider, fallback to theme primary color
+    final selectedColor = ref.watch(selectedColorProvider);
+    final displayColor = selectedColor;
+
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -162,25 +167,21 @@ class SheetDetailScreen extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+          color: displayColor.withValues(alpha: 0.1),
           border: Border.all(
-            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+            color: displayColor.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.people_rounded,
-              size: 16,
-              color: theme.colorScheme.primary,
-            ),
+            Icon(Icons.people_rounded, size: 16, color: displayColor),
             const SizedBox(width: 6),
             Text(
               '$userCount ${userCount == 1 ? l10n.user : l10n.users}',
               style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.primary,
+                color: displayColor,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -188,7 +189,7 @@ class SheetDetailScreen extends ConsumerWidget {
             Icon(
               Icons.arrow_forward_ios_rounded,
               size: 12,
-              color: theme.colorScheme.primary,
+              color: displayColor,
             ),
           ],
         ),

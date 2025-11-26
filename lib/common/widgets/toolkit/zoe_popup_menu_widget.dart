@@ -45,6 +45,7 @@ class ZoePopupMenuWidget extends StatelessWidget {
     Color? shadowColor,
     ShapeBorder? shape,
     bool isAppBarAction = false,
+    Color? menuIconColor,
   }) async {
     final colorScheme = Theme.of(context).colorScheme;
     final renderBox = context.findRenderObject() as RenderBox?;
@@ -72,14 +73,16 @@ class ZoePopupMenuWidget extends StatelessWidget {
               offset.dy + 200,
             ),
       elevation: elevation,
-      shadowColor: shadowColor ?? colorScheme.primary.withValues(alpha: 0.6),
+      shadowColor:
+          shadowColor ??
+          (menuIconColor ?? colorScheme.primary).withValues(alpha: 0.6),
       shape:
           shape ??
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       items: activeItems.map((item) {
         return PopupMenuItem<ZoePopupMenuItem>(
           value: item,
-          child: _buildMenuItem(context, item),
+          child: _buildMenuItem(context, item, menuIconColor),
         );
       }).toList(),
     );
@@ -90,10 +93,16 @@ class ZoePopupMenuWidget extends StatelessWidget {
   }
 
   /// Builds a menu item widget
-  static Widget _buildMenuItem(BuildContext context, ZoePopupMenuItem item) {
+  static Widget _buildMenuItem(
+    BuildContext context,
+    ZoePopupMenuItem item, [
+    Color? menuIconColor,
+  ]) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final color = item.isDestructive ? colorScheme.error : colorScheme.primary;
+    final color = item.isDestructive
+        ? colorScheme.error
+        : (menuIconColor ?? colorScheme.primary);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),

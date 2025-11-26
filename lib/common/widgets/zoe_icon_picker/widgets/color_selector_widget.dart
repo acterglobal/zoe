@@ -42,7 +42,7 @@ class ColorSelectorWidget extends StatelessWidget {
     final isSelected = colorItem == selectedColor;
 
     return InkWell(
-      key: Key(colorPickerKey),
+      key: Key('$colorPickerKey-$index'),
       borderRadius: BorderRadius.circular(100),
       onTap: () => onColorChanged(colorItem),
       child: Container(

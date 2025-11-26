@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/providers/selected_color_provider.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/choose_color_bottom_sheet.dart';
 import 'package:zoe/common/widgets/media_selection_bottom_sheet.dart';
@@ -50,7 +51,14 @@ void showSheetMenu({
     ),
   ];
 
-  ZoePopupMenuWidget.show(context: context, items: menuItems);
+  // Get selected color from provider
+  final selectedColor = ref.read(selectedColorProvider);
+
+  ZoePopupMenuWidget.show(
+    context: context,
+    items: menuItems,
+    menuIconColor: selectedColor,
+  );
 }
 
 /// Sheet-specific actions that can be performed on sheet content

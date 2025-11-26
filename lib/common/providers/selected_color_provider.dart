@@ -5,78 +5,34 @@ import 'package:zoe/common/widgets/zoe_icon_picker/models/color_data.dart';
 
 part 'selected_color_provider.g.dart';
 
-/// State class to hold selected primary and secondary colors
-class SelectedColorState {
-  final Color primaryColor;
-  final Color secondaryColor;
-
-  const SelectedColorState({
-    required this.primaryColor,
-    required this.secondaryColor,
-  });
-
-  SelectedColorState copyWith({Color? primaryColor, Color? secondaryColor}) {
-    return SelectedColorState(
-      primaryColor: primaryColor ?? this.primaryColor,
-      secondaryColor: secondaryColor ?? this.secondaryColor,
-    );
-  }
-}
-
-/// Provider for managing selected theme colors
+/// Provider for managing selected color
 @Riverpod(keepAlive: true)
 class SelectedColor extends _$SelectedColor {
   @override
-  SelectedColorState build() {
-    // Initialize with default colors and load saved colors
-    _loadColors();
-    return SelectedColorState(
-      primaryColor: iconPickerColors.first,
-      secondaryColor: iconPickerColors[1],
-    );
+  Color build() {
+    // Initialize with default color and load saved color
+    _loadColor();
+    return iconPickerColors.first;
   }
 
-  Future<void> _loadColors() async {
+  Future<void> _loadColor() async {
     final prefsService = ref.read(preferencesServiceProvider);
-    final primaryColor = await prefsService.getPrimaryColor();
-    final secondaryColor = await prefsService.getSecondaryColor();
+    final savedColor = await prefsService.getPrimaryColor();
 
-    if (primaryColor != null || secondaryColor != null) {
-      state = SelectedColorState(
-        primaryColor: primaryColor ?? iconPickerColors.first,
-        secondaryColor: secondaryColor ?? iconPickerColors[1],
-      );
+    if (savedColor != null) {
+      state = savedColor;
     }
   }
 
-  Future<void> setPrimaryColor(Color color) async {
-    state = state.copyWith(primaryColor: color);
+  Future<void> setColor(Color color) async {
+    state = color;
     await ref.read(preferencesServiceProvider).setPrimaryColor(color);
   }
 
-  Future<void> setSecondaryColor(Color color) async {
-    state = state.copyWith(secondaryColor: color);
-    await ref.read(preferencesServiceProvider).setSecondaryColor(color);
-  }
-
-  Future<void> setColors({
-    required Color primaryColor,
-    required Color secondaryColor,
-  }) async {
-    state = SelectedColorState(
-      primaryColor: primaryColor,
-      secondaryColor: secondaryColor,
-    );
-    final prefsService = ref.read(preferencesServiceProvider);
-    await prefsService.setPrimaryColor(primaryColor);
-    await prefsService.setSecondaryColor(secondaryColor);
-  }
-
-  Future<void> clearColors() async {
-    state = SelectedColorState(
-      primaryColor: iconPickerColors.first,
-      secondaryColor: iconPickerColors[1],
-    );
-    await ref.read(preferencesServiceProvider).clearThemeColors();
+  Future<void> clearColor() async {
+    state = iconPickerColors.first;
+    await ref
+        .read(preferencesServiceProvider)
+        .setPrimaryColor(iconPickerColors.first);
   }
 }
