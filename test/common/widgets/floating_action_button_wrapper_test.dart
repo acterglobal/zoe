@@ -18,10 +18,7 @@ class FloatingActionButtonWrapperTestUtils {
     String? editContentId,
     List<ContentModel>? contentList,
   }) {
-    return FloatingActionButtonWrapper(
-      parentId: parentId,
-      sheetId: sheetId,
-    );
+    return FloatingActionButtonWrapper(parentId: parentId, sheetId: sheetId);
   }
 
   /// Creates a mock ContentModel for testing
@@ -72,12 +69,12 @@ void main() {
       expect(find.byIcon(Icons.save_rounded), findsNothing);
     });
 
-    testWidgets('displays save icon when editing current content', (tester) async {
+    testWidgets('displays save icon when editing current content', (
+      tester,
+    ) async {
       await tester.pumpMaterialWidgetWithProviderScope(
         container: ProviderContainer(
-          overrides: [
-            editContentIdProvider.overrideWith((ref) => 'parent-1'),
-          ],
+          overrides: [editContentIdProvider.overrideWith((ref) => 'parent-1')],
         ),
         child: FloatingActionButtonWrapperTestUtils.createTestWidget(
           parentId: 'parent-1',
@@ -90,11 +87,14 @@ void main() {
       expect(find.byIcon(Icons.add_rounded), findsNothing);
     });
 
-    testWidgets('displays save icon when editing child content', (tester) async {
-      final testContent = FloatingActionButtonWrapperTestUtils.createTestContent(
-        id: 'child-1',
-        parentId: 'parent-1',
-      );
+    testWidgets('displays save icon when editing child content', (
+      tester,
+    ) async {
+      final testContent =
+          FloatingActionButtonWrapperTestUtils.createTestContent(
+            id: 'child-1',
+            parentId: 'parent-1',
+          );
 
       await tester.pumpMaterialWidgetWithProviderScope(
         container: ProviderContainer(
@@ -114,11 +114,14 @@ void main() {
       expect(find.byIcon(Icons.add_rounded), findsNothing);
     });
 
-    testWidgets('displays add icon when editing unrelated content', (tester) async {
-      final testContent = FloatingActionButtonWrapperTestUtils.createTestContent(
-        id: 'child-1',
-        parentId: 'other-parent',
-      );
+    testWidgets('displays add icon when editing unrelated content', (
+      tester,
+    ) async {
+      final testContent =
+          FloatingActionButtonWrapperTestUtils.createTestContent(
+            id: 'child-1',
+            parentId: 'other-parent',
+          );
 
       await tester.pumpMaterialWidgetWithProviderScope(
         container: ProviderContainer(
@@ -141,9 +144,7 @@ void main() {
     testWidgets('handles null editContentId', (tester) async {
       await tester.pumpMaterialWidgetWithProviderScope(
         container: ProviderContainer(
-          overrides: [
-            editContentIdProvider.overrideWith((ref) => null),
-          ],
+          overrides: [editContentIdProvider.overrideWith((ref) => null)],
         ),
         child: FloatingActionButtonWrapperTestUtils.createTestWidget(
           parentId: 'parent-1',
@@ -193,5 +194,28 @@ void main() {
       expect(find.byIcon(Icons.add_rounded), findsOneWidget);
       expect(find.byIcon(Icons.save_rounded), findsNothing);
     });
+  });
+  testWidgets('applies primaryColor to ZoeFloatingActionButton', (
+    tester,
+  ) async {
+    const customColor = Colors.purple;
+
+    await tester.pumpMaterialWidgetWithProviderScope(
+      container: ProviderContainer(),
+      child: FloatingActionButtonWrapper(
+        parentId: 'parent-1',
+        sheetId: 'sheet-1',
+        primaryColor: customColor,
+      ),
+    );
+
+    // Ensure the ZoeFloatingActionButton is present
+    final fabFinder = find.byType(ZoeFloatingActionButton);
+    expect(fabFinder, findsOneWidget);
+
+    final fab = tester.widget<ZoeFloatingActionButton>(fabFinder);
+
+    // Verify the primaryColor was passed to the internal FAB
+    expect(fab.primaryColor, equals(customColor));
   });
 }
