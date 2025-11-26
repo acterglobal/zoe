@@ -45,7 +45,7 @@ void main() {
   group('ZoePopupMenuItem Tests -', () {
     test('creates with required properties', () {
       final item = ZoePopupMenuTestUtils.createTestMenuItem();
-      
+
       expect(item.id, equals('test_item'));
       expect(item.icon, equals(Icons.close));
       expect(item.title, equals('Test Title'));
@@ -64,13 +64,13 @@ void main() {
         isDestructive: true,
         onTap: () => wasTapped = true,
       );
-      
+
       expect(item.id, equals('custom_id'));
       expect(item.icon, equals(Icons.add));
       expect(item.title, equals('Custom Title'));
       expect(item.subtitle, equals('Custom Subtitle'));
       expect(item.isDestructive, isTrue);
-      
+
       item.onTap?.call();
       expect(wasTapped, isTrue);
     });
@@ -84,20 +84,20 @@ void main() {
         title: 'Custom Connect',
         subtitle: 'Custom Connect Subtitle',
       );
-      
+
       expect(item.id, equals('connect'));
       expect(item.icon, equals(Icons.link_rounded));
       expect(item.title, equals('Custom Connect'));
       expect(item.subtitle, equals('Custom Connect Subtitle'));
       expect(item.isDestructive, isFalse);
-      
+
       item.onTap?.call();
       expect(wasTapped, isTrue);
     });
 
     test('creates copy menu item correctly', () {
       final item = ZoeCommonMenuItems.copy();
-      
+
       expect(item.id, equals('copy'));
       expect(item.icon, equals(Icons.copy_rounded));
       expect(item.title, equals('Copy'));
@@ -107,7 +107,7 @@ void main() {
 
     test('creates share menu item correctly', () {
       final item = ZoeCommonMenuItems.share();
-      
+
       expect(item.id, equals('share'));
       expect(item.icon, equals(Icons.share_rounded));
       expect(item.title, equals('Share'));
@@ -117,7 +117,7 @@ void main() {
 
     test('creates edit menu item correctly', () {
       final item = ZoeCommonMenuItems.edit();
-      
+
       expect(item.id, equals('edit'));
       expect(item.icon, equals(Icons.edit_rounded));
       expect(item.title, equals('Edit'));
@@ -127,28 +127,43 @@ void main() {
 
     test('creates delete menu item correctly', () {
       final item = ZoeCommonMenuItems.delete();
-      
+
       expect(item.id, equals('delete'));
       expect(item.icon, equals(Icons.delete_rounded));
       expect(item.title, equals('Delete'));
       expect(item.subtitle, equals('Delete this content'));
       expect(item.isDestructive, isTrue);
     });
+
+    test('creates chooseTheme menu item correctly', () {
+      bool wasTapped = false;
+      final item = ZoeCommonMenuItems.chooseTheme(
+        onTapChooseTheme: () => wasTapped = true,
+        title: 'Choose theme',
+        subtitle: 'Choose a theme for this sheet',
+      );
+
+      expect(item.id, equals('choose_theme'));
+      expect(item.icon, equals(Icons.color_lens));
+      expect(item.title, equals('Choose theme'));
+      expect(item.subtitle, equals('Choose a theme for this sheet'));
+      expect(item.isDestructive, isFalse);
+
+      item.onTap?.call();
+      expect(wasTapped, isTrue);
+    });
   });
 
   group('ZoePopupMenuWidget Tests -', () {
     testWidgets('renders menu items correctly', (tester) async {
       final items = ZoePopupMenuTestUtils.createTestMenuItems();
-      
+
       await tester.pumpMaterialWidget(
         child: Builder(
           builder: (context) {
             return TextButton(
               onPressed: () {
-                ZoePopupMenuWidget.show(
-                  context: context,
-                  items: items,
-                );
+                ZoePopupMenuWidget.show(context: context, items: items);
               },
               child: const Text('Show Menu'),
             );
@@ -170,20 +185,15 @@ void main() {
     testWidgets('handles item tap correctly', (tester) async {
       bool wasTapped = false;
       final items = [
-        ZoePopupMenuTestUtils.createTestMenuItem(
-          onTap: () => wasTapped = true,
-        ),
+        ZoePopupMenuTestUtils.createTestMenuItem(onTap: () => wasTapped = true),
       ];
-      
+
       await tester.pumpMaterialWidget(
         child: Builder(
           builder: (context) {
             return TextButton(
               onPressed: () {
-                ZoePopupMenuWidget.show(
-                  context: context,
-                  items: items,
-                );
+                ZoePopupMenuWidget.show(context: context, items: items);
               },
               child: const Text('Show Menu'),
             );
@@ -204,7 +214,7 @@ void main() {
 
     testWidgets('applies custom style correctly', (tester) async {
       final items = ZoePopupMenuTestUtils.createTestMenuItems();
-      
+
       await tester.pumpMaterialWidget(
         child: Builder(
           builder: (context) {
@@ -236,5 +246,98 @@ void main() {
         expect(find.text('Subtitle $i'), findsOneWidget);
       }
     });
+    testWidgets('applies menuIconColor correctly for non-destructive items', (
+      tester,
+    ) async {
+      const customMenuIconColor = Colors.purple;
+
+      final items = [
+        ZoePopupMenuItem(
+          id: 'theme',
+          icon: Icons.color_lens,
+          title: 'Choose Theme',
+          subtitle: 'Pick a theme',
+          isDestructive: false,
+          onTap: () {},
+        ),
+      ];
+
+      await tester.pumpMaterialWidget(
+        child: Builder(
+          builder: (context) {
+            return TextButton(
+              onPressed: () {
+                ZoePopupMenuWidget.show(
+                  context: context,
+                  items: items,
+                  menuIconColor: customMenuIconColor,
+                );
+              },
+              child: const Text('Show Menu'),
+            );
+          },
+        ),
+      );
+
+      // Tap to show menu
+      await tester.tap(find.text('Show Menu'));
+      await tester.pumpAndSettle();
+
+      // Find the icon
+      final icon = tester.widget<Icon>(find.byIcon(Icons.color_lens));
+
+      // Verify color applied correctly
+      expect(icon.color, equals(customMenuIconColor));
+    });
+
+    testWidgets(
+      'destructive items override menuIconColor and use error color',
+      (tester) async {
+        const customMenuIconColor = Colors.green;
+
+        final items = [
+          ZoePopupMenuItem(
+            id: 'delete',
+            icon: Icons.delete,
+            title: 'Delete',
+            subtitle: 'Remove item',
+            isDestructive: true,
+            onTap: () {},
+          ),
+        ];
+
+        await tester.pumpMaterialWidget(
+          child: Builder(
+            builder: (context) {
+              return TextButton(
+                onPressed: () {
+                  ZoePopupMenuWidget.show(
+                    context: context,
+                    items: items,
+                    menuIconColor: customMenuIconColor,
+                  );
+                },
+                child: const Text('Show Menu'),
+              );
+            },
+          ),
+        );
+
+        // Tap to show menu
+        await tester.tap(find.text('Show Menu'));
+        await tester.pumpAndSettle();
+
+        final context = tester.element(find.byIcon(Icons.delete));
+        final errorColor = Theme.of(context).colorScheme.error;
+
+        final icon = tester.widget<Icon>(find.byIcon(Icons.delete));
+
+        expect(
+          icon.color,
+          equals(errorColor),
+        ); // MUST NOT equal customMenuIconColor
+        expect(icon.color == customMenuIconColor, isFalse);
+      },
+    );
   });
 }
