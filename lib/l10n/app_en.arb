@@ -575,11 +575,5 @@
     "message": "Message",
     "@message": {},
     "removeAvatar": "Remove Avatar",
-    "removeAvatarDescription": "Remove avatar and use default icon",
-    "primaryColor": "Primary Color",
-    "@primaryColor": {},
-    "secondaryColor": "Secondary Color",
-    "@secondaryColor": {},
-    "preview": "Preview",
-    "@preview": {}
-}
+    "removeAvatarDescription": "Remove avatar and use default icon"
+}  

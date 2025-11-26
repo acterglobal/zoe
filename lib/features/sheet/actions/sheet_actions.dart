@@ -103,11 +103,12 @@ class SheetActions {
   ) {
     final theme = Theme.of(context);
     final sheetListNotifier = ref.read(sheetListProvider.notifier);
+    final sheet = ref.read(sheetProvider(sheetId));
     sheetListNotifier.updateSheetCoverImage(sheetId, null);
     sheetListNotifier.updateSheetTheme(
       sheetId: sheetId,
-      primary: theme.colorScheme.primary,
-      secondary: theme.colorScheme.secondary,
+      primary: sheet?.theme?.primary ?? theme.colorScheme.primary,
+      secondary: sheet?.theme?.secondary ?? theme.colorScheme.secondary,
     );
     Navigator.of(context).pop();
   }
