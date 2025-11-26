@@ -370,6 +370,18 @@ void main() {
       ) async {
         container = ProviderContainer.test();
 
+        // Set up a sheet with a specific theme
+        final customPrimaryColor = Colors.purple;
+        final customSecondaryColor = Colors.purple[100]!;
+
+        container
+            .read(sheetListProvider.notifier)
+            .updateSheetTheme(
+              sheetId: testSheet.id,
+              primary: customPrimaryColor,
+              secondary: customSecondaryColor,
+            );
+
         // Ensure test sheet has a cover image
         container
             .read(sheetListProvider.notifier)
@@ -377,6 +389,12 @@ void main() {
               testSheet.id,
               'https://example.com/image.jpg',
             );
+
+        // Verify initial state
+        var sheet = container.read(sheetProvider(testSheet.id));
+        expect(sheet?.coverImageUrl, isNotNull);
+        expect(sheet?.theme?.primary, equals(customPrimaryColor));
+        expect(sheet?.theme?.secondary, equals(customSecondaryColor));
 
         await tester.pumpActionsWidget(
           container: container,
@@ -389,14 +407,51 @@ void main() {
         await tester.tap(find.text(buttonText));
         await tester.pumpAndSettle();
 
-        // Verify theme was updated
-        // Note: We can't easily check exact colors without mocking Theme or knowing default test theme,
-        // but we can check if the sheet's theme property is not null (assuming it was null or we check for change)
-        // However, SheetModel likely has a theme property.
-        final sheet = container.read(sheetProvider(testSheet.id));
+        // Verify cover image was removed
+        sheet = container.read(sheetProvider(testSheet.id));
+        expect(sheet?.coverImageUrl, isNull);
+
+        // Verify theme colors were preserved (not reset to default)
+        expect(sheet?.theme?.primary, equals(customPrimaryColor));
+        expect(sheet?.theme?.secondary, equals(customSecondaryColor));
+      });
+
+      testWidgets('falls back to context theme when sheet has no theme', (
+        tester,
+      ) async {
+        container = ProviderContainer.test();
+
+        // Ensure test sheet has a cover image but NO custom theme
+        container
+            .read(sheetListProvider.notifier)
+            .updateSheetCoverImage(
+              testSheet.id,
+              'https://example.com/image.jpg',
+            );
+
+        // Verify initial state - sheet should have no custom theme
+        var sheet = container.read(sheetProvider(testSheet.id));
+        expect(sheet?.coverImageUrl, isNotNull);
+
+        await tester.pumpActionsWidget(
+          container: container,
+          buttonText: buttonText,
+          onPressed: (context, ref) =>
+              SheetActions.removeCoverImage(context, ref, testSheet.id),
+        );
+
+        // Tap the button to trigger remove cover image action
+        await tester.tap(find.text(buttonText));
+        await tester.pumpAndSettle();
+
+        // Verify cover image was removed
+        sheet = container.read(sheetProvider(testSheet.id));
+        expect(sheet?.coverImageUrl, isNull);
+
+        // Verify theme was set (should use context theme as fallback)
         expect(sheet?.theme, isNotNull);
-        // We could also verify it matches the context theme if we knew it.
-        // For now, just verifying it's set is a good step.
+        expect(sheet?.theme?.primary, isNotNull);
+        expect(sheet?.theme?.secondary, isNotNull);
       });
     });
 

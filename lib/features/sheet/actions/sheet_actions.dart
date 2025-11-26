@@ -144,6 +144,6 @@ class SheetActions {
 
   /// Chooses theme for the specified sheet content
   static void chooseTheme(BuildContext context, WidgetRef ref, String sheetId) {
-    ChooseColorBottomSheet.show(context, sheetId: sheetId);
+    showChooseColorBottomSheet(context: context, sheetId: sheetId);
   }
 }

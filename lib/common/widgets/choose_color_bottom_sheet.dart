@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/widgets/color_selector_widget.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
+void showChooseColorBottomSheet({
+  required BuildContext context,
+  required String sheetId,
+}) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    showDragHandle: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) => ChooseColorBottomSheet(sheetId: sheetId),
+  );
+}
+
 class ChooseColorBottomSheet extends ConsumerStatefulWidget {
   final String sheetId;
 
   const ChooseColorBottomSheet({super.key, required this.sheetId});
-
-  static Future<void> show(
-    BuildContext context, {
-    required String sheetId,
-  }) async {
-    await showModalBottomSheet(
-      showDragHandle: true,
-      useSafeArea: true,
-      context: context,
-      isDismissible: true,
-      isScrollControlled: true,
-      builder: (context) => ChooseColorBottomSheet(sheetId: sheetId),
-    );
-  }
 
   @override
   ConsumerState<ChooseColorBottomSheet> createState() =>
@@ -31,19 +33,16 @@ class ChooseColorBottomSheet extends ConsumerStatefulWidget {
 
 class _ChooseColorBottomSheetState
     extends ConsumerState<ChooseColorBottomSheet> {
-  late Color selectedColor;
-
-  bool _isInitialized = false;
+  Color? selectedColor;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!_isInitialized) {
+    if (selectedColor == null) {
       // Initialize with current sheet theme colors or defaults
       final sheet = ref.read(sheetProvider(widget.sheetId));
       selectedColor =
           sheet?.theme?.primary ?? Theme.of(context).colorScheme.primary;
-      _isInitialized = true;
     }
   }
 
@@ -51,39 +50,42 @@ class _ChooseColorBottomSheetState
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 20, right: 16, left: 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ColorSelectorWidget(
-              onColorChanged: (color) {
-                setState(() {
-                  selectedColor = color;
-                });
-              },
-              selectedColor: selectedColor,
-            ),
-            const SizedBox(height: 24),
+    return MaxWidthWidget(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+        left: 16,
+        right: 16,
+      ),
+      isScrollable: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ColorSelectorWidget(
+            onColorChanged: (color) {
+              setState(() {
+                selectedColor = color;
+              });
+            },
+            selectedColor: selectedColor!,
+          ),
+          const SizedBox(height: 24),
 
-            // Save Button
-            ZoePrimaryButton(onPressed: _saveColors, text: l10n.save),
-            const SizedBox(height: 16),
-          ],
-        ),
+          // Save Button
+          ZoePrimaryButton(onPressed: _saveSelectedColor, text: l10n.save),
+          const SizedBox(height: 16),
+        ],
       ),
     );
   }
 
-  void _saveColors() {
+  void _saveSelectedColor() {
     // Update the sheet's theme
     ref
         .read(sheetListProvider.notifier)
         .updateSheetTheme(
           sheetId: widget.sheetId,
-          primary: selectedColor,
+          primary: selectedColor!,
           secondary: Theme.of(
             context,
           ).colorScheme.primary.withValues(alpha: 0.3),
