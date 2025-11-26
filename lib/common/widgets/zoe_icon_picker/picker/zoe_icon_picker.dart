@@ -135,6 +135,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
                     selectedColor.value = newColor;
                   },
                   selectedColor: selectedColor.value,
+                  colors: iconPickerColors,
                 ),
                 const SizedBox(height: 24),
               ],

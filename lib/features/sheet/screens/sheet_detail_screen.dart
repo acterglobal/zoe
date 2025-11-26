@@ -26,6 +26,8 @@ class SheetDetailScreen extends ConsumerWidget {
     final sheet = ref.watch(sheetProvider(sheetId));
     final userSelectedThemeColor =
         sheet?.theme?.primary ?? Theme.of(context).colorScheme.primary;
+    final userSelectedSecondaryThemeColor =
+        sheet?.theme?.secondary ?? Theme.of(context).colorScheme.secondary;
 
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
@@ -44,6 +46,7 @@ class SheetDetailScreen extends ConsumerWidget {
           parentId: sheetId,
           sheetId: sheetId,
           primaryColor: userSelectedThemeColor,
+          secondaryColor: userSelectedSecondaryThemeColor,
         ),
       ),
     );
@@ -176,6 +179,7 @@ class SheetDetailScreen extends ConsumerWidget {
           builder: (context) => UserListWidget(
             userIdList: listOfUsersBySheetIdProvider(sheetId),
             title: l10n.usersInSheet,
+            iconColor: userSelectedThemeColor,
           ),
         );
       },

@@ -52,11 +52,17 @@ class ZoePrimaryButton extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            effectivePrimaryColor,
-            effectivePrimaryColor.withValues(alpha: 0.85),
-            effectiveSecondaryColor.withValues(alpha: 0.9),
-          ],
+          colors: primaryColor != null || secondaryColor != null
+              ? [
+                  effectivePrimaryColor,
+                  effectivePrimaryColor.withValues(alpha: 0.4),
+                  effectiveSecondaryColor.withValues(alpha: 0.2),
+                ]
+              : [
+                  effectivePrimaryColor,
+                  effectivePrimaryColor.withValues(alpha: 0.85),
+                  effectiveSecondaryColor.withValues(alpha: 0.9),
+                ],
           stops: const [0.0, 0.6, 1.0],
         ),
         border: Border.all(

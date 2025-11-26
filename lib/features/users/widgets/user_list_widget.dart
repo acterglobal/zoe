@@ -7,6 +7,7 @@ class UserListWidget extends ConsumerWidget {
   final ProviderListenable<List<String>> userIdList;
   final Widget? Function(String userId)? actionWidget;
   final Function(String userId)? onTapUser;
+  final Color? iconColor;
   final String title;
 
   const UserListWidget({
@@ -14,6 +15,7 @@ class UserListWidget extends ConsumerWidget {
     required this.userIdList,
     this.actionWidget,
     this.onTapUser,
+    this.iconColor,
     required this.title,
   });
 
@@ -31,19 +33,24 @@ class UserListWidget extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 20,right: 5, top: 10, bottom: 10),
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 5,
+              top: 10,
+              bottom: 10,
+            ),
             child: ListTile(
               contentPadding: EdgeInsets.zero,
               leading: Icon(
                 Icons.people_rounded,
-                color: theme.colorScheme.primary,
+                color: iconColor ?? theme.colorScheme.primary,
                 size: 24,
               ),
               title: Text(
-                  title,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.onSurface,
+                title,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               trailing: IconButton(
@@ -63,13 +70,17 @@ class UserListWidget extends ConsumerWidget {
               itemBuilder: (context, index) {
                 final userId = userIds[index];
                 return Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
-                                  child: UserWidget(
-                  key: ValueKey(userId),
-                  userId: userId,
-                  actionWidget: actionWidget?.call(userId),
-                  onTapUser: onTapUser,
-                ),
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    bottom: 8,
+                  ),
+                  child: UserWidget(
+                    key: ValueKey(userId),
+                    userId: userId,
+                    actionWidget: actionWidget?.call(userId),
+                    onTapUser: onTapUser,
+                  ),
                 );
               },
             ),

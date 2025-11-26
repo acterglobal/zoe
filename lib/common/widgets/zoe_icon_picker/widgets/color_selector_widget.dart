@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:zoe/common/widgets/zoe_icon_picker/models/color_data.dart';
-
 import '../../../../l10n/generated/l10n.dart';
 
 class ColorSelectorWidget extends StatelessWidget {
   final ValueChanged<Color> onColorChanged;
   final Color selectedColor;
+  final List<Color> colors;
 
   const ColorSelectorWidget({
     super.key,
     required this.onColorChanged,
     required this.selectedColor,
+    required this.colors,
   });
 
   static const colorPickerKey = 'color-picker';
@@ -31,7 +31,7 @@ class ColorSelectorWidget extends StatelessWidget {
   }
 
   List<Widget> _buildColorBoxes() {
-    return iconPickerColors
+    return colors
         .asMap()
         .entries
         .map((entry) => _buildColorBoxItem(entry.value, entry.key))

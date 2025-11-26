@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
+import 'package:zoe/common/widgets/zoe_icon_picker/models/color_data.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/widgets/color_selector_widget.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -68,11 +69,17 @@ class _ChooseColorBottomSheetState
               });
             },
             selectedColor: selectedColor!,
+            colors: sheetThemeColors,
           ),
           const SizedBox(height: 24),
 
           // Save Button
-          ZoePrimaryButton(onPressed: _saveSelectedColor, text: l10n.save),
+          ZoePrimaryButton(
+            onPressed: _saveSelectedColor,
+            text: l10n.save,
+            primaryColor: selectedColor!,
+            secondaryColor: selectedColor!.withValues(alpha: 0.2),
+          ),
           const SizedBox(height: 16),
         ],
       ),
@@ -86,9 +93,7 @@ class _ChooseColorBottomSheetState
         .updateSheetTheme(
           sheetId: widget.sheetId,
           primary: selectedColor!,
-          secondary: Theme.of(
-            context,
-          ).colorScheme.primary.withValues(alpha: 0.3),
+          secondary: selectedColor!.withValues(alpha: 0.2),
         );
 
     if (mounted) {
