@@ -9,6 +9,7 @@ void selectProfileFileSource(
   String userId,
   WidgetRef ref, {
   Function(String)? onImageSelected,
+  bool hasAvatar = false,
 }) {
   showMediaSelectionBottomSheet(
     context,
@@ -21,9 +22,12 @@ void selectProfileFileSource(
       _updateUserAvatar(ref, userId, image.path);
       onImageSelected?.call(image.path);
     },
-    onTapRemoveImage: () async {
-      _updateUserAvatar(ref, userId, null);
-    },
+    onTapRemoveImage: hasAvatar
+        ? () async {
+            _updateUserAvatar(ref, userId, null);
+            Navigator.pop(context);
+          }
+        : null,
   );
 }
 

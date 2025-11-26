@@ -5,6 +5,7 @@ import 'package:zoe/common/widgets/bottom_sheet_option_widget.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_avatar_type_bottom_sheet.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -336,17 +337,41 @@ void main() {
     });
 
     group('Remove Avatar Tests', () {
-      testWidgets('displays remove avatar option', (tester) async {
+      testWidgets('hides remove avatar option when avatar is default', (
+        tester,
+      ) async {
+        // Create a sheet with default avatar
+        final defaultSheet = SheetModel(
+          id: 'default-sheet',
+          title: 'Default Sheet',
+          // Default SheetAvatar is type=icon, data='file', color=null
+        );
+        container.read(sheetListProvider.notifier).addSheet(defaultSheet);
+
+        await pumpSheetAvatarTypeBottomSheet(tester, sheetId: defaultSheet.id);
+
+        final l10n = getL10n(tester);
+        // Verify remove avatar option is NOT displayed
+        expect(find.text(l10n.removeAvatar), findsNothing);
+        expect(find.text(l10n.removeAvatarDescription), findsNothing);
+        expect(find.byIcon(Icons.delete_outline_rounded), findsNothing);
+      });
+
+      testWidgets('displays remove avatar option when avatar is not default', (
+        tester,
+      ) async {
+        // testSheet has a custom avatar (from sheet_data.dart), so it should show the option
         await pumpSheetAvatarTypeBottomSheet(tester, sheetId: testSheet.id);
 
         final l10n = getL10n(tester);
-        // Verify remove avatar option is displayed
+        // Verify remove avatar option IS displayed
         expect(find.text(l10n.removeAvatar), findsOneWidget);
         expect(find.text(l10n.removeAvatarDescription), findsOneWidget);
         expect(find.byIcon(Icons.delete_outline_rounded), findsOneWidget);
       });
 
       testWidgets('remove avatar option has correct color', (tester) async {
+        // testSheet has custom avatar, so option is visible
         await pumpSheetAvatarTypeBottomSheet(tester, sheetId: testSheet.id);
 
         final optionWidgets = find
@@ -361,6 +386,7 @@ void main() {
       });
 
       testWidgets('remove avatar option is tappable', (tester) async {
+        // testSheet has custom avatar, so option is visible
         await pumpSheetAvatarTypeBottomSheet(tester, sheetId: testSheet.id);
 
         final l10n = getL10n(tester);
@@ -378,16 +404,19 @@ void main() {
         expect(widget.onTap, isNotNull);
       });
 
-      testWidgets('displays all 4 options including remove avatar', (
-        tester,
-      ) async {
-        await pumpSheetAvatarTypeBottomSheet(tester, sheetId: testSheet.id);
+      testWidgets(
+        'displays all 4 options including remove avatar when not default',
+        (tester) async {
+          // testSheet has custom avatar, so option is visible
+          await pumpSheetAvatarTypeBottomSheet(tester, sheetId: testSheet.id);
 
-        // Verify all four option widgets are present
-        expect(find.byType(BottomSheetOptionWidget), findsNWidgets(4));
-      });
+          // Verify all four option widgets are present
+          expect(find.byType(BottomSheetOptionWidget), findsNWidgets(4));
+        },
+      );
 
       testWidgets('remove avatar option is in correct order', (tester) async {
+        // testSheet has custom avatar, so option is visible
         await pumpSheetAvatarTypeBottomSheet(tester, sheetId: testSheet.id);
 
         final l10n = getL10n(tester);

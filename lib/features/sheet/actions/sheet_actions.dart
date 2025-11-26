@@ -20,7 +20,6 @@ void showSheetMenu({
   required BuildContext context,
   required WidgetRef ref,
   required bool isEditing,
-  bool hasCoverImage = false,
   required String sheetId,
 }) {
   final menuItems = [
@@ -32,18 +31,6 @@ void showSheetMenu({
       onTapChooseTheme: () => SheetActions.chooseTheme(context, ref, sheetId),
       subtitle: L10n.of(context).chooseTheme,
     ),
-    if (hasCoverImage) ...[
-      ZoeCommonMenuItems.updateCoverImage(
-        onTapUpdateCoverImage: () =>
-            SheetActions.addOrUpdateCoverImage(context, ref, sheetId),
-        subtitle: L10n.of(context).updateCoverImage,
-      ),
-    ] else
-      ZoeCommonMenuItems.addCoverImage(
-        onTapAddCoverImage: () =>
-            SheetActions.addOrUpdateCoverImage(context, ref, sheetId),
-        subtitle: L10n.of(context).addCoverImage,
-      ),
     ZoeCommonMenuItems.copy(
       onTapCopy: () => SheetActions.copySheet(context, ref, sheetId),
       subtitle: L10n.of(context).copySheetContent,
@@ -80,6 +67,7 @@ class SheetActions {
     BuildContext context,
     WidgetRef ref,
     String sheetId,
+    bool hasCoverImage,
   ) async {
     final l10n = L10n.of(context);
     XFile? selectedImage;
@@ -89,8 +77,9 @@ class SheetActions {
       subtitle: l10n.chooseAMediaFile,
       onTapCamera: (image) => selectedImage = image,
       onTapGallery: (images) => selectedImage = images.first,
-      onTapRemoveImage: () =>
-          SheetActions.removeCoverImage(context, ref, sheetId),
+      onTapRemoveImage: hasCoverImage
+          ? () => SheetActions.removeCoverImage(context, ref, sheetId)
+          : null,
     );
     if (selectedImage != null && context.mounted) {
       ref

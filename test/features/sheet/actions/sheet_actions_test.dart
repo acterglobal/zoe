@@ -221,8 +221,13 @@ void main() {
         await tester.pumpActionsWidget(
           container: container,
           buttonText: buttonText,
-          onPressed: (context, ref) =>
-              SheetActions.addOrUpdateCoverImage(context, ref, testSheet.id),
+
+          onPressed: (context, ref) => SheetActions.addOrUpdateCoverImage(
+            context,
+            ref,
+            testSheet.id,
+            true,
+          ),
         );
 
         // Tap the button to trigger add cover image action
@@ -237,8 +242,12 @@ void main() {
         await tester.pumpActionsWidget(
           container: container,
           buttonText: buttonText,
-          onPressed: (context, ref) =>
-              SheetActions.addOrUpdateCoverImage(context, ref, testSheet.id),
+          onPressed: (context, ref) => SheetActions.addOrUpdateCoverImage(
+            context,
+            ref,
+            testSheet.id,
+            true,
+          ),
         );
 
         // Tap the button to trigger add cover image action
@@ -256,8 +265,12 @@ void main() {
         await tester.pumpActionsWidget(
           container: container,
           buttonText: buttonText,
-          onPressed: (context, ref) =>
-              SheetActions.addOrUpdateCoverImage(context, ref, testSheet.id),
+          onPressed: (context, ref) => SheetActions.addOrUpdateCoverImage(
+            context,
+            ref,
+            testSheet.id,
+            true,
+          ),
         );
 
         // Tap the button to trigger update cover image action
@@ -276,8 +289,12 @@ void main() {
         await tester.pumpActionsWidget(
           container: container,
           buttonText: buttonText,
-          onPressed: (context, ref) =>
-              SheetActions.addOrUpdateCoverImage(context, ref, customSheetId),
+          onPressed: (context, ref) => SheetActions.addOrUpdateCoverImage(
+            context,
+            ref,
+            customSheetId,
+            true,
+          ),
         );
 
         // Tap the button to trigger add cover image action
@@ -438,58 +455,6 @@ void main() {
         expect(find.text(l10n.deleteThisSheet), findsOneWidget);
       });
 
-      testWidgets('shows add cover image option when no cover image exists', (
-        tester,
-      ) async {
-        await tester.pumpActionsWidget(
-          container: container,
-          buttonText: buttonText,
-          onPressed: (context, ref) => showSheetMenu(
-            context: context,
-            ref: ref,
-            isEditing: false,
-            hasCoverImage: false,
-            sheetId: testSheet.id,
-          ),
-        );
-
-        // Tap the button to trigger menu action
-        await tester.tap(find.text(buttonText));
-        await tester.pumpAndSettle();
-
-        // Verify add cover image option is shown
-        final l10n = getL10n(tester);
-        expect(find.text(l10n.addCoverImage), findsAtLeastNWidgets(1));
-        expect(find.text(l10n.updateCoverImage), findsNothing);
-        expect(find.text(l10n.removeImage), findsNothing);
-      });
-
-      testWidgets(
-        'shows update and remove cover image options when cover image exists',
-        (tester) async {
-          await tester.pumpActionsWidget(
-            container: container,
-            buttonText: buttonText,
-            onPressed: (context, ref) => showSheetMenu(
-              context: context,
-              ref: ref,
-              isEditing: false,
-              hasCoverImage: true,
-              sheetId: testSheet.id,
-            ),
-          );
-
-          // Tap the button to trigger menu action
-          await tester.tap(find.text(buttonText));
-          await tester.pumpAndSettle();
-
-          // Verify update and remove cover image options are shown
-          final l10n = getL10n(tester);
-          expect(find.text(l10n.updateCoverImage), findsAtLeastNWidgets(1));
-          expect(find.text(l10n.addCoverImage), findsNothing);
-        },
-      );
-
       testWidgets('cover image menu items work correctly', (tester) async {
         await tester.pumpActionsWidget(
           container: container,
@@ -498,7 +463,6 @@ void main() {
             context: context,
             ref: ref,
             isEditing: false,
-            hasCoverImage: true,
             sheetId: testSheet.id,
           ),
         );
@@ -510,7 +474,6 @@ void main() {
         // Verify all expected menu items are present
         final l10n = getL10n(tester);
         expect(find.text(l10n.connectWithWhatsAppGroup), findsOneWidget);
-        expect(find.text(l10n.updateCoverImage), findsAtLeastNWidgets(1));
         expect(find.text(l10n.copySheetContent), findsOneWidget);
         expect(find.text(l10n.shareThisSheet), findsOneWidget);
         expect(find.text(l10n.editThisSheet), findsOneWidget);
@@ -527,7 +490,6 @@ void main() {
             context: context,
             ref: ref,
             isEditing: true,
-            hasCoverImage: true,
             sheetId: testSheet.id,
           ),
         );
@@ -539,7 +501,6 @@ void main() {
         // Verify menu items when editing with cover image
         final l10n = getL10n(tester);
         expect(find.text(l10n.connectWithWhatsAppGroup), findsOneWidget);
-        expect(find.text(l10n.updateCoverImage), findsAtLeastNWidgets(1));
         expect(find.text(l10n.copySheetContent), findsOneWidget);
         expect(find.text(l10n.shareThisSheet), findsOneWidget);
         expect(

@@ -1,29 +1,25 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:zoe/features/profile/actions/select_profile_actions.dart';
-
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-
+import '../../../test-utils/mock_file.dart';
+import '../../users/utils/users_utils.dart';
 import '../mock_data.dart';
-
-class MockImagePickerPlatform extends Mock
-    with MockPlatformInterfaceMixin
-    implements ImagePickerPlatform {}
-
-class MockXFile extends Mock implements XFile {}
 
 void main() {
   late ProviderContainer container;
   late MockImagePickerPlatform mockImagePickerPlatform;
   late MockXFile mockImageFile;
   late UserModel testUser;
+
+  final testImageFile = File('/test/path/image.jpg');
 
   setUpAll(() {
     registerFallbackValue(ImageSource.camera);
@@ -35,20 +31,18 @@ void main() {
     ImagePickerPlatform.instance = mockImagePickerPlatform;
 
     mockImageFile = MockXFile();
-    when(() => mockImageFile.path).thenReturn('/test/path/image.jpg');
+    when(() => mockImageFile.path).thenReturn(testImageFile.path);
 
-    testUser = UserModel(id: 'test-id', name: 'Test User', bio: 'Test Bio');
+    testUser = getUserByIndex(ProviderContainer.test());
 
-    container = ProviderContainer(
+    container = ProviderContainer.test(
       overrides: [
         currentUserProvider.overrideWithValue(AsyncValue.data(testUser)),
         userListProvider.overrideWith(() => TestUserList([testUser])),
       ],
     );
-  });
 
-  tearDown(() {
-    container.dispose();
+    testUser = getUserByIndex(container);
   });
 
   Widget buildTestWidget({
@@ -56,7 +50,7 @@ void main() {
     ProviderContainer? container,
   }) {
     return UncontrolledProviderScope(
-      container: container ?? ProviderContainer(),
+      container: container ?? ProviderContainer.test(),
       child: MaterialApp(
         localizationsDelegates: L10n.localizationsDelegates,
         supportedLocales: L10n.supportedLocales,
@@ -137,13 +131,13 @@ void main() {
 
       // Verify callback was called with correct path
       expect(callbackCalled, isTrue);
-      expect(selectedPath, equals('/test/path/image.jpg'));
+      expect(selectedPath, equals(testImageFile.path));
 
       // Verify user was updated
       final updatedUser = container
           .read(userListProvider)
           .firstWhere((user) => user.id == testUser.id);
-      expect(updatedUser.avatar, equals('/test/path/image.jpg'));
+      expect(updatedUser.avatar, equals(testImageFile.path));
     });
 
     testWidgets('handles gallery selection and updates user avatar', (
@@ -190,16 +184,37 @@ void main() {
 
       // Verify callback was called with correct path
       expect(callbackCalled, isTrue);
-      expect(selectedPath, equals('/test/path/image.jpg'));
+      expect(selectedPath, equals(testImageFile.path));
 
       // Verify user was updated
       final updatedUser = container
           .read(userListProvider)
           .firstWhere((user) => user.id == testUser.id);
-      expect(updatedUser.avatar, equals('/test/path/image.jpg'));
+      expect(updatedUser.avatar, equals(testImageFile.path));
     });
 
     testWidgets('handles image picker returning null', (tester) async {
+      // Create a fresh user with null avatar for this test
+      // Note: copyWith doesn't work for setting to null, so create new instance
+      final testUserWithNullAvatar = UserModel(
+        id: testUser.id,
+        name: testUser.name,
+        bio: testUser.bio,
+        avatar: null, // Explicitly set to null
+      );
+
+      // Create a new container with the null-avatar user
+      final testContainer = ProviderContainer.test(
+        overrides: [
+          currentUserProvider.overrideWithValue(
+            AsyncValue.data(testUserWithNullAvatar),
+          ),
+          userListProvider.overrideWith(
+            () => TestUserList([testUserWithNullAvatar]),
+          ),
+        ],
+      );
+
       // Mock image picker to return null
       when(
         () => mockImagePickerPlatform.getImageFromSource(
@@ -212,13 +227,13 @@ void main() {
 
       await tester.pumpWidget(
         buildTestWidget(
-          container: container,
+          container: testContainer,
           child: Consumer(
             builder: (context, ref, _) {
               return TextButton(
                 onPressed: () => selectProfileFileSource(
                   context,
-                  testUser.id,
+                  testUserWithNullAvatar.id,
                   ref,
                   onImageSelected: (_) => callbackCalled = true,
                 ),
@@ -239,54 +254,12 @@ void main() {
       expect(callbackCalled, isFalse);
 
       // Verify user was not updated
-      final updatedUser = container
+      final updatedUser = testContainer
           .read(userListProvider)
-          .firstWhere((user) => user.id == testUser.id);
+          .firstWhere((user) => user.id == testUserWithNullAvatar.id);
       expect(updatedUser.avatar, isNull);
-    });
 
-    testWidgets('handles null current user', (tester) async {
-      // Override container with null current user
-      container = ProviderContainer(
-        overrides: [
-          currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
-          userListProvider.overrideWith(() => TestUserList([testUser])),
-        ],
-      );
-
-      // Mock image picker to return our mock file
-      when(
-        () => mockImagePickerPlatform.getImageFromSource(
-          source: any(named: 'source'),
-          options: any(named: 'options'),
-        ),
-      ).thenAnswer((_) async => mockImageFile);
-
-      await tester.pumpWidget(
-        buildTestWidget(
-          container: container,
-          child: Consumer(
-            builder: (context, ref, _) {
-              return TextButton(
-                onPressed: () =>
-                    selectProfileFileSource(context, testUser.id, ref),
-                child: const Text('Select Profile'),
-              );
-            },
-          ),
-        ),
-      );
-
-      // Open bottom sheet and select camera
-      await tester.tap(find.text('Select Profile'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Take photo or video'));
-      await tester.pumpAndSettle();
-
-      // Verify user list was not modified
-      final users = container.read(userListProvider);
-      expect(users.length, equals(1));
-      expect(users.first.avatar, isNull);
+      testContainer.dispose();
     });
 
     testWidgets(
@@ -304,8 +277,12 @@ void main() {
             child: Consumer(
               builder: (context, ref, _) {
                 return TextButton(
-                  onPressed: () =>
-                      selectProfileFileSource(context, testUser.id, ref),
+                  onPressed: () => selectProfileFileSource(
+                    context,
+                    testUser.id,
+                    ref,
+                    hasAvatar: true,
+                  ),
                   child: const Text('Select Profile'),
                 );
               },

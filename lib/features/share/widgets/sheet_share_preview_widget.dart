@@ -37,6 +37,12 @@ class _SheetSharePreviewWidgetState
   void initState() {
     super.initState();
     _messageController = TextEditingController();
+    _messageController.addListener(() {
+      final callback = widget.onMessageChanged;
+      if (callback != null) {
+        callback(_messageController.text);
+      }
+    });
   }
 
   @override
@@ -89,12 +95,7 @@ class _SheetSharePreviewWidgetState
               controller: _messageController,
               hintText: l10n.addAMessage,
               onErrorChanged: (error) {},
-              onSubmitted: () {
-                final callback = widget.onMessageChanged;
-                if (callback != null) {
-                  callback(_messageController.text);
-                }
-              },
+              onSubmitted: () {},
               maxLines: 3,
               keyboardType: TextInputType.multiline,
               autofocus: false,
