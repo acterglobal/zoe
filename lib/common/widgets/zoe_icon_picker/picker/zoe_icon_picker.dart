@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/keyboard_visibility_provider.dart';
-import 'package:zoe/common/providers/selected_color_provider.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
+import 'package:zoe/common/widgets/zoe_icon_picker/models/color_data.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
+import 'package:zoe/common/widgets/zoe_icon_picker/widgets/color_selector_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-
-import '../widgets/color_selector_widget.dart';
 
 class ZoeIconPicker extends ConsumerStatefulWidget {
   final Color? selectedColor;
@@ -41,6 +40,7 @@ class ZoeIconPicker extends ConsumerStatefulWidget {
 
   // Keys
   static const iconPreviewKey = 'icon-preview';
+  static const colorPickerKey = 'color-picker';
   static const iconPickerKey = 'icon-picker';
 
   @override
@@ -49,6 +49,9 @@ class ZoeIconPicker extends ConsumerStatefulWidget {
 
 class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
   final searchController = TextEditingController();
+  final ValueNotifier<Color> selectedColor = ValueNotifier(
+    iconPickerColors.first,
+  );
   final ValueNotifier<ZoeIcon> selectedIcon = ValueNotifier(ZoeIcon.file);
   final ValueNotifier<List<ZoeIcon>> zoeIconList = ValueNotifier(
     ZoeIcon.values,
@@ -56,12 +59,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
 
   void _setWidgetValues() {
     if (widget.selectedColor != null) {
-      // Update provider with the passed color
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref
-            .read(selectedColorProvider.notifier)
-            .setColor(widget.selectedColor!);
-      });
+      selectedColor.value = widget.selectedColor!;
     }
     if (widget.selectedIcon != null) {
       selectedIcon.value = widget.selectedIcon!;
@@ -77,6 +75,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
   @override
   void dispose() {
     searchController.dispose();
+    selectedColor.dispose();
     selectedIcon.dispose();
     zoeIconList.dispose();
     super.dispose();
@@ -87,7 +86,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
     super.didUpdateWidget(oldWidget);
     if (widget.selectedColor != null &&
         widget.selectedColor != oldWidget.selectedColor) {
-      ref.read(selectedColorProvider.notifier).setColor(widget.selectedColor!);
+      selectedColor.value = widget.selectedColor!;
     }
     if (widget.selectedIcon != null &&
         widget.selectedIcon != oldWidget.selectedIcon) {
@@ -106,8 +105,10 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
           Expanded(child: _buildIconSelector()),
           ZoePrimaryButton(
             onPressed: () {
-              final currentColor = ref.read(selectedColorProvider);
-              widget.onIconSelection?.call(currentColor, selectedIcon.value);
+              widget.onIconSelection?.call(
+                selectedColor.value,
+                selectedIcon.value,
+              );
               Navigator.pop(context);
             },
             text: L10n.of(context).select,
@@ -131,9 +132,9 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
                 const SizedBox(height: 24),
                 ColorSelectorWidget(
                   onColorChanged: (newColor) {
-                    ref.read(selectedColorProvider.notifier).setColor(newColor);
+                    selectedColor.value = newColor;
                   },
-                  selectedColor: ref.watch(selectedColorProvider),
+                  selectedColor: selectedColor.value,
                 ),
                 const SizedBox(height: 24),
               ],
@@ -142,20 +143,24 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
   }
 
   Widget _buildIconPreviewUI() {
-    final color = ref.watch(selectedColorProvider);
-    return ValueListenableBuilder<ZoeIcon>(
-      valueListenable: selectedIcon,
-      builder: (context, zoeIcon, child) {
-        return Center(
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            child: Icon(
-              key: Key(ZoeIconPicker.iconPreviewKey),
-              zoeIcon.data,
-              size: 100,
-              color: color,
-            ),
-          ),
+    return ValueListenableBuilder<Color>(
+      valueListenable: selectedColor,
+      builder: (context, color, child) {
+        return ValueListenableBuilder<ZoeIcon>(
+          valueListenable: selectedIcon,
+          builder: (context, zoeIcon, child) {
+            return Center(
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                child: Icon(
+                  key: Key(ZoeIconPicker.iconPreviewKey),
+                  zoeIcon.data,
+                  size: 100,
+                  color: color,
+                ),
+              ),
+            );
+          },
         );
       },
     );
@@ -177,11 +182,8 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          L10n.of(context).selectIcon,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-        const SizedBox(height: 10),
+        Text(L10n.of(context).selectIcon),
+        const SizedBox(height: 5),
         _buildSearchWidget(),
         const SizedBox(height: 5),
         Expanded(
@@ -223,7 +225,7 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
             height: 45,
             width: 45,
             alignment: Alignment.center,
-            margin: const EdgeInsets.all(5),
+            margin: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Colors.white24,
               border: zoeIconItem == zoeIcon

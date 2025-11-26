@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zoe/core/preference_service/preference_constants.dart';
 import 'package:zoe/features/settings/models/theme.dart';
@@ -57,52 +56,6 @@ class PreferencesService {
   Future<bool> clearLoginUserId() async {
     await init();
     return await _prefs?.remove(PreferenceConstants.keyLoginUserId) ?? false;
-  }
-
-  // Theme Colors
-  Future<Color?> getPrimaryColor() async {
-    await init();
-    final colorValue = _prefs?.getInt(PreferenceConstants.keyPrimaryColor);
-    if (colorValue != null) {
-      return Color(colorValue);
-    }
-    return null;
-  }
-
-  Future<bool> setPrimaryColor(Color color) async {
-    await init();
-    return await _prefs?.setInt(
-          PreferenceConstants.keyPrimaryColor,
-          color.value,
-        ) ??
-        false;
-  }
-
-  Future<Color?> getSecondaryColor() async {
-    await init();
-    final colorValue = _prefs?.getInt(PreferenceConstants.keySecondaryColor);
-    if (colorValue != null) {
-      return Color(colorValue);
-    }
-    return null;
-  }
-
-  Future<bool> setSecondaryColor(Color color) async {
-    await init();
-    return await _prefs?.setInt(
-          PreferenceConstants.keySecondaryColor,
-          color.value,
-        ) ??
-        false;
-  }
-
-  Future<bool> clearThemeColors() async {
-    await init();
-    final primaryRemoved =
-        await _prefs?.remove(PreferenceConstants.keyPrimaryColor) ?? false;
-    final secondaryRemoved =
-        await _prefs?.remove(PreferenceConstants.keySecondaryColor) ?? false;
-    return primaryRemoved && secondaryRemoved;
   }
 }
 

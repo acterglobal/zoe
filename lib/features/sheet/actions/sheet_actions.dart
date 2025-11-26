@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/common/providers/selected_color_provider.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/choose_color_bottom_sheet.dart';
 import 'package:zoe/common/widgets/media_selection_bottom_sheet.dart';
@@ -50,14 +49,14 @@ void showSheetMenu({
       subtitle: L10n.of(context).deleteThisSheet,
     ),
   ];
-
-  // Get selected color from provider
-  final selectedColor = ref.read(selectedColorProvider);
+  final sheet = ref.read(sheetProvider(sheetId));
+  final userSelectedThemeColor =
+      sheet?.theme?.primary ?? Theme.of(context).colorScheme.primary;
 
   ZoePopupMenuWidget.show(
     context: context,
     items: menuItems,
-    menuIconColor: selectedColor,
+    menuIconColor: userSelectedThemeColor,
   );
 }
 

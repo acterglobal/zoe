@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/providers/selected_color_provider.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
-import 'package:zoe/common/widgets/zoe_icon_picker/models/color_data.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/widgets/color_selector_widget.dart';
-import 'package:zoe/core/theme/colors/app_colors.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -36,12 +33,18 @@ class _ChooseColorBottomSheetState
     extends ConsumerState<ChooseColorBottomSheet> {
   late Color selectedColor;
 
+  bool _isInitialized = false;
+
   @override
-  void initState() {
-    super.initState();
-    // Initialize with current sheet theme colors or defaults
-    final sheet = ref.read(sheetProvider(widget.sheetId));
-    selectedColor = sheet?.theme?.primary ?? iconPickerColors.first;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      // Initialize with current sheet theme colors or defaults
+      final sheet = ref.read(sheetProvider(widget.sheetId));
+      selectedColor =
+          sheet?.theme?.primary ?? Theme.of(context).colorScheme.primary;
+      _isInitialized = true;
+    }
   }
 
   @override
@@ -81,11 +84,10 @@ class _ChooseColorBottomSheetState
         .updateSheetTheme(
           sheetId: widget.sheetId,
           primary: selectedColor,
-          secondary: AppColors.primaryColor.withValues(alpha: 0.3),
+          secondary: Theme.of(
+            context,
+          ).colorScheme.primary.withValues(alpha: 0.3),
         );
-
-    // Also update the global selected color provider
-    ref.read(selectedColorProvider.notifier).setColor(selectedColor);
 
     if (mounted) {
       Navigator.pop(context);

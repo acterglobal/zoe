@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/common/providers/selected_color_provider.dart';
 import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
 import 'package:zoe/common/widgets/paper_sheet_background_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
@@ -24,6 +23,9 @@ class SheetDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(editContentIdProvider) == sheetId;
+    final sheet = ref.watch(sheetProvider(sheetId));
+    final userSelectedThemeColor =
+        sheet?.theme?.primary ?? Theme.of(context).colorScheme.primary;
 
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
@@ -41,6 +43,7 @@ class SheetDetailScreen extends ConsumerWidget {
         floatingActionButton: FloatingActionButtonWrapper(
           parentId: sheetId,
           sheetId: sheetId,
+          primaryColor: userSelectedThemeColor,
         ),
       ),
     );
@@ -148,8 +151,9 @@ class SheetDetailScreen extends ConsumerWidget {
     final userCount = usersInSheet.length;
 
     // Use selected color from provider, fallback to theme primary color
-    final selectedColor = ref.watch(selectedColorProvider);
-    final displayColor = selectedColor;
+    final sheet = ref.read(sheetProvider(sheetId));
+    final userSelectedThemeColor =
+        sheet?.theme?.primary ?? Theme.of(context).colorScheme.primary;
 
     return GestureDetector(
       onTap: () {
@@ -167,21 +171,21 @@ class SheetDetailScreen extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: displayColor.withValues(alpha: 0.1),
+          color: userSelectedThemeColor.withValues(alpha: 0.1),
           border: Border.all(
-            color: displayColor.withValues(alpha: 0.2),
+            color: userSelectedThemeColor.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.people_rounded, size: 16, color: displayColor),
+            Icon(Icons.people_rounded, size: 16, color: userSelectedThemeColor),
             const SizedBox(width: 6),
             Text(
               '$userCount ${userCount == 1 ? l10n.user : l10n.users}',
               style: theme.textTheme.bodySmall?.copyWith(
-                color: displayColor,
+                color: userSelectedThemeColor,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -189,7 +193,7 @@ class SheetDetailScreen extends ConsumerWidget {
             Icon(
               Icons.arrow_forward_ios_rounded,
               size: 12,
-              color: displayColor,
+              color: userSelectedThemeColor,
             ),
           ],
         ),
