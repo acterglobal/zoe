@@ -47,6 +47,7 @@ class _ChooseColorBottomSheetState
   @override
   Widget build(BuildContext context) {
     final l10n = L10n.of(context);
+    final primaryColor = Theme.of(context).colorScheme.primary;
 
     return MaxWidthWidget(
       padding: EdgeInsets.only(
@@ -73,8 +74,10 @@ class _ChooseColorBottomSheetState
           ZoePrimaryButton(
             onPressed: _saveSelectedColor,
             text: l10n.save,
-            primaryColor: selectedColor,
-            secondaryColor: selectedColor?.withValues(alpha: 0.2),
+            primaryColor: selectedColor == primaryColor ? null : selectedColor,
+            secondaryColor: selectedColor == primaryColor
+                ? null
+                : selectedColor?.withValues(alpha: 0.2),
           ),
           const SizedBox(height: 16),
         ],

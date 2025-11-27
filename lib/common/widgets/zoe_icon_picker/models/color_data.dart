@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoe/core/theme/colors/app_colors.dart';
 
 List<Color> iconPickerColors = [
   Colors.grey,
@@ -16,6 +17,7 @@ List<Color> iconPickerColors = [
 ];
 
 List<Color> sheetThemeColors = [
+  AppColors.primaryColor,
   Colors.green,
   Colors.red,
   Colors.lightBlue,
@@ -29,5 +31,4 @@ List<Color> sheetThemeColors = [
   Colors.brown,
   Colors.blue,
   Colors.blueGrey,
-  Colors.deepPurpleAccent,
 ];
