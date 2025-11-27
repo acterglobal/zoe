@@ -203,7 +203,6 @@ void main() {
         await tester.pump();
 
         final newColor = Colors.blue;
-        final theme = getTheme(tester);
 
         // Get the ColorSelectorWidget and change color
         final colorSelector = tester.widget<ColorSelectorWidget>(
@@ -219,9 +218,7 @@ void main() {
 
         // Verify secondary color was set with alpha
         final updatedSheet = container.read(sheetProvider(testSheet.id));
-        final expectedSecondary = theme.colorScheme.primary.withValues(
-          alpha: 0.3,
-        );
+        final expectedSecondary = newColor.withValues(alpha: 0.2);
         expect(updatedSheet?.theme?.secondary, equals(expectedSecondary));
       });
 

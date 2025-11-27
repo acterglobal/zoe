@@ -15,6 +15,7 @@ void main() {
       child: ColorSelectorWidget(
         selectedColor: selectedColor,
         onColorChanged: onColorChanged,
+        colors: iconPickerColors,
       ),
     );
   }
