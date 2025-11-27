@@ -49,9 +49,11 @@ void main() {
       // Verify button is rendered
       expect(find.byType(Container), findsWidgets);
       expect(find.text('Test Button'), findsOneWidget);
-      
+
       // Verify default dimensions through the widget
-      final button = tester.widget<ZoePrimaryButton>(find.byType(ZoePrimaryButton));
+      final button = tester.widget<ZoePrimaryButton>(
+        find.byType(ZoePrimaryButton),
+      );
       expect(button.height, 56);
       expect(button.width, isNull);
     });
@@ -59,9 +61,7 @@ void main() {
     testWidgets('applies custom text correctly', (tester) async {
       const customText = 'Custom Button';
       await tester.pumpMaterialWidget(
-        child: ZoePrimaryButtonTestUtils.createTestWidget(
-          text: customText,
-        ),
+        child: ZoePrimaryButtonTestUtils.createTestWidget(text: customText),
       );
 
       expect(find.text(customText), findsOneWidget);
@@ -81,9 +81,7 @@ void main() {
 
     testWidgets('renders icon when provided', (tester) async {
       await tester.pumpMaterialWidget(
-        child: ZoePrimaryButtonTestUtils.createTestWidget(
-          icon: Icons.add,
-        ),
+        child: ZoePrimaryButtonTestUtils.createTestWidget(icon: Icons.add),
       );
 
       final icon = tester.widget<Icon>(find.byType(Icon));
@@ -94,7 +92,7 @@ void main() {
 
     testWidgets('applies custom padding correctly', (tester) async {
       const customPadding = EdgeInsets.all(20);
-      
+
       await tester.pumpMaterialWidget(
         child: ZoePrimaryButtonTestUtils.createTestWidget(
           contentPadding: customPadding,
@@ -102,26 +100,26 @@ void main() {
       );
 
       final container = tester.widget<Container>(
-        find.descendant(
-          of: find.byType(InkWell),
-          matching: find.byType(Container),
-        ).first,
+        find
+            .descendant(
+              of: find.byType(InkWell),
+              matching: find.byType(Container),
+            )
+            .first,
       );
       expect(container.padding, customPadding);
     });
 
     testWidgets('applies custom border radius correctly', (tester) async {
       final customRadius = BorderRadius.circular(24);
-      
+
       await tester.pumpMaterialWidget(
         child: ZoePrimaryButtonTestUtils.createTestWidget(
           borderRadius: customRadius,
         ),
       );
 
-      final container = tester.widget<Container>(
-        find.byType(Container).first,
-      );
+      final container = tester.widget<Container>(find.byType(Container).first);
       final decoration = container.decoration as BoxDecoration;
       expect(decoration.borderRadius, customRadius);
     });
@@ -129,7 +127,7 @@ void main() {
     testWidgets('applies custom colors correctly', (tester) async {
       final customPrimaryColor = Colors.red;
       final customSecondaryColor = Colors.blue;
-      
+
       await tester.pumpMaterialWidget(
         child: ZoePrimaryButtonTestUtils.createTestWidget(
           primaryColor: customPrimaryColor,
@@ -137,21 +135,45 @@ void main() {
         ),
       );
 
-      final container = tester.widget<Container>(
-        find.byType(Container).first,
-      );
+      final container = tester.widget<Container>(find.byType(Container).first);
       final decoration = container.decoration as BoxDecoration;
       final gradient = decoration.gradient as LinearGradient;
-      
+
       expect(gradient.colors[0], customPrimaryColor);
-      expect(gradient.colors[2], customSecondaryColor.withValues(alpha: 0.9));
+      expect(gradient.colors[2], customSecondaryColor.withValues(alpha: 0.2));
     });
+
+    testWidgets(
+      'applies gradient when primaryColor and secondaryColor is not passed',
+      (tester) async {
+        await tester.pumpMaterialWidget(
+          child: ZoePrimaryButtonTestUtils.createTestWidget(),
+        );
+
+        final container = tester.widget<Container>(
+          find.byType(Container).first,
+        );
+        final decoration = container.decoration as BoxDecoration;
+        final gradient = decoration.gradient as LinearGradient;
+
+        expect(
+          gradient.colors[0],
+          Theme.of(
+            tester.element(find.byType(ZoePrimaryButton)),
+          ).colorScheme.primary,
+        );
+        expect(
+          gradient.colors[2],
+          Theme.of(
+            tester.element(find.byType(ZoePrimaryButton)),
+          ).colorScheme.secondary.withValues(alpha: 0.9),
+        );
+      },
+    );
 
     testWidgets('shows shimmer overlay when enabled', (tester) async {
       await tester.pumpMaterialWidget(
-        child: ZoePrimaryButtonTestUtils.createTestWidget(
-          showShimmer: true,
-        ),
+        child: ZoePrimaryButtonTestUtils.createTestWidget(showShimmer: true),
       );
 
       expect(find.byType(ShimmerOverlay), findsOneWidget);
@@ -159,9 +181,7 @@ void main() {
 
     testWidgets('hides shimmer overlay when disabled', (tester) async {
       await tester.pumpMaterialWidget(
-        child: ZoePrimaryButtonTestUtils.createTestWidget(
-          showShimmer: false,
-        ),
+        child: ZoePrimaryButtonTestUtils.createTestWidget(showShimmer: false),
       );
 
       expect(find.byType(ShimmerOverlay), findsNothing);

@@ -454,5 +454,201 @@ void main() {
         expect(find.byType(SizedBox), findsAtLeastNWidgets(1));
       });
     });
+
+    group('User Selected Theme Color', () {
+      testWidgets('uses sheet theme primary color when available', (
+        tester,
+      ) async {
+        final customPrimaryColor = Colors.purple;
+        final customSecondaryColor = Colors.purple[100]!;
+
+        // Update sheet with custom theme
+        container
+            .read(sheetListProvider.notifier)
+            .updateSheetTheme(
+              sheetId: testSheetId,
+              primary: customPrimaryColor,
+              secondary: customSecondaryColor,
+            );
+
+        await pumpSheetDetailScreen(tester);
+
+        // Verify FloatingActionButtonWrapper receives the custom color
+        final fabWrapper = tester.widget<FloatingActionButtonWrapper>(
+          find.byType(FloatingActionButtonWrapper),
+        );
+        expect(fabWrapper.primaryColor, equals(customPrimaryColor));
+      });
+
+      testWidgets('falls back to context theme when sheet has no theme', (
+        tester,
+      ) async {
+        // Ensure sheet has no custom theme
+        final sheetWithoutTheme = testSheet.copyWith(theme: null);
+        container.read(sheetListProvider.notifier).addSheet(sheetWithoutTheme);
+
+        await pumpSheetDetailScreen(tester, sheetId: sheetWithoutTheme.id);
+
+        final theme = Theme.of(tester.element(find.byType(SheetDetailScreen)));
+
+        // Verify FloatingActionButtonWrapper uses context theme color
+        final fabWrapper = tester.widget<FloatingActionButtonWrapper>(
+          find.byType(FloatingActionButtonWrapper),
+        );
+        expect(fabWrapper.primaryColor, equals(theme.colorScheme.primary));
+        await tester.pump(const Duration(seconds: 1));
+      });
+
+      testWidgets('applies theme color to users count widget', (tester) async {
+        final customPrimaryColor = Colors.teal;
+        final customSecondaryColor = Colors.teal[100]!;
+
+        // Get actual user IDs from test data
+        final user1 = getUserByIndex(container).id;
+        final user2 = getUserByIndex(container, index: 1).id;
+
+        // Create sheet with users and custom theme
+        final sheetWithUsersAndTheme = testSheet.copyWith(
+          id: '${testSheet.id}-themed',
+          users: [user1, user2],
+        );
+        container
+            .read(sheetListProvider.notifier)
+            .addSheet(sheetWithUsersAndTheme);
+        container
+            .read(sheetListProvider.notifier)
+            .updateSheetTheme(
+              sheetId: sheetWithUsersAndTheme.id,
+              primary: customPrimaryColor,
+              secondary: customSecondaryColor,
+            );
+
+        await pumpSheetDetailScreen(tester, sheetId: sheetWithUsersAndTheme.id);
+
+        // Verify the screen renders without errors
+        expect(tester.takeException(), isNull);
+
+        // Verify users count is displayed
+        final l10n = getL10n(tester);
+        expect(find.textContaining('2'), findsAtLeastNWidgets(1));
+        expect(find.textContaining(l10n.users), findsAtLeastNWidgets(1));
+        await tester.pump(const Duration(seconds: 1));
+      });
+
+      testWidgets('applies theme color to users count icon and text', (
+        tester,
+      ) async {
+        final customPrimaryColor = Colors.orange;
+        final customSecondaryColor = Colors.orange[100]!;
+
+        // Get actual user IDs from test data
+        final user1 = getUserByIndex(container).id;
+
+        // Create sheet with user and custom theme
+        final sheetWithUserAndTheme = testSheet.copyWith(
+          id: '${testSheet.id}-orange-themed',
+          users: [user1],
+        );
+        container
+            .read(sheetListProvider.notifier)
+            .addSheet(sheetWithUserAndTheme);
+        container
+            .read(sheetListProvider.notifier)
+            .updateSheetTheme(
+              sheetId: sheetWithUserAndTheme.id,
+              primary: customPrimaryColor,
+              secondary: customSecondaryColor,
+            );
+
+        await pumpSheetDetailScreen(tester, sheetId: sheetWithUserAndTheme.id);
+
+        // Verify the screen renders without errors
+        expect(tester.takeException(), isNull);
+
+        // Verify user count is displayed
+        final l10n = getL10n(tester);
+        expect(find.textContaining('1'), findsAtLeastNWidgets(1));
+        expect(find.textContaining(l10n.user), findsAtLeastNWidgets(1));
+        await tester.pump(const Duration(seconds: 1));
+      });
+
+      testWidgets('theme color updates when sheet theme changes', (
+        tester,
+      ) async {
+        await pumpSheetDetailScreen(tester);
+
+        final theme = Theme.of(tester.element(find.byType(SheetDetailScreen)));
+
+        // Initially should use context theme
+        var fabWrapper = tester.widget<FloatingActionButtonWrapper>(
+          find.byType(FloatingActionButtonWrapper),
+        );
+        expect(fabWrapper.primaryColor, equals(theme.colorScheme.primary));
+
+        // Update sheet theme
+        final newPrimaryColor = Colors.pink;
+        final newSecondaryColor = Colors.pink[100]!;
+        container
+            .read(sheetListProvider.notifier)
+            .updateSheetTheme(
+              sheetId: testSheetId,
+              primary: newPrimaryColor,
+              secondary: newSecondaryColor,
+            );
+
+        await tester.pump();
+
+        // Should now use the new custom theme
+        fabWrapper = tester.widget<FloatingActionButtonWrapper>(
+          find.byType(FloatingActionButtonWrapper),
+        );
+        expect(fabWrapper.primaryColor, equals(newPrimaryColor));
+        await tester.pump(const Duration(seconds: 1));
+      });
+
+      testWidgets('different sheets can have different theme colors', (
+        tester,
+      ) async {
+        final sheet1Color = Colors.blue;
+        final sheet2Color = Colors.red;
+
+        // Create two sheets with different themes
+        final sheet1 = testSheet.copyWith(id: '${testSheet.id}-blue');
+        final sheet2 = testSheet.copyWith(id: '${testSheet.id}-red');
+
+        container.read(sheetListProvider.notifier).addSheet(sheet1);
+        container.read(sheetListProvider.notifier).addSheet(sheet2);
+
+        container
+            .read(sheetListProvider.notifier)
+            .updateSheetTheme(
+              sheetId: sheet1.id,
+              primary: sheet1Color,
+              secondary: sheet1Color.withValues(alpha: 0.3),
+            );
+        container
+            .read(sheetListProvider.notifier)
+            .updateSheetTheme(
+              sheetId: sheet2.id,
+              primary: sheet2Color,
+              secondary: sheet2Color.withValues(alpha: 0.3),
+            );
+
+        // Test sheet 1
+        await pumpSheetDetailScreen(tester, sheetId: sheet1.id);
+        var fabWrapper = tester.widget<FloatingActionButtonWrapper>(
+          find.byType(FloatingActionButtonWrapper),
+        );
+        expect(fabWrapper.primaryColor, equals(sheet1Color));
+
+        // Test sheet 2
+        await pumpSheetDetailScreen(tester, sheetId: sheet2.id);
+        fabWrapper = tester.widget<FloatingActionButtonWrapper>(
+          find.byType(FloatingActionButtonWrapper),
+        );
+        expect(fabWrapper.primaryColor, equals(sheet2Color));
+        await tester.pump(const Duration(seconds: 1));
+      });
+    });
   });
 }

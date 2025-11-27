@@ -23,13 +23,18 @@ class SheetDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditing = ref.watch(editContentIdProvider) == sheetId;
+    final sheet = ref.watch(sheetProvider(sheetId));
+    final userSelectedThemeColor =
+        sheet?.theme?.primary ?? Theme.of(context).colorScheme.primary;
+    final userSelectedSecondaryThemeColor =
+        sheet?.theme?.secondary ?? Theme.of(context).colorScheme.secondary;
 
     return NotebookPaperBackgroundWidget(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [
-            _buildSliverBody(context, ref, isEditing),
+            _buildSliverBody(context, ref, isEditing, userSelectedThemeColor),
             buildQuillEditorPositionedToolbar(
               context,
               ref,
@@ -40,13 +45,20 @@ class SheetDetailScreen extends ConsumerWidget {
         floatingActionButton: FloatingActionButtonWrapper(
           parentId: sheetId,
           sheetId: sheetId,
+          primaryColor: userSelectedThemeColor,
+          secondaryColor: userSelectedSecondaryThemeColor,
         ),
       ),
     );
   }
 
   /// Builds the sliver body
-  Widget _buildSliverBody(BuildContext context, WidgetRef ref, bool isEditing) {
+  Widget _buildSliverBody(
+    BuildContext context,
+    WidgetRef ref,
+    bool isEditing,
+    Color userSelectedThemeColor,
+  ) {
     return CustomScrollView(
       slivers: [
         SheetAppBar(sheetId: sheetId, isEditing: isEditing),
@@ -55,7 +67,12 @@ class SheetDetailScreen extends ConsumerWidget {
           sliver: SliverList(
             delegate: SliverChildListDelegate([
               const SizedBox(height: 10),
-              _buildSheetHeader(context, ref, isEditing),
+              _buildSheetHeader(
+                context,
+                ref,
+                isEditing,
+                userSelectedThemeColor,
+              ),
               const SizedBox(height: 16),
               ContentWidget(
                 parentId: sheetId,
@@ -74,6 +91,7 @@ class SheetDetailScreen extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     bool isEditing,
+    Color userSelectedThemeColor,
   ) {
     final sheet = ref.watch(sheetProvider(sheetId));
     if (sheet == null) return const SizedBox.shrink();
@@ -119,7 +137,12 @@ class SheetDetailScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         if (usersInSheet.isNotEmpty) ...[
-          _buildUsersCountWidget(context, usersInSheet, ref),
+          _buildUsersCountWidget(
+            context,
+            usersInSheet,
+            ref,
+            userSelectedThemeColor,
+          ),
           const SizedBox(height: 8),
         ],
         ZoeHtmlTextEditWidget(
@@ -141,6 +164,7 @@ class SheetDetailScreen extends ConsumerWidget {
     BuildContext context,
     List<String> usersInSheet,
     WidgetRef ref,
+    Color userSelectedThemeColor,
   ) {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
@@ -155,6 +179,7 @@ class SheetDetailScreen extends ConsumerWidget {
           builder: (context) => UserListWidget(
             userIdList: listOfUsersBySheetIdProvider(sheetId),
             title: l10n.usersInSheet,
+            iconColor: userSelectedThemeColor,
           ),
         );
       },
@@ -162,25 +187,21 @@ class SheetDetailScreen extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+          color: userSelectedThemeColor.withValues(alpha: 0.1),
           border: Border.all(
-            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+            color: userSelectedThemeColor.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.people_rounded,
-              size: 16,
-              color: theme.colorScheme.primary,
-            ),
+            Icon(Icons.people_rounded, size: 16, color: userSelectedThemeColor),
             const SizedBox(width: 6),
             Text(
               '$userCount ${userCount == 1 ? l10n.user : l10n.users}',
               style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.primary,
+                color: userSelectedThemeColor,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -188,7 +209,7 @@ class SheetDetailScreen extends ConsumerWidget {
             Icon(
               Icons.arrow_forward_ios_rounded,
               size: 12,
-              color: theme.colorScheme.primary,
+              color: userSelectedThemeColor,
             ),
           ],
         ),

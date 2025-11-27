@@ -5,6 +5,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/models/color_data.dart';
 import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
+import 'package:zoe/common/widgets/zoe_icon_picker/widgets/color_selector_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class ZoeIconPicker extends ConsumerStatefulWidget {
@@ -129,7 +130,13 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
               children: [
                 _buildIconPreviewUI(),
                 const SizedBox(height: 24),
-                _buildColorSelector(),
+                ColorSelectorWidget(
+                  onColorChanged: (newColor) {
+                    selectedColor.value = newColor;
+                  },
+                  selectedColor: selectedColor.value,
+                  colors: iconPickerColors,
+                ),
                 const SizedBox(height: 24),
               ],
             ),
@@ -155,50 +162,6 @@ class _ZoeIconPickerState extends ConsumerState<ZoeIconPicker> {
               ),
             );
           },
-        );
-      },
-    );
-  }
-
-  List<Widget> _buildColorBoxes() {
-    final iconColorWidgetsMap = iconPickerColors.asMap().map(
-      (index, color) => MapEntry(index, _buildColorBoxItem(color, index)),
-    );
-    return iconColorWidgetsMap.values.toList();
-  }
-
-  Widget _buildColorSelector() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(L10n.of(context).selectColor),
-        const SizedBox(height: 12),
-        Wrap(children: _buildColorBoxes()),
-      ],
-    );
-  }
-
-  Widget _buildColorBoxItem(Color colorItem, int index) {
-    return ValueListenableBuilder<Color>(
-      valueListenable: selectedColor,
-      builder: (context, color, child) {
-        return InkWell(
-          key: Key('${ZoeIconPicker.colorPickerKey}-$index'),
-          borderRadius: BorderRadius.circular(100),
-          onTap: () => selectedColor.value = colorItem,
-          child: Container(
-            height: 40,
-            width: 40,
-            padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: colorItem,
-              border: colorItem == color
-                  ? Border.all(color: Colors.white, width: 1)
-                  : null,
-              borderRadius: const BorderRadius.all(Radius.circular(100)),
-            ),
-          ),
         );
       },
     );

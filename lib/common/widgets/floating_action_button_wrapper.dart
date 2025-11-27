@@ -8,11 +8,15 @@ import 'package:zoe/features/content/widgets/add_content_bottom_sheet.dart';
 class FloatingActionButtonWrapper extends ConsumerWidget {
   final String parentId;
   final String sheetId;
+  final Color? primaryColor;
+  final Color? secondaryColor;
 
   const FloatingActionButtonWrapper({
     super.key,
     required this.parentId,
     required this.sheetId,
+    this.primaryColor,
+    this.secondaryColor,
   });
 
   @override
@@ -35,6 +39,8 @@ class FloatingActionButtonWrapper extends ConsumerWidget {
 
     return ZoeFloatingActionButton(
       icon: isEditing ? Icons.save_rounded : Icons.add_rounded,
+      primaryColor: primaryColor,
+      secondaryColor: secondaryColor,
       onPressed: () => isEditing
           ? ref.read(editContentIdProvider.notifier).state = null
           : showAddContentBottomSheet(
