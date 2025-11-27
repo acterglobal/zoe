@@ -39,12 +39,9 @@ class _ChooseColorBottomSheetState
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (selectedColor == null) {
-      // Initialize with current sheet theme colors or defaults
-      final sheet = ref.read(sheetProvider(widget.sheetId));
-      selectedColor =
-          sheet?.theme?.primary ?? Theme.of(context).colorScheme.primary;
-    }
+    final sheet = ref.read(sheetProvider(widget.sheetId));
+    selectedColor =
+        sheet?.theme?.primary ?? Theme.of(context).colorScheme.primary;
   }
 
   @override
@@ -57,7 +54,6 @@ class _ChooseColorBottomSheetState
         left: 16,
         right: 16,
       ),
-      isScrollable: true,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -87,7 +83,6 @@ class _ChooseColorBottomSheetState
   }
 
   void _saveSelectedColor() {
-    // Update the sheet's theme
     ref
         .read(sheetListProvider.notifier)
         .updateSheetTheme(

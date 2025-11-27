@@ -86,9 +86,6 @@ void main() {
           find.byType(MaxWidthWidget),
         );
 
-        // Verify isScrollable is true
-        expect(maxWidthWidget.isScrollable, isTrue);
-
         // Verify padding includes bottom insets
         expect(maxWidthWidget.padding?.left, equals(16));
         expect(maxWidthWidget.padding?.right, equals(16));
