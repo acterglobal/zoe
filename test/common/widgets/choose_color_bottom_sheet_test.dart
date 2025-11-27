@@ -265,5 +265,130 @@ void main() {
         expect(colorSelector.selectedColor, equals(theme.colorScheme.primary));
       });
     });
+
+    group('Button Color Changes', () {
+      testWidgets(
+        'button uses default colors when selected color matches theme primary',
+        (tester) async {
+          final testSheet = getSheetByIndex(container);
+          await pumpChooseColorBottomSheet(tester, sheetId: testSheet.id);
+          await tester.pump();
+
+          final theme = getTheme(tester);
+          final primaryColor = theme.colorScheme.primary;
+
+          // Get the ColorSelectorWidget and select the theme primary color
+          final colorSelector = tester.widget<ColorSelectorWidget>(
+            find.byType(ColorSelectorWidget),
+          );
+          colorSelector.onColorChanged(primaryColor);
+          await tester.pump();
+
+          // Verify button has null primaryColor and secondaryColor
+          final saveButton = tester.widget<ZoePrimaryButton>(
+            find.byType(ZoePrimaryButton),
+          );
+          expect(saveButton.primaryColor, isNull);
+          expect(saveButton.secondaryColor, isNull);
+        },
+      );
+
+      testWidgets(
+        'button uses selected color when different from theme primary',
+        (tester) async {
+          final testSheet = getSheetByIndex(container);
+          await pumpChooseColorBottomSheet(tester, sheetId: testSheet.id);
+          await tester.pump();
+
+          final newColor = Colors.red;
+
+          // Get the ColorSelectorWidget and change to a different color
+          final colorSelector = tester.widget<ColorSelectorWidget>(
+            find.byType(ColorSelectorWidget),
+          );
+          colorSelector.onColorChanged(newColor);
+          await tester.pump();
+
+          // Verify button uses the selected color
+          final saveButton = tester.widget<ZoePrimaryButton>(
+            find.byType(ZoePrimaryButton),
+          );
+          expect(saveButton.primaryColor, equals(newColor));
+          expect(
+            saveButton.secondaryColor,
+            equals(newColor.withValues(alpha: 0.2)),
+          );
+        },
+      );
+
+      testWidgets('button color updates when color selection changes', (
+        tester,
+      ) async {
+        final testSheet = getSheetByIndex(container);
+        await pumpChooseColorBottomSheet(tester, sheetId: testSheet.id);
+        await tester.pump();
+
+        final theme = getTheme(tester);
+        final primaryColor = theme.colorScheme.primary;
+
+        // Get the ColorSelectorWidget
+        final colorSelector = tester.widget<ColorSelectorWidget>(
+          find.byType(ColorSelectorWidget),
+        );
+
+        // First, select a custom color
+        final customColor = Colors.blue;
+        colorSelector.onColorChanged(customColor);
+        await tester.pump();
+
+        // Verify button uses custom color
+        var saveButton = tester.widget<ZoePrimaryButton>(
+          find.byType(ZoePrimaryButton),
+        );
+        expect(saveButton.primaryColor, equals(customColor));
+        expect(
+          saveButton.secondaryColor,
+          equals(customColor.withValues(alpha: 0.2)),
+        );
+
+        // Then, change back to theme primary color
+        colorSelector.onColorChanged(primaryColor);
+        await tester.pump();
+
+        // Verify button now uses default colors
+        saveButton = tester.widget<ZoePrimaryButton>(
+          find.byType(ZoePrimaryButton),
+        );
+        expect(saveButton.primaryColor, isNull);
+        expect(saveButton.secondaryColor, isNull);
+      });
+
+      testWidgets('button color reflects initial sheet theme color', (
+        tester,
+      ) async {
+        final customColor = Colors.orange;
+        final testSheet = getSheetByIndex(container).copyWith(
+          theme: SheetTheme(
+            primary: customColor,
+            secondary: customColor.withValues(alpha: 0.2),
+          ),
+        );
+
+        container.read(sheetListProvider.notifier).state = [testSheet];
+
+        await pumpChooseColorBottomSheet(tester, sheetId: testSheet.id);
+        await tester.pump();
+
+        // Verify button initially uses the sheet's custom theme color
+        final saveButton = tester.widget<ZoePrimaryButton>(
+          find.byType(ZoePrimaryButton),
+        );
+        expect(saveButton.primaryColor, equals(customColor));
+        expect(
+          saveButton.secondaryColor,
+          equals(customColor.withValues(alpha: 0.2)),
+        );
+      });
+    });
   });
 }

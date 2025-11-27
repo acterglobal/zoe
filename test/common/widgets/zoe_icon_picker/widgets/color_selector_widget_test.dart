@@ -284,7 +284,7 @@ void main() {
         );
 
         final decoration = container.decoration as BoxDecoration;
-        expect(decoration.borderRadius, equals(BorderRadius.circular(100)));
+        expect(decoration.shape, equals(BoxShape.circle));
       });
 
       testWidgets('InkWell has correct border radius', (tester) async {
