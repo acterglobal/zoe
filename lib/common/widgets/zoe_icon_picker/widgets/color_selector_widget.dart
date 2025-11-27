@@ -53,7 +53,7 @@ class ColorSelectorWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: colorItem,
           border: isSelected ? Border.all(color: Colors.white, width: 1) : null,
-          borderRadius: BorderRadius.circular(100),
+          shape: BoxShape.circle,
         ),
       ),
     );
