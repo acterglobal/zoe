@@ -26,4 +26,8 @@ List<Color> sheetThemeColors = [
   Colors.purple,
   Colors.indigo,
   Colors.pinkAccent,
+  Colors.brown,
+  Colors.blue,
+  Colors.blueGrey,
+  Colors.deepPurpleAccent,
 ];

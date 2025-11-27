@@ -77,8 +77,8 @@ class _ChooseColorBottomSheetState
           ZoePrimaryButton(
             onPressed: _saveSelectedColor,
             text: l10n.save,
-            primaryColor: selectedColor!,
-            secondaryColor: selectedColor!.withValues(alpha: 0.2),
+            primaryColor: selectedColor,
+            secondaryColor: selectedColor?.withValues(alpha: 0.2),
           ),
           const SizedBox(height: 16),
         ],
