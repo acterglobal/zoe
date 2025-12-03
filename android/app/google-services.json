@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "762703988712",
+    "project_id": "zoe-firebase-c9810",
+    "storage_bucket": "zoe-firebase-c9810.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762703988712:android:6ef1c79ff8a5058f54465d",
+        "android_client_info": {
+          "package_name": "app.hellozoe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKmwh8-Ktjdf2aNzeD6QBS6gaqF_zrOYw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
