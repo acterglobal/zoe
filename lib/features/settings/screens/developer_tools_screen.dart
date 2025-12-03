@@ -6,8 +6,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/settings/widgets/setting_card_widget.dart';
 import 'package:zoe/features/settings/widgets/setting_item_widget.dart';
-import 'package:zoe_native/zoe_native.dart';
-
+// import 'package:zoe_native/zoe_native.dart';
 
 class DeveloperToolsScreen extends ConsumerWidget {
   const DeveloperToolsScreen({super.key});
@@ -139,12 +138,13 @@ class DeveloperToolsScreen extends ConsumerWidget {
         },
       );
 
-      await resetClient();
+      // resetClient from Zoe Native package
+      // await resetClient();
 
       // Close loading dialog
       if (context.mounted) {
         Navigator.of(context).pop();
-        
+
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -157,7 +157,7 @@ class DeveloperToolsScreen extends ConsumerWidget {
       // Close loading dialog if still open
       if (context.mounted) {
         Navigator.of(context).pop();
-        
+
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -169,4 +169,3 @@ class DeveloperToolsScreen extends ConsumerWidget {
     }
   }
 }
-

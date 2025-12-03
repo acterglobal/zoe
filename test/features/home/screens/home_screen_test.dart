@@ -19,8 +19,8 @@ import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-import 'package:zoe_native/providers.dart';
-import 'package:zoe_native/zoe_native.dart';
+// import 'package:zoe_native/providers.dart';
+// import 'package:zoe_native/zoe_native.dart';
 import '../../../test-utils/mock_gorouter.dart';
 import '../../../test-utils/test_utils.dart';
 
@@ -36,15 +36,15 @@ void main() {
           // Override providers that might cause async operations
           currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
           isUserLoggedInProvider.overrideWithValue(const AsyncValue.data(true)),
-          connectionStatusProvider.overrideWithValue(
-            AsyncValue.data(
-              OverallConnectionStatus(
-                isConnected: true,
-                connectedCount: BigInt.one,
-                totalCount: BigInt.one,
-              ),
-            ),
-          ),
+          // connectionStatusProvider.overrideWithValue(
+          //   AsyncValue.data(
+          //     OverallConnectionStatus(
+          //       isConnected: true,
+          //       connectedCount: BigInt.one,
+          //       totalCount: BigInt.one,
+          //     ),
+          //   ),
+          // ),
         ],
       );
     });
@@ -282,15 +282,15 @@ void main() {
             isUserLoggedInProvider.overrideWithValue(
               const AsyncValue.data(true),
             ),
-            connectionStatusProvider.overrideWithValue(
-              AsyncValue.data(
-                OverallConnectionStatus(
-                  isConnected: true,
-                  connectedCount: BigInt.one,
-                  totalCount: BigInt.one,
-                ),
-              ),
-            ),
+            // connectionStatusProvider.overrideWithValue(
+            //   AsyncValue.data(
+            //     OverallConnectionStatus(
+            //       isConnected: true,
+            //       connectedCount: BigInt.one,
+            //       totalCount: BigInt.one,
+            //     ),
+            //   ),
+            // ),
           ],
         );
 
