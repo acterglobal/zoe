@@ -100,7 +100,7 @@ class LoginScreen extends ConsumerWidget {
       hintText: l10n.emailDescription,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
-      validator: ValidationUtils.validateEmail,
+      validator: (value) => ValidationUtils.validateEmail(context, value),
       enabled: !isLoading,
     );
   }
@@ -119,7 +119,7 @@ class LoginScreen extends ConsumerWidget {
       hintText: l10n.passwordDescription,
       obscureText: formState.obscurePassword,
       textInputAction: TextInputAction.done,
-      validator: ValidationUtils.validatePassword,
+      validator: (value) => ValidationUtils.validatePassword(context, value),
       enabled: !isLoading,
       suffixIcon: IconButton(
         icon: Icon(

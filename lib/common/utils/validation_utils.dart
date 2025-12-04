@@ -8,14 +8,14 @@ class ValidationUtils {
     return true;
   }
 
-  static String? validateFirstName(String? value, BuildContext context) {
+  static String? validateFirstName(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
       return L10n.of(context).pleaseEnterAValidFirstName;
     }
     return null;
   }
 
-  static String? validateLastName(String? value, BuildContext context) {
+  static String? validateLastName(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
       return L10n.of(context).pleaseEnterAValidLastName;
     }
@@ -57,37 +57,40 @@ class ValidationUtils {
 
   /// Validates email format
   /// Returns error message if invalid, null if valid
-  static String? validateEmail(String? value) {
+  static String? validateEmail(BuildContext context, String? value) {
+    final l10n = L10n.of(context);
     if (value == null || value.isEmpty) {
-      return 'Please enter your email';
+      return l10n.pleaseEnterYourEmail;
     }
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(value)) {
-      return 'Please enter a valid email';
+      return l10n.pleaseEnterAValidEmail;
     }
     return null;
   }
 
   /// Validates password (minimum 6 characters)
   /// Returns error message if invalid, null if valid
-  static String? validatePassword(String? value) {
+  static String? validatePassword(BuildContext context, String? value) {
+    final l10n = L10n.of(context);
     if (value == null || value.isEmpty) {
-      return 'Please enter a password';
+      return l10n.pleaseEnterAPassword;
     }
     if (value.length < 6) {
-      return 'Password must be at least 6 characters';
+      return l10n.passwordMustBeAtLeast6Characters;
     }
     return null;
   }
 
   /// Validates confirm password matches the original password
   /// Returns error message if invalid, null if valid
-  static String? validateConfirmPassword(String? value, String password) {
+  static String? validateConfirmPassword(BuildContext context, String? value, String password) {
+    final l10n = L10n.of(context);
     if (value == null || value.isEmpty) {
-      return 'Please confirm your password';
+      return l10n.pleaseConfirmYourPassword; 
     }
     if (value != password) {
-      return 'Passwords do not match';
+      return l10n.passwordsDoNotMatch;
     }
     return null;
   }

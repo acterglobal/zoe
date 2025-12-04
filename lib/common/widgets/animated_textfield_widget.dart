@@ -64,11 +64,8 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
   void didUpdateWidget(AnimatedTextField oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // Trigger shake animation when error text changes
-    final currentError = widget.errorText ?? _validationError;
-    final oldError = oldWidget.errorText ?? _validationError;
-    
-    if (oldError == null && currentError != null) {
+    // Trigger shake animation for external error text changes
+    if (widget.errorText != null && oldWidget.errorText == null) {
       _shakeController.forward().then((_) => _shakeController.reverse());
     }
   }
@@ -76,9 +73,18 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
   String? _handleValidation(String? value) {
     if (widget.validator != null) {
       final error = widget.validator!(value);
-      setState(() {
-        _validationError = error;
-      });
+      // Trigger shake on new internal error, if no external error is present.
+      if (error != null &&
+          _validationError == null &&
+          widget.errorText == null) {
+        _shakeController.forward().then((_) => _shakeController.reverse());
+      }
+
+      if (_validationError != error) {
+        setState(() {
+          _validationError = error;
+        });
+      }
       return error;
     }
     return null;
@@ -88,92 +94,89 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final displayError = widget.errorText ?? _validationError;
-    
+
     return AnimatedBuilder(
       animation: _shakeAnimation,
       builder: (context, child) {
+        final shakeOffset = 0.5 - (0.5 - _shakeAnimation.value).abs();
         return Transform.translate(
-          offset: Offset(
-            _shakeAnimation.value * 10 * (displayError != null ? 1 : 0),
-            0,
-          ),
-          child: TextFormField(
-            controller: widget.controller,
-            obscureText: widget.obscureText,
-            decoration: InputDecoration(
-              labelText: widget.labelText,
-              hintText: widget.hintText,
-              suffixIcon: widget.suffixIcon,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: colorScheme.outline.withValues(alpha: 0.4),
-                  width: 1,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: colorScheme.outline.withValues(alpha: 0.3),
-                  width: 1,
-                ),
-              ),
-              disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: colorScheme.outline.withValues(alpha: 0.15),
-                  width: 1,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: colorScheme.error, width: 1),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: colorScheme.error, width: 1.5),
-              ),
-              filled: true,
-              fillColor: colorScheme.surfaceContainerHighest.withValues(
-                alpha: widget.enabled ? 0.1 : 0.05,
-              ),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: widget.maxLines != null && widget.maxLines! > 1
-                    ? 12
-                    : 16,
-              ),
-              errorText: displayError,
-            ),
-            keyboardType: widget.keyboardType,
-            textInputAction: widget.textInputAction,
-            autofocus: widget.autofocus,
-            enabled: widget.enabled,
-            readOnly: widget.readOnly,
-            maxLines: widget.obscureText ? 1 : widget.maxLines,
-            validator: widget.validator != null ? _handleValidation : null,
-            onChanged: (value) {
-              if (displayError != null) {
-                if (widget.onErrorChanged != null) {
-                  widget.onErrorChanged!(null);
-                }
-                if (_validationError != null) {
-                  setState(() {
-                    _validationError = null;
-                  });
-                }
-              }
-            },
-            onFieldSubmitted: widget.onSubmitted != null 
-                ? (value) => widget.onSubmitted!() 
-                : null,
-          ),
+          offset: Offset(shakeOffset * 20, 0),
+          child: child,
         );
       },
+      child: TextFormField(
+        controller: widget.controller,
+        obscureText: widget.obscureText,
+        decoration: InputDecoration(
+          labelText: widget.labelText,
+          hintText: widget.hintText,
+          suffixIcon: widget.suffixIcon,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: colorScheme.outline.withOpacity(0.4),
+              width: 1,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: colorScheme.outline.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: colorScheme.outline.withOpacity(0.15),
+              width: 1,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: colorScheme.error, width: 1),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: colorScheme.error, width: 1.5),
+          ),
+          filled: true,
+          fillColor: colorScheme.surfaceContainerHighest.withOpacity(
+            widget.enabled ? 0.1 : 0.05,
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: widget.maxLines != null && widget.maxLines! > 1 ? 12 : 16,
+          ),
+          errorText: displayError,
+        ),
+        keyboardType: widget.keyboardType,
+        textInputAction: widget.textInputAction,
+        autofocus: widget.autofocus,
+        enabled: widget.enabled,
+        readOnly: widget.readOnly,
+        maxLines: widget.obscureText ? 1 : widget.maxLines,
+        validator: widget.validator != null ? _handleValidation : null,
+        onChanged: (value) {
+          if (displayError != null) {
+            if (widget.onErrorChanged != null) {
+              widget.onErrorChanged!(null);
+            }
+            if (_validationError != null) {
+              setState(() {
+                _validationError = null;
+              });
+            }
+          }
+        },
+        onFieldSubmitted: widget.onSubmitted != null
+            ? (value) => widget.onSubmitted!()
+            : null,
+      ),
     );
   }
 

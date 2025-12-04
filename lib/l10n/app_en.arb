@@ -617,5 +617,17 @@
     "pleaseEnterAValidFirstName": "Please enter a valid first name",
     "@pleaseEnterAValidFirstName": {},
     "pleaseEnterAValidLastName": "Please enter a valid last name",
-    "@pleaseEnterAValidLastName": {} 
+    "@pleaseEnterAValidLastName": {},
+    "pleaseEnterYourEmail": "Please enter your email",
+    "@pleaseEnterYourEmail": {},
+    "pleaseEnterAValidEmail": "Please enter a valid email",
+    "@pleaseEnterAValidEmail": {},
+    "pleaseEnterAPassword": "Please enter a password",
+    "@pleaseEnterAPassword": {},
+    "passwordMustBeAtLeast6Characters": "Password must be at least 6 characters",
+    "@passwordMustBeAtLeast6Characters": {},
+    "pleaseConfirmYourPassword": "Please confirm your password",
+    "@pleaseConfirmYourPassword": {},
+    "passwordsDoNotMatch": "Passwords do not match", 
+    "@passwordsDoNotMatch": {}
 }

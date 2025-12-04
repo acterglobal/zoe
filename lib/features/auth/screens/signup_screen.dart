@@ -112,7 +112,7 @@ class SignupScreen extends ConsumerWidget {
       hintText: l10n.firstNameDescription,
       keyboardType: TextInputType.name,
       textInputAction: TextInputAction.next,
-      validator: (value) => ValidationUtils.validateFirstName(value, context),
+      validator: (value) => ValidationUtils.validateFirstName(context, value),
       enabled: !isLoading,
     );
   }
@@ -131,7 +131,7 @@ class SignupScreen extends ConsumerWidget {
       hintText: l10n.lastNameDescription,
       keyboardType: TextInputType.name,
       textInputAction: TextInputAction.next,
-      validator: (value) => ValidationUtils.validateLastName(value, context),
+      validator: (value) => ValidationUtils.validateLastName(context, value),
       enabled: !isLoading,
     );
   }
@@ -150,7 +150,7 @@ class SignupScreen extends ConsumerWidget {
       hintText: l10n.emailDescription,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
-      validator: ValidationUtils.validateEmail,
+      validator: (value) => ValidationUtils.validateEmail(context, value),
       enabled: !isLoading,
     );
   }
@@ -169,7 +169,7 @@ class SignupScreen extends ConsumerWidget {
       hintText: l10n.passwordDescription,
       obscureText: formState.obscurePassword,
       textInputAction: TextInputAction.next,
-      validator: ValidationUtils.validatePassword,
+      validator: (value) => ValidationUtils.validatePassword(context, value),
       enabled: !isLoading,
       suffixIcon: IconButton(
         icon: Icon(
@@ -197,6 +197,7 @@ class SignupScreen extends ConsumerWidget {
       obscureText: formState.obscureConfirmPassword,
       textInputAction: TextInputAction.done,
       validator: (value) => ValidationUtils.validateConfirmPassword(
+        context,
         value,
         formState.passwordController.text,
       ),
