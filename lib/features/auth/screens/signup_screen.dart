@@ -221,9 +221,8 @@ class SignupScreen extends ConsumerWidget {
       width: double.infinity,
       child: ZoePrimaryButton(
         text: isLoading ? l10n.creatingAccount : l10n.signUp,
-        onPressed: isLoading
-            ? () {}
-            : () => handleSignUp(ref, context, _formKey),
+        isLoading: isLoading,
+        onPressed: () => handleSignUp(ref, context, _formKey),
       ),
     );
   }

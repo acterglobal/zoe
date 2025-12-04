@@ -20,12 +20,12 @@ Future<void> handleSignIn(
   ref.read(loginFormProvider.notifier).clearError();
 
   try {
-    await ref.read(authStateProvider.notifier).signIn(
+    await ref
+        .read(authStateProvider.notifier)
+        .signIn(
           email: formState.emailController.text.trim(),
           password: formState.passwordController.text,
         );
-
-    // Navigation is handled by auth state listener
   } catch (e) {
     if (!context.mounted) return;
     ref

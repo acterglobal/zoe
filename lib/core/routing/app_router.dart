@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zoe/common/screens/page_not_found_screen.dart';
-import 'package:zoe/core/routing/notifiers/auth_state_notifier.dart';
+import 'package:zoe/features/auth/notifiers/auth_state_notifier.dart';
 import 'package:zoe/features/bullets/screens/bullet_detail_screen.dart';
 import 'package:zoe/features/documents/screens/documents_list_screen.dart';
 import 'package:zoe/features/events/screens/event_detail_screen.dart';
@@ -49,23 +49,21 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final authState = ref.read(authStateProvider);
       final isAuthenticated = authState is AuthStateAuthenticated;
+      final location = state.uri.path;
 
-      final isOnWelcome = state.matchedLocation == AppRoutes.welcome.route;
-      final isOnLogin = state.matchedLocation == AppRoutes.login.route;
-      final isOnSignup = state.matchedLocation == AppRoutes.signup.route;
-      final isOnAuthPage = isOnWelcome || isOnLogin || isOnSignup;
+      final isAuthFlow =
+          location == AppRoutes.login.route ||
+          location == AppRoutes.signup.route ||
+          location == AppRoutes.welcome.route;
 
-      // If authenticated and on auth pages, redirect to home
-      if (isAuthenticated && isOnAuthPage) {
-        return AppRoutes.home.route;
+      if (isAuthFlow) {
+        return isAuthenticated ? AppRoutes.home.route : null;
       }
 
-      //If not authenticated and not on auth pages, redirect to welcome
-      if (!isAuthenticated && !isOnAuthPage) {
+      if (!isAuthenticated) {
         return AppRoutes.welcome.route;
       }
 
-      // No redirect needed
       return null;
     },
     refreshListenable: AuthStateNotifier(ref),

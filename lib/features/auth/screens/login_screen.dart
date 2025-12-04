@@ -159,9 +159,8 @@ class LoginScreen extends ConsumerWidget {
       width: double.infinity,
       child: ZoePrimaryButton(
         text: isLoading ? l10n.signingIn : l10n.signIn,
-        onPressed: isLoading
-            ? () {}
-            : () => handleSignIn(ref, context, _formKey),
+        isLoading: isLoading,
+        onPressed: () => handleSignIn(ref, context, _formKey),
       ),
     );
   }
