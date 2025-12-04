@@ -22,8 +22,8 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
       body: AnimatedBackgroundWidget(
         child: SafeArea(
           child: Center(
-          child: MaxWidthWidget(
-            padding: const EdgeInsets.all(24),
+            child: MaxWidthWidget(
+              padding: const EdgeInsets.all(24),
               child: _buildWelcomeBodyUI(),
             ),
           ),
@@ -67,8 +67,8 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
       width: double.infinity,
       child: ZoePrimaryButton(
         text: L10n.of(context).getStarted,
-        onPressed: () => context.go(AppRoutes.home.route),
-      ),
+        onPressed: () => context.push(AppRoutes.login.route),
+      ), 
     );
   }
 }

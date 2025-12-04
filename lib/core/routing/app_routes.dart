@@ -1,5 +1,7 @@
 enum AppRoutes {
   welcome('/welcome'),
+  login('/login'),
+  signup('/signup'),
   home('/'),
   sheetsList('/sheets-list'),
   sheet('/sheet/:sheetId'),

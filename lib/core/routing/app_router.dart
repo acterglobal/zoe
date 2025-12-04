@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zoe/common/screens/page_not_found_screen.dart';
+import 'package:zoe/core/routing/notifiers/auth_state_notifier.dart';
 import 'package:zoe/features/bullets/screens/bullet_detail_screen.dart';
 import 'package:zoe/features/documents/screens/documents_list_screen.dart';
 import 'package:zoe/features/events/screens/event_detail_screen.dart';
@@ -19,7 +20,7 @@ import 'package:zoe/features/quick-search/screens/quick_search_screen.dart';
 import 'package:zoe/features/settings/screens/settings_screen.dart';
 import 'package:zoe/features/settings/screens/language_selection_screen.dart';
 import 'package:zoe/features/settings/screens/developer_tools_screen.dart';
-import 'package:zoe/features/settings/screens/systems_test_screen.dart';
+// import 'package:zoe/features/settings/screens/systems_test_screen.dart';
 import 'package:zoe/features/sheet/screens/sheet_detail_screen.dart';
 import 'package:zoe/features/sheet/screens/sheet_list_screen.dart';
 import 'package:zoe/features/task/screens/task_detail_screen.dart';
@@ -28,6 +29,10 @@ import 'package:zoe/features/text/screens/text_block_details_screen.dart';
 import 'package:zoe/features/welcome/screens/welcome_screen.dart';
 import 'package:zoe/features/whatsapp/screens/whatsapp_group_connect_screen.dart';
 import 'package:zoe/features/documents/screens/document_preview_screen.dart';
+import 'package:zoe/features/auth/screens/login_screen.dart';
+import 'package:zoe/features/auth/screens/signup_screen.dart';
+import 'package:zoe/features/auth/providers/auth_providers.dart';
+import '../../features/auth/models/auth_state_model.dart';
 import 'app_routes.dart';
 
 // Global navigator key for accessing the router
@@ -36,17 +41,54 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 // AppLinks provider for dependency injection (allows mocking in tests)
 final appLinksProvider = Provider<AppLinks>((ref) => AppLinks());
 
-// Router provider that always starts with welcome screen
+// Router provider with auth guards
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: AppRoutes.welcome.route,
+    redirect: (context, state) {
+      final authState = ref.read(authStateProvider);
+      final isAuthenticated = authState is AuthStateAuthenticated;
+
+      final isOnWelcome = state.matchedLocation == AppRoutes.welcome.route;
+      final isOnLogin = state.matchedLocation == AppRoutes.login.route;
+      final isOnSignup = state.matchedLocation == AppRoutes.signup.route;
+      final isOnAuthPage = isOnWelcome || isOnLogin || isOnSignup;
+
+      // If authenticated and on auth pages, redirect to home
+      if (isAuthenticated && isOnAuthPage) {
+        return AppRoutes.home.route;
+      }
+
+      //If not authenticated and not on auth pages, redirect to welcome
+      if (!isAuthenticated && !isOnAuthPage) {
+        return AppRoutes.welcome.route;
+      }
+
+      // No redirect needed
+      return null;
+    },
+    refreshListenable: AuthStateNotifier(ref),
     routes: [
       // Welcome route
       GoRoute(
         path: AppRoutes.welcome.route,
         name: AppRoutes.welcome.name,
         builder: (context, state) => const WelcomeScreen(),
+      ),
+
+      // Login route
+      GoRoute(
+        path: AppRoutes.login.route,
+        name: AppRoutes.login.name,
+        builder: (context, state) => LoginScreen(),
+      ),
+
+      // Signup route
+      GoRoute(
+        path: AppRoutes.signup.route,
+        name: AppRoutes.signup.name,
+        builder: (context, state) => SignupScreen(),
       ),
 
       // Home route
