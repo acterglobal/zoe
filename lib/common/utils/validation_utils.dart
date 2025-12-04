@@ -8,16 +8,9 @@ class ValidationUtils {
     return true;
   }
 
-  static String? validateFirstName(BuildContext context, String? value) {
+  static String? validateName(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
-      return L10n.of(context).pleaseEnterAValidFirstName;
-    }
-    return null;
-  }
-
-  static String? validateLastName(BuildContext context, String? value) {
-    if (value == null || value.isEmpty) {
-      return L10n.of(context).pleaseEnterAValidLastName;
+      return L10n.of(context).pleaseEnterAValidName;
     }
     return null;
   }
@@ -84,10 +77,14 @@ class ValidationUtils {
 
   /// Validates confirm password matches the original password
   /// Returns error message if invalid, null if valid
-  static String? validateConfirmPassword(BuildContext context, String? value, String password) {
+  static String? validateConfirmPassword(
+    BuildContext context,
+    String? value,
+    String password,
+  ) {
     final l10n = L10n.of(context);
     if (value == null || value.isEmpty) {
-      return l10n.pleaseConfirmYourPassword; 
+      return l10n.pleaseConfirmYourPassword;
     }
     if (value != password) {
       return l10n.passwordsDoNotMatch;

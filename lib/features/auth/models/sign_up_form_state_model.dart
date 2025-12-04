@@ -5,8 +5,7 @@ class SignupFormStateModel {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
-  final TextEditingController firstNameController;
-  final TextEditingController lastNameController;
+  final TextEditingController nameController;
   final bool obscurePassword;
   final bool obscureConfirmPassword;
   final String? errorMessage;
@@ -15,8 +14,7 @@ class SignupFormStateModel {
     required this.emailController,
     required this.passwordController,
     required this.confirmPasswordController,
-    required this.firstNameController,
-    required this.lastNameController,
+    required this.nameController,
     this.obscurePassword = true,
     this.obscureConfirmPassword = true,
     this.errorMessage,
@@ -26,8 +24,7 @@ class SignupFormStateModel {
     TextEditingController? emailController,
     TextEditingController? passwordController,
     TextEditingController? confirmPasswordController,
-    TextEditingController? firstNameController,
-    TextEditingController? lastNameController,
+    TextEditingController? nameController,
     bool? obscurePassword,
     bool? obscureConfirmPassword,
     String? errorMessage,
@@ -37,8 +34,7 @@ class SignupFormStateModel {
       passwordController: passwordController ?? this.passwordController,
       confirmPasswordController:
           confirmPasswordController ?? this.confirmPasswordController,
-      firstNameController: firstNameController ?? this.firstNameController,
-      lastNameController: lastNameController ?? this.lastNameController,
+      nameController: nameController ?? this.nameController,
       obscurePassword: obscurePassword ?? this.obscurePassword,
       obscureConfirmPassword:
           obscureConfirmPassword ?? this.obscureConfirmPassword,

@@ -55,9 +55,7 @@ class SignupScreen extends ConsumerWidget {
                   children: [
                     _buildTitle(context),
                     const SizedBox(height: 32),
-                    _buildFirstNameField(context, ref, isLoading, formState),
-                    const SizedBox(height: 16),
-                    _buildLastNameField(context, ref, isLoading, formState),
+                    _buildNameField(context, ref, isLoading, formState),
                     const SizedBox(height: 16),
                     _buildEmailField(context, ref, isLoading, formState),
                     const SizedBox(height: 16),
@@ -98,7 +96,7 @@ class SignupScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildFirstNameField(
+  Widget _buildNameField(
     BuildContext context,
     WidgetRef ref,
     bool isLoading,
@@ -107,31 +105,12 @@ class SignupScreen extends ConsumerWidget {
     final l10n = L10n.of(context);
 
     return AnimatedTextField(
-      controller: formState.firstNameController,
-      labelText: l10n.firstName,
-      hintText: l10n.firstNameDescription,
+      controller: formState.nameController,
+      labelText: l10n.name,
+      hintText: l10n.nameDescription,
       keyboardType: TextInputType.name,
       textInputAction: TextInputAction.next,
-      validator: (value) => ValidationUtils.validateFirstName(context, value),
-      enabled: !isLoading,
-    );
-  }
-
-  Widget _buildLastNameField(
-    BuildContext context,
-    WidgetRef ref,
-    bool isLoading,
-    SignupFormStateModel formState,
-  ) {
-    final l10n = L10n.of(context);
-
-    return AnimatedTextField(
-      controller: formState.lastNameController,
-      labelText: l10n.lastName,
-      hintText: l10n.lastNameDescription,
-      keyboardType: TextInputType.name,
-      textInputAction: TextInputAction.next,
-      validator: (value) => ValidationUtils.validateLastName(context, value),
+      validator: (value) => ValidationUtils.validateName(context, value),
       enabled: !isLoading,
     );
   }

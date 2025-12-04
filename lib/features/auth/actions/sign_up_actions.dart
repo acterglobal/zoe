@@ -22,11 +22,12 @@ Future<void> handleSignUp(
   ref.read(signupFormProvider.notifier).clearError();
 
   try {
-    await ref.read(authStateProvider.notifier).signUp( 
+    await ref
+        .read(authStateProvider.notifier)
+        .signUp(
           email: formState.emailController.text.trim(),
           password: formState.passwordController.text,
-          firstName: formState.firstNameController.text.trim(),
-          lastName: formState.lastNameController.text.trim(),
+          name: formState.nameController.text.trim(),
         );
 
     if (context.mounted) {

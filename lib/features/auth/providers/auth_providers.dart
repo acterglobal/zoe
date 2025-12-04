@@ -40,19 +40,17 @@ class AuthState extends _$AuthState {
 
   /// Sign up with email and password
   Future<void> signUp({
-    required String firstName,
-    required String lastName,
+    required String name,
     required String email,
     required String password,
   }) async {
     state = const AuthStateLoading();
     try {
       final authService = ref.read(authServiceProvider);
-      final displayName = '$firstName $lastName'.trim();
       await authService.signUp(
         email: email,
         password: password,
-        displayName: displayName,
+        displayName: name.trim(),
       );
       // State will be updated by authStateChanges listener
     } catch (e) {

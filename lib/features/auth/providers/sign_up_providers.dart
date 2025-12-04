@@ -13,24 +13,21 @@ class SignupForm extends _$SignupForm {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
-    final firstNameController = TextEditingController();
-    final lastNameController = TextEditingController();
+    final nameController = TextEditingController();
 
     // Dispose controllers when provider is destroyed
     ref.onDispose(() {
       emailController.dispose();
       passwordController.dispose();
       confirmPasswordController.dispose();
-      firstNameController.dispose();
-      lastNameController.dispose();
+      nameController.dispose();
     });
 
     return SignupFormStateModel(
       emailController: emailController,
       passwordController: passwordController,
       confirmPasswordController: confirmPasswordController,
-      firstNameController: firstNameController,
-      lastNameController: lastNameController,
+      nameController: nameController,
     );
   }
 
