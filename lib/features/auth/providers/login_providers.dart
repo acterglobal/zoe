@@ -6,7 +6,7 @@ import '../models/login_form_state_model.dart';
 part 'login_providers.g.dart';
 
 /// Login form state provider
-@riverpod
+@Riverpod(keepAlive: true)
 class LoginForm extends _$LoginForm {
   @override
   LoginFormStateModel build() {

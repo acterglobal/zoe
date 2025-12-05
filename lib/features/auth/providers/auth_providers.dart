@@ -1,22 +1,28 @@
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logging/logging.dart';
 import '../models/auth_state_model.dart';
 import '../services/auth_service.dart';
 
 part 'auth_providers.g.dart';
-
+ 
 /// Main auth state provider with authentication management functionality
 @Riverpod(keepAlive: true)
 class AuthState extends _$AuthState {
   final Logger _logger = Logger('AuthState');
+  StreamSubscription<User?>? _authSubscription;
 
   @override
   AuthStateModel build() {
     // Listen to auth state changes from Firebase
     final authService = ref.watch(authServiceProvider);
 
+    // Cancel previous subscription if any
+    _authSubscription?.cancel();
+
     // Subscribe to auth state changes
-    authService.authStateChanges.listen((firebaseUser) {
+    _authSubscription = authService.authStateChanges.listen((firebaseUser) {
       if (firebaseUser != null) {
         _logger.info('User authenticated: ${firebaseUser.uid}');
         state = AuthStateAuthenticated(
@@ -26,6 +32,11 @@ class AuthState extends _$AuthState {
         _logger.info('User unauthenticated');
         state = const AuthStateUnauthenticated();
       }
+    });
+
+    // Clean up on dispose
+    ref.onDispose(() {
+      _authSubscription?.cancel();
     });
 
     // Return initial state based on current user

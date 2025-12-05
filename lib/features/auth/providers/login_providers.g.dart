@@ -23,7 +23,7 @@ final class LoginFormProvider
         argument: null,
         retry: null,
         name: r'loginFormProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -44,7 +44,7 @@ final class LoginFormProvider
   }
 }
 
-String _$loginFormHash() => r'f7b2c138426974a30595ed8e0abe74e5ad273016';
+String _$loginFormHash() => r'ec9f3bb12ed5181dc50db6a15659f69fc11fa7ef';
 
 /// Login form state provider
 

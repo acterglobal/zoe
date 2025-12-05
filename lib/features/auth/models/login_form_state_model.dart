@@ -30,6 +30,6 @@ class LoginFormStateModel {
 
   /// Clear error message
   LoginFormStateModel clearError() {
-    return copyWith(errorMessage: null);
+    return copyWith(errorMessage: null);  
   }
 }

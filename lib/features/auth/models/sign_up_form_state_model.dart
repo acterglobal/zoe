@@ -30,7 +30,7 @@ class SignupFormStateModel {
     String? errorMessage,
   }) {
     return SignupFormStateModel(
-      emailController: emailController ?? this.emailController,
+      emailController: emailController ?? this.emailController, 
       passwordController: passwordController ?? this.passwordController,
       confirmPasswordController:
           confirmPasswordController ?? this.confirmPasswordController,
@@ -38,7 +38,7 @@ class SignupFormStateModel {
       obscurePassword: obscurePassword ?? this.obscurePassword,
       obscureConfirmPassword:
           obscureConfirmPassword ?? this.obscureConfirmPassword,
-      errorMessage: errorMessage,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
@@ -46,4 +46,4 @@ class SignupFormStateModel {
   SignupFormStateModel clearError() {
     return copyWith(errorMessage: null);
   }
-}
+} 

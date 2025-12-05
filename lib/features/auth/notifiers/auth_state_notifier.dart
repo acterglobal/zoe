@@ -6,10 +6,18 @@ import 'package:zoe/features/auth/providers/auth_providers.dart';
 // Helper class to notify GoRouter when auth state changes
 class AuthStateNotifier extends ChangeNotifier {
   final Ref _ref;
-
+  late final ProviderSubscription<AuthStateModel> _subscription;
   AuthStateNotifier(this._ref) {
-    _ref.listen<AuthStateModel>(authStateProvider, (previous, next) {
+    _subscription = _ref.listen<AuthStateModel>(authStateProvider, (
+      previous,
+      next,
+    ) {
       notifyListeners();
     });
+  }
+  @override
+  void dispose() {
+    _subscription.close();
+    super.dispose();
   }
 }

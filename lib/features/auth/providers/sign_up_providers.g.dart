@@ -20,7 +20,7 @@ final class SignupFormProvider
         argument: null,
         retry: null,
         name: r'signupFormProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -41,7 +41,7 @@ final class SignupFormProvider
   }
 }
 
-String _$signupFormHash() => r'f857e920b041010094ce222c6ba27f7abe651ab1';
+String _$signupFormHash() => r'65e5720f2a55db0b1a45b4c7654413d17d9a5709';
 
 abstract class _$SignupForm extends $Notifier<SignupFormStateModel> {
   SignupFormStateModel build();

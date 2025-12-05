@@ -10,7 +10,7 @@ class AuthService {
   AuthService(this._firebaseAuth);
 
   /// Stream of authentication state changes
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges(); 
 
   /// Get the current user
   User? get currentUser => _firebaseAuth.currentUser;
@@ -22,7 +22,7 @@ class AuthService {
     String? displayName,
   }) async {
     try {
-      _logger.info('Attempting to sign up user: $email');
+      _logger.info('Attempting to sign up user'); 
       final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -48,9 +48,9 @@ class AuthService {
   Future<UserCredential> signIn({
     required String email,
     required String password,
-  }) async {
+  }) async { 
     try {
-      _logger.info('Attempting to sign in user: $email');
+      _logger.info('Attempting to sign in user');
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,

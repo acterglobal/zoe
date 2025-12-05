@@ -5,7 +5,7 @@ import '../models/sign_up_form_state_model.dart';
 
 part 'sign_up_providers.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class SignupForm extends _$SignupForm {
   @override
   SignupFormStateModel build() {

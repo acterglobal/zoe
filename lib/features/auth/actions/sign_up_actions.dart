@@ -10,7 +10,8 @@ Future<void> handleSignUp(
   GlobalKey<FormState> formKey,
 ) async {
   // Validate form first
-  if (!formKey.currentState!.validate()) {
+  final currentState = formKey.currentState;
+  if (currentState == null || !currentState.validate()) {
     return;
   }
 

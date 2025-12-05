@@ -16,13 +16,18 @@ import 'package:zoe/l10n/generated/l10n.dart';
 
 import '../../../common/widgets/toolkit/zoe_app_bar_widget.dart';
 
-class SignupScreen extends ConsumerWidget {
-  SignupScreen({super.key});
+class SignupScreen extends ConsumerStatefulWidget {
+  const SignupScreen({super.key});
 
+  @override
+  ConsumerState<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends ConsumerState<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
     final formState = ref.watch(signupFormProvider);
     final isLoading = authState is AuthStateLoading;
@@ -117,7 +122,7 @@ class SignupScreen extends ConsumerWidget {
 
   Widget _buildEmailField(
     BuildContext context,
-    WidgetRef ref,
+    WidgetRef ref, 
     bool isLoading,
     SignupFormStateModel formState,
   ) {
