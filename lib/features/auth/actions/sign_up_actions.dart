@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/features/auth/providers/sign_up_providers.dart';
 
@@ -28,6 +30,11 @@ Future<void> handleSignUp(
           password: formState.passwordController.text,
           name: formState.nameController.text.trim(),
         );
+    
+    // Navigate to home screen after successful signup
+    if (context.mounted) {
+      context.go(AppRoutes.home.route);
+    }
   } catch (e) {
     if (!context.mounted) return;
     ref

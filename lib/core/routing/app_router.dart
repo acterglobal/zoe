@@ -51,16 +51,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isAuthenticated = authState is AuthStateAuthenticated;
       final location = state.uri.path;
 
-      final isAuthFlow =
+      // Redirect unauthenticated users to welcome screen
+      // (except if they're already on welcome, login, or signup)
+      final isPublicRoute =
+          location == AppRoutes.welcome.route ||
           location == AppRoutes.login.route ||
-          location == AppRoutes.signup.route ||
-          location == AppRoutes.welcome.route;
+          location == AppRoutes.signup.route;
 
-      if (isAuthFlow) {
-        return isAuthenticated ? AppRoutes.home.route : null;
-      }
-
-      if (!isAuthenticated) {
+      if (!isAuthenticated && !isPublicRoute) {
         return AppRoutes.welcome.route;
       }
 
