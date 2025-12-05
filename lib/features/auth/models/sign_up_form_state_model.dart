@@ -44,6 +44,14 @@ class SignupFormStateModel {
 
   /// Clear error message
   SignupFormStateModel clearError() {
-    return copyWith(errorMessage: null);
+    return SignupFormStateModel(
+      emailController: emailController,
+      passwordController: passwordController,
+      confirmPasswordController: confirmPasswordController,
+      nameController: nameController,
+      obscurePassword: obscurePassword,
+      obscureConfirmPassword: obscureConfirmPassword,
+      errorMessage: null,
+    );
   }
 } 

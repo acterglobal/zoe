@@ -52,7 +52,7 @@ void main() {
           child: Consumer(
             builder: (context, ref, _) {
               final formState = ref.watch(signupFormProvider);
-              return Column(
+              return Column( 
                 children: [
                   TextFormField(
                     controller: formState.nameController,

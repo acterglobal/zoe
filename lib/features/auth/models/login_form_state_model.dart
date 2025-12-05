@@ -24,12 +24,17 @@ class LoginFormStateModel {
       emailController: emailController ?? this.emailController,
       passwordController: passwordController ?? this.passwordController,
       obscurePassword: obscurePassword ?? this.obscurePassword,
-      errorMessage: errorMessage,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   /// Clear error message
-  LoginFormStateModel clearError() {
-    return copyWith(errorMessage: null);  
+  LoginFormStateModel clearError() {  
+     return LoginFormStateModel(
+      emailController: emailController,
+      passwordController: passwordController,
+      obscurePassword: obscurePassword,
+      errorMessage: null,
+    );
   }
 }
