@@ -1,11 +1,11 @@
 import 'package:zoe/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:zoe_native/zoe_native.dart';
+// import 'package:zoe_native/zoe_native.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  setUpAll(() async => await RustLib.init());
+  // setUpAll(() async => await RustLib.init());
   testWidgets('Can call rust function', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
     expect(find.textContaining('Result: `Hello, Tom!`'), findsOneWidget);

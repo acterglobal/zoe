@@ -218,11 +218,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       // Systems test route
-      GoRoute(
-        path: AppRoutes.systemsTest.route,
-        name: AppRoutes.systemsTest.name,
-        builder: (context, state) => const SystemsTestScreen(),
-      ),
+      // GoRoute(
+      //   path: AppRoutes.systemsTest.route,
+      //   name: AppRoutes.systemsTest.name,
+      //   builder: (context, state) => const SystemsTestScreen(),
+      // ),
       // Profile route
       GoRoute(
         path: AppRoutes.settingsProfile.route,
