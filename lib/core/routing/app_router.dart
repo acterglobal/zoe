@@ -84,7 +84,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.signup.route,
         name: AppRoutes.signup.name,
-        builder: (context, state) => SignupScreen(),
+        builder: (context, state) => const SignupScreen(),
       ),
 
       // Home route

@@ -33,10 +33,10 @@ Future<void> handleSignIn(
     if (context.mounted) {
       context.go(AppRoutes.home.route);
     }
-  } catch (e) {
-    if (!context.mounted) return;
+  } catch (FirebaseAuthException e) {
+    if (!context.mounted) return; 
     ref
         .read(loginFormProvider.notifier)
-        .setError(e.toString().replaceAll('Exception: ', ''));
+        .setError(e.message);
   }
 }

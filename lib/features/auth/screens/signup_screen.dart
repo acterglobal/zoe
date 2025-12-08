@@ -122,7 +122,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   Widget _buildEmailField(
     BuildContext context,
-    WidgetRef ref, 
+    WidgetRef ref,
     bool isLoading,
     SignupFormStateModel formState,
   ) {
@@ -210,7 +210,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       ),
       child: Text(
         errorMessage,
-        style: TextStyle(color: theme.colorScheme.onErrorContainer),
+        style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white),
         textAlign: TextAlign.center,
       ),
     );

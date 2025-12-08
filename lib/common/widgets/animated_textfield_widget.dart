@@ -114,21 +114,21 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: colorScheme.outline.withOpacity(0.4),
+              color: colorScheme.outline.withValues(alpha: .4),
               width: 1,
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: colorScheme.outline.withOpacity(0.3),
+              color: colorScheme.outline.withValues(alpha: 0.3),
               width: 1,
             ),
           ),
           disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: colorScheme.outline.withOpacity(0.15),
+              color: colorScheme.outline.withValues(alpha: 0.15),
               width: 1,
             ),
           ),
@@ -145,8 +145,8 @@ class _AnimatedTextFieldState extends State<AnimatedTextField>
             borderSide: BorderSide(color: colorScheme.error, width: 1.5),
           ),
           filled: true,
-          fillColor: colorScheme.surfaceContainerHighest.withOpacity(
-            widget.enabled ? 0.1 : 0.05,
+          fillColor: colorScheme.surfaceContainerHighest.withValues(
+            alpha: widget.enabled ? 0.1 : 0.05,
           ),
           contentPadding: EdgeInsets.symmetric(
             horizontal: 16,

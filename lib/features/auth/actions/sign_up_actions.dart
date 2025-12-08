@@ -35,10 +35,10 @@ Future<void> handleSignUp(
     if (context.mounted) {
       context.go(AppRoutes.home.route);
     }
-  } catch (e) {
+  } catch (FirebaseAuthException e) {
     if (!context.mounted) return;
     ref
         .read(signupFormProvider.notifier)
-        .setError(e.toString().replaceAll('Exception: ', ''));
+        .setError(e.message);  
   }
 }

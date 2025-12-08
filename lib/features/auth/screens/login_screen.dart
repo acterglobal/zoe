@@ -143,7 +143,7 @@ class LoginScreen extends ConsumerWidget {
       ),
       child: Text(
         errorMessage,
-        style: TextStyle(color: theme.colorScheme.onErrorContainer),
+        style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white),
         textAlign: TextAlign.center,
       ),
     );
