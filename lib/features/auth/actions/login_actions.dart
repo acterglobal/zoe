@@ -28,15 +28,15 @@ Future<void> handleSignIn(
           email: formState.emailController.text.trim(),
           password: formState.passwordController.text,
         );
-    
+
     // Navigate to home screen after successful login
     if (context.mounted) {
       context.go(AppRoutes.home.route);
     }
-  } catch (FirebaseAuthException e) {
-    if (!context.mounted) return; 
+  } catch (e) {
+    if (!context.mounted) return;
     ref
         .read(loginFormProvider.notifier)
-        .setError(e.message);
+        .setError(e.toString().replaceAll('Exception: ', ''));
   }
 }

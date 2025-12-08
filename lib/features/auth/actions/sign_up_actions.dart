@@ -5,6 +5,8 @@ import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/features/auth/providers/sign_up_providers.dart';
 
+import '../providers/login_providers.dart';
+
 /// Handles the sign up action
 Future<void> handleSignUp(
   WidgetRef ref,
@@ -12,8 +14,7 @@ Future<void> handleSignUp(
   GlobalKey<FormState> formKey,
 ) async {
   // Validate form first
-  final currentState = formKey.currentState;
-  if (currentState == null || !currentState.validate()) {
+  if (!formKey.currentState!.validate()) {
     return;
   }
 
@@ -30,15 +31,15 @@ Future<void> handleSignUp(
           password: formState.passwordController.text,
           name: formState.nameController.text.trim(),
         );
-    
+
     // Navigate to home screen after successful signup
     if (context.mounted) {
       context.go(AppRoutes.home.route);
     }
-  } catch (FirebaseAuthException e) {
+  } catch (e) {
     if (!context.mounted) return;
     ref
-        .read(signupFormProvider.notifier)
-        .setError(e.message);  
+        .read(loginFormProvider.notifier)
+        .setError(e.toString().replaceAll('Exception: ', ''));
   }
 }

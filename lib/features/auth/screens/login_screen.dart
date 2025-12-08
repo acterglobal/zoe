@@ -42,32 +42,30 @@ class LoginScreen extends ConsumerWidget {
       ),
       body: AnimatedBackgroundWidget(
         child: SafeArea(
-          child: Center(
-            child: MaxWidthWidget(
-              isScrollable: true,
-              padding: const EdgeInsets.all(24),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildTitle(context),
-                    const SizedBox(height: 32),
-                    _buildEmailField(context, ref, isLoading, formState),
-                    const SizedBox(height: 16),
-                    _buildPasswordField(ref, context, isLoading, formState),
+          child: MaxWidthWidget(
+            isScrollable: true,
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildTitle(context),
+                  const SizedBox(height: 32),
+                  _buildEmailField(context, ref, isLoading, formState),
+                  const SizedBox(height: 16),
+                  _buildPasswordField(ref, context, isLoading, formState),
+                  const SizedBox(height: 8),
+                  if (formState.errorMessage != null) ...[
                     const SizedBox(height: 8),
-                    if (formState.errorMessage != null) ...[
-                      const SizedBox(height: 8),
-                      _buildErrorMessage(context, formState.errorMessage!),
-                    ],
-                    const SizedBox(height: 24),
-                    _buildSignInButton(context, ref, isLoading),
-                    const SizedBox(height: 16),
-                    _buildSignUpLink(context),
+                    _buildErrorMessage(context, formState.errorMessage!),
                   ],
-                ),
+                  const SizedBox(height: 24),
+                  _buildSignInButton(context, ref, isLoading),
+                  const SizedBox(height: 16),
+                  _buildSignUpLink(context),
+                ],
               ),
             ),
           ),

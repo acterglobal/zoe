@@ -48,41 +48,39 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       ),
       body: AnimatedBackgroundWidget(
         child: SafeArea(
-          child: Center(
-            child: MaxWidthWidget(
-              isScrollable: true,
-              padding: const EdgeInsets.all(24),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildTitle(context),
-                    const SizedBox(height: 32),
-                    _buildNameField(context, ref, isLoading, formState),
-                    const SizedBox(height: 16),
-                    _buildEmailField(context, ref, isLoading, formState),
-                    const SizedBox(height: 16),
-                    _buildPasswordField(context, ref, isLoading, formState),
-                    const SizedBox(height: 16),
-                    _buildConfirmPasswordField(
-                      context,
-                      ref,
-                      isLoading,
-                      formState,
-                    ),
+          child: MaxWidthWidget(
+            isScrollable: true,
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildTitle(context),
+                  const SizedBox(height: 32),
+                  _buildNameField(context, ref, isLoading, formState),
+                  const SizedBox(height: 16),
+                  _buildEmailField(context, ref, isLoading, formState),
+                  const SizedBox(height: 16),
+                  _buildPasswordField(context, ref, isLoading, formState),
+                  const SizedBox(height: 16),
+                  _buildConfirmPasswordField(
+                    context,
+                    ref,
+                    isLoading,
+                    formState,
+                  ),
+                  const SizedBox(height: 8),
+                  if (formState.errorMessage != null) ...[
                     const SizedBox(height: 8),
-                    if (formState.errorMessage != null) ...[
-                      const SizedBox(height: 8),
-                      _buildErrorMessage(context, formState.errorMessage!),
-                    ],
-                    const SizedBox(height: 24),
-                    _buildSignUpButton(context, ref, isLoading),
-                    const SizedBox(height: 16),
-                    _buildSignInLink(context),
+                    _buildErrorMessage(context, formState.errorMessage!),
                   ],
-                ),
+                  const SizedBox(height: 24),
+                  _buildSignUpButton(context, ref, isLoading),
+                  const SizedBox(height: 16),
+                  _buildSignInLink(context),
+                ],
               ),
             ),
           ),
