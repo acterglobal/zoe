@@ -1,4 +1,4 @@
-import 'dart:async';
+
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
@@ -17,41 +17,45 @@ class AuthState extends _$AuthState {
     final authService = ref.watch(authServiceProvider);
     final prefsService = PreferencesService();
 
-    final completer = Completer<AuthUserModel?>();
+    // Get the current auth state directly
+    final firebaseUser = authService.currentUser;
 
+    // Update preferences based on current state
+    if (firebaseUser != null) {
+      await prefsService.setLoginUserId(firebaseUser.uid);
+      _logger.info('Stored user ID in preferences: ${firebaseUser.uid}');
+    } else {
+      await prefsService.clearLoginUserId();
+      _logger.info('Cleared user ID from preferences.');
+    }
+
+    // Listen for future auth state changes
     final subscription = authService.authStateChanges.listen(
-      (firebaseUser) async {
-        if (firebaseUser != null) {
-          await prefsService.setLoginUserId(firebaseUser.uid);
-          _logger.info('Stored user ID in preferences: ${firebaseUser.uid}');
+      (user) async {
+        if (user != null) {
+          await prefsService.setLoginUserId(user.uid);
+          _logger.info('Stored user ID in preferences: ${user.uid}');
         } else {
           await prefsService.clearLoginUserId();
           _logger.info('Cleared user ID from preferences.');
         }
 
-        final userModel = firebaseUser == null
-            ? null
-            : AuthUserModel.fromFirebaseUser(firebaseUser);
-
-        if (!completer.isCompleted) {
-          completer.complete(userModel);
-        } else {
-          state = AsyncValue.data(userModel);
-        }
+        state = AsyncValue.data(
+          user == null ? null : AuthUserModel.fromFirebaseUser(user),
+        );
       },
       onError: (e, s) {
         _logger.severe('Auth state stream error: $e');
-        if (!completer.isCompleted) {
-          completer.completeError(e, s);
-        } else {
-          state = AsyncValue.error(e, s);
-        }
+        state = AsyncValue.error(e, s);
       },
     );
 
     ref.onDispose(() => subscription.cancel());
 
-    return completer.future;
+    // Return initial state
+    return firebaseUser == null
+        ? null
+        : AuthUserModel.fromFirebaseUser(firebaseUser);
   }
 
   /// Sign up with email and password

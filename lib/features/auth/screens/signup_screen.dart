@@ -7,7 +7,6 @@ import 'package:zoe/common/widgets/animated_textfield_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/core/routing/app_routes.dart';
-import 'package:zoe/features/auth/actions/sign_up_actions.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../common/widgets/toolkit/zoe_app_bar_widget.dart';
@@ -39,22 +38,32 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   }
 
   Future<void> _handleSignUp() async {
-    await handleSignUp(
-      ref: ref,
-      context: context,
-      formKey: _formKey,
-      nameController: _nameController,
-      emailController: _emailController,
-      passwordController: _passwordController,
-      confirmPasswordController: _confirmPasswordController,
-      setErrorMessage: (error) {
-        if (mounted) {
-          setState(() {
-            _errorMessage = error;
-          });
-        }
-      },
-    );
+    // Validate form first
+    if (_formKey.currentState?.validate() == false) {
+      return;
+    }
+
+    // Clear any previous errors
+    setState(() {
+      _errorMessage = null;
+    });
+
+    try {
+      await ref
+          .read(authStateProvider.notifier)
+          .signUp(
+            name: _nameController.text.trim(),
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
+      if (!context.mounted) return;
+      context.go(AppRoutes.home.route);
+    } catch (e) {
+      if (!context.mounted) return;
+      setState(() {
+        _errorMessage = e.toString().replaceAll('Exception: ', '');
+      });
+    }
   }
 
   @override

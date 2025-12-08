@@ -7,7 +7,6 @@ import 'package:zoe/common/widgets/animated_textfield_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/core/routing/app_routes.dart';
-import 'package:zoe/features/auth/actions/login_actions.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../common/widgets/toolkit/zoe_app_bar_widget.dart';
@@ -34,20 +33,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _handleSignIn() async {
-    await handleSignIn(
-      ref: ref,
-      context: context,
-      formKey: _formKey,
-      emailController: _emailController,
-      passwordController: _passwordController,
-      setErrorMessage: (error) {
-        if (mounted) {
-          setState(() {
-            _errorMessage = error;
-          });
-        }
-      },
-    );
+    // Validate form first
+    if (_formKey.currentState?.validate() == false) {
+      return;
+    }
+
+    setState(() {
+      _errorMessage = null;
+    });
+
+    try {
+      await ref
+          .read(authStateProvider.notifier)
+          .signIn(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
+      if (!context.mounted) return;
+      context.go(AppRoutes.home.route);
+    } catch (e) {
+      if (!context.mounted) return;
+      setState(() {
+        _errorMessage = e.toString().replaceAll('Exception: ', '');
+      });
+    }
   }
 
   @override
