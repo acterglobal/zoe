@@ -68,11 +68,13 @@ abstract class _$SheetList extends $Notifier<List<SheetModel>> {
 }
 
 /// Provider for sheets filtered by membership (current user must be a member)
+/// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
 
 @ProviderFor(sheetsList)
 const sheetsListProvider = SheetsListProvider._();
 
 /// Provider for sheets filtered by membership (current user must be a member)
+/// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
 
 final class SheetsListProvider
     extends
@@ -83,6 +85,7 @@ final class SheetsListProvider
         >
     with $Provider<List<SheetModel>> {
   /// Provider for sheets filtered by membership (current user must be a member)
+  /// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
   const SheetsListProvider._()
     : super(
         from: null,
@@ -116,7 +119,7 @@ final class SheetsListProvider
   }
 }
 
-String _$sheetsListHash() => r'3e7092ab9e7b574749055fa0869c55d696adb9c6';
+String _$sheetsListHash() => r'994bb84d8a8243b8b64d4a487691a8328168bb6a';
 
 /// Provider for searching sheets
 

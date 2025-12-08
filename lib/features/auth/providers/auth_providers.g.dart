@@ -36,7 +36,7 @@ final class AuthStateProvider
   AuthState create() => AuthState();
 }
 
-String _$authStateHash() => r'a1e103a39f3e3ed91f6e6d18490524fe1e1b06c9';
+String _$authStateHash() => r'065038f9f011981683075fac1a60872e4d56cb3a';
 
 /// Main auth state provider with authentication management functionality
 
