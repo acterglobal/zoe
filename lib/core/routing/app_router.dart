@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zoe/common/screens/page_not_found_screen.dart';
-import 'package:zoe/features/auth/notifiers/auth_state_notifier.dart';
 import 'package:zoe/features/bullets/screens/bullet_detail_screen.dart';
 import 'package:zoe/features/documents/screens/documents_list_screen.dart';
 import 'package:zoe/features/events/screens/event_detail_screen.dart';
@@ -31,8 +30,6 @@ import 'package:zoe/features/whatsapp/screens/whatsapp_group_connect_screen.dart
 import 'package:zoe/features/documents/screens/document_preview_screen.dart';
 import 'package:zoe/features/auth/screens/login_screen.dart';
 import 'package:zoe/features/auth/screens/signup_screen.dart';
-import 'package:zoe/features/auth/providers/auth_providers.dart';
-import '../../features/auth/models/auth_state_model.dart';
 import 'app_routes.dart';
 
 // Global navigator key for accessing the router
@@ -41,30 +38,10 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 // AppLinks provider for dependency injection (allows mocking in tests)
 final appLinksProvider = Provider<AppLinks>((ref) => AppLinks());
 
-// Router provider with auth guards
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: AppRoutes.welcome.route,
-    redirect: (context, state) {
-      final authState = ref.read(authStateProvider);
-      final isAuthenticated = authState is AuthStateAuthenticated;
-      final location = state.uri.path;
-
-      // Redirect unauthenticated users to welcome screen
-      // (except if they're already on welcome, login, or signup)
-      final isPublicRoute =
-          location == AppRoutes.welcome.route ||
-          location == AppRoutes.login.route ||
-          location == AppRoutes.signup.route;
-
-      if (!isAuthenticated && !isPublicRoute) {
-        return AppRoutes.welcome.route;
-      }
-
-      return null;
-    },
-    refreshListenable: AuthStateNotifier(ref),
     routes: [
       // Welcome route
       GoRoute(

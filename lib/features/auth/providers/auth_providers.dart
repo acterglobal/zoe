@@ -1,52 +1,57 @@
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logging/logging.dart';
-import '../models/auth_state_model.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/core/preference_service/preferences_service.dart';
+import '../models/auth_user_model.dart';
 import '../services/auth_service.dart';
 
 part 'auth_providers.g.dart';
- 
+
 /// Main auth state provider with authentication management functionality
 @Riverpod(keepAlive: true)
 class AuthState extends _$AuthState {
   final Logger _logger = Logger('AuthState');
-  StreamSubscription<User?>? _authSubscription;
 
   @override
-  AuthStateModel build() {
-    // Listen to auth state changes from Firebase
+  Future<AuthUserModel?> build() async {
     final authService = ref.watch(authServiceProvider);
+    final prefsService = PreferencesService();
 
-    // Cancel previous subscription if any
-    _authSubscription?.cancel();
+    final completer = Completer<AuthUserModel?>();
 
-    // Subscribe to auth state changes
-    _authSubscription = authService.authStateChanges.listen((firebaseUser) {
-      if (firebaseUser != null) {
-        _logger.info('User authenticated: ${firebaseUser.uid}');
-        state = AuthStateAuthenticated(
-          AuthUserModel.fromFirebaseUser(firebaseUser),
-        );
-      } else {
-        _logger.info('User unauthenticated');
-        state = const AuthStateUnauthenticated();
-      }
-    });
+    final subscription = authService.authStateChanges.listen(
+      (firebaseUser) async {
+        if (firebaseUser != null) {
+          await prefsService.setLoginUserId(firebaseUser.uid);
+          _logger.info('Stored user ID in preferences: ${firebaseUser.uid}');
+        } else {
+          await prefsService.clearLoginUserId();
+          _logger.info('Cleared user ID from preferences.');
+        }
 
-    // Clean up on dispose
-    ref.onDispose(() {
-      _authSubscription?.cancel();
-    });
+        final userModel = firebaseUser == null
+            ? null
+            : AuthUserModel.fromFirebaseUser(firebaseUser);
 
-    // Return initial state based on current user
-    final currentUser = authService.currentUser;
-    if (currentUser != null) {
-      return AuthStateAuthenticated(
-        AuthUserModel.fromFirebaseUser(currentUser),
-      );
-    }
-    return const AuthStateUnauthenticated();
+        if (!completer.isCompleted) {
+          completer.complete(userModel);
+        } else {
+          state = AsyncValue.data(userModel);
+        }
+      },
+      onError: (e, s) {
+        _logger.severe('Auth state stream error: $e');
+        if (!completer.isCompleted) {
+          completer.completeError(e, s);
+        } else {
+          state = AsyncValue.error(e, s);
+        }
+      },
+    );
+
+    ref.onDispose(() => subscription.cancel());
+
+    return completer.future;
   }
 
   /// Sign up with email and password
@@ -55,7 +60,7 @@ class AuthState extends _$AuthState {
     required String email,
     required String password,
   }) async {
-    state = const AuthStateLoading();
+    state = const AsyncValue.loading();
     try {
       final authService = ref.read(authServiceProvider);
       await authService.signUp(
@@ -64,23 +69,23 @@ class AuthState extends _$AuthState {
         displayName: name.trim(),
       );
       // State will be updated by authStateChanges listener
-    } catch (e) {
+    } catch (e, st) {
       _logger.severe('Sign up error: $e');
-      state = const AuthStateUnauthenticated();
+      state = AsyncValue.error(e, st);
       rethrow;
     }
   }
 
   /// Sign in with email and password
   Future<void> signIn({required String email, required String password}) async {
-    state = const AuthStateLoading();
+    state = const AsyncValue.loading();
     try {
       final authService = ref.read(authServiceProvider);
       await authService.signIn(email: email, password: password);
       // State will be updated by authStateChanges listener
-    } catch (e) {
+    } catch (e, st) {
       _logger.severe('Sign in error: $e');
-      state = const AuthStateUnauthenticated();
+      state = AsyncValue.error(e, st);
       rethrow;
     }
   }
@@ -96,21 +101,4 @@ class AuthState extends _$AuthState {
       rethrow;
     }
   }
-}
-
-/// Provider to check if user is authenticated
-@riverpod
-bool isAuthenticated(Ref ref) {
-  final authState = ref.watch(authStateProvider);
-  return authState is AuthStateAuthenticated;
-}
-
-/// Provider for the current authenticated user (null if not authenticated)
-@riverpod
-AuthUserModel? currentUser(Ref ref) {
-  final authState = ref.watch(authStateProvider);
-  if (authState is AuthStateAuthenticated) {
-    return authState.user;
-  }
-  return null;
 }

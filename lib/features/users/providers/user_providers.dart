@@ -45,13 +45,12 @@ Future<bool> isUserLoggedIn(Ref ref) async {
 /// Provider for the logged-in user ID
 @riverpod
 Future<String?> loggedInUser(Ref ref) async {
-  final defaultUser = 'user_1';
-  final prefsService = PreferencesService();
+  final prefsService = PreferencesService(); 
   final userId = await prefsService.getLoginUserId();
-  if (userId == null || userId.isEmpty) {
-    await prefsService.setLoginUserId(defaultUser);
+  if (userId != null) {
+    return userId;
   }
-  return userId ?? defaultUser;
+  return null;
 }
 
 /// Provider for the current user model

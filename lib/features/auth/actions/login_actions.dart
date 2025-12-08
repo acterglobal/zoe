@@ -3,40 +3,35 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
-import 'package:zoe/features/auth/providers/login_providers.dart';
 
 /// Handles the sign in action
-Future<void> handleSignIn(
-  WidgetRef ref,
-  BuildContext context,
-  GlobalKey<FormState> formKey,
-) async {
+Future<void> handleSignIn({
+  required WidgetRef ref,
+  required BuildContext context,
+  required GlobalKey<FormState> formKey,
+  required TextEditingController emailController,
+  required TextEditingController passwordController,
+  required Function(String?) setErrorMessage,
+}) async {
   // Validate form first
   if (formKey.currentState?.validate() == false) {
     return;
   }
 
-  final formState = ref.read(loginFormProvider);
-
   // Clear any previous errors
-  ref.read(loginFormProvider.notifier).clearError();
+  setErrorMessage(null);
 
   try {
     await ref
         .read(authStateProvider.notifier)
         .signIn(
-          email: formState.emailController.text.trim(),
-          password: formState.passwordController.text,
+          email: emailController.text.trim(),
+          password: passwordController.text,
         );
-
-    // Navigate to home screen after successful login
-    if (context.mounted) {
-      context.go(AppRoutes.home.route);
-    }
+    if (!context.mounted) return;
+    context.go(AppRoutes.home.route);
   } catch (e) {
     if (!context.mounted) return;
-    ref
-        .read(loginFormProvider.notifier)
-        .setError(e.toString().replaceAll('Exception: ', ''));
+    setErrorMessage(e.toString().replaceAll('Exception: ', ''));
   }
 }

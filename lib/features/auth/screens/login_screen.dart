@@ -9,22 +9,51 @@ import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/auth/actions/login_actions.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
-import 'package:zoe/features/auth/providers/login_providers.dart';
-import 'package:zoe/features/auth/models/auth_state_model.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../common/widgets/toolkit/zoe_app_bar_widget.dart';
-import '../models/login_form_state_model.dart';
 
-class LoginScreen extends ConsumerWidget {
-  LoginScreen({super.key});
-
-  final _formKey = GlobalKey<FormState>();
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _obscurePassword = true;
+  String? _errorMessage;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleSignIn() async {
+    await handleSignIn(
+      ref: ref,
+      context: context,
+      formKey: _formKey,
+      emailController: _emailController,
+      passwordController: _passwordController,
+      setErrorMessage: (error) {
+        if (mounted) {
+          setState(() {
+            _errorMessage = error;
+          });
+        }
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
-    final formState = ref.watch(loginFormProvider);
-    final isLoading = authState is AuthStateLoading;
+    final isLoading = authState.isLoading;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -53,16 +82,16 @@ class LoginScreen extends ConsumerWidget {
                 children: [
                   _buildTitle(context),
                   const SizedBox(height: 32),
-                  _buildEmailField(context, ref, isLoading, formState),
+                  _buildEmailField(context, isLoading),
                   const SizedBox(height: 16),
-                  _buildPasswordField(ref, context, isLoading, formState),
+                  _buildPasswordField(context, isLoading),
                   const SizedBox(height: 8),
-                  if (formState.errorMessage != null) ...[
+                  if (_errorMessage != null) ...[
                     const SizedBox(height: 8),
-                    _buildErrorMessage(context, formState.errorMessage!),
+                    _buildErrorMessage(context, _errorMessage!),
                   ],
                   const SizedBox(height: 24),
-                  _buildSignInButton(context, ref, isLoading),
+                  _buildSignInButton(context, isLoading),
                   const SizedBox(height: 16),
                   _buildSignUpLink(context),
                 ],
@@ -84,16 +113,11 @@ class LoginScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildEmailField(
-    BuildContext context,
-    WidgetRef ref,
-    bool isLoading,
-    LoginFormStateModel formState,
-  ) {
+  Widget _buildEmailField(BuildContext context, bool isLoading) {
     final l10n = L10n.of(context);
 
     return AnimatedTextField(
-      controller: formState.emailController,
+      controller: _emailController,
       labelText: l10n.email,
       hintText: l10n.emailDescription,
       keyboardType: TextInputType.emailAddress,
@@ -103,31 +127,26 @@ class LoginScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildPasswordField(
-    WidgetRef ref,
-    BuildContext context,
-    bool isLoading,
-    LoginFormStateModel formState,
-  ) {
+  Widget _buildPasswordField(BuildContext context, bool isLoading) {
     final l10n = L10n.of(context);
 
     return AnimatedTextField(
-      controller: formState.passwordController,
+      controller: _passwordController,
       labelText: l10n.password,
       hintText: l10n.passwordDescription,
-      obscureText: formState.obscurePassword,
+      obscureText: _obscurePassword,
       textInputAction: TextInputAction.done,
       validator: (value) => ValidationUtils.validatePassword(context, value),
       enabled: !isLoading,
       suffixIcon: IconButton(
-        icon: Icon(
-          formState.obscurePassword ? Icons.visibility : Icons.visibility_off,
-        ),
+        icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
         onPressed: () {
-          ref.read(loginFormProvider.notifier).toggleObscurePassword();
+          setState(() {
+            _obscurePassword = !_obscurePassword;
+          });
         },
       ),
-      onSubmitted: () => handleSignIn(ref, context, _formKey),
+      onSubmitted: _handleSignIn,
     );
   }
 
@@ -147,18 +166,14 @@ class LoginScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSignInButton(
-    BuildContext context,
-    WidgetRef ref,
-    bool isLoading,
-  ) {
+  Widget _buildSignInButton(BuildContext context, bool isLoading) {
     final l10n = L10n.of(context);
     return SizedBox(
       width: double.infinity,
       child: ZoePrimaryButton(
         text: isLoading ? l10n.signingIn : l10n.signIn,
         isLoading: isLoading,
-        onPressed: () => handleSignIn(ref, context, _formKey),
+        onPressed: _handleSignIn,
       ),
     );
   }

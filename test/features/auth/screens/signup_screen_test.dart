@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:zoe/features/auth/models/auth_state_model.dart';
+import 'package:zoe/features/auth/models/auth_user_model.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/features/auth/providers/sign_up_providers.dart';
 import 'package:zoe/features/auth/screens/signup_screen.dart';

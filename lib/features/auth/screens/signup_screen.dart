@@ -8,12 +8,8 @@ import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/auth/actions/sign_up_actions.dart';
-import 'package:zoe/features/auth/models/sign_up_form_state_model.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
-import 'package:zoe/features/auth/providers/sign_up_providers.dart';
-import 'package:zoe/features/auth/models/auth_state_model.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-
 import '../../../common/widgets/toolkit/zoe_app_bar_widget.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
@@ -25,12 +21,46 @@ class SignupScreen extends ConsumerStatefulWidget {
 
 class _SignupScreenState extends ConsumerState<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+  String? _errorMessage;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleSignUp() async {
+    await handleSignUp(
+      ref: ref,
+      context: context,
+      formKey: _formKey,
+      nameController: _nameController,
+      emailController: _emailController,
+      passwordController: _passwordController,
+      confirmPasswordController: _confirmPasswordController,
+      setErrorMessage: (error) {
+        if (mounted) {
+          setState(() {
+            _errorMessage = error;
+          });
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
-    final formState = ref.watch(signupFormProvider);
-    final isLoading = authState is AuthStateLoading;
+    final isLoading = authState.isLoading;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -59,25 +89,20 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 children: [
                   _buildTitle(context),
                   const SizedBox(height: 32),
-                  _buildNameField(context, ref, isLoading, formState),
+                  _buildNameField(context, isLoading),
                   const SizedBox(height: 16),
-                  _buildEmailField(context, ref, isLoading, formState),
+                  _buildEmailField(context, isLoading),
                   const SizedBox(height: 16),
-                  _buildPasswordField(context, ref, isLoading, formState),
+                  _buildPasswordField(context, isLoading),
                   const SizedBox(height: 16),
-                  _buildConfirmPasswordField(
-                    context,
-                    ref,
-                    isLoading,
-                    formState,
-                  ),
+                  _buildConfirmPasswordField(context, isLoading),
                   const SizedBox(height: 8),
-                  if (formState.errorMessage != null) ...[
+                  if (_errorMessage != null) ...[
                     const SizedBox(height: 8),
-                    _buildErrorMessage(context, formState.errorMessage!),
+                    _buildErrorMessage(context, _errorMessage!),
                   ],
                   const SizedBox(height: 24),
-                  _buildSignUpButton(context, ref, isLoading),
+                  _buildSignUpButton(context, isLoading),
                   const SizedBox(height: 16),
                   _buildSignInLink(context),
                 ],
@@ -99,16 +124,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     );
   }
 
-  Widget _buildNameField(
-    BuildContext context,
-    WidgetRef ref,
-    bool isLoading,
-    SignupFormStateModel formState,
-  ) {
+  Widget _buildNameField(BuildContext context, bool isLoading) {
     final l10n = L10n.of(context);
 
     return AnimatedTextField(
-      controller: formState.nameController,
+      controller: _nameController,
       labelText: l10n.name,
       hintText: l10n.nameDescription,
       keyboardType: TextInputType.name,
@@ -118,16 +138,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     );
   }
 
-  Widget _buildEmailField(
-    BuildContext context,
-    WidgetRef ref,
-    bool isLoading,
-    SignupFormStateModel formState,
-  ) {
+  Widget _buildEmailField(BuildContext context, bool isLoading) {
     final l10n = L10n.of(context);
 
     return AnimatedTextField(
-      controller: formState.emailController,
+      controller: _emailController,
       labelText: l10n.email,
       hintText: l10n.emailDescription,
       keyboardType: TextInputType.emailAddress,
@@ -137,64 +152,54 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     );
   }
 
-  Widget _buildPasswordField(
-    BuildContext context,
-    WidgetRef ref,
-    bool isLoading,
-    SignupFormStateModel formState,
-  ) {
+  Widget _buildPasswordField(BuildContext context, bool isLoading) {
     final l10n = L10n.of(context);
 
     return AnimatedTextField(
-      controller: formState.passwordController,
+      controller: _passwordController,
       labelText: l10n.password,
       hintText: l10n.passwordDescription,
-      obscureText: formState.obscurePassword,
+      obscureText: _obscurePassword,
       textInputAction: TextInputAction.next,
       validator: (value) => ValidationUtils.validatePassword(context, value),
       enabled: !isLoading,
       suffixIcon: IconButton(
-        icon: Icon(
-          formState.obscurePassword ? Icons.visibility : Icons.visibility_off,
-        ),
+        icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
         onPressed: () {
-          ref.read(signupFormProvider.notifier).toggleObscurePassword();
+          setState(() {
+            _obscurePassword = !_obscurePassword;
+          });
         },
       ),
     );
   }
 
-  Widget _buildConfirmPasswordField(
-    BuildContext context,
-    WidgetRef ref,
-    bool isLoading,
-    SignupFormStateModel formState,
-  ) {
+  Widget _buildConfirmPasswordField(BuildContext context, bool isLoading) {
     final l10n = L10n.of(context);
 
     return AnimatedTextField(
-      controller: formState.confirmPasswordController,
+      controller: _confirmPasswordController,
       labelText: l10n.confirmPassword,
       hintText: l10n.confirmPasswordDescription,
-      obscureText: formState.obscureConfirmPassword,
+      obscureText: _obscureConfirmPassword,
       textInputAction: TextInputAction.done,
       validator: (value) => ValidationUtils.validateConfirmPassword(
         context,
         value,
-        formState.passwordController.text,
+        _passwordController.text,
       ),
       enabled: !isLoading,
       suffixIcon: IconButton(
         icon: Icon(
-          formState.obscureConfirmPassword
-              ? Icons.visibility
-              : Icons.visibility_off,
+          _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
         ),
         onPressed: () {
-          ref.read(signupFormProvider.notifier).toggleObscureConfirmPassword();
+          setState(() {
+            _obscureConfirmPassword = !_obscureConfirmPassword;
+          });
         },
       ),
-      onSubmitted: () => handleSignUp(ref, context, _formKey),
+      onSubmitted: _handleSignUp,
     );
   }
 
@@ -214,18 +219,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     );
   }
 
-  Widget _buildSignUpButton(
-    BuildContext context,
-    WidgetRef ref,
-    bool isLoading,
-  ) {
+  Widget _buildSignUpButton(BuildContext context, bool isLoading) {
     final l10n = L10n.of(context);
     return SizedBox(
       width: double.infinity,
       child: ZoePrimaryButton(
         text: isLoading ? l10n.creatingAccount : l10n.signUp,
         isLoading: isLoading,
-        onPressed: () => handleSignUp(ref, context, _formKey),
+        onPressed: _handleSignUp,
       ),
     );
   }

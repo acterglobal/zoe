@@ -28,21 +28,3 @@ class AuthUserModel {
     );
   }
 }
-
-/// Represents the current authentication state
-sealed class AuthStateModel {
-  const AuthStateModel();
-}
-
-class AuthStateAuthenticated extends AuthStateModel {
-  final AuthUserModel user;
-  const AuthStateAuthenticated(this.user);
-}
-
-class AuthStateUnauthenticated extends AuthStateModel {
-  const AuthStateUnauthenticated();
-}
-
-class AuthStateLoading extends AuthStateModel {
-  const AuthStateLoading();
-}
