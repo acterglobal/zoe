@@ -1,0 +1,40 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "zoe-firebase-c9810",
+          "appId": "1:762703988712:android:6ef1c79ff8a5058f54465d",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "zoe-firebase-c9810",
+          "appId": "1:762703988712:ios:81e0fb0f4e1e32cd54465d",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "zoe-firebase-c9810",
+          "appId": "1:762703988712:ios:81e0fb0f4e1e32cd54465d",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "zoe-firebase-c9810",
+          "configurations": {
+            "android": "1:762703988712:android:6ef1c79ff8a5058f54465d",
+            "ios": "1:762703988712:ios:81e0fb0f4e1e32cd54465d",
+            "macos": "1:762703988712:ios:81e0fb0f4e1e32cd54465d",
+            "web": "1:762703988712:web:fb010b28b7d6035554465d"
+          }
+        }
+      }
+    }
+  }
+}
