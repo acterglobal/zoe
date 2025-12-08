@@ -57,26 +57,26 @@ class ZoePrimaryButton extends StatelessWidget {
           colors: primaryColor != null || secondaryColor != null
               ? [
                   effectivePrimaryColor,
-                  effectivePrimaryColor.withOpacity(0.4),
-                  effectiveSecondaryColor.withOpacity(0.2),
+                  effectivePrimaryColor.withValues(alpha: 0.4),
+                  effectiveSecondaryColor.withValues(alpha: 0.2),
                 ]
               : [
                   effectivePrimaryColor,
-                  effectivePrimaryColor.withOpacity(0.85),
-                  effectiveSecondaryColor.withOpacity(0.9),
+                  effectivePrimaryColor.withValues(alpha: 0.85),
+                  effectiveSecondaryColor.withValues(alpha: 0.9),
                 ],
           stops: const [0.0, 0.6, 1.0],
         ),
         border: Border.all(
-          color: Colors.white.withOpacity(isDark ? 0.2 : 0.3),
+          color: Colors.white.withValues(alpha: isDark ? 0.2 : 0.3),
           width: 1.5,
         ),
         boxShadow: [
           // Subtle elevation shadow
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.3)
-                : Colors.black.withOpacity(0.08),
+                ? Colors.black.withValues(alpha: 0.3)
+                : Colors.black.withValues(alpha: 0.08),
             blurRadius: 8,
             offset: const Offset(0, 4),
             spreadRadius: 0,
@@ -84,8 +84,8 @@ class ZoePrimaryButton extends StatelessWidget {
           // Very subtle depth
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.2)
-                : Colors.black.withOpacity(0.04),
+                ? Colors.black.withValues(alpha: 0.2)
+                : Colors.black.withValues(alpha: 0.04),
             blurRadius: 16,
             offset: const Offset(0, 6),
             spreadRadius: 0,
@@ -123,7 +123,7 @@ class ZoePrimaryButton extends StatelessWidget {
                       color: Colors.white,
                       shadows: [
                         Shadow(
-                          color: Colors.black.withOpacity(0.3),
+                          color: Colors.black.withValues(alpha: 0.3),
                           offset: const Offset(0, 1),
                           blurRadius: 2,
                         ),
@@ -140,7 +140,7 @@ class ZoePrimaryButton extends StatelessWidget {
                         letterSpacing: 0.2,
                         shadows: [
                           Shadow(
-                            color: Colors.black.withOpacity(0.3),
+                            color: Colors.black.withValues(alpha: 0.3),
                             offset: const Offset(0, 1),
                             blurRadius: 2,
                           ),
@@ -159,12 +159,12 @@ class ZoePrimaryButton extends StatelessWidget {
     if (showShimmer) {
       return ShimmerOverlay(
         borderRadius: effectiveBorderRadius,
-        duration: shimmerDuration,
+        duration: shimmerDuration, 
         shimmerColors: [
           Colors.transparent,
-          Colors.white.withOpacity(0.04),
-          Colors.white.withOpacity(0.08),
-          Colors.white.withOpacity(0.04),
+          Colors.white.withValues(alpha: 0.04),
+          Colors.white.withValues(alpha: 0.08),
+          Colors.white.withValues(alpha: 0.04),
           Colors.transparent,
         ],
         child: buttonWidget,
