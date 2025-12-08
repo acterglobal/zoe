@@ -12,7 +12,7 @@ Future<void> handleSignIn(
   GlobalKey<FormState> formKey,
 ) async {
   // Validate form first
-  if (!formKey.currentState!.validate()) {
+  if (formKey.currentState?.validate() == false) {
     return;
   }
 

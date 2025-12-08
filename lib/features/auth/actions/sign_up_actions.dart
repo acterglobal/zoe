@@ -14,7 +14,7 @@ Future<void> handleSignUp(
   GlobalKey<FormState> formKey,
 ) async {
   // Validate form first
-  if (!formKey.currentState!.validate()) {
+  if (formKey.currentState?.validate() == false) {
     return;
   }
 
@@ -39,7 +39,7 @@ Future<void> handleSignUp(
   } catch (e) {
     if (!context.mounted) return;
     ref
-        .read(loginFormProvider.notifier)
+        .read(signupFormProvider.notifier)
         .setError(e.toString().replaceAll('Exception: ', ''));
   }
 }
