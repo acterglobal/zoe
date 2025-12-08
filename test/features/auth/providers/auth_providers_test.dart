@@ -4,21 +4,24 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:zoe/features/auth/models/auth_state_model.dart';
+import 'package:zoe/common/providers/service_providers.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/features/auth/services/auth_service.dart';
 
+import '../../../test-utils/mock_preferences.dart';
 import '../utils/auth_utils.dart';
 
 void main() {
   group('Auth Providers', () {
     late ProviderContainer container;
     late MockAuthService mockAuthService;
+    late MockPreferencesService mockPreferencesService;
     late MockUser mockUser;
     late MockUserCredential mockUserCredential;
 
-    setUp(() {  
+    setUp(() {
       mockAuthService = MockAuthService();
+      mockPreferencesService = MockPreferencesService();
       mockUser = MockUser();
       mockUserCredential = MockUserCredential();
 
@@ -32,30 +35,52 @@ void main() {
         () => mockAuthService.authStateChanges,
       ).thenAnswer((_) => Stream.value(null));
 
+      // Mock PreferencesService methods
+      when(
+        () => mockPreferencesService.setLoginUserId(any()),
+      ).thenAnswer((_) async => true);
+      when(
+        () => mockPreferencesService.clearLoginUserId(),
+      ).thenAnswer((_) async => true);
+      when(
+        () => mockPreferencesService.getLoginUserId(),
+      ).thenAnswer((_) async => null);
+
       container = ProviderContainer.test(
-        overrides: [authServiceProvider.overrideWithValue(mockAuthService)],
+        overrides: [
+          authServiceProvider.overrideWithValue(mockAuthService),
+          preferencesServiceProvider.overrideWithValue(mockPreferencesService),
+        ],
       );
     });
 
     group('AuthState', () {
-      test('initializes with unauthenticated state when no user', () {
-        final state = container.read(authStateProvider);
-        expect(state, isA<AuthStateUnauthenticated>());
+      test('initializes with null (unauthenticated) when no user', () async {
+        final state = await container.read(authStateProvider.future);
+        expect(state, isNull);
       });
 
-      test('initializes with authenticated state when user exists', () {
+      test('initializes with user model when user exists', () async {
         when(() => mockAuthService.currentUser).thenReturn(mockUser);
+        when(
+          () => mockAuthService.authStateChanges,
+        ).thenAnswer((_) => Stream.value(mockUser));
 
         final newContainer = ProviderContainer.test(
-          overrides: [authServiceProvider.overrideWithValue(mockAuthService)],
+          overrides: [
+            authServiceProvider.overrideWithValue(mockAuthService),
+            preferencesServiceProvider.overrideWithValue(
+              mockPreferencesService,
+            ),
+          ],
         );
 
-        final state = newContainer.read(authStateProvider);
-        expect(state, isA<AuthStateAuthenticated>());
-        expect((state as AuthStateAuthenticated).user.uid, 'test-uid');
-        expect(state.user.email, 'test@example.com');
-      }); 
- 
+        final state = await newContainer.read(authStateProvider.future);
+        expect(state, isNotNull);
+        expect(state?.uid, 'test-uid');
+        expect(state?.email, 'test@example.com');
+      });
+
       test('updates to authenticated state on successful sign in', () async {
         when(
           () => mockAuthService.signIn(
@@ -105,38 +130,7 @@ void main() {
         ).called(1);
       });
 
-      test('sets loading state during sign in', () async {
-        final controller = StreamController<firebase_auth.User?>();
-        when(
-          () => mockAuthService.authStateChanges,
-        ).thenAnswer((_) => controller.stream);
-
-        when(
-          () => mockAuthService.signIn(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ),
-        ).thenAnswer((_) async {
-          await Future.delayed(const Duration(milliseconds: 100));
-          return mockUserCredential;
-        });
-
-        final notifier = container.read(authStateProvider.notifier);
-        final future = notifier.signIn(
-          email: 'test@example.com',
-          password: 'password123',
-        );
-
-        // Check loading state immediately
-        await Future.delayed(const Duration(milliseconds: 10));
-        final state = container.read(authStateProvider);
-        expect(state, isA<AuthStateLoading>());
-
-        await future;
-        controller.close();
-      });
-
-      test('sets unauthenticated state on sign in error', () async {
+      test('sets error state on sign in error', () async {
         when(
           () => mockAuthService.signIn(
             email: any(named: 'email'),
@@ -154,11 +148,11 @@ void main() {
           throwsA(isA<Exception>()),
         );
 
-        final state = container.read(authStateProvider);
-        expect(state, isA<AuthStateUnauthenticated>());
+        final asyncState = container.read(authStateProvider);
+        expect(asyncState.hasError, isTrue);
       });
 
-      test('sets unauthenticated state on sign up error', () async {
+      test('sets error state on sign up error', () async {
         when(
           () => mockAuthService.signUp(
             email: any(named: 'email'),
@@ -178,8 +172,8 @@ void main() {
           throwsA(isA<Exception>()),
         );
 
-        final state = container.read(authStateProvider);
-        expect(state, isA<AuthStateUnauthenticated>());
+        final asyncState = container.read(authStateProvider);
+        expect(asyncState.hasError, isTrue);
       });
 
       test('calls sign out on auth service', () async {
@@ -199,69 +193,91 @@ void main() {
         when(() => mockAuthService.currentUser).thenReturn(null);
 
         final newContainer = ProviderContainer.test(
-          overrides: [authServiceProvider.overrideWithValue(mockAuthService)],
+          overrides: [
+            authServiceProvider.overrideWithValue(mockAuthService),
+            preferencesServiceProvider.overrideWithValue(
+              mockPreferencesService,
+            ),
+          ],
         );
 
-        // Initial state
-        expect(
-          newContainer.read(authStateProvider),
-          isA<AuthStateUnauthenticated>(),
-        );
+        // Initial state - wait for build to complete
+        final initialState = await newContainer.read(authStateProvider.future);
+        expect(initialState, isNull);
 
         // Emit authenticated user
         controller.add(mockUser);
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future.delayed(const Duration(milliseconds: 50));
 
         // State should update to authenticated
-        expect(
-          newContainer.read(authStateProvider),
-          isA<AuthStateAuthenticated>(),
-        );
+        final authState = newContainer.read(authStateProvider);
+        expect(authState.hasValue, isTrue);
+        expect(authState.value, isNotNull);
+        expect(authState.value?.uid, 'test-uid');
 
         // Emit null (sign out)
         controller.add(null);
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future.delayed(const Duration(milliseconds: 50));
 
         // State should update to unauthenticated
-        expect(
-          newContainer.read(authStateProvider),
-          isA<AuthStateUnauthenticated>(),
-        );
+        final signedOutState = newContainer.read(authStateProvider);
+        expect(signedOutState.hasValue, isTrue);
+        expect(signedOutState.value, isNull);
+
+        await controller.close();
       });
     });
 
-    group('isAuthenticated Provider', () {
-      test('returns false when unauthenticated', () {
-        final isAuth = container.read(isAuthenticatedProvider);
+    group('isAuthenticated check', () {
+      test('returns false when unauthenticated', () async {
+        final user = await container.read(authStateProvider.future);
+        final isAuth = user != null;
         expect(isAuth, isFalse);
       });
 
-      test('returns true when authenticated', () {
+      test('returns true when authenticated', () async {
         when(() => mockAuthService.currentUser).thenReturn(mockUser);
+        when(
+          () => mockAuthService.authStateChanges,
+        ).thenAnswer((_) => Stream.value(mockUser));
 
         final newContainer = ProviderContainer.test(
-          overrides: [authServiceProvider.overrideWithValue(mockAuthService)],
+          overrides: [
+            authServiceProvider.overrideWithValue(mockAuthService),
+            preferencesServiceProvider.overrideWithValue(
+              mockPreferencesService,
+            ),
+          ],
         );
 
-        final isAuth = newContainer.read(isAuthenticatedProvider);
+        final user = await newContainer.read(authStateProvider.future);
+        final isAuth = user != null;
         expect(isAuth, isTrue);
       });
     });
 
-    group('currentUser Provider', () {
-      test('returns null when unauthenticated', () {
-        final user = container.read(currentUserProvider);
+    group('currentUser check', () {
+      test('returns null when unauthenticated', () async {
+        final user = await container.read(authStateProvider.future);
         expect(user, isNull);
       });
 
-      test('returns user model when authenticated', () {
+      test('returns user model when authenticated', () async {
         when(() => mockAuthService.currentUser).thenReturn(mockUser);
+        when(
+          () => mockAuthService.authStateChanges,
+        ).thenAnswer((_) => Stream.value(mockUser));
 
         final newContainer = ProviderContainer.test(
-          overrides: [authServiceProvider.overrideWithValue(mockAuthService)],
+          overrides: [
+            authServiceProvider.overrideWithValue(mockAuthService),
+            preferencesServiceProvider.overrideWithValue(
+              mockPreferencesService,
+            ),
+          ],
         );
 
-        final user = newContainer.read(currentUserProvider);
+        final user = await newContainer.read(authStateProvider.future);
         expect(user, isNotNull);
         expect(user?.uid, 'test-uid');
         expect(user?.email, 'test@example.com');
@@ -270,27 +286,43 @@ void main() {
     });
 
     group('Edge Cases', () {
-      test('handles null display name', () {
+      test('handles null display name', () async {
         when(() => mockUser.displayName).thenReturn(null);
         when(() => mockAuthService.currentUser).thenReturn(mockUser);
+        when(
+          () => mockAuthService.authStateChanges,
+        ).thenAnswer((_) => Stream.value(mockUser));
 
         final newContainer = ProviderContainer.test(
-          overrides: [authServiceProvider.overrideWithValue(mockAuthService)],
+          overrides: [
+            authServiceProvider.overrideWithValue(mockAuthService),
+            preferencesServiceProvider.overrideWithValue(
+              mockPreferencesService,
+            ),
+          ],
         );
 
-        final user = newContainer.read(currentUserProvider);
+        final user = await newContainer.read(authStateProvider.future);
         expect(user?.displayName, isNull);
       });
 
-      test('handles empty email', () {
+      test('handles empty email', () async {
         when(() => mockUser.email).thenReturn('');
         when(() => mockAuthService.currentUser).thenReturn(mockUser);
+        when(
+          () => mockAuthService.authStateChanges,
+        ).thenAnswer((_) => Stream.value(mockUser));
 
         final newContainer = ProviderContainer.test(
-          overrides: [authServiceProvider.overrideWithValue(mockAuthService)],
+          overrides: [
+            authServiceProvider.overrideWithValue(mockAuthService),
+            preferencesServiceProvider.overrideWithValue(
+              mockPreferencesService,
+            ),
+          ],
         );
 
-        final user = newContainer.read(currentUserProvider);
+        final user = await newContainer.read(authStateProvider.future);
         expect(user?.email, '');
       });
 

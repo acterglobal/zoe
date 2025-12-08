@@ -1,7 +1,6 @@
-
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:zoe/core/preference_service/preferences_service.dart';
+import '../../../common/providers/service_providers.dart';
 import '../models/auth_user_model.dart';
 import '../services/auth_service.dart';
 
@@ -15,7 +14,7 @@ class AuthState extends _$AuthState {
   @override
   Future<AuthUserModel?> build() async {
     final authService = ref.watch(authServiceProvider);
-    final prefsService = PreferencesService();
+    final prefsService = ref.watch(preferencesServiceProvider);
 
     // Get the current auth state directly
     final firebaseUser = authService.currentUser;
@@ -40,12 +39,17 @@ class AuthState extends _$AuthState {
           _logger.info('Cleared user ID from preferences.');
         }
 
+        // Check if provider is still mounted before updating state
+        if (!ref.mounted) return;
+
         state = AsyncValue.data(
           user == null ? null : AuthUserModel.fromFirebaseUser(user),
         );
       },
       onError: (e, s) {
         _logger.severe('Auth state stream error: $e');
+        // Check if provider is still mounted before updating state
+        if (!ref.mounted) return;
         state = AsyncValue.error(e, s);
       },
     );
