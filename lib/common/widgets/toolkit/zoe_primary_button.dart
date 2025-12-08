@@ -15,6 +15,7 @@ class ZoePrimaryButton extends StatelessWidget {
   final Duration shimmerDuration;
   final double height;
   final double? width;
+  final bool isLoading;
 
   const ZoePrimaryButton({
     super.key,
@@ -30,6 +31,7 @@ class ZoePrimaryButton extends StatelessWidget {
     this.shimmerDuration = const Duration(seconds: 3),
     this.height = 56,
     this.width,
+    this.isLoading = false,
   });
 
   @override
@@ -94,7 +96,7 @@ class ZoePrimaryButton extends StatelessWidget {
         color: Colors.transparent,
         borderRadius: effectiveBorderRadius,
         child: InkWell(
-          onTap: onPressed,
+          onTap: isLoading ? null : onPressed,
           borderRadius: effectiveBorderRadius,
           child: Container(
             width: width,
@@ -105,7 +107,16 @@ class ZoePrimaryButton extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (icon != null) ...[
+                  if (isLoading)
+                    const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  else if (icon != null) ...[
                     Icon(
                       icon,
                       size: 20,
@@ -118,23 +129,25 @@ class ZoePrimaryButton extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(width: 12),
                   ],
-                  Text(
-                    text ?? L10n.of(context).primaryButton,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.2,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black.withValues(alpha: 0.3),
-                          offset: const Offset(0, 1),
-                          blurRadius: 2,
-                        ),
-                      ],
+                  if (text != null) ...[
+                    const SizedBox(width: 12),
+                    Text(
+                      text!,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.2,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withValues(alpha: 0.3),
+                            offset: const Offset(0, 1),
+                            blurRadius: 2,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             ),
@@ -146,7 +159,7 @@ class ZoePrimaryButton extends StatelessWidget {
     if (showShimmer) {
       return ShimmerOverlay(
         borderRadius: effectiveBorderRadius,
-        duration: shimmerDuration,
+        duration: shimmerDuration, 
         shimmerColors: [
           Colors.transparent,
           Colors.white.withValues(alpha: 0.04),

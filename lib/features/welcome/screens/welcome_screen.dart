@@ -6,7 +6,8 @@ import 'package:zoe/common/widgets/app_icon_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/core/routing/app_routes.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
+import '../../../l10n/generated/l10n.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 
 class WelcomeScreen extends ConsumerStatefulWidget {
   const WelcomeScreen({super.key});
@@ -22,8 +23,8 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
       body: AnimatedBackgroundWidget(
         child: SafeArea(
           child: Center(
-          child: MaxWidthWidget(
-            padding: const EdgeInsets.all(24),
+            child: MaxWidthWidget(
+              padding: const EdgeInsets.all(24),
               child: _buildWelcomeBodyUI(),
             ),
           ),
@@ -67,7 +68,16 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
       width: double.infinity,
       child: ZoePrimaryButton(
         text: L10n.of(context).getStarted,
-        onPressed: () => context.go(AppRoutes.home.route),
+        onPressed: () async {
+          final isUserLoggedIn = await ref.read(isUserLoggedInProvider.future);
+          if (mounted) {  
+            if (isUserLoggedIn) {
+              context.go(AppRoutes.home.route);
+            } else {
+              context.push(AppRoutes.login.route);
+            } 
+          }
+        },
       ),
     );
   }

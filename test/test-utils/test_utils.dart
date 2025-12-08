@@ -15,7 +15,7 @@ extension WidgetTesterExtension on WidgetTester {
     await pumpWidget(
       MaterialApp(
         locale: const Locale('en'),
-        theme: theme ?? ThemeData.light(),
+        theme: theme ?? ThemeData(useMaterial3: false),
         localizationsDelegates: [
           L10n.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -43,7 +43,7 @@ extension WidgetTesterExtension on WidgetTester {
         container: container,
         child: MaterialApp(
           locale: const Locale('en'),
-          theme: theme ?? ThemeData.light(),
+          theme: theme ?? ThemeData(useMaterial3: false),
           localizationsDelegates: [
             L10n.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -81,14 +81,27 @@ extension WidgetTesterExtension on WidgetTester {
     required String buttonText,
     required Function(BuildContext, WidgetRef) onPressed,
     GoRouter? router,
+    GlobalKey<FormState>? formKey,
   }) async {
     await pumpConsumerWidget(
       container: container,
       router: router,
-      builder: (context, ref, child) => ElevatedButton(
-        onPressed: () => onPressed(context, ref),
-        child: Text(buttonText),
-      ),
+      builder: (context, ref, child) {
+        final button = ElevatedButton(
+          onPressed: () => onPressed(context, ref),
+          child: Text(buttonText),
+        );
+        
+        // Wrap in Form if formKey is provided
+        if (formKey != null) {
+          return Form(
+            key: formKey,
+            child: button,
+          );
+        }
+        
+        return button;
+      },
     );
   }
 

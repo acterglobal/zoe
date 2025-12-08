@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:zoe/core/preference_service/preferences_service.dart';
+import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/features/users/data/user_list.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
@@ -45,13 +45,9 @@ Future<bool> isUserLoggedIn(Ref ref) async {
 /// Provider for the logged-in user ID
 @riverpod
 Future<String?> loggedInUser(Ref ref) async {
-  final defaultUser = 'user_1';
-  final prefsService = PreferencesService();
-  final userId = await prefsService.getLoginUserId();
-  if (userId == null || userId.isEmpty) {
-    await prefsService.setLoginUserId(defaultUser);
-  }
-  return userId ?? defaultUser;
+  // Watch authStateProvider to get real-time auth state from Firebase
+  final authUser = await ref.watch(authStateProvider.future);
+  return authUser?.uid;
 }
 
 /// Provider for the current user model

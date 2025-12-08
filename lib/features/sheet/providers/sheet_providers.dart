@@ -136,7 +136,11 @@ class SheetList extends _$SheetList {
   }
 }
 
+/// ID of the default Getting Started sheet that should be visible to all users
+const String kGettingStartedSheetId = 'sheet-1';
+
 /// Provider for sheets filtered by membership (current user must be a member)
+/// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
 @riverpod
 List<SheetModel> sheetsList(Ref ref) {
   final allSheets = ref.watch(sheetListProvider);
@@ -145,8 +149,10 @@ List<SheetModel> sheetsList(Ref ref) {
   // If no user, show nothing
   if (currentUserId == null || currentUserId.isEmpty) return [];
 
-  // Filter by membership
-  return allSheets.where((s) => s.users.contains(currentUserId)).toList();
+  // Filter by membership, but always include the Getting Started sheet
+  return allSheets.where((s) =>
+    s.id == kGettingStartedSheetId || s.users.contains(currentUserId)
+  ).toList();
 }
 
 /// Provider for searching sheets

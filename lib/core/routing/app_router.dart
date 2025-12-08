@@ -19,7 +19,7 @@ import 'package:zoe/features/quick-search/screens/quick_search_screen.dart';
 import 'package:zoe/features/settings/screens/settings_screen.dart';
 import 'package:zoe/features/settings/screens/language_selection_screen.dart';
 import 'package:zoe/features/settings/screens/developer_tools_screen.dart';
-import 'package:zoe/features/settings/screens/systems_test_screen.dart';
+// import 'package:zoe/features/settings/screens/systems_test_screen.dart';
 import 'package:zoe/features/sheet/screens/sheet_detail_screen.dart';
 import 'package:zoe/features/sheet/screens/sheet_list_screen.dart';
 import 'package:zoe/features/task/screens/task_detail_screen.dart';
@@ -28,6 +28,8 @@ import 'package:zoe/features/text/screens/text_block_details_screen.dart';
 import 'package:zoe/features/welcome/screens/welcome_screen.dart';
 import 'package:zoe/features/whatsapp/screens/whatsapp_group_connect_screen.dart';
 import 'package:zoe/features/documents/screens/document_preview_screen.dart';
+import 'package:zoe/features/auth/screens/login_screen.dart';
+import 'package:zoe/features/auth/screens/signup_screen.dart';
 import 'app_routes.dart';
 
 // Global navigator key for accessing the router
@@ -36,7 +38,6 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 // AppLinks provider for dependency injection (allows mocking in tests)
 final appLinksProvider = Provider<AppLinks>((ref) => AppLinks());
 
-// Router provider that always starts with welcome screen
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
@@ -47,6 +48,20 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.welcome.route,
         name: AppRoutes.welcome.name,
         builder: (context, state) => const WelcomeScreen(),
+      ),
+
+      // Login route
+      GoRoute(
+        path: AppRoutes.login.route,
+        name: AppRoutes.login.name,
+        builder: (context, state) => LoginScreen(),
+      ),
+
+      // Signup route
+      GoRoute(
+        path: AppRoutes.signup.route,
+        name: AppRoutes.signup.name,
+        builder: (context, state) => const SignupScreen(),
       ),
 
       // Home route
