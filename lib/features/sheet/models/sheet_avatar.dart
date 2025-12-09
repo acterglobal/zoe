@@ -21,6 +21,29 @@ class SheetAvatar {
     );
   }
 
+  /// Convert to JSON for Firestore
+  Map<String, dynamic> toJson() {
+    return {
+      'type': type.name,
+      'data': data,
+      if (color != null) 'color': '#${color!.value.toRadixString(16).padLeft(8, '0')}',
+    };
+  }
+
+  /// Create from JSON from Firestore
+  factory SheetAvatar.fromJson(Map<String, dynamic> json) {
+    return SheetAvatar(
+      type: AvatarType.values.firstWhere(
+        (e) => e.name == json['type'],
+        orElse: () => AvatarType.icon,
+      ),
+      data: json['data'] as String? ?? 'file',
+      color: json['color'] != null
+          ? Color(int.parse((json['color'] as String).substring(1), radix: 16))
+          : null,
+    );
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

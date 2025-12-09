@@ -10,8 +10,11 @@ import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_item_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
+import '../../../common/widgets/state_widgets/error_state_widget.dart';
+import '../../../common/widgets/state_widgets/loading_state_widget.dart';
+
 class SheetListWidget extends ConsumerWidget {
-  final ProviderListenable<List<SheetModel>> sheetsProvider;
+  final ProviderListenable<AsyncValue<List<SheetModel>>> sheetsProvider;
   final bool shrinkWrap;
   final bool isCompact;
   final int? maxItems;
@@ -30,26 +33,36 @@ class SheetListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sheetList = ref.watch(sheetsProvider);
-    if (sheetList.isEmpty) {
-      return emptyState;
-    }
+    final sheetsAsync = ref.watch(sheetsProvider);
 
-    if (showSectionHeader) {
-      return Column(
-        children: [
-          _buildSectionHeader(context),
-          const SizedBox(height: 16),
-          _buildSheetList(context, ref, sheetList),
-        ],
-      );
-    }
+    return sheetsAsync.when(
+      data: (sheetList) {
+        if (sheetList.isEmpty) {
+          return emptyState;
+        }
 
-    return _buildSheetList(context, ref, sheetList);
+        if (showSectionHeader) {
+          return Column(
+            children: [
+              _buildSectionHeader(context),
+              const SizedBox(height: 16),
+              _buildSheetList(context, ref, sheetList),
+            ],
+          );
+        }
+
+        return _buildSheetList(context, ref, sheetList);
+      },
+      loading: () => LoadingStateWidget(),
+      error: (error, stack) => ErrorStateWidget(message: error.toString()),
+    );
   }
 
-  Widget _buildSheetList(BuildContext context, WidgetRef ref, List<SheetModel> sheetList) {
-
+  Widget _buildSheetList(
+    BuildContext context,
+    WidgetRef ref,
+    List<SheetModel> sheetList,
+  ) {
     final itemCount = maxItems != null
         ? min(maxItems!, sheetList.length)
         : sheetList.length;

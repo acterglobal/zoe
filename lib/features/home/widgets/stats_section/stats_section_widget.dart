@@ -17,12 +17,19 @@ class StatsSectionWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sheetList = ref.watch(sheetsListProvider);
+    final sheetListAsync = ref.watch(sheetsListProvider);
     final eventList = ref.watch(eventsListProvider);
     final taskList = ref.watch(tasksListProvider);
     final linkList = ref.watch(linkListProvider);
     final documentList = ref.watch(documentListProvider);
     final pollList = ref.watch(pollsListProvider);
+    
+    final sheetCount = sheetListAsync.when(
+      data: (sheets) => sheets.length.toString(),
+      loading: () => '0',
+      error: (_, __) => '0',
+    );
+    
     return Column(
       children: [
         // Top row: Sheets and Events
@@ -31,7 +38,7 @@ class StatsSectionWidget extends ConsumerWidget {
             Expanded(
               child: StatsWidget(
                 icon: Icons.article_rounded,
-                count: sheetList.length.toString(),
+                count: sheetCount,
                 title: L10n.of(context).sheets,
                 color: AppColors.primaryColor,
                 onTap: () => context.push(AppRoutes.sheetsList.route),

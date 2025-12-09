@@ -1,196 +1,345 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
-import 'package:zoe/features/sheet/data/sheet_data.dart';
+import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'sheet_providers.g.dart';
 
-/// Main sheet list provider with all sheet management functionality
+/// Firebase reference
+final firestoreProvider = Provider<FirebaseFirestore>((ref) {
+  return FirebaseFirestore.instance;
+});
+
 @Riverpod(keepAlive: true)
 class SheetList extends _$SheetList {
+  CollectionReference<Map<String, dynamic>> get col =>
+      ref.read(firestoreProvider).collection('sheets');
+
   @override
-  List<SheetModel> build() => sheetList;
+  Future<List<SheetModel>> build() async {
+    final userId = ref.watch(loggedInUserProvider).value;
+    if (userId == null) return [];
 
-  void addSheet(SheetModel sheet) {
-    final currentUserId = ref.read(loggedInUserProvider).value;
-    var newSheet = sheet;
+    final userSheetsFuture = col.where('users', arrayContains: userId).get();
 
-    // Apply default theme if sheet doesn't have one
-    if (newSheet.theme == null) {
-      newSheet = newSheet.copyWith(
-        theme: SheetTheme(
-          primary: AppColors.primaryColor,
-          secondary: AppColors.secondaryColor,
+    final gettingStartedFuture = col.doc(kGettingStartedSheetId).get();
+
+    final results = await Future.wait([userSheetsFuture, gettingStartedFuture]);
+
+    final userSheets = results[0] as QuerySnapshot<Map<String, dynamic>>;
+    final gsDoc = results[1] as DocumentSnapshot<Map<String, dynamic>>;
+
+    final map = <String, SheetModel>{};
+
+    // User sheets
+    for (final doc in userSheets.docs) {
+      try {
+        final sheet = SheetModel.fromJson(doc.data());
+        map[sheet.id] = sheet;
+      } catch (_) {}
+    }
+
+    // Getting Started sheet
+    if (gsDoc.exists && gsDoc.data() != null) {
+      try {
+        final s = SheetModel.fromJson(gsDoc.data()!);
+        map[s.id] = s;
+      } catch (_) {}
+    } else {
+      // Auto-create getting started
+      final gs = SheetModel(
+        id: kGettingStartedSheetId,
+        title: 'Getting Started Guide',
+        createdBy: 'system',
+        sheetAvatar: SheetAvatar(
+          type: AvatarType.icon,
+          data: ZoeIcon.book.name,
+          color: const Color(0xFF6366F1),
+        ),
+        coverImageUrl:
+            'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_1280.jpg',
+        description: (
+          plainText:
+              'Your complete introduction to Zoe! This interactive guide helps you start quickly.',
+          htmlText:
+              '<p>Your complete introduction to <strong>Zoe</strong>!</p>',
         ),
       );
+
+      try {
+        await col.doc(gs.id).set(gs.toJson());
+        map[gs.id] = gs;
+      } catch (_) {}
     }
 
-    if (currentUserId != null && currentUserId.isNotEmpty) {
-      state = [
-        ...state,
-        newSheet.copyWith(users: [currentUserId], createdBy: currentUserId),
-      ];
-    } else {
-      state = [...state, newSheet];
+    // Sort
+    final items = map.values.toList()
+      ..sort((a, b) {
+        if (a.id == kGettingStartedSheetId) return -1;
+        if (b.id == kGettingStartedSheetId) return 1;
+        return a.title.compareTo(b.title);
+      });
+
+    return items;
+  }
+
+  // ─────────────────────────────────────
+  // Helpers
+  // ─────────────────────────────────────
+
+  /// Updates local list safely
+  void _updateLocalState(List<SheetModel> Function(List<SheetModel>) update) {
+    final prev = state.value ?? [];
+    state = AsyncValue.data(update(prev));
+  }
+
+  /// Firestore update wrapper with revert safety
+  Future<void> _safeUpdate(Future<void> Function() action) async {
+    final prev = state;
+    try {
+      await action();
+    } catch (e) {
+      state = prev; // Revert
+      rethrow;
     }
   }
 
-  void deleteSheet(String sheetId) {
-    state = state.where((s) => s.id != sheetId).toList();
+  // ─────────────────────────────────────
+  // CRUD Operations
+  // ─────────────────────────────────────
+
+  Future<void> addSheet(SheetModel sheet) async {
+    final userId = ref.read(loggedInUserProvider).value;
+    var s = sheet;
+
+    s = s.copyWith(
+      theme:
+          s.theme ??
+          SheetTheme(
+            primary: AppColors.primaryColor,
+            secondary: AppColors.secondaryColor,
+          ),
+      users: [if (userId != null) userId],
+      createdBy: userId,
+    );
+
+    _updateLocalState((list) => [...list, s]);
+
+    await _safeUpdate(() async {
+      await col.doc(s.id).set(s.toJson());
+    });
   }
 
-  void updateSheetTitle(String sheetId, String title) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId) sheet.copyWith(title: title) else sheet,
-    ];
+  Future<void> deleteSheet(String sheetId) async {
+    _updateLocalState((list) => list.where((s) => s.id != sheetId).toList());
+
+    await _safeUpdate(() async {
+      await col.doc(sheetId).delete();
+    });
   }
 
-  void updateSheetCoverImage(String sheetId, String? coverImageUrl) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          if (coverImageUrl == null)
-            sheet.removeCoverImage()
+  Future<void> updateSheetTitle(String sheetId, String title) async {
+    _updateLocalState(
+      (list) => [
+        for (final s in list)
+          if (s.id == sheetId) s.copyWith(title: title) else s,
+      ],
+    );
+
+    await _safeUpdate(() async {
+      await col.doc(sheetId).update({
+        'title': title,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    });
+  }
+
+  Future<void> updateSheetCoverImage(String sheetId, String? url) async {
+    _updateLocalState(
+      (list) => [
+        for (final s in list)
+          if (s.id == sheetId)
+            url == null ? s.removeCoverImage() : s.copyWith(coverImageUrl: url)
           else
-            sheet.copyWith(coverImageUrl: coverImageUrl)
+            s,
+      ],
+    );
+
+    await _safeUpdate(() async {
+      await col.doc(sheetId).update({
+        if (url == null)
+          'coverImageUrl': FieldValue.delete()
         else
-          sheet,
-    ];
+          'coverImageUrl': url,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    });
   }
 
-  void updateSheetDescription(String sheetId, Description description) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(description: description)
-        else
-          sheet,
-    ];
+  Future<void> updateSheetDescription(String sheetId, Description desc) async {
+    _updateLocalState(
+      (list) => [
+        for (final s in list)
+          if (s.id == sheetId) s.copyWith(description: desc) else s,
+      ],
+    );
+
+    await _safeUpdate(() async {
+      await col.doc(sheetId).update({
+        'description': {'plainText': desc.plainText, 'htmlText': desc.htmlText},
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    });
   }
 
-  void updateSheetAvatar({
+  Future<void> updateSheetAvatar({
     required String sheetId,
     required AvatarType type,
     required String data,
     Color? color,
-  }) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(
-            sheetAvatar: sheet.sheetAvatar.copyWith(
-              type: type,
-              data: data,
-              color: color,
-            ),
-          )
-        else
-          sheet,
-    ];
+  }) async {
+    _updateLocalState(
+      (list) => [
+        for (final s in list)
+          if (s.id == sheetId)
+            s.copyWith(
+              sheetAvatar: s.sheetAvatar.copyWith(
+                type: type,
+                data: data,
+                color: color,
+              ),
+            )
+          else
+            s,
+      ],
+    );
+
+    await _safeUpdate(() async {
+      final sheet = state.value!.firstWhere((s) => s.id == sheetId);
+      await col.doc(sheetId).update({
+        'sheetAvatar': sheet.sheetAvatar.toJson(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    });
   }
 
   Future<void> addUserToSheet(String sheetId, String userId) async {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(users: {...sheet.users, userId}.toList())
-        else
-          sheet,
-    ];
+    _updateLocalState(
+      (list) => [
+        for (final s in list)
+          if (s.id == sheetId)
+            s.copyWith(users: {...s.users, userId}.toList())
+          else
+            s,
+      ],
+    );
+
+    await _safeUpdate(() async {
+      await col.doc(sheetId).update({
+        'users': FieldValue.arrayUnion([userId]),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    });
   }
 
-  void updateSheetShareInfo({
+  Future<void> updateSheetShareInfo({
     required String sheetId,
     String? sharedBy,
     String? message,
-  }) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(sharedBy: sharedBy, message: message)
-        else
-          sheet,
-    ];
+  }) async {
+    _updateLocalState(
+      (list) => [
+        for (final s in list)
+          if (s.id == sheetId)
+            s.copyWith(sharedBy: sharedBy, message: message)
+          else
+            s,
+      ],
+    );
+
+    await _safeUpdate(() async {
+      final updateMap = <String, dynamic>{
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+      if (sharedBy != null) updateMap['sharedBy'] = sharedBy;
+      if (message != null) updateMap['message'] = message;
+
+      await col.doc(sheetId).update(updateMap);
+    });
   }
 
-  void updateSheetTheme({
+  Future<void> updateSheetTheme({
     required String sheetId,
     required Color primary,
     required Color secondary,
-  }) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(
-            theme: SheetTheme(primary: primary, secondary: secondary),
-          )
-        else
-          sheet,
-    ];
+  }) async {
+    _updateLocalState(
+      (list) => [
+        for (final s in list)
+          if (s.id == sheetId)
+            s.copyWith(
+              theme: SheetTheme(primary: primary, secondary: secondary),
+            )
+          else
+            s,
+      ],
+    );
+
+    await _safeUpdate(() async {
+      final sheet = state.value!.firstWhere((s) => s.id == sheetId);
+      await col.doc(sheetId).update({
+        'theme': sheet.theme?.toJson(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    });
   }
 }
 
-/// ID of the default Getting Started sheet that should be visible to all users
+/// Default Getting Started Sheet ID
 const String kGettingStartedSheetId = 'sheet-1';
 
-/// Provider for sheets filtered by membership (current user must be a member)
-/// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
+/// Filters by membership
 @riverpod
-List<SheetModel> sheetsList(Ref ref) {
-  final allSheets = ref.watch(sheetListProvider);
-  final currentUserId = ref.watch(loggedInUserProvider).value;
-
-  // If no user, show nothing
-  if (currentUserId == null || currentUserId.isEmpty) return [];
-
-  // Filter by membership, but always include the Getting Started sheet
-  return allSheets.where((s) =>
-    s.id == kGettingStartedSheetId || s.users.contains(currentUserId)
-  ).toList();
+Future<List<SheetModel>> sheetsList(Ref ref) async {
+  return ref.watch(sheetListProvider.future);
 }
 
-/// Provider for searching sheets
+/// Search provider
 @riverpod
-List<SheetModel> sheetListSearch(Ref ref) {
-  final sheets = ref.watch(sheetsListProvider);
-  final searchValue = ref.watch(searchValueProvider);
+Future<List<SheetModel>> sheetListSearch(Ref ref) async {
+  final sheets = await ref.watch(sheetsListProvider.future);
+  final query = ref.watch(searchValueProvider);
 
-  if (searchValue.isEmpty) return sheets;
+  if (query.isEmpty) return sheets;
   return sheets
-      .where((s) => s.title.toLowerCase().contains(searchValue.toLowerCase()))
+      .where((s) => s.title.toLowerCase().contains(query.toLowerCase()))
       .toList();
 }
 
-/// Provider for a single sheet by ID
+/// Get Single Sheet
 @riverpod
 SheetModel? sheet(Ref ref, String sheetId) {
-  final sheetList = ref.watch(sheetListProvider);
-  return sheetList.where((s) => s.id == sheetId).firstOrNull;
+  return ref
+      .watch(sheetListProvider)
+      .value
+      ?.where((s) => s.id == sheetId)
+      .firstOrNull;
 }
 
-/// Provider for list of users in a sheet
+/// Get Users of Sheet
 @riverpod
 List<String> listOfUsersBySheetId(Ref ref, String sheetId) {
-  final sheetList = ref.watch(sheetListProvider);
-  return sheetList.where((s) => s.id == sheetId).firstOrNull?.users ?? [];
-}
-
-/// Provider to check if a sheet exists
-@riverpod
-bool sheetExists(Ref ref, String sheetId) {
-  final sheet = ref.watch(sheetProvider(sheetId));
-  return sheet != null;
-}
-
-/// Provider for sheets sorted by title (filtered by membership)
-@riverpod
-List<SheetModel> sortedSheets(Ref ref) {
-  final sheets = ref.watch(sheetsListProvider);
-  return [...sheets]..sort((a, b) => a.title.compareTo(b.title));
+  return ref
+          .watch(sheetListProvider)
+          .value
+          ?.firstWhere((s) => s.id == sheetId)
+          .users ??
+      [];
 }

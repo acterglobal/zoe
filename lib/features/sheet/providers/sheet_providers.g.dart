@@ -8,15 +8,12 @@ part of 'sheet_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Main sheet list provider with all sheet management functionality
 
 @ProviderFor(SheetList)
 const sheetListProvider = SheetListProvider._();
 
-/// Main sheet list provider with all sheet management functionality
 final class SheetListProvider
-    extends $NotifierProvider<SheetList, List<SheetModel>> {
-  /// Main sheet list provider with all sheet management functionality
+    extends $AsyncNotifierProvider<SheetList, List<SheetModel>> {
   const SheetListProvider._()
     : super(
         from: null,
@@ -34,32 +31,23 @@ final class SheetListProvider
   @$internal
   @override
   SheetList create() => SheetList();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<SheetModel> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<SheetModel>>(value),
-    );
-  }
 }
 
-String _$sheetListHash() => r'daef632f57c2383323a39f9baaca0b8b226a1feb';
+String _$sheetListHash() => r'ab0234cb40facc753514363b4ff7ec6896b544c0';
 
-/// Main sheet list provider with all sheet management functionality
-
-abstract class _$SheetList extends $Notifier<List<SheetModel>> {
-  List<SheetModel> build();
+abstract class _$SheetList extends $AsyncNotifier<List<SheetModel>> {
+  FutureOr<List<SheetModel>> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<List<SheetModel>, List<SheetModel>>;
+    final ref =
+        this.ref as $Ref<AsyncValue<List<SheetModel>>, List<SheetModel>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<List<SheetModel>, List<SheetModel>>,
-              List<SheetModel>,
+              AnyNotifier<AsyncValue<List<SheetModel>>, List<SheetModel>>,
+              AsyncValue<List<SheetModel>>,
               Object?,
               Object?
             >;
@@ -67,25 +55,22 @@ abstract class _$SheetList extends $Notifier<List<SheetModel>> {
   }
 }
 
-/// Provider for sheets filtered by membership (current user must be a member)
-/// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
+/// Filters by membership
 
 @ProviderFor(sheetsList)
 const sheetsListProvider = SheetsListProvider._();
 
-/// Provider for sheets filtered by membership (current user must be a member)
-/// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
+/// Filters by membership
 
 final class SheetsListProvider
     extends
         $FunctionalProvider<
+          AsyncValue<List<SheetModel>>,
           List<SheetModel>,
-          List<SheetModel>,
-          List<SheetModel>
+          FutureOr<List<SheetModel>>
         >
-    with $Provider<List<SheetModel>> {
-  /// Provider for sheets filtered by membership (current user must be a member)
-  /// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
+    with $FutureModifier<List<SheetModel>>, $FutureProvider<List<SheetModel>> {
+  /// Filters by membership
   const SheetsListProvider._()
     : super(
         from: null,
@@ -102,41 +87,34 @@ final class SheetsListProvider
 
   @$internal
   @override
-  $ProviderElement<List<SheetModel>> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<List<SheetModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  List<SheetModel> create(Ref ref) {
+  FutureOr<List<SheetModel>> create(Ref ref) {
     return sheetsList(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<SheetModel> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<SheetModel>>(value),
-    );
   }
 }
 
-String _$sheetsListHash() => r'994bb84d8a8243b8b64d4a487691a8328168bb6a';
+String _$sheetsListHash() => r'eaf41c4e5433ca25a24a6c207e163b9ca0c41c38';
 
-/// Provider for searching sheets
+/// Search provider
 
 @ProviderFor(sheetListSearch)
 const sheetListSearchProvider = SheetListSearchProvider._();
 
-/// Provider for searching sheets
+/// Search provider
 
 final class SheetListSearchProvider
     extends
         $FunctionalProvider<
+          AsyncValue<List<SheetModel>>,
           List<SheetModel>,
-          List<SheetModel>,
-          List<SheetModel>
+          FutureOr<List<SheetModel>>
         >
-    with $Provider<List<SheetModel>> {
-  /// Provider for searching sheets
+    with $FutureModifier<List<SheetModel>>, $FutureProvider<List<SheetModel>> {
+  /// Search provider
   const SheetListSearchProvider._()
     : super(
         from: null,
@@ -153,36 +131,29 @@ final class SheetListSearchProvider
 
   @$internal
   @override
-  $ProviderElement<List<SheetModel>> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<List<SheetModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  List<SheetModel> create(Ref ref) {
+  FutureOr<List<SheetModel>> create(Ref ref) {
     return sheetListSearch(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<SheetModel> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<SheetModel>>(value),
-    );
   }
 }
 
-String _$sheetListSearchHash() => r'5e0d646f0ce32a8939134e1f21a665bc3793ae2b';
+String _$sheetListSearchHash() => r'b245d1f11e4645fb06f895a1961e3e3bb26aeccf';
 
-/// Provider for a single sheet by ID
+/// Get Single Sheet
 
 @ProviderFor(sheet)
 const sheetProvider = SheetFamily._();
 
-/// Provider for a single sheet by ID
+/// Get Single Sheet
 
 final class SheetProvider
     extends $FunctionalProvider<SheetModel?, SheetModel?, SheetModel?>
     with $Provider<SheetModel?> {
-  /// Provider for a single sheet by ID
+  /// Get Single Sheet
   const SheetProvider._({
     required SheetFamily super.from,
     required String super.argument,
@@ -234,9 +205,9 @@ final class SheetProvider
   }
 }
 
-String _$sheetHash() => r'23dbb2da469ce0110e0f6f82122873e908175561';
+String _$sheetHash() => r'bdc7dbaa53e93d6de58dff0445ae750ada818b08';
 
-/// Provider for a single sheet by ID
+/// Get Single Sheet
 
 final class SheetFamily extends $Family
     with $FunctionalFamilyOverride<SheetModel?, String> {
@@ -249,7 +220,7 @@ final class SheetFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// Provider for a single sheet by ID
+  /// Get Single Sheet
 
   SheetProvider call(String sheetId) =>
       SheetProvider._(argument: sheetId, from: this);
@@ -258,17 +229,17 @@ final class SheetFamily extends $Family
   String toString() => r'sheetProvider';
 }
 
-/// Provider for list of users in a sheet
+/// Get Users of Sheet
 
 @ProviderFor(listOfUsersBySheetId)
 const listOfUsersBySheetIdProvider = ListOfUsersBySheetIdFamily._();
 
-/// Provider for list of users in a sheet
+/// Get Users of Sheet
 
 final class ListOfUsersBySheetIdProvider
     extends $FunctionalProvider<List<String>, List<String>, List<String>>
     with $Provider<List<String>> {
-  /// Provider for list of users in a sheet
+  /// Get Users of Sheet
   const ListOfUsersBySheetIdProvider._({
     required ListOfUsersBySheetIdFamily super.from,
     required String super.argument,
@@ -321,9 +292,9 @@ final class ListOfUsersBySheetIdProvider
 }
 
 String _$listOfUsersBySheetIdHash() =>
-    r'df6f970ce33d3935d21f30914f64679a492efc59';
+    r'2fb8aa6634ea8b94fe66926318adabfa86782fea';
 
-/// Provider for list of users in a sheet
+/// Get Users of Sheet
 
 final class ListOfUsersBySheetIdFamily extends $Family
     with $FunctionalFamilyOverride<List<String>, String> {
@@ -336,7 +307,7 @@ final class ListOfUsersBySheetIdFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// Provider for list of users in a sheet
+  /// Get Users of Sheet
 
   ListOfUsersBySheetIdProvider call(String sheetId) =>
       ListOfUsersBySheetIdProvider._(argument: sheetId, from: this);
@@ -344,139 +315,3 @@ final class ListOfUsersBySheetIdFamily extends $Family
   @override
   String toString() => r'listOfUsersBySheetIdProvider';
 }
-
-/// Provider to check if a sheet exists
-
-@ProviderFor(sheetExists)
-const sheetExistsProvider = SheetExistsFamily._();
-
-/// Provider to check if a sheet exists
-
-final class SheetExistsProvider extends $FunctionalProvider<bool, bool, bool>
-    with $Provider<bool> {
-  /// Provider to check if a sheet exists
-  const SheetExistsProvider._({
-    required SheetExistsFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'sheetExistsProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$sheetExistsHash();
-
-  @override
-  String toString() {
-    return r'sheetExistsProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  $ProviderElement<bool> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  bool create(Ref ref) {
-    final argument = this.argument as String;
-    return sheetExists(ref, argument);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(bool value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<bool>(value),
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is SheetExistsProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
-String _$sheetExistsHash() => r'1271be6e2dccad76c612a52e81aaeca23cb72ae0';
-
-/// Provider to check if a sheet exists
-
-final class SheetExistsFamily extends $Family
-    with $FunctionalFamilyOverride<bool, String> {
-  const SheetExistsFamily._()
-    : super(
-        retry: null,
-        name: r'sheetExistsProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  /// Provider to check if a sheet exists
-
-  SheetExistsProvider call(String sheetId) =>
-      SheetExistsProvider._(argument: sheetId, from: this);
-
-  @override
-  String toString() => r'sheetExistsProvider';
-}
-
-/// Provider for sheets sorted by title (filtered by membership)
-
-@ProviderFor(sortedSheets)
-const sortedSheetsProvider = SortedSheetsProvider._();
-
-/// Provider for sheets sorted by title (filtered by membership)
-
-final class SortedSheetsProvider
-    extends
-        $FunctionalProvider<
-          List<SheetModel>,
-          List<SheetModel>,
-          List<SheetModel>
-        >
-    with $Provider<List<SheetModel>> {
-  /// Provider for sheets sorted by title (filtered by membership)
-  const SortedSheetsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'sortedSheetsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$sortedSheetsHash();
-
-  @$internal
-  @override
-  $ProviderElement<List<SheetModel>> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  List<SheetModel> create(Ref ref) {
-    return sortedSheets(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<SheetModel> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<SheetModel>>(value),
-    );
-  }
-}
-
-String _$sortedSheetsHash() => r'e58c9902407d4adccfa510004bee3bcf2854e252';

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 
@@ -16,6 +17,22 @@ class SheetTheme {
     return SheetTheme(
       primary: primary ?? this.primary,
       secondary: secondary ?? this.secondary,
+    );
+  }
+
+  /// Convert to JSON for Firestore
+  Map<String, dynamic> toJson() {
+    return {
+      'primary': '#${primary.value.toRadixString(16).padLeft(8, '0')}',
+      'secondary': '#${secondary.value.toRadixString(16).padLeft(8, '0')}',
+    };
+  }
+
+  /// Create from JSON from Firestore
+  factory SheetTheme.fromJson(Map<String, dynamic> json) {
+    return SheetTheme(
+      primary: Color(int.parse((json['primary'] as String).replaceAll('#', ''), radix: 16)),
+      secondary: Color(int.parse((json['secondary'] as String).replaceAll('#', ''), radix: 16)),
     );
   }
 }
@@ -52,7 +69,7 @@ class SheetModel {
   }) : id = id ?? CommonUtils.generateRandomId(),
        sheetAvatar = sheetAvatar ?? SheetAvatar(),
        title = title ?? 'Untitled',
-       createdBy = createdBy ?? CommonUtils.generateRandomId(),
+       createdBy = createdBy ?? '',  // Will be set by addSheet method
        users = users ?? [],
        createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now();
@@ -104,6 +121,62 @@ class SheetModel {
       updatedAt: DateTime.now(),
       sharedBy: sharedBy,
       message: message,
+    );
+  }
+
+  /// Convert to JSON for Firestore
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'sheetAvatar': sheetAvatar.toJson(),
+      'title': title,
+      if (coverImageUrl != null) 'coverImageUrl': coverImageUrl,
+      if (description != null) 'description': {
+        if (description!.plainText != null) 'plainText': description!.plainText,
+        if (description!.htmlText != null) 'htmlText': description!.htmlText,
+      },
+      if (color != null) 'color': '#${color!.value.toRadixString(16).padLeft(8, '0')}',
+      if (theme != null) 'theme': theme!.toJson(),
+      'createdBy': createdBy,
+      'users': users,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'updatedAt': Timestamp.fromDate(updatedAt),
+      if (sharedBy != null) 'sharedBy': sharedBy,
+      if (message != null) 'message': message,
+    };
+  }
+
+  /// Create from JSON from Firestore
+  factory SheetModel.fromJson(Map<String, dynamic> json) {
+    return SheetModel(
+      id: json['id'] as String,
+      sheetAvatar: SheetAvatar.fromJson(json['sheetAvatar'] as Map<String, dynamic>),
+      title: json['title'] as String? ?? 'Untitled',
+      coverImageUrl: json['coverImageUrl'] as String?,
+      description: json['description'] != null
+          ? (
+              plainText: (json['description'] as Map<String, dynamic>)['plainText'] as String?,
+              htmlText: (json['description'] as Map<String, dynamic>)['htmlText'] as String?,
+            )
+          : null,
+      color: json['color'] != null
+          ? Color(int.parse((json['color'] as String).replaceAll('#', ''), radix: 16))
+          : null,
+      theme: json['theme'] != null
+          ? SheetTheme.fromJson(json['theme'] as Map<String, dynamic>)
+          : null,
+      createdBy: json['createdBy'] as String? ?? '',
+      users: json['users'] != null 
+          ? (json['users'] as List<dynamic>).cast<String>()
+          : [],
+      createdAt: json['createdAt'] != null
+          ? (json['createdAt'] as Timestamp).toDate()
+          : DateTime.now(),
+      updatedAt: json['updatedAt'] != null
+          ? (json['updatedAt'] as Timestamp).toDate()
+          : DateTime.now(),
+      sharedBy: json['sharedBy'] as String?,
+      message: json['message'] as String?,
     );
   }
 }
