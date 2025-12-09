@@ -23,9 +23,14 @@ class SheetList extends _$SheetList {
       ref.read(firestoreProvider).collection('sheets');
 
   @override
-  Future<List<SheetModel>> build() async {
+  List<SheetModel> build() {
+    _init();
+    return [];
+  }
+
+  Future<void> _init() async {
     final userId = ref.watch(loggedInUserProvider).value;
-    if (userId == null) return [];
+    if (userId == null) return;
 
     final userSheetsFuture = col.where('users', arrayContains: userId).get();
 
@@ -87,7 +92,7 @@ class SheetList extends _$SheetList {
         return a.title.compareTo(b.title);
       });
 
-    return items;
+    state = items;
   }
 
   // ─────────────────────────────────────
@@ -96,8 +101,7 @@ class SheetList extends _$SheetList {
 
   /// Updates local list safely
   void _updateLocalState(List<SheetModel> Function(List<SheetModel>) update) {
-    final prev = state.value ?? [];
-    state = AsyncValue.data(update(prev));
+    state = update(state);
   }
 
   /// Firestore update wrapper with revert safety
@@ -222,7 +226,7 @@ class SheetList extends _$SheetList {
     );
 
     await _safeUpdate(() async {
-      final sheet = state.value!.firstWhere((s) => s.id == sheetId);
+      final sheet = state.firstWhere((s) => s.id == sheetId);
       await col.doc(sheetId).update({
         'sheetAvatar': sheet.sheetAvatar.toJson(),
         'updatedAt': FieldValue.serverTimestamp(),
@@ -293,7 +297,7 @@ class SheetList extends _$SheetList {
     );
 
     await _safeUpdate(() async {
-      final sheet = state.value!.firstWhere((s) => s.id == sheetId);
+      final sheet = state.firstWhere((s) => s.id == sheetId);
       await col.doc(sheetId).update({
         'theme': sheet.theme?.toJson(),
         'updatedAt': FieldValue.serverTimestamp(),
@@ -307,14 +311,14 @@ const String kGettingStartedSheetId = 'sheet-1';
 
 /// Filters by membership
 @riverpod
-Future<List<SheetModel>> sheetsList(Ref ref) async {
-  return ref.watch(sheetListProvider.future);
+List<SheetModel> sheetsList(Ref ref) {
+  return ref.watch(sheetListProvider);
 }
 
 /// Search provider
 @riverpod
-Future<List<SheetModel>> sheetListSearch(Ref ref) async {
-  final sheets = await ref.watch(sheetsListProvider.future);
+List<SheetModel> sheetListSearch(Ref ref) {
+  final sheets = ref.watch(sheetsListProvider);
   final query = ref.watch(searchValueProvider);
 
   if (query.isEmpty) return sheets;
@@ -326,20 +330,25 @@ Future<List<SheetModel>> sheetListSearch(Ref ref) async {
 /// Get Single Sheet
 @riverpod
 SheetModel? sheet(Ref ref, String sheetId) {
-  return ref
-      .watch(sheetListProvider)
-      .value
-      ?.where((s) => s.id == sheetId)
-      .firstOrNull;
+  return ref.watch(sheetListProvider).where((s) => s.id == sheetId).firstOrNull;
 }
 
 /// Get Users of Sheet
 @riverpod
 List<String> listOfUsersBySheetId(Ref ref, String sheetId) {
-  return ref
-          .watch(sheetListProvider)
-          .value
-          ?.firstWhere((s) => s.id == sheetId)
-          .users ??
-      [];
+  return ref.watch(sheetListProvider).firstWhere((s) => s.id == sheetId).users;
+}
+
+/// Provider to check if a sheet exists
+@riverpod
+bool sheetExists(Ref ref, String sheetId) {
+  final sheet = ref.watch(sheetProvider(sheetId));
+  return sheet != null;
+}
+
+/// Provider for sheets sorted by title (filtered by membership)
+@riverpod
+List<SheetModel> sortedSheets(Ref ref) {
+  final sheets = ref.watch(sheetsListProvider);
+  return [...sheets]..sort((a, b) => a.title.compareTo(b.title));
 }

@@ -10,11 +10,8 @@ import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_item_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-import '../../../common/widgets/state_widgets/error_state_widget.dart';
-import '../../../common/widgets/state_widgets/loading_state_widget.dart';
-
 class SheetListWidget extends ConsumerWidget {
-  final ProviderListenable<AsyncValue<List<SheetModel>>> sheetsProvider;
+  final ProviderListenable<List<SheetModel>> sheetsProvider;
   final bool shrinkWrap;
   final bool isCompact;
   final int? maxItems;
@@ -33,29 +30,23 @@ class SheetListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sheetsAsync = ref.watch(sheetsProvider);
+    final sheetList = ref.watch(sheetsProvider);
 
-    return sheetsAsync.when(
-      data: (sheetList) {
-        if (sheetList.isEmpty) {
-          return emptyState;
-        }
+    if (sheetList.isEmpty) {
+      return emptyState;
+    }
 
-        if (showSectionHeader) {
-          return Column(
-            children: [
-              _buildSectionHeader(context),
-              const SizedBox(height: 16),
-              _buildSheetList(context, ref, sheetList),
-            ],
-          );
-        }
+    if (showSectionHeader) {
+      return Column(
+        children: [
+          _buildSectionHeader(context),
+          const SizedBox(height: 16),
+          _buildSheetList(context, ref, sheetList),
+        ],
+      );
+    }
 
-        return _buildSheetList(context, ref, sheetList);
-      },
-      loading: () => LoadingStateWidget(),
-      error: (error, stack) => ErrorStateWidget(message: error.toString()),
-    );
+    return _buildSheetList(context, ref, sheetList);
   }
 
   Widget _buildSheetList(
