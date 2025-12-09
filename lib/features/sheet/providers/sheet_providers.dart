@@ -336,7 +336,12 @@ SheetModel? sheet(Ref ref, String sheetId) {
 /// Get Users of Sheet
 @riverpod
 List<String> listOfUsersBySheetId(Ref ref, String sheetId) {
-  return ref.watch(sheetListProvider).firstWhere((s) => s.id == sheetId).users;
+  return ref
+          .watch(sheetListProvider)
+          .where((s) => s.id == sheetId)
+          .firstOrNull
+          ?.users ??
+      [];
 }
 
 /// Provider to check if a sheet exists
