@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,3 +14,8 @@ class SearchValue extends _$SearchValue {
 }
 
 final editContentIdProvider = StateProvider<String?>((ref) => null);
+
+/// Firebase reference
+final firestoreProvider = Provider<FirebaseFirestore>((ref) {
+  return FirebaseFirestore.instance;
+});

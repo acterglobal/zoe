@@ -8,15 +8,12 @@ part of 'sheet_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Main sheet list provider with all sheet management functionality
 
 @ProviderFor(SheetList)
 const sheetListProvider = SheetListProvider._();
 
-/// Main sheet list provider with all sheet management functionality
 final class SheetListProvider
     extends $NotifierProvider<SheetList, List<SheetModel>> {
-  /// Main sheet list provider with all sheet management functionality
   const SheetListProvider._()
     : super(
         from: null,
@@ -44,9 +41,7 @@ final class SheetListProvider
   }
 }
 
-String _$sheetListHash() => r'daef632f57c2383323a39f9baaca0b8b226a1feb';
-
-/// Main sheet list provider with all sheet management functionality
+String _$sheetListHash() => r'45242f54fc51ec82b2bd94fc3b4e8abfac724965';
 
 abstract class _$SheetList extends $Notifier<List<SheetModel>> {
   List<SheetModel> build();
@@ -67,66 +62,12 @@ abstract class _$SheetList extends $Notifier<List<SheetModel>> {
   }
 }
 
-/// Provider for sheets filtered by membership (current user must be a member)
-/// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
-
-@ProviderFor(sheetsList)
-const sheetsListProvider = SheetsListProvider._();
-
-/// Provider for sheets filtered by membership (current user must be a member)
-/// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
-
-final class SheetsListProvider
-    extends
-        $FunctionalProvider<
-          List<SheetModel>,
-          List<SheetModel>,
-          List<SheetModel>
-        >
-    with $Provider<List<SheetModel>> {
-  /// Provider for sheets filtered by membership (current user must be a member)
-  /// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
-  const SheetsListProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'sheetsListProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$sheetsListHash();
-
-  @$internal
-  @override
-  $ProviderElement<List<SheetModel>> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  List<SheetModel> create(Ref ref) {
-    return sheetsList(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<SheetModel> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<SheetModel>>(value),
-    );
-  }
-}
-
-String _$sheetsListHash() => r'994bb84d8a8243b8b64d4a487691a8328168bb6a';
-
-/// Provider for searching sheets
+/// Search provider
 
 @ProviderFor(sheetListSearch)
 const sheetListSearchProvider = SheetListSearchProvider._();
 
-/// Provider for searching sheets
+/// Search provider
 
 final class SheetListSearchProvider
     extends
@@ -136,7 +77,7 @@ final class SheetListSearchProvider
           List<SheetModel>
         >
     with $Provider<List<SheetModel>> {
-  /// Provider for searching sheets
+  /// Search provider
   const SheetListSearchProvider._()
     : super(
         from: null,
@@ -170,19 +111,19 @@ final class SheetListSearchProvider
   }
 }
 
-String _$sheetListSearchHash() => r'5e0d646f0ce32a8939134e1f21a665bc3793ae2b';
+String _$sheetListSearchHash() => r'93398bf3848f81ca8d6d661712c3557cc0258db1';
 
-/// Provider for a single sheet by ID
+/// Get Single Sheet
 
 @ProviderFor(sheet)
 const sheetProvider = SheetFamily._();
 
-/// Provider for a single sheet by ID
+/// Get Single Sheet
 
 final class SheetProvider
     extends $FunctionalProvider<SheetModel?, SheetModel?, SheetModel?>
     with $Provider<SheetModel?> {
-  /// Provider for a single sheet by ID
+  /// Get Single Sheet
   const SheetProvider._({
     required SheetFamily super.from,
     required String super.argument,
@@ -234,9 +175,9 @@ final class SheetProvider
   }
 }
 
-String _$sheetHash() => r'23dbb2da469ce0110e0f6f82122873e908175561';
+String _$sheetHash() => r'643f3018c457e0265991a63b129a7d554cf53122';
 
-/// Provider for a single sheet by ID
+/// Get Single Sheet
 
 final class SheetFamily extends $Family
     with $FunctionalFamilyOverride<SheetModel?, String> {
@@ -249,7 +190,7 @@ final class SheetFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// Provider for a single sheet by ID
+  /// Get Single Sheet
 
   SheetProvider call(String sheetId) =>
       SheetProvider._(argument: sheetId, from: this);
@@ -258,17 +199,17 @@ final class SheetFamily extends $Family
   String toString() => r'sheetProvider';
 }
 
-/// Provider for list of users in a sheet
+/// Get Users of Sheet
 
 @ProviderFor(listOfUsersBySheetId)
 const listOfUsersBySheetIdProvider = ListOfUsersBySheetIdFamily._();
 
-/// Provider for list of users in a sheet
+/// Get Users of Sheet
 
 final class ListOfUsersBySheetIdProvider
     extends $FunctionalProvider<List<String>, List<String>, List<String>>
     with $Provider<List<String>> {
-  /// Provider for list of users in a sheet
+  /// Get Users of Sheet
   const ListOfUsersBySheetIdProvider._({
     required ListOfUsersBySheetIdFamily super.from,
     required String super.argument,
@@ -321,9 +262,9 @@ final class ListOfUsersBySheetIdProvider
 }
 
 String _$listOfUsersBySheetIdHash() =>
-    r'df6f970ce33d3935d21f30914f64679a492efc59';
+    r'6795fc9de767d64d6806d624fad19fab81d3415f';
 
-/// Provider for list of users in a sheet
+/// Get Users of Sheet
 
 final class ListOfUsersBySheetIdFamily extends $Family
     with $FunctionalFamilyOverride<List<String>, String> {
@@ -336,7 +277,7 @@ final class ListOfUsersBySheetIdFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// Provider for list of users in a sheet
+  /// Get Users of Sheet
 
   ListOfUsersBySheetIdProvider call(String sheetId) =>
       ListOfUsersBySheetIdProvider._(argument: sheetId, from: this);
@@ -479,4 +420,4 @@ final class SortedSheetsProvider
   }
 }
 
-String _$sortedSheetsHash() => r'e58c9902407d4adccfa510004bee3bcf2854e252';
+String _$sortedSheetsHash() => r'aae31f7ba341c156247c9ad7f23dee5de23a74a4';

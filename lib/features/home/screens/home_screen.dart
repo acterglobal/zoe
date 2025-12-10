@@ -134,7 +134,7 @@ class HomeScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         SheetListWidget(
-          sheetsProvider: sheetsListProvider,
+          sheetsProvider: sheetListProvider,
           shrinkWrap: true,
           maxItems: 3,
         ),

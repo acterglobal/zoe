@@ -186,7 +186,7 @@ void main() {
       testWidgets('displays correct counts from providers', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            sheetsListProvider.overrideWithValue(<SheetModel>[]),
+            sheetListProvider.overrideWithValue(<SheetModel>[]),
             eventListProvider.overrideWithValue(<EventModel>[]),
             taskListProvider.overrideWithValue(<TaskModel>[]),
             linkListProvider.overrideWithValue(<LinkModel>[]),
@@ -222,7 +222,7 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            sheetsListProvider.overrideWithValue([sheet1, sheet2]),
+            sheetListProvider.overrideWithValue([sheet1, sheet2]),
             eventsListProvider.overrideWithValue([event1]),
             tasksListProvider.overrideWithValue([task1, task2, task3]),
             linkListProvider.overrideWithValue([linkList.first]),
@@ -233,11 +233,13 @@ void main() {
 
         await pumpStatsSectionWidget(tester);
 
-        final statsWidgets = tester.widgetList<StatsWidget>(find.byType(StatsWidget));
-        
+        final statsWidgets = tester.widgetList<StatsWidget>(
+          find.byType(StatsWidget),
+        );
+
         // Get counts in the order they appear in the widget tree
         final counts = statsWidgets.map((w) => w.count).toList();
-        
+
         expect(counts.length, equals(6));
         expect(counts[0], equals('2'));
         expect(counts[1], equals('1'));
@@ -313,7 +315,7 @@ void main() {
       testWidgets('handles empty provider data gracefully', (tester) async {
         container = ProviderContainer.test(
           overrides: [
-            sheetsListProvider.overrideWithValue(<SheetModel>[]),
+            sheetListProvider.overrideWithValue(<SheetModel>[]),
             eventListProvider.overrideWithValue(<EventModel>[]),
             taskListProvider.overrideWithValue(<TaskModel>[]),
             linkListProvider.overrideWithValue(<LinkModel>[]),
@@ -330,4 +332,3 @@ void main() {
     });
   });
 }
-

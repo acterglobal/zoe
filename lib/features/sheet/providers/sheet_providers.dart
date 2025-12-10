@@ -1,184 +1,194 @@
+import 'dart:async';
 import 'dart:ui';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/core/theme/colors/app_colors.dart';
-import 'package:zoe/features/sheet/data/sheet_data.dart';
+import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'sheet_providers.g.dart';
 
-/// Main sheet list provider with all sheet management functionality
 @Riverpod(keepAlive: true)
 class SheetList extends _$SheetList {
+  CollectionReference<Map<String, dynamic>> get collection =>
+      ref.read(firestoreProvider).collection(FirestoreCollections.sheets);
+
+  StreamSubscription? _subscription;
+
   @override
-  List<SheetModel> build() => sheetList;
+  List<SheetModel> build() {
+    final userId = ref.watch(loggedInUserProvider).value;
 
-  void addSheet(SheetModel sheet) {
-    final currentUserId = ref.read(loggedInUserProvider).value;
-    var newSheet = sheet;
+    _subscription?.cancel();
+    _subscription = null;
 
-    // Apply default theme if sheet doesn't have one
-    if (newSheet.theme == null) {
-      newSheet = newSheet.copyWith(
-        theme: SheetTheme(
-          primary: AppColors.primaryColor,
-          secondary: AppColors.secondaryColor,
+    Query<Map<String, dynamic>> query = collection;
+
+    query = query.where(
+      Filter.or(
+        Filter(FirestoreFieldConstants.users, arrayContains: userId),
+        Filter(FirestoreFieldConstants.users, isEqualTo: []),
+        Filter(FirestoreFieldConstants.users, isNull: true),
+      ),
+    );
+
+    if (userId != null) {
+      query = query.where(
+        Filter.or(
+          Filter(FirestoreFieldConstants.users, arrayContains: userId),
+          Filter(FirestoreFieldConstants.users, isEqualTo: []),
+          Filter(FirestoreFieldConstants.users, isNull: true),
+        ),
+      );
+    } else {
+      query = query.where(
+        Filter.or(
+          Filter(FirestoreFieldConstants.users, isEqualTo: []),
+          Filter(FirestoreFieldConstants.users, isNull: true),
         ),
       );
     }
 
-    if (currentUserId != null && currentUserId.isNotEmpty) {
-      state = [
-        ...state,
-        newSheet.copyWith(users: [currentUserId], createdBy: currentUserId),
-      ];
-    } else {
-      state = [...state, newSheet];
+    _subscription = query.snapshots().listen((snapshot) {
+      final items = snapshot.docs
+          .map((doc) {
+            return SheetModel.fromJson(doc.data());
+          })
+          .whereType<SheetModel>()
+          .toList();
+
+      state = items;
+    });
+
+    ref.onDispose(() {
+      _subscription?.cancel();
+    });
+
+    return [];
+  }
+
+  // ─────────────────────────────────────
+  // CRUD Operations
+  // ─────────────────────────────────────
+
+  Future<void> addSheet(SheetModel sheet) async {
+    final userId = ref.read(loggedInUserProvider).value;
+    if (userId != null) {
+      var newSheet = sheet;
+      newSheet = newSheet.copyWith(users: [userId], createdBy: userId);
+      await collection.doc(newSheet.id).set(newSheet.toJson());
     }
   }
 
-  void deleteSheet(String sheetId) {
-    state = state.where((s) => s.id != sheetId).toList();
+  Future<void> deleteSheet(String sheetId) async {
+    await collection.doc(sheetId).delete();
   }
 
-  void updateSheetTitle(String sheetId, String title) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId) sheet.copyWith(title: title) else sheet,
-    ];
+  Future<void> updateSheetTitle(String sheetId, String title) async {
+    await collection.doc(sheetId).update({
+      FirestoreFieldConstants.title: title,
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+    });
   }
 
-  void updateSheetCoverImage(String sheetId, String? coverImageUrl) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          if (coverImageUrl == null)
-            sheet.removeCoverImage()
-          else
-            sheet.copyWith(coverImageUrl: coverImageUrl)
-        else
-          sheet,
-    ];
+  Future<void> updateSheetCoverImage(String sheetId, String? url) async {
+    await collection.doc(sheetId).update({
+      if (url == null)
+        FirestoreFieldConstants.coverImageUrl: null
+      else
+        FirestoreFieldConstants.coverImageUrl: url,
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+    });
   }
 
-  void updateSheetDescription(String sheetId, Description description) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(description: description)
-        else
-          sheet,
-    ];
+  Future<void> updateSheetDescription(String sheetId, Description desc) async {
+    await collection.doc(sheetId).update({
+      FirestoreFieldConstants.description: {
+        'plainText': desc.plainText,
+        'htmlText': desc.htmlText,
+      },
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+    });
   }
 
-  void updateSheetAvatar({
+  Future<void> updateSheetAvatar({
     required String sheetId,
     required AvatarType type,
     required String data,
     Color? color,
-  }) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(
-            sheetAvatar: sheet.sheetAvatar.copyWith(
-              type: type,
-              data: data,
-              color: color,
-            ),
-          )
-        else
-          sheet,
-    ];
+  }) async {
+    final updatedAvatar = SheetAvatar(type: type, data: data, color: color);
+    await collection.doc(sheetId).update({
+      FirestoreFieldConstants.sheetAvatar: updatedAvatar.toJson(),
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+    });
   }
 
   Future<void> addUserToSheet(String sheetId, String userId) async {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(users: {...sheet.users, userId}.toList())
-        else
-          sheet,
-    ];
+    await collection.doc(sheetId).update({
+      FirestoreFieldConstants.users: FieldValue.arrayUnion([userId]),
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+    });
   }
 
-  void updateSheetShareInfo({
+  Future<void> updateSheetShareInfo({
     required String sheetId,
     String? sharedBy,
     String? message,
-  }) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(sharedBy: sharedBy, message: message)
-        else
-          sheet,
-    ];
+  }) async {
+    final updateMap = <String, dynamic>{
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+    };
+    if (sharedBy != null) updateMap['sharedBy'] = sharedBy;
+    if (message != null) updateMap['message'] = message;
+
+    await collection.doc(sheetId).update(updateMap);
   }
 
-  void updateSheetTheme({
+  Future<void> updateSheetTheme({
     required String sheetId,
     required Color primary,
     required Color secondary,
-  }) {
-    state = [
-      for (final sheet in state)
-        if (sheet.id == sheetId)
-          sheet.copyWith(
-            theme: SheetTheme(primary: primary, secondary: secondary),
-          )
-        else
-          sheet,
-    ];
+  }) async {
+    final newTheme = SheetTheme(primary: primary, secondary: secondary);
+    await collection.doc(sheetId).update({
+      FirestoreFieldConstants.theme: newTheme.toJson(),
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+    });
   }
 }
 
-/// ID of the default Getting Started sheet that should be visible to all users
-const String kGettingStartedSheetId = 'sheet-1';
-
-/// Provider for sheets filtered by membership (current user must be a member)
-/// The "Getting Started" sheet (sheet-1) is always included for all logged-in users
-@riverpod
-List<SheetModel> sheetsList(Ref ref) {
-  final allSheets = ref.watch(sheetListProvider);
-  final currentUserId = ref.watch(loggedInUserProvider).value;
-
-  // If no user, show nothing
-  if (currentUserId == null || currentUserId.isEmpty) return [];
-
-  // Filter by membership, but always include the Getting Started sheet
-  return allSheets.where((s) =>
-    s.id == kGettingStartedSheetId || s.users.contains(currentUserId)
-  ).toList();
-}
-
-/// Provider for searching sheets
+/// Search provider
 @riverpod
 List<SheetModel> sheetListSearch(Ref ref) {
-  final sheets = ref.watch(sheetsListProvider);
-  final searchValue = ref.watch(searchValueProvider);
+  final sheets = ref.watch(sheetListProvider);
+  final query = ref.watch(searchValueProvider);
 
-  if (searchValue.isEmpty) return sheets;
+  if (query.isEmpty) return sheets;
   return sheets
-      .where((s) => s.title.toLowerCase().contains(searchValue.toLowerCase()))
+      .where((s) => s.title.toLowerCase().contains(query.toLowerCase()))
       .toList();
 }
 
-/// Provider for a single sheet by ID
+/// Get Single Sheet
 @riverpod
 SheetModel? sheet(Ref ref, String sheetId) {
-  final sheetList = ref.watch(sheetListProvider);
-  return sheetList.where((s) => s.id == sheetId).firstOrNull;
+  return ref.watch(sheetListProvider).where((s) => s.id == sheetId).firstOrNull;
 }
 
-/// Provider for list of users in a sheet
+/// Get Users of Sheet
 @riverpod
 List<String> listOfUsersBySheetId(Ref ref, String sheetId) {
-  final sheetList = ref.watch(sheetListProvider);
-  return sheetList.where((s) => s.id == sheetId).firstOrNull?.users ?? [];
+  return ref
+          .watch(sheetListProvider)
+          .where((s) => s.id == sheetId)
+          .firstOrNull
+          ?.users ??
+      [];
 }
 
 /// Provider to check if a sheet exists
@@ -191,6 +201,6 @@ bool sheetExists(Ref ref, String sheetId) {
 /// Provider for sheets sorted by title (filtered by membership)
 @riverpod
 List<SheetModel> sortedSheets(Ref ref) {
-  final sheets = ref.watch(sheetsListProvider);
+  final sheets = ref.watch(sheetListProvider);
   return [...sheets]..sort((a, b) => a.title.compareTo(b.title));
 }

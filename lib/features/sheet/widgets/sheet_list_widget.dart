@@ -31,6 +31,7 @@ class SheetListWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sheetList = ref.watch(sheetsProvider);
+
     if (sheetList.isEmpty) {
       return emptyState;
     }
@@ -48,8 +49,11 @@ class SheetListWidget extends ConsumerWidget {
     return _buildSheetList(context, ref, sheetList);
   }
 
-  Widget _buildSheetList(BuildContext context, WidgetRef ref, List<SheetModel> sheetList) {
-
+  Widget _buildSheetList(
+    BuildContext context,
+    WidgetRef ref,
+    List<SheetModel> sheetList,
+  ) {
     final itemCount = maxItems != null
         ? min(maxItems!, sheetList.length)
         : sheetList.length;

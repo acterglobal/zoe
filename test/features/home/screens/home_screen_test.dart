@@ -197,7 +197,7 @@ void main() {
         final sheetList = tester.widget<SheetListWidget>(
           find.byType(SheetListWidget),
         );
-        expect(sheetList.sheetsProvider, equals(sheetsListProvider));
+        expect(sheetList.sheetsProvider, equals(sheetListProvider));
         expect(sheetList.shrinkWrap, isTrue);
         expect(sheetList.maxItems, equals(3));
       });
@@ -270,7 +270,7 @@ void main() {
           find.byType(SheetListWidget),
         );
 
-        expect(sheetList.sheetsProvider, equals(sheetsListProvider));
+        expect(sheetList.sheetsProvider, equals(sheetListProvider));
       });
 
       testWidgets('handles empty sheet list gracefully', (tester) async {
