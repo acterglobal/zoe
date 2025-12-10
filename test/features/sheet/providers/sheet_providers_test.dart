@@ -68,6 +68,11 @@ void main() {
         await Future.delayed(const Duration(milliseconds: 50));
         retries++;
       }
+      expect(
+        container.read(sheetListProvider).length,
+        greaterThanOrEqualTo(2),
+        reason: 'Provider failed to load test data within timeout',
+      );
 
       final userSheets = container.read(sheetListProvider);
       testSheet1 = userSheets.firstWhere((s) => s.id == 'sheet-1');
