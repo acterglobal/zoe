@@ -4,7 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/constants/firestore_constants.dart';
+import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
@@ -27,19 +28,27 @@ class SheetList extends _$SheetList {
 
     Query<Map<String, dynamic>> query = collection;
 
+    query = query.where(
+      Filter.or(
+        Filter(FirestoreFieldConstants.users, arrayContains: userId),
+        Filter(FirestoreFieldConstants.users, isEqualTo: []),
+        Filter(FirestoreFieldConstants.users, isNull: true),
+      ),
+    );
+
     if (userId != null) {
       query = query.where(
         Filter.or(
-          Filter('users', arrayContains: userId),
-          Filter('users', isEqualTo: []),
-          Filter('users', isNull: true),
+          Filter(FirestoreFieldConstants.users, arrayContains: userId),
+          Filter(FirestoreFieldConstants.users, isEqualTo: []),
+          Filter(FirestoreFieldConstants.users, isNull: true),
         ),
       );
     } else {
       query = query.where(
         Filter.or(
-          Filter('users', isEqualTo: []),
-          Filter('users', isNull: true),
+          Filter(FirestoreFieldConstants.users, isEqualTo: []),
+          Filter(FirestoreFieldConstants.users, isNull: true),
         ),
       );
     }
@@ -81,22 +90,28 @@ class SheetList extends _$SheetList {
 
   Future<void> updateSheetTitle(String sheetId, String title) async {
     await collection.doc(sheetId).update({
-      'title': title,
-      'updatedAt': FieldValue.serverTimestamp(),
+      FirestoreFieldConstants.title: title,
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
     });
   }
 
   Future<void> updateSheetCoverImage(String sheetId, String? url) async {
     await collection.doc(sheetId).update({
-      if (url == null) 'coverImageUrl': null else 'coverImageUrl': url,
-      'updatedAt': FieldValue.serverTimestamp(),
+      if (url == null)
+        FirestoreFieldConstants.coverImageUrl: null
+      else
+        FirestoreFieldConstants.coverImageUrl: url,
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
     });
   }
 
   Future<void> updateSheetDescription(String sheetId, Description desc) async {
     await collection.doc(sheetId).update({
-      'description': {'plainText': desc.plainText, 'htmlText': desc.htmlText},
-      'updatedAt': FieldValue.serverTimestamp(),
+      FirestoreFieldConstants.description: {
+        'plainText': desc.plainText,
+        'htmlText': desc.htmlText,
+      },
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
     });
   }
 
@@ -108,15 +123,15 @@ class SheetList extends _$SheetList {
   }) async {
     final updatedAvatar = SheetAvatar(type: type, data: data, color: color);
     await collection.doc(sheetId).update({
-      'sheetAvatar': updatedAvatar.toJson(),
-      'updatedAt': FieldValue.serverTimestamp(),
+      FirestoreFieldConstants.sheetAvatar: updatedAvatar.toJson(),
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
     });
   }
 
   Future<void> addUserToSheet(String sheetId, String userId) async {
     await collection.doc(sheetId).update({
-      'users': FieldValue.arrayUnion([userId]),
-      'updatedAt': FieldValue.serverTimestamp(),
+      FirestoreFieldConstants.users: FieldValue.arrayUnion([userId]),
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
     });
   }
 
@@ -126,7 +141,7 @@ class SheetList extends _$SheetList {
     String? message,
   }) async {
     final updateMap = <String, dynamic>{
-      'updatedAt': FieldValue.serverTimestamp(),
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
     };
     if (sharedBy != null) updateMap['sharedBy'] = sharedBy;
     if (message != null) updateMap['message'] = message;
@@ -141,8 +156,8 @@ class SheetList extends _$SheetList {
   }) async {
     final newTheme = SheetTheme(primary: primary, secondary: secondary);
     await collection.doc(sheetId).update({
-      'theme': newTheme.toJson(),
-      'updatedAt': FieldValue.serverTimestamp(),
+      FirestoreFieldConstants.theme: newTheme.toJson(),
+      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
     });
   }
 }
