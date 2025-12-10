@@ -20,21 +20,15 @@ class SheetTheme {
     );
   }
 
-  /// Convert to JSON for Firestore
-  Map<String, dynamic> toJson() {
-    return {
-      'primary': '#${primary.value.toRadixString(16).padLeft(8, '0')}',
-      'secondary': '#${secondary.value.toRadixString(16).padLeft(8, '0')}',
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'primary': CommonUtils.clrToHex(primary),
+    'secondary': CommonUtils.clrToHex(secondary),
+  };
 
-  /// Create from JSON from Firestore
-  factory SheetTheme.fromJson(Map<String, dynamic> json) {
-    return SheetTheme(
-      primary: Color(int.parse((json['primary'] as String).replaceAll('#', ''), radix: 16)),
-      secondary: Color(int.parse((json['secondary'] as String).replaceAll('#', ''), radix: 16)),
-    );
-  }
+  factory SheetTheme.fromJson(Map<String, dynamic> json) => SheetTheme(
+    primary: CommonUtils.clrFromHex(json['primary']),
+    secondary: CommonUtils.clrFromHex(json['secondary']),
+  );
 }
 
 class SheetModel {
@@ -69,7 +63,7 @@ class SheetModel {
   }) : id = id ?? CommonUtils.generateRandomId(),
        sheetAvatar = sheetAvatar ?? SheetAvatar(),
        title = title ?? 'Untitled',
-       createdBy = createdBy ?? '',  // Will be set by addSheet method
+       createdBy = createdBy ?? '', // Will be set by addSheet method
        users = users ?? [],
        createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now();
@@ -131,11 +125,13 @@ class SheetModel {
       'sheetAvatar': sheetAvatar.toJson(),
       'title': title,
       if (coverImageUrl != null) 'coverImageUrl': coverImageUrl,
-      if (description != null) 'description': {
-        if (description!.plainText != null) 'plainText': description!.plainText,
-        if (description!.htmlText != null) 'htmlText': description!.htmlText,
-      },
-      if (color != null) 'color': '#${color!.value.toRadixString(16).padLeft(8, '0')}',
+      if (description != null)
+        'description': {
+          if (description!.plainText != null)
+            'plainText': description!.plainText,
+          if (description!.htmlText != null) 'htmlText': description!.htmlText,
+        },
+      if (color != null) 'color': CommonUtils.clrToHex(color!),
       if (theme != null) 'theme': theme!.toJson(),
       'createdBy': createdBy,
       'users': users,
@@ -150,25 +146,27 @@ class SheetModel {
   factory SheetModel.fromJson(Map<String, dynamic> json) {
     return SheetModel(
       id: json['id'] as String,
-      sheetAvatar: SheetAvatar.fromJson(json['sheetAvatar'] as Map<String, dynamic>),
+      sheetAvatar: SheetAvatar.fromJson(
+        json['sheetAvatar'] as Map<String, dynamic>,
+      ),
       title: json['title'] as String? ?? 'Untitled',
       coverImageUrl: json['coverImageUrl'] as String?,
       description: json['description'] != null
           ? (
-              plainText: (json['description'] as Map<String, dynamic>)['plainText'] as String?,
-              htmlText: (json['description'] as Map<String, dynamic>)['htmlText'] as String?,
+              plainText:
+                  (json['description'] as Map<String, dynamic>)['plainText']
+                      as String?,
+              htmlText:
+                  (json['description'] as Map<String, dynamic>)['htmlText']
+                      as String?,
             )
           : null,
       color: json['color'] != null
-          ? Color(int.parse((json['color'] as String).replaceAll('#', ''), radix: 16))
+          ? CommonUtils.clrFromHex(json['color'])
           : null,
-      theme: json['theme'] != null
-          ? SheetTheme.fromJson(json['theme'] as Map<String, dynamic>)
-          : null,
+      theme: json['theme'] != null ? SheetTheme.fromJson(json['theme']) : null,
       createdBy: json['createdBy'] as String? ?? '',
-      users: json['users'] != null 
-          ? (json['users'] as List<dynamic>).cast<String>()
-          : [],
+      users: (json['users'] as List).cast<String>(),
       createdAt: json['createdAt'] != null
           ? (json['createdAt'] as Timestamp).toDate()
           : DateTime.now(),

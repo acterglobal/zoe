@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 
 enum AvatarType { icon, image, emoji }
 
@@ -7,11 +8,7 @@ class SheetAvatar {
   final String data;
   final Color? color;
 
-  SheetAvatar({
-    this.type = AvatarType.icon,
-    this.data = 'file',
-    this.color,
-  });
+  SheetAvatar({this.type = AvatarType.icon, this.data = 'file', this.color});
 
   SheetAvatar copyWith({AvatarType? type, String? data, Color? color}) {
     return SheetAvatar(
@@ -26,7 +23,7 @@ class SheetAvatar {
     return {
       'type': type.name,
       'data': data,
-      if (color != null) 'color': '#${color!.value.toRadixString(16).padLeft(8, '0')}',
+      if (color != null) 'color': CommonUtils.clrToHex(color!),
     };
   }
 
@@ -39,7 +36,7 @@ class SheetAvatar {
       ),
       data: json['data'] as String? ?? 'file',
       color: json['color'] != null
-          ? Color(int.parse((json['color'] as String).substring(1), radix: 16))
+          ? CommonUtils.clrFromHex(json['color'] as String)
           : null,
     );
   }
