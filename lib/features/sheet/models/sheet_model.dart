@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:zoe/common/utils/color_extensions.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 
@@ -21,13 +22,13 @@ class SheetTheme {
   }
 
   Map<String, dynamic> toJson() => {
-    'primary': CommonUtils.clrToHex(primary),
-    'secondary': CommonUtils.clrToHex(secondary),
+    'primary': primary.toHex(),
+    'secondary': secondary.toHex(),
   };
 
   factory SheetTheme.fromJson(Map<String, dynamic> json) => SheetTheme(
-    primary: CommonUtils.clrFromHex(json['primary'] as String),
-    secondary: CommonUtils.clrFromHex(json['secondary'] as String),
+    primary: (json['primary'] as String).toColor(),
+    secondary: (json['secondary'] as String).toColor(),
   );
 }
 
@@ -131,7 +132,7 @@ class SheetModel {
             'plainText': description!.plainText,
           if (description!.htmlText != null) 'htmlText': description!.htmlText,
         },
-      if (color != null) 'color': CommonUtils.clrToHex(color!),
+      if (color != null) 'color': color!.toHex(),
       if (theme != null) 'theme': theme!.toJson(),
       'createdBy': createdBy,
       'users': users,
@@ -161,9 +162,7 @@ class SheetModel {
                       as String?,
             )
           : null,
-      color: json['color'] != null
-          ? CommonUtils.clrFromHex(json['color'])
-          : null,
+      color: json['color'] != null ? (json['color'] as String).toColor() : null,
       theme: json['theme'] != null ? SheetTheme.fromJson(json['theme']) : null,
       createdBy: json['createdBy'] as String? ?? '',
       users: List<String>.from(json['users'] ?? []),

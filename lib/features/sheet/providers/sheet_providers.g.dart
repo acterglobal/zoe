@@ -41,7 +41,7 @@ final class SheetListProvider
   }
 }
 
-String _$sheetListHash() => r'c5abc9e268298aba533799daa40d75c6fe53802d';
+String _$sheetListHash() => r'45242f54fc51ec82b2bd94fc3b4e8abfac724965';
 
 abstract class _$SheetList extends $Notifier<List<SheetModel>> {
   List<SheetModel> build();
@@ -61,57 +61,6 @@ abstract class _$SheetList extends $Notifier<List<SheetModel>> {
     element.handleValue(ref, created);
   }
 }
-
-/// Filters by membership
-
-@ProviderFor(sheetsList)
-const sheetsListProvider = SheetsListProvider._();
-
-/// Filters by membership
-
-final class SheetsListProvider
-    extends
-        $FunctionalProvider<
-          List<SheetModel>,
-          List<SheetModel>,
-          List<SheetModel>
-        >
-    with $Provider<List<SheetModel>> {
-  /// Filters by membership
-  const SheetsListProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'sheetsListProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$sheetsListHash();
-
-  @$internal
-  @override
-  $ProviderElement<List<SheetModel>> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  List<SheetModel> create(Ref ref) {
-    return sheetsList(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<SheetModel> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<SheetModel>>(value),
-    );
-  }
-}
-
-String _$sheetsListHash() => r'2aa2bfdc64b8a7ba7290046b39b0f2824d681828';
 
 /// Search provider
 
@@ -162,7 +111,7 @@ final class SheetListSearchProvider
   }
 }
 
-String _$sheetListSearchHash() => r'819ef72f72cb682624888c237311c4dc3e651889';
+String _$sheetListSearchHash() => r'93398bf3848f81ca8d6d661712c3557cc0258db1';
 
 /// Get Single Sheet
 
@@ -471,4 +420,4 @@ final class SortedSheetsProvider
   }
 }
 
-String _$sortedSheetsHash() => r'e58c9902407d4adccfa510004bee3bcf2854e252';
+String _$sortedSheetsHash() => r'aae31f7ba341c156247c9ad7f23dee5de23a74a4';

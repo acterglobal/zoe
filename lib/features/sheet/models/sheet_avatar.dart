@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/utils/color_extensions.dart';
 
 enum AvatarType { icon, image, emoji }
 
@@ -23,7 +23,7 @@ class SheetAvatar {
     return {
       'type': type.name,
       'data': data,
-      if (color != null) 'color': CommonUtils.clrToHex(color!),
+      if (color != null) 'color': color!.toHex(),
     };
   }
 
@@ -35,9 +35,7 @@ class SheetAvatar {
         orElse: () => AvatarType.icon,
       ),
       data: json['data'] as String? ?? 'file',
-      color: json['color'] != null
-          ? CommonUtils.clrFromHex(json['color'] as String)
-          : null,
+      color: (json['color'] as String?)?.toColor(),
     );
   }
 

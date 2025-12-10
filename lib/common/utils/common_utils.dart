@@ -93,11 +93,4 @@ class CommonUtils {
     final viewInsets = MediaQuery.of(context).viewInsets;
     return viewInsets.bottom > 0;
   }
-
-  /// convert Color <-> Hex String
-  static String clrToHex(Color color) =>
-      '#${color.value.toRadixString(16).padLeft(8, '0')}';
-
-  static Color clrFromHex(String hex) =>
-      Color(int.parse(hex.replaceAll('#', ''), radix: 16));
 }

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/constants/firestore_constants.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
@@ -13,7 +14,7 @@ part 'sheet_providers.g.dart';
 @Riverpod(keepAlive: true)
 class SheetList extends _$SheetList {
   CollectionReference<Map<String, dynamic>> get collection =>
-      ref.read(firestoreProvider).collection('sheets');
+      ref.read(firestoreProvider).collection(FirestoreCollections.sheets);
 
   StreamSubscription? _subscription;
 
@@ -107,13 +108,7 @@ class SheetList extends _$SheetList {
     required String data,
     Color? color,
   }) async {
-    final sheet = state.firstWhere((s) => s.id == sheetId);
-    final updatedAvatar = sheet.sheetAvatar.copyWith(
-      type: type,
-      data: data,
-      color: color,
-    );
-
+    final updatedAvatar = SheetAvatar(type: type, data: data, color: color);
     await collection.doc(sheetId).update({
       'sheetAvatar': updatedAvatar.toJson(),
       'updatedAt': FieldValue.serverTimestamp(),
@@ -146,11 +141,7 @@ class SheetList extends _$SheetList {
     required Color primary,
     required Color secondary,
   }) async {
-    final sheet = state.firstWhere((s) => s.id == sheetId);
-    final newTheme =
-        sheet.theme?.copyWith(primary: primary, secondary: secondary) ??
-        SheetTheme(primary: primary, secondary: secondary);
-
+    final newTheme = SheetTheme(primary: primary, secondary: secondary);
     await collection.doc(sheetId).update({
       'theme': newTheme.toJson(),
       'updatedAt': FieldValue.serverTimestamp(),
@@ -158,16 +149,10 @@ class SheetList extends _$SheetList {
   }
 }
 
-/// Filters by membership
-@riverpod
-List<SheetModel> sheetsList(Ref ref) {
-  return ref.watch(sheetListProvider);
-}
-
 /// Search provider
 @riverpod
 List<SheetModel> sheetListSearch(Ref ref) {
-  final sheets = ref.watch(sheetsListProvider);
+  final sheets = ref.watch(sheetListProvider);
   final query = ref.watch(searchValueProvider);
 
   if (query.isEmpty) return sheets;
@@ -203,6 +188,6 @@ bool sheetExists(Ref ref, String sheetId) {
 /// Provider for sheets sorted by title (filtered by membership)
 @riverpod
 List<SheetModel> sortedSheets(Ref ref) {
-  final sheets = ref.watch(sheetsListProvider);
+  final sheets = ref.watch(sheetListProvider);
   return [...sheets]..sort((a, b) => a.title.compareTo(b.title));
 }
