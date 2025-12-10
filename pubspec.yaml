@@ -107,6 +107,7 @@ dependencies:
   firebase_core: ^4.2.1
   firebase_auth: ^6.1.2
   cloud_firestore: ^6.1.0
+  fake_cloud_firestore: ^4.0.0
 
 # Added cause; without this, it gives a 'Terminating app due to uncaught exception 'NSInvalidArgumentException'' error on macOS.
 dependency_overrides:
