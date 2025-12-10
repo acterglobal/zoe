@@ -68,13 +68,11 @@ class SheetList extends _$SheetList {
 
   Future<void> addSheet(SheetModel sheet) async {
     final userId = ref.read(loggedInUserProvider).value;
-    var newSheet = sheet;
-
-    newSheet = newSheet.copyWith(
-      users: [if (userId != null) userId],
-      createdBy: userId,
-    );
-    await collection.doc(newSheet.id).set(newSheet.toJson());
+    if (userId != null) {
+      var newSheet = sheet;
+      newSheet = newSheet.copyWith(users: [userId], createdBy: userId);
+      await collection.doc(newSheet.id).set(newSheet.toJson());
+    }
   }
 
   Future<void> deleteSheet(String sheetId) async {
