@@ -26,8 +26,8 @@ class SheetTheme {
   };
 
   factory SheetTheme.fromJson(Map<String, dynamic> json) => SheetTheme(
-    primary: CommonUtils.clrFromHex(json['primary']),
-    secondary: CommonUtils.clrFromHex(json['secondary']),
+    primary: CommonUtils.clrFromHex(json['primary'] as String),
+    secondary: CommonUtils.clrFromHex(json['secondary'] as String),
   );
 }
 
@@ -146,9 +146,9 @@ class SheetModel {
   factory SheetModel.fromJson(Map<String, dynamic> json) {
     return SheetModel(
       id: json['id'] as String,
-      sheetAvatar: SheetAvatar.fromJson(
-        json['sheetAvatar'] as Map<String, dynamic>,
-      ),
+      sheetAvatar: json['sheetAvatar'] != null
+          ? SheetAvatar.fromJson(json['sheetAvatar'] as Map<String, dynamic>)
+          : null,
       title: json['title'] as String? ?? 'Untitled',
       coverImageUrl: json['coverImageUrl'] as String?,
       description: json['description'] != null
@@ -166,7 +166,7 @@ class SheetModel {
           : null,
       theme: json['theme'] != null ? SheetTheme.fromJson(json['theme']) : null,
       createdBy: json['createdBy'] as String? ?? '',
-      users: (json['users'] as List).cast<String>(),
+      users: List<String>.from(json['users'] ?? []),
       createdAt: json['createdAt'] != null
           ? (json['createdAt'] as Timestamp).toDate()
           : DateTime.now(),

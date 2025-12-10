@@ -12,35 +12,50 @@ part 'sheet_providers.g.dart';
 
 @Riverpod(keepAlive: true)
 class SheetList extends _$SheetList {
-  CollectionReference<Map<String, dynamic>> get col =>
+  CollectionReference<Map<String, dynamic>> get collection =>
       ref.read(firestoreProvider).collection('sheets');
 
-  StreamSubscription? _sub;
+  StreamSubscription? _subscription;
 
   @override
   List<SheetModel> build() {
     final userId = ref.watch(loggedInUserProvider).value;
 
-    _sub?.cancel();
-    _sub = null;
+    _subscription?.cancel();
+    _subscription = null;
+
+    Query<Map<String, dynamic>> query = collection;
 
     if (userId != null) {
-      _sub = col.where('users', arrayContains: userId).snapshots().listen((
-        snapshot,
-      ) {
-        final items = snapshot.docs
-            .map((doc) {
-              return SheetModel.fromJson(doc.data());
-            })
-            .whereType<SheetModel>()
-            .toList();
-
-        state = items;
-      });
+      query = query.where(
+        Filter.or(
+          Filter('users', arrayContains: userId),
+          Filter('users', isEqualTo: []),
+          Filter('users', isNull: true),
+        ),
+      );
+    } else {
+      query = query.where(
+        Filter.or(
+          Filter('users', isEqualTo: []),
+          Filter('users', isNull: true),
+        ),
+      );
     }
 
+    _subscription = query.snapshots().listen((snapshot) {
+      final items = snapshot.docs
+          .map((doc) {
+            return SheetModel.fromJson(doc.data());
+          })
+          .whereType<SheetModel>()
+          .toList();
+
+      state = items;
+    });
+
     ref.onDispose(() {
-      _sub?.cancel();
+      _subscription?.cancel();
     });
 
     return [];
@@ -52,32 +67,35 @@ class SheetList extends _$SheetList {
 
   Future<void> addSheet(SheetModel sheet) async {
     final userId = ref.read(loggedInUserProvider).value;
-    var s = sheet;
+    var newSheet = sheet;
 
-    s = s.copyWith(users: [if (userId != null) userId], createdBy: userId);
-    await col.doc(s.id).set(s.toJson());
+    newSheet = newSheet.copyWith(
+      users: [if (userId != null) userId],
+      createdBy: userId,
+    );
+    await collection.doc(newSheet.id).set(newSheet.toJson());
   }
 
   Future<void> deleteSheet(String sheetId) async {
-    await col.doc(sheetId).delete();
+    await collection.doc(sheetId).delete();
   }
 
   Future<void> updateSheetTitle(String sheetId, String title) async {
-    await col.doc(sheetId).update({
+    await collection.doc(sheetId).update({
       'title': title,
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
 
   Future<void> updateSheetCoverImage(String sheetId, String? url) async {
-    await col.doc(sheetId).update({
+    await collection.doc(sheetId).update({
       if (url == null) 'coverImageUrl': null else 'coverImageUrl': url,
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
 
   Future<void> updateSheetDescription(String sheetId, Description desc) async {
-    await col.doc(sheetId).update({
+    await collection.doc(sheetId).update({
       'description': {'plainText': desc.plainText, 'htmlText': desc.htmlText},
       'updatedAt': FieldValue.serverTimestamp(),
     });
@@ -96,14 +114,14 @@ class SheetList extends _$SheetList {
       color: color,
     );
 
-    await col.doc(sheetId).update({
+    await collection.doc(sheetId).update({
       'sheetAvatar': updatedAvatar.toJson(),
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
 
   Future<void> addUserToSheet(String sheetId, String userId) async {
-    await col.doc(sheetId).update({
+    await collection.doc(sheetId).update({
       'users': FieldValue.arrayUnion([userId]),
       'updatedAt': FieldValue.serverTimestamp(),
     });
@@ -120,7 +138,7 @@ class SheetList extends _$SheetList {
     if (sharedBy != null) updateMap['sharedBy'] = sharedBy;
     if (message != null) updateMap['message'] = message;
 
-    await col.doc(sheetId).update(updateMap);
+    await collection.doc(sheetId).update(updateMap);
   }
 
   Future<void> updateSheetTheme({
@@ -133,7 +151,7 @@ class SheetList extends _$SheetList {
         sheet.theme?.copyWith(primary: primary, secondary: secondary) ??
         SheetTheme(primary: primary, secondary: secondary);
 
-    await col.doc(sheetId).update({
+    await collection.doc(sheetId).update({
       'theme': newTheme.toJson(),
       'updatedAt': FieldValue.serverTimestamp(),
     });
