@@ -26,6 +26,7 @@ void main() {
             PollOption(id: 'option-1', title: 'Red'),
             PollOption(id: 'option-2', title: 'Blue'),
           ],
+          createdBy: 'test-user',
         );
 
         final initialLength = container.read(pollListProvider).length;
@@ -51,6 +52,7 @@ void main() {
           parentId: 'sheet-1',
           question: 'Test question',
           options: [PollOption(id: 'option-1', title: 'Test option')],
+          createdBy: 'test-user',
         );
 
         await container.read(pollListProvider.notifier).addPoll(newPoll);

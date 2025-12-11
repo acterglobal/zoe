@@ -31,6 +31,7 @@ class ContentTestUtils {
       description: (plainText: plainText, htmlText: htmlText),
       orderIndex: orderIndex,
       createdAt: createdAt,
+      createdBy: 'test-user',
     );
   }
 

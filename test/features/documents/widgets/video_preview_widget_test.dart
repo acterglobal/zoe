@@ -140,6 +140,7 @@ void main() {
             parentId: 'list-1',
             sheetId: 'sheet-1',
             filePath: '/non/existent/path.mp4',
+            createdBy: 'test-user',
           );
 
           await createTestWidget(tester, document: errorDocument);
@@ -167,6 +168,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: emptyPathDocument);
@@ -195,6 +197,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: emptyPathDocument);
@@ -387,6 +390,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '/non/existent/path.mp4',
+          createdBy: 'test-user',
         );
 
         await tester.pumpMaterialWidgetWithProviderScope(
@@ -410,6 +414,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '/non/existent/path.mp4',
+          createdBy: 'test-user',
         );
 
         await tester.pumpMaterialWidgetWithProviderScope(
