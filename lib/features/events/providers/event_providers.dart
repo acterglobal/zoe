@@ -102,21 +102,6 @@ class EventList extends _$EventList {
     );
   }
 
-  Future<void> updateEventDateRange(
-    String eventId,
-    DateTime startDate,
-    DateTime endDate,
-  ) async {
-    await runFirestoreOperation(
-      ref,
-      () => collection.doc(eventId).update({
-        FirestoreFieldConstants.startDate: Timestamp.fromDate(startDate),
-        FirestoreFieldConstants.endDate: Timestamp.fromDate(endDate),
-        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-      }),
-    );
-  }
-
   Future<void> updateEventOrderIndex(String eventId, int orderIndex) async {
     await runFirestoreOperation(
       ref,
