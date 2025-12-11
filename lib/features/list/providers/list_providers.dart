@@ -1,6 +1,11 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:zoe/features/content/models/content_model.dart';
-import 'package:zoe/features/list/data/lists.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/firestore_error_handler.dart';
+import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 
@@ -9,53 +14,85 @@ part 'list_providers.g.dart';
 /// Main list provider with all list management functionality
 @Riverpod(keepAlive: true)
 class Lists extends _$Lists {
+  StreamSubscription? _subscription;
+
+  CollectionReference<Map<String, dynamic>> get collection =>
+      ref.read(firestoreProvider).collection(FirestoreCollections.lists);
+
   @override
-  List<ListModel> build() => lists;
+  List<ListModel> build() {
+    _subscription?.cancel();
+    _subscription = null;
 
-  void addList(ListModel list) {
-    state = [...state, list];
+    _subscription = collection.snapshots().listen(
+      (snapshot) {
+        state = snapshot.docs
+            .map((doc) => ListModel.fromJson(doc.data()))
+            .toList();
+      },
+      onError: (error, stackTrace) =>
+          runFirestoreOperation(ref, () => throw error),
+    );
+
+    ref.onDispose(() => _subscription?.cancel());
+    return [];
   }
 
-  void deleteList(String listId) {
-    state = state.where((l) => l.id != listId).toList();
+  Future<void> addList(ListModel list) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(list.id).set(list.toJson()),
+    );
   }
 
-  void updateListTitle(String listId, String title) {
-    state = [
-      for (final list in state)
-        if (list.id == listId) list.copyWith(title: title) else list,
-    ];
+  Future<void> deleteList(String listId) async {
+    await runFirestoreOperation(ref, () => collection.doc(listId).delete());
   }
 
-  void updateListDescription(String listId, Description description) {
-    state = [
-      for (final list in state)
-        if (list.id == listId)
-          list.copyWith(description: description)
-        else
-          list,
-    ];
+  Future<void> updateListTitle(String listId, String title) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(listId).update({
+        FirestoreFieldConstants.title: title,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateListEmoji(String listId, String emoji) {
-    state = [
-      for (final list in state)
-        if (list.id == listId) list.copyWith(emoji: emoji) else list,
-    ];
+  Future<void> updateListDescription(
+    String listId,
+    Description description,
+  ) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(listId).update({
+        FirestoreFieldConstants.description: {
+          FirestoreFieldConstants.plainText: description.plainText,
+          FirestoreFieldConstants.htmlText: description.htmlText,
+        },
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateListType(String listId, ContentType contentType) {
-    state = [
-      for (final list in state)
-        if (list.id == listId) list.copyWith(listType: contentType) else list,
-    ];
+  Future<void> updateListEmoji(String listId, String emoji) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(listId).update({
+        FirestoreFieldConstants.emoji: emoji,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateListOrderIndex(String listId, int orderIndex) {
-    state = [
-      for (final list in state)
-        if (list.id == listId) list.copyWith(orderIndex: orderIndex) else list,
-    ];
+  Future<void> updateListOrderIndex(String listId, int orderIndex) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(listId).update({
+        FirestoreFieldConstants.orderIndex: orderIndex,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 }
 

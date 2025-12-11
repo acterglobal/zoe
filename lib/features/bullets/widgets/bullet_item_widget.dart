@@ -131,7 +131,9 @@ class BulletItemWidget extends ConsumerWidget {
           child: Icon(
             Icons.edit,
             size: 16,
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.4),
           ),
         ),
         const SizedBox(width: 6),
@@ -154,25 +156,22 @@ class BulletItemWidget extends ConsumerWidget {
 
     return switch (userDisplayType) {
       ZoeUserDisplayType.avatarOnly => Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: ZoeUserAvatarWidget(user: user),
-        ),
+        padding: const EdgeInsets.only(left: 8),
+        child: ZoeUserAvatarWidget(user: user),
+      ),
       ZoeUserDisplayType.nameChipBelow => Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Row(
-            children: [
-              BulletAddedByHeaderWidget(iconSize: 16, textSize: 12),
-              const SizedBox(width: 8),
-              ZoeUserChipWidget(
-                user: user,
-                type: ZoeUserChipType.userNameChip,
-              ),
-            ],
-          ),
+        padding: const EdgeInsets.only(left: 16),
+        child: Row(
+          children: [
+            BulletAddedByHeaderWidget(iconSize: 16, textSize: 12),
+            const SizedBox(width: 8),
+            ZoeUserChipWidget(user: user, type: ZoeUserChipType.userNameChip),
+          ],
         ),
+      ),
       // Bullets don't support multiple users, so these cases are not needed
-      ZoeUserDisplayType.stackedAvatars || ZoeUserDisplayType.nameChipsWrap => 
-        const SizedBox.shrink(),
+      ZoeUserDisplayType.stackedAvatars ||
+      ZoeUserDisplayType.nameChipsWrap => const SizedBox.shrink(),
     };
   }
 }

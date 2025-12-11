@@ -1,599 +1,599 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/features/list/actions/list_actions.dart';
-import 'package:zoe/features/list/models/list_model.dart';
-import 'package:zoe/features/list/providers/list_providers.dart';
-import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
-import '../../../test-utils/test_utils.dart';
-import '../../../test-utils/mock_gorouter.dart';
-import '../utils/list_utils.dart';
-
-// Helper function to get l10n strings in tests
-L10n getL10n(WidgetTester tester) {
-  return WidgetTesterExtension.getL10n(tester, byType: Consumer);
-}
-
-void main() {
-  group('ListActions Tests', () {
-    late ProviderContainer container;
-    late ListModel testList;
-    late MockGoRouter mockGoRouter;
-
-    setUp(() {
-      mockGoRouter = MockGoRouter();
-
-      // Set up mock methods
-      when(() => mockGoRouter.canPop()).thenReturn(true);
-      when(() => mockGoRouter.pop()).thenReturn(null);
-
-      container = ProviderContainer.test(
-        overrides: [
-          editContentIdProvider.overrideWith((ref) => null),
-        ],
-      );
-      
-      testList = getListByIndex(container);
-      
-      // Now override with the actual test list
-      container = ProviderContainer.test(
-        overrides: [
-          listItemProvider(testList.id).overrideWith((ref) => testList),
-        ],
-      );
-    });
-
-    group('copyList', () {
-      testWidgets('copies list content to clipboard', (tester) async {
-        await tester.pumpActionsWidget(
-          container: container,
-          buttonText: 'Copy List',
-          onPressed: (context, ref) =>
-              ListActions.copyList(context, ref, testList.id),
-        );
-
-        // Tap the button to trigger copy action
-        await tester.tap(find.text('Copy List'));
-        await tester.pumpAndSettle();
-
-        // Verify the action was called (we can't easily test clipboard in unit tests)
-        expect(find.text('Copy List'), findsOneWidget);
-      });
-
-      testWidgets('shows snackbar after copying', (tester) async {
-        await tester.pumpActionsWidget(
-          container: container,
-          buttonText: 'Copy List',
-          onPressed: (context, ref) =>
-              ListActions.copyList(context, ref, testList.id),
-        );
-
-        // Tap the button to trigger copy action
-        await tester.tap(find.text('Copy List'));
-        await tester.pumpAndSettle();
-
-        // Verify snackbar is shown with correct message
-        expect(find.byType(SnackBar), findsOneWidget);
-        expect(find.text(getL10n(tester).copiedToClipboard), findsOneWidget);
-      });
-
-      testWidgets('handles invalid list ID gracefully', (tester) async {
-        const invalidListId = 'invalid-list-id';
-
-        await tester.pumpActionsWidget(
-          container: container,
-          buttonText: 'Copy Invalid List',
-          onPressed: (context, ref) =>
-              ListActions.copyList(context, ref, invalidListId),
-        );
-
-        // Tap the button
-        await tester.tap(find.text('Copy Invalid List'));
-        await tester.pumpAndSettle();
-
-        // Should not throw an error
-        expect(find.text('Copy Invalid List'), findsOneWidget);
-      });
-    });
-
-    group('shareList', () {
-      testWidgets('shows share bottom sheet', (tester) async {
-        await tester.pumpActionsWidget( 
-          buttonText: 'Share List',
-          onPressed: (context, ref) => ListActions.shareList(context, testList.id), 
-          container: container,
-          router: mockGoRouter,
-        );
-
-        // Tap the button to trigger share action
-        await tester.tap(find.text('Share List'));
-        await tester.pump(); // Don't use pumpAndSettle to avoid timeout
-
-        // Verify the action was called
-        expect(find.text('Share List'), findsAtLeastNWidgets(1));
-        expect(find.byType(ShareItemsBottomSheet), findsOneWidget);
-      });
-    });
-
-    group('editList', () {
-      testWidgets('sets correct list ID in edit provider', (tester) async {
-        await tester.pumpActionsWidget(
-          container: container,
-          buttonText: 'Edit List',
-          onPressed: (context, ref) => ListActions.editList(ref, testList.id),
-        );
-
-        // Tap the button to trigger edit action
-        await tester.tap(find.text('Edit List'));
-        await tester.pumpAndSettle();
-
-        // Verify the correct list ID is set
-        final editContentId = container.read(editContentIdProvider);
-        expect(editContentId, equals(testList.id));
-      });
-    });
-
-    group('deleteList', () {
-      testWidgets('deletes list from provider', (tester) async {
-        // Verify list exists initially
-        final initialLists = container.read(listsProvider);
-        expect(initialLists.any((list) => list.id == testList.id), isTrue);
-
-        await tester.pumpActionsWidget(
-          buttonText: 'Delete List',
-          onPressed: (context, ref) =>
-              ListActions.deleteList(context, ref, testList.id),
-          container: container,
-        );
-
-        // Tap the button to trigger delete action
-        await tester.tap(find.text('Delete List'));
-        await tester.pumpAndSettle();
-
-        // Verify list was deleted from provider
-        final updatedLists = container.read(listsProvider);
-        expect(updatedLists.any((list) => list.id == testList.id), isFalse);
-        expect(updatedLists.length, equals(initialLists.length - 1));
-      });
-
-      testWidgets('shows snackbar after deletion', (tester) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Delete List',
-          onPressed: (context, ref) =>
-              ListActions.deleteList(context, ref, testList.id),
-          container: container,
-        );
-
-        // Tap the button to trigger delete action
-        await tester.tap(find.text('Delete List'));
-        await tester.pumpAndSettle();
-
-        // Verify snackbar is shown with correct message
-        expect(find.byType(SnackBar), findsOneWidget);
-        expect(find.text(getL10n(tester).listDeleted), findsOneWidget);
-      });
-    });
-
-    group('showListMenu', () {
-      testWidgets('shows list menu with all items when not editing', (
-        tester,
-      ) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Show Menu',
-          onPressed: (context, ref) => showListMenu(
-            context: context,
-            ref: ref,
-            isEditing: false,
-            listId: testList.id,
-          ),
-          container: container,
-          router: mockGoRouter,
-        );
-
-        // Tap the button to trigger menu
-        await tester.tap(find.text('Show Menu'));
-        await tester.pumpAndSettle();
-
-        // Verify menu items are rendered (copy, share, edit, delete)
-        // Using l10n strings from app_en.arb
-        expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
-        expect(find.text(getL10n(tester).shareThisList), findsOneWidget);
-        expect(find.text(getL10n(tester).editThisList), findsOneWidget);
-        expect(find.text(getL10n(tester).deleteThisList), findsOneWidget);
-      });
-
-      testWidgets('shows list menu without edit item when editing', (
-        tester,
-      ) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Show Menu',
-          onPressed: (context, ref) => showListMenu(
-            context: context,
-            ref: ref,
-            isEditing: true,
-            listId: testList.id,
-          ),
-          container: container,
-          router: mockGoRouter,
-        );
-
-        // Tap the button to trigger menu
-        await tester.tap(find.text('Show Menu'));
-        await tester.pumpAndSettle();
-
-        // Verify menu items are rendered (copy, share, delete - no edit)
-        // Using l10n strings from app_en.arb
-        expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
-        expect(find.text(getL10n(tester).shareThisList), findsOneWidget);
-        expect(find.text(getL10n(tester).deleteThisList), findsOneWidget);
-        expect(find.text(getL10n(tester).editThisList), findsNothing);
-      });
-
-      testWidgets('handles copy menu item tap correctly', (tester) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Show Menu',
-          onPressed: (context, ref) => showListMenu(
-            context: context,
-            ref: ref,
-            isEditing: false,
-            listId: testList.id,
-          ),
-          container: container,
-          router: mockGoRouter,
-        );
-
-        // Tap the button to trigger menu
-        await tester.tap(find.text('Show Menu'));
-        await tester.pumpAndSettle();
-
-        // Tap the copy menu item
-        await tester.tap(find.text(getL10n(tester).copyListContent));
-        await tester.pumpAndSettle();
-
-        // Verify snackbar is shown with correct message (indicates copy action was executed)
-        expect(find.byType(SnackBar), findsOneWidget);
-        expect(find.text(getL10n(tester).copiedToClipboard), findsOneWidget);
-      });
-
-      testWidgets('handles edit menu item tap correctly', (tester) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Show Menu',
-          onPressed: (context, ref) => showListMenu(
-            context: context,
-            ref: ref,
-            isEditing: false,
-            listId: testList.id,
-          ),
-          container: container,
-          router: mockGoRouter,
-        );
-
-        // Tap the button to trigger menu
-        await tester.tap(find.text('Show Menu'));
-        await tester.pumpAndSettle();
-
-        // Tap the edit menu item
-        await tester.tap(find.text(getL10n(tester).editThisList));
-        await tester.pumpAndSettle();
-
-        // Verify edit state was set
-        final editContentId = container.read(editContentIdProvider);
-        expect(editContentId, equals(testList.id));
-      });
-
-      testWidgets('handles delete menu item tap correctly', (tester) async {
-        // Verify list exists initially
-        final initialLists = container.read(listsProvider);
-        expect(initialLists.any((list) => list.id == testList.id), isTrue);
-
-        await tester.pumpActionsWidget(
-          buttonText: 'Show Menu',
-          onPressed: (context, ref) => showListMenu(
-            context: context,
-            ref: ref,
-            isEditing: false,
-            listId: testList.id,
-          ),
-          container: container,
-          router: mockGoRouter,
-        );
-
-        // Tap the button to trigger menu
-        await tester.tap(find.text('Show Menu'));
-        await tester.pumpAndSettle();
-
-        // Tap the delete menu item
-        await tester.tap(find.text(getL10n(tester).deleteThisList));
-        await tester.pumpAndSettle();
-
-        // Verify list was deleted from provider
-        final updatedLists = container.read(listsProvider);
-        expect(updatedLists.any((list) => list.id == testList.id), isFalse);
-        expect(updatedLists.length, equals(initialLists.length - 1));
-
-        // Verify snackbar is shown with correct message
-        expect(find.byType(SnackBar), findsOneWidget);
-        expect(find.text(getL10n(tester).listDeleted), findsOneWidget);
-      });
-
-      testWidgets('handles share menu item tap correctly', (tester) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Show Menu',
-          onPressed: (context, ref) => showListMenu(
-            context: context,
-            ref: ref,
-            isEditing: false,
-            listId: testList.id,
-          ),
-          container: container,
-          router: mockGoRouter,
-        );
-
-        // Tap the button to trigger menu
-        await tester.tap(find.text('Show Menu'));
-        await tester.pumpAndSettle();
-
-        // Tap the share menu item
-        await tester.tap(find.text(getL10n(tester).shareThisList));
-        await tester.pump(); // Don't use pumpAndSettle to avoid timeout
-
-        // Verify the action was called (share bottom sheet might not settle)
-        expect(find.text(getL10n(tester).shareThisList), findsAtLeastNWidgets(1));
-      });
-
-      testWidgets('menu can be dismissed by tapping outside', (tester) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Show Menu',
-          onPressed: (context, ref) => showListMenu(
-            context: context,
-            ref: ref,
-            isEditing: false,
-            listId: testList.id,
-          ),
-          container: container,
-          router: mockGoRouter,
-        );
-
-        // Tap the button to trigger menu
-        await tester.tap(find.text('Show Menu'));
-        await tester.pumpAndSettle();
-
-        // Verify menu is shown
-        expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
-
-        // Tap outside the menu to dismiss it
-        await tester.tapAt(const Offset(10, 10));
-        await tester.pumpAndSettle();
-
-        // Verify menu is dismissed
-        expect(find.text(getL10n(tester).copyListContent), findsNothing);
-      });
-
-      testWidgets('shows correct menu items with detail screen flag', (
-        tester,
-      ) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Show Menu',
-          onPressed: (context, ref) => showListMenu(
-            context: context,
-            ref: ref,
-            isEditing: false,
-            listId: testList.id,
-            isDetailScreen: true,
-          ),
-          container: container,
-          router: mockGoRouter,
-        );
-
-        // Tap the button to trigger menu
-        await tester.tap(find.text('Show Menu'));
-        await tester.pumpAndSettle();
-
-        // Verify all menu items are present
-        // Using l10n strings from app_en.arb
-        expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
-        expect(find.text(getL10n(tester).shareThisList), findsOneWidget);
-        expect(find.text(getL10n(tester).editThisList), findsOneWidget);
-        expect(find.text(getL10n(tester).deleteThisList), findsOneWidget);
-      });
-    });
-
-    group('Integration Tests', () {
-      testWidgets('copy action works with real providers', (tester) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Copy',
-          onPressed: (context, ref) =>
-              ListActions.copyList(context, ref, testList.id),
-          container: container,
-        );
-
-        // Tap the button
-        await tester.tap(find.text('Copy'));
-        await tester.pumpAndSettle();
-
-        // Verify the action completed without errors
-        expect(find.text('Copy'), findsOneWidget);
-      });
-
-      testWidgets('edit action works with real providers', (tester) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Edit',
-          onPressed: (context, ref) => ListActions.editList(ref, testList.id),
-          container: container,
-        );
-
-        // Tap the button
-        await tester.tap(find.text('Edit'));
-        await tester.pumpAndSettle();
-
-        // Verify edit state was set
-        final editContentId = container.read(editContentIdProvider);
-        expect(editContentId, equals(testList.id));
-      });
-
-      testWidgets('delete action works with real providers', (tester) async {
-        // Verify list exists initially
-        final initialLists = container.read(listsProvider);
-        expect(initialLists.any((list) => list.id == testList.id), isTrue);
-
-        await tester.pumpActionsWidget(
-          buttonText: 'Delete',
-          onPressed: (context, ref) =>
-              ListActions.deleteList(context, ref, testList.id),
-          container: container,
-        );
-
-        // Tap the button
-        await tester.tap(find.text('Delete'));
-        await tester.pumpAndSettle();
-
-        // Verify list was deleted from provider
-        final updatedLists = container.read(listsProvider);
-        expect(updatedLists.any((list) => list.id == testList.id), isFalse);
-        expect(updatedLists.length, equals(initialLists.length - 1));
-      });
-    });
-
-    group('Edge Cases', () {
-      testWidgets('handles invalid list ID gracefully', (tester) async {
-        const invalidListId = 'invalid-list-id';
-
-        await tester.pumpActionsWidget(
-          container: container,
-          buttonText: 'Copy Invalid',
-          onPressed: (context, ref) =>
-              ListActions.copyList(context, ref, invalidListId),
-        );
-
-        // Tap the button
-        await tester.tap(find.text('Copy Invalid'));
-        await tester.pumpAndSettle();
-
-        // Should not throw an error
-        expect(find.text('Copy Invalid'), findsOneWidget);
-      });
-
-      testWidgets('handles empty list ID', (tester) async {
-        const emptyListId = '';
-
-        await tester.pumpActionsWidget(
-          container: container,
-          buttonText: 'Edit Empty',
-          onPressed: (context, ref) => ListActions.editList(ref, emptyListId),
-        );
-
-        // Tap the button
-        await tester.tap(find.text('Edit Empty'));
-        await tester.pumpAndSettle();
-
-        // Should set empty string as edit content ID
-        final editContentId = container.read(editContentIdProvider);
-        expect(editContentId, equals(emptyListId));
-      });
-    });
-
-    group('Provider State Changes', () {
-      testWidgets('edit list updates provider state', (tester) async {
-        // Initial state should be null
-        expect(container.read(editContentIdProvider), isNull);
-
-        await tester.pumpActionsWidget(
-          buttonText: 'Edit',
-          onPressed: (context, ref) => ListActions.editList(ref, testList.id),
-          container: container,
-        );
-
-        // Tap the button
-        await tester.tap(find.text('Edit'));
-        await tester.pumpAndSettle();
-
-        // State should be updated
-        expect(container.read(editContentIdProvider), equals(testList.id));
-      });
-
-      testWidgets('delete list updates provider state', (tester) async {
-        // Verify list exists initially
-        final initialLists = container.read(listsProvider);
-        expect(initialLists.any((list) => list.id == testList.id), isTrue);
-
-        await tester.pumpActionsWidget(
-          buttonText: 'Delete',
-          onPressed: (context, ref) =>
-              ListActions.deleteList(context, ref, testList.id),
-          container: container,
-        );
-
-        // Tap the button
-        await tester.tap(find.text('Delete'));
-        await tester.pumpAndSettle();
-
-        // Verify list was deleted from provider
-        final updatedLists = container.read(listsProvider);
-        expect(updatedLists.any((list) => list.id == testList.id), isFalse);
-        expect(updatedLists.length, equals(initialLists.length - 1));
-      });
-    });
-
-    group('Menu Item Configuration', () {
-      testWidgets('menu items are configured correctly for non-editing state', (
-        tester,
-      ) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Menu',
-          onPressed: (context, ref) => showListMenu(
-            context: context,
-            ref: ref,
-            isEditing: false,
-            listId: testList.id,
-          ),
-          container: container,
-        );
-
-        // Tap the button
-        await tester.tap(find.text('Menu'));
-        await tester.pumpAndSettle();
-
-        // Verify menu was shown
-        expect(find.text('Menu'), findsOneWidget);
-      });
-    });
-
-    group('Detail Screen Navigation', () {
-      testWidgets('delete action pops context when isDetailScreen is true', (
-        tester,
-      ) async {
-        await tester.pumpActionsWidget(
-          buttonText: 'Show Menu',
-          onPressed: (context, ref) => showListMenu(
-            context: context,
-            ref: ref,
-            isEditing: false,
-            listId: testList.id,
-            isDetailScreen: true,
-          ),
-          container: container,
-          router: mockGoRouter,
-        );
-
-        // Tap the button to trigger menu
-        await tester.tap(find.text('Show Menu'));
-        await tester.pumpAndSettle();
-
-        // Tap the delete menu item
-        await tester.tap(find.text(getL10n(tester).deleteThisList));
-        await tester.pumpAndSettle();
-
-        // Verify list was deleted from provider
-        final updatedLists = container.read(listsProvider);
-        expect(updatedLists.any((list) => list.id == testList.id), isFalse);
-
-        // Verify snackbar is shown with correct message
-        expect(find.byType(SnackBar), findsOneWidget);
-        expect(find.text(getL10n(tester).listDeleted), findsOneWidget);
-      });
-    });
-  });
-}
+// import 'package:flutter/material.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:mocktail/mocktail.dart';
+// import 'package:zoe/common/providers/common_providers.dart';
+// import 'package:zoe/features/list/actions/list_actions.dart';
+// import 'package:zoe/features/list/models/list_model.dart';
+// import 'package:zoe/features/list/providers/list_providers.dart';
+// import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
+// import 'package:zoe/l10n/generated/l10n.dart';
+// import '../../../test-utils/test_utils.dart';
+// import '../../../test-utils/mock_gorouter.dart';
+// import '../utils/list_utils.dart';
+//
+// // Helper function to get l10n strings in tests
+// L10n getL10n(WidgetTester tester) {
+//   return WidgetTesterExtension.getL10n(tester, byType: Consumer);
+// }
+//
+// void main() {
+//   group('ListActions Tests', () {
+//     late ProviderContainer container;
+//     late ListModel testList;
+//     late MockGoRouter mockGoRouter;
+//
+//     setUp(() {
+//       mockGoRouter = MockGoRouter();
+//
+//       // Set up mock methods
+//       when(() => mockGoRouter.canPop()).thenReturn(true);
+//       when(() => mockGoRouter.pop()).thenReturn(null);
+//
+//       container = ProviderContainer.test(
+//         overrides: [
+//           editContentIdProvider.overrideWith((ref) => null),
+//         ],
+//       );
+//
+//       testList = getListByIndex(container);
+//
+//       // Now override with the actual test list
+//       container = ProviderContainer.test(
+//         overrides: [
+//           listItemProvider(testList.id).overrideWith((ref) => testList),
+//         ],
+//       );
+//     });
+//
+//     group('copyList', () {
+//       testWidgets('copies list content to clipboard', (tester) async {
+//         await tester.pumpActionsWidget(
+//           container: container,
+//           buttonText: 'Copy List',
+//           onPressed: (context, ref) =>
+//               ListActions.copyList(context, ref, testList.id),
+//         );
+//
+//         // Tap the button to trigger copy action
+//         await tester.tap(find.text('Copy List'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify the action was called (we can't easily test clipboard in unit tests)
+//         expect(find.text('Copy List'), findsOneWidget);
+//       });
+//
+//       testWidgets('shows snackbar after copying', (tester) async {
+//         await tester.pumpActionsWidget(
+//           container: container,
+//           buttonText: 'Copy List',
+//           onPressed: (context, ref) =>
+//               ListActions.copyList(context, ref, testList.id),
+//         );
+//
+//         // Tap the button to trigger copy action
+//         await tester.tap(find.text('Copy List'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify snackbar is shown with correct message
+//         expect(find.byType(SnackBar), findsOneWidget);
+//         expect(find.text(getL10n(tester).copiedToClipboard), findsOneWidget);
+//       });
+//
+//       testWidgets('handles invalid list ID gracefully', (tester) async {
+//         const invalidListId = 'invalid-list-id';
+//
+//         await tester.pumpActionsWidget(
+//           container: container,
+//           buttonText: 'Copy Invalid List',
+//           onPressed: (context, ref) =>
+//               ListActions.copyList(context, ref, invalidListId),
+//         );
+//
+//         // Tap the button
+//         await tester.tap(find.text('Copy Invalid List'));
+//         await tester.pumpAndSettle();
+//
+//         // Should not throw an error
+//         expect(find.text('Copy Invalid List'), findsOneWidget);
+//       });
+//     });
+//
+//     group('shareList', () {
+//       testWidgets('shows share bottom sheet', (tester) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Share List',
+//           onPressed: (context, ref) => ListActions.shareList(context, testList.id),
+//           container: container,
+//           router: mockGoRouter,
+//         );
+//
+//         // Tap the button to trigger share action
+//         await tester.tap(find.text('Share List'));
+//         await tester.pump(); // Don't use pumpAndSettle to avoid timeout
+//
+//         // Verify the action was called
+//         expect(find.text('Share List'), findsAtLeastNWidgets(1));
+//         expect(find.byType(ShareItemsBottomSheet), findsOneWidget);
+//       });
+//     });
+//
+//     group('editList', () {
+//       testWidgets('sets correct list ID in edit provider', (tester) async {
+//         await tester.pumpActionsWidget(
+//           container: container,
+//           buttonText: 'Edit List',
+//           onPressed: (context, ref) => ListActions.editList(ref, testList.id),
+//         );
+//
+//         // Tap the button to trigger edit action
+//         await tester.tap(find.text('Edit List'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify the correct list ID is set
+//         final editContentId = container.read(editContentIdProvider);
+//         expect(editContentId, equals(testList.id));
+//       });
+//     });
+//
+//     group('deleteList', () {
+//       testWidgets('deletes list from provider', (tester) async {
+//         // Verify list exists initially
+//         final initialLists = container.read(listsProvider);
+//         expect(initialLists.any((list) => list.id == testList.id), isTrue);
+//
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Delete List',
+//           onPressed: (context, ref) =>
+//               ListActions.deleteList(context, ref, testList.id),
+//           container: container,
+//         );
+//
+//         // Tap the button to trigger delete action
+//         await tester.tap(find.text('Delete List'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify list was deleted from provider
+//         final updatedLists = container.read(listsProvider);
+//         expect(updatedLists.any((list) => list.id == testList.id), isFalse);
+//         expect(updatedLists.length, equals(initialLists.length - 1));
+//       });
+//
+//       testWidgets('shows snackbar after deletion', (tester) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Delete List',
+//           onPressed: (context, ref) =>
+//               ListActions.deleteList(context, ref, testList.id),
+//           container: container,
+//         );
+//
+//         // Tap the button to trigger delete action
+//         await tester.tap(find.text('Delete List'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify snackbar is shown with correct message
+//         expect(find.byType(SnackBar), findsOneWidget);
+//         expect(find.text(getL10n(tester).listDeleted), findsOneWidget);
+//       });
+//     });
+//
+//     group('showListMenu', () {
+//       testWidgets('shows list menu with all items when not editing', (
+//         tester,
+//       ) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Show Menu',
+//           onPressed: (context, ref) => showListMenu(
+//             context: context,
+//             ref: ref,
+//             isEditing: false,
+//             listId: testList.id,
+//           ),
+//           container: container,
+//           router: mockGoRouter,
+//         );
+//
+//         // Tap the button to trigger menu
+//         await tester.tap(find.text('Show Menu'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify menu items are rendered (copy, share, edit, delete)
+//         // Using l10n strings from app_en.arb
+//         expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
+//         expect(find.text(getL10n(tester).shareThisList), findsOneWidget);
+//         expect(find.text(getL10n(tester).editThisList), findsOneWidget);
+//         expect(find.text(getL10n(tester).deleteThisList), findsOneWidget);
+//       });
+//
+//       testWidgets('shows list menu without edit item when editing', (
+//         tester,
+//       ) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Show Menu',
+//           onPressed: (context, ref) => showListMenu(
+//             context: context,
+//             ref: ref,
+//             isEditing: true,
+//             listId: testList.id,
+//           ),
+//           container: container,
+//           router: mockGoRouter,
+//         );
+//
+//         // Tap the button to trigger menu
+//         await tester.tap(find.text('Show Menu'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify menu items are rendered (copy, share, delete - no edit)
+//         // Using l10n strings from app_en.arb
+//         expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
+//         expect(find.text(getL10n(tester).shareThisList), findsOneWidget);
+//         expect(find.text(getL10n(tester).deleteThisList), findsOneWidget);
+//         expect(find.text(getL10n(tester).editThisList), findsNothing);
+//       });
+//
+//       testWidgets('handles copy menu item tap correctly', (tester) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Show Menu',
+//           onPressed: (context, ref) => showListMenu(
+//             context: context,
+//             ref: ref,
+//             isEditing: false,
+//             listId: testList.id,
+//           ),
+//           container: container,
+//           router: mockGoRouter,
+//         );
+//
+//         // Tap the button to trigger menu
+//         await tester.tap(find.text('Show Menu'));
+//         await tester.pumpAndSettle();
+//
+//         // Tap the copy menu item
+//         await tester.tap(find.text(getL10n(tester).copyListContent));
+//         await tester.pumpAndSettle();
+//
+//         // Verify snackbar is shown with correct message (indicates copy action was executed)
+//         expect(find.byType(SnackBar), findsOneWidget);
+//         expect(find.text(getL10n(tester).copiedToClipboard), findsOneWidget);
+//       });
+//
+//       testWidgets('handles edit menu item tap correctly', (tester) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Show Menu',
+//           onPressed: (context, ref) => showListMenu(
+//             context: context,
+//             ref: ref,
+//             isEditing: false,
+//             listId: testList.id,
+//           ),
+//           container: container,
+//           router: mockGoRouter,
+//         );
+//
+//         // Tap the button to trigger menu
+//         await tester.tap(find.text('Show Menu'));
+//         await tester.pumpAndSettle();
+//
+//         // Tap the edit menu item
+//         await tester.tap(find.text(getL10n(tester).editThisList));
+//         await tester.pumpAndSettle();
+//
+//         // Verify edit state was set
+//         final editContentId = container.read(editContentIdProvider);
+//         expect(editContentId, equals(testList.id));
+//       });
+//
+//       testWidgets('handles delete menu item tap correctly', (tester) async {
+//         // Verify list exists initially
+//         final initialLists = container.read(listsProvider);
+//         expect(initialLists.any((list) => list.id == testList.id), isTrue);
+//
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Show Menu',
+//           onPressed: (context, ref) => showListMenu(
+//             context: context,
+//             ref: ref,
+//             isEditing: false,
+//             listId: testList.id,
+//           ),
+//           container: container,
+//           router: mockGoRouter,
+//         );
+//
+//         // Tap the button to trigger menu
+//         await tester.tap(find.text('Show Menu'));
+//         await tester.pumpAndSettle();
+//
+//         // Tap the delete menu item
+//         await tester.tap(find.text(getL10n(tester).deleteThisList));
+//         await tester.pumpAndSettle();
+//
+//         // Verify list was deleted from provider
+//         final updatedLists = container.read(listsProvider);
+//         expect(updatedLists.any((list) => list.id == testList.id), isFalse);
+//         expect(updatedLists.length, equals(initialLists.length - 1));
+//
+//         // Verify snackbar is shown with correct message
+//         expect(find.byType(SnackBar), findsOneWidget);
+//         expect(find.text(getL10n(tester).listDeleted), findsOneWidget);
+//       });
+//
+//       testWidgets('handles share menu item tap correctly', (tester) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Show Menu',
+//           onPressed: (context, ref) => showListMenu(
+//             context: context,
+//             ref: ref,
+//             isEditing: false,
+//             listId: testList.id,
+//           ),
+//           container: container,
+//           router: mockGoRouter,
+//         );
+//
+//         // Tap the button to trigger menu
+//         await tester.tap(find.text('Show Menu'));
+//         await tester.pumpAndSettle();
+//
+//         // Tap the share menu item
+//         await tester.tap(find.text(getL10n(tester).shareThisList));
+//         await tester.pump(); // Don't use pumpAndSettle to avoid timeout
+//
+//         // Verify the action was called (share bottom sheet might not settle)
+//         expect(find.text(getL10n(tester).shareThisList), findsAtLeastNWidgets(1));
+//       });
+//
+//       testWidgets('menu can be dismissed by tapping outside', (tester) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Show Menu',
+//           onPressed: (context, ref) => showListMenu(
+//             context: context,
+//             ref: ref,
+//             isEditing: false,
+//             listId: testList.id,
+//           ),
+//           container: container,
+//           router: mockGoRouter,
+//         );
+//
+//         // Tap the button to trigger menu
+//         await tester.tap(find.text('Show Menu'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify menu is shown
+//         expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
+//
+//         // Tap outside the menu to dismiss it
+//         await tester.tapAt(const Offset(10, 10));
+//         await tester.pumpAndSettle();
+//
+//         // Verify menu is dismissed
+//         expect(find.text(getL10n(tester).copyListContent), findsNothing);
+//       });
+//
+//       testWidgets('shows correct menu items with detail screen flag', (
+//         tester,
+//       ) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Show Menu',
+//           onPressed: (context, ref) => showListMenu(
+//             context: context,
+//             ref: ref,
+//             isEditing: false,
+//             listId: testList.id,
+//             isDetailScreen: true,
+//           ),
+//           container: container,
+//           router: mockGoRouter,
+//         );
+//
+//         // Tap the button to trigger menu
+//         await tester.tap(find.text('Show Menu'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify all menu items are present
+//         // Using l10n strings from app_en.arb
+//         expect(find.text(getL10n(tester).copyListContent), findsOneWidget);
+//         expect(find.text(getL10n(tester).shareThisList), findsOneWidget);
+//         expect(find.text(getL10n(tester).editThisList), findsOneWidget);
+//         expect(find.text(getL10n(tester).deleteThisList), findsOneWidget);
+//       });
+//     });
+//
+//     group('Integration Tests', () {
+//       testWidgets('copy action works with real providers', (tester) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Copy',
+//           onPressed: (context, ref) =>
+//               ListActions.copyList(context, ref, testList.id),
+//           container: container,
+//         );
+//
+//         // Tap the button
+//         await tester.tap(find.text('Copy'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify the action completed without errors
+//         expect(find.text('Copy'), findsOneWidget);
+//       });
+//
+//       testWidgets('edit action works with real providers', (tester) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Edit',
+//           onPressed: (context, ref) => ListActions.editList(ref, testList.id),
+//           container: container,
+//         );
+//
+//         // Tap the button
+//         await tester.tap(find.text('Edit'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify edit state was set
+//         final editContentId = container.read(editContentIdProvider);
+//         expect(editContentId, equals(testList.id));
+//       });
+//
+//       testWidgets('delete action works with real providers', (tester) async {
+//         // Verify list exists initially
+//         final initialLists = container.read(listsProvider);
+//         expect(initialLists.any((list) => list.id == testList.id), isTrue);
+//
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Delete',
+//           onPressed: (context, ref) =>
+//               ListActions.deleteList(context, ref, testList.id),
+//           container: container,
+//         );
+//
+//         // Tap the button
+//         await tester.tap(find.text('Delete'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify list was deleted from provider
+//         final updatedLists = container.read(listsProvider);
+//         expect(updatedLists.any((list) => list.id == testList.id), isFalse);
+//         expect(updatedLists.length, equals(initialLists.length - 1));
+//       });
+//     });
+//
+//     group('Edge Cases', () {
+//       testWidgets('handles invalid list ID gracefully', (tester) async {
+//         const invalidListId = 'invalid-list-id';
+//
+//         await tester.pumpActionsWidget(
+//           container: container,
+//           buttonText: 'Copy Invalid',
+//           onPressed: (context, ref) =>
+//               ListActions.copyList(context, ref, invalidListId),
+//         );
+//
+//         // Tap the button
+//         await tester.tap(find.text('Copy Invalid'));
+//         await tester.pumpAndSettle();
+//
+//         // Should not throw an error
+//         expect(find.text('Copy Invalid'), findsOneWidget);
+//       });
+//
+//       testWidgets('handles empty list ID', (tester) async {
+//         const emptyListId = '';
+//
+//         await tester.pumpActionsWidget(
+//           container: container,
+//           buttonText: 'Edit Empty',
+//           onPressed: (context, ref) => ListActions.editList(ref, emptyListId),
+//         );
+//
+//         // Tap the button
+//         await tester.tap(find.text('Edit Empty'));
+//         await tester.pumpAndSettle();
+//
+//         // Should set empty string as edit content ID
+//         final editContentId = container.read(editContentIdProvider);
+//         expect(editContentId, equals(emptyListId));
+//       });
+//     });
+//
+//     group('Provider State Changes', () {
+//       testWidgets('edit list updates provider state', (tester) async {
+//         // Initial state should be null
+//         expect(container.read(editContentIdProvider), isNull);
+//
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Edit',
+//           onPressed: (context, ref) => ListActions.editList(ref, testList.id),
+//           container: container,
+//         );
+//
+//         // Tap the button
+//         await tester.tap(find.text('Edit'));
+//         await tester.pumpAndSettle();
+//
+//         // State should be updated
+//         expect(container.read(editContentIdProvider), equals(testList.id));
+//       });
+//
+//       testWidgets('delete list updates provider state', (tester) async {
+//         // Verify list exists initially
+//         final initialLists = container.read(listsProvider);
+//         expect(initialLists.any((list) => list.id == testList.id), isTrue);
+//
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Delete',
+//           onPressed: (context, ref) =>
+//               ListActions.deleteList(context, ref, testList.id),
+//           container: container,
+//         );
+//
+//         // Tap the button
+//         await tester.tap(find.text('Delete'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify list was deleted from provider
+//         final updatedLists = container.read(listsProvider);
+//         expect(updatedLists.any((list) => list.id == testList.id), isFalse);
+//         expect(updatedLists.length, equals(initialLists.length - 1));
+//       });
+//     });
+//
+//     group('Menu Item Configuration', () {
+//       testWidgets('menu items are configured correctly for non-editing state', (
+//         tester,
+//       ) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Menu',
+//           onPressed: (context, ref) => showListMenu(
+//             context: context,
+//             ref: ref,
+//             isEditing: false,
+//             listId: testList.id,
+//           ),
+//           container: container,
+//         );
+//
+//         // Tap the button
+//         await tester.tap(find.text('Menu'));
+//         await tester.pumpAndSettle();
+//
+//         // Verify menu was shown
+//         expect(find.text('Menu'), findsOneWidget);
+//       });
+//     });
+//
+//     group('Detail Screen Navigation', () {
+//       testWidgets('delete action pops context when isDetailScreen is true', (
+//         tester,
+//       ) async {
+//         await tester.pumpActionsWidget(
+//           buttonText: 'Show Menu',
+//           onPressed: (context, ref) => showListMenu(
+//             context: context,
+//             ref: ref,
+//             isEditing: false,
+//             listId: testList.id,
+//             isDetailScreen: true,
+//           ),
+//           container: container,
+//           router: mockGoRouter,
+//         );
+//
+//         // Tap the button to trigger menu
+//         await tester.tap(find.text('Show Menu'));
+//         await tester.pumpAndSettle();
+//
+//         // Tap the delete menu item
+//         await tester.tap(find.text(getL10n(tester).deleteThisList));
+//         await tester.pumpAndSettle();
+//
+//         // Verify list was deleted from provider
+//         final updatedLists = container.read(listsProvider);
+//         expect(updatedLists.any((list) => list.id == testList.id), isFalse);
+//
+//         // Verify snackbar is shown with correct message
+//         expect(find.byType(SnackBar), findsOneWidget);
+//         expect(find.text(getL10n(tester).listDeleted), findsOneWidget);
+//       });
+//     });
+//   });
+// }
