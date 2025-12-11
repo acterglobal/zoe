@@ -1,41 +1,57 @@
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
-import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
-import 'package:zoe/common/widgets/max_width_widget.dart';
-import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
 import 'package:zoe/common/widgets/emoji_widget.dart';
+import 'package:zoe/common/widgets/floating_action_button_wrapper.dart';
+import 'package:zoe/common/widgets/max_width_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
-import 'package:zoe/features/text/screens/text_block_details_screen.dart';
-import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/text/data/text_list.dart';
+import 'package:zoe/features/text/providers/text_providers.dart';
+import 'package:zoe/features/text/screens/text_block_details_screen.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
+
 import '../../../test-utils/test_utils.dart';
+import '../utils/mock_fakefirestore_text.dart';
 
 void main() {
   group('TextBlockDetailsScreen', () {
     late ProviderContainer container;
+    late FakeFirebaseFirestore fakeFirestore;
 
-    setUp(() {
-      container = ProviderContainer.test(
-        overrides: [textListProvider.overrideWithValue(textList)],
+    setUp(() async {
+      fakeFirestore = FakeFirebaseFirestore();
+      container = ProviderContainer(
+        overrides: [
+          firestoreProvider.overrideWithValue(fakeFirestore),
+          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUser)),
+        ],
       );
+
+      for (final text in textList) {
+        await fakeFirestore.collection('texts').doc(text.id).set(text.toJson());
+      }
+
+      int retries = 0;
+      while (container.read(textListProvider).length < textList.length &&
+          retries < 20) {
+        await Future.delayed(const Duration(milliseconds: 50));
+        retries++;
+      }
     });
 
     testWidgets('renders empty state when text block not found', (
       tester,
     ) async {
-      final emptyContainer = ProviderContainer.test(
-        overrides: [textProvider('non-existent-id').overrideWithValue(null)],
-      );
-
       await tester.pumpMaterialWidgetWithProviderScope(
         child: const TextBlockDetailsScreen(textBlockId: 'non-existent-id'),
-        container: emptyContainer,
+        container: container,
       );
 
       await tester.pump();
@@ -185,13 +201,9 @@ void main() {
     });
 
     testWidgets('handles empty/null text block gracefully', (tester) async {
-      final emptyContainer = ProviderContainer.test(
-        overrides: [textProvider('empty-id').overrideWithValue(null)],
-      );
-
       await tester.pumpMaterialWidgetWithProviderScope(
         child: const TextBlockDetailsScreen(textBlockId: 'empty-id'),
-        container: emptyContainer,
+        container: container,
       );
 
       await tester.pump();

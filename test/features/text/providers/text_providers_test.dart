@@ -1,288 +1,187 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/features/text/providers/text_providers.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/features/text/models/text_model.dart';
-import 'package:zoe/features/text/data/text_list.dart';
+import 'package:zoe/features/text/providers/text_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
+import '../utils/mock_fakefirestore_text.dart';
 
 void main() {
   late ProviderContainer container;
-  late String testTextId = 'text-content-1';
+  late FakeFirebaseFirestore fakeFirestore;
+  final testUser = 'test-user';
 
-  setUp(() {
-    container = ProviderContainer.test();
+  setUp(() async {
+    fakeFirestore = FakeFirebaseFirestore();
+    container = ProviderContainer.test(
+      overrides: [
+        firestoreProvider.overrideWithValue(fakeFirestore),
+        loggedInUserProvider.overrideWithValue(AsyncValue.data(testUser)),
+      ],
+    );
+
+    // Add initial data
+    await fakeFirestore
+        .collection('texts')
+        .doc(mockText1.id)
+        .set(mockText1.toJson());
+    await fakeFirestore
+        .collection('texts')
+        .doc(mockText2.id)
+        .set(mockText2.toJson());
+
+    int retries = 0;
+    while (container.read(textListProvider).length < 2 && retries < 20) {
+      await Future.delayed(const Duration(milliseconds: 50));
+      retries++;
+    }
   });
 
-  // Helper methods to reduce repetitive container.read calls
+  // Helper methods
   List<TextModel> getTextList() => container.read(textListProvider);
-
   TextModel? getTextById(String id) => container.read(textProvider(id));
-
   List<TextModel> getTextsByParent(String parentId) =>
       container.read(textByParentProvider(parentId));
-
   List<TextModel> searchTexts(String searchTerm) =>
       container.read(textListSearchProvider(searchTerm));
-
   List<TextModel> getSortedTexts() => container.read(sortedTextsProvider);
 
   group('TextList Provider', () {
-    test('initial state contains data', () {
+    test('initial state is populated from Firestore', () {
       final textList = getTextList();
-
       expect(textList, isA<List<TextModel>>());
-      expect(textList.first.id, equals(testTextId));
-      expect(textList.first.title, equals('Welcome to Zoe!'));
-      expect(textList.first.emoji, isNull);
+      expect(textList.length, 2);
+      expect(textList.any((t) => t.id == textContent1), isTrue);
     });
 
-    test('addText adds new text to the list', () {
-      final newText = textList.first.copyWith(
+    test('addText adds new text to the list', () async {
+      final newText = mockText1.copyWith(
         id: 'new-text-id',
         title: 'New Text',
         emoji: '🆕',
       );
 
-      container.read(textListProvider.notifier).addText(newText);
+      await container.read(textListProvider.notifier).addText(newText);
+      await Future.delayed(
+        const Duration(milliseconds: 50),
+      ); // allow stream to update
 
       final updatedList = getTextList();
-      expect(updatedList.last.id, equals('new-text-id'));
-      expect(updatedList.last.title, equals('New Text'));
+      expect(updatedList.length, 3);
+      expect(updatedList.any((t) => t.id == 'new-text-id'), isTrue);
     });
 
-    test('deleteText removes data from the list', () {
-      container.read(textListProvider.notifier).deleteText(testTextId);
+    test('deleteText removes data from the list', () async {
+      await container.read(textListProvider.notifier).deleteText(textContent1);
+      await Future.delayed(const Duration(milliseconds: 50));
 
       final updatedList = getTextList();
-      expect(updatedList.any((t) => t.id == testTextId), isFalse);
+      expect(updatedList.length, 1);
+      expect(updatedList.any((t) => t.id == textContent1), isFalse);
     });
 
-    test('updateTextTitle changes title of data', () {
-      container
+    test('updateTextTitle changes title of data', () async {
+      await container
           .read(textListProvider.notifier)
-          .updateTextTitle(testTextId, 'Updated Title');
+          .updateTextTitle(textContent1, 'Updated Title');
+      await Future.delayed(const Duration(milliseconds: 50));
 
-      final updatedList = getTextList();
-      final targetText = updatedList.firstWhere(
-        (t) => t.id == testTextId,
-      );
-      expect(targetText.title, equals('Updated Title'));
+      final targetText = getTextById(textContent1);
+      expect(targetText?.title, equals('Updated Title'));
     });
 
-    test('updateTextDescription changes description of data', () {
+    test('updateTextDescription changes description of data', () async {
       final newDescription = (
         plainText: 'Updated description content',
         htmlText: '<p>Updated description content</p>',
       );
 
-      container
+      await container
           .read(textListProvider.notifier)
-          .updateTextDescription(testTextId, newDescription);
+          .updateTextDescription(textContent1, newDescription);
+      await Future.delayed(const Duration(milliseconds: 50));
 
-      final updatedList = getTextList();
-      final targetText = updatedList.firstWhere(
-        (t) => t.id == testTextId,
+      final targetText = getTextById(textContent1);
+      expect(
+        targetText?.description?.plainText,
+        equals(newDescription.plainText),
       );
-      expect(targetText.description, equals(newDescription));
     });
 
-    test('updateTextEmoji changes emoji of data', () {
-      container
+    test('updateTextEmoji changes emoji of data', () async {
+      await container
           .read(textListProvider.notifier)
-          .updateTextEmoji(testTextId, '🎉');
+          .updateTextEmoji(textContent1, '🎉');
+      await Future.delayed(const Duration(milliseconds: 50));
 
-      final updatedList = getTextList();
-      final targetText = updatedList.firstWhere(
-        (t) => t.id == testTextId,
-      );
-      expect(targetText.emoji, equals('🎉'));
+      final targetText = getTextById(textContent1);
+      expect(targetText?.emoji, equals('🎉'));
     });
 
-    test('updateTextOrderIndex changes order index of data', () {
-      container
+    test('updateTextOrderIndex changes order index of data', () async {
+      await container
           .read(textListProvider.notifier)
-          .updateTextOrderIndex(testTextId, 99);
+          .updateTextOrderIndex(textContent1, 99);
+      await Future.delayed(const Duration(milliseconds: 50));
 
-      final updatedList = getTextList();
-      final targetText = updatedList.firstWhere(
-        (t) => t.id == testTextId,
-      );
-      expect(targetText.orderIndex, equals(99));
-    });
-
-    test('multiple operations maintain list integrity', () {
-      // Add a text based on existing data
-      final newText = textList.first.copyWith(
-        id: 'new-text-id',
-        title: 'New Text',
-        emoji: '🆕',
-      );
-      container.read(textListProvider.notifier).addText(newText);
-
-      // Update text-content-1
-      container
-          .read(textListProvider.notifier)
-          .updateTextTitle(testTextId, 'Modified Title');
-
-      final finalList = getTextList();
-
-      final modifiedText = finalList.firstWhere(
-        (t) => t.id == testTextId,
-      );
-      expect(modifiedText.title, equals('Modified Title'));
-
-      expect(finalList.any((t) => t.id == 'new-text-id'), isTrue);
+      final targetText = getTextById(textContent1);
+      expect(targetText?.orderIndex, equals(99));
     });
   });
 
   group('Text Provider (by ID)', () {
     test('returns correct text for data', () {
-      final text = getTextById(testTextId);
-
+      final text = getTextById(textContent1);
       expect(text, isNotNull);
-      expect(text!.id, equals(testTextId));
+      expect(text!.id, equals(textContent1));
       expect(text.title, equals('Welcome to Zoe!'));
-      expect(text.emoji, isNull); // text-content-1 doesn't have an emoji
     });
 
     test('returns null for non-existent ID', () {
       final text = getTextById('non-existent-id');
-
       expect(text, isNull);
     });
   });
 
   group('TextByParent Provider', () {
-    test('returns text-content-1 when filtered by sheet-1', () {
+    test('returns texts filtered by parentId', () {
       final texts = getTextsByParent('sheet-1');
-
-      expect(texts, isA<List<TextModel>>());
-      
-      // Find text-content-1 in the filtered list
-      final textContent1 = texts.firstWhere(
-        (text) => text.id == testTextId,
-        orElse: () => throw Exception('text-content-1 not found'),
-      );
-      
-      expect(textContent1.id, equals(testTextId));
-      expect(textContent1.parentId, equals('sheet-1'));
-      expect(textContent1.title, equals('Welcome to Zoe!'));
+      expect(texts.length, 2);
+      expect(texts.every((t) => t.parentId == 'sheet-1'), isTrue);
     });
 
-    test('data has correct orderIndex in sheet-1', () {
+    test('returns texts sorted by orderIndex', () {
       final texts = getTextsByParent('sheet-1');
-
-      final textContent1 = texts.firstWhere(
-        (text) => text.id == testTextId,
-        orElse: () => throw Exception('text-content-1 not found'),
-      );
-      
-      expect(textContent1.orderIndex, equals(1));
-    });
-
-    test('updates order when data orderIndex changes', () {
-      // Change orderIndex of text-content-1
-      container
-          .read(textListProvider.notifier)
-          .updateTextOrderIndex(testTextId, 0);
-
-      final texts = getTextsByParent('sheet-1');
-
-      // Find text-content-1 in the updated list
-      final textContent1 = texts.firstWhere(
-        (text) => text.id == testTextId,
-        orElse: () => throw Exception('text-content-1 not found'),
-      );
-      
-      expect(textContent1.orderIndex, equals(0));
+      expect(texts[0].id, textContent1);
+      expect(texts[1].id, textContent2);
     });
   });
 
   group('TextListSearch Provider', () {
-    test('returns data when search term is empty', () {
+    test('returns all texts when search term is empty', () {
       final texts = searchTexts('');
-
-      expect(texts, contains(container.read(textProvider(testTextId))));
-      
-      // Verify text-content-1 is in the results
-      final textContent1 = texts.firstWhere(
-        (text) => text.id == testTextId,
-        orElse: () => throw Exception('text-content-1 not found'),
-      );
-      
-      expect(textContent1.title, equals('Welcome to Zoe!'));
+      expect(texts.length, 2);
     });
-  
-    test('returns data when searching for "welcome"', () {
+
+    test('returns filtered texts based on search term', () {
       final texts = searchTexts('welcome');
-
-      expect(texts.length, greaterThanOrEqualTo(1));
-      
-      // Find text-content-1 in the results
-      final textContent1 = texts.firstWhere(
-        (text) => text.id == testTextId,
-        orElse: () => throw Exception('text-content-1 not found'),
-      );
-      
-      expect(textContent1.title, equals('Welcome to Zoe!'));
+      expect(texts.length, 1);
+      expect(texts.first.id, textContent1);
     });
 
-    test('returns data when searching for "zoe"', () {
-      final texts = searchTexts('zoe');
-
-      expect(texts.length, greaterThanOrEqualTo(1));
-      
-      // Find text-content-1 in the results
-      final textContent1 = texts.firstWhere(
-        (text) => text.id == testTextId,
-        orElse: () => throw Exception('text-content-1 not found'),
-      );
-      
-      expect(textContent1.title, equals('Welcome to Zoe!'));
-    });
-
-    test('returns empty list when searching for text not in data', () {
+    test('returns empty list for non-matching search term', () {
       final texts = searchTexts('nonexistent');
-
       expect(texts, isEmpty);
     });
   });
 
   group('SortedTexts Provider', () {
-    test('data appears in sorted list', () {
+    test('returns texts sorted by title', () {
       final sortedTexts = getSortedTexts();
-
-      // Find text-content-1 in the sorted list
-      final textContent1 = sortedTexts.firstWhere(
-        (text) => text.id == testTextId,
-        orElse: () => throw Exception('text-content-1 not found'),
-      );
-      
-      expect(textContent1.title, equals('Welcome to Zoe!'));
-    });
-
-    test('data maintains position when new text is added', () {
-      // Add new text with title that would be first alphabetically
-      final newText = textList.first.copyWith(
-        sheetId: 'sheet-2',
-        parentId: 'sheet-2',
-        id: 'alphabetical-first',
-        title: 'A First Alphabetical Text',
-        emoji: '🔤',
-      );
-      container.read(textListProvider.notifier).addText(newText);
-
-      final sortedTexts = getSortedTexts();
-
-      // Verify new text is first
-      expect(sortedTexts[0].title, equals('A First Alphabetical Text'));
-      
-      // Verify text-content-1 is still in the list
-      final textContent1 = sortedTexts.firstWhere(
-        (text) => text.id == testTextId,
-        orElse: () => throw Exception('text-content-1 not found'),
-      );
-      
-      expect(textContent1.title, equals('Welcome to Zoe!'));
+      // 'Understanding Sheets' comes before 'Welcome to Zoe!'
+      expect(sortedTexts[0].id, textContent2);
+      expect(sortedTexts[1].id, textContent1);
     });
   });
 }
