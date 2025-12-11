@@ -8,4 +8,6 @@ class FirestoreFieldConstants {
   static const String theme = 'theme';
   static const String emoji = 'emoji';
   static const String orderIndex = 'orderIndex';
+  static const String plainText = 'plainText';
+  static const String htmlText = 'htmlText';
 }

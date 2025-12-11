@@ -67,8 +67,8 @@ class Lists extends _$Lists {
       ref,
       () => collection.doc(listId).update({
         FirestoreFieldConstants.description: {
-          'plainText': description.plainText,
-          'htmlText': description.htmlText,
+          FirestoreFieldConstants.plainText: description.plainText,
+          FirestoreFieldConstants.htmlText: description.htmlText,
         },
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),
