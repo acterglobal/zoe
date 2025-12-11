@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 
@@ -54,6 +55,57 @@ class ListModel extends ContentModel {
 
       /// ListModel specific properties
       listType: listType ?? this.listType,
+    );
+  }
+
+  /// Convert to JSON for Firestore
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'sheetId': sheetId,
+      'parentId': parentId,
+      'title': title,
+      'listType': listType.name,
+      'description': {
+        'plainText': description?.plainText,
+        'htmlText': description?.htmlText,
+      },
+      'emoji': emoji,
+      'createdBy': createdBy,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'updatedAt': Timestamp.fromDate(updatedAt),
+      'orderIndex': orderIndex,
+    };
+  }
+
+  /// Create from JSON from Firestore
+  factory ListModel.fromJson(Map<String, dynamic> json) {
+    return ListModel(
+      id: json['id'],
+      sheetId: json['sheetId'],
+      parentId: json['parentId'],
+      title: json['title'],
+      listType: ContentType.values.firstWhere(
+        (type) => type.name == json['listType'],
+        orElse: () => ContentType.list,
+      ),
+      description:
+          json['description'] != null &&
+              json['description'] is Map<String, dynamic>
+          ? (
+              plainText: json['description']['plainText'],
+              htmlText: json['description']['htmlText'],
+            )
+          : null,
+      emoji: json['emoji'],
+      createdBy: json['createdBy'],
+      createdAt: json['createdAt'] != null
+          ? (json['createdAt'] as Timestamp).toDate()
+          : DateTime.now(),
+      updatedAt: json['updatedAt'] != null
+          ? (json['updatedAt'] as Timestamp).toDate()
+          : DateTime.now(),
+      orderIndex: json['orderIndex'] ?? 0,
     );
   }
 }

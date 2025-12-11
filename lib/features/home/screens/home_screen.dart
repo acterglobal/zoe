@@ -96,6 +96,7 @@ class HomeScreen extends ConsumerWidget {
       child: Center(
         child: MaxWidthWidget(
           isScrollable: true,
+          alignment: Alignment.topCenter,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             children: [
