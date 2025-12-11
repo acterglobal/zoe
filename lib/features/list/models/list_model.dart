@@ -66,13 +66,11 @@ class ListModel extends ContentModel {
       'parentId': parentId,
       'title': title,
       'listType': listType.name,
-      if (description != null)
-        'description': {
-          if (description!.plainText != null)
-            'plainText': description!.plainText,
-          if (description!.htmlText != null) 'htmlText': description!.htmlText,
-        },
-      if (emoji != null) 'emoji': emoji,
+      'description': {
+        'plainText': description?.plainText,
+        'htmlText': description?.htmlText,
+      },
+      'emoji': emoji,
       'createdBy': createdBy,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': Timestamp.fromDate(updatedAt),
