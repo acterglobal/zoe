@@ -59,7 +59,7 @@ class MyApp extends ConsumerWidget {
       builder: (context, child) =>
           DeepLinkInitializer(child: child ?? SizedBox.shrink()),
       supportedLocales: L10n.supportedLocales,
-      scaffoldMessengerKey: ref.watch(snackbarServiceProvider).messengerKey,
+      scaffoldMessengerKey: ref.read(snackbarServiceProvider).messengerKey,
     );
   }
 }
