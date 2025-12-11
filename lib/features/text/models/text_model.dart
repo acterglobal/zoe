@@ -40,7 +40,7 @@ class TextModel extends ContentModel {
       emoji: emoji ?? this.emoji,
       createdBy: createdBy ?? this.createdBy,
       createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
       orderIndex: orderIndex ?? this.orderIndex,
     );
   }
@@ -52,10 +52,12 @@ class TextModel extends ContentModel {
       sheetId: json['sheetId'],
       parentId: json['parentId'],
       title: json['title'],
-      description: (
-        plainText: json['description']['plainText'],
-        htmlText: json['description']['htmlText'],
-      ),
+      description: json['description'] != null
+          ? (
+              plainText: json['description']['plainText'],
+              htmlText: json['description']['htmlText'],
+            )
+          : null,
       emoji: json['emoji'],
       createdBy: json['createdBy'],
       createdAt: json['createdAt'] == null
@@ -80,10 +82,8 @@ class TextModel extends ContentModel {
         'htmlText': description?.htmlText,
       },
       'emoji': emoji,
-      'createdBy': createdBy,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-
+      'createdAt': Timestamp.fromDate(createdAt),
+      'updatedAt': Timestamp.fromDate(updatedAt),
       'orderIndex': orderIndex,
     };
   }
