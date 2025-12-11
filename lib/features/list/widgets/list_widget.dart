@@ -30,7 +30,7 @@ import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/text/widgets/text_list_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-import '../../../common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
+import 'package:zoe/common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 
 class ListWidget extends ConsumerWidget {
   final String listId;
