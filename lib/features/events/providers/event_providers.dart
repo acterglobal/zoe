@@ -33,9 +33,9 @@ class EventList extends _$EventList {
             .map((doc) => EventModel.fromJson(doc.data()))
             .toList();
       },
-      onError: (error, stackTrace) {
-        runFirestoreOperation(ref, () => throw error);
-      },
+      // onError: (error, stackTrace) {
+      //   runFirestoreOperation(ref, () => throw error);
+      // },
     );
 
     ref.onDispose(() {
@@ -74,8 +74,8 @@ class EventList extends _$EventList {
       ref,
       () => collection.doc(eventId).update({
         FirestoreFieldConstants.description: {
-          'plainText': description.plainText,
-          'htmlText': description.htmlText,
+          FirestoreFieldConstants.plainText: description.plainText,
+          FirestoreFieldConstants.htmlText: description.htmlText,
         },
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),

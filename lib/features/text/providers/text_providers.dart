@@ -79,8 +79,8 @@ class TextList extends _$TextList {
       ref,
       () => collection.doc(textId).update({
         FirestoreFieldConstants.description: {
-          'plainText': desc.plainText,
-          'htmlText': desc.htmlText,
+          FirestoreFieldConstants.plainText: desc.plainText,
+          FirestoreFieldConstants.htmlText: desc.htmlText,
         },
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),

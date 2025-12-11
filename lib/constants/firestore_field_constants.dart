@@ -12,4 +12,7 @@ class FirestoreFieldConstants {
   static const String startDate = 'startDate';
   static const String endDate = 'endDate';
   static const String createdBy = 'createdBy';
+  static const String plainText = 'plainText';
+  static const String htmlText = 'htmlText';
+  static const String createdAt = 'createdAt';
 }
