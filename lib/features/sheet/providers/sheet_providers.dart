@@ -100,8 +100,8 @@ class SheetList extends _$SheetList {
   Future<void> updateSheetDescription(String sheetId, Description desc) async {
     await collection.doc(sheetId).update({
       FirestoreFieldConstants.description: {
-        'plainText': desc.plainText,
-        'htmlText': desc.htmlText,
+        FirestoreFieldConstants.plainText: desc.plainText,
+        FirestoreFieldConstants.htmlText: desc.htmlText,
       },
       FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
     });
