@@ -179,6 +179,7 @@ void main() {
           title: 'New Link Test',
           url: 'https://example.com',
           orderIndex: 0,
+          createdBy: 'test-user',
         );
         container.read(linkListProvider.notifier).addLink(newLink);
         await tester.pumpAndSettle();
