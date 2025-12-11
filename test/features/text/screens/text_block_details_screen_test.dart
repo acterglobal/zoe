@@ -17,14 +17,13 @@ import 'package:zoe/features/text/data/text_list.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/text/screens/text_block_details_screen.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-
 import '../../../test-utils/test_utils.dart';
-import '../utils/mock_fakefirestore_text.dart';
 
 void main() {
   group('TextBlockDetailsScreen', () {
     late ProviderContainer container;
     late FakeFirebaseFirestore fakeFirestore;
+    final testUser = 'test-user';
 
     setUp(() async {
       fakeFirestore = FakeFirebaseFirestore();

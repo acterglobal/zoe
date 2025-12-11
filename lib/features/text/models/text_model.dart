@@ -49,17 +49,17 @@ class TextModel extends ContentModel {
     return TextModel(
       /// ContentModel properties
       id: json['id'],
-      sheetId: json['sheetId'],
-      parentId: json['parentId'],
-      title: json['title'],
+      sheetId: json['sheetId'] ?? '',
+      parentId: json['parentId'] ?? '',
+      title: json['title'] ?? '',
       description: json['description'] != null
           ? (
-              plainText: json['description']['plainText'],
-              htmlText: json['description']['htmlText'],
+              plainText: json['description']['plainText'] ?? '',
+              htmlText: json['description']['htmlText'] ?? '',
             )
           : null,
       emoji: json['emoji'],
-      createdBy: json['createdBy'],
+      createdBy: json['createdBy'] ?? '',
       createdAt: json['createdAt'] == null
           ? DateTime.now()
           : (json['createdAt'] as Timestamp).toDate(),
