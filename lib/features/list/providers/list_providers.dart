@@ -27,14 +27,10 @@ class Lists extends _$Lists {
     _subscription = collection.snapshots().listen((snapshot) {
       state = snapshot.docs
           .map((doc) => ListModel.fromJson(doc.data()))
-          .whereType<ListModel>()
           .toList();
     });
 
-    ref.onDispose(() {
-      _subscription?.cancel();
-    });
-
+    ref.onDispose(() => _subscription?.cancel());
     return [];
   }
 
