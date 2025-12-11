@@ -40,7 +40,7 @@ class TextModel extends ContentModel {
       emoji: emoji ?? this.emoji,
       createdBy: createdBy ?? this.createdBy,
       createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
+      updatedAt: updatedAt ?? DateTime.now(),
       orderIndex: orderIndex ?? this.orderIndex,
     );
   }
