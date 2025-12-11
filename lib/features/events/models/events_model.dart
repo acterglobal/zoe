@@ -75,17 +75,16 @@ class EventModel extends ContentModel {
   }
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
-    final rsvpMap = json['rsvpResponses'] as Map<String, dynamic>? ?? {};
-    final rsvpResponses = rsvpMap.map((key, value) {
-      return MapEntry(
-        key,
-        RsvpStatus.values.firstWhere(
-          (e) => e.name == value,
-          orElse: () =>
-              RsvpStatus.maybe, // Default value if string doesn't match
-        ),
-      );
-    });
+    final rsvpResponses = <String, RsvpStatus>{};
+
+    final raw = json['rsvpResponses'];
+
+    if (raw is Map<String, dynamic>) {
+      raw.forEach((key, value) {
+        final match = RsvpStatus.values.firstWhere((e) => e.name == value);
+        rsvpResponses[key] = match;
+      });
+    }
 
     return EventModel(
       /// ContentModel properties
@@ -109,8 +108,12 @@ class EventModel extends ContentModel {
       orderIndex: json['orderIndex'] ?? 0,
 
       /// EventModel properties
-      startDate: (json['startDate'] as Timestamp).toDate(),
-      endDate: (json['endDate'] as Timestamp).toDate(),
+      startDate: json['startDate'] == null
+          ? DateTime.now()
+          : (json['startDate'] as Timestamp).toDate(),
+      endDate: json['endDate'] == null
+          ? DateTime.now()
+          : (json['endDate'] as Timestamp).toDate(),
       rsvpResponses: rsvpResponses,
     );
   }
@@ -122,10 +125,12 @@ class EventModel extends ContentModel {
       'sheetId': sheetId,
       'parentId': parentId,
       'title': title,
-      'description': {
-        'plainText': description?.plainText,
-        'htmlText': description?.htmlText,
-      },
+      'description': description != null
+          ? {
+              'plainText': description?.plainText,
+              'htmlText': description?.htmlText,
+            }
+          : null,
       'emoji': emoji,
       'createdBy': createdBy,
       'createdAt': Timestamp.fromDate(createdAt),

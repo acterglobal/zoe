@@ -25,11 +25,16 @@ class TextList extends _$TextList {
     _subscription?.cancel();
     _subscription = null;
 
-    _subscription = collection.snapshots().listen((snapshot) {
-      state = snapshot.docs
-          .map((doc) => TextModel.fromJson(doc.data()))
-          .toList();
-    });
+    _subscription = collection.snapshots().listen(
+      (snapshot) {
+        state = snapshot.docs
+            .map((doc) => TextModel.fromJson(doc.data()))
+            .toList();
+      },
+      onError: (error, stackTrace) {
+        runFirestoreOperation(ref, () => throw error);
+      },
+    );
 
     ref.onDispose(() {
       _subscription?.cancel();
