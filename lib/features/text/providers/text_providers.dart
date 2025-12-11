@@ -1,53 +1,95 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:zoe/features/text/data/text_list.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/firestore_error_handler.dart';
+import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/text/models/text_model.dart';
-import 'package:zoe/features/sheet/models/sheet_model.dart';
+
+import '../../sheet/models/sheet_model.dart';
 
 part 'text_providers.g.dart';
 
-/// Main text list provider with all text management functionality
 @Riverpod(keepAlive: true)
 class TextList extends _$TextList {
+  CollectionReference<Map<String, dynamic>> get collection =>
+      ref.read(firestoreProvider).collection(FirestoreCollections.texts);
+
+  StreamSubscription? _subscription;
+
   @override
-  List<TextModel> build() => textList;
+  List<TextModel> build() {
+    _subscription?.cancel();
+    _subscription = null;
 
-  void addText(TextModel text) {
-    state = [...state, text];
+    _subscription = collection.snapshots().listen((snapshot) {
+      state = snapshot.docs
+          .map((doc) => TextModel.fromJson(doc.data()))
+          .toList();
+    });
+
+    ref.onDispose(() {
+      _subscription?.cancel();
+    });
+
+    return [];
   }
 
-  void deleteText(String textId) {
-    state = state.where((t) => t.id != textId).toList();
+  Future<void> addText(TextModel text) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(text.id).set(text.toJson()),
+    );
   }
 
-  void updateTextTitle(String textId, String title) {
-    state = [
-      for (final text in state)
-        if (text.id == textId) text.copyWith(title: title) else text,
-    ];
+  Future<void> deleteText(String textId) async {
+    await runFirestoreOperation(ref, () => collection.doc(textId).delete());
   }
 
-  void updateTextDescription(String textId, Description description) {
-    state = [
-      for (final text in state)
-        if (text.id == textId)
-          text.copyWith(description: description)
-        else
-          text,
-    ];
+  Future<void> updateTextTitle(String textId, String title) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(textId).update({
+        FirestoreFieldConstants.title: title,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateTextEmoji(String textId, String emoji) {
-    state = [
-      for (final text in state)
-        if (text.id == textId) text.copyWith(emoji: emoji) else text,
-    ];
+  Future<void> updateTextEmoji(String textId, String? emoji) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(textId).update({
+        FirestoreFieldConstants.emoji: emoji,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateTextOrderIndex(String textId, int orderIndex) {
-    state = [
-      for (final text in state)
-        if (text.id == textId) text.copyWith(orderIndex: orderIndex) else text,
-    ];
+  Future<void> updateTextDescription(String textId, Description desc) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(textId).update({
+        FirestoreFieldConstants.description: {
+          'plainText': desc.plainText,
+          'htmlText': desc.htmlText,
+        },
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
+  }
+
+  Future<void> updateTextOrderIndex(String textId, int orderIndex) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(textId).update({
+        FirestoreFieldConstants.orderIndex: orderIndex,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 }
 
