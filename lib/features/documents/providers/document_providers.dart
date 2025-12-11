@@ -21,6 +21,9 @@ class DocumentList extends _$DocumentList {
     required String filePath,
     int? orderIndex,
   }) {
+    final userId = ref.read(loggedInUserProvider).value;
+    if(userId == null) return;
+
     // Extract filename without extension for title
     final extractedTitle = title.contains('.')
         ? title.substring(0, title.lastIndexOf('.'))
@@ -32,6 +35,7 @@ class DocumentList extends _$DocumentList {
       sheetId: sheetId,
       filePath: filePath,
       orderIndex: orderIndex ?? 0,
+      createdBy: userId,
     );
     state = [...state, newDocument];
   }

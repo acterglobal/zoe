@@ -418,6 +418,7 @@ void main() {
                 dueDate: DateTime.now(),
                 isCompleted: false,
                 assignedUsers: [],
+                createdBy: 'test-user',
               ),
             ]),
           ],

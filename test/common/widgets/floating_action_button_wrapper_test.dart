@@ -35,6 +35,7 @@ class FloatingActionButtonWrapperTestUtils {
       title: title ?? 'Test Content',
       description: (plainText: 'Test description', htmlText: null),
       orderIndex: orderIndex,
+      createdBy: 'test-user',
     );
   }
 }

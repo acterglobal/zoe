@@ -145,6 +145,7 @@ void main() {
             parentId: 'list-1',
             sheetId: 'sheet-1',
             filePath: 'test.xyz',
+            createdBy: 'test-user',
           ),
           DocumentModel(
             id: 'doc-2',
@@ -152,6 +153,7 @@ void main() {
             parentId: 'list-1',
             sheetId: 'sheet-1',
             filePath: 'test.unknown',
+            createdBy: 'test-user',
           ),
           DocumentModel(
             id: 'doc-3',
@@ -159,6 +161,7 @@ void main() {
             parentId: 'list-1',
             sheetId: 'sheet-1',
             filePath: 'test.weird',
+            createdBy: 'test-user',
           ),
         ];
 
@@ -179,6 +182,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'testfile',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: noExtensionDocument);
@@ -195,6 +199,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'test.file.backup.old',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: multiDotDocument);

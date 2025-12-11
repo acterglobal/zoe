@@ -160,6 +160,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '/non/existent/path.txt',
+          createdBy: 'test-user',
         );
 
         // Override the provider to return this document
@@ -212,6 +213,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'test.jpg',
+          createdBy: 'test-user',
         );
 
         container = ProviderContainer(
@@ -235,6 +237,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'test.mp4',
+          createdBy: 'test-user',
         );
 
         container = ProviderContainer(
@@ -258,6 +261,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'test.mp3',
+          createdBy: 'test-user',
         );
 
         container = ProviderContainer(
@@ -279,6 +283,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'test.pdf',
+          createdBy: 'test-user',
         );
 
         container = ProviderContainer(
@@ -302,6 +307,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'test.txt',
+          createdBy: 'test-user',
         );
 
         container = ProviderContainer(
@@ -325,6 +331,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'test.unknown',
+          createdBy: 'test-user',
         );
 
         container = ProviderContainer(
@@ -433,6 +440,7 @@ void main() {
           parentId: 'p1',
           sheetId: 's1',
           filePath: 'test.jpg',
+          createdBy: 'test-user',
         );
         final imageType = getDocumentType(imageDoc);
         expect(imageType, equals(DocumentFileType.image));
@@ -444,6 +452,7 @@ void main() {
           parentId: 'p1',
           sheetId: 's1',
           filePath: 'test.mp4',
+          createdBy: 'test-user',
         );
         final videoType = getDocumentType(videoDoc);
         expect(videoType, equals(DocumentFileType.video));
@@ -455,6 +464,7 @@ void main() {
           parentId: 'p1',
           sheetId: 's1',
           filePath: 'test.mp3',
+          createdBy: 'test-user',
         );
         final musicType = getDocumentType(musicDoc);
         expect(musicType, equals(DocumentFileType.music));
@@ -466,6 +476,7 @@ void main() {
           parentId: 'p1',
           sheetId: 's1',
           filePath: 'test.pdf',
+          createdBy: 'test-user',
         );
         final pdfType = getDocumentType(pdfDoc);
         expect(pdfType, equals(DocumentFileType.pdf));
@@ -477,6 +488,7 @@ void main() {
           parentId: 'p1',
           sheetId: 's1',
           filePath: 'test.txt',
+          createdBy: 'test-user',
         );
         final textType = getDocumentType(textDoc);
         expect(textType, equals(DocumentFileType.text));
@@ -488,6 +500,7 @@ void main() {
           parentId: 'p1',
           sheetId: 's1',
           filePath: 'test.unknown',
+          createdBy: 'test-user',
         );
         final unknownType = getDocumentType(unknownDoc);
         expect(unknownType, equals(DocumentFileType.unknown));
@@ -527,6 +540,7 @@ void main() {
           parentId: 'p1',
           sheetId: 's1',
           filePath: 'test.jpg',
+          createdBy: 'test-user',
         );
         bool isImage = isImageDocument(imageDoc);
         expect(isImage, isTrue);
@@ -538,6 +552,7 @@ void main() {
           parentId: 'p1',
           sheetId: 's1',
           filePath: 'test.mp4',
+          createdBy: 'test-user',
         );
         bool isVideo = isVideoDocument(videoDoc);
         expect(isVideo, isTrue);
@@ -549,6 +564,7 @@ void main() {
           parentId: 'p1',
           sheetId: 's1',
           filePath: 'test.mp3',
+          createdBy: 'test-user',
         );
         bool isMusic = isMusicDocument(musicDoc);
         expect(isMusic, isTrue);
@@ -560,6 +576,7 @@ void main() {
           parentId: 'p1',
           sheetId: 's1',
           filePath: 'test.pdf',
+          createdBy: 'test-user',
         );
         bool isPdf = isPdfDocument(pdfDoc);
         expect(isPdf, isTrue);
@@ -571,6 +588,7 @@ void main() {
           parentId: 'p1',
           sheetId: 's1',
           filePath: 'test.txt',
+          createdBy: 'test-user',
         );
         bool isText = isTextDocument(textDoc);
         expect(isText, isTrue);

@@ -59,6 +59,7 @@ void main() {
             PollOption(id: 'option-1', title: 'Option 1'),
             PollOption(id: 'option-2', title: 'Option 2'),
           ],
+          createdBy: 'test-user',
         );
 
         await container.read(pollListProvider.notifier).addPoll(newPoll);
@@ -456,6 +457,7 @@ void main() {
             PollOption(id: 'option-1', title: 'Option 1'),
             PollOption(id: 'option-2', title: 'Option 2'),
           ],
+          createdBy: 'test-user',
         );
         
         // Add the poll to the container

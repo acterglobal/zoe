@@ -100,6 +100,7 @@ void main() {
           title: 'Test Link',
           url: 'https://test.com',
           orderIndex: 100,
+          createdBy: 'test-user',
         );
 
         container.read(linkListProvider.notifier).addLink(linkWithoutEmoji);
@@ -352,6 +353,7 @@ void main() {
           url: '',
           emoji: '🔗',
           orderIndex: 100,
+          createdBy: 'test-user',
         );
 
         container.read(linkListProvider.notifier).addLink(linkWithEmptyUrl);
@@ -388,6 +390,7 @@ void main() {
           emoji: '🔗',
           url: 'https://example.com',
           orderIndex: 101,
+          createdBy: 'test-user',
         );
 
         container.read(linkListProvider.notifier).addLink(linkWithOnlyEmoji);

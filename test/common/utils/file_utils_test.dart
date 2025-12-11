@@ -13,6 +13,7 @@ void main() {
         sheetId: 'sheet_id',
         title: 'Test Document',
         filePath: filePath,
+        createdBy: 'user_id',
       );
     }
 

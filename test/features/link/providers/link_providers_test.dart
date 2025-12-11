@@ -60,6 +60,7 @@ void main() {
           url: 'https://newlink.com',
           emoji: '🔗',
           orderIndex: 100,
+          createdBy: 'test-user',
         );
 
         container.read(linkListProvider.notifier).addLink(newLink);

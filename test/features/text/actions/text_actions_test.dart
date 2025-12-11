@@ -111,6 +111,7 @@ void main() {
         title: 'Empty Description Text',
         description: (plainText: '', htmlText: ''),
         orderIndex: 10,
+        createdBy: 'test-user',
       );
 
       container.read(textListProvider.notifier).addText(textWithEmptyDesc);
@@ -236,6 +237,7 @@ void main() {
         title: 'Empty Description Text',
         description: (plainText: '', htmlText: ''),
         orderIndex: 10,
+        createdBy: 'test-user',
       );
 
       container.read(textListProvider.notifier).addText(textWithEmptyDesc);
@@ -271,6 +273,7 @@ void main() {
           htmlText: '<p>Description only</p>',
         ),
         orderIndex: 13,
+        createdBy: 'test-user',
       );
 
       container.read(textListProvider.notifier).addText(textWithOnlyEmoji);
@@ -300,6 +303,7 @@ void main() {
         emoji: '📝',
         description: null,
         orderIndex: 14,
+        createdBy: 'test-user',
       );
 
       container.read(textListProvider.notifier).addText(textWithNullDesc);
@@ -360,6 +364,7 @@ void main() {
           htmlText: '<p>Description only</p>',
         ),
         orderIndex: 13,
+        createdBy: 'test-user',
       );
 
       container.read(textListProvider.notifier).addText(textWithOnlyEmoji);
@@ -385,6 +390,7 @@ void main() {
         emoji: '📝',
         description: null,
         orderIndex: 14,
+        createdBy: 'test-user',
       );
 
       container.read(textListProvider.notifier).addText(textWithNullDesc);

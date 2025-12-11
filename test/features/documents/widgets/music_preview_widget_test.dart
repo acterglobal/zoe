@@ -86,6 +86,7 @@ void main() {
         parentId: 'p1',
         sheetId: 's1',
         filePath: '/invalid/path.mp3',
+        createdBy: 'test-user',
       );
 
       await pumpMusicWidget(tester, document: invalidDoc);
@@ -101,6 +102,7 @@ void main() {
         parentId: 'p1',
         sheetId: 's1',
         filePath: '',
+        createdBy: 'test-user',
       );
 
       await pumpMusicWidget(tester, document: emptyDoc);
@@ -152,6 +154,7 @@ void main() {
         parentId: 'p1',
         sheetId: 's1',
         filePath: '/non/existent/path.mp3',
+        createdBy: 'test-user',
       );
 
       await pumpMusicWidget(tester, document: newDoc);
