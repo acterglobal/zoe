@@ -63,7 +63,7 @@ class PollModel extends ContentModel {
     super.createdAt,
     super.updatedAt,
     super.orderIndex,
-    super.createdBy,
+    required super.createdBy,
 
     /// PollModel properties
     required this.question,

@@ -13,7 +13,7 @@ class ListModel extends ContentModel {
     required super.title,
     super.description,
     super.emoji,
-    super.createdBy,
+    required super.createdBy,
     super.createdAt,
     super.updatedAt,
     super.orderIndex,

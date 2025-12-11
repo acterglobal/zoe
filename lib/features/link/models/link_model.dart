@@ -14,7 +14,7 @@ class LinkModel extends ContentModel {
     required super.title,
     super.emoji,
     super.description,
-    super.createdBy,
+    required super.createdBy,
     super.createdAt,
     super.updatedAt,
     super.orderIndex,

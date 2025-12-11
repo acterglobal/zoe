@@ -27,10 +27,9 @@ abstract class ContentModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? orderIndex,
-    String? createdBy,
+    required this.createdBy,
   }) : id = id ?? CommonUtils.generateRandomId(),
        createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now(),
-       orderIndex = orderIndex ?? 0,
-       createdBy = createdBy ?? CommonUtils.generateRandomId();
+       orderIndex = orderIndex ?? 0;
 }
