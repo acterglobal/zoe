@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/firestore_error_handler.dart';
 import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
-import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'list_providers.g.dart';
 
@@ -24,60 +24,75 @@ class Lists extends _$Lists {
     _subscription?.cancel();
     _subscription = null;
 
-    _subscription = collection.snapshots().listen((snapshot) {
-      state = snapshot.docs
-          .map((doc) => ListModel.fromJson(doc.data()))
-          .toList();
-    });
+    _subscription = collection.snapshots().listen(
+      (snapshot) {
+        state = snapshot.docs
+            .map((doc) => ListModel.fromJson(doc.data()))
+            .toList();
+      },
+      onError: (error, stackTrace) =>
+          runFirestoreOperation(ref, () => throw error),
+    );
 
     ref.onDispose(() => _subscription?.cancel());
     return [];
   }
 
   Future<void> addList(ListModel list) async {
-    final userId = ref.read(loggedInUserProvider).value;
-    if (userId == null) return;
-    await collection
-        .doc(list.id)
-        .set(list.copyWith(createdBy: userId).toJson());
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(list.id).set(list.toJson()),
+    );
   }
 
   Future<void> deleteList(String listId) async {
-    await collection.doc(listId).delete();
+    await runFirestoreOperation(ref, () => collection.doc(listId).delete());
   }
 
   Future<void> updateListTitle(String listId, String title) async {
-    await collection.doc(listId).update({
-      FirestoreFieldConstants.title: title,
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(listId).update({
+        FirestoreFieldConstants.title: title,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   Future<void> updateListDescription(
     String listId,
     Description description,
   ) async {
-    await collection.doc(listId).update({
-      FirestoreFieldConstants.description: {
-        'plainText': description.plainText,
-        'htmlText': description.htmlText,
-      },
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(listId).update({
+        FirestoreFieldConstants.description: {
+          'plainText': description.plainText,
+          'htmlText': description.htmlText,
+        },
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   Future<void> updateListEmoji(String listId, String emoji) async {
-    await collection.doc(listId).update({
-      FirestoreFieldConstants.emoji: emoji,
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(listId).update({
+        FirestoreFieldConstants.emoji: emoji,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   Future<void> updateListOrderIndex(String listId, int orderIndex) async {
-    await collection.doc(listId).update({
-      FirestoreFieldConstants.orderIndex: orderIndex,
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(listId).update({
+        FirestoreFieldConstants.orderIndex: orderIndex,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 }
 
