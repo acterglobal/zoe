@@ -41,7 +41,7 @@ final class TextListProvider
   }
 }
 
-String _$textListHash() => r'14cbef2c4f09c7ef641926868b9f067b98023287';
+String _$textListHash() => r'4fbed589bfcccc57352097d81966957b8a36eca0';
 
 abstract class _$TextList extends $Notifier<List<TextModel>> {
   List<TextModel> build();

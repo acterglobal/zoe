@@ -23,14 +23,11 @@ class TextList extends _$TextList {
     _subscription?.cancel();
     _subscription = null;
 
-    final query = collection;
-
-    _subscription = query.snapshots().listen((snapshot) {
-      final items = snapshot.docs
+    _subscription = collection.snapshots().listen((snapshot) {
+      state = snapshot.docs
           .map((doc) => TextModel.fromJson(doc.data()))
           .whereType<TextModel>()
           .toList();
-      state = items;
     });
 
     ref.onDispose(() {
