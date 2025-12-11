@@ -28,6 +28,7 @@ import 'package:zoe/features/bullets/widgets/bullet_list_widget.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/text/widgets/text_list_widget.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../common/widgets/emoji_picker/widgets/custom_emoji_picker_widget.dart';
 
@@ -182,6 +183,8 @@ class ListWidget extends ConsumerWidget {
       padding: const EdgeInsets.only(top: 8, left: 24),
       child: GestureDetector(
         onTap: () {
+          final userId = ref.read(loggedInUserProvider).value;
+          if (userId == null) return;
           switch (list.listType) {
             case ContentType.bullet:
               ref
@@ -204,6 +207,7 @@ class ListWidget extends ConsumerWidget {
                       orderIndex: 0,
                       startDate: DateTime.now(),
                       endDate: DateTime.now(),
+                      createdBy: userId,
                     ),
                   );
               break;
@@ -217,6 +221,7 @@ class ListWidget extends ConsumerWidget {
                       title: '',
                       orderIndex: 0,
                       description: (plainText: '', htmlText: ''),
+                      createdBy: userId,
                     ),
                   );
               break;
@@ -230,6 +235,7 @@ class ListWidget extends ConsumerWidget {
                       title: '',
                       orderIndex: 0,
                       url: '',
+                      createdBy: userId,
                     ),
                   );
               break;
