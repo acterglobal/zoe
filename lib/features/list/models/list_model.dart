@@ -81,31 +81,31 @@ class ListModel extends ContentModel {
   /// Create from JSON from Firestore
   factory ListModel.fromJson(Map<String, dynamic> json) {
     return ListModel(
-      id: json['id'] as String,
-      sheetId: json['sheetId'] as String,
-      parentId: json['parentId'] as String,
-      title: json['title'] as String,
+      id: json['id'],
+      sheetId: json['sheetId'],
+      parentId: json['parentId'],
+      title: json['title'],
       listType: ContentType.values.firstWhere(
-        (type) => type.name == json['listType'] as String,
+        (type) => type.name == json['listType'],
         orElse: () => ContentType.list,
       ),
       description:
           json['description'] != null &&
               json['description'] is Map<String, dynamic>
           ? (
-              plainText: json['description']['plainText'] as String?,
-              htmlText: json['description']['htmlText'] as String?,
+              plainText: json['description']['plainText'],
+              htmlText: json['description']['htmlText'],
             )
           : null,
-      emoji: json['emoji'] as String?,
-      createdBy: json['createdBy'] as String,
+      emoji: json['emoji'],
+      createdBy: json['createdBy'],
       createdAt: json['createdAt'] != null
           ? (json['createdAt'] as Timestamp).toDate()
           : DateTime.now(),
       updatedAt: json['updatedAt'] != null
           ? (json['updatedAt'] as Timestamp).toDate()
           : DateTime.now(),
-      orderIndex: json['orderIndex'] as int?,
+      orderIndex: json['orderIndex'] ?? 0,
     );
   }
 }
