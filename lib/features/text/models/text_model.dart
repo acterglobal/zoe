@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 
@@ -39,8 +40,51 @@ class TextModel extends ContentModel {
       emoji: emoji ?? this.emoji,
       createdBy: createdBy ?? this.createdBy,
       createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? DateTime.now(),
+      updatedAt: updatedAt,
       orderIndex: orderIndex ?? this.orderIndex,
     );
+  }
+
+  factory TextModel.fromJson(Map<String, dynamic> json) {
+    return TextModel(
+      /// ContentModel properties
+      id: json['id'],
+      sheetId: json['sheetId'],
+      parentId: json['parentId'],
+      title: json['title'],
+      description: (
+        plainText: json['description']['plainText'],
+        htmlText: json['description']['htmlText'],
+      ),
+      emoji: json['emoji'],
+      createdBy: json['createdBy'],
+      createdAt: json['createdAt'] == null
+          ? DateTime.now()
+          : (json['createdAt'] as Timestamp).toDate(),
+      updatedAt: json['updatedAt'] == null
+          ? DateTime.now()
+          : (json['updatedAt'] as Timestamp).toDate(),
+      orderIndex: json['orderIndex'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      /// ContentModel properties
+      'id': id,
+      'sheetId': sheetId,
+      'parentId': parentId,
+      'title': title,
+      'description': {
+        'plainText': description?.plainText,
+        'htmlText': description?.htmlText,
+      },
+      'emoji': emoji,
+      'createdBy': createdBy,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+
+      'orderIndex': orderIndex,
+    };
   }
 }

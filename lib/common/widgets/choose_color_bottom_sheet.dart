@@ -13,7 +13,6 @@ void showChooseColorBottomSheet({
 }) {
   showModalBottomSheet(
     context: context,
-    isScrollControlled: true,
     showDragHandle: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),

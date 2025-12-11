@@ -28,14 +28,6 @@ class SheetList extends _$SheetList {
 
     Query<Map<String, dynamic>> query = collection;
 
-    query = query.where(
-      Filter.or(
-        Filter(FirestoreFieldConstants.users, arrayContains: userId),
-        Filter(FirestoreFieldConstants.users, isEqualTo: []),
-        Filter(FirestoreFieldConstants.users, isNull: true),
-      ),
-    );
-
     if (userId != null) {
       query = query.where(
         Filter.or(

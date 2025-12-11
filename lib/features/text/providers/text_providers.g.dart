@@ -8,15 +8,12 @@ part of 'text_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Main text list provider with all text management functionality
 
 @ProviderFor(TextList)
 const textListProvider = TextListProvider._();
 
-/// Main text list provider with all text management functionality
 final class TextListProvider
     extends $NotifierProvider<TextList, List<TextModel>> {
-  /// Main text list provider with all text management functionality
   const TextListProvider._()
     : super(
         from: null,
@@ -44,9 +41,7 @@ final class TextListProvider
   }
 }
 
-String _$textListHash() => r'5e175dd2d502034d010454c8e4ccd14cb8768d8f';
-
-/// Main text list provider with all text management functionality
+String _$textListHash() => r'14cbef2c4f09c7ef641926868b9f067b98023287';
 
 abstract class _$TextList extends $Notifier<List<TextModel>> {
   List<TextModel> build();

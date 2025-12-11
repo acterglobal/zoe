@@ -6,4 +6,6 @@ class FirestoreFieldConstants {
   static const String description = 'description';
   static const String sheetAvatar = 'sheetAvatar';
   static const String theme = 'theme';
+  static const String emoji = 'emoji';
+  static const String orderIndex = 'orderIndex';
 }
