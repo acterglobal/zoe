@@ -1,22 +1,49 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
+import 'package:zoe/features/text/data/text_list.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
-import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
-import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
+import '../utils/text_utils.dart';
 
 void main() {
   late ProviderContainer container;
-  late String textContent1 = 'text-content-1';
-  late String textContent2 = 'text-content-2';
+  late FakeFirebaseFirestore fakeFirestore;
+  final textContent1 = 'text-content-1';
+  final textContent2 = 'text-content-2';
+  final testUser = 'test-user';
 
-  setUp(() {
-    container = ProviderContainer.test();
-  });
+  setUp(() async {
+    fakeFirestore = FakeFirebaseFirestore();
+    container = ProviderContainer.test(
+      overrides: [
+        firestoreProvider.overrideWithValue(fakeFirestore),
+        loggedInUserProvider.overrideWithValue(AsyncValue.data(testUser)),
+      ],
+    );
 
-  tearDown(() {
-    container.dispose();
+    for (final text in textList) {
+      await fakeFirestore
+          .collection(FirestoreCollections.texts)
+          .doc(text.id)
+          .set(text.toJson());
+    }
+
+    int retries = 0;
+    while (container.read(textListProvider).length < 2 && retries < 20) {
+      await Future.delayed(const Duration(milliseconds: 50));
+      retries++;
+    }
+    expect(
+      container.read(textListProvider).length,
+      greaterThanOrEqualTo(2),
+      reason: 'Provider failed to load test data within timeout',
+    );
   });
 
   // Helper method to simulate clipboard content construction logic
@@ -69,11 +96,11 @@ void main() {
   group('TextActions.copyText', () {
     test('copies text with emoji and description correctly', () {
       // Arrange
-      final textContent = container.read(textProvider(textContent2));
+      final textContent = getTextByIndex(container, index: 1);
       expect(textContent, isNotNull);
 
       // Act
-      final clipboardContent = buildClipboardContent(textContent!);
+      final clipboardContent = buildClipboardContent(textContent);
 
       // Assert
       expect(clipboardContent, contains('📋 Understanding Sheets'));
@@ -86,11 +113,11 @@ void main() {
 
     test('copies text without emoji correctly', () {
       // Arrange
-      final textContent = container.read(textProvider(textContent1));
+      final textContent = getTextByIndex(container);
       expect(textContent, isNotNull);
 
       // Act
-      final clipboardContent = buildClipboardContent(textContent!);
+      final clipboardContent = buildClipboardContent(textContent);
 
       // Assert
       expect(clipboardContent, startsWith('Welcome to Zoe!'));
@@ -102,7 +129,7 @@ void main() {
       verifySnackbarFunctionality();
     });
 
-    test('handles text with empty description', () {
+    test('handles text with empty description', () async {
       // Arrange
       final textWithEmptyDesc = TextModel(
         id: 'text-empty-desc',
@@ -114,7 +141,9 @@ void main() {
         createdBy: 'test-user',
       );
 
-      container.read(textListProvider.notifier).addText(textWithEmptyDesc);
+      await container
+          .read(textListProvider.notifier)
+          .addText(textWithEmptyDesc);
 
       final textContent = container.read(textProvider('text-empty-desc'));
       expect(textContent, isNotNull);
@@ -176,12 +205,12 @@ void main() {
   });
 
   group('TextActions.deleteText', () {
-    test('deletes text from provider correctly', () {
+    test('deletes text from provider correctly', () async {
       // Arrange
-      expect(container.read(textProvider(textContent1)), isNotNull);
+      expect(getTextByIndex(container), isNotNull);
 
       // Act
-      container.read(textListProvider.notifier).deleteText(textContent1);
+      await container.read(textListProvider.notifier).deleteText(textContent1);
 
       // Assert
       expect(container.read(textProvider(textContent1)), isNull);
@@ -192,11 +221,11 @@ void main() {
   group('ShareUtils.getTextContentShareMessage', () {
     test('generates share message with emoji and description', () {
       // Arrange
-      final textContent = container.read(textProvider(textContent2));
+      final textContent = getTextByIndex(container, index: 1);
       expect(textContent, isNotNull);
 
       // Act
-      final shareMessage = buildShareMessage(textContent!, textContent2);
+      final shareMessage = buildShareMessage(textContent, textContent2);
 
       // Assert
       expect(shareMessage, contains('📋 Understanding Sheets'));
@@ -209,11 +238,11 @@ void main() {
 
     test('generates share message without emoji', () {
       // Arrange
-      final textContent = container.read(textProvider(textContent1));
+      final textContent = getTextByIndex(container);
       expect(textContent, isNotNull);
 
       // Act
-      final shareMessage = buildShareMessage(textContent!, textContent1);
+      final shareMessage = buildShareMessage(textContent, textContent1);
 
       // Assert
       expect(shareMessage, startsWith('Welcome to Zoe!'));
@@ -228,7 +257,7 @@ void main() {
       );
     });
 
-    test('generates share message with empty description', () {
+    test('generates share message with empty description', () async {
       // Arrange
       final textWithEmptyDesc = TextModel(
         id: 'text-empty-desc-share',
@@ -240,7 +269,9 @@ void main() {
         createdBy: 'test-user',
       );
 
-      container.read(textListProvider.notifier).addText(textWithEmptyDesc);
+      await container
+          .read(textListProvider.notifier)
+          .addText(textWithEmptyDesc);
 
       final textContent = container.read(textProvider('text-empty-desc-share'));
       expect(textContent, isNotNull);
@@ -260,7 +291,7 @@ void main() {
       );
     });
 
-    test('generates share message with only emoji and no title', () {
+    test('generates share message with only emoji and no title', () async {
       // Arrange
       final textWithOnlyEmoji = TextModel(
         id: 'only-emoji-share',
@@ -276,7 +307,9 @@ void main() {
         createdBy: 'test-user',
       );
 
-      container.read(textListProvider.notifier).addText(textWithOnlyEmoji);
+      await container
+          .read(textListProvider.notifier)
+          .addText(textWithOnlyEmoji);
 
       final textContent = container.read(textProvider('only-emoji-share'));
       expect(textContent, isNotNull);
@@ -293,7 +326,7 @@ void main() {
       );
     });
 
-    test('generates share message with null description', () {
+    test('generates share message with null description', () async {
       // Arrange
       final textWithNullDesc = TextModel(
         id: 'null-desc-share',
@@ -306,7 +339,7 @@ void main() {
         createdBy: 'test-user',
       );
 
-      container.read(textListProvider.notifier).addText(textWithNullDesc);
+      await container.read(textListProvider.notifier).addText(textWithNullDesc);
 
       final textContent = container.read(textProvider('null-desc-share'));
       expect(textContent, isNotNull);
@@ -351,7 +384,7 @@ void main() {
   });
 
   group('TextActions Edge Cases', () {
-    test('handles text with only emoji and no title', () {
+    test('handles text with only emoji and no title', () async {
       // Arrange
       final textWithOnlyEmoji = TextModel(
         id: 'only-emoji',
@@ -367,7 +400,9 @@ void main() {
         createdBy: 'test-user',
       );
 
-      container.read(textListProvider.notifier).addText(textWithOnlyEmoji);
+      await container
+          .read(textListProvider.notifier)
+          .addText(textWithOnlyEmoji);
 
       final textContent = container.read(textProvider('only-emoji'));
       expect(textContent, isNotNull);
@@ -380,7 +415,7 @@ void main() {
       expect(clipboardContent, contains('Description only'));
     });
 
-    test('handles text with null description', () {
+    test('handles text with null description', () async {
       // Arrange
       final textWithNullDesc = TextModel(
         id: 'null-desc',
@@ -393,7 +428,7 @@ void main() {
         createdBy: 'test-user',
       );
 
-      container.read(textListProvider.notifier).addText(textWithNullDesc);
+      await container.read(textListProvider.notifier).addText(textWithNullDesc);
 
       final textContent = container.read(textProvider('null-desc'));
       expect(textContent, isNotNull);
