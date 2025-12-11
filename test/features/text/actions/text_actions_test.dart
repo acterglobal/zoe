@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
@@ -25,11 +26,11 @@ void main() {
     );
 
     await fakeFirestore
-        .collection('texts')
+        .collection(FirestoreCollections.texts)
         .doc(mockText1.id)
         .set(mockText1.toJson());
     await fakeFirestore
-        .collection('texts')
+        .collection(FirestoreCollections.texts)
         .doc(mockText2.id)
         .set(mockText2.toJson());
 
