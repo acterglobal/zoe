@@ -17,7 +17,7 @@ class TaskModel extends ContentModel {
     super.createdAt,
     super.updatedAt,
     super.orderIndex,
-    super.createdBy,
+    required super.createdBy,
 
     /// TaskModel properties
     required this.dueDate,

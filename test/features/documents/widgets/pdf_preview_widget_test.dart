@@ -68,6 +68,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '/non/existent/path.pdf',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: errorDocument);
@@ -87,6 +88,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: existingFile.path,
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: validDocument);
@@ -103,6 +105,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '/non/existent/path.pdf',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: errorDocument);

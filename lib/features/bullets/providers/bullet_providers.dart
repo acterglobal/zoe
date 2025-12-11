@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/features/bullets/data/bullets.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'bullet_providers.g.dart';
 
@@ -17,6 +18,9 @@ class BulletList extends _$BulletList {
     required String sheetId,
     int? orderIndex,
   }) {
+    final userId = ref.read(loggedInUserProvider).value;
+    if (userId == null) return;
+
     // Single pass optimization: collect parent bullets and determine new orderIndex
     int newOrderIndex;
     Map<String, BulletModel> bulletsToUpdate = {};
@@ -48,6 +52,7 @@ class BulletList extends _$BulletList {
       title: title,
       sheetId: sheetId,
       orderIndex: newOrderIndex,
+      createdBy: userId,
     );
 
     // Update state efficiently

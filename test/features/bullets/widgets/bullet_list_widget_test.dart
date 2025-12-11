@@ -396,6 +396,7 @@ void main() {
                 title: singleBulletTitle,
                 parentId: testParentId,
                 sheetId: testSheetId,
+                createdBy: 'test-user',
               ),
             ]),
           ],

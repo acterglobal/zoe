@@ -26,7 +26,7 @@ class EventModel extends ContentModel {
     required super.sheetId,
     required super.title,
     super.description,
-    super.createdBy,
+    required super.createdBy,
     super.createdAt,
     super.updatedAt,
     super.orderIndex,

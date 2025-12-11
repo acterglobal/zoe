@@ -190,6 +190,7 @@ void main() {
           url: 'https://test.com',
           emoji: null,
           orderIndex: 1000,
+          createdBy: 'test-user',
         );
 
         // Add the link to the provider

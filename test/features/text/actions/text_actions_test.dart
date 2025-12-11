@@ -138,6 +138,7 @@ void main() {
         title: 'Empty Description Text',
         description: (plainText: '', htmlText: ''),
         orderIndex: 10,
+        createdBy: 'test-user',
       );
 
       await container
@@ -265,6 +266,7 @@ void main() {
         title: 'Empty Description Text',
         description: (plainText: '', htmlText: ''),
         orderIndex: 10,
+        createdBy: 'test-user',
       );
 
       await container
@@ -302,6 +304,7 @@ void main() {
           htmlText: '<p>Description only</p>',
         ),
         orderIndex: 13,
+        createdBy: 'test-user',
       );
 
       await container
@@ -333,6 +336,7 @@ void main() {
         emoji: '📝',
         description: null,
         orderIndex: 14,
+        createdBy: 'test-user',
       );
 
       await container.read(textListProvider.notifier).addText(textWithNullDesc);
@@ -393,6 +397,7 @@ void main() {
           htmlText: '<p>Description only</p>',
         ),
         orderIndex: 13,
+        createdBy: 'test-user',
       );
 
       await container
@@ -420,6 +425,7 @@ void main() {
         emoji: '📝',
         description: null,
         orderIndex: 14,
+        createdBy: 'test-user',
       );
 
       await container.read(textListProvider.notifier).addText(textWithNullDesc);

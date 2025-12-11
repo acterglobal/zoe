@@ -71,6 +71,7 @@ void main() {
         title: 'Test',
         description: (plainText: '', htmlText: ''),
         orderIndex: 0,
+        createdBy: 'test-user',
       );
 
       // Update to non-empty list
@@ -139,6 +140,7 @@ void main() {
         title: 'Test',
         description: (plainText: '', htmlText: ''),
         orderIndex: 0,
+        createdBy: 'test-user',
       );
 
       // Create a new container with different value

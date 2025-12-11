@@ -7,6 +7,7 @@ import 'package:zoe/common/models/user_display_type.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_close_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_chip_widget.dart';
+import 'package:zoe/features/task/data/tasks.dart';
 import 'package:zoe/features/task/widgets/task_assignee_header_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_stacked_avatars_widget.dart';
 import 'package:zoe/features/task/models/task_model.dart';
@@ -32,6 +33,7 @@ void main() {
     // Create the container with mock
     container = ProviderContainer.test(
       overrides: [
+        taskListProvider.overrideWithValue(tasks),
         preferencesServiceProvider.overrideWithValue(mockPreferencesService),
       ],
     );
@@ -454,15 +456,7 @@ void main() {
 
     group('Edge Cases', () {
       testWidgets('handles empty task title', (tester) async {
-        final emptyTitleTask = TaskModel(
-          id: testTaskModel.id,
-          title: '', // Empty title
-          parentId: testTaskModel.parentId,
-          sheetId: testTaskModel.sheetId,
-          dueDate: DateTime.now(),
-          isCompleted: false,
-          assignedUsers: [],
-        );
+        final emptyTitleTask = testTaskModel.copyWith(title: '');
 
         container = ProviderContainer.test(
           overrides: [
@@ -488,15 +482,9 @@ void main() {
         const differentTaskId = 'different-task-id';
         const differentTitle = 'Different Title';
 
-        final differentTask = TaskModel(
+        final differentTask = testTaskModel.copyWith(
           id: differentTaskId,
           title: differentTitle,
-          parentId: testTaskModel.parentId,
-          sheetId: testTaskModel.sheetId,
-          orderIndex: 1,
-          dueDate: DateTime.now(),
-          isCompleted: false,
-          assignedUsers: [],
         );
 
         container = ProviderContainer.test(
@@ -563,8 +551,7 @@ void main() {
 
       testWidgets('watches focus provider correctly', (tester) async {
         // Test when task is not focused
-        container.read(taskFocusProvider.notifier).state =
-            'different-task-id';
+        container.read(taskFocusProvider.notifier).state = 'different-task-id';
 
         await pumpTaskItemWidget(
           tester: tester,

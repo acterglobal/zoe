@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
-import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/features/content/providers/content_providers.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
@@ -17,6 +16,7 @@ import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/text/models/text_model.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 
 // Helper function to get the new orderIndex for a parent
 int _getNewOrderIndex({
@@ -104,6 +104,9 @@ void addNewTextContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
+  final userId = ref.read(loggedInUserProvider).value;
+  if (userId == null) return;
+
   final orderIndex = _getNewOrderIndex(
     ref: ref,
     parentId: parentId,
@@ -115,6 +118,7 @@ void addNewTextContent({
     title: '',
     description: (plainText: '', htmlText: ''),
     orderIndex: orderIndex,
+    createdBy: userId,
   );
   ref.read(textListProvider.notifier).addText(textContentModel);
   ref.read(editContentIdProvider.notifier).state = textContentModel.id;
@@ -126,6 +130,9 @@ void addNewEventContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
+  final userId = ref.read(loggedInUserProvider).value;
+  if (userId == null) return;
+
   final orderIndex = _getNewOrderIndex(
     ref: ref,
     parentId: parentId,
@@ -139,6 +146,7 @@ void addNewEventContent({
     startDate: DateTime.now(),
     endDate: DateTime.now(),
     orderIndex: orderIndex,
+    createdBy: userId,
   );
   ref.read(eventListProvider.notifier).addEvent(eventContentModel);
   ref.read(editContentIdProvider.notifier).state = eventContentModel.id;
@@ -150,6 +158,9 @@ void addNewBulletedListContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
+  final userId = ref.read(loggedInUserProvider).value;
+  if (userId == null) return;
+
   final orderIndex = _getNewOrderIndex(
     ref: ref,
     parentId: parentId,
@@ -161,6 +172,7 @@ void addNewBulletedListContent({
     title: '',
     listType: ContentType.bullet,
     orderIndex: orderIndex,
+    createdBy: userId,
   );
   ref.read(listsProvider.notifier).addList(bulletedListContentModel);
   ref.read(editContentIdProvider.notifier).state = bulletedListContentModel.id;
@@ -176,6 +188,9 @@ void addNewTaskListContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
+  final userId = ref.read(loggedInUserProvider).value;
+  if (userId == null) return;
+
   final orderIndex = _getNewOrderIndex(
     ref: ref,
     parentId: parentId,
@@ -187,6 +202,7 @@ void addNewTaskListContent({
     title: '',
     listType: ContentType.task,
     orderIndex: orderIndex,
+    createdBy: userId,
   );
   ref.read(listsProvider.notifier).addList(toDoListContentModel);
   ref.read(editContentIdProvider.notifier).state = toDoListContentModel.id;
@@ -203,6 +219,9 @@ void addNewLinkContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
+  final userId = ref.read(loggedInUserProvider).value;
+  if (userId == null) return;
+
   final orderIndex = _getNewOrderIndex(
     ref: ref,
     parentId: parentId,
@@ -214,6 +233,7 @@ void addNewLinkContent({
     title: '',
     url: '',
     orderIndex: orderIndex,
+    createdBy: userId,
   );
   ref.read(linkListProvider.notifier).addLink(linkContentModel);
   ref.read(editContentIdProvider.notifier).state = linkContentModel.id;
@@ -225,6 +245,9 @@ void addNewDocumentContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
+  final userId = ref.read(loggedInUserProvider).value;
+  if (userId == null) return;
+
   final orderIndex = _getNewOrderIndex(
     ref: ref,
     parentId: parentId,
@@ -236,6 +259,7 @@ void addNewDocumentContent({
     title: '',
     listType: ContentType.document,
     orderIndex: orderIndex,
+    createdBy: userId,
   );
   ref.read(listsProvider.notifier).addList(documentListContentModel);
   ref.read(editContentIdProvider.notifier).state = documentListContentModel.id;
@@ -247,12 +271,14 @@ Future<void> addNewPollContent({
   required String sheetId,
   bool addAtTop = false,
 }) async {
+  final userId = ref.read(loggedInUserProvider).value;
+  if (userId == null) return;
+
   final orderIndex = _getNewOrderIndex(
     ref: ref,
     parentId: parentId,
     addAtTop: addAtTop,
   );
-  final createdBy = await PreferencesService().getLoginUserId();
   final newPoll = PollModel(
     parentId: parentId,
     question: '',
@@ -262,7 +288,7 @@ Future<void> addNewPollContent({
       PollOption(id: CommonUtils.generateRandomId(), title: ''),
       PollOption(id: CommonUtils.generateRandomId(), title: ''),
     ],
-    createdBy: createdBy,
+    createdBy: userId,
   );
 
   ref.read(pollListProvider.notifier).addPoll(newPoll);

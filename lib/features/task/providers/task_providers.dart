@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/common/providers/service_providers.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/features/task/data/tasks.dart';
 import 'package:zoe/features/task/models/task_model.dart';
@@ -22,6 +21,9 @@ class TaskList extends _$TaskList {
     required String sheetId,
     int? orderIndex,
   }) async {
+    final userId = ref.read(loggedInUserProvider).value;
+    if (userId == null) return;
+
     // Single pass optimization: collect parent tasks and determine new orderIndex
     int newOrderIndex;
     Map<String, TaskModel> tasksToUpdate = {};
@@ -47,10 +49,6 @@ class TaskList extends _$TaskList {
       }
     }
 
-    final createdBy = await ref
-        .read(preferencesServiceProvider)
-        .getLoginUserId();
-
     // Create the new task
     final newTask = TaskModel(
       parentId: parentId,
@@ -59,7 +57,7 @@ class TaskList extends _$TaskList {
       orderIndex: newOrderIndex,
       dueDate: DateTime.now(),
       isCompleted: false,
-      createdBy: createdBy,
+      createdBy: userId,
       assignedUsers: [],
     );
 
@@ -257,8 +255,9 @@ List<TaskModel> taskListSearch(Ref ref) {
 
   if (searchValue.isEmpty) return tasks;
   return tasks
-      .where((task) =>
-          task.title.toLowerCase().contains(searchValue.toLowerCase()))
+      .where(
+        (task) => task.title.toLowerCase().contains(searchValue.toLowerCase()),
+      )
       .toList();
 }
 

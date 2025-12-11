@@ -39,10 +39,7 @@ class MockContent extends ContentModel {
     required String super.id,
     required super.type,
     required super.title,
-  }) : super(
-          sheetId: 'sheet-1',
-          parentId: 'parent-1',
-        );
+  }) : super(sheetId: 'sheet-1', parentId: 'parent-1', createdBy: 'test-user');
 }
 
 void main() {
@@ -66,7 +63,11 @@ void main() {
     title: 'Text 1',
     sheetId: sheetId,
     parentId: parentId,
-    description: (plainText: 'Text description', htmlText: '<p>Text description</p>'),
+    description: (
+      plainText: 'Text description',
+      htmlText: '<p>Text description</p>',
+    ),
+    createdBy: 'test-user',
   );
 
   final mockEventModel = EventModel(
@@ -76,6 +77,7 @@ void main() {
     parentId: parentId,
     startDate: DateTime.now(),
     endDate: DateTime.now().add(const Duration(hours: 1)),
+    createdBy: 'test-user',
   );
 
   final mockDocumentModel = DocumentModel(
@@ -84,6 +86,7 @@ void main() {
     sheetId: sheetId,
     parentId: parentId,
     filePath: 'path/to/doc.pdf',
+    createdBy: 'test-user',
   );
 
   final mockTaskModel = TaskModel(
@@ -94,6 +97,7 @@ void main() {
     dueDate: DateTime.now().add(const Duration(days: 1)),
     isCompleted: false,
     assignedUsers: [],
+    createdBy: 'test-user',
   );
 
   final mockBulletModel = BulletModel(
@@ -101,6 +105,7 @@ void main() {
     title: 'Bullet 1',
     sheetId: sheetId,
     parentId: parentId,
+    createdBy: 'test-user',
   );
 
   final mockLinkModel = LinkModel(
@@ -109,6 +114,7 @@ void main() {
     sheetId: sheetId,
     parentId: parentId,
     url: 'https://example.com',
+    createdBy: 'test-user',
   );
 
   final mockPollModel = PollModel(
@@ -117,6 +123,7 @@ void main() {
     parentId: parentId,
     options: [],
     question: 'Poll question',
+    createdBy: 'test-user',
   );
 
   final mockListModel = ListModel(
@@ -125,12 +132,15 @@ void main() {
     sheetId: sheetId,
     parentId: parentId,
     listType: ContentType.bullet,
+    createdBy: 'test-user',
   );
 
   setUp(() {
     container = ProviderContainer(
       overrides: [
-        contentListByParentIdProvider(parentId).overrideWithValue(mockContentList),
+        contentListByParentIdProvider(
+          parentId,
+        ).overrideWithValue(mockContentList),
         editContentIdProvider.overrideWith((ref) => null),
         // Override individual content providers
         contentProvider('text-1').overrideWithValue(mockContentList[0]),
@@ -177,9 +187,7 @@ void main() {
           child: SizedBox(
             width: 800,
             height: 600,
-            child: SingleChildScrollView(
-              child: child,
-            ),
+            child: SingleChildScrollView(child: child),
           ),
         ),
       ),
@@ -189,8 +197,16 @@ void main() {
   group('ContentWidget', () {
     testWidgets('renders document section in Wrap layout', (tester) async {
       final documentsOnly = [
-        MockContent(id: 'doc-1', type: ContentType.document, title: 'Document 1'),
-        MockContent(id: 'doc-2', type: ContentType.document, title: 'Document 2'),
+        MockContent(
+          id: 'doc-1',
+          type: ContentType.document,
+          title: 'Document 1',
+        ),
+        MockContent(
+          id: 'doc-2',
+          type: ContentType.document,
+          title: 'Document 2',
+        ),
       ];
 
       final mockDoc2 = DocumentModel(
@@ -199,11 +215,14 @@ void main() {
         sheetId: sheetId,
         parentId: parentId,
         filePath: 'path/to/doc2.pdf',
+        createdBy: 'test-user',
       );
 
       final documentsContainer = ProviderContainer(
         overrides: [
-          contentListByParentIdProvider(parentId).overrideWithValue(documentsOnly),
+          contentListByParentIdProvider(
+            parentId,
+          ).overrideWithValue(documentsOnly),
           editContentIdProvider.overrideWith((ref) => null),
           contentProvider('doc-1').overrideWithValue(documentsOnly[0]),
           contentProvider('doc-2').overrideWithValue(documentsOnly[1]),
@@ -214,24 +233,18 @@ void main() {
 
       await tester.pumpWidget(
         buildTestWidget(
-          child: const ContentWidget(
-            parentId: parentId,
-            sheetId: sheetId,
-          ),
+          child: const ContentWidget(parentId: parentId, sheetId: sheetId),
           container: documentsContainer,
         ),
       );
       await tester.pumpAndSettle();
 
       expect(find.byType(DocumentWidget), findsNWidgets(2));
-      
+
       // Find the first DocumentWidget and verify it's inside a Wrap
       final firstDocWidget = find.byType(DocumentWidget).first;
       expect(
-        find.ancestor(
-          of: firstDocWidget,
-          matching: find.byType(Wrap),
-        ),
+        find.ancestor(of: firstDocWidget, matching: find.byType(Wrap)),
         findsOneWidget,
       );
     });
@@ -244,7 +257,9 @@ void main() {
 
       final nonDocContainer = ProviderContainer(
         overrides: [
-          contentListByParentIdProvider(parentId).overrideWithValue(nonDocumentContent),
+          contentListByParentIdProvider(
+            parentId,
+          ).overrideWithValue(nonDocumentContent),
           editContentIdProvider.overrideWith((ref) => null),
           contentProvider('text-1').overrideWithValue(nonDocumentContent[0]),
           contentProvider('event-1').overrideWithValue(nonDocumentContent[1]),
@@ -255,10 +270,7 @@ void main() {
 
       await tester.pumpWidget(
         buildTestWidget(
-          child: const ContentWidget(
-            parentId: parentId,
-            sheetId: sheetId,
-          ),
+          child: const ContentWidget(parentId: parentId, sheetId: sheetId),
           container: nonDocContainer,
         ),
       );
@@ -276,7 +288,9 @@ void main() {
 
       final editingContainer = ProviderContainer(
         overrides: [
-          contentListByParentIdProvider(parentId).overrideWithValue(nonDocumentContent),
+          contentListByParentIdProvider(
+            parentId,
+          ).overrideWithValue(nonDocumentContent),
           editContentIdProvider.overrideWith((ref) => parentId),
           contentProvider('text-1').overrideWithValue(nonDocumentContent[0]),
           contentProvider('event-1').overrideWithValue(nonDocumentContent[1]),
@@ -287,10 +301,7 @@ void main() {
 
       await tester.pumpWidget(
         buildTestWidget(
-          child: const ContentWidget(
-            parentId: parentId,
-            sheetId: sheetId,
-          ),
+          child: const ContentWidget(parentId: parentId, sheetId: sheetId),
           container: editingContainer,
         ),
       );
@@ -304,10 +315,7 @@ void main() {
     testWidgets('shows AddContentWidget', (tester) async {
       await tester.pumpWidget(
         buildTestWidget(
-          child: const ContentWidget(
-            parentId: parentId,
-            sheetId: sheetId,
-          ),
+          child: const ContentWidget(parentId: parentId, sheetId: sheetId),
           container: container,
         ),
       );
@@ -319,10 +327,7 @@ void main() {
     testWidgets('renders all content types correctly', (tester) async {
       await tester.pumpWidget(
         buildTestWidget(
-          child: const ContentWidget(
-            parentId: parentId,
-            sheetId: sheetId,
-          ),
+          child: const ContentWidget(parentId: parentId, sheetId: sheetId),
           container: container,
         ),
       );
@@ -339,23 +344,30 @@ void main() {
       expect(find.byType(ListWidget), findsOneWidget);
     });
 
-    testWidgets('shows correct user display type for task and bullet items', (tester) async {
+    testWidgets('shows correct user display type for task and bullet items', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         buildTestWidget(
-          child: const ContentWidget(
-            parentId: parentId,
-            sheetId: sheetId,
-          ),
+          child: const ContentWidget(parentId: parentId, sheetId: sheetId),
           container: container,
         ),
       );
       await tester.pumpAndSettle();
 
       final taskWidget = tester.widget<TaskWidget>(find.byType(TaskWidget));
-      expect(taskWidget.userDisplayType, equals(ZoeUserDisplayType.nameChipsWrap));
+      expect(
+        taskWidget.userDisplayType,
+        equals(ZoeUserDisplayType.nameChipsWrap),
+      );
 
-      final bulletWidget = tester.widget<BulletItemWidget>(find.byType(BulletItemWidget));
-      expect(bulletWidget.userDisplayType, equals(ZoeUserDisplayType.nameChipBelow));
+      final bulletWidget = tester.widget<BulletItemWidget>(
+        find.byType(BulletItemWidget),
+      );
+      expect(
+        bulletWidget.userDisplayType,
+        equals(ZoeUserDisplayType.nameChipBelow),
+      );
     });
 
     testWidgets('shows sheet name when showSheetName is true', (tester) async {
@@ -380,7 +392,9 @@ void main() {
       final linkWidget = tester.widget<LinkWidget>(find.byType(LinkWidget));
       expect(linkWidget.showSheetName, isTrue);
 
-      final documentWidget = tester.widget<DocumentWidget>(find.byType(DocumentWidget));
+      final documentWidget = tester.widget<DocumentWidget>(
+        find.byType(DocumentWidget),
+      );
       expect(documentWidget.showSheetName, isTrue);
 
       final pollWidget = tester.widget<PollWidget>(find.byType(PollWidget));
@@ -409,7 +423,9 @@ void main() {
       final linkWidget = tester.widget<LinkWidget>(find.byType(LinkWidget));
       expect(linkWidget.showSheetName, isFalse);
 
-      final documentWidget = tester.widget<DocumentWidget>(find.byType(DocumentWidget));
+      final documentWidget = tester.widget<DocumentWidget>(
+        find.byType(DocumentWidget),
+      );
       expect(documentWidget.showSheetName, isFalse);
 
       final pollWidget = tester.widget<PollWidget>(find.byType(PollWidget));
@@ -426,10 +442,7 @@ void main() {
 
       await tester.pumpWidget(
         buildTestWidget(
-          child: const ContentWidget(
-            parentId: parentId,
-            sheetId: sheetId,
-          ),
+          child: const ContentWidget(parentId: parentId, sheetId: sheetId),
           container: emptyContainer,
         ),
       );

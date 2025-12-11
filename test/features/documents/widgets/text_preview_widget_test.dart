@@ -43,6 +43,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'pubspec.yaml',
+          createdBy: 'test-user',
         ),
       );
     });
@@ -112,6 +113,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '/non/existent/path.txt',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: errorDocument);
@@ -137,6 +139,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '/non/existent/empty.txt',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: emptyDocument);
@@ -159,6 +162,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: emptyPathDocument);
@@ -182,6 +186,7 @@ void main() {
         parentId: 'list-1',
         sheetId: 'sheet-1',
         filePath: 'pubspec.yaml',
+        createdBy: 'test-user',
       );
       testWidgets(
         'should show error widget when file content cannot be loaded',
@@ -250,6 +255,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '/non/existent/path.txt',
+          createdBy: 'test-user',
         );
 
         await tester.pumpMaterialWidgetWithProviderScope(
@@ -271,6 +277,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: '/non/existent/path.txt',
+          createdBy: 'test-user',
         );
 
         await tester.pumpMaterialWidgetWithProviderScope(
@@ -293,6 +300,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'pubspec.yaml',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: contentDocument);
@@ -359,6 +367,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'pubspec.yaml',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: contentDocument);
@@ -379,6 +388,7 @@ void main() {
           parentId: 'list-1',
           sheetId: 'sheet-1',
           filePath: 'pubspec.yaml',
+          createdBy: 'test-user',
         );
 
         await createTestWidget(tester, document: contentDocument);

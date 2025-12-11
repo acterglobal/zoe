@@ -1,3 +1,4 @@
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 
 final documentList = [
@@ -7,6 +8,7 @@ final documentList = [
     parentId: 'list-document-1',
     sheetId: 'sheet-1',
     filePath: 'path/to/project_proposal.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-2',
@@ -14,6 +16,7 @@ final documentList = [
     parentId: 'list-document-1',
     sheetId: 'sheet-1',
     filePath: 'path/to/meeting_notes.docx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-3',
@@ -21,6 +24,7 @@ final documentList = [
     parentId: 'list-document-1',
     sheetId: 'sheet-1',
     filePath: 'path/to/budget.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-4',
@@ -28,6 +32,7 @@ final documentList = [
     parentId: 'list-document-2',
     sheetId: 'sheet-1',
     filePath: 'path/to/design_mockups.png',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // Trip Planning Documents
   DocumentModel(
@@ -36,6 +41,7 @@ final documentList = [
     parentId: 'list-document-2',
     sheetId: 'sheet-2',
     filePath: 'path/to/trip_itinerary.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-6',
@@ -43,6 +49,7 @@ final documentList = [
     parentId: 'list-document-2',
     sheetId: 'sheet-2',
     filePath: 'path/to/hotel_confirmation.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-7',
@@ -50,6 +57,7 @@ final documentList = [
     parentId: 'list-document-2',
     sheetId: 'sheet-2',
     filePath: 'path/to/flight_tickets.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // Christmas Planning Documents
   DocumentModel(
@@ -58,6 +66,7 @@ final documentList = [
     parentId: 'list-document-3',
     sheetId: 'sheet-3',
     filePath: 'path/to/christmas_guest_list.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-12',
@@ -65,6 +74,7 @@ final documentList = [
     parentId: 'list-document-3',
     sheetId: 'sheet-3',
     filePath: 'path/to/christmas_menu.docx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-13',
@@ -72,6 +82,7 @@ final documentList = [
     parentId: 'list-document-3',
     sheetId: 'sheet-3',
     filePath: 'path/to/secret_santa_list.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // Community Management Documents
   DocumentModel(
@@ -80,6 +91,7 @@ final documentList = [
     parentId: 'list-document-5',
     sheetId: 'sheet-4',
     filePath: 'path/to/vip_client_database.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-24',
@@ -87,6 +99,7 @@ final documentList = [
     parentId: 'list-document-5',
     sheetId: 'sheet-4',
     filePath: 'path/to/community_guidelines.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-25',
@@ -94,6 +107,7 @@ final documentList = [
     parentId: 'list-document-5',
     sheetId: 'sheet-4',
     filePath: 'path/to/notification_system.docx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // Exhibition Planning Documents
   DocumentModel(
@@ -102,6 +116,7 @@ final documentList = [
     parentId: 'list-document-7',
     sheetId: 'sheet-5',
     filePath: 'path/to/exhibition_checklist.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-36',
@@ -109,6 +124,7 @@ final documentList = [
     parentId: 'list-document-7',
     sheetId: 'sheet-5',
     filePath: 'path/to/food_vendors.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-37',
@@ -116,6 +132,7 @@ final documentList = [
     parentId: 'list-document-7',
     sheetId: 'sheet-5',
     filePath: 'path/to/guest_list.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // School Fundraiser Documents
   DocumentModel(
@@ -124,6 +141,7 @@ final documentList = [
     parentId: 'list-document-8',
     sheetId: 'sheet-6',
     filePath: 'path/to/fundraiser_checklist.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-42',
@@ -131,6 +149,7 @@ final documentList = [
     parentId: 'list-document-8',
     sheetId: 'sheet-6',
     filePath: 'path/to/cupcake_list.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-43',
@@ -138,6 +157,7 @@ final documentList = [
     parentId: 'list-document-8',
     sheetId: 'sheet-6',
     filePath: 'path/to/ticket_tracker.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // BBQ Planning Documents
   DocumentModel(
@@ -146,6 +166,7 @@ final documentList = [
     parentId: 'list-document-9',
     sheetId: 'sheet-7',
     filePath: 'path/to/bbq_checklist.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-48',
@@ -153,6 +174,7 @@ final documentList = [
     parentId: 'list-document-9',
     sheetId: 'sheet-7',
     filePath: 'path/to/bbq_coordination.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-49',
@@ -160,6 +182,7 @@ final documentList = [
     parentId: 'list-document-9',
     sheetId: 'sheet-7',
     filePath: 'path/to/dietary_tracker.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // University Hangout Documents
   DocumentModel(
@@ -168,6 +191,7 @@ final documentList = [
     parentId: 'list-document-10',
     sheetId: 'sheet-8',
     filePath: 'path/to/university_hangout_checklist.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-54',
@@ -175,6 +199,7 @@ final documentList = [
     parentId: 'list-document-10',
     sheetId: 'sheet-8',
     filePath: 'path/to/schedule_coordination.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-55',
@@ -182,6 +207,7 @@ final documentList = [
     parentId: 'list-document-10',
     sheetId: 'sheet-8',
     filePath: 'path/to/campus_spots.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // Book Club Documents
   DocumentModel(
@@ -190,6 +216,7 @@ final documentList = [
     parentId: 'list-document-11',
     sheetId: 'sheet-9',
     filePath: 'path/to/bookclub_checklist.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-60',
@@ -197,6 +224,7 @@ final documentList = [
     parentId: 'list-document-11',
     sheetId: 'sheet-9',
     filePath: 'path/to/meeting_schedule.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-61',
@@ -204,6 +232,7 @@ final documentList = [
     parentId: 'list-document-11',
     sheetId: 'sheet-9',
     filePath: 'path/to/reading_list.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // Softball Club BBQ Party Documents
   DocumentModel(
@@ -212,6 +241,7 @@ final documentList = [
     parentId: 'list-document-12',
     sheetId: 'sheet-10',
     filePath: 'path/to/softball_bbq_checklist.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-66',
@@ -219,6 +249,7 @@ final documentList = [
     parentId: 'list-document-12',
     sheetId: 'sheet-10',
     filePath: 'path/to/date_coordination.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-67',
@@ -226,6 +257,7 @@ final documentList = [
     parentId: 'list-document-12',
     sheetId: 'sheet-10',
     filePath: 'path/to/bbq_menu.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // Bachelorette Party Documents
   DocumentModel(
@@ -234,6 +266,7 @@ final documentList = [
     parentId: 'list-document-13',
     sheetId: 'sheet-11',
     filePath: 'path/to/bachelorette_checklist.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-72',
@@ -241,6 +274,7 @@ final documentList = [
     parentId: 'list-document-13',
     sheetId: 'sheet-11',
     filePath: 'path/to/budget_planning.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-73',
@@ -248,6 +282,7 @@ final documentList = [
     parentId: 'list-document-13',
     sheetId: 'sheet-11',
     filePath: 'path/to/theme_planning.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // Church Summer Fest 2026 Documents
   DocumentModel(
@@ -256,6 +291,7 @@ final documentList = [
     parentId: 'list-document-14',
     sheetId: 'sheet-12',
     filePath: 'path/to/church_fest_checklist.pdf',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-75',
@@ -263,6 +299,7 @@ final documentList = [
     parentId: 'list-document-14',
     sheetId: 'sheet-12',
     filePath: 'path/to/food_budget_planning.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   DocumentModel(
     id: 'document-76',
@@ -270,6 +307,7 @@ final documentList = [
     parentId: 'list-document-14',
     sheetId: 'sheet-12',
     filePath: 'path/to/equipment_setup_guide.xlsx',
+    createdBy: CommonUtils.generateRandomId(),
   ),
   // PTA Bake Sale Documents
   DocumentModel(

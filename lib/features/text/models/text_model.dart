@@ -11,7 +11,7 @@ class TextModel extends ContentModel {
     required super.title,
     required super.description,
     super.emoji,
-    super.createdBy,
+    required super.createdBy,
     super.createdAt,
     super.updatedAt,
     super.orderIndex,
