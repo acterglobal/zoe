@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/firestore_error_handler.dart';
 import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/text/models/text_model.dart';
@@ -26,7 +28,6 @@ class TextList extends _$TextList {
     _subscription = collection.snapshots().listen((snapshot) {
       state = snapshot.docs
           .map((doc) => TextModel.fromJson(doc.data()))
-          .whereType<TextModel>()
           .toList();
     });
 
@@ -38,42 +39,57 @@ class TextList extends _$TextList {
   }
 
   Future<void> addText(TextModel text) async {
-    await collection.doc(text.id).set(text.toJson());
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(text.id).set(text.toJson()),
+    );
   }
 
   Future<void> deleteText(String textId) async {
-    await collection.doc(textId).delete();
+    await runFirestoreOperation(ref, () => collection.doc(textId).delete());
   }
 
   Future<void> updateTextTitle(String textId, String title) async {
-    await collection.doc(textId).update({
-      FirestoreFieldConstants.title: title,
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(textId).update({
+        FirestoreFieldConstants.title: title,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   Future<void> updateTextEmoji(String textId, String? emoji) async {
-    await collection.doc(textId).update({
-      FirestoreFieldConstants.emoji: emoji,
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(textId).update({
+        FirestoreFieldConstants.emoji: emoji,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   Future<void> updateTextDescription(String textId, Description desc) async {
-    await collection.doc(textId).update({
-      FirestoreFieldConstants.description: {
-        'plainText': desc.plainText,
-        'htmlText': desc.htmlText,
-      },
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(textId).update({
+        FirestoreFieldConstants.description: {
+          'plainText': desc.plainText,
+          'htmlText': desc.htmlText,
+        },
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   Future<void> updateTextOrderIndex(String textId, int orderIndex) async {
-    await collection.doc(textId).update({
-      FirestoreFieldConstants.orderIndex: orderIndex,
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(textId).update({
+        FirestoreFieldConstants.orderIndex: orderIndex,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 }
 

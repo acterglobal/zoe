@@ -8,6 +8,7 @@ import 'package:zoe/features/settings/providers/locale_provider.dart';
 import 'package:zoe/features/settings/providers/theme_provider.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 // import 'package:zoe_native/zoe_native.dart';
+import 'common/providers/common_providers.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/deeplink/deep_link_initializer.dart';
@@ -58,6 +59,7 @@ class MyApp extends ConsumerWidget {
       builder: (context, child) =>
           DeepLinkInitializer(child: child ?? SizedBox.shrink()),
       supportedLocales: L10n.supportedLocales,
+      scaffoldMessengerKey: ref.watch(snackbarServiceProvider).messengerKey,
     );
   }
 }
