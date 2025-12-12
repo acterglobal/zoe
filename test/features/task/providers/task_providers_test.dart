@@ -119,7 +119,7 @@ void main() {
 
         container
             .read(taskListProvider.notifier)
-            .toggleTaskCompletion(testTask.id);
+            .updateTaskCompletion(testTask.id, !initialStatus);
 
         final updatedTask = container.read(taskProvider(testTask.id));
         expect(updatedTask?.isCompleted, equals(!initialStatus));
