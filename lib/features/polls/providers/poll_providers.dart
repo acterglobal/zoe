@@ -211,7 +211,7 @@ class PollList extends _$PollList {
     await runFirestoreOperation(
       ref,
       () => _collection.doc(pollId).update({
-        FirestoreFieldConstants.endDate: DateTime.now(),
+        FirestoreFieldConstants.endDate: Timestamp.fromDate(DateTime.now()),
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),
     );
@@ -223,7 +223,7 @@ class PollList extends _$PollList {
     await runFirestoreOperation(
       ref,
       () => _collection.doc(pollId).update({
-        FirestoreFieldConstants.startDate: DateTime.now(),
+        FirestoreFieldConstants.startDate: Timestamp.fromDate(DateTime.now()),
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),
     );
