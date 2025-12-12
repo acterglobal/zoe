@@ -95,7 +95,8 @@ class PollList extends _$PollList {
     String newTitle,
   ) async {
     await runFirestoreOperation(ref, () async {
-      final poll = state.firstWhere((p) => p.id == pollId);
+      final poll = state.where((p) => p.id == pollId).firstOrNull;
+      if (poll == null) return;
       final updatedOptions = poll.options.map((option) {
         if (option.id == optionId) {
           return option.copyWith(title: newTitle);
@@ -114,7 +115,8 @@ class PollList extends _$PollList {
 
   Future<void> deletePollOption(String pollId, String optionId) async {
     await runFirestoreOperation(ref, () async {
-      final poll = state.firstWhere((p) => p.id == pollId);
+      final poll = state.where((p) => p.id == pollId).firstOrNull;
+      if (poll == null) return;
       final updatedOptions = poll.options
           .where((option) => option.id != optionId)
           .toList();
@@ -130,7 +132,8 @@ class PollList extends _$PollList {
 
   Future<void> voteOnPoll(String pollId, String optionId, String userId) async {
     await runFirestoreOperation(ref, () async {
-      final poll = state.firstWhere((p) => p.id == pollId);
+      final poll = state.where((p) => p.id == pollId).firstOrNull;
+      if (poll == null) return;
       final updatedPoll = _updatePollVotes(poll, optionId, userId);
 
       await _collection.doc(pollId).update({
@@ -189,7 +192,8 @@ class PollList extends _$PollList {
   }
 
   Future<void> togglePollMultipleChoice(String pollId) async {
-    final poll = state.firstWhere((p) => p.id == pollId);
+    final poll = state.where((p) => p.id == pollId).firstOrNull;
+    if (poll == null) return;
     await runFirestoreOperation(
       ref,
       () => _collection.doc(pollId).update({
