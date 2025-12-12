@@ -18,6 +18,8 @@ class AuthState extends _$AuthState {
     preferencesServiceProvider,
   );
 
+  late final AuthService _authService = ref.read(authServiceProvider);
+
   @override
   Future<AuthUserModel?> build() async {
     final authService = ref.watch(authServiceProvider);
@@ -76,9 +78,11 @@ class AuthState extends _$AuthState {
   }) async {
     state = const AsyncValue.loading();
     try {
-      await ref
-          .read(authServiceProvider)
-          .signUp(email: email, password: password, displayName: name.trim());
+      await _authService.signUp(
+        email: email,
+        password: password,
+        displayName: name.trim(),
+      );
       // State will be updated by authStateChanges listener
     } catch (e, st) {
       _logger.severe('Sign up error: $e');
@@ -91,9 +95,7 @@ class AuthState extends _$AuthState {
   Future<void> signIn({required String email, required String password}) async {
     state = const AsyncValue.loading();
     try {
-      await ref
-          .read(authServiceProvider)
-          .signIn(email: email, password: password);
+      await _authService.signIn(email: email, password: password);
       // State will be updated by authStateChanges listener
     } catch (e, st) {
       _logger.severe('Sign in error: $e');
@@ -105,7 +107,7 @@ class AuthState extends _$AuthState {
   /// Sign out the current user
   Future<void> signOut() async {
     try {
-      await ref.read(authServiceProvider).signOut();
+      await _authService.signOut();
       await _prefsService.clearLoginUserId();
       if (!ref.mounted) return;
       ref.read(routerProvider).go(AppRoutes.login.route);
@@ -118,7 +120,7 @@ class AuthState extends _$AuthState {
   /// Delete account of the current user
   Future<void> deleteAccount() async {
     try {
-      await ref.read(authServiceProvider).deleteAccount();
+      await _authService.deleteAccount();
       await _prefsService.clearLoginUserId();
       if (!ref.mounted) return;
       ref.read(routerProvider).go(AppRoutes.login.route);
