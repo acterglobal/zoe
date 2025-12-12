@@ -56,10 +56,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             email: _emailController.text.trim(),
             password: _passwordController.text.trim(),
           );
-      if (!context.mounted) return;
+      if (!mounted) return;
       context.go(AppRoutes.home.route);
     } catch (e) {
-      if (!context.mounted) return;
+      if (!mounted) return;
       setState(() {
         _errorMessage = e.toString().replaceAll('Exception: ', '');
       });

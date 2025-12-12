@@ -187,5 +187,5 @@ class PollModel extends ContentModel {
   }
 
   int get totalVotes =>
-      options.fold(0, (sum, option) => sum + option.votes.length);
+      options.fold(0, (total, option) => total + option.votes.length);
 }
