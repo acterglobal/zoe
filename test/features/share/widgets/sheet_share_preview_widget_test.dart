@@ -182,7 +182,7 @@ void main() {
             eventsListProvider.overrideWithValue([event1, event2]),
             tasksListProvider.overrideWithValue(<TaskModel>[]),
             documentListProvider.overrideWithValue(<DocumentModel>[]),
-            pollsListProvider.overrideWithValue(<PollModel>[]),
+            pollListProvider.overrideWithValue(<PollModel>[]),
           ],
         );
 
@@ -218,7 +218,7 @@ void main() {
             eventsListProvider.overrideWithValue(<EventModel>[]),
             tasksListProvider.overrideWithValue([task1, task2]),
             documentListProvider.overrideWithValue(<DocumentModel>[]),
-            pollsListProvider.overrideWithValue(<PollModel>[]),
+            pollListProvider.overrideWithValue(<PollModel>[]),
           ],
         );
 
@@ -256,7 +256,7 @@ void main() {
             eventsListProvider.overrideWithValue(<EventModel>[]),
             tasksListProvider.overrideWithValue(<TaskModel>[]),
             documentListProvider.overrideWithValue([doc1, doc2, doc3]),
-            pollsListProvider.overrideWithValue(<PollModel>[]),
+            pollListProvider.overrideWithValue(<PollModel>[]),
           ],
         );
 
@@ -292,7 +292,7 @@ void main() {
             eventsListProvider.overrideWithValue(<EventModel>[]),
             tasksListProvider.overrideWithValue(<TaskModel>[]),
             documentListProvider.overrideWithValue(<DocumentModel>[]),
-            pollsListProvider.overrideWithValue([poll1, poll2]),
+            pollListProvider.overrideWithValue([poll1, poll2]),
           ],
         );
 
@@ -332,7 +332,7 @@ void main() {
             eventsListProvider.overrideWithValue([event]),
             tasksListProvider.overrideWithValue([task]),
             documentListProvider.overrideWithValue([document]),
-            pollsListProvider.overrideWithValue([poll]),
+            pollListProvider.overrideWithValue([poll]),
           ],
         );
 
@@ -377,7 +377,7 @@ void main() {
             eventsListProvider.overrideWithValue([event]),
             tasksListProvider.overrideWithValue([task]),
             documentListProvider.overrideWithValue([document]),
-            pollsListProvider.overrideWithValue([poll]),
+            pollListProvider.overrideWithValue([poll]),
           ],
         );
 
@@ -449,7 +449,7 @@ void main() {
             eventsListProvider.overrideWithValue([todayEvent, futureEvent]),
             tasksListProvider.overrideWithValue(<TaskModel>[]),
             documentListProvider.overrideWithValue(<DocumentModel>[]),
-            pollsListProvider.overrideWithValue(<PollModel>[]),
+            pollListProvider.overrideWithValue(<PollModel>[]),
           ],
         );
 
@@ -490,7 +490,7 @@ void main() {
               eventsListProvider.overrideWithValue([futureEvent]),
               tasksListProvider.overrideWithValue(<TaskModel>[]),
               documentListProvider.overrideWithValue(<DocumentModel>[]),
-              pollsListProvider.overrideWithValue(<PollModel>[]),
+              pollListProvider.overrideWithValue(<PollModel>[]),
             ],
           );
 
@@ -537,7 +537,7 @@ void main() {
             eventsListProvider.overrideWithValue(<EventModel>[]),
             tasksListProvider.overrideWithValue([todayTask, futureTask]),
             documentListProvider.overrideWithValue(<DocumentModel>[]),
-            pollsListProvider.overrideWithValue(<PollModel>[]),
+            pollListProvider.overrideWithValue(<PollModel>[]),
           ],
         );
 
@@ -580,7 +580,7 @@ void main() {
               eventsListProvider.overrideWithValue(<EventModel>[]),
               tasksListProvider.overrideWithValue([futureTask]),
               documentListProvider.overrideWithValue(<DocumentModel>[]),
-              pollsListProvider.overrideWithValue(<PollModel>[]),
+              pollListProvider.overrideWithValue(<PollModel>[]),
             ],
           );
 
@@ -626,7 +626,7 @@ void main() {
             eventsListProvider.overrideWithValue([event]),
             tasksListProvider.overrideWithValue(<TaskModel>[]),
             documentListProvider.overrideWithValue(<DocumentModel>[]),
-            pollsListProvider.overrideWithValue(<PollModel>[]),
+            pollListProvider.overrideWithValue(<PollModel>[]),
           ],
         );
 

@@ -21,7 +21,7 @@ List<ContentModel> contentList(Ref ref) {
   final bullets = ref.watch(bulletListProvider);
   final tasks = ref.watch(tasksListProvider);
   final links = ref.watch(linkListProvider);
-  final polls = ref.watch(pollsListProvider);
+  final polls = ref.watch(pollListProvider);
   final documents = ref.watch(documentListProvider);
 
   // Create a mutable list to allow sorting

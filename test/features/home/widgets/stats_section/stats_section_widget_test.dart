@@ -227,7 +227,7 @@ void main() {
             tasksListProvider.overrideWithValue([task1, task2, task3]),
             linkListProvider.overrideWithValue([linkList.first]),
             documentListProvider.overrideWithValue([doc1, doc2]),
-            pollsListProvider.overrideWithValue([poll1, poll2, poll3, poll4]),
+            pollListProvider.overrideWithValue([poll1, poll2, poll3, poll4]),
           ],
         );
 

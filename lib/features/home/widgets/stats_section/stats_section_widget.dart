@@ -22,7 +22,7 @@ class StatsSectionWidget extends ConsumerWidget {
     final taskList = ref.watch(tasksListProvider);
     final linkList = ref.watch(linkListProvider);
     final documentList = ref.watch(documentListProvider);
-    final pollList = ref.watch(pollsListProvider);
+    final pollList = ref.watch(pollListProvider);
 
     return Column(
       children: [

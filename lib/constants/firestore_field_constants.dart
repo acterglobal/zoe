@@ -18,4 +18,9 @@ class FirestoreFieldConstants {
   static const String dueDate = 'dueDate';
   static const String isCompleted = 'isCompleted';
   static const String assignedUsers = 'assignedUsers';
+  static const String options = 'options';
+  static const String votes = 'votes';
+  static const String question = 'question';
+  static const String answer = 'answer';
+  static const String isMultipleChoice = 'isMultipleChoice';
 }
