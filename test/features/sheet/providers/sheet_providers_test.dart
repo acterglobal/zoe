@@ -142,7 +142,7 @@ void main() {
 
       final updatedSheet = container.read(sheetProvider(testSheet1.id));
       expect(updatedSheet?.sheetAvatar.data, equals(newIcon.name));
-      expect(updatedSheet?.sheetAvatar.color?.value, equals(newColor.value));
+      expect(updatedSheet?.sheetAvatar.color?.toARGB32(), equals(newColor.toARGB32()));
     });
 
     test('updateSheetTheme updates sheet theme', () async {
@@ -156,8 +156,8 @@ void main() {
       );
 
       final updatedSheet = container.read(sheetProvider(testSheet1.id));
-      expect(updatedSheet?.theme?.primary.value, equals(newPrimary.value));
-      expect(updatedSheet?.theme?.secondary.value, equals(newSecondary.value));
+      expect(updatedSheet?.theme?.primary.toARGB32(), equals(newPrimary.toARGB32()));
+      expect(updatedSheet?.theme?.secondary.toARGB32(), equals(newSecondary.toARGB32()));
     });
 
     test('filters sheets by title when search has value', () {
