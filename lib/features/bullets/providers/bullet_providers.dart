@@ -1,23 +1,52 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:zoe/features/bullets/data/bullets.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/firestore_error_handler.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/constants/firestore_field_constants.dart';
 
 part 'bullet_providers.g.dart';
 
 /// Main bullet list notifier with all bullet management functionality
 @Riverpod(keepAlive: true)
 class BulletList extends _$BulletList {
-  @override
-  List<BulletModel> build() => bulletList;
+  StreamSubscription? _subscription;
 
-  void addBullet({
+  CollectionReference<Map<String, dynamic>> get collection =>
+      ref.read(firestoreProvider).collection(FirestoreCollections.bullets);
+
+  @override
+  List<BulletModel> build() {
+    _subscription?.cancel();
+    _subscription = null;
+
+    _subscription = collection.snapshots().listen(
+      (snapshot) {
+        state = snapshot.docs
+            .map((doc) => BulletModel.fromJson(doc.data()))
+            .toList();
+      },
+      onError: (error, stackTrace) => runFirestoreOperation(
+        ref,
+        () => Error.throwWithStackTrace(error, stackTrace),
+      ),
+    );
+
+    ref.onDispose(() => _subscription?.cancel());
+    return [];
+  }
+
+  Future<void> addBullet({
     String title = '',
     required String parentId,
     required String sheetId,
     int? orderIndex,
-  }) {
+  }) async {
     final userId = ref.read(loggedInUserProvider).value;
     if (userId == null) return;
 
@@ -55,69 +84,74 @@ class BulletList extends _$BulletList {
       createdBy: userId,
     );
 
-    // Update state efficiently
-    if (orderIndex == null) {
-      // Simple append - no need to update existing bullets
-      state = [...state, newBullet];
-    } else {
-      // Replace existing bullets with updated ones and add new bullet
-      final updatedState = <BulletModel>[];
+    // Persist to Firebase
+    await runFirestoreOperation(ref, () async {
+      final batch = ref.read(firestoreProvider).batch();
 
-      // Single pass to build new state with O(1) lookup
-      for (final bullet in state) {
-        final updatedBullet = bulletsToUpdate[bullet.id];
-        updatedState.add(updatedBullet ?? bullet);
+      // Add the new bullet
+      batch.set(collection.doc(newBullet.id), newBullet.toJson());
+
+      // Update orderIndex for affected bullets
+      for (final entry in bulletsToUpdate.entries) {
+        batch.update(collection.doc(entry.key), {
+          FirestoreFieldConstants.orderIndex: entry.value.orderIndex,
+          FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+        });
       }
-      updatedState.add(newBullet);
-      state = updatedState;
+      await batch.commit();
+
+      // Set the focus to the new bullet
       ref.read(bulletFocusProvider.notifier).state = newBullet.id;
-    }
+    });
   }
 
-  void deleteBullet(String bulletId) {
+  Future<void> deleteBullet(String bulletId) async {
     // Get the focus bullet id
     final focusBulletId = getFocusBulletId(bulletId);
-    // Remove the bullet from the state
-    state = state.where((b) => b.id != bulletId).toList();
-    // Set the focus to the focus bullet
-    ref.read(bulletFocusProvider.notifier).state = focusBulletId;
+    // Persist to Firebase
+    await runFirestoreOperation(ref, () async {
+      await collection.doc(bulletId).delete();
+      // Set the focus to the focus bullet
+      ref.read(bulletFocusProvider.notifier).state = focusBulletId;
+    });
   }
 
-  void updateBulletTitle(String bulletId, String title) {
-    state = [
-      for (final bullet in state)
-        if (bullet.id == bulletId) bullet.copyWith(title: title) else bullet,
-    ];
+  Future<void> updateBulletTitle(String bulletId, String title) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(bulletId).update({
+        FirestoreFieldConstants.title: title,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateBulletDescription(String bulletId, Description description) {
-    state = [
-      for (final bullet in state)
-        if (bullet.id == bulletId)
-          bullet.copyWith(description: description)
-        else
-          bullet,
-    ];
+  Future<void> updateBulletDescription(
+    String bulletId,
+    Description description,
+  ) async {
+    // Persist to Firebase
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(bulletId).update({
+        FirestoreFieldConstants.description: {
+          FirestoreFieldConstants.plainText: description.plainText,
+          FirestoreFieldConstants.htmlText: description.htmlText,
+        },
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateBulletParentId(String bulletId, String parentId) {
-    state = [
-      for (final bullet in state)
-        if (bullet.id == bulletId)
-          bullet.copyWith(parentId: parentId)
-        else
-          bullet,
-    ];
-  }
-
-  void updateBulletOrderIndex(String bulletId, int orderIndex) {
-    state = [
-      for (final bullet in state)
-        if (bullet.id == bulletId)
-          bullet.copyWith(orderIndex: orderIndex)
-        else
-          bullet,
-    ];
+  Future<void> updateBulletOrderIndex(String bulletId, int orderIndex) async {
+    // Persist to Firebase
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(bulletId).update({
+        FirestoreFieldConstants.orderIndex: orderIndex,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   String? getFocusBulletId(String bulletId) {
