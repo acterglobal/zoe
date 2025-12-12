@@ -38,17 +38,19 @@ class LanguageSelectionScreen extends ConsumerWidget {
     LanguageModel language,
   ) {
     return Card(
-      child: RadioListTile(
-        value: language.languageCode,
+      child: RadioGroup<String>(
         groupValue: ref.watch(appLocaleProvider),
-        title: Text(language.languageName),
-        subtitle: Text(language.languageCode.toUpperCase()),
         onChanged: (val) async {
           if (val != null) {
             final notifier = ref.read(appLocaleProvider.notifier);
             await notifier.setLanguage(val);
           }
         },
+        child: RadioListTile<String>(
+          value: language.languageCode,
+          title: Text(language.languageName),
+          subtitle: Text(language.languageCode.toUpperCase()),
+        ),
       ),
     );
   }
