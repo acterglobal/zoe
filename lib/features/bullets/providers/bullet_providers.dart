@@ -84,7 +84,6 @@ class BulletList extends _$BulletList {
 
     // Persist to Firebase
     await runFirestoreOperation(ref, () async {
-      ref.read(bulletFocusProvider.notifier).state = newBullet.id;
       // Add the new bullet
       await collection.doc(newBullet.id).set(newBullet.toJson());
 
@@ -99,16 +98,20 @@ class BulletList extends _$BulletList {
         }
         await batch.commit();
       }
+      // Set the focus to the new bullet
+      ref.read(bulletFocusProvider.notifier).state = newBullet.id;
     });
   }
 
   Future<void> deleteBullet(String bulletId) async {
     // Get the focus bullet id
     final focusBulletId = getFocusBulletId(bulletId);
-    // Set the focus to the focus bullet
-    ref.read(bulletFocusProvider.notifier).state = focusBulletId;
     // Persist to Firebase
-    await runFirestoreOperation(ref, () => collection.doc(bulletId).delete());
+    await runFirestoreOperation(ref, () async {
+      await collection.doc(bulletId).delete();
+      // Set the focus to the focus bullet
+      ref.read(bulletFocusProvider.notifier).state = focusBulletId;
+    });
   }
 
   Future<void> updateBulletTitle(String bulletId, String title) async {
