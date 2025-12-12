@@ -32,9 +32,7 @@ class SheetListWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final sheetList = ref.watch(sheetsProvider);
 
-    if (sheetList.isEmpty) {
-      return emptyState;
-    }
+    if (sheetList.isEmpty) return emptyState;
 
     if (showSectionHeader) {
       return Column(

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/firestore_error_handler.dart';
 import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
@@ -44,21 +45,19 @@ class SheetList extends _$SheetList {
       );
     }
 
-    _subscription = query.snapshots().listen((snapshot) {
-      final items = snapshot.docs
-          .map((doc) {
-            return SheetModel.fromJson(doc.data());
-          })
-          .whereType<SheetModel>()
-          .toList();
+    _subscription = query.snapshots().listen(
+      (snapshot) {
+        state = snapshot.docs
+            .map((doc) => SheetModel.fromJson(doc.data()))
+            .toList();
+      },
+      onError: (error, stackTrace) => runFirestoreOperation(
+        ref,
+        () => Error.throwWithStackTrace(error, stackTrace),
+      ),
+    );
 
-      state = items;
-    });
-
-    ref.onDispose(() {
-      _subscription?.cancel();
-    });
-
+    ref.onDispose(() => _subscription?.cancel());
     return [];
   }
 
@@ -68,42 +67,52 @@ class SheetList extends _$SheetList {
 
   Future<void> addSheet(SheetModel sheet) async {
     final userId = ref.read(loggedInUserProvider).value;
-    if (userId != null) {
+    if (userId == null) return;
+    await runFirestoreOperation(ref, () async {
       var newSheet = sheet;
       newSheet = newSheet.copyWith(users: [userId], createdBy: userId);
       await collection.doc(newSheet.id).set(newSheet.toJson());
-    }
+    });
   }
 
   Future<void> deleteSheet(String sheetId) async {
-    await collection.doc(sheetId).delete();
+    await runFirestoreOperation(ref, () => collection.doc(sheetId).delete());
   }
 
   Future<void> updateSheetTitle(String sheetId, String title) async {
-    await collection.doc(sheetId).update({
-      FirestoreFieldConstants.title: title,
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(sheetId).update({
+        FirestoreFieldConstants.title: title,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   Future<void> updateSheetCoverImage(String sheetId, String? url) async {
-    await collection.doc(sheetId).update({
-      if (url == null)
-        FirestoreFieldConstants.coverImageUrl: null
-      else
-        FirestoreFieldConstants.coverImageUrl: url,
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(sheetId).update({
+        if (url == null)
+          FirestoreFieldConstants.coverImageUrl: null
+        else
+          FirestoreFieldConstants.coverImageUrl: url,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   Future<void> updateSheetDescription(String sheetId, Description desc) async {
-    await collection.doc(sheetId).update({
-      FirestoreFieldConstants.description: {
-        FirestoreFieldConstants.plainText: desc.plainText,
-        FirestoreFieldConstants.htmlText: desc.htmlText,
-      },
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(sheetId).update({
+        FirestoreFieldConstants.description: {
+          FirestoreFieldConstants.plainText: desc.plainText,
+          FirestoreFieldConstants.htmlText: desc.htmlText,
+        },
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   Future<void> updateSheetAvatar({
@@ -112,18 +121,23 @@ class SheetList extends _$SheetList {
     required String data,
     Color? color,
   }) async {
-    final updatedAvatar = SheetAvatar(type: type, data: data, color: color);
-    await collection.doc(sheetId).update({
-      FirestoreFieldConstants.sheetAvatar: updatedAvatar.toJson(),
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+    await runFirestoreOperation(ref, () async {
+      final updatedAvatar = SheetAvatar(type: type, data: data, color: color);
+      await collection.doc(sheetId).update({
+        FirestoreFieldConstants.sheetAvatar: updatedAvatar.toJson(),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      });
     });
   }
 
   Future<void> addUserToSheet(String sheetId, String userId) async {
-    await collection.doc(sheetId).update({
-      FirestoreFieldConstants.users: FieldValue.arrayUnion([userId]),
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    });
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(sheetId).update({
+        FirestoreFieldConstants.users: FieldValue.arrayUnion([userId]),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   Future<void> updateSheetShareInfo({
@@ -131,13 +145,15 @@ class SheetList extends _$SheetList {
     String? sharedBy,
     String? message,
   }) async {
-    final updateMap = <String, dynamic>{
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-    };
-    if (sharedBy != null) updateMap['sharedBy'] = sharedBy;
-    if (message != null) updateMap['message'] = message;
+    await runFirestoreOperation(ref, () async {
+      final updateMap = <String, dynamic>{
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      };
+      if (sharedBy != null) updateMap['sharedBy'] = sharedBy;
+      if (message != null) updateMap['message'] = message;
 
-    await collection.doc(sheetId).update(updateMap);
+      await collection.doc(sheetId).update(updateMap);
+    });
   }
 
   Future<void> updateSheetTheme({
@@ -145,10 +161,12 @@ class SheetList extends _$SheetList {
     required Color primary,
     required Color secondary,
   }) async {
-    final newTheme = SheetTheme(primary: primary, secondary: secondary);
-    await collection.doc(sheetId).update({
-      FirestoreFieldConstants.theme: newTheme.toJson(),
-      FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+    await runFirestoreOperation(ref, () async {
+      final newTheme = SheetTheme(primary: primary, secondary: secondary);
+      await collection.doc(sheetId).update({
+        FirestoreFieldConstants.theme: newTheme.toJson(),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      });
     });
   }
 }
