@@ -16,10 +16,10 @@ part 'content_providers.g.dart';
 @riverpod
 List<ContentModel> contentList(Ref ref) {
   final texts = ref.watch(textListProvider);
-  final events = ref.watch(eventsListProvider);
+  final events = ref.watch(eventListProvider);
   final lists = ref.watch(listsProvider);
   final bullets = ref.watch(bulletListProvider);
-  final tasks = ref.watch(tasksListProvider);
+  final tasks = ref.watch(taskListProvider);
   final links = ref.watch(linkListProvider);
   final polls = ref.watch(pollListProvider);
   final documents = ref.watch(documentListProvider);

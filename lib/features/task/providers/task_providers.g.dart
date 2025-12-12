@@ -67,53 +67,6 @@ abstract class _$TaskList extends $Notifier<List<TaskModel>> {
   }
 }
 
-/// Provider for tasks filtered by membership (current user must be a member of the sheet)
-
-@ProviderFor(tasksList)
-const tasksListProvider = TasksListProvider._();
-
-/// Provider for tasks filtered by membership (current user must be a member of the sheet)
-
-final class TasksListProvider
-    extends
-        $FunctionalProvider<List<TaskModel>, List<TaskModel>, List<TaskModel>>
-    with $Provider<List<TaskModel>> {
-  /// Provider for tasks filtered by membership (current user must be a member of the sheet)
-  const TasksListProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'tasksListProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$tasksListHash();
-
-  @$internal
-  @override
-  $ProviderElement<List<TaskModel>> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  List<TaskModel> create(Ref ref) {
-    return tasksList(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<TaskModel> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<TaskModel>>(value),
-    );
-  }
-}
-
-String _$tasksListHash() => r'4e86e7b22e827c80f4455f6bdc1ff534cc6bca2e';
-
 /// Provider for today's tasks (filtered by membership)
 
 @ProviderFor(todaysTasks)
@@ -159,7 +112,7 @@ final class TodaysTasksProvider
   }
 }
 
-String _$todaysTasksHash() => r'68097ec59cd1e1af81de1a3d35f8d5ec55292b98';
+String _$todaysTasksHash() => r'abf80427baff2383e0aee050911a54b5454e934d';
 
 /// Provider for upcoming tasks (filtered by membership)
 
@@ -206,7 +159,7 @@ final class UpcomingTasksProvider
   }
 }
 
-String _$upcomingTasksHash() => r'fd366cace44a681d0d748222a39921fb687abff8';
+String _$upcomingTasksHash() => r'e2fd67a6ef38d9b9238942048e4c3592ef69ac4a';
 
 /// Provider for past due tasks (filtered by membership)
 
@@ -253,7 +206,7 @@ final class PastDueTasksProvider
   }
 }
 
-String _$pastDueTasksHash() => r'2de67586d2e7852b9a5667289155f36fab9a4cdc';
+String _$pastDueTasksHash() => r'60fdc6e0103c34fc39a32e6ab6a4756b3b1f5beb';
 
 /// Provider for all tasks combined
 
@@ -347,7 +300,7 @@ final class TaskListSearchProvider
   }
 }
 
-String _$taskListSearchHash() => r'40752bcca43bae7b3c91656d0c15d4c4c2a549b0';
+String _$taskListSearchHash() => r'9d0d5606ee049e132413e45f32134e5cec317091';
 
 /// Provider for a single task by ID
 
@@ -712,7 +665,7 @@ final class CompletedTasksCountProvider
 }
 
 String _$completedTasksCountHash() =>
-    r'cd64fb6197124da4eeb8ef96e067eb44fb9667ae';
+    r'df8785202dfdaf497ebbf574de9562d48ca494a4';
 
 /// Provider for tasks due today count
 

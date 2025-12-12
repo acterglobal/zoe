@@ -223,8 +223,8 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             sheetListProvider.overrideWithValue([sheet1, sheet2]),
-            eventsListProvider.overrideWithValue([event1]),
-            tasksListProvider.overrideWithValue([task1, task2, task3]),
+            eventListProvider.overrideWithValue([event1]),
+            taskListProvider.overrideWithValue([task1, task2, task3]),
             linkListProvider.overrideWithValue([linkList.first]),
             documentListProvider.overrideWithValue([doc1, doc2]),
             pollListProvider.overrideWithValue([poll1, poll2, poll3, poll4]),
