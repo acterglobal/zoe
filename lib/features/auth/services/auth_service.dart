@@ -78,6 +78,18 @@ class AuthService {
     }
   }
 
+  /// Sign out the current user
+  Future<void> deleteAccount() async {
+    try {
+      _logger.info('Signing out user: ${_firebaseAuth.currentUser?.uid}');
+      await _firebaseAuth.currentUser?.delete();
+      _logger.info('Successfully signed out');
+    } catch (e) {
+      _logger.severe('Error during sign out: $e');
+      rethrow;
+    }
+  }
+
   /// Handle Firebase Auth exceptions and convert to user-friendly messages
   Exception _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
