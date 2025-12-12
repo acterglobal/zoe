@@ -15,4 +15,7 @@ class FirestoreFieldConstants {
   static const String plainText = 'plainText';
   static const String htmlText = 'htmlText';
   static const String createdAt = 'createdAt';
+  static const String dueDate = 'dueDate';
+  static const String isCompleted = 'isCompleted';
+  static const String assignedUsers = 'assignedUsers';
 }

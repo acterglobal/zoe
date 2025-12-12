@@ -1,7 +1,12 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
-import 'package:zoe/features/task/data/tasks.dart';
+import 'package:zoe/common/utils/firestore_error_handler.dart';
+import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
@@ -12,8 +17,31 @@ part 'task_providers.g.dart';
 /// Main task list provider with all task management functionality
 @Riverpod(keepAlive: true)
 class TaskList extends _$TaskList {
+  StreamSubscription? _subscription;
+
+  CollectionReference<Map<String, dynamic>> get collection =>
+      ref.read(firestoreProvider).collection(FirestoreCollections.tasks);
+
   @override
-  List<TaskModel> build() => tasks;
+  List<TaskModel> build() {
+    _subscription?.cancel();
+    _subscription = null;
+
+    _subscription = collection.snapshots().listen(
+      (snapshot) {
+        state = snapshot.docs
+            .map((doc) => TaskModel.fromJson(doc.data()))
+            .toList();
+      },
+      onError: (error, stackTrace) => runFirestoreOperation(
+        ref,
+        () => Error.throwWithStackTrace(error, stackTrace),
+      ),
+    );
+
+    ref.onDispose(() => _subscription?.cancel());
+    return [];
+  }
 
   Future<void> addTask({
     String title = '',
@@ -61,93 +89,106 @@ class TaskList extends _$TaskList {
       assignedUsers: [],
     );
 
-    // Update state efficiently
-    if (orderIndex == null) {
-      // Simple append - no need to update existing tasks
-      state = [...state, newTask];
-    } else {
-      // Replace existing tasks with updated ones and add new task
-      final updatedState = <TaskModel>[];
+    // Persist to Firebase
+    await runFirestoreOperation(ref, () async {
+      final batch = ref.read(firestoreProvider).batch();
+      // Add the new Task
+      batch.set(collection.doc(newTask.id), newTask.toJson());
 
-      // Single pass to build new state with O(1) lookup
-      for (final task in state) {
-        final updatedTask = tasksToUpdate[task.id];
-        updatedState.add(updatedTask ?? task);
+      // Update orderIndex for affected tasks
+      for (final entry in tasksToUpdate.entries) {
+        batch.update(collection.doc(entry.key), {
+          FirestoreFieldConstants.orderIndex: entry.value.orderIndex,
+          FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+        });
       }
-      updatedState.add(newTask);
-      state = updatedState;
+      await batch.commit();
+
+      // Set the focus to the new task
       ref.read(taskFocusProvider.notifier).state = newTask.id;
-    }
+    });
   }
 
-  void deleteTask(String taskId) {
+  Future<void> deleteTask(String taskId) async {
     // Get the focus task id (previous or next)
     final focusTaskId = getFocusTaskId(taskId);
-    // Remove the task from the state
-    state = state.where((t) => t.id != taskId).toList();
-    // Set the focus to the focus task
-    ref.read(taskFocusProvider.notifier).state = focusTaskId;
+    // Persist to Firebase
+    await runFirestoreOperation(ref, () async {
+      await collection.doc(taskId).delete();
+      // Set the focus to the focus task
+      ref.read(taskFocusProvider.notifier).state = focusTaskId;
+    });
   }
 
-  void toggleTaskCompletion(String taskId) {
-    state = [
-      for (final task in state)
-        if (task.id == taskId)
-          task.copyWith(isCompleted: !task.isCompleted)
-        else
-          task,
-    ];
+  Future<void> updateTaskTitle(String taskId, String title) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(taskId).update({
+        FirestoreFieldConstants.title: title,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateTaskTitle(String taskId, String title) {
-    state = [
-      for (final task in state)
-        if (task.id == taskId) task.copyWith(title: title) else task,
-    ];
+  Future<void> updateTaskDescription(
+    String taskId,
+    Description description,
+  ) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(taskId).update({
+        FirestoreFieldConstants.description: {
+          FirestoreFieldConstants.plainText: description.plainText,
+          FirestoreFieldConstants.htmlText: description.htmlText,
+        },
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateTaskDescription(String taskId, Description description) {
-    state = [
-      for (final task in state)
-        if (task.id == taskId)
-          task.copyWith(description: description)
-        else
-          task,
-    ];
+  Future<void> updateTaskCompletion(String taskId, bool isCompleted) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(taskId).update({
+        FirestoreFieldConstants.isCompleted: isCompleted,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateTaskCompletion(String taskId, bool isCompleted) {
-    state = [
-      for (final task in state)
-        if (task.id == taskId)
-          task.copyWith(isCompleted: isCompleted)
-        else
-          task,
-    ];
+  Future<void> updateTaskDueDate(String taskId, DateTime dueDate) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(taskId).update({
+        FirestoreFieldConstants.dueDate: Timestamp.fromDate(dueDate),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateTaskDueDate(String taskId, DateTime? dueDate) {
-    state = [
-      for (final task in state)
-        if (task.id == taskId) task.copyWith(dueDate: dueDate) else task,
-    ];
+  Future<void> updateTaskOrderIndex(String taskId, int orderIndex) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(taskId).update({
+        FirestoreFieldConstants.orderIndex: orderIndex,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateTaskOrderIndex(String taskId, int orderIndex) {
-    state = [
-      for (final task in state)
-        if (task.id == taskId) task.copyWith(orderIndex: orderIndex) else task,
-    ];
-  }
-
-  void updateTaskAssignees(String taskId, List<String> assignedUsers) {
-    state = [
-      for (final task in state)
-        if (task.id == taskId)
-          task.copyWith(assignedUsers: assignedUsers)
-        else
-          task,
-    ];
+  Future<void> updateTaskAssignees(
+    String taskId,
+    List<String> assignedUsers,
+  ) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(taskId).update({
+        FirestoreFieldConstants.assignedUsers: FieldValue.arrayUnion(
+          assignedUsers,
+        ),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   void addAssignee(String taskId, String userId) {
