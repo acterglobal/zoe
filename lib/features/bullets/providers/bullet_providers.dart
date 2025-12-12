@@ -31,8 +31,10 @@ class BulletList extends _$BulletList {
             .map((doc) => BulletModel.fromJson(doc.data()))
             .toList();
       },
-      onError: (error, stackTrace) =>
-          runFirestoreOperation(ref, () => throw error),
+      onError: (error, stackTrace) => runFirestoreOperation(
+        ref,
+        () => Error.throwWithStackTrace(error, stackTrace),
+      ),
     );
 
     ref.onDispose(() => _subscription?.cancel());
@@ -84,20 +86,20 @@ class BulletList extends _$BulletList {
 
     // Persist to Firebase
     await runFirestoreOperation(ref, () async {
-      // Add the new bullet
-      await collection.doc(newBullet.id).set(newBullet.toJson());
+      final batch = ref.read(firestoreProvider).batch();
 
-      // Update orderIndex for affected bullets if needed
-      if (bulletsToUpdate.isNotEmpty) {
-        final batch = ref.read(firestoreProvider).batch();
-        for (final entry in bulletsToUpdate.entries) {
-          batch.update(collection.doc(entry.key), {
-            FirestoreFieldConstants.orderIndex: entry.value.orderIndex,
-            FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-          });
-        }
-        await batch.commit();
+      // Add the new bullet
+      batch.set(collection.doc(newBullet.id), newBullet.toJson());
+
+      // Update orderIndex for affected bullets
+      for (final entry in bulletsToUpdate.entries) {
+        batch.update(collection.doc(entry.key), {
+          FirestoreFieldConstants.orderIndex: entry.value.orderIndex,
+          FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+        });
       }
+      await batch.commit();
+
       // Set the focus to the new bullet
       ref.read(bulletFocusProvider.notifier).state = newBullet.id;
     });
