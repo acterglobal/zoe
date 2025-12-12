@@ -53,8 +53,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final userAsync = ref.watch(currentUserProvider);
     return userAsync.when(
       data: (user) {
-        if (user == null)
+        if (user == null) {
           return Center(child: Text(L10n.of(context).userNotFound));
+        }
         return Scaffold(
           appBar: _buildAppBar(context, user),
           body: SafeArea(

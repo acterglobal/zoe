@@ -65,8 +65,8 @@ void main() {
       // Verify theme color is applied
       final icon = tester.widget<Icon>(find.byIcon(Icons.close));
       expect(
-        icon.color?.value,
-        equals(testTheme.onSurface.withValues(alpha: 0.5).value),
+        icon.color?.toARGB32(),
+        equals(testTheme.onSurface.withValues(alpha: 0.5).toARGB32()),
       );
     });
 

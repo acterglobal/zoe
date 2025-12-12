@@ -9,21 +9,20 @@ import '../../../test-utils/test_utils.dart';
 void main() {
   const testUserName = 'John Doe';
 
-  setUp(() {
-    // Set a fixed window size for testing
-    TestWidgetsFlutterBinding.ensureInitialized();
-    final binding = TestWidgetsFlutterBinding.instance;
-    binding.window.physicalSizeTestValue = const Size(1080, 1920);
-    binding.window.devicePixelRatioTestValue = 1.0;
-  });
+  // Helper to set standard testing view size
+  void setTestViewSize(WidgetTester tester) {
+    tester.view.physicalSize = const Size(1080, 1920);
+    tester.view.devicePixelRatio = 1.0;
 
-  tearDown(() {
-    // Clear window size overrides
-    TestWidgetsFlutterBinding.instance.window.clearPhysicalSizeTestValue();
-    TestWidgetsFlutterBinding.instance.window.clearDevicePixelRatioTestValue();
-  });
+    // Always reset in a tearDown to prevent state leaking to other tests
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+  }
 
   Future<void> pumpWidget(WidgetTester tester) async {
+    setTestViewSize(tester); // Apply size configuration
     await tester.pumpMaterialWidget(
       child: SingleChildScrollView(
         child: const ProfileQrCodeWidget(userName: testUserName),
@@ -37,7 +36,9 @@ void main() {
 
     expect(find.byIcon(Icons.qr_code_scanner_rounded), findsOneWidget);
     expect(
-      find.text(L10n.of(tester.element(find.byType(ProfileQrCodeWidget))).scanToConnect),
+      find.text(
+        L10n.of(tester.element(find.byType(ProfileQrCodeWidget))).scanToConnect,
+      ),
       findsOneWidget,
     );
   });
@@ -50,11 +51,13 @@ void main() {
   });
 
   testWidgets('shows bottom sheet when triggered', (tester) async {
+    setTestViewSize(tester);
     await tester.pumpMaterialWidget(
       child: Scaffold(
         body: Builder(
           builder: (context) => TextButton(
-            onPressed: () => showProfileQrCodeBottomSheet(context, testUserName),
+            onPressed: () =>
+                showProfileQrCodeBottomSheet(context, testUserName),
             child: const Text('Show QR'),
           ),
         ),
@@ -70,6 +73,7 @@ void main() {
 
   group('getAppIconImagePath', () {
     testWidgets('returns light icon in dark mode', (tester) async {
+      setTestViewSize(tester);
       await tester.pumpMaterialWidget(
         child: Theme(
           data: ThemeData.dark(),
@@ -77,7 +81,10 @@ void main() {
             builder: (context) {
               final widget = ProfileQrCodeWidget(userName: testUserName);
               final assetImage = widget.getAppIconImagePath(context);
-              expect(assetImage.assetName, equals('assets/icon/app_icon_light.png'));
+              expect(
+                assetImage.assetName,
+                equals('assets/icon/app_icon_light.png'),
+              );
               return widget;
             },
           ),
@@ -86,6 +93,7 @@ void main() {
     });
 
     testWidgets('returns dark icon in light mode', (tester) async {
+      setTestViewSize(tester);
       await tester.pumpMaterialWidget(
         child: Theme(
           data: ThemeData.light(),
@@ -93,7 +101,10 @@ void main() {
             builder: (context) {
               final widget = ProfileQrCodeWidget(userName: testUserName);
               final assetImage = widget.getAppIconImagePath(context);
-              expect(assetImage.assetName, equals('assets/icon/app_icon_dark.png'));
+              expect(
+                assetImage.assetName,
+                equals('assets/icon/app_icon_dark.png'),
+              );
               return widget;
             },
           ),

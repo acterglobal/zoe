@@ -108,9 +108,9 @@ void main() {
 
     testWidgets('handles scrolling with long content', (tester) async {
       // Set a small screen size to force scrolling
-      tester.binding.window.physicalSizeTestValue = const Size(400, 400);
-      tester.binding.window.devicePixelRatioTestValue = 1.0;
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      tester.view.physicalSize = const Size(400, 400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
 
       await tester.pumpMaterialWidget(
         child: const EnableInvitesBottomSheet(),

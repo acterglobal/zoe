@@ -1,7 +1,6 @@
 // Mock classes
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:mocktail/mocktail.dart';
-import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/features/auth/services/auth_service.dart';
 

@@ -64,8 +64,8 @@ void main() {
       // Verify theme error color is applied with opacity
       final icon = tester.widget<Icon>(find.byIcon(Icons.delete_outlined));
       expect(
-        icon.color?.value,
-        equals(testTheme.error.withValues(alpha: 0.7).value),
+        icon.color?.toARGB32(),
+        equals(testTheme.error.withValues(alpha: 0.7).toARGB32()),
       );
     });
 

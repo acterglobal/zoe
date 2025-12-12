@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/features/settings/models/theme.dart';
@@ -13,16 +12,7 @@ void showThemeDialog(BuildContext context, WidgetRef ref) {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: AppThemeMode.values.map((theme) {
-          return RadioListTile<AppThemeMode>(
-            title: Text(
-              theme.getTitle(context),
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            subtitle: Text(
-              theme.getDescription(context),
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            value: theme,
+          return RadioGroup<AppThemeMode>(
             groupValue: ref.watch(themeProvider),
             onChanged: (value) {
               if (value != null) {
@@ -30,6 +20,17 @@ void showThemeDialog(BuildContext context, WidgetRef ref) {
                 Navigator.of(context).pop();
               }
             },
+            child: RadioListTile<AppThemeMode>(
+              title: Text(
+                theme.getTitle(context),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              subtitle: Text(
+                theme.getDescription(context),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              value: theme,
+            ),
           );
         }).toList(),
       ),

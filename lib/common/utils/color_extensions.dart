@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 extension ColorExtension on Color {
   /// Converts the color to a hex string with a leading #.
-  String toHex() => '#${value.toRadixString(16).padLeft(8, '0')}';
+  String toHex() => '#${toARGB32().toRadixString(16).padLeft(8, '0')}';
 }
 
 extension StringToColorExtension on String {

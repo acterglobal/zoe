@@ -3,16 +3,18 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  app_links
   audioplayers_windows
+  cloud_firestore
   emoji_picker_flutter
   file_selector_windows
-  flutter_secure_storage_windows
+  firebase_auth
+  firebase_core
   share_plus
   url_launcher_windows
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
-  zoe_native
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)
