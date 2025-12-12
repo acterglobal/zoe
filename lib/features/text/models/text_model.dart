@@ -66,7 +66,7 @@ class TextModel extends ContentModel {
       updatedAt: json['updatedAt'] == null
           ? DateTime.now()
           : (json['updatedAt'] as Timestamp).toDate(),
-      orderIndex: json['orderIndex'],
+      orderIndex: json['orderIndex'] ?? 0,
     );
   }
 
@@ -82,6 +82,7 @@ class TextModel extends ContentModel {
         'htmlText': description?.htmlText,
       },
       'emoji': emoji,
+      'createdBy': createdBy,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': Timestamp.fromDate(updatedAt),
       'orderIndex': orderIndex,

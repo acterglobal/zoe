@@ -1,7 +1,12 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
-import 'package:zoe/features/events/data/event_list.dart';
+import 'package:zoe/common/utils/firestore_error_handler.dart';
+import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
@@ -12,86 +17,114 @@ part 'event_providers.g.dart';
 /// Main event list provider with all event management functionality
 @Riverpod(keepAlive: true)
 class EventList extends _$EventList {
+  CollectionReference<Map<String, dynamic>> get collection =>
+      ref.read(firestoreProvider).collection(FirestoreCollections.events);
+
+  StreamSubscription? _subscription;
+
   @override
-  List<EventModel> build() => eventList;
+  List<EventModel> build() {
+    _subscription?.cancel();
+    _subscription = null;
 
-  void addEvent(EventModel event) {
-    state = [...state, event];
+    _subscription = collection.snapshots().listen(
+      (snapshot) {
+        state = snapshot.docs
+            .map((doc) => EventModel.fromJson(doc.data()))
+            .toList();
+      },
+      onError: (error, stackTrace) {
+        runFirestoreOperation(ref, () => throw error);
+      },
+    );
+
+    ref.onDispose(() {
+      _subscription?.cancel();
+    });
+
+    return [];
   }
 
-  void deleteEvent(String eventId) {
-    state = state.where((e) => e.id != eventId).toList();
+  Future<void> addEvent(EventModel event) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(event.id).set(event.toJson()),
+    );
   }
 
-  void updateEventTitle(String eventId, String title) {
-    state = [
-      for (final event in state)
-        if (event.id == eventId) event.copyWith(title: title) else event,
-    ];
+  Future<void> deleteEvent(String eventId) async {
+    await runFirestoreOperation(ref, () => collection.doc(eventId).delete());
   }
 
-  void updateEventDescription(String eventId, Description description) {
-    state = [
-      for (final event in state)
-        if (event.id == eventId)
-          event.copyWith(description: description)
-        else
-          event,
-    ];
+  Future<void> updateEventTitle(String eventId, String title) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(eventId).update({
+        FirestoreFieldConstants.title: title,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateEventStartDate(String eventId, DateTime startDate) {
-    state = [
-      for (final event in state)
-        if (event.id == eventId)
-          event.copyWith(startDate: startDate)
-        else
-          event,
-    ];
-  }
-
-  void updateEventEndDate(String eventId, DateTime endDate) {
-    state = [
-      for (final event in state)
-        if (event.id == eventId) event.copyWith(endDate: endDate) else event,
-    ];
-  }
-
-  void updateEventDateRange(
+  Future<void> updateEventDescription(
     String eventId,
-    DateTime startDate,
-    DateTime endDate,
-  ) {
-    state = [
-      for (final event in state)
-        if (event.id == eventId)
-          event.copyWith(startDate: startDate, endDate: endDate)
-        else
-          event,
-    ];
+    Description description,
+  ) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(eventId).update({
+        FirestoreFieldConstants.description: {
+          FirestoreFieldConstants.plainText: description.plainText,
+          FirestoreFieldConstants.htmlText: description.htmlText,
+        },
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updateEventOrderIndex(String eventId, int orderIndex) {
-    state = [
-      for (final event in state)
-        if (event.id == eventId)
-          event.copyWith(orderIndex: orderIndex)
-        else
-          event,
-    ];
+  Future<void> updateEventStartDate(String eventId, DateTime startDate) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(eventId).update({
+        FirestoreFieldConstants.startDate: Timestamp.fromDate(startDate),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
+  }
+
+  Future<void> updateEventEndDate(String eventId, DateTime endDate) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(eventId).update({
+        FirestoreFieldConstants.endDate: Timestamp.fromDate(endDate),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
+  }
+
+  Future<void> updateEventOrderIndex(String eventId, int orderIndex) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(eventId).update({
+        FirestoreFieldConstants.orderIndex: orderIndex,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
   /// Add or update RSVP response for a user
-  void updateRsvpResponse(String eventId, String userId, RsvpStatus status) {
-    state = [
-      for (final event in state)
-        if (event.id == eventId)
-          event.copyWith(
-            rsvpResponses: {...event.rsvpResponses, userId: status},
-          )
-        else
-          event,
-    ];
+  Future<void> updateRsvpResponse(
+    String eventId,
+    String userId,
+    RsvpStatus status,
+  ) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(eventId).update({
+        '${FirestoreFieldConstants.rsvpResponses}.$userId': status.name,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 }
 
@@ -134,7 +167,7 @@ List<EventModel> upcomingEvents(Ref ref) {
 }
 
 /// Provider for past events (filtered by membership)
-@riverpod 
+@riverpod
 List<EventModel> pastEvents(Ref ref) {
   final events = ref.watch(eventsListProvider);
   final pastEvents = events.where((event) {
@@ -226,7 +259,7 @@ List<String> eventRsvpYesUsers(Ref ref, String eventId) {
   final eventList = ref.watch(eventListProvider);
   final event = eventList.where((e) => e.id == eventId).firstOrNull;
   if (event == null) return [];
-  
+
   // Filter for only users whose RSVP is "yes"
   return event.rsvpResponses.entries
       .where((entry) => entry.value == RsvpStatus.yes)

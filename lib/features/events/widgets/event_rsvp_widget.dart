@@ -23,7 +23,12 @@ class EventRsvpWidget extends ConsumerWidget {
       children: [
         _buildHeader(context, currentRsvp.value),
         const SizedBox(height: 16),
-        _buildRsvpButtons(context, ref, currentRsvp.value, currentUser.value ?? ''),
+        _buildRsvpButtons(
+          context,
+          ref,
+          currentRsvp.value,
+          currentUser.value ?? '',
+        ),
       ],
     );
   }
@@ -59,7 +64,9 @@ class EventRsvpWidget extends ConsumerWidget {
                 children: [
                   Text(
                     l10n.willYouAttend,
-                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   EventRsvpCountWidget(eventId: eventId),
                 ],
@@ -111,11 +118,9 @@ class EventRsvpWidget extends ConsumerWidget {
       child: InkWell(
         onTap: () {
           HapticFeedback.lightImpact();
-          ref.read(eventListProvider.notifier).updateRsvpResponse(
-                eventId,
-                currentUser,
-                status,
-              );
+          ref
+              .read(eventListProvider.notifier)
+              .updateRsvpResponse(eventId, currentUser, status);
         },
         borderRadius: BorderRadius.circular(10),
         child: AnimatedContainer(
@@ -139,14 +144,14 @@ class EventRsvpWidget extends ConsumerWidget {
                 status == RsvpStatus.yes
                     ? Icons.check_circle_rounded
                     : status == RsvpStatus.no
-                        ? Icons.cancel_rounded
-                        : Icons.question_mark_rounded,
+                    ? Icons.cancel_rounded
+                    : Icons.question_mark_rounded,
                 size: 20,
                 color: statusColor,
               ),
               const SizedBox(height: 4),
               Text(
-                status.name,
+                status.displayName,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,

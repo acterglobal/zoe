@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 
@@ -6,11 +7,11 @@ enum RsvpStatus {
   no,
   maybe;
 
-  String get name => switch (this) {
-        yes => 'Yes',
-        no => 'No',
-        maybe => 'Maybe',
-      };
+  String get displayName => switch (this) {
+    yes => 'Yes',
+    no => 'No',
+    maybe => 'Maybe',
+  };
 }
 
 class EventModel extends ContentModel {
@@ -71,5 +72,77 @@ class EventModel extends ContentModel {
       endDate: endDate ?? this.endDate,
       rsvpResponses: rsvpResponses ?? this.rsvpResponses,
     );
+  }
+
+  factory EventModel.fromJson(Map<String, dynamic> json) {
+    final rsvpResponses = <String, RsvpStatus>{};
+
+    final raw = json['rsvpResponses'];
+
+    if (raw is Map<String, dynamic>) {
+      raw.forEach((key, value) {
+        final match = RsvpStatus.values.firstWhere((e) => e.name == value);
+        rsvpResponses[key] = match;
+      });
+    }
+
+    return EventModel(
+      /// ContentModel properties
+      id: json['id'],
+      sheetId: json['sheetId'] ?? '',
+      parentId: json['parentId'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'] != null
+          ? (
+              plainText: json['description']['plainText'] ?? '',
+              htmlText: json['description']['htmlText'] ?? '',
+            )
+          : null,
+      createdBy: json['createdBy'] ?? '',
+      createdAt: json['createdAt'] == null
+          ? DateTime.now()
+          : (json['createdAt'] as Timestamp).toDate(),
+      updatedAt: json['updatedAt'] == null
+          ? DateTime.now()
+          : (json['updatedAt'] as Timestamp).toDate(),
+      orderIndex: json['orderIndex'] ?? 0,
+
+      /// EventModel properties
+      startDate: json['startDate'] == null
+          ? DateTime.now()
+          : (json['startDate'] as Timestamp).toDate(),
+      endDate: json['endDate'] == null
+          ? DateTime.now()
+          : (json['endDate'] as Timestamp).toDate(),
+      rsvpResponses: rsvpResponses,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      /// ContentModel properties
+      'id': id,
+      'sheetId': sheetId,
+      'parentId': parentId,
+      'title': title,
+      'description': description != null
+          ? {
+              'plainText': description?.plainText,
+              'htmlText': description?.htmlText,
+            }
+          : null,
+      'emoji': emoji,
+      'createdBy': createdBy,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'updatedAt': Timestamp.fromDate(updatedAt),
+      'orderIndex': orderIndex,
+
+      /// EventModel properties
+      'startDate': Timestamp.fromDate(startDate),
+      'endDate': Timestamp.fromDate(endDate),
+      'rsvpResponses': rsvpResponses.map(
+        (key, value) => MapEntry(key, value.name),
+      ),
+    };
   }
 }

@@ -23,7 +23,7 @@ void main() {
     setUp(() {
       container = createTestContainer();
       testUserId = getUserByIndex(container).id;
-      
+
       // Override loggedInUserProvider for tests that depend on eventsListProvider
       container = createTestContainer(
         overrides: [
@@ -31,7 +31,7 @@ void main() {
         ],
       );
     });
-    
+
     group('EventListNotifier', () {
       test('add, update, delete, order, and RSVP updates', () {
         container = createTestContainer(
@@ -76,17 +76,6 @@ void main() {
         final updated = container.read(eventListProvider).single;
         expect(updated.startDate, newStart);
         expect(updated.endDate, newEnd);
-
-        // Update range
-        final rangeStart = originalStart.add(const Duration(days: 2));
-        final rangeEnd = originalEnd.add(const Duration(days: 2, hours: 3));
-        container
-            .read(eventListProvider.notifier)
-            .updateEventDateRange(e1.id, rangeStart, rangeEnd);
-
-        final ranged = container.read(eventListProvider).single;
-        expect(ranged.startDate, rangeStart);
-        expect(ranged.endDate, rangeEnd);
 
         // Update order index
         container
@@ -175,13 +164,16 @@ void main() {
         } else {
           // If user doesn't have access, assert that firstEvent is NOT in filtered
           expect(filtered.any((e) => e.id == firstEvent.id), isFalse);
-          
+
           // Assert that a visible event that matches the search query is in filtered
-          final visibleMatchingEvents = userEvents.where(
-            (e) => e.title.toLowerCase().contains(searchQuery),
-          ).toList();
+          final visibleMatchingEvents = userEvents
+              .where((e) => e.title.toLowerCase().contains(searchQuery))
+              .toList();
           if (visibleMatchingEvents.isNotEmpty) {
-            expect(filtered.any((e) => e.id == visibleMatchingEvents.first.id), isTrue);
+            expect(
+              filtered.any((e) => e.id == visibleMatchingEvents.first.id),
+              isTrue,
+            );
           }
         }
       });
@@ -321,7 +313,7 @@ void main() {
           final sheet = searchScoped.read(sheetProvider(e.sheetId));
           return sheet?.users.contains(testUserId) == true;
         }).toList();
-        
+
         // Check if first event's sheet contains the test user
         final firstSheet = searchScoped.read(sheetProvider(first.sheetId));
         if (firstSheet?.users.contains(testUserId) == true) {
@@ -329,13 +321,16 @@ void main() {
         } else {
           // If user doesn't have access, assert that first is NOT in filtered
           expect(filtered.any((e) => e.id == first.id), isFalse);
-          
+
           // Assert that a visible event that matches the search query is in filtered
-          final visibleMatchingEvents = userEventsInScope.where(
-            (e) => e.title.toLowerCase().contains(query),
-          ).toList();
+          final visibleMatchingEvents = userEventsInScope
+              .where((e) => e.title.toLowerCase().contains(query))
+              .toList();
           if (visibleMatchingEvents.isNotEmpty) {
-            expect(filtered.any((e) => e.id == visibleMatchingEvents.first.id), isTrue);
+            expect(
+              filtered.any((e) => e.id == visibleMatchingEvents.first.id),
+              isTrue,
+            );
           }
         }
       });
