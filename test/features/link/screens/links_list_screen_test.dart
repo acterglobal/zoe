@@ -12,7 +12,7 @@ import 'package:zoe/features/link/screens/links_list_screen.dart';
 import 'package:zoe/features/link/widgets/link_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../test-utils/test_utils.dart';
-import '../../../test-utils/mock_searchValue.dart';
+import '../../../test-utils/mock_search_value.dart';
 
 void main() {
   group('LinksListScreen', () {
