@@ -128,26 +128,10 @@ class EventList extends _$EventList {
   }
 }
 
-/// Provider for events filtered by membership (current user must be a member of the sheet)
-@riverpod
-List<EventModel> eventsList(Ref ref) {
-  final allEvents = ref.watch(eventListProvider);
-  final currentUserId = ref.watch(loggedInUserProvider).value;
-
-  // If no user, show nothing
-  if (currentUserId == null || currentUserId.isEmpty) return [];
-
-  // Filter events by membership of current user in the event's sheet
-  return allEvents.where((e) {
-    final sheet = ref.watch(sheetProvider(e.sheetId));
-    return sheet?.users.contains(currentUserId) == true;
-  }).toList();
-}
-
 /// Provider for today's events (filtered by membership)
 @riverpod
 List<EventModel> todaysEvents(Ref ref) {
-  final events = ref.watch(eventsListProvider);
+  final events = ref.watch(eventListProvider);
   final todayEvents = events.where((event) {
     return event.startDate.isToday;
   }).toList();
@@ -158,7 +142,7 @@ List<EventModel> todaysEvents(Ref ref) {
 /// Provider for upcoming events (filtered by membership)
 @riverpod
 List<EventModel> upcomingEvents(Ref ref) {
-  final events = ref.watch(eventsListProvider);
+  final events = ref.watch(eventListProvider);
   final upcomingEvents = events.where((event) {
     return event.startDate.isAfter(DateTime.now()) && !event.startDate.isToday;
   }).toList();
@@ -169,7 +153,7 @@ List<EventModel> upcomingEvents(Ref ref) {
 /// Provider for past events (filtered by membership)
 @riverpod
 List<EventModel> pastEvents(Ref ref) {
-  final events = ref.watch(eventsListProvider);
+  final events = ref.watch(eventListProvider);
   final pastEvents = events.where((event) {
     return event.startDate.isBefore(DateTime.now()) && !event.startDate.isToday;
   }).toList();
@@ -190,7 +174,7 @@ List<EventModel> allEvents(Ref ref) {
 @riverpod
 List<EventModel> eventListSearch(Ref ref) {
   final searchValue = ref.watch(searchValueProvider);
-  final events = ref.watch(eventsListProvider);
+  final events = ref.watch(eventListProvider);
 
   if (searchValue.isEmpty) return events;
   return events

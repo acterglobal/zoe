@@ -56,8 +56,8 @@ class _SheetSharePreviewWidgetState
     final sheet = ref.watch(sheetProvider(widget.parentId));
     if (sheet == null) return const SizedBox.shrink();
 
-    final eventList = ref.watch(eventsListProvider);
-    final taskList = ref.watch(tasksListProvider);
+    final eventList = ref.watch(eventListProvider);
+    final taskList = ref.watch(taskListProvider);
 
     final documentList = ref.watch(documentListProvider);
     final pollList = ref.watch(pollListProvider);

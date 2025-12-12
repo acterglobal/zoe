@@ -232,26 +232,10 @@ class TaskList extends _$TaskList {
   }
 }
 
-/// Provider for tasks filtered by membership (current user must be a member of the sheet)
-@riverpod
-List<TaskModel> tasksList(Ref ref) {
-  final allTasks = ref.watch(taskListProvider);
-  final currentUserId = ref.watch(loggedInUserProvider).value;
-
-  // If no user, show nothing
-  if (currentUserId == null || currentUserId.isEmpty) return [];
-
-  // Filter tasks by membership of current user in the task's sheet
-  return allTasks.where((t) {
-    final sheet = ref.watch(sheetProvider(t.sheetId));
-    return sheet?.users.contains(currentUserId) == true;
-  }).toList();
-}
-
 /// Provider for today's tasks (filtered by membership)
 @riverpod
 List<TaskModel> todaysTasks(Ref ref) {
-  final tasks = ref.watch(tasksListProvider);
+  final tasks = ref.watch(taskListProvider);
   final todayTasks = tasks.where((task) => task.dueDate.isToday).toList();
   todayTasks.sort((a, b) => a.dueDate.compareTo(b.dueDate));
   return todayTasks;
@@ -260,7 +244,7 @@ List<TaskModel> todaysTasks(Ref ref) {
 /// Provider for upcoming tasks (filtered by membership)
 @riverpod
 List<TaskModel> upcomingTasks(Ref ref) {
-  final tasks = ref.watch(tasksListProvider);
+  final tasks = ref.watch(taskListProvider);
   final upcomingTasks = tasks.where((task) {
     return task.dueDate.isAfter(DateTime.now()) && !task.dueDate.isToday;
   }).toList();
@@ -271,7 +255,7 @@ List<TaskModel> upcomingTasks(Ref ref) {
 /// Provider for past due tasks (filtered by membership)
 @riverpod
 List<TaskModel> pastDueTasks(Ref ref) {
-  final tasks = ref.watch(tasksListProvider);
+  final tasks = ref.watch(taskListProvider);
   final pastDueTasks = tasks.where((task) {
     return task.dueDate.isBefore(DateTime.now()) && !task.dueDate.isToday;
   }).toList();
@@ -292,7 +276,7 @@ List<TaskModel> allTasks(Ref ref) {
 @riverpod
 List<TaskModel> taskListSearch(Ref ref) {
   final searchValue = ref.watch(searchValueProvider);
-  final tasks = ref.watch(tasksListProvider);
+  final tasks = ref.watch(taskListProvider);
 
   if (searchValue.isEmpty) return tasks;
   return tasks
@@ -335,7 +319,7 @@ class TaskFocus extends _$TaskFocus {
 /// Provider for completed tasks count (filtered by membership)
 @riverpod
 int completedTasksCount(Ref ref) {
-  final tasks = ref.watch(tasksListProvider);
+  final tasks = ref.watch(taskListProvider);
   return tasks.where((task) => task.isCompleted).length;
 }
 
