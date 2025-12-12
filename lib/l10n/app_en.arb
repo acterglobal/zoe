@@ -621,5 +621,21 @@
     "name": "Name",
     "@name": {}, 
     "nameDescription": "Enter your name",
-    "@nameDescription": {} 
+    "@nameDescription": {},
+    "manageAccount": "Manage Account",
+    "@manageAccount": {},
+    "confirm": "Confirm",
+    "@confirm": {},
+    "logout": "Logout",
+    "@logout": {},
+    "logoutFromThisDevice": "Log out from this device",
+    "@logoutFromThisDevice": {},
+    "areYouSureYouWantToLogout": "Are you sure you want to log out?",
+    "@areYouSureYouWantToLogout": {},
+    "deleteAccount": "Delete Account",
+    "@deleteAccount": {},
+    "permanentlyDeleteAccount": "Permanently delete your account",
+    "@permanentlyDeleteAccount": {},
+    "areYouSureYouWantToDeleteAccount": "Are you sure you want to permanently delete your account?",
+    "@areYouSureYouWantToDeleteAccount": {}
 }
