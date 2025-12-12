@@ -30,9 +30,10 @@ class PollList extends _$PollList {
             .map((doc) => PollModel.fromJson(doc.data()))
             .toList();
       },
-      onError: (error, stackTrace) {
-        log.severe('Error listening to poll snapshots', error, stackTrace);
-      },
+      onError: (error, stackTrace) => runFirestoreOperation(
+        ref,
+        () => Error.throwWithStackTrace(error, stackTrace),
+      ),
     );
 
     ref.onDispose(() {
