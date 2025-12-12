@@ -171,7 +171,7 @@ class PollModel extends ContentModel {
       'id': id,
       'sheetId': sheetId,
       'parentId': parentId,
-      'title': title,
+      'title': question,
       'emoji': emoji,
       'createdBy': createdBy,
       'createdAt': Timestamp.fromDate(createdAt),

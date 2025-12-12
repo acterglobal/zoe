@@ -58,6 +58,7 @@ class PollList extends _$PollList {
       ref,
       () => _collection.doc(pollId).update({
         FirestoreFieldConstants.question: question,
+        FirestoreFieldConstants.title: question,
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),
     );
