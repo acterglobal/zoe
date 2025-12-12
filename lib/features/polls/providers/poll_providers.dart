@@ -97,7 +97,7 @@ class PollList extends _$PollList {
     String newTitle,
   ) async {
     await runFirestoreOperation(ref, () async {
-      final poll = state.where((p) => p.id == pollId).firstOrNull;
+      final poll = ref.read(pollProvider(pollId));
       if (poll == null) return;
       final updatedOptions = poll.options.map((option) {
         if (option.id == optionId) {
@@ -108,7 +108,7 @@ class PollList extends _$PollList {
 
       await _collection.doc(pollId).update({
         FirestoreFieldConstants.options: updatedOptions
-            .map((o) => o.toJson())
+            .map((option) => option.toJson())
             .toList(),
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       });
@@ -117,7 +117,7 @@ class PollList extends _$PollList {
 
   Future<void> deletePollOption(String pollId, String optionId) async {
     await runFirestoreOperation(ref, () async {
-      final poll = state.where((p) => p.id == pollId).firstOrNull;
+      final poll = ref.read(pollProvider(pollId));
       if (poll == null) return;
       final updatedOptions = poll.options
           .where((option) => option.id != optionId)
@@ -125,7 +125,7 @@ class PollList extends _$PollList {
 
       await _collection.doc(pollId).update({
         FirestoreFieldConstants.options: updatedOptions
-            .map((o) => o.toJson())
+            .map((option) => option.toJson())
             .toList(),
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       });
@@ -134,13 +134,13 @@ class PollList extends _$PollList {
 
   Future<void> voteOnPoll(String pollId, String optionId, String userId) async {
     await runFirestoreOperation(ref, () async {
-      final poll = state.where((p) => p.id == pollId).firstOrNull;
+      final poll = ref.read(pollProvider(pollId));
       if (poll == null) return;
       final updatedPoll = _updatePollVotes(poll, optionId, userId);
 
       await _collection.doc(pollId).update({
         FirestoreFieldConstants.options: updatedPoll.options
-            .map((o) => o.toJson())
+            .map((option) => option.toJson())
             .toList(),
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       });
@@ -194,7 +194,7 @@ class PollList extends _$PollList {
   }
 
   Future<void> togglePollMultipleChoice(String pollId) async {
-    final poll = state.where((p) => p.id == pollId).firstOrNull;
+    final poll = ref.read(pollProvider(pollId));
     if (poll == null) return;
     await runFirestoreOperation(
       ref,
@@ -206,7 +206,7 @@ class PollList extends _$PollList {
   }
 
   Future<void> endPoll(String pollId) async {
-    final poll = state.where((p) => p.id == pollId).firstOrNull;
+    final poll = ref.read(pollProvider(pollId));
     if (poll == null) return;
     await runFirestoreOperation(
       ref,
@@ -218,7 +218,7 @@ class PollList extends _$PollList {
   }
 
   Future<void> startPoll(String pollId) async {
-    final poll = state.where((p) => p.id == pollId).firstOrNull;
+    final poll = ref.read(pollProvider(pollId));
     if (poll == null) return;
     await runFirestoreOperation(
       ref,
