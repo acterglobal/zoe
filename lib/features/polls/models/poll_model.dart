@@ -49,8 +49,8 @@ class Vote {
   Vote copyWith({String? userId, DateTime? createdAt, DateTime? updatedAt}) {
     return Vote(
       userId: userId ?? this.userId,
-      createdAt: createdAt ?? DateTime.now(),
-      updatedAt: updatedAt ?? DateTime.now(),
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 

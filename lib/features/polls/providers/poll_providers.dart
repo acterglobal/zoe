@@ -129,45 +129,17 @@ class PollList extends _$PollList {
   }
 
   Future<void> voteOnPoll(String pollId, String optionId, String userId) async {
-    final originalState = state;
-    final pollIndex = originalState.indexWhere((p) => p.id == pollId);
-    if (pollIndex == -1) return;
+    await runFirestoreOperation(ref, () async {
+      final poll = state.firstWhere((p) => p.id == pollId);
+      final updatedPoll = _updatePollVotes(poll, optionId, userId);
 
-    final pollToUpdate = originalState[pollIndex];
-    final optimisticPoll = _updatePollVotes(pollToUpdate, optionId, userId);
-
-    final newState = List<PollModel>.from(originalState);
-    newState[pollIndex] = optimisticPoll;
-    state = newState;
-
-    try {
-      await _firestore.runTransaction((transaction) async {
-        final docRef = _collection.doc(pollId);
-        final snapshot = await transaction.get(docRef);
-
-        if (!snapshot.exists) {
-          throw Exception("Poll document not found during transaction!");
-        }
-
-        final serverPoll = PollModel.fromJson(snapshot.data()!);
-        final finalUpdatedPoll = _updatePollVotes(serverPoll, optionId, userId);
-
-        transaction.update(docRef, {
-          FirestoreFieldConstants.options: finalUpdatedPoll.options
-              .map((o) => o.toJson())
-              .toList(),
-          FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-        });
+      await _collection.doc(pollId).update({
+        FirestoreFieldConstants.options: updatedPoll.options
+            .map((o) => o.toJson())
+            .toList(),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       });
-    } catch (e, stackTrace) {
-      log.severe(
-        'Error voting on poll. Reverting optimistic update.',
-        e,
-        stackTrace,
-      );
-      state = originalState;
-      rethrow;
-    }
+    });
   }
 
   PollModel _updatePollVotes(PollModel poll, String optionId, String userId) {
