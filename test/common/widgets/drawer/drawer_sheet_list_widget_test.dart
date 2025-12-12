@@ -19,7 +19,7 @@ void main() {
     mockGoRouter = MockGoRouter();
     when(() => mockGoRouter.push(any())).thenAnswer((_) async => true);
     when(() => mockGoRouter.canPop()).thenReturn(true);
-    when(() => mockGoRouter.pop()).thenReturn(true);
+    when(() => mockGoRouter.pop());
   });
 
   Future<void> pumpDrawerSheetListWidget(
