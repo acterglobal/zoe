@@ -205,20 +205,24 @@ class PollList extends _$PollList {
   }
 
   Future<void> endPoll(String pollId) async {
+    final poll = state.where((p) => p.id == pollId).firstOrNull;
+    if (poll == null) return;
     await runFirestoreOperation(
       ref,
       () => _collection.doc(pollId).update({
-        FirestoreFieldConstants.endDate: FieldValue.serverTimestamp(),
+        FirestoreFieldConstants.endDate: DateTime.now(),
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),
     );
   }
 
   Future<void> startPoll(String pollId) async {
+    final poll = state.where((p) => p.id == pollId).firstOrNull;
+    if (poll == null) return;
     await runFirestoreOperation(
       ref,
       () => _collection.doc(pollId).update({
-        FirestoreFieldConstants.startDate: FieldValue.serverTimestamp(),
+        FirestoreFieldConstants.startDate: DateTime.now(),
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),
     );
