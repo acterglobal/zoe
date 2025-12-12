@@ -169,7 +169,6 @@ class SettingsScreen extends ConsumerWidget {
           subtitle: ref.watch(appNameProvider),
           icon: Icons.apps_rounded,
           iconColor: const Color(0xFF8B5CF6),
-          // Violet
           onTap: () {},
         ),
         const Divider(height: 1),
@@ -178,7 +177,6 @@ class SettingsScreen extends ConsumerWidget {
           subtitle: ref.watch(appVersionProvider),
           icon: Icons.info_outline_rounded,
           iconColor: const Color(0xFF06B6D4),
-          // Cyan
           onTap: () {},
         ),
         const Divider(height: 1),
@@ -187,7 +185,6 @@ class SettingsScreen extends ConsumerWidget {
           subtitle: ref.watch(buildNumberProvider),
           icon: Icons.build_rounded,
           iconColor: const Color(0xFF84CC16),
-          // Lime
           onTap: () {},
         ),
         if (kDebugMode) ...[
@@ -197,7 +194,6 @@ class SettingsScreen extends ConsumerWidget {
             subtitle: 'System diagnostics and testing tools',
             icon: Icons.developer_mode,
             iconColor: const Color(0xFFFF6B35),
-            // Orange
             onTap: () => context.push(AppRoutes.developerTools.route),
           ),
         ],
@@ -219,6 +215,7 @@ class SettingsScreen extends ConsumerWidget {
           iconColor: const Color(0xFFEF4444),
           onTap: () => InfoDialogWidget.show(
             context,
+            icon: Icons.logout,
             title: l10n.logout,
             description: l10n.areYouSureYouWantToLogout,
             onPrimary: () async => await authController.signOut(),
@@ -233,6 +230,7 @@ class SettingsScreen extends ConsumerWidget {
           iconColor: const Color(0xFFEF4444),
           onTap: () => InfoDialogWidget.show(
             context,
+            icon: Icons.delete_outline,
             title: L10n.of(context).deleteAccount,
             description: l10n.areYouSureYouWantToDeleteAccount,
             onPrimary: () async => await authController.deleteAccount(),
