@@ -15,7 +15,7 @@ const authStateProvider = AuthStateProvider._();
 
 /// Main auth state provider with authentication management functionality
 final class AuthStateProvider
-    extends $AsyncNotifierProvider<AuthState, AuthUserModel?> {
+    extends $AsyncNotifierProvider<AuthState, UserModel?> {
   /// Main auth state provider with authentication management functionality
   const AuthStateProvider._()
     : super(
@@ -36,22 +36,22 @@ final class AuthStateProvider
   AuthState create() => AuthState();
 }
 
-String _$authStateHash() => r'065038f9f011981683075fac1a60872e4d56cb3a';
+String _$authStateHash() => r'24de502887ad65bd2bc302cbbfc3de352e325017';
 
 /// Main auth state provider with authentication management functionality
 
-abstract class _$AuthState extends $AsyncNotifier<AuthUserModel?> {
-  FutureOr<AuthUserModel?> build();
+abstract class _$AuthState extends $AsyncNotifier<UserModel?> {
+  FutureOr<UserModel?> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<AsyncValue<AuthUserModel?>, AuthUserModel?>;
+    final ref = this.ref as $Ref<AsyncValue<UserModel?>, UserModel?>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<AuthUserModel?>, AuthUserModel?>,
-              AsyncValue<AuthUserModel?>,
+              AnyNotifier<AsyncValue<UserModel?>, UserModel?>,
+              AsyncValue<UserModel?>,
               Object?,
               Object?
             >;

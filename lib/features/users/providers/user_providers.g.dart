@@ -44,7 +44,7 @@ final class UserListProvider
   }
 }
 
-String _$userListHash() => r'58ff16edd69cc74899846e5a09c7708078513d35';
+String _$userListHash() => r'60d228fa82954ac75119b566d88fb27ce893efb3';
 
 /// Main user list provider with all user management functionality
 
@@ -122,7 +122,7 @@ final class LoggedInUserProvider
         argument: null,
         retry: null,
         name: r'loggedInUserProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -141,7 +141,7 @@ final class LoggedInUserProvider
   }
 }
 
-String _$loggedInUserHash() => r'0bd1a9fe8cb88e38ea44098a5d97d686fb13c332';
+String _$loggedInUserHash() => r'e3d78cd65434cef8d17c810c2457b3da6fc8502a';
 
 /// Provider for the current user model
 
