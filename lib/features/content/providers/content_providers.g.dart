@@ -61,7 +61,7 @@ final class ContentListProvider
   }
 }
 
-String _$contentListHash() => r'38cb9530c94c444b53bc9e511637777c2d89ba71';
+String _$contentListHash() => r'a994f47db9ddb0c36a8fe736043db4fe72dbf42e';
 
 /// Provider for content filtered by parent ID
 

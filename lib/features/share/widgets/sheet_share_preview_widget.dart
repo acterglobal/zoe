@@ -60,7 +60,7 @@ class _SheetSharePreviewWidgetState
     final taskList = ref.watch(tasksListProvider);
 
     final documentList = ref.watch(documentListProvider);
-    final pollList = ref.watch(pollsListProvider);
+    final pollList = ref.watch(pollListProvider);
 
     // Filter by sheetId
     final sheetEvents = eventList

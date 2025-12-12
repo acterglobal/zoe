@@ -1,287 +1,326 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
-import 'package:zoe/features/polls/data/polls.dart';
+import 'package:zoe/common/utils/firestore_error_handler.dart';
+import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 
 part 'poll_providers.g.dart';
 
-/// Main poll list provider with all poll management functionality
 @Riverpod(keepAlive: true)
 class PollList extends _$PollList {
+  FirebaseFirestore get _firestore => ref.read(firestoreProvider);
+  CollectionReference<Map<String, dynamic>> get _collection =>
+      _firestore.collection(FirestoreCollections.polls);
+
+  StreamSubscription? _subscription;
+
   @override
-  List<PollModel> build() => polls;
+  List<PollModel> build() {
+    _subscription?.cancel();
+    _subscription = _collection.snapshots().listen(
+      (snapshot) {
+        state = snapshot.docs
+            .map((doc) => PollModel.fromJson(doc.data()))
+            .toList();
+      },
+      onError: (error, stackTrace) {
+        log.severe('Error listening to poll snapshots', error, stackTrace);
+      },
+    );
+
+    ref.onDispose(() {
+      _subscription?.cancel();
+    });
+
+    return [];
+  }
 
   Future<void> addPoll(PollModel newPoll) async {
-    state = [...state, newPoll];
+    await runFirestoreOperation(
+      ref,
+      () => _collection.doc(newPoll.id).set(newPoll.toJson()),
+    );
   }
 
-  void deletePoll(String pollId) {
-    state = state.where((p) => p.id != pollId).toList();
+  Future<void> deletePoll(String pollId) async {
+    await runFirestoreOperation(ref, () => _collection.doc(pollId).delete());
   }
 
-  void updatePollQuestion(String pollId, String question) {
-    state = [
-      for (final poll in state)
-        if (poll.id == pollId) poll.copyWith(question: question) else poll,
-    ];
+  Future<void> updatePollQuestion(String pollId, String question) async {
+    await runFirestoreOperation(
+      ref,
+      () => _collection.doc(pollId).update({
+        FirestoreFieldConstants.question: question,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updatePollOrderIndex(String pollId, int orderIndex) {
-    state = [
-      for (final poll in state)
-        if (poll.id == pollId) poll.copyWith(orderIndex: orderIndex) else poll,
-    ];
+  Future<void> updatePollOrderIndex(String pollId, int orderIndex) async {
+    await runFirestoreOperation(
+      ref,
+      () => _collection.doc(pollId).update({
+        FirestoreFieldConstants.orderIndex: orderIndex,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void addPollOption(String pollId, String optionText) {
-    state = [
-      for (final poll in state)
-        if (poll.id == pollId)
-          poll.copyWith(
-            options: [
-              ...poll.options,
-              PollOption(
-                id: CommonUtils.generateRandomId(),
-                title: optionText.isEmpty ? '' : optionText,
-              ),
-            ],
-          )
-        else
-          poll,
-    ];
+  Future<void> addPollOption(String pollId, String optionText) async {
+    final newOption = PollOption(
+      id: CommonUtils.generateRandomId(),
+      title: optionText,
+    );
+    await runFirestoreOperation(
+      ref,
+      () => _collection.doc(pollId).update({
+        FirestoreFieldConstants.options: FieldValue.arrayUnion([
+          newOption.toJson(),
+        ]),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void updatePollOptionText(String pollId, String optionId, String newTitle) {
-    state = [
-      for (final poll in state)
-        if (poll.id == pollId)
-          poll.copyWith(
-            options: poll.options.map((option) {
-              if (option.id == optionId) {
-                return option.copyWith(title: newTitle);
-              }
-              return option;
-            }).toList(),
-          )
-        else
-          poll,
-    ];
+  Future<void> updatePollOptionText(
+    String pollId,
+    String optionId,
+    String newTitle,
+  ) async {
+    await runFirestoreOperation(ref, () async {
+      final poll = state.firstWhere((p) => p.id == pollId);
+      final updatedOptions = poll.options.map((option) {
+        if (option.id == optionId) {
+          return option.copyWith(title: newTitle);
+        }
+        return option;
+      }).toList();
+
+      await _collection.doc(pollId).update({
+        FirestoreFieldConstants.options: updatedOptions
+            .map((o) => o.toJson())
+            .toList(),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      });
+    });
   }
 
-  void deletePollOption(String pollId, String optionId) {
-    state = [
-      for (final poll in state)
-        if (poll.id == pollId)
-          poll.copyWith(
-            options: poll.options
-                .where((option) => option.id != optionId)
-                .toList(),
-          )
-        else
-          poll,
-    ];
+  Future<void> deletePollOption(String pollId, String optionId) async {
+    await runFirestoreOperation(ref, () async {
+      final poll = state.firstWhere((p) => p.id == pollId);
+      final updatedOptions = poll.options
+          .where((option) => option.id != optionId)
+          .toList();
+
+      await _collection.doc(pollId).update({
+        FirestoreFieldConstants.options: updatedOptions
+            .map((o) => o.toJson())
+            .toList(),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      });
+    });
   }
 
   Future<void> voteOnPoll(String pollId, String optionId, String userId) async {
-    state = [
-      for (final poll in state)
-        if (poll.id == pollId)
-          _updatePollVotes(poll, optionId, userId)
-        else
-          poll,
-    ];
+    final originalState = state;
+    final pollIndex = originalState.indexWhere((p) => p.id == pollId);
+    if (pollIndex == -1) return;
+
+    final pollToUpdate = originalState[pollIndex];
+    final optimisticPoll = _updatePollVotes(pollToUpdate, optionId, userId);
+
+    final newState = List<PollModel>.from(originalState);
+    newState[pollIndex] = optimisticPoll;
+    state = newState;
+
+    try {
+      await _firestore.runTransaction((transaction) async {
+        final docRef = _collection.doc(pollId);
+        final snapshot = await transaction.get(docRef);
+
+        if (!snapshot.exists) {
+          throw Exception("Poll document not found during transaction!");
+        }
+
+        final serverPoll = PollModel.fromJson(snapshot.data()!);
+        final finalUpdatedPoll = _updatePollVotes(serverPoll, optionId, userId);
+
+        transaction.update(docRef, {
+          FirestoreFieldConstants.options: finalUpdatedPoll.options
+              .map((o) => o.toJson())
+              .toList(),
+          FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+        });
+      });
+    } catch (e, stackTrace) {
+      log.severe(
+        'Error voting on poll. Reverting optimistic update.',
+        e,
+        stackTrace,
+      );
+      state = originalState;
+      rethrow;
+    }
   }
 
   PollModel _updatePollVotes(PollModel poll, String optionId, String userId) {
-    // Check if user has already voted on this option
     final hasVotedOnOption = poll.options.any(
-      (option) => option.id == optionId && option.votes.any((vote) => vote.userId == userId),
+      (option) =>
+          option.id == optionId &&
+          option.votes.any((vote) => vote.userId == userId),
     );
 
     if (hasVotedOnOption) {
-      // Remove vote if already voted
       return poll.copyWith(
         options: poll.options.map((option) {
           if (option.id == optionId) {
             return option.copyWith(
-              votes: option.votes.where((voter) => voter.userId != userId).toList(),
+              votes: option.votes
+                  .where((voter) => voter.userId != userId)
+                  .toList(),
             );
           }
           return option;
         }).toList(),
       );
     } else {
-      // Add vote
+      var options = poll.options;
       if (!poll.isMultipleChoice) {
-        // For single choice, remove all previous votes from this user
-        final updatedOptions = poll.options.map((option) {
-          if (option.votes.any((vote) => vote.userId == userId)) {
-            return option.copyWith(
-              votes: option.votes.where((vote) => vote.userId != userId).toList(),
-            );
-          }
-          return option;
+        options = poll.options.map((option) {
+          return option.copyWith(
+            votes: option.votes.where((vote) => vote.userId != userId).toList(),
+          );
         }).toList();
+      }
 
-        // Add new vote
-        final finalOptions = updatedOptions.map((option) {
+      return poll.copyWith(
+        options: options.map((option) {
           if (option.id == optionId) {
             return option.copyWith(
-              votes: [...option.votes, Vote(userId: userId)],
+              votes: [
+                ...option.votes,
+                Vote(userId: userId, createdAt: DateTime.now()),
+              ],
             );
           }
           return option;
-        }).toList();
-
-        return poll.copyWith(options: finalOptions);
-      } else {
-        // For multiple choice, just add the vote
-        return poll.copyWith(
-          options: poll.options.map((option) {
-            if (option.id == optionId) {
-              return option.copyWith(
-                votes: [...option.votes, Vote(userId: userId)],
-              );
-            }
-            return option;
-          }).toList(),
-        );
-      }
+        }).toList(),
+      );
     }
   }
 
-  void togglePollMultipleChoice(String pollId) {
-    state = [
-      for (final poll in state)
-        if (poll.id == pollId)
-          poll.copyWith(isMultipleChoice: !poll.isMultipleChoice)
-        else
-          poll,
-    ];
+  Future<void> togglePollMultipleChoice(String pollId) async {
+    final poll = state.firstWhere((p) => p.id == pollId);
+    await runFirestoreOperation(
+      ref,
+      () => _collection.doc(pollId).update({
+        FirestoreFieldConstants.isMultipleChoice: !poll.isMultipleChoice,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void endPoll(String pollId) {
-    state = [
-      for (final poll in state)
-        if (poll.id == pollId)
-          poll.copyWith(endDate: DateTime.now())
-        else
-          poll,
-    ];
+  Future<void> endPoll(String pollId) async {
+    await runFirestoreOperation(
+      ref,
+      () => _collection.doc(pollId).update({
+        FirestoreFieldConstants.endDate: FieldValue.serverTimestamp(),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 
-  void startPoll(String pollId) {
-    state = [
-      for (final poll in state)
-        if (poll.id == pollId)
-          poll.copyWith(startDate: DateTime.now())
-        else
-          poll,
-    ];
+  Future<void> startPoll(String pollId) async {
+    await runFirestoreOperation(
+      ref,
+      () => _collection.doc(pollId).update({
+        FirestoreFieldConstants.startDate: FieldValue.serverTimestamp(),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
   }
 }
 
-/// Provider for a single poll by ID
 @riverpod
 PollModel? poll(Ref ref, String pollId) {
   final pollList = ref.watch(pollListProvider);
   return pollList.where((p) => p.id == pollId).firstOrNull;
 }
 
-/// Provider for polls filtered by membership (current user must be a member of the sheet)
-@riverpod
-List<PollModel> pollsList(Ref ref) {
-  final allPolls = ref.watch(pollListProvider);
-  final currentUserId = ref.watch(loggedInUserProvider).value;
-
-  // If no user, show nothing
-  if (currentUserId == null || currentUserId.isEmpty) return [];
-
-  // Filter polls by membership of current user in the poll's sheet
-  return allPolls.where((p) {
-    final sheet = ref.watch(sheetProvider(p.sheetId));
-    return sheet?.users.contains(currentUserId) == true;
-  }).toList();
-}
-
-/// Provider for not active polls (drafts) (filtered by membership)
 @riverpod
 List<PollModel> notActivePollList(Ref ref) {
-  final polls = ref.watch(pollsListProvider);
+  final polls = ref.watch(pollListProvider);
   return polls.where((p) => PollUtils.isDraft(p)).toList();
 }
 
-/// Provider for active polls (filtered by membership)
 @riverpod
 List<PollModel> activePollList(Ref ref) {
-  final polls = ref.watch(pollsListProvider);
+  final polls = ref.watch(pollListProvider);
   return polls.where((p) => PollUtils.isActive(p)).toList();
 }
 
-/// Provider for completed polls (filtered by membership)
 @riverpod
 List<PollModel> completedPollList(Ref ref) {
-  final polls = ref.watch(pollsListProvider);
+  final polls = ref.watch(pollListProvider);
   return polls.where((p) => PollUtils.isCompleted(p)).toList();
 }
 
-/// Provider for searching polls
 @riverpod
 List<PollModel> pollListSearch(Ref ref) {
   final searchValue = ref.watch(searchValueProvider);
-  final polls = ref.watch(pollsListProvider);
+  final polls = ref.watch(pollListProvider);
 
   if (searchValue.isEmpty) return polls;
   return polls
-      .where((poll) =>
-          poll.question.toLowerCase().contains(searchValue.toLowerCase()))
+      .where(
+        (poll) =>
+            poll.question.toLowerCase().contains(searchValue.toLowerCase()),
+      )
       .toList();
 }
 
-/// Provider for polls filtered by parent ID
 @riverpod
 List<PollModel> pollListByParent(Ref ref, String parentId) {
   final pollList = ref.watch(pollListProvider);
   return pollList.where((p) => p.parentId == parentId).toList();
 }
 
-/// Provider for members who have voted
 @riverpod
 List<UserModel> pollVotedMembers(Ref ref, String pollId) {
   final poll = ref.watch(pollProvider(pollId));
   if (poll == null) return [];
-  
+
   final members = ref.watch(usersBySheetIdProvider(poll.sheetId));
-  
+
   return members.where((member) {
-    return poll.options.any((option) => 
-      option.votes.any((vote) => vote.userId == member.id)
+    return poll.options.any(
+      (option) => option.votes.any((vote) => vote.userId == member.id),
     );
   }).toList();
 }
 
-/// Provider for active polls with pending response from current user (filtered by membership)
 @riverpod
 class ActivePollsWithPendingResponse extends _$ActivePollsWithPendingResponse {
   @override
   List<PollModel> build() {
     final activePollList = ref.watch(activePollListProvider);
     final currentUserAsync = ref.watch(currentUserProvider);
-    
+
     if (currentUserAsync.value == null) return [];
     final currentUserId = currentUserAsync.value!.id;
-    
+
     return activePollList.where((poll) {
-      // Check if user hasn't voted in any option
       final hasVoted = poll.options.any(
-        (option) => option.votes.any((vote) => vote.userId == currentUserId)
+        (option) => option.votes.any((vote) => vote.userId == currentUserId),
       );
-    
+
       return !hasVoted;
     }).toList();
   }

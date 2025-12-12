@@ -15,4 +15,9 @@ class FirestoreFieldConstants {
   static const String plainText = 'plainText';
   static const String htmlText = 'htmlText';
   static const String createdAt = 'createdAt';
+  static const String options = 'options';
+  static const String votes = 'votes';
+  static const String question = 'question';
+  static const String answer = 'answer';
+  static const String isMultipleChoice = 'isMultipleChoice';
 }

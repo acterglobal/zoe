@@ -8,15 +8,12 @@ part of 'poll_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Main poll list provider with all poll management functionality
 
 @ProviderFor(PollList)
 const pollListProvider = PollListProvider._();
 
-/// Main poll list provider with all poll management functionality
 final class PollListProvider
     extends $NotifierProvider<PollList, List<PollModel>> {
-  /// Main poll list provider with all poll management functionality
   const PollListProvider._()
     : super(
         from: null,
@@ -44,9 +41,7 @@ final class PollListProvider
   }
 }
 
-String _$pollListHash() => r'ecd26f25a9f2ded61448d1a50185948a87720ae2';
-
-/// Main poll list provider with all poll management functionality
+String _$pollListHash() => r'ba77412c75eeaebc315bb4e1d8f187926a15a0b8';
 
 abstract class _$PollList extends $Notifier<List<PollModel>> {
   List<PollModel> build();
@@ -153,65 +148,13 @@ final class PollFamily extends $Family
   String toString() => r'pollProvider';
 }
 
-/// Provider for polls filtered by membership (current user must be a member of the sheet)
-
-@ProviderFor(pollsList)
-const pollsListProvider = PollsListProvider._();
-
-/// Provider for polls filtered by membership (current user must be a member of the sheet)
-
-final class PollsListProvider
-    extends
-        $FunctionalProvider<List<PollModel>, List<PollModel>, List<PollModel>>
-    with $Provider<List<PollModel>> {
-  /// Provider for polls filtered by membership (current user must be a member of the sheet)
-  const PollsListProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'pollsListProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$pollsListHash();
-
-  @$internal
-  @override
-  $ProviderElement<List<PollModel>> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  List<PollModel> create(Ref ref) {
-    return pollsList(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<PollModel> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<PollModel>>(value),
-    );
-  }
-}
-
-String _$pollsListHash() => r'ebba5677089fbf59070902756ac2fa07d98d245c';
-
-/// Provider for not active polls (drafts) (filtered by membership)
-
 @ProviderFor(notActivePollList)
 const notActivePollListProvider = NotActivePollListProvider._();
-
-/// Provider for not active polls (drafts) (filtered by membership)
 
 final class NotActivePollListProvider
     extends
         $FunctionalProvider<List<PollModel>, List<PollModel>, List<PollModel>>
     with $Provider<List<PollModel>> {
-  /// Provider for not active polls (drafts) (filtered by membership)
   const NotActivePollListProvider._()
     : super(
         from: null,
@@ -245,7 +188,7 @@ final class NotActivePollListProvider
   }
 }
 
-String _$notActivePollListHash() => r'59c2d4576751446af175d9e0d027517f2d6b7a4d';
+String _$notActivePollListHash() => r'e77ac147bf6d3def9e14943a784904c75e8554b6';
 
 /// Provider for active polls (filtered by membership)
 
@@ -292,7 +235,7 @@ final class ActivePollListProvider
   }
 }
 
-String _$activePollListHash() => r'4cff1602c3ecd9448809dac5b8c55d71e5d751f1';
+String _$activePollListHash() => r'29392dc2f0e61cc3d8c21566c32123dfe3709203';
 
 /// Provider for completed polls (filtered by membership)
 
@@ -339,7 +282,7 @@ final class CompletedPollListProvider
   }
 }
 
-String _$completedPollListHash() => r'c7fec916fdef2c70acd42e39873d56e9a3cf86c6';
+String _$completedPollListHash() => r'824b380a253c3f5fcd72157e710deec54a091a2d';
 
 /// Provider for searching polls
 
@@ -386,7 +329,7 @@ final class PollListSearchProvider
   }
 }
 
-String _$pollListSearchHash() => r'd19195d93c43fa62669d2701657e98f151d2aa72';
+String _$pollListSearchHash() => r'afb2fa93e421cac1ed2b29c70c41f585c662f926';
 
 /// Provider for polls filtered by parent ID
 
