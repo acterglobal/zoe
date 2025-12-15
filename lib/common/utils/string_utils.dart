@@ -1,4 +1,4 @@
 extension ExceptionObjectExtension on Object {
-  /// Converts the object to a string representation.
-  String convertToString() => toString().replaceAll('Exception: ', '');
+  /// Strips 'Exception: ' prefix for user-friendly error display.
+  String toErrorMessage() => toString().replaceAll('Exception: ', '');
 }

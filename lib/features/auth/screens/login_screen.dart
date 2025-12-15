@@ -51,7 +51,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             password: _passwordController.text.trim(),
           );
     } catch (e) {
-      setState(() => _errorMessage = e.convertToString());
+      setState(() => _errorMessage = e.toErrorMessage());
     } finally {
       setState(() => _isLoading = false);
     }
