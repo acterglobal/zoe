@@ -127,17 +127,17 @@ void main() {
         await pumpUserListWidget(tester, userIds: testUserIds);
 
         final paddings = tester.widgetList<Padding>(find.byType(Padding));
-        const expectedPadding = EdgeInsets.only(left: 20, right: 5, top: 10, bottom: 10);
+        const expectedPadding = EdgeInsets.only(
+          left: 20,
+          right: 5,
+          top: 10,
+          bottom: 10,
+        );
         final headerPadding = paddings.firstWhere(
-          (p) =>
-              p.padding ==
-              expectedPadding,
+          (p) => p.padding == expectedPadding,
           orElse: () => paddings.first,
         );
-        expect(
-          headerPadding.padding,
-          expectedPadding,
-        );
+        expect(headerPadding.padding, expectedPadding);
       });
 
       testWidgets('configures ListTile correctly', (tester) async {
@@ -215,6 +215,7 @@ void main() {
         for (int i = 0; i < 10; i++) {
           final user = UserModel(
             id: 'user_$i',
+            email: 'user$i@gmail.com',
             name: 'User $i',
             bio: 'Bio for user $i',
             avatar: null,

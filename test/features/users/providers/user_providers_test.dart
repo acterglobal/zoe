@@ -24,6 +24,7 @@ void main() {
     test('addUser adds new user to the list', () {
       final newUser = UserModel(
         id: 'new_user_1',
+        email: 'user@gmail.com',
         name: 'New User',
         bio: 'New user bio',
         avatar: null,
@@ -62,10 +63,14 @@ void main() {
       final userToUpdate = initialList.first;
       const newName = 'Updated Name';
 
-      container.read(userListProvider.notifier).updateUserName(userToUpdate.id, newName);
+      container
+          .read(userListProvider.notifier)
+          .updateUserName(userToUpdate.id, newName);
 
       final updatedList = container.read(userListProvider);
-      final updatedUser = updatedList.firstWhere((u) => u.id == userToUpdate.id);
+      final updatedUser = updatedList.firstWhere(
+        (u) => u.id == userToUpdate.id,
+      );
       expect(updatedUser.name, equals(newName));
       expect(updatedUser.id, equals(userToUpdate.id));
       expect(updatedUser.bio, equals(userToUpdate.bio));
@@ -76,7 +81,9 @@ void main() {
       final initialList = container.read(userListProvider);
       const newName = 'Updated Name';
 
-      container.read(userListProvider.notifier).updateUserName('non_existent_user', newName);
+      container
+          .read(userListProvider.notifier)
+          .updateUserName('non_existent_user', newName);
 
       final updatedList = container.read(userListProvider);
       expect(updatedList, equals(initialList));
@@ -91,7 +98,9 @@ void main() {
         avatar: 'new_avatar.png',
       );
 
-      container.read(userListProvider.notifier).updateUser(userToUpdate.id, updatedUser);
+      container
+          .read(userListProvider.notifier)
+          .updateUser(userToUpdate.id, updatedUser);
 
       final updatedList = container.read(userListProvider);
       final foundUser = updatedList.firstWhere((u) => u.id == userToUpdate.id);
@@ -102,12 +111,15 @@ void main() {
       final initialList = container.read(userListProvider);
       final newUser = UserModel(
         id: 'new_user',
+        email: 'user@gmail.com',
         name: 'New User',
         bio: 'New bio',
         avatar: null,
       );
 
-      container.read(userListProvider.notifier).updateUser('non_existent_user', newUser);
+      container
+          .read(userListProvider.notifier)
+          .updateUser('non_existent_user', newUser);
 
       final updatedList = container.read(userListProvider);
       expect(updatedList, equals(initialList));
@@ -131,7 +143,6 @@ void main() {
   });
 
   group('getUserById Provider', () {
-
     test('returns user when found', () {
       final userList = container.read(userListProvider);
       final targetUser = userList.first;
@@ -152,7 +163,6 @@ void main() {
   });
 
   group('userIdsFromUserModels Provider', () {
-
     test('returns list of user IDs from user models', () {
       final userList = container.read(userListProvider);
       final userModels = userList.take(3).toList();
@@ -176,12 +186,14 @@ void main() {
   });
 
   group('userDisplayName Provider', () {
-
     test('provider exists and can be read', () {
       final userList = container.read(userListProvider);
       final firstUser = userList.first;
 
-      expect(() => container.read(userDisplayNameProvider(firstUser.id)), returnsNormally);
+      expect(
+        () => container.read(userDisplayNameProvider(firstUser.id)),
+        returnsNormally,
+      );
     });
 
     test('returns user name for existing user', () {
@@ -194,7 +206,9 @@ void main() {
     });
 
     test('returns user ID for non-existent user', () {
-      final result = container.read(userDisplayNameProvider('non_existent_user'));
+      final result = container.read(
+        userDisplayNameProvider('non_existent_user'),
+      );
       expect(result, equals('non_existent_user'));
     });
 
@@ -205,7 +219,6 @@ void main() {
   });
 
   group('userListSearch Provider', () {
-
     test('returns all users when search term is empty', () {
       final result = container.read(userListSearchProvider(''));
       expect(result, equals(container.read(userListProvider)));
@@ -221,7 +234,9 @@ void main() {
     });
 
     test('returns empty list when no users match search term', () {
-      final result = container.read(userListSearchProvider('nonexistentuser123'));
+      final result = container.read(
+        userListSearchProvider('nonexistentuser123'),
+      );
       expect(result, isEmpty);
     });
 
@@ -236,7 +251,6 @@ void main() {
   });
 
   group('usersBySheetId Provider', () {
-
     test('returns users for valid sheet', () {
       // Create a mock sheet with some users
       final userList = container.read(userListProvider);
@@ -258,7 +272,9 @@ void main() {
     });
 
     test('returns empty list for non-existent sheet', () {
-      final result = container.read(usersBySheetIdProvider('non_existent_sheet'));
+      final result = container.read(
+        usersBySheetIdProvider('non_existent_sheet'),
+      );
       expect(result, isEmpty);
     });
 
@@ -279,7 +295,6 @@ void main() {
   });
 
   group('sheetUserCount Provider', () {
-
     test('returns correct count for sheet with users', () {
       // Create a mock sheet with some users
       final userList = container.read(userListProvider);
@@ -299,7 +314,9 @@ void main() {
     });
 
     test('returns zero for non-existent sheet', () {
-      final result = container.read(sheetUserCountProvider('non_existent_sheet'));
+      final result = container.read(
+        sheetUserCountProvider('non_existent_sheet'),
+      );
       expect(result, equals(0));
     });
 
@@ -320,18 +337,21 @@ void main() {
   });
 
   group('Provider Integration Tests', () {
-
     test('user list updates trigger dependent providers', () {
       final initialUserList = container.read(userListProvider);
       final firstUser = initialUserList.first;
 
       // Test getUserById before update
-      final userBeforeUpdate = container.read(getUserByIdProvider(firstUser.id));
+      final userBeforeUpdate = container.read(
+        getUserByIdProvider(firstUser.id),
+      );
       expect(userBeforeUpdate, equals(firstUser));
 
       // Update user
       final updatedUser = firstUser.copyWith(name: 'Updated Name');
-      container.read(userListProvider.notifier).updateUser(firstUser.id, updatedUser);
+      container
+          .read(userListProvider.notifier)
+          .updateUser(firstUser.id, updatedUser);
 
       // Test getUserById after update
       final userAfterUpdate = container.read(getUserByIdProvider(firstUser.id));
@@ -342,6 +362,7 @@ void main() {
     test('search provider updates when user list changes', () {
       final newUser = UserModel(
         id: 'searchable_user',
+        email: 'user@gmail.com',
         name: 'Searchable User',
         bio: 'A user for testing search',
         avatar: null,
@@ -364,21 +385,26 @@ void main() {
       final userToUpdate = userList.first;
 
       // Get display name before update
-      final displayNameBefore = container.read(userDisplayNameProvider(userToUpdate.id));
+      final displayNameBefore = container.read(
+        userDisplayNameProvider(userToUpdate.id),
+      );
       expect(displayNameBefore, isA<String>());
 
       // Update user name
       final updatedUser = userToUpdate.copyWith(name: 'New Display Name');
-      container.read(userListProvider.notifier).updateUser(userToUpdate.id, updatedUser);
+      container
+          .read(userListProvider.notifier)
+          .updateUser(userToUpdate.id, updatedUser);
 
       // Get display name after update
-      final displayNameAfter = container.read(userDisplayNameProvider(userToUpdate.id));
+      final displayNameAfter = container.read(
+        userDisplayNameProvider(userToUpdate.id),
+      );
       expect(displayNameAfter, isA<String>());
     });
   });
 
   group('Edge Cases and Error Handling', () {
-
     test('handles empty user list gracefully', () {
       // Clear all users
       final userList = container.read(userListProvider);
@@ -404,7 +430,9 @@ void main() {
 
       // Should have added the duplicate (this is the current behavior)
       final updatedList = container.read(userListProvider);
-      final usersWithSameId = updatedList.where((u) => u.id == firstUser.id).toList();
+      final usersWithSameId = updatedList
+          .where((u) => u.id == firstUser.id)
+          .toList();
       expect(usersWithSameId.length, equals(2));
     });
 

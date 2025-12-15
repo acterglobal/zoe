@@ -11,14 +11,11 @@ class ZoeUserAvatarTestUtils {
   /// Creates a test user model
   static UserModel createTestUser({
     String id = 'test_id',
+    String email = 'test@gmail.com',
     String name = 'Test User',
     String? avatar,
   }) {
-    return UserModel(
-      id: id,
-      name: name,
-      avatar: avatar,
-    );
+    return UserModel(id: id, email: email, name: name, avatar: avatar);
   }
 
   /// Creates a test wrapper for the ZoeUserAvatar widget
@@ -39,15 +36,13 @@ class ZoeUserAvatarTestUtils {
 
 void main() {
   group('ZoeUserAvatar Widget Tests -', () {
-    testWidgets('renders placeholder with first letter when no avatar', (tester) async {
-      final user = ZoeUserAvatarTestUtils.createTestUser(
-        name: 'John Doe',
-      );
+    testWidgets('renders placeholder with first letter when no avatar', (
+      tester,
+    ) async {
+      final user = ZoeUserAvatarTestUtils.createTestUser(name: 'John Doe');
 
       await tester.pumpMaterialWidget(
-        child: ZoeUserAvatarTestUtils.createTestWidget(
-          user: user,
-        ),
+        child: ZoeUserAvatarTestUtils.createTestWidget(user: user),
       );
 
       expect(find.text('J'), findsOneWidget);
@@ -55,14 +50,10 @@ void main() {
     });
 
     testWidgets('renders question mark when name is empty', (tester) async {
-      final user = ZoeUserAvatarTestUtils.createTestUser(
-        name: '',
-      );
+      final user = ZoeUserAvatarTestUtils.createTestUser(name: '');
 
       await tester.pumpMaterialWidget(
-        child: ZoeUserAvatarTestUtils.createTestWidget(
-          user: user,
-        ),
+        child: ZoeUserAvatarTestUtils.createTestWidget(user: user),
       );
 
       expect(find.text('?'), findsOneWidget);
@@ -71,15 +62,13 @@ void main() {
     testWidgets('applies custom size correctly', (tester) async {
       const customSize = 48.0;
       await tester.pumpMaterialWidget(
-        child: ZoeUserAvatarTestUtils.createTestWidget(
-          size: customSize,
-        ),
+        child: ZoeUserAvatarTestUtils.createTestWidget(size: customSize),
       );
 
       final container = tester.widget<Container>(find.byType(Container).first);
       final decoration = container.decoration as BoxDecoration;
       expect(decoration.shape, BoxShape.circle);
-      
+
       final constraints = tester.getSize(find.byType(Container).first);
       expect(constraints.width, customSize);
       expect(constraints.height, customSize);
@@ -97,15 +86,15 @@ void main() {
       expect(text.style?.fontSize, customFontSize);
     });
 
-    testWidgets('renders network image when avatar URL provided', (tester) async {
+    testWidgets('renders network image when avatar URL provided', (
+      tester,
+    ) async {
       final user = ZoeUserAvatarTestUtils.createTestUser(
         avatar: 'https://example.com/avatar.jpg',
       );
 
       await tester.pumpMaterialWidget(
-        child: ZoeUserAvatarTestUtils.createTestWidget(
-          user: user,
-        ),
+        child: ZoeUserAvatarTestUtils.createTestWidget(user: user),
       );
 
       expect(find.byType(Image), findsOneWidget);
@@ -119,9 +108,7 @@ void main() {
       );
 
       await tester.pumpMaterialWidget(
-        child: ZoeUserAvatarTestUtils.createTestWidget(
-          user: user,
-        ),
+        child: ZoeUserAvatarTestUtils.createTestWidget(user: user),
       );
 
       expect(find.byType(Image), findsOneWidget);
@@ -129,19 +116,21 @@ void main() {
       expect(image.image, isA<FileImage>());
     });
 
-    testWidgets('shows error icon when network image fails to load', (tester) async {
+    testWidgets('shows error icon when network image fails to load', (
+      tester,
+    ) async {
       final user = ZoeUserAvatarTestUtils.createTestUser(
         avatar: 'https://example.com/invalid.jpg',
       );
 
       await tester.pumpMaterialWidget(
-        child: ZoeUserAvatarTestUtils.createTestWidget(
-          user: user,
-        ),
+        child: ZoeUserAvatarTestUtils.createTestWidget(user: user),
       );
 
       // Trigger error callback
-      final errorBuilder = tester.widget<Image>(find.byType(Image)).errorBuilder!;
+      final errorBuilder = tester
+          .widget<Image>(find.byType(Image))
+          .errorBuilder!;
       final errorWidget = errorBuilder(
         tester.element(find.byType(Image)),
         Error(),
@@ -149,28 +138,26 @@ void main() {
       );
 
       // Pump the error widget
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Material(child: errorWidget),
-        ),
-      );
+      await tester.pumpWidget(MaterialApp(home: Material(child: errorWidget)));
 
       expect(find.byIcon(Icons.error_outline), findsOneWidget);
     });
 
-    testWidgets('shows error icon when file image fails to load', (tester) async {
+    testWidgets('shows error icon when file image fails to load', (
+      tester,
+    ) async {
       final user = ZoeUserAvatarTestUtils.createTestUser(
         avatar: '/invalid/path.jpg',
       );
 
       await tester.pumpMaterialWidget(
-        child: ZoeUserAvatarTestUtils.createTestWidget(
-          user: user,
-        ),
+        child: ZoeUserAvatarTestUtils.createTestWidget(user: user),
       );
 
       // Trigger error callback
-      final errorBuilder = tester.widget<Image>(find.byType(Image)).errorBuilder!;
+      final errorBuilder = tester
+          .widget<Image>(find.byType(Image))
+          .errorBuilder!;
       final errorWidget = errorBuilder(
         tester.element(find.byType(Image)),
         Error(),
@@ -178,11 +165,7 @@ void main() {
       );
 
       // Pump the error widget
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Material(child: errorWidget),
-        ),
-      );
+      await tester.pumpWidget(MaterialApp(home: Material(child: errorWidget)));
 
       expect(find.byIcon(Icons.error_outline), findsOneWidget);
     });
@@ -205,14 +188,10 @@ void main() {
     });
 
     testWidgets('applies correct placeholder colors', (tester) async {
-      final user = ZoeUserAvatarTestUtils.createTestUser(
-        name: 'Test User',
-      );
+      final user = ZoeUserAvatarTestUtils.createTestUser(name: 'Test User');
 
       await tester.pumpMaterialWidget(
-        child: ZoeUserAvatarTestUtils.createTestWidget(
-          user: user,
-        ),
+        child: ZoeUserAvatarTestUtils.createTestWidget(user: user),
       );
 
       final container = tester.widget<Container>(find.byType(Container).first);
@@ -220,10 +199,7 @@ void main() {
       final expectedColor = CommonUtils().getRandomColorFromName(user.name);
 
       expect(decoration.color, equals(expectedColor.withValues(alpha: 0.2)));
-      expect(
-        (decoration.border as Border).top.color,
-        equals(expectedColor),
-      );
+      expect((decoration.border as Border).top.color, equals(expectedColor));
 
       final text = tester.widget<Text>(find.byType(Text));
       expect(text.style?.color, equals(expectedColor));
@@ -235,9 +211,7 @@ void main() {
       );
 
       await tester.pumpMaterialWidget(
-        child: ZoeUserAvatarTestUtils.createTestWidget(
-          user: user,
-        ),
+        child: ZoeUserAvatarTestUtils.createTestWidget(user: user),
       );
 
       expect(find.byType(ClipOval), findsOneWidget);

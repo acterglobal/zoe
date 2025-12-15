@@ -71,7 +71,7 @@ void main() {
 
       test('deletePoll removes poll from list', () {
         final initialLength = container.read(pollListProvider).length;
-        
+
         container.read(pollListProvider.notifier).deletePoll(testPoll.id);
 
         final updatedList = container.read(pollListProvider);
@@ -81,7 +81,7 @@ void main() {
 
       test('deletePoll does nothing for non-existent poll', () {
         final initialLength = container.read(pollListProvider).length;
-        
+
         container.read(pollListProvider.notifier).deletePoll('non-existent-id');
 
         final updatedList = container.read(pollListProvider);
@@ -90,8 +90,10 @@ void main() {
 
       test('updatePollQuestion updates poll question', () {
         const newQuestion = 'Updated question?';
-        
-        container.read(pollListProvider.notifier).updatePollQuestion(testPoll.id, newQuestion);
+
+        container
+            .read(pollListProvider.notifier)
+            .updatePollQuestion(testPoll.id, newQuestion);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         expect(updatedPoll?.question, equals(newQuestion));
@@ -99,8 +101,10 @@ void main() {
 
       test('updatePollOrderIndex updates poll order', () {
         const newOrderIndex = 999;
-        
-        container.read(pollListProvider.notifier).updatePollOrderIndex(testPoll.id, newOrderIndex);
+
+        container
+            .read(pollListProvider.notifier)
+            .updatePollOrderIndex(testPoll.id, newOrderIndex);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         expect(updatedPoll?.orderIndex, equals(newOrderIndex));
@@ -109,8 +113,10 @@ void main() {
       test('addPollOption adds new option to poll', () {
         const newOptionText = 'New Option';
         final initialOptionsCount = testPoll.options.length;
-        
-        container.read(pollListProvider.notifier).addPollOption(testPoll.id, newOptionText);
+
+        container
+            .read(pollListProvider.notifier)
+            .addPollOption(testPoll.id, newOptionText);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         expect(updatedPoll?.options.length, equals(initialOptionsCount + 1));
@@ -120,8 +126,10 @@ void main() {
       test('addPollOption with empty text adds empty option', () {
         const emptyOptionText = '';
         final initialOptionsCount = testPoll.options.length;
-        
-        container.read(pollListProvider.notifier).addPollOption(testPoll.id, emptyOptionText);
+
+        container
+            .read(pollListProvider.notifier)
+            .addPollOption(testPoll.id, emptyOptionText);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         expect(updatedPoll?.options.length, equals(initialOptionsCount + 1));
@@ -131,19 +139,25 @@ void main() {
       test('updatePollOptionText updates option text', () {
         const newText = 'Updated Option Text';
         final optionId = testPoll.options.first.id;
-        
-        container.read(pollListProvider.notifier).updatePollOptionText(testPoll.id, optionId, newText);
+
+        container
+            .read(pollListProvider.notifier)
+            .updatePollOptionText(testPoll.id, optionId, newText);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
-        final updatedOption = updatedPoll?.options.firstWhere((o) => o.id == optionId);
+        final updatedOption = updatedPoll?.options.firstWhere(
+          (o) => o.id == optionId,
+        );
         expect(updatedOption?.title, equals(newText));
       });
 
       test('deletePollOption removes option from poll', () {
         final optionId = testPoll.options.first.id;
         final initialOptionsCount = testPoll.options.length;
-        
-        container.read(pollListProvider.notifier).deletePollOption(testPoll.id, optionId);
+
+        container
+            .read(pollListProvider.notifier)
+            .deletePollOption(testPoll.id, optionId);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         expect(updatedPoll?.options.length, equals(initialOptionsCount - 1));
@@ -152,8 +166,10 @@ void main() {
 
       test('togglePollMultipleChoice toggles multiple choice setting', () {
         final initialValue = testPoll.isMultipleChoice;
-        
-        container.read(pollListProvider.notifier).togglePollMultipleChoice(testPoll.id);
+
+        container
+            .read(pollListProvider.notifier)
+            .togglePollMultipleChoice(testPoll.id);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         expect(updatedPoll?.isMultipleChoice, equals(!initialValue));
@@ -164,7 +180,12 @@ void main() {
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         expect(updatedPoll?.endDate, isNotNull);
-        expect(updatedPoll?.endDate?.isBefore(DateTime.now().add(const Duration(seconds: 1))), isTrue);
+        expect(
+          updatedPoll?.endDate?.isBefore(
+            DateTime.now().add(const Duration(seconds: 1)),
+          ),
+          isTrue,
+        );
       });
 
       test('startPoll sets start date', () {
@@ -172,7 +193,12 @@ void main() {
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         expect(updatedPoll?.startDate, isNotNull);
-        expect(updatedPoll?.startDate?.isBefore(DateTime.now().add(const Duration(seconds: 1))), isTrue);
+        expect(
+          updatedPoll?.startDate?.isBefore(
+            DateTime.now().add(const Duration(seconds: 1)),
+          ),
+          isTrue,
+        );
       });
     });
 
@@ -181,10 +207,14 @@ void main() {
         final optionId = testPoll.options.first.id;
         final initialVotesCount = testPoll.options.first.votes.length;
 
-        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, optionId, testUserId);
+        await container
+            .read(pollListProvider.notifier)
+            .voteOnPoll(testPoll.id, optionId, testUserId);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
-        final updatedOption = updatedPoll?.options.firstWhere((o) => o.id == optionId);
+        final updatedOption = updatedPoll?.options.firstWhere(
+          (o) => o.id == optionId,
+        );
         expect(updatedOption?.votes.length, equals(initialVotesCount + 1));
         expect(updatedOption?.votes.any((v) => v.userId == testUserId), isTrue);
       });
@@ -192,113 +222,206 @@ void main() {
       test('voteOnPoll removes vote if already voted (single choice)', () async {
         // Find an option that the test user has already voted on, or vote on one first
         final optionId = testPoll.options.first.id;
-        
+
         // First, ensure the user has voted on this option
-        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, optionId, testUserId2);
-        
+        await container
+            .read(pollListProvider.notifier)
+            .voteOnPoll(testPoll.id, optionId, testUserId2);
+
         // Get the vote count after first vote
         final pollAfterFirstVote = container.read(pollProvider(testPoll.id));
-        final initialVotesCount = pollAfterFirstVote?.options.firstWhere((o) => o.id == optionId).votes.length ?? 0;
+        final initialVotesCount =
+            pollAfterFirstVote?.options
+                .firstWhere((o) => o.id == optionId)
+                .votes
+                .length ??
+            0;
 
         // Vote again to remove the vote
-        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, optionId, testUserId2);
+        await container
+            .read(pollListProvider.notifier)
+            .voteOnPoll(testPoll.id, optionId, testUserId2);
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
-        final updatedOption = updatedPoll?.options.firstWhere((o) => o.id == optionId);
+        final updatedOption = updatedPoll?.options.firstWhere(
+          (o) => o.id == optionId,
+        );
         expect(updatedOption?.votes.length, equals(initialVotesCount - 1));
-        expect(updatedOption?.votes.any((v) => v.userId == testUserId2), isFalse);
+        expect(
+          updatedOption?.votes.any((v) => v.userId == testUserId2),
+          isFalse,
+        );
       });
 
-      test('voteOnPoll removes previous votes when voting on different option (single choice)', () async {
-        final firstOptionId = testPoll.options.first.id;
-        final secondOptionId = testPoll.options[1].id;
+      test(
+        'voteOnPoll removes previous votes when voting on different option (single choice)',
+        () async {
+          final firstOptionId = testPoll.options.first.id;
+          final secondOptionId = testPoll.options[1].id;
 
-        // Vote on first option
-        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, firstOptionId, testUserId);
-        
-        // Vote on second option
-        await container.read(pollListProvider.notifier).voteOnPoll(testPoll.id, secondOptionId, testUserId);
+          // Vote on first option
+          await container
+              .read(pollListProvider.notifier)
+              .voteOnPoll(testPoll.id, firstOptionId, testUserId);
 
-        final updatedPoll = container.read(pollProvider(testPoll.id));
-        final firstOption = updatedPoll?.options.firstWhere((o) => o.id == firstOptionId);
-        final secondOption = updatedPoll?.options.firstWhere((o) => o.id == secondOptionId);
-        
-        expect(firstOption?.votes.any((v) => v.userId == testUserId), isFalse);
-        expect(secondOption?.votes.any((v) => v.userId == testUserId), isTrue);
-      });
+          // Vote on second option
+          await container
+              .read(pollListProvider.notifier)
+              .voteOnPoll(testPoll.id, secondOptionId, testUserId);
 
-      test('voteOnPoll allows multiple votes for multiple choice poll', () async {
-        // Use a test user who hasn't voted yet
-        final multipleChoicePoll = polls.firstWhere((p) => p.isMultipleChoice);
-        final firstOptionId = multipleChoicePoll.options.first.id;
-        final secondOptionId = multipleChoicePoll.options[1].id;
+          final updatedPoll = container.read(pollProvider(testPoll.id));
+          final firstOption = updatedPoll?.options.firstWhere(
+            (o) => o.id == firstOptionId,
+          );
+          final secondOption = updatedPoll?.options.firstWhere(
+            (o) => o.id == secondOptionId,
+          );
 
-        // Check initial state and ensure we start with no votes from this user
-        final initialPoll = container.read(pollProvider(multipleChoicePoll.id));
-        final initialFirstOption = initialPoll?.options.firstWhere((o) => o.id == firstOptionId);
-        final initialSecondOption = initialPoll?.options.firstWhere((o) => o.id == secondOptionId);
-        final hadInitialVote1 = initialFirstOption?.votes.any((v) => v.userId == testUserId3) ?? false;
-        final hadInitialVote2 = initialSecondOption?.votes.any((v) => v.userId == testUserId3) ?? false;
+          expect(
+            firstOption?.votes.any((v) => v.userId == testUserId),
+            isFalse,
+          );
+          expect(
+            secondOption?.votes.any((v) => v.userId == testUserId),
+            isTrue,
+          );
+        },
+      );
 
-        // If user already has votes, remove them first to start clean
-        if (hadInitialVote1) {
-          await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, firstOptionId, testUserId3);
-        }
-        if (hadInitialVote2) {
-          await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, secondOptionId, testUserId3);
-        }
+      test(
+        'voteOnPoll allows multiple votes for multiple choice poll',
+        () async {
+          // Use a test user who hasn't voted yet
+          final multipleChoicePoll = polls.firstWhere(
+            (p) => p.isMultipleChoice,
+          );
+          final firstOptionId = multipleChoicePoll.options.first.id;
+          final secondOptionId = multipleChoicePoll.options[1].id;
 
-        // Now vote on both options (should add votes)
-        await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, firstOptionId, testUserId3);
-        await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, secondOptionId, testUserId3);
+          // Check initial state and ensure we start with no votes from this user
+          final initialPoll = container.read(
+            pollProvider(multipleChoicePoll.id),
+          );
+          final initialFirstOption = initialPoll?.options.firstWhere(
+            (o) => o.id == firstOptionId,
+          );
+          final initialSecondOption = initialPoll?.options.firstWhere(
+            (o) => o.id == secondOptionId,
+          );
+          final hadInitialVote1 =
+              initialFirstOption?.votes.any((v) => v.userId == testUserId3) ??
+              false;
+          final hadInitialVote2 =
+              initialSecondOption?.votes.any((v) => v.userId == testUserId3) ??
+              false;
 
-        final updatedPoll = container.read(pollProvider(multipleChoicePoll.id));
-        final firstOption = updatedPoll?.options.firstWhere((o) => o.id == firstOptionId);
-        final secondOption = updatedPoll?.options.firstWhere((o) => o.id == secondOptionId);
-        
-        // Verify both options have the vote
-        expect(firstOption?.votes.any((v) => v.userId == testUserId3), isTrue);
-        expect(secondOption?.votes.any((v) => v.userId == testUserId3), isTrue);
-      });
+          // If user already has votes, remove them first to start clean
+          if (hadInitialVote1) {
+            await container
+                .read(pollListProvider.notifier)
+                .voteOnPoll(multipleChoicePoll.id, firstOptionId, testUserId3);
+          }
+          if (hadInitialVote2) {
+            await container
+                .read(pollListProvider.notifier)
+                .voteOnPoll(multipleChoicePoll.id, secondOptionId, testUserId3);
+          }
 
-      test('voteOnPoll removes vote from specific option in multiple choice poll', () async {
-        final multipleChoicePoll = polls.firstWhere((p) => p.isMultipleChoice);
-        final optionId = multipleChoicePoll.options.first.id;
-        
-        // Get initial state
-        final initialPoll = container.read(pollProvider(multipleChoicePoll.id));
-        final initialOption = initialPoll?.options.firstWhere((o) => o.id == optionId);
-        final initialVotesCount = initialOption?.votes.length ?? 0;
-        final hadInitialVote = initialOption?.votes.any((v) => v.userId == testUserId) ?? false;
+          // Now vote on both options (should add votes)
+          await container
+              .read(pollListProvider.notifier)
+              .voteOnPoll(multipleChoicePoll.id, firstOptionId, testUserId3);
+          await container
+              .read(pollListProvider.notifier)
+              .voteOnPoll(multipleChoicePoll.id, secondOptionId, testUserId3);
 
-        // Vote on the option (toggle behavior - if no vote, add; if vote exists, remove)
-        await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, optionId, testUserId);
-        
-        // Get state after first vote
-        final pollAfterFirstVote = container.read(pollProvider(multipleChoicePoll.id));
-        final optionAfterFirst = pollAfterFirstVote?.options.firstWhere((o) => o.id == optionId);
-        final votesAfterFirst = optionAfterFirst?.votes.length ?? 0;
-        final hasVoteAfterFirst = optionAfterFirst?.votes.any((v) => v.userId == testUserId) ?? false;
+          final updatedPoll = container.read(
+            pollProvider(multipleChoicePoll.id),
+          );
+          final firstOption = updatedPoll?.options.firstWhere(
+            (o) => o.id == firstOptionId,
+          );
+          final secondOption = updatedPoll?.options.firstWhere(
+            (o) => o.id == secondOptionId,
+          );
 
-        // Verify the toggle worked correctly
-        if (hadInitialVote) {
-          // If we had a vote, it should be removed
-          expect(votesAfterFirst, equals(initialVotesCount - 1));
-          expect(hasVoteAfterFirst, isFalse);
-        } else {
-          // If we didn't have a vote, it should be added
-          expect(votesAfterFirst, equals(initialVotesCount + 1));
-          expect(hasVoteAfterFirst, isTrue);
-          
-          // Now vote again to remove it
-          await container.read(pollListProvider.notifier).voteOnPoll(multipleChoicePoll.id, optionId, testUserId);
-          
-          final finalPoll = container.read(pollProvider(multipleChoicePoll.id));
-          final finalOption = finalPoll?.options.firstWhere((o) => o.id == optionId);
-          expect(finalOption?.votes.length, equals(votesAfterFirst - 1));
-          expect(finalOption?.votes.any((v) => v.userId == testUserId), isFalse);
-        }
-      });
+          // Verify both options have the vote
+          expect(
+            firstOption?.votes.any((v) => v.userId == testUserId3),
+            isTrue,
+          );
+          expect(
+            secondOption?.votes.any((v) => v.userId == testUserId3),
+            isTrue,
+          );
+        },
+      );
+
+      test(
+        'voteOnPoll removes vote from specific option in multiple choice poll',
+        () async {
+          final multipleChoicePoll = polls.firstWhere(
+            (p) => p.isMultipleChoice,
+          );
+          final optionId = multipleChoicePoll.options.first.id;
+
+          // Get initial state
+          final initialPoll = container.read(
+            pollProvider(multipleChoicePoll.id),
+          );
+          final initialOption = initialPoll?.options.firstWhere(
+            (o) => o.id == optionId,
+          );
+          final initialVotesCount = initialOption?.votes.length ?? 0;
+          final hadInitialVote =
+              initialOption?.votes.any((v) => v.userId == testUserId) ?? false;
+
+          // Vote on the option (toggle behavior - if no vote, add; if vote exists, remove)
+          await container
+              .read(pollListProvider.notifier)
+              .voteOnPoll(multipleChoicePoll.id, optionId, testUserId);
+
+          // Get state after first vote
+          final pollAfterFirstVote = container.read(
+            pollProvider(multipleChoicePoll.id),
+          );
+          final optionAfterFirst = pollAfterFirstVote?.options.firstWhere(
+            (o) => o.id == optionId,
+          );
+          final votesAfterFirst = optionAfterFirst?.votes.length ?? 0;
+          final hasVoteAfterFirst =
+              optionAfterFirst?.votes.any((v) => v.userId == testUserId) ??
+              false;
+
+          // Verify the toggle worked correctly
+          if (hadInitialVote) {
+            // If we had a vote, it should be removed
+            expect(votesAfterFirst, equals(initialVotesCount - 1));
+            expect(hasVoteAfterFirst, isFalse);
+          } else {
+            // If we didn't have a vote, it should be added
+            expect(votesAfterFirst, equals(initialVotesCount + 1));
+            expect(hasVoteAfterFirst, isTrue);
+
+            // Now vote again to remove it
+            await container
+                .read(pollListProvider.notifier)
+                .voteOnPoll(multipleChoicePoll.id, optionId, testUserId);
+
+            final finalPoll = container.read(
+              pollProvider(multipleChoicePoll.id),
+            );
+            final finalOption = finalPoll?.options.firstWhere(
+              (o) => o.id == optionId,
+            );
+            expect(finalOption?.votes.length, equals(votesAfterFirst - 1));
+            expect(
+              finalOption?.votes.any((v) => v.userId == testUserId),
+              isFalse,
+            );
+          }
+        },
+      );
     });
 
     group('Poll Provider', () {
@@ -316,7 +439,9 @@ void main() {
         final initialPoll = container.read(pollProvider(testPoll.id));
         expect(initialPoll, equals(testPoll));
 
-        container.read(pollListProvider.notifier).updatePollQuestion(testPoll.id, 'Updated Question');
+        container
+            .read(pollListProvider.notifier)
+            .updatePollQuestion(testPoll.id, 'Updated Question');
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         expect(updatedPoll?.question, equals('Updated Question'));
@@ -327,7 +452,7 @@ void main() {
     group('Filtered Poll Lists', () {
       test('notActivePollList returns only draft polls', () {
         final notActivePolls = container.read(notActivePollListProvider);
-        
+
         for (final poll in notActivePolls) {
           expect(poll.startDate, isNull);
           expect(poll.endDate, isNull);
@@ -336,7 +461,7 @@ void main() {
 
       test('activePollList returns only active polls', () {
         final activePolls = container.read(activePollListProvider);
-        
+
         for (final poll in activePolls) {
           expect(poll.startDate, isNotNull);
           expect(poll.endDate, isNull);
@@ -346,7 +471,7 @@ void main() {
 
       test('completedPollList returns only completed polls', () {
         final completedPolls = container.read(completedPollListProvider);
-        
+
         for (final poll in completedPolls) {
           expect(poll.startDate, isNotNull);
           expect(poll.endDate, isNotNull);
@@ -356,8 +481,10 @@ void main() {
 
       test('pollListByParent returns polls for specific parent', () {
         const parentId = 'sheet-1';
-        final pollsByParent = container.read(pollListByParentProvider(parentId));
-        
+        final pollsByParent = container.read(
+          pollListByParentProvider(parentId),
+        );
+
         for (final poll in pollsByParent) {
           expect(poll.parentId, equals(parentId));
         }
@@ -365,8 +492,10 @@ void main() {
 
       test('pollListByParent returns empty list for non-existent parent', () {
         const nonExistentParentId = 'non-existent-parent';
-        final pollsByParent = container.read(pollListByParentProvider(nonExistentParentId));
-        
+        final pollsByParent = container.read(
+          pollListByParentProvider(nonExistentParentId),
+        );
+
         expect(pollsByParent, isEmpty);
       });
     });
@@ -374,14 +503,14 @@ void main() {
     group('Search Tests', () {
       test('pollListSearch returns all polls when search is empty', () {
         container.read(searchValueProvider.notifier).update('');
-        
+
         final searchResults = container.read(pollListSearchProvider);
         expect(searchResults.length, equals(polls.length));
       });
 
       test('pollListSearch filters polls by question', () {
         container.read(searchValueProvider.notifier).update('feature');
-        
+
         final searchResults = container.read(pollListSearchProvider);
         expect(searchResults.length, greaterThan(0));
         for (final poll in searchResults) {
@@ -391,7 +520,7 @@ void main() {
 
       test('pollListSearch is case insensitive', () {
         container.read(searchValueProvider.notifier).update('FEATURE');
-        
+
         final searchResults = container.read(pollListSearchProvider);
         expect(searchResults.length, greaterThan(0));
         for (final poll in searchResults) {
@@ -400,8 +529,10 @@ void main() {
       });
 
       test('pollListSearch returns empty list for non-matching search', () {
-        container.read(searchValueProvider.notifier).update('non-existent-search-term');
-        
+        container
+            .read(searchValueProvider.notifier)
+            .update('non-existent-search-term');
+
         final searchResults = container.read(pollListSearchProvider);
         expect(searchResults, isEmpty);
       });
@@ -410,10 +541,10 @@ void main() {
     group('Poll Voted Members', () {
       test('pollVotedMembers returns users who have voted', () {
         // Use a poll that has votes and users in the sheet
-        final pollWithVotes = polls.firstWhere((p) => 
-          p.options.any((option) => option.votes.isNotEmpty)
+        final pollWithVotes = polls.firstWhere(
+          (p) => p.options.any((option) => option.votes.isNotEmpty),
         );
-        
+
         // Override usersBySheetId to return users who have voted
         final votedUserIds = <String>{};
         for (final option in pollWithVotes.options) {
@@ -421,28 +552,34 @@ void main() {
             votedUserIds.add(vote.userId);
           }
         }
-        
-        final votedUsers = votedUserIds.map((id) => UserModel(id: id, name: 'User $id')).toList();
-        
+
+        final votedUsers = votedUserIds.map((id) {
+          return UserModel(id: id, email: 'test@gmail.com', name: 'User $id');
+        }).toList();
+
         final containerWithVotedUsers = ProviderContainer.test(
           overrides: [
             searchValueProvider.overrideWith(MockSearchValue.new),
             currentUserProvider.overrideWith((ref) => Future.value(null)),
-            usersBySheetIdProvider(pollWithVotes.sheetId).overrideWith((ref) => votedUsers),
+            usersBySheetIdProvider(
+              pollWithVotes.sheetId,
+            ).overrideWith((ref) => votedUsers),
           ],
         );
-        
-        final votedMembers = containerWithVotedUsers.read(pollVotedMembersProvider(pollWithVotes.id));
-        
+
+        final votedMembers = containerWithVotedUsers.read(
+          pollVotedMembersProvider(pollWithVotes.id),
+        );
+
         expect(votedMembers, isNotEmpty);
         // Verify that all returned users have actually voted
         for (final member in votedMembers) {
-          final hasVoted = pollWithVotes.options.any((option) => 
-            option.votes.any((vote) => vote.userId == member.id)
+          final hasVoted = pollWithVotes.options.any(
+            (option) => option.votes.any((vote) => vote.userId == member.id),
           );
           expect(hasVoted, isTrue);
         }
-        
+
         containerWithVotedUsers.dispose();
       });
 
@@ -459,55 +596,78 @@ void main() {
           ],
           createdBy: 'test-user',
         );
-        
+
         // Add the poll to the container
         container.read(pollListProvider.notifier).addPoll(pollWithNoVotes);
-        
-        final votedMembers = container.read(pollVotedMembersProvider(pollWithNoVotes.id));
+
+        final votedMembers = container.read(
+          pollVotedMembersProvider(pollWithNoVotes.id),
+        );
         expect(votedMembers, isEmpty);
       });
 
       test('pollVotedMembers returns empty list for non-existent poll', () {
-        final votedMembers = container.read(pollVotedMembersProvider('non-existent-poll'));
+        final votedMembers = container.read(
+          pollVotedMembersProvider('non-existent-poll'),
+        );
         expect(votedMembers, isEmpty);
       });
     });
 
     group('Active Polls With Pending Response', () {
-      test('ActivePollsWithPendingResponse returns polls where current user has not voted', () {
-        final pendingPolls = container.read(activePollsWithPendingResponseProvider);
-        
-        // Since currentUser is null, empty list should be returned
-        expect(pendingPolls, isEmpty);
-      });
+      test(
+        'ActivePollsWithPendingResponse returns polls where current user has not voted',
+        () {
+          final pendingPolls = container.read(
+            activePollsWithPendingResponseProvider,
+          );
 
-      test('ActivePollsWithPendingResponse excludes polls where current user has voted', () {
-        // Since currentUser is null, this test verifies the logic works correctly
-        final pendingPolls = container.read(activePollsWithPendingResponseProvider);
-        
-        // When no current user, empty list should be returned
-        expect(pendingPolls, isEmpty);
-      });
+          // Since currentUser is null, empty list should be returned
+          expect(pendingPolls, isEmpty);
+        },
+      );
 
-      test('ActivePollsWithPendingResponse returns empty list when no current user', () {
-        final containerWithoutUser = ProviderContainer.test(
-          overrides: [
-            currentUserProvider.overrideWith((ref) => Future.value(null)),
-          ],
-        );
+      test(
+        'ActivePollsWithPendingResponse excludes polls where current user has voted',
+        () {
+          // Since currentUser is null, this test verifies the logic works correctly
+          final pendingPolls = container.read(
+            activePollsWithPendingResponseProvider,
+          );
 
-        final pendingPolls = containerWithoutUser.read(activePollsWithPendingResponseProvider);
-        expect(pendingPolls, isEmpty);
-        
-        containerWithoutUser.dispose();
-      });
+          // When no current user, empty list should be returned
+          expect(pendingPolls, isEmpty);
+        },
+      );
+
+      test(
+        'ActivePollsWithPendingResponse returns empty list when no current user',
+        () {
+          final containerWithoutUser = ProviderContainer.test(
+            overrides: [
+              currentUserProvider.overrideWith((ref) => Future.value(null)),
+            ],
+          );
+
+          final pendingPolls = containerWithoutUser.read(
+            activePollsWithPendingResponseProvider,
+          );
+          expect(pendingPolls, isEmpty);
+
+          containerWithoutUser.dispose();
+        },
+      );
 
       test('ActivePollsWithPendingResponse can be updated manually', () {
         final newPolls = [testPoll];
-        
-        container.read(activePollsWithPendingResponseProvider.notifier).update(newPolls);
-        
-        final updatedPolls = container.read(activePollsWithPendingResponseProvider);
+
+        container
+            .read(activePollsWithPendingResponseProvider.notifier)
+            .update(newPolls);
+
+        final updatedPolls = container.read(
+          activePollsWithPendingResponseProvider,
+        );
         expect(updatedPolls, equals(newPolls));
       });
     });

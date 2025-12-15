@@ -381,7 +381,11 @@ void main() {
 
       testWidgets('displays message as is (without trimming)', (tester) async {
         const testMessage = '  Message with whitespace  ';
-        final sharingUser = UserModel(id: 'sharing_user', name: 'Sharing User');
+        final sharingUser = UserModel(
+          id: 'sharing_user',
+          email: 'test@gmail.com',
+          name: 'Sharing User',
+        );
         final sheetWithTrimmedMessage = testSheet.copyWith(
           message: testMessage,
           sharedBy: sharingUser.name,
