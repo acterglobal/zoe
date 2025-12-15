@@ -78,14 +78,14 @@ class AuthService {
     }
   }
 
-  /// Sign out the current user
+  /// Delete account of the current user
   Future<void> deleteAccount() async {
     try {
-      _logger.info('Signing out user: ${_firebaseAuth.currentUser?.uid}');
+      _logger.info('Deleting account of user: ${_firebaseAuth.currentUser?.uid}');
       await _firebaseAuth.currentUser?.delete();
-      _logger.info('Successfully signed out');
+      _logger.info('Successfully deleted account');
     } catch (e) {
-      _logger.severe('Error during sign out: $e');
+      _logger.severe('Error during deleting account: $e');
       rethrow;
     }
   }
