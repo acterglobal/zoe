@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/utils/string_utils.dart';
 import 'package:zoe/common/utils/validation_utils.dart';
 import 'package:zoe/common/widgets/animated_background_widget.dart';
 import 'package:zoe/common/widgets/animated_textfield_widget.dart';
@@ -57,10 +57,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             email: _emailController.text.trim(),
             password: _passwordController.text.trim(),
           );
-    } on FirebaseAuthException catch (e) {
-      _errorMessage = e.message ?? 'Sign up error';
     } catch (e) {
-      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      setState(() => _errorMessage = e.convertToString());
     } finally {
       setState(() => _isLoading = false);
     }
