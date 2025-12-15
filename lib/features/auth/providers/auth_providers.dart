@@ -125,7 +125,7 @@ class AuthState extends _$AuthState {
       if (!ref.mounted) return;
       ref.read(routerProvider).go(AppRoutes.login.route);
     } catch (e) {
-      _logger.severe('Sign out error: $e');
+      _logger.severe('Delete account error: $e');
       rethrow;
     }
   }
