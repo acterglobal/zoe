@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
-import 'package:zoe/common/utils/firestore_error_handler.dart';
+import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';

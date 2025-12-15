@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
-import 'package:zoe/common/utils/firestore_error_handler.dart';
+import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/task/models/task_model.dart';
