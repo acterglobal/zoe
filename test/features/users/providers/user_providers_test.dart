@@ -126,14 +126,6 @@ void main() {
     });
   });
 
-  group('isUserLoggedIn Provider', () {
-    test('provider exists and can be read', () {
-      final container = ProviderContainer();
-      expect(() => container.read(isUserLoggedInProvider), returnsNormally);
-      container.dispose();
-    });
-  });
-
   group('loggedInUser Provider', () {
     test('provider exists and can be read', () {
       final container = ProviderContainer();
@@ -309,15 +301,13 @@ void main() {
 
       container.read(sheetListProvider.notifier).addSheet(mockSheet);
 
-      final result = container.read(sheetUserCountProvider('test_sheet'));
-      expect(result, equals(3));
+      final result = container.read(sheetProvider('test_sheet'));
+      expect(result?.users, equals(3));
     });
 
     test('returns zero for non-existent sheet', () {
-      final result = container.read(
-        sheetUserCountProvider('non_existent_sheet'),
-      );
-      expect(result, equals(0));
+      final result = container.read(sheetProvider('non_existent_sheet'));
+      expect(result?.users, equals(0));
     });
 
     test('returns zero for sheet with no users', () {
@@ -331,8 +321,8 @@ void main() {
 
       container.read(sheetListProvider.notifier).addSheet(mockSheet);
 
-      final result = container.read(sheetUserCountProvider('empty_sheet'));
-      expect(result, equals(0));
+      final result = container.read(sheetProvider('empty_sheet'));
+      expect(result?.users, equals(0));
     });
   });
 

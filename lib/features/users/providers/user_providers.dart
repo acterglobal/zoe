@@ -51,13 +51,6 @@ class UserList extends _$UserList {
   }
 }
 
-/// Provider to check if a user is logged in
-@riverpod
-Future<bool> isUserLoggedIn(Ref ref) async {
-  final userId = await ref.watch(loggedInUserProvider.future);
-  return userId != null && userId.isNotEmpty;
-}
-
 /// Provider for the logged-in user ID
 @Riverpod(keepAlive: true)
 Future<String?> loggedInUser(Ref ref) async {
@@ -130,11 +123,4 @@ List<UserModel> userListSearch(Ref ref, String searchTerm) {
   return userList
       .where((u) => u.name.toLowerCase().contains(searchTerm.toLowerCase()))
       .toList();
-}
-
-/// Provider for user count in a sheet
-@riverpod
-int sheetUserCount(Ref ref, String sheetId) {
-  final users = ref.watch(usersBySheetIdProvider(sheetId));
-  return users.length;
 }
