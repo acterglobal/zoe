@@ -18,14 +18,12 @@ class AuthState extends _$AuthState {
     preferencesServiceProvider,
   );
 
-  late final AuthService _authService = ref.read(authServiceProvider);
+  late final AuthService _authService = ref.watch(authServiceProvider);
 
   @override
   Future<AuthUserModel?> build() async {
-    final authService = ref.watch(authServiceProvider);
-
     // Get the current auth state directly
-    final firebaseUser = authService.currentUser;
+    final firebaseUser = _authService.currentUser;
 
     // Update preferences based on current state
     if (firebaseUser != null) {
@@ -37,7 +35,7 @@ class AuthState extends _$AuthState {
     }
 
     // Listen for future auth state changes
-    final subscription = authService.authStateChanges.listen(
+    final subscription = _authService.authStateChanges.listen(
       (user) async {
         if (user != null) {
           await _prefsService.setLoginUserId(user.uid);
