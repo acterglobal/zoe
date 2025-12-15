@@ -23,4 +23,5 @@ class FirestoreFieldConstants {
   static const String question = 'question';
   static const String answer = 'answer';
   static const String isMultipleChoice = 'isMultipleChoice';
+  static const String name = 'name';
 }
