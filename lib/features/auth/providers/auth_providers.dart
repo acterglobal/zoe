@@ -52,6 +52,7 @@ class Auth extends _$Auth {
       await ref.read(userListProvider.notifier).addUser(user);
       await _prefsService.setLoginUserId(user.id);
       state = user;
+      if (ref.mounted) ref.read(routerProvider).go(AppRoutes.home.route);
     } on FirebaseAuthException catch (e) {
       _logger.severe('Sign up error: $e');
       rethrow;
@@ -67,6 +68,7 @@ class Auth extends _$Auth {
       final user = UserModel.fromFirebaseUser(firebaseUser);
       await _prefsService.setLoginUserId(user.id);
       state = user;
+      if (ref.mounted) ref.read(routerProvider).go(AppRoutes.home.route);
     } on FirebaseAuthException catch (e) {
       _logger.severe('Sign in error: $e');
       rethrow;
@@ -89,6 +91,9 @@ class Auth extends _$Auth {
   /// Delete account of the current user
   Future<void> deleteAccount() async {
     try {
+      final userId = _authService.currentUser?.uid;
+      if (userId == null) return;
+      await ref.read(userListProvider.notifier).deleteUser(userId);
       await _authService.deleteAccount();
       await _prefsService.clearLoginUserId();
       if (!ref.mounted) return;

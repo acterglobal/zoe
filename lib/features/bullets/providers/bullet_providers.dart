@@ -31,10 +31,10 @@ class BulletList extends _$BulletList {
             .map((doc) => BulletModel.fromJson(doc.data()))
             .toList();
       },
-      onError: (error, stackTrace) => runFirestoreOperation(
+      /*onError: (error, stackTrace) => runFirestoreOperation(
         ref,
         () => Error.throwWithStackTrace(error, stackTrace),
-      ),
+      ),*/
     );
 
     ref.onDispose(() => _subscription?.cancel());

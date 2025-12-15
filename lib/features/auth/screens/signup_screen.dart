@@ -57,8 +57,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             email: _emailController.text.trim(),
             password: _passwordController.text.trim(),
           );
-      if (!mounted) return;
-      context.go(AppRoutes.home.route);
     } on FirebaseAuthException catch (e) {
       _errorMessage = e.message ?? 'Sign up error';
     } catch (e) {

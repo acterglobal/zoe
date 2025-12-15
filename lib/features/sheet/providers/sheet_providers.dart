@@ -51,10 +51,10 @@ class SheetList extends _$SheetList {
             .map((doc) => SheetModel.fromJson(doc.data()))
             .toList();
       },
-      onError: (error, stackTrace) => runFirestoreOperation(
+      /*onError: (error, stackTrace) => runFirestoreOperation(
         ref,
         () => Error.throwWithStackTrace(error, stackTrace),
-      ),
+      ),*/
     );
 
     ref.onDispose(() => _subscription?.cancel());

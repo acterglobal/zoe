@@ -16,6 +16,7 @@ part 'poll_providers.g.dart';
 @Riverpod(keepAlive: true)
 class PollList extends _$PollList {
   FirebaseFirestore get _firestore => ref.read(firestoreProvider);
+
   CollectionReference<Map<String, dynamic>> get _collection =>
       _firestore.collection(FirestoreCollections.polls);
 
@@ -30,10 +31,10 @@ class PollList extends _$PollList {
             .map((doc) => PollModel.fromJson(doc.data()))
             .toList();
       },
-      onError: (error, stackTrace) => runFirestoreOperation(
+      /*onError: (error, stackTrace) => runFirestoreOperation(
         ref,
         () => Error.throwWithStackTrace(error, stackTrace),
-      ),
+      ),*/
     );
 
     ref.onDispose(() {

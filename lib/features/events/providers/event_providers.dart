@@ -32,9 +32,10 @@ class EventList extends _$EventList {
             .map((doc) => EventModel.fromJson(doc.data()))
             .toList();
       },
-      onError: (error, stackTrace) {
-        runFirestoreOperation(ref, () => throw error);
-      },
+      /*onError: (error, stackTrace) => runFirestoreOperation(
+        ref,
+        () => Error.throwWithStackTrace(error, stackTrace),
+      ),*/
     );
 
     ref.onDispose(() {
