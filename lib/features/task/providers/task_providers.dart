@@ -9,7 +9,6 @@ import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
-import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'task_providers.g.dart';
