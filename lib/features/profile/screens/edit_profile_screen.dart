@@ -53,24 +53,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final userAsync = ref.watch(currentUserProvider);
     return userAsync.when(
       data: (user) {
-        if (user == null) {
-          return Center(child: Text(L10n.of(context).userNotFound));
-        }
         return Scaffold(
           appBar: _buildAppBar(context, user),
           body: SafeArea(
-            child: Column(
-              children: [
-                Expanded(child: _buildProfileContent(context, user)),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  child: _buildActionButton(user),
-                ),
-              ],
-            ),
+            child: user == null
+                ? Center(child: Text(L10n.of(context).userNotFound))
+                : _buildBody(user),
           ),
         );
       },
@@ -79,37 +67,52 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
   }
 
-  AppBar _buildAppBar(BuildContext context, UserModel user) {
+  AppBar _buildAppBar(BuildContext context, UserModel? user) {
     return AppBar(
       automaticallyImplyLeading: false,
       title: ZoeAppBar(
         title: L10n.of(context).profile,
         actions: [
-          StyledIconContainer(
-            icon: Icons.qr_code_scanner,
-            size: 40,
-            primaryColor: Theme.of(context).colorScheme.onSurface,
-            iconSize: 20,
-            backgroundOpacity: 0.08,
-            borderOpacity: 0.15,
-            shadowOpacity: 0.1,
-            onTap: () => showProfileQrCodeBottomSheet(context, user.name),
-          ),
+          if (user != null)
+            StyledIconContainer(
+              icon: Icons.qr_code_scanner,
+              size: 40,
+              primaryColor: Theme.of(context).colorScheme.onSurface,
+              iconSize: 20,
+              backgroundOpacity: 0.08,
+              borderOpacity: 0.15,
+              shadowOpacity: 0.1,
+              onTap: () => showProfileQrCodeBottomSheet(context, user.name),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBody(UserModel user) {
+    return MaxWidthWidget(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Expanded(child: _buildProfileContent(context, user)),
+          _buildActionButton(user),
         ],
       ),
     );
   }
 
   Widget _buildProfileContent(BuildContext context, UserModel user) {
-    return MaxWidthWidget(
-      isScrollable: true,
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          _buildAvatarSection(context, user),
-          const SizedBox(height: 32),
-          _buildProfileInfoSection(),
-        ],
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            _buildAvatarSection(context, user),
+            const SizedBox(height: 32),
+            _buildProfileInfoSection(),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
