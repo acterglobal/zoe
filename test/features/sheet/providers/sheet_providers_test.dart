@@ -142,7 +142,10 @@ void main() {
 
       final updatedSheet = container.read(sheetProvider(testSheet1.id));
       expect(updatedSheet?.sheetAvatar.data, equals(newIcon.name));
-      expect(updatedSheet?.sheetAvatar.color?.toARGB32(), equals(newColor.toARGB32()));
+      expect(
+        updatedSheet?.sheetAvatar.color?.toARGB32(),
+        equals(newColor.toARGB32()),
+      );
     });
 
     test('updateSheetTheme updates sheet theme', () async {
@@ -156,8 +159,14 @@ void main() {
       );
 
       final updatedSheet = container.read(sheetProvider(testSheet1.id));
-      expect(updatedSheet?.theme?.primary.toARGB32(), equals(newPrimary.toARGB32()));
-      expect(updatedSheet?.theme?.secondary.toARGB32(), equals(newSecondary.toARGB32()));
+      expect(
+        updatedSheet?.theme?.primary.toARGB32(),
+        equals(newPrimary.toARGB32()),
+      );
+      expect(
+        updatedSheet?.theme?.secondary.toARGB32(),
+        equals(newSecondary.toARGB32()),
+      );
     });
 
     test('filters sheets by title when search has value', () {
@@ -254,37 +263,6 @@ void main() {
         listOfUsersBySheetIdProvider('non-existent-id'),
       );
       expect(users, isEmpty);
-    });
-
-    test('sheetExists returns true for an existing sheet', () {
-      final exists = container.read(sheetExistsProvider(testSheet1.id));
-      expect(exists, isTrue);
-    });
-
-    test('sheetExists returns false for a non-existent sheet', () {
-      final exists = container.read(sheetExistsProvider('non-existent-id'));
-      expect(exists, isFalse);
-    });
-
-    test('sortedSheets returns sheets sorted by title', () async {
-      // Add a sheet to ensure sorting is needed
-      final newSheet = SheetModel(
-        id: 'aaa-sheet',
-        title: 'AAA Sheet',
-        sheetAvatar: SheetAvatar(type: AvatarType.emoji, data: '🥇'),
-        users: [testUserId],
-      );
-      await notifier.addSheet(newSheet);
-
-      // Need to wait for the provider to update
-      await Future.delayed(const Duration(milliseconds: 50));
-
-      final sorted = container.read(sortedSheetsProvider);
-
-      expect(sorted.length, 3);
-      expect(sorted[0].title, 'AAA Sheet');
-      expect(sorted[1].title, 'User Sheet 1');
-      expect(sorted[2].title, 'User Sheet 2');
     });
   });
 }

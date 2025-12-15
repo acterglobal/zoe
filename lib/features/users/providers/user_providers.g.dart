@@ -44,7 +44,7 @@ final class UserListProvider
   }
 }
 
-String _$userListHash() => r'60d228fa82954ac75119b566d88fb27ce893efb3';
+String _$userListHash() => r'83b7366d9a9c832bee8187d39eae85691db02970';
 
 /// Main user list provider with all user management functionality
 

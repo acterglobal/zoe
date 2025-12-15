@@ -41,10 +41,11 @@ final class SheetListProvider
   }
 }
 
-String _$sheetListHash() => r'0bc7c6333be3ad0c1082356f1edc1cc6479bf93f';
+String _$sheetListHash() => r'9755aa3701472856c34d956e875d07f8f2ade16a';
 
 abstract class _$SheetList extends $Notifier<List<SheetModel>> {
   List<SheetModel> build();
+
   @$mustCallSuper
   @override
   void runBuild() {
@@ -285,139 +286,3 @@ final class ListOfUsersBySheetIdFamily extends $Family
   @override
   String toString() => r'listOfUsersBySheetIdProvider';
 }
-
-/// Provider to check if a sheet exists
-
-@ProviderFor(sheetExists)
-const sheetExistsProvider = SheetExistsFamily._();
-
-/// Provider to check if a sheet exists
-
-final class SheetExistsProvider extends $FunctionalProvider<bool, bool, bool>
-    with $Provider<bool> {
-  /// Provider to check if a sheet exists
-  const SheetExistsProvider._({
-    required SheetExistsFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'sheetExistsProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$sheetExistsHash();
-
-  @override
-  String toString() {
-    return r'sheetExistsProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  $ProviderElement<bool> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  bool create(Ref ref) {
-    final argument = this.argument as String;
-    return sheetExists(ref, argument);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(bool value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<bool>(value),
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is SheetExistsProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
-String _$sheetExistsHash() => r'1271be6e2dccad76c612a52e81aaeca23cb72ae0';
-
-/// Provider to check if a sheet exists
-
-final class SheetExistsFamily extends $Family
-    with $FunctionalFamilyOverride<bool, String> {
-  const SheetExistsFamily._()
-    : super(
-        retry: null,
-        name: r'sheetExistsProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  /// Provider to check if a sheet exists
-
-  SheetExistsProvider call(String sheetId) =>
-      SheetExistsProvider._(argument: sheetId, from: this);
-
-  @override
-  String toString() => r'sheetExistsProvider';
-}
-
-/// Provider for sheets sorted by title (filtered by membership)
-
-@ProviderFor(sortedSheets)
-const sortedSheetsProvider = SortedSheetsProvider._();
-
-/// Provider for sheets sorted by title (filtered by membership)
-
-final class SortedSheetsProvider
-    extends
-        $FunctionalProvider<
-          List<SheetModel>,
-          List<SheetModel>,
-          List<SheetModel>
-        >
-    with $Provider<List<SheetModel>> {
-  /// Provider for sheets sorted by title (filtered by membership)
-  const SortedSheetsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'sortedSheetsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$sortedSheetsHash();
-
-  @$internal
-  @override
-  $ProviderElement<List<SheetModel>> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  List<SheetModel> create(Ref ref) {
-    return sortedSheets(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<SheetModel> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<SheetModel>>(value),
-    );
-  }
-}
-
-String _$sortedSheetsHash() => r'aae31f7ba341c156247c9ad7f23dee5de23a74a4';
