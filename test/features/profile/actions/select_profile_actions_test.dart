@@ -198,6 +198,7 @@ void main() {
       // Note: copyWith doesn't work for setting to null, so create new instance
       final testUserWithNullAvatar = UserModel(
         id: testUser.id,
+        email: testUser.email,
         name: testUser.name,
         bio: testUser.bio,
         avatar: null, // Explicitly set to null

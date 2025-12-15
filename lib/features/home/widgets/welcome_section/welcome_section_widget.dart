@@ -18,7 +18,6 @@ class WelcomeSectionWidget extends ConsumerWidget {
     return currentUserAsync.when(
       data: (user) {
         final userName = user?.name ?? L10n.of(context).guest;
-        final firstName = userName.split(' ').first;
 
         return Container(
           width: double.infinity,
@@ -43,7 +42,7 @@ class WelcomeSectionWidget extends ConsumerWidget {
             children: [
               Expanded(
                 flex: 3,
-                child: _buildWelcomeTextWidget(context, theme, firstName),
+                child: _buildWelcomeTextWidget(context, theme, userName),
               ),
               const SizedBox(width: 16),
               Expanded(flex: 2, child: WelcomeAnimationWidget()),
@@ -59,7 +58,7 @@ class WelcomeSectionWidget extends ConsumerWidget {
   Widget _buildWelcomeTextWidget(
     BuildContext context,
     ThemeData theme,
-    String firstName,
+    String userName,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +72,9 @@ class WelcomeSectionWidget extends ConsumerWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          firstName,
+          userName,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
           style: theme.textTheme.headlineLarge?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.w800,

@@ -35,7 +35,6 @@ void main() {
         overrides: [
           // Override providers that might cause async operations
           currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
-          isUserLoggedInProvider.overrideWithValue(const AsyncValue.data(true)),
           // connectionStatusProvider.overrideWithValue(
           //   AsyncValue.data(
           //     OverallConnectionStatus(
@@ -279,9 +278,6 @@ void main() {
             sheetListProvider.overrideWithValue([]),
             // Include the same overrides as main setup to prevent timer issues
             currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
-            isUserLoggedInProvider.overrideWithValue(
-              const AsyncValue.data(true),
-            ),
             // connectionStatusProvider.overrideWithValue(
             //   AsyncValue.data(
             //     OverallConnectionStatus(

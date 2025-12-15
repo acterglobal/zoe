@@ -39,6 +39,7 @@ void _updateUserAvatar(WidgetRef ref, String userId, String? imagePath) {
       id: currentUser.id,
       name: currentUser.name,
       bio: currentUser.bio,
+      email: currentUser.email,
       avatar: imagePath,
     );
     ref.read(userListProvider.notifier).updateUser(userId, updatedUser);

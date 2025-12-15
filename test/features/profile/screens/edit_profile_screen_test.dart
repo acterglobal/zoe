@@ -18,6 +18,7 @@ void main() {
   late ProviderContainer container;
   final testUser = UserModel(
     id: 'test-id',
+    email: 'test@gmail.com',
     name: 'Test User',
     bio: 'Test Bio',
   );
@@ -74,7 +75,9 @@ void main() {
       expect(find.byType(ErrorStateWidget), findsOneWidget);
     });
 
-    testWidgets('shows user not found message when user is null', (tester) async {
+    testWidgets('shows user not found message when user is null', (
+      tester,
+    ) async {
       container = ProviderContainer(
         overrides: [
           currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
@@ -84,7 +87,9 @@ void main() {
 
       await pumpScreen(tester);
       expect(
-        find.text(L10n.of(tester.element(find.byType(EditProfileScreen))).userNotFound),
+        find.text(
+          L10n.of(tester.element(find.byType(EditProfileScreen))).userNotFound,
+        ),
         findsOneWidget,
       );
     });
@@ -104,7 +109,7 @@ void main() {
 
     testWidgets('initializes fields with user data', (tester) async {
       await pumpScreen(tester);
-      
+
       // Wait for post-frame callback
       await tester.pump();
 
@@ -146,7 +151,11 @@ void main() {
 
       // Should show validation error message
       expect(
-        find.text(L10n.of(tester.element(find.byType(EditProfileScreen))).nameCannotBeEmpty),
+        find.text(
+          L10n.of(
+            tester.element(find.byType(EditProfileScreen)),
+          ).nameCannotBeEmpty,
+        ),
         findsOneWidget,
       );
     });
@@ -181,7 +190,9 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify user data was updated in the provider
-      final updatedUser = container.read(userListProvider).firstWhere((u) => u.id == testUser.id);
+      final updatedUser = container
+          .read(userListProvider)
+          .firstWhere((u) => u.id == testUser.id);
       expect(updatedUser.name, equals(newName));
       expect(updatedUser.bio, equals(newBio));
     });
@@ -190,10 +201,10 @@ void main() {
   group('UI Elements', () {
     testWidgets('shows camera and QR code buttons', (tester) async {
       await pumpScreen(tester);
-      
+
       // Check for camera button
       expect(find.byIcon(Icons.camera_alt), findsOneWidget);
-      
+
       // Check for QR code button in app bar
       expect(find.byIcon(Icons.qr_code_scanner), findsOneWidget);
     });

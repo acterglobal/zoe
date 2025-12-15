@@ -44,7 +44,7 @@ final class UserListProvider
   }
 }
 
-String _$userListHash() => r'58ff16edd69cc74899846e5a09c7708078513d35';
+String _$userListHash() => r'83b7366d9a9c832bee8187d39eae85691db02970';
 
 /// Main user list provider with all user management functionality
 
@@ -67,44 +67,6 @@ abstract class _$UserList extends $Notifier<List<UserModel>> {
   }
 }
 
-/// Provider to check if a user is logged in
-
-@ProviderFor(isUserLoggedIn)
-const isUserLoggedInProvider = IsUserLoggedInProvider._();
-
-/// Provider to check if a user is logged in
-
-final class IsUserLoggedInProvider
-    extends $FunctionalProvider<AsyncValue<bool>, bool, FutureOr<bool>>
-    with $FutureModifier<bool>, $FutureProvider<bool> {
-  /// Provider to check if a user is logged in
-  const IsUserLoggedInProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'isUserLoggedInProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$isUserLoggedInHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<bool> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<bool> create(Ref ref) {
-    return isUserLoggedIn(ref);
-  }
-}
-
-String _$isUserLoggedInHash() => r'a4dbd77b16ca64827d192c900291405218f70b0c';
-
 /// Provider for the logged-in user ID
 
 @ProviderFor(loggedInUser)
@@ -122,7 +84,7 @@ final class LoggedInUserProvider
         argument: null,
         retry: null,
         name: r'loggedInUserProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -141,7 +103,7 @@ final class LoggedInUserProvider
   }
 }
 
-String _$loggedInUserHash() => r'0bd1a9fe8cb88e38ea44098a5d97d686fb13c332';
+String _$loggedInUserHash() => r'e3d78cd65434cef8d17c810c2457b3da6fc8502a';
 
 /// Provider for the current user model
 
@@ -703,89 +665,4 @@ final class UserListSearchFamily extends $Family
 
   @override
   String toString() => r'userListSearchProvider';
-}
-
-/// Provider for user count in a sheet
-
-@ProviderFor(sheetUserCount)
-const sheetUserCountProvider = SheetUserCountFamily._();
-
-/// Provider for user count in a sheet
-
-final class SheetUserCountProvider extends $FunctionalProvider<int, int, int>
-    with $Provider<int> {
-  /// Provider for user count in a sheet
-  const SheetUserCountProvider._({
-    required SheetUserCountFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'sheetUserCountProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$sheetUserCountHash();
-
-  @override
-  String toString() {
-    return r'sheetUserCountProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  $ProviderElement<int> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  int create(Ref ref) {
-    final argument = this.argument as String;
-    return sheetUserCount(ref, argument);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(int value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<int>(value),
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is SheetUserCountProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
-String _$sheetUserCountHash() => r'3783f0e37099a80473e611fc19ee469aa7c18ecc';
-
-/// Provider for user count in a sheet
-
-final class SheetUserCountFamily extends $Family
-    with $FunctionalFamilyOverride<int, String> {
-  const SheetUserCountFamily._()
-    : super(
-        retry: null,
-        name: r'sheetUserCountProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  /// Provider for user count in a sheet
-
-  SheetUserCountProvider call(String sheetId) =>
-      SheetUserCountProvider._(argument: sheetId, from: this);
-
-  @override
-  String toString() => r'sheetUserCountProvider';
 }

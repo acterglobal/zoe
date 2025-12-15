@@ -1,6 +1,11 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
-import 'package:zoe/features/users/data/user_list.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 
@@ -9,45 +14,50 @@ part 'user_providers.g.dart';
 /// Main user list provider with all user management functionality
 @Riverpod(keepAlive: true)
 class UserList extends _$UserList {
+  CollectionReference<Map<String, dynamic>> get collection =>
+      ref.read(firestoreProvider).collection(FirestoreCollections.users);
+
+  StreamSubscription? _subscription;
+
   @override
-  List<UserModel> build() => userList;
+  List<UserModel> build() {
+    _subscription?.cancel();
+    _subscription = null;
 
-  void addUser(UserModel user) {
-    state = [...state, user];
+    _subscription = collection.snapshots().listen((snapshot) {
+      state = snapshot.docs
+          .map((doc) => UserModel.fromJson(doc.data()))
+          .toList();
+    });
+
+    ref.onDispose(() => _subscription?.cancel());
+    return [];
   }
 
-  void deleteUser(String userId) {
-    state = state.where((u) => u.id != userId).toList();
+  Future<void> addUser(UserModel user) async {
+    await collection.doc(user.id).set(user.toJson());
   }
 
-  void updateUserName(String userId, String name) {
-    state = [
-      for (final user in state)
-        if (user.id == userId) user.copyWith(name: name) else user,
-    ];
+  Future<void> deleteUser(String userId) async {
+    await collection.doc(userId).delete();
   }
 
-  void updateUser(String userId, UserModel updatedUser) {
-    state = [
-      for (final user in state)
-        if (user.id == userId) updatedUser else user,
-    ];
+  Future<void> updateUserName(String userId, String name) async {
+    await collection.doc(userId).update({FirestoreFieldConstants.name: name});
   }
-}
 
-/// Provider to check if a user is logged in
-@riverpod
-Future<bool> isUserLoggedIn(Ref ref) async {
-  final userId = await ref.watch(loggedInUserProvider.future);
-  return userId != null && userId.isNotEmpty;
+  Future<void> updateUser(String userId, UserModel updatedUser) async {
+    await collection.doc(userId).update(updatedUser.toJson());
+  }
 }
 
 /// Provider for the logged-in user ID
-@riverpod
+@Riverpod(keepAlive: true)
 Future<String?> loggedInUser(Ref ref) async {
   // Watch authStateProvider to get real-time auth state from Firebase
   final authUser = await ref.watch(authStateProvider.future);
-  return authUser?.uid;
+
+  return authUser?.id;
 }
 
 /// Provider for the current user model
@@ -113,11 +123,4 @@ List<UserModel> userListSearch(Ref ref, String searchTerm) {
   return userList
       .where((u) => u.name.toLowerCase().contains(searchTerm.toLowerCase()))
       .toList();
-}
-
-/// Provider for user count in a sheet
-@riverpod
-int sheetUserCount(Ref ref, String sheetId) {
-  final users = ref.watch(usersBySheetIdProvider(sheetId));
-  return users.length;
 }
