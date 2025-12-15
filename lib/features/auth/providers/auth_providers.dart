@@ -82,7 +82,7 @@ class Auth extends _$Auth {
       await _prefsService.clearLoginUserId();
       state = null;
       if (!ref.mounted) return;
-      ref.read(routerProvider).go(AppRoutes.login.route);
+      ref.read(routerProvider).go(AppRoutes.welcome.route);
     } catch (e) {
       _logger.severe('Sign out error: $e');
       rethrow;
@@ -99,7 +99,7 @@ class Auth extends _$Auth {
       await _prefsService.clearLoginUserId();
       state = null;
       if (!ref.mounted) return;
-      ref.read(routerProvider).go(AppRoutes.login.route);
+      ref.read(routerProvider).go(AppRoutes.welcome.route);
     } catch (e) {
       _logger.severe('Delete account error: $e');
       rethrow;
