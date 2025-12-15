@@ -27,7 +27,9 @@ void main() {
       container = ProviderContainer.test(
         overrides: [
           getUserByIdProvider(testUser.id).overrideWith((ref) => testUser),
-          userDisplayNameProvider(testUser.id).overrideWith((ref) => testUser.name),
+          userDisplayNameProvider(
+            testUser.id,
+          ).overrideWith((ref) => testUser.name),
         ],
       );
     });
@@ -59,14 +61,22 @@ void main() {
         expect(find.text(testUser.name), findsOneWidget);
 
         // Should find formatted date time text
-        expect(find.text(DateTimeUtils.formatDateTime(testVote.createdAt ?? DateTime.now())), findsOneWidget);
+        expect(
+          find.text(
+            DateTimeUtils.formatDateTime(testVote.createdAt ?? DateTime.now()),
+          ),
+          findsOneWidget,
+        );
       });
 
       testWidgets('renders with correct layout structure', (tester) async {
         await createWidgetUnderTest(tester: tester, vote: testVote);
 
         // Should find SizedBox for spacing
-        expect(find.byType(SizedBox), findsNWidgets(2)); // One for width, one for height
+        expect(
+          find.byType(SizedBox),
+          findsNWidgets(2),
+        ); // One for width, one for height
 
         // Should find Expanded widget for user info
         expect(find.byType(Expanded), findsOneWidget);
@@ -81,7 +91,9 @@ void main() {
       testWidgets('applies correct styling', (tester) async {
         await createWidgetUnderTest(tester: tester, vote: testVote);
 
-        final glassyContainer = tester.widget<GlassyContainer>(find.byType(GlassyContainer));
+        final glassyContainer = tester.widget<GlassyContainer>(
+          find.byType(GlassyContainer),
+        );
         expect(glassyContainer.margin, const EdgeInsets.only(bottom: 8));
         expect(glassyContainer.padding, const EdgeInsets.all(12));
         expect(glassyContainer.borderRadius, BorderRadius.circular(12));
@@ -93,14 +105,20 @@ void main() {
     });
 
     group('User Provider Integration', () {
-      testWidgets('displays user name from userDisplayNameProvider', (tester) async {
+      testWidgets('displays user name from userDisplayNameProvider', (
+        tester,
+      ) async {
         final customUser = userList[1]; // Jane Smith
         final customVote = Vote(userId: customUser.id);
 
         container = ProviderContainer.test(
           overrides: [
-            getUserByIdProvider(customUser.id).overrideWith((ref) => customUser),
-            userDisplayNameProvider(customUser.id).overrideWith((ref) => customUser.name),
+            getUserByIdProvider(
+              customUser.id,
+            ).overrideWith((ref) => customUser),
+            userDisplayNameProvider(
+              customUser.id,
+            ).overrideWith((ref) => customUser.name),
           ],
         );
 
@@ -115,8 +133,12 @@ void main() {
 
         container = ProviderContainer.test(
           overrides: [
-            getUserByIdProvider(userWithBio.id).overrideWith((ref) => userWithBio),
-            userDisplayNameProvider(userWithBio.id).overrideWith((ref) => userWithBio.name),
+            getUserByIdProvider(
+              userWithBio.id,
+            ).overrideWith((ref) => userWithBio),
+            userDisplayNameProvider(
+              userWithBio.id,
+            ).overrideWith((ref) => userWithBio.name),
           ],
         );
 
@@ -136,7 +158,10 @@ void main() {
 
         await createWidgetUnderTest(tester: tester, vote: voteWithSpecificTime);
 
-        expect(find.text(DateTimeUtils.formatDateTime(specificDateTime)), findsOneWidget);
+        expect(
+          find.text(DateTimeUtils.formatDateTime(specificDateTime)),
+          findsOneWidget,
+        );
       });
 
       testWidgets('handles different time formats', (tester) async {
@@ -144,51 +169,56 @@ void main() {
         final eveningTime = DateTime(2024, 6, 10, 20, 30);
         final midnightTime = DateTime(2024, 6, 10, 0, 0);
 
-        final morningVote = Vote(
-          userId: testUser.id,
-          createdAt: morningTime,
-        );
-        final eveningVote = Vote(
-          userId: testUser.id,
-          createdAt: eveningTime,
-        );
-        final midnightVote = Vote(
-          userId: testUser.id,
-          createdAt: midnightTime,
-        );
+        final morningVote = Vote(userId: testUser.id, createdAt: morningTime);
+        final eveningVote = Vote(userId: testUser.id, createdAt: eveningTime);
+        final midnightVote = Vote(userId: testUser.id, createdAt: midnightTime);
 
         // Test morning time
         await createWidgetUnderTest(tester: tester, vote: morningVote);
-        expect(find.text(DateTimeUtils.formatDateTime(morningTime)), findsOneWidget);
+        expect(
+          find.text(DateTimeUtils.formatDateTime(morningTime)),
+          findsOneWidget,
+        );
 
         await tester.pumpWidget(Container()); // Clear previous widget
 
         // Test evening time
         await createWidgetUnderTest(tester: tester, vote: eveningVote);
-        expect(find.text(DateTimeUtils.formatDateTime(eveningTime)), findsOneWidget);
+        expect(
+          find.text(DateTimeUtils.formatDateTime(eveningTime)),
+          findsOneWidget,
+        );
 
         await tester.pumpWidget(Container()); // Clear previous widget
 
         // Test midnight time
         await createWidgetUnderTest(tester: tester, vote: midnightVote);
-        expect(find.text(DateTimeUtils.formatDateTime(midnightTime)), findsOneWidget);
+        expect(
+          find.text(DateTimeUtils.formatDateTime(midnightTime)),
+          findsOneWidget,
+        );
       });
     });
 
     group('Edge Cases', () {
       testWidgets('returns SizedBox.shrink when user is null', (tester) async {
-        final voteWithNonExistentUser = Vote(
-          userId: 'non-existent-user-id',
-        );
+        final voteWithNonExistentUser = Vote(userId: 'non-existent-user-id');
 
         container = ProviderContainer.test(
           overrides: [
-            getUserByIdProvider('non-existent-user-id').overrideWith((ref) => null),
-            userDisplayNameProvider('non-existent-user-id').overrideWith((ref) => 'Unknown User'),
+            getUserByIdProvider(
+              'non-existent-user-id',
+            ).overrideWith((ref) => null),
+            userDisplayNameProvider(
+              'non-existent-user-id',
+            ).overrideWith((ref) => 'Unknown User'),
           ],
         );
 
-        await createWidgetUnderTest(tester: tester, vote: voteWithNonExistentUser);
+        await createWidgetUnderTest(
+          tester: tester,
+          vote: voteWithNonExistentUser,
+        );
 
         // Should find SizedBox.shrink (which renders nothing)
         expect(find.byType(SizedBox), findsOneWidget);
@@ -197,19 +227,24 @@ void main() {
       });
 
       testWidgets('handles special characters in user name', (tester) async {
-        final specialName = r'User@#$%^&*()_+{}|:"<>?[]\;\'',./';
+        final specialName =
+            r'User@#$%^&*()_+{}|:"<>?[]\;\'
+            ',./';
         final userWithSpecialName = UserModel(
           id: 'special-name-user-id',
+          email: 'test@gmail.com',
           name: specialName,
         );
-        final voteWithSpecialName = Vote(
-          userId: userWithSpecialName.id,
-        );
+        final voteWithSpecialName = Vote(userId: userWithSpecialName.id);
 
         container = ProviderContainer.test(
           overrides: [
-            getUserByIdProvider(userWithSpecialName.id).overrideWith((ref) => userWithSpecialName),
-            userDisplayNameProvider(userWithSpecialName.id).overrideWith((ref) => specialName),
+            getUserByIdProvider(
+              userWithSpecialName.id,
+            ).overrideWith((ref) => userWithSpecialName),
+            userDisplayNameProvider(
+              userWithSpecialName.id,
+            ).overrideWith((ref) => specialName),
           ],
         );
 
@@ -231,12 +266,9 @@ void main() {
     group('Widget Properties', () {
       testWidgets('has correct key when provided', (tester) async {
         const testKey = Key('test-voter-item-key');
-        
+
         await tester.pumpMaterialWidgetWithProviderScope(
-          child: PollVoterItemWidget(
-            key: testKey,
-            vote: testVote,
-          ),
+          child: PollVoterItemWidget(key: testKey, vote: testVote),
           container: container,
         );
 
@@ -260,7 +292,9 @@ void main() {
             getUserByIdProvider('user_1').overrideWith((ref) => user1),
             getUserByIdProvider('user_2').overrideWith((ref) => user2),
             userDisplayNameProvider('user_1').overrideWith((ref) => 'John Doe'),
-            userDisplayNameProvider('user_2').overrideWith((ref) => 'Jane Smith'),
+            userDisplayNameProvider(
+              'user_2',
+            ).overrideWith((ref) => 'Jane Smith'),
           ],
         );
 

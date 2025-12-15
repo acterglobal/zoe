@@ -77,7 +77,7 @@ void main() {
 
         final state = await newContainer.read(authStateProvider.future);
         expect(state, isNotNull);
-        expect(state?.uid, 'test-uid');
+        expect(state?.id, 'test-uid');
         expect(state?.email, 'test@example.com');
       });
 
@@ -213,7 +213,7 @@ void main() {
         final authState = newContainer.read(authStateProvider);
         expect(authState.hasValue, isTrue);
         expect(authState.value, isNotNull);
-        expect(authState.value?.uid, 'test-uid');
+        expect(authState.value?.id, 'test-uid');
 
         // Emit null (sign out)
         controller.add(null);
@@ -279,9 +279,9 @@ void main() {
 
         final user = await newContainer.read(authStateProvider.future);
         expect(user, isNotNull);
-        expect(user?.uid, 'test-uid');
+        expect(user?.id, 'test-uid');
         expect(user?.email, 'test@example.com');
-        expect(user?.displayName, 'Test User');
+        expect(user?.name, 'Test User');
       });
     });
 
@@ -303,7 +303,7 @@ void main() {
         );
 
         final user = await newContainer.read(authStateProvider.future);
-        expect(user?.displayName, isNull);
+        expect(user?.name, isNull);
       });
 
       test('handles empty email', () async {

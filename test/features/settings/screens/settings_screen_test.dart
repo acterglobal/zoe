@@ -16,9 +16,7 @@ void main() {
   setUp(() {
     container = ProviderContainer(
       overrides: [
-        currentUserProvider.overrideWith(
-          (ref) => null,
-        ),
+        currentUserProvider.overrideWith((ref) => null),
         appNameProvider.overrideWith((ref) => 'Test App'),
         appVersionProvider.overrideWith((ref) => '1.0.0'),
         buildNumberProvider.overrideWith((ref) => '100'),
@@ -50,32 +48,39 @@ void main() {
       expect(find.text(''), findsOneWidget); // Empty bio when user is null
     });
 
-    testWidgets('displays user information when user is not null', (tester) async {
+    testWidgets('displays user information when user is not null', (
+      tester,
+    ) async {
       // Override the container with a mock user
       container = ProviderContainer(
         overrides: [
           currentUserProvider.overrideWith(
-            (ref) => Future<UserModel?>.value(UserModel(
-              id: 'test-user-id',
-              name: 'John Doe',
-              bio: 'Test Bio',
-            )),
+            (ref) => Future<UserModel?>.value(
+              UserModel(
+                id: 'test-user-id',
+                email: 'john@gmail.com',
+                name: 'John Doe',
+                bio: 'Test Bio',
+              ),
+            ),
           ),
           appNameProvider.overrideWith((ref) => 'Test App'),
           appVersionProvider.overrideWith((ref) => '1.0.0'),
           buildNumberProvider.overrideWith((ref) => '100'),
         ],
       );
-      
+
       await pumpSettingsScreen(tester);
-      
+
       // Verify user name and bio are displayed
       expect(find.text('John Doe'), findsOneWidget);
       expect(find.text('Test Bio'), findsOneWidget);
       expect(find.text('Guest'), findsNothing);
     });
 
-    testWidgets('shows profile section with correct icon and color', (tester) async {
+    testWidgets('shows profile section with correct icon and color', (
+      tester,
+    ) async {
       await pumpSettingsScreen(tester);
       final iconWidget = tester.widget<SettingItemWidget>(
         find.ancestor(

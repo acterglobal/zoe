@@ -11,12 +11,14 @@ class ZoeStackedAvatarsTestUtils {
   /// Creates a test user model
   static UserModel createTestUser({
     String id = 'test_id',
+    String email = 'test@gmail.com',
     String name = 'Test User',
     String? avatar,
     String? bio,
   }) {
     return UserModel(
       id: id,
+      email: email,
       name: name,
       avatar: avatar,
       bio: bio,
@@ -27,7 +29,7 @@ class ZoeStackedAvatarsTestUtils {
   static List<UserModel> createTestUsers({
     int count = 3,
     bool withAvatars = false,
-  }) {                                                                                                                                                                                                                                                                                  
+  }) {
     return List.generate(count, (index) {
       return createTestUser(
         id: 'user_$index',
@@ -58,22 +60,19 @@ void main() {
   group('ZoeStackedAvatars Widget Tests -', () {
     testWidgets('renders nothing when users list is empty', (tester) async {
       await tester.pumpMaterialWidget(
-        child: ZoeStackedAvatarsTestUtils.createTestWidget(
-          users: [],
-        ),
+        child: ZoeStackedAvatarsTestUtils.createTestWidget(users: []),
       );
 
       expect(find.byType(ZoeUserAvatarWidget), findsNothing);
       expect(find.byType(SizedBox), findsOneWidget);
-      expect(
-        tester.widget<SizedBox>(find.byType(SizedBox)).width,
-        0.0,
-      );
+      expect(tester.widget<SizedBox>(find.byType(SizedBox)).width, 0.0);
     });
 
-    testWidgets('renders correct number of avatars within maxUsers', (tester) async {
+    testWidgets('renders correct number of avatars within maxUsers', (
+      tester,
+    ) async {
       final users = ZoeStackedAvatarsTestUtils.createTestUsers(count: 3);
-      
+
       await tester.pumpMaterialWidget(
         child: ZoeStackedAvatarsTestUtils.createTestWidget(
           users: users,
@@ -85,9 +84,11 @@ void main() {
       expect(find.text('+0'), findsNothing);
     });
 
-    testWidgets('shows +X indicator when users exceed maxUsers', (tester) async {
+    testWidgets('shows +X indicator when users exceed maxUsers', (
+      tester,
+    ) async {
       final users = ZoeStackedAvatarsTestUtils.createTestUsers(count: 5);
-      
+
       await tester.pumpMaterialWidget(
         child: ZoeStackedAvatarsTestUtils.createTestWidget(
           users: users,
@@ -102,7 +103,7 @@ void main() {
     testWidgets('applies custom avatar size correctly', (tester) async {
       const customSize = 30.0;
       final users = ZoeStackedAvatarsTestUtils.createTestUsers(count: 1);
-      
+
       await tester.pumpMaterialWidget(
         child: ZoeStackedAvatarsTestUtils.createTestWidget(
           users: users,
@@ -124,7 +125,7 @@ void main() {
       const avatarSize = 20.0;
       const spacing = -6.0;
       final users = ZoeStackedAvatarsTestUtils.createTestUsers(count: 3);
-      
+
       await tester.pumpMaterialWidget(
         child: ZoeStackedAvatarsTestUtils.createTestWidget(
           users: users,
@@ -134,10 +135,12 @@ void main() {
       );
 
       final container = tester.widget<SizedBox>(
-        find.descendant(
-          of: find.byType(ZoeStackedAvatarsWidget),
-          matching: find.byType(SizedBox),
-        ).first,
+        find
+            .descendant(
+              of: find.byType(ZoeStackedAvatarsWidget),
+              matching: find.byType(SizedBox),
+            )
+            .first,
       );
 
       // Width = _getPosition(displayCount)
@@ -146,11 +149,13 @@ void main() {
       expect(container.width, expectedWidth);
     });
 
-    testWidgets('calculates width with remaining count indicator correctly', (tester) async {
+    testWidgets('calculates width with remaining count indicator correctly', (
+      tester,
+    ) async {
       const avatarSize = 20.0;
       const spacing = -6.0;
       final users = ZoeStackedAvatarsTestUtils.createTestUsers(count: 5);
-      
+
       await tester.pumpMaterialWidget(
         child: ZoeStackedAvatarsTestUtils.createTestWidget(
           users: users,
@@ -161,10 +166,12 @@ void main() {
       );
 
       final container = tester.widget<SizedBox>(
-        find.descendant(
-          of: find.byType(ZoeStackedAvatarsWidget),
-          matching: find.byType(SizedBox),
-        ).first,
+        find
+            .descendant(
+              of: find.byType(ZoeStackedAvatarsWidget),
+              matching: find.byType(SizedBox),
+            )
+            .first,
       );
 
       // Width = _getPosition(displayCount) + avatarSize + 5
@@ -177,7 +184,7 @@ void main() {
       const avatarSize = 20.0;
       const spacing = -6.0;
       final users = ZoeStackedAvatarsTestUtils.createTestUsers(count: 3);
-      
+
       await tester.pumpMaterialWidget(
         child: ZoeStackedAvatarsTestUtils.createTestWidget(
           users: users,

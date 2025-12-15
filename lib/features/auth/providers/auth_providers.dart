@@ -3,8 +3,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/core/routing/app_router.dart';
 import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/users/models/user_model.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import '../../../common/providers/service_providers.dart';
-import '../models/auth_user_model.dart';
 import '../services/auth_service.dart';
 
 part 'auth_providers.g.dart';
@@ -21,7 +22,7 @@ class AuthState extends _$AuthState {
   late final AuthService _authService = ref.watch(authServiceProvider);
 
   @override
-  Future<AuthUserModel?> build() async {
+  Future<UserModel?> build() async {
     // Get the current auth state directly
     final firebaseUser = _authService.currentUser;
 
@@ -49,7 +50,7 @@ class AuthState extends _$AuthState {
         if (!ref.mounted) return;
 
         state = AsyncValue.data(
-          user == null ? null : AuthUserModel.fromFirebaseUser(user),
+          user == null ? null : UserModel.fromFirebaseUser(user),
         );
       },
       onError: (e, s) {
@@ -65,7 +66,7 @@ class AuthState extends _$AuthState {
     // Return initial state
     return firebaseUser == null
         ? null
-        : AuthUserModel.fromFirebaseUser(firebaseUser);
+        : UserModel.fromFirebaseUser(firebaseUser);
   }
 
   /// Sign up with email and password
@@ -81,7 +82,12 @@ class AuthState extends _$AuthState {
         password: password,
         displayName: name.trim(),
       );
-      // State will be updated by authStateChanges listener
+
+      final firebaseUser = _authService.currentUser;
+      if (firebaseUser != null) {
+        final newUser = UserModel.fromFirebaseUser(firebaseUser);
+        await ref.read(userListProvider.notifier).addUser(newUser);
+      }
     } catch (e, st) {
       _logger.severe('Sign up error: $e');
       state = AsyncValue.error(e, st);

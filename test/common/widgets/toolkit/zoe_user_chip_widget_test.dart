@@ -13,14 +13,11 @@ class ZoeUserChipTestUtils {
   /// Creates a test user model
   static UserModel createTestUser({
     String id = 'test_id',
+    String email = 'test@gmail.com',
     String name = 'Test User',
     String? avatar,
   }) {
-    return UserModel(
-      id: id,
-      name: name,
-      avatar: avatar,
-    );
+    return UserModel(id: id, email: email, name: name, avatar: avatar);
   }
 
   /// Creates a test wrapper for the ZoeUserChip widget
@@ -40,9 +37,7 @@ class ZoeUserChipTestUtils {
 void main() {
   group('ZoeUserChip Widget Tests -', () {
     testWidgets('renders user name chip correctly', (tester) async {
-      final user = ZoeUserChipTestUtils.createTestUser(
-        name: 'John Doe',
-      );
+      final user = ZoeUserChipTestUtils.createTestUser(name: 'John Doe');
 
       await tester.pumpMaterialWidget(
         child: ZoeUserChipTestUtils.createTestWidget(
@@ -64,14 +59,15 @@ void main() {
       final container = tester.widget<Container>(find.byType(Container).first);
       final decoration = container.decoration as BoxDecoration;
       expect(decoration.borderRadius, BorderRadius.circular(6));
-      expect(container.padding, const EdgeInsets.symmetric(horizontal: 5, vertical: 2));
+      expect(
+        container.padding,
+        const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+      );
       expect(container.margin, const EdgeInsets.only(right: 4));
     });
 
     testWidgets('renders user name with avatar chip correctly', (tester) async {
-      final user = ZoeUserChipTestUtils.createTestUser(
-        name: 'John Doe',
-      );
+      final user = ZoeUserChipTestUtils.createTestUser(name: 'John Doe');
 
       await tester.pumpMaterialWidget(
         child: ZoeUserChipTestUtils.createTestWidget(
@@ -91,7 +87,10 @@ void main() {
       final container = tester.widget<Container>(find.byType(Container).first);
       final decoration = container.decoration as BoxDecoration;
       expect(decoration.borderRadius, BorderRadius.circular(20));
-      expect(container.padding, const EdgeInsets.symmetric(horizontal: 5, vertical: 4));
+      expect(
+        container.padding,
+        const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+      );
       expect(container.margin, isNull);
     });
 
@@ -111,7 +110,10 @@ void main() {
       // Verify button style
       final iconButton = tester.widget<IconButton>(find.byType(IconButton));
       expect(iconButton.padding, EdgeInsets.zero);
-      expect(iconButton.constraints, const BoxConstraints(minWidth: 20, minHeight: 20));
+      expect(
+        iconButton.constraints,
+        const BoxConstraints(minWidth: 20, minHeight: 20),
+      );
       expect(iconButton.visualDensity, VisualDensity.compact);
 
       // Verify icon style
@@ -124,9 +126,7 @@ void main() {
     });
 
     testWidgets('applies correct colors based on user name', (tester) async {
-      final user = ZoeUserChipTestUtils.createTestUser(
-        name: 'John Doe',
-      );
+      final user = ZoeUserChipTestUtils.createTestUser(name: 'John Doe');
 
       await tester.pumpMaterialWidget(
         child: ZoeUserChipTestUtils.createTestWidget(

@@ -199,17 +199,3 @@ List<String> listOfUsersBySheetId(Ref ref, String sheetId) {
           ?.users ??
       [];
 }
-
-/// Provider to check if a sheet exists
-@riverpod
-bool sheetExists(Ref ref, String sheetId) {
-  final sheet = ref.watch(sheetProvider(sheetId));
-  return sheet != null;
-}
-
-/// Provider for sheets sorted by title (filtered by membership)
-@riverpod
-List<SheetModel> sortedSheets(Ref ref) {
-  final sheets = ref.watch(sheetListProvider);
-  return [...sheets]..sort((a, b) => a.title.compareTo(b.title));
-}
