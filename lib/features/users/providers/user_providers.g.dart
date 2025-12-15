@@ -103,7 +103,7 @@ final class LoggedInUserProvider
   }
 }
 
-String _$loggedInUserHash() => r'e3d78cd65434cef8d17c810c2457b3da6fc8502a';
+String _$loggedInUserHash() => r'b0250a555a99db0cc699cd1697343ee35e5d3a7f';
 
 /// Provider for the current user model
 
