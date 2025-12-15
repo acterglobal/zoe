@@ -80,15 +80,9 @@ class AuthState extends _$AuthState {
 
       final firebaseUser = authService.currentUser;
       if (firebaseUser != null) {
-        final newUser = UserModel(
-          id: firebaseUser.uid,
-          name: name.trim(),
-          email: email,
-          avatar: firebaseUser.photoURL,
-        );
+        final newUser = UserModel.fromFirebaseUser(firebaseUser);
         await ref.read(userListProvider.notifier).addUser(newUser);
       }
-      // State will be updated by authStateChanges listener
     } catch (e, st) {
       _logger.severe('Sign up error: $e');
       state = AsyncValue.error(e, st);

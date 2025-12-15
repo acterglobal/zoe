@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
@@ -23,23 +24,13 @@ class UserList extends _$UserList {
     _subscription?.cancel();
     _subscription = null;
 
-    final query = collection;
-
-    _subscription = query.snapshots().listen((snapshot) {
-      final items = snapshot.docs
-          .map((doc) {
-            return UserModel.fromJson(doc.data());
-          })
-          .whereType<UserModel>()
+    _subscription = collection.snapshots().listen((snapshot) {
+      state = snapshot.docs
+          .map((doc) => UserModel.fromJson(doc.data()))
           .toList();
-
-      state = items;
     });
 
-    ref.onDispose(() {
-      _subscription?.cancel();
-    });
-
+    ref.onDispose(() => _subscription?.cancel());
     return [];
   }
 
@@ -52,7 +43,7 @@ class UserList extends _$UserList {
   }
 
   Future<void> updateUserName(String userId, String name) async {
-    await collection.doc(userId).update({'name': name});
+    await collection.doc(userId).update({FirestoreFieldConstants.name: name});
   }
 
   Future<void> updateUser(String userId, UserModel updatedUser) async {
