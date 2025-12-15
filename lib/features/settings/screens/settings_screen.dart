@@ -78,14 +78,14 @@ class SettingsScreen extends ConsumerWidget {
 
   Widget _buildProfileSection(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
-    final authUSer = ref.watch(currentUserProvider).value;
+    final currentUser = ref.watch(currentUserProvider).value;
 
     return SettingCardWidget(
       title: l10n.profile,
       children: [
         SettingItemWidget(
-          title: authUSer?.name ?? l10n.guest,
-          subtitle: authUSer?.email ?? '',
+          title: currentUser?.name ?? l10n.guest,
+          subtitle: currentUser?.email ?? '',
           icon: Icons.person_rounded,
           iconColor: AppColors.brightMagentaColor,
           onTap: () => context.push(AppRoutes.settingsProfile.route),
