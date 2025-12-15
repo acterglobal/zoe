@@ -10,7 +10,7 @@ class MockUser extends Mock implements firebase_auth.User {}
 
 class MockUserCredential extends Mock implements firebase_auth.UserCredential {}
 
-class MockAuthState extends Mock implements AuthState {}
+class MockAuthState extends Mock implements Auth {}
 
 class MockFirebaseAuth extends Mock implements firebase_auth.FirebaseAuth {}
 

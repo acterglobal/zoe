@@ -54,9 +54,8 @@ class UserList extends _$UserList {
 /// Provider for the logged-in user ID
 @Riverpod(keepAlive: true)
 Future<String?> loggedInUser(Ref ref) async {
-  // Watch authStateProvider to get real-time auth state from Firebase
-  final authUser = await ref.watch(authStateProvider.future);
-
+  // Watch authProvider to get real-time auth state from Firebase
+  final authUser = ref.watch(authProvider);
   return authUser?.id;
 }
 

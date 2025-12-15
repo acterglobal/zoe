@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
-import 'package:zoe/common/utils/firestore_error_handler.dart';
+import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/events/models/events_model.dart';
@@ -32,9 +32,10 @@ class EventList extends _$EventList {
             .map((doc) => EventModel.fromJson(doc.data()))
             .toList();
       },
-      onError: (error, stackTrace) {
-        runFirestoreOperation(ref, () => throw error);
-      },
+      /*onError: (error, stackTrace) => runFirestoreOperation(
+        ref,
+        () => Error.throwWithStackTrace(error, stackTrace),
+      ),*/
     );
 
     ref.onDispose(() {

@@ -10,7 +10,7 @@ class AuthService {
   AuthService(this._firebaseAuth);
 
   /// Stream of authentication state changes
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges(); 
+  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
   /// Get the current user
   User? get currentUser => _firebaseAuth.currentUser;
@@ -22,7 +22,7 @@ class AuthService {
     String? displayName,
   }) async {
     try {
-      _logger.info('Attempting to sign up user'); 
+      _logger.info('Attempting to sign up user');
       final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -48,7 +48,7 @@ class AuthService {
   Future<UserCredential> signIn({
     required String email,
     required String password,
-  }) async { 
+  }) async {
     try {
       _logger.info('Attempting to sign in user');
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
@@ -72,8 +72,33 @@ class AuthService {
       _logger.info('Signing out user: ${_firebaseAuth.currentUser?.uid}');
       await _firebaseAuth.signOut();
       _logger.info('Successfully signed out');
+    } on FirebaseAuthException catch (e) {
+      _logger.warning('Signing out failed: ${e.code} - ${e.message}');
+      throw _handleAuthException(e);
     } catch (e) {
       _logger.severe('Error during sign out: $e');
+      rethrow;
+    }
+  }
+
+  /// Delete account of the current user
+  Future<void> deleteAccount() async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) {
+        throw FirebaseAuthException(
+          code: 'user-not-found',
+          message: 'No user is currently signed in.',
+        );
+      }
+      _logger.info('Deleting account of user: ${user.uid}');
+      await user.delete();
+      _logger.info('Successfully deleted account');
+    } on FirebaseAuthException catch (e) {
+      _logger.warning('Delete account failed: ${e.code} - ${e.message}');
+      throw _handleAuthException(e);
+    } catch (e) {
+      _logger.severe('Error during deleting account: $e');
       rethrow;
     }
   }
@@ -82,7 +107,9 @@ class AuthService {
   Exception _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'weak-password':
-        return Exception('The password is too weak. Please use a stronger password.');
+        return Exception(
+          'The password is too weak. Please use a stronger password.',
+        );
       case 'email-already-in-use':
         return Exception('An account already exists with this email.');
       case 'invalid-email':
@@ -98,7 +125,7 @@ class AuthService {
       case 'operation-not-allowed':
         return Exception('Email/password sign-in is not enabled.');
       default:
-        return Exception('Authentication failed: ${e.message}');
+        return Exception(e.message);
     }
   }
 }

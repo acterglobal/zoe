@@ -1,61 +1,31 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/core/preference_service/preferences_service.dart';
+import 'package:zoe/core/routing/app_router.dart';
+import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-import '../../../common/providers/service_providers.dart';
-import '../services/auth_service.dart';
+import 'package:zoe/common/providers/service_providers.dart';
+import 'package:zoe/features/auth/services/auth_service.dart';
 
 part 'auth_providers.g.dart';
 
 /// Main auth state provider with authentication management functionality
 @Riverpod(keepAlive: true)
-class AuthState extends _$AuthState {
+class Auth extends _$Auth {
   final Logger _logger = Logger('AuthState');
 
+  late final PreferencesService _prefsService = ref.read(
+    preferencesServiceProvider,
+  );
+
+  late final AuthService _authService = ref.watch(authServiceProvider);
+
   @override
-  Future<UserModel?> build() async {
-    final authService = ref.watch(authServiceProvider);
-    final prefsService = ref.watch(preferencesServiceProvider);
-
+  UserModel? build() {
     // Get the current auth state directly
-    final firebaseUser = authService.currentUser;
-
-    // Update preferences based on current state
-    if (firebaseUser != null) {
-      await prefsService.setLoginUserId(firebaseUser.uid);
-      _logger.info('Stored user ID in preferences: ${firebaseUser.uid}');
-    } else {
-      await prefsService.clearLoginUserId();
-      _logger.info('Cleared user ID from preferences.');
-    }
-
-    // Listen for future auth state changes
-    final subscription = authService.authStateChanges.listen(
-      (user) async {
-        if (user != null) {
-          await prefsService.setLoginUserId(user.uid);
-          _logger.info('Stored user ID in preferences: ${user.uid}');
-        } else {
-          await prefsService.clearLoginUserId();
-          _logger.info('Cleared user ID from preferences.');
-        }
-
-        // Check if provider is still mounted before updating state
-        if (!ref.mounted) return;
-
-        state = AsyncValue.data(
-          user == null ? null : UserModel.fromFirebaseUser(user),
-        );
-      },
-      onError: (e, s) {
-        _logger.severe('Auth state stream error: $e');
-        // Check if provider is still mounted before updating state
-        if (!ref.mounted) return;
-        state = AsyncValue.error(e, s);
-      },
-    );
-
-    ref.onDispose(() => subscription.cancel());
+    final firebaseUser = _authService.currentUser;
 
     // Return initial state
     return firebaseUser == null
@@ -69,37 +39,38 @@ class AuthState extends _$AuthState {
     required String email,
     required String password,
   }) async {
-    state = const AsyncValue.loading();
     try {
-      final authService = ref.read(authServiceProvider);
-      await authService.signUp(
+      await _authService.signUp(
         email: email,
         password: password,
         displayName: name.trim(),
       );
 
-      final firebaseUser = authService.currentUser;
-      if (firebaseUser != null) {
-        final newUser = UserModel.fromFirebaseUser(firebaseUser);
-        await ref.read(userListProvider.notifier).addUser(newUser);
-      }
-    } catch (e, st) {
+      final firebaseUser = _authService.currentUser;
+      if (firebaseUser == null) return;
+      final user = UserModel.fromFirebaseUser(firebaseUser);
+      await ref.read(userListProvider.notifier).addUser(user);
+      await _prefsService.setLoginUserId(user.id);
+      state = user;
+      if (ref.mounted) ref.read(routerProvider).go(AppRoutes.home.route);
+    } on FirebaseAuthException catch (e) {
       _logger.severe('Sign up error: $e');
-      state = AsyncValue.error(e, st);
       rethrow;
     }
   }
 
   /// Sign in with email and password
   Future<void> signIn({required String email, required String password}) async {
-    state = const AsyncValue.loading();
     try {
-      final authService = ref.read(authServiceProvider);
-      await authService.signIn(email: email, password: password);
-      // State will be updated by authStateChanges listener
-    } catch (e, st) {
+      await _authService.signIn(email: email, password: password);
+      final firebaseUser = _authService.currentUser;
+      if (firebaseUser == null) return;
+      final user = UserModel.fromFirebaseUser(firebaseUser);
+      await _prefsService.setLoginUserId(user.id);
+      state = user;
+      if (ref.mounted) ref.read(routerProvider).go(AppRoutes.home.route);
+    } on FirebaseAuthException catch (e) {
       _logger.severe('Sign in error: $e');
-      state = AsyncValue.error(e, st);
       rethrow;
     }
   }
@@ -107,11 +78,30 @@ class AuthState extends _$AuthState {
   /// Sign out the current user
   Future<void> signOut() async {
     try {
-      final authService = ref.read(authServiceProvider);
-      await authService.signOut();
-      // State will be updated by authStateChanges listener
+      await _authService.signOut();
+      await _prefsService.clearLoginUserId();
+      state = null;
+      if (!ref.mounted) return;
+      ref.read(routerProvider).go(AppRoutes.welcome.route);
     } catch (e) {
       _logger.severe('Sign out error: $e');
+      rethrow;
+    }
+  }
+
+  /// Delete account of the current user
+  Future<void> deleteAccount() async {
+    try {
+      final userId = _authService.currentUser?.uid;
+      if (userId == null) return;
+      await ref.read(userListProvider.notifier).deleteUser(userId);
+      await _authService.deleteAccount();
+      await _prefsService.clearLoginUserId();
+      state = null;
+      if (!ref.mounted) return;
+      ref.read(routerProvider).go(AppRoutes.welcome.route);
+    } catch (e) {
+      _logger.severe('Delete account error: $e');
       rethrow;
     }
   }

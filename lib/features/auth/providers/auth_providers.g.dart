@@ -10,48 +10,55 @@ part of 'auth_providers.dart';
 // ignore_for_file: type=lint, type=warning
 /// Main auth state provider with authentication management functionality
 
-@ProviderFor(AuthState)
-const authStateProvider = AuthStateProvider._();
+@ProviderFor(Auth)
+const authProvider = AuthProvider._();
 
 /// Main auth state provider with authentication management functionality
-final class AuthStateProvider
-    extends $AsyncNotifierProvider<AuthState, UserModel?> {
+final class AuthProvider extends $NotifierProvider<Auth, UserModel?> {
   /// Main auth state provider with authentication management functionality
-  const AuthStateProvider._()
+  const AuthProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'authStateProvider',
+        name: r'authProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$authStateHash();
+  String debugGetCreateSourceHash() => _$authHash();
 
   @$internal
   @override
-  AuthState create() => AuthState();
+  Auth create() => Auth();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UserModel? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UserModel?>(value),
+    );
+  }
 }
 
-String _$authStateHash() => r'be36c54578b3ef93fc080e99b969d0acdbb9725a';
+String _$authHash() => r'80db7fd3d91dea03f8ef64854b638106011f3e19';
 
 /// Main auth state provider with authentication management functionality
 
-abstract class _$AuthState extends $AsyncNotifier<UserModel?> {
-  FutureOr<UserModel?> build();
+abstract class _$Auth extends $Notifier<UserModel?> {
+  UserModel? build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<AsyncValue<UserModel?>, UserModel?>;
+    final ref = this.ref as $Ref<UserModel?, UserModel?>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<UserModel?>, UserModel?>,
-              AsyncValue<UserModel?>,
+              AnyNotifier<UserModel?, UserModel?>,
+              UserModel?,
               Object?,
               Object?
             >;
