@@ -91,9 +91,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       title: ZoeAppBar(
         title: L10n.of(context).signUp,
         showBackButton: true,
-        onBackPressed: () {
-          Navigator.pop(context);
-        },
+        onBackPressed: () => context.pop(),
       ),
     );
   }
@@ -253,7 +251,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       children: [
         Text(l10n.alreadyHaveAccount, style: theme.textTheme.bodyMedium),
         TextButton(
-          onPressed: () => context.push(AppRoutes.login.route),
+          onPressed: () => context.replace(AppRoutes.login.route),
           child: Text(
             l10n.signIn,
             style: theme.textTheme.bodyMedium?.copyWith(

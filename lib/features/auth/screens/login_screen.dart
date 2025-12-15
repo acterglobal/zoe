@@ -84,9 +84,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       title: ZoeAppBar(
         title: L10n.of(context).signIn,
         showBackButton: true,
-        onBackPressed: () {
-          context.push(AppRoutes.welcome.route);
-        },
+        onBackPressed: () => context.pop(),
       ),
     );
   }
@@ -200,7 +198,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       children: [
         Text(l10n.dontHaveAccount, style: theme.textTheme.bodyMedium),
         TextButton(
-          onPressed: () => context.push(AppRoutes.signup.route),
+          onPressed: () => context.replace(AppRoutes.signup.route),
           child: Text(
             l10n.signUp,
             style: theme.textTheme.bodyMedium?.copyWith(
