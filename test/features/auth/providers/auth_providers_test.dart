@@ -55,8 +55,8 @@ void main() {
     });
 
     group('AuthState', () {
-      test('initializes with null (unauthenticated) when no user', () async {
-        final state = await container.read(authStateProvider.future);
+      test('initializes with null (unauthenticated) when no user', () {
+        final state = container.read(authProvider);
         expect(state, isNull);
       });
 
@@ -75,7 +75,7 @@ void main() {
           ],
         );
 
-        final state = await newContainer.read(authStateProvider.future);
+        final state = newContainer.read(authProvider);
         expect(state, isNotNull);
         expect(state?.id, 'test-uid');
         expect(state?.email, 'test@example.com');
@@ -89,7 +89,7 @@ void main() {
           ),
         ).thenAnswer((_) async => mockUserCredential);
 
-        final notifier = container.read(authStateProvider.notifier);
+        final notifier = container.read(authProvider.notifier);
         await notifier.signIn(
           email: 'test@example.com',
           password: 'password123',
@@ -114,7 +114,7 @@ void main() {
           ),
         ).thenAnswer((_) async => mockUserCredential);
 
-        final notifier = container.read(authStateProvider.notifier);
+        final notifier = container.read(authProvider.notifier);
         await notifier.signUp(
           email: 'test@example.com',
           password: 'password123',
@@ -138,7 +138,7 @@ void main() {
           ),
         ).thenThrow(Exception('Invalid credentials'));
 
-        final notifier = container.read(authStateProvider.notifier);
+        final notifier = container.read(authProvider.notifier);
 
         expect(
           () => notifier.signIn(
@@ -148,8 +148,8 @@ void main() {
           throwsA(isA<Exception>()),
         );
 
-        final asyncState = container.read(authStateProvider);
-        expect(asyncState.hasError, isTrue);
+        final state = container.read(authProvider);
+        expect(state, isNull);
       });
 
       test('sets error state on sign up error', () async {
@@ -161,7 +161,7 @@ void main() {
           ),
         ).thenThrow(Exception('Email already in use'));
 
-        final notifier = container.read(authStateProvider.notifier);
+        final notifier = container.read(authProvider.notifier);
 
         expect(
           () => notifier.signUp(
@@ -172,14 +172,14 @@ void main() {
           throwsA(isA<Exception>()),
         );
 
-        final asyncState = container.read(authStateProvider);
-        expect(asyncState.hasError, isTrue);
+        final state = container.read(authProvider);
+        expect(state, isNull);
       });
 
       test('calls sign out on auth service', () async {
         when(() => mockAuthService.signOut()).thenAnswer((_) async => {});
 
-        final notifier = container.read(authStateProvider.notifier);
+        final notifier = container.read(authProvider.notifier);
         await notifier.signOut();
 
         verify(() => mockAuthService.signOut()).called(1);
@@ -202,7 +202,7 @@ void main() {
         );
 
         // Initial state - wait for build to complete
-        final initialState = await newContainer.read(authStateProvider.future);
+        final initialState = newContainer.read(authProvider);
         expect(initialState, isNull);
 
         // Emit authenticated user
@@ -210,19 +210,17 @@ void main() {
         await Future.delayed(const Duration(milliseconds: 50));
 
         // State should update to authenticated
-        final authState = newContainer.read(authStateProvider);
-        expect(authState.hasValue, isTrue);
-        expect(authState.value, isNotNull);
-        expect(authState.value?.id, 'test-uid');
+        final authState = newContainer.read(authProvider);
+        expect(authState, isNotNull);
+        expect(authState?.id, 'test-uid');
 
         // Emit null (sign out)
         controller.add(null);
         await Future.delayed(const Duration(milliseconds: 50));
 
         // State should update to unauthenticated
-        final signedOutState = newContainer.read(authStateProvider);
-        expect(signedOutState.hasValue, isTrue);
-        expect(signedOutState.value, isNull);
+        final signedOutState = newContainer.read(authProvider);
+        expect(signedOutState, isNull);
 
         await controller.close();
       });
@@ -230,7 +228,7 @@ void main() {
 
     group('isAuthenticated check', () {
       test('returns false when unauthenticated', () async {
-        final user = await container.read(authStateProvider.future);
+        final user = container.read(authProvider);
         final isAuth = user != null;
         expect(isAuth, isFalse);
       });
@@ -250,15 +248,15 @@ void main() {
           ],
         );
 
-        final user = await newContainer.read(authStateProvider.future);
+        final user = newContainer.read(authProvider);
         final isAuth = user != null;
         expect(isAuth, isTrue);
       });
     });
 
     group('currentUser check', () {
-      test('returns null when unauthenticated', () async {
-        final user = await container.read(authStateProvider.future);
+      test('returns null when unauthenticated', () {
+        final user = container.read(authProvider);
         expect(user, isNull);
       });
 
@@ -277,7 +275,7 @@ void main() {
           ],
         );
 
-        final user = await newContainer.read(authStateProvider.future);
+        final user = newContainer.read(authProvider);
         expect(user, isNotNull);
         expect(user?.id, 'test-uid');
         expect(user?.email, 'test@example.com');
@@ -302,7 +300,7 @@ void main() {
           ],
         );
 
-        final user = await newContainer.read(authStateProvider.future);
+        final user = newContainer.read(authProvider);
         expect(user?.name, isNull);
       });
 
@@ -322,7 +320,7 @@ void main() {
           ],
         );
 
-        final user = await newContainer.read(authStateProvider.future);
+        final user = newContainer.read(authProvider);
         expect(user?.email, '');
       });
 
@@ -335,7 +333,7 @@ void main() {
           ),
         ).thenAnswer((_) async => mockUserCredential);
 
-        final notifier = container.read(authStateProvider.notifier);
+        final notifier = container.read(authProvider.notifier);
         await notifier.signUp(
           email: 'test@example.com',
           password: 'password123',

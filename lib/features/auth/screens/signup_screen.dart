@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,7 +10,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-import '../../../common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
@@ -26,6 +27,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  bool _isLoading = false;
   String? _errorMessage;
 
   @override
@@ -39,18 +41,17 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   Future<void> _handleSignUp() async {
     // Validate form first
-    if (_formKey.currentState?.validate() == false) {
-      return;
-    }
+    if (_formKey.currentState?.validate() == false) return;
 
-    // Clear any previous errors
+    // Clear any previous errors and set loading state
     setState(() {
+      _isLoading = true;
       _errorMessage = null;
     });
 
     try {
       await ref
-          .read(authStateProvider.notifier)
+          .read(authProvider.notifier)
           .signUp(
             name: _nameController.text.trim(),
             email: _emailController.text.trim(),
@@ -58,72 +59,78 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           );
       if (!mounted) return;
       context.go(AppRoutes.home.route);
+    } on FirebaseAuthException catch (e) {
+      _errorMessage = e.message ?? 'Sign up error';
     } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _errorMessage = e.toString().replaceAll('Exception: ', '');
-      });
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authStateProvider);
-    final isLoading = authState.isLoading;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: ZoeAppBar(
-          title: L10n.of(context).signUp,
-          showBackButton: true,
-          onBackPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      appBar: _buildAppBar(),
       body: AnimatedBackgroundWidget(
         child: SafeArea(
           child: MaxWidthWidget(
             isScrollable: true,
             padding: const EdgeInsets.all(24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildTitle(context),
-                  const SizedBox(height: 32),
-                  _buildNameField(context, isLoading),
-                  const SizedBox(height: 16),
-                  _buildEmailField(context, isLoading),
-                  const SizedBox(height: 16),
-                  _buildPasswordField(context, isLoading),
-                  const SizedBox(height: 16),
-                  _buildConfirmPasswordField(context, isLoading),
-                  const SizedBox(height: 8),
-                  if (_errorMessage != null) ...[
-                    const SizedBox(height: 8),
-                    _buildErrorMessage(context, _errorMessage!),
-                  ],
-                  const SizedBox(height: 24),
-                  _buildSignUpButton(context, isLoading),
-                  const SizedBox(height: 16),
-                  _buildSignInLink(context),
-                ],
-              ),
-            ),
+            child: _buildBody(),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildTitle(BuildContext context) {
+  AppBar _buildAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: ZoeAppBar(
+        title: L10n.of(context).signUp,
+        showBackButton: true,
+        onBackPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  Widget _buildBody() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildTitle(),
+          const SizedBox(height: 32),
+          _buildNameField(),
+          const SizedBox(height: 16),
+          _buildEmailField(),
+          const SizedBox(height: 16),
+          _buildPasswordField(),
+          const SizedBox(height: 16),
+          _buildConfirmPasswordField(),
+          const SizedBox(height: 8),
+          if (_errorMessage != null) ...[
+            const SizedBox(height: 8),
+            _buildErrorMessage(),
+          ],
+          const SizedBox(height: 24),
+          _buildSignUpButton(),
+          const SizedBox(height: 16),
+          _buildSignInLink(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTitle() {
     return Text(
       L10n.of(context).createAccount,
       style: Theme.of(
@@ -133,7 +140,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     );
   }
 
-  Widget _buildNameField(BuildContext context, bool isLoading) {
+  Widget _buildNameField() {
     final l10n = L10n.of(context);
 
     return AnimatedTextField(
@@ -143,11 +150,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       keyboardType: TextInputType.name,
       textInputAction: TextInputAction.next,
       validator: (value) => ValidationUtils.validateName(context, value),
-      enabled: !isLoading,
+      enabled: !_isLoading,
     );
   }
 
-  Widget _buildEmailField(BuildContext context, bool isLoading) {
+  Widget _buildEmailField() {
     final l10n = L10n.of(context);
 
     return AnimatedTextField(
@@ -157,11 +164,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       validator: (value) => ValidationUtils.validateEmail(context, value),
-      enabled: !isLoading,
+      enabled: !_isLoading,
     );
   }
 
-  Widget _buildPasswordField(BuildContext context, bool isLoading) {
+  Widget _buildPasswordField() {
     final l10n = L10n.of(context);
 
     return AnimatedTextField(
@@ -171,7 +178,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       obscureText: _obscurePassword,
       textInputAction: TextInputAction.next,
       validator: (value) => ValidationUtils.validatePassword(context, value),
-      enabled: !isLoading,
+      enabled: !_isLoading,
       suffixIcon: IconButton(
         icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
         onPressed: () {
@@ -183,7 +190,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     );
   }
 
-  Widget _buildConfirmPasswordField(BuildContext context, bool isLoading) {
+  Widget _buildConfirmPasswordField() {
     final l10n = L10n.of(context);
 
     return AnimatedTextField(
@@ -197,7 +204,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         value,
         _passwordController.text,
       ),
-      enabled: !isLoading,
+      enabled: !_isLoading,
       suffixIcon: IconButton(
         icon: Icon(
           _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
@@ -212,7 +219,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     );
   }
 
-  Widget _buildErrorMessage(BuildContext context, String errorMessage) {
+  Widget _buildErrorMessage() {
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(12),
@@ -221,26 +228,26 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
-        errorMessage,
+        _errorMessage!,
         style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white),
         textAlign: TextAlign.center,
       ),
     );
   }
 
-  Widget _buildSignUpButton(BuildContext context, bool isLoading) {
+  Widget _buildSignUpButton() {
     final l10n = L10n.of(context);
     return SizedBox(
       width: double.infinity,
       child: ZoePrimaryButton(
-        text: isLoading ? l10n.creatingAccount : l10n.signUp,
-        isLoading: isLoading,
+        text: _isLoading ? l10n.creatingAccount : l10n.signUp,
+        isLoading: _isLoading,
         onPressed: _handleSignUp,
       ),
     );
   }
 
-  Widget _buildSignInLink(BuildContext context) {
+  Widget _buildSignInLink() {
     final l10n = L10n.of(context);
     final theme = Theme.of(context);
     return Row(

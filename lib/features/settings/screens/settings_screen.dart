@@ -203,7 +203,7 @@ class SettingsScreen extends ConsumerWidget {
 
   Widget _buildAccountSection(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
-    final authController = ref.read(authStateProvider.notifier);
+    final authController = ref.read(authProvider.notifier);
 
     return SettingCardWidget(
       title: L10n.of(context).manageAccount,
