@@ -12,7 +12,7 @@ import 'package:zoe/features/polls/screens/polls_list_screen.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/polls/widgets/poll_list_widget.dart';
 
-import '../../../test-utils/mock_searchValue.dart';
+import '../../../test-utils/mock_search_value.dart';
 import '../../../test-utils/test_utils.dart';
 
 void main() {

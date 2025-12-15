@@ -356,7 +356,7 @@ void main() {
         
         // Test case 3: Query validation
         String validQuery = 'valid search';
-        bool isValid = validQuery.isNotEmpty && validQuery.length > 0;
+        bool isValid = validQuery.isNotEmpty;
         expect(isValid, isTrue);
         
         // Test case 4: Search result filtering logic

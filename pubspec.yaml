@@ -109,6 +109,10 @@ dependencies:
   cloud_firestore: ^6.1.0
   fake_cloud_firestore: ^4.0.0
 
+  # Platform Interface
+  plugin_platform_interface: ^2.1.8
+  image_picker_platform_interface: ^2.11.1
+
 # Added cause; without this, it gives a 'Terminating app due to uncaught exception 'NSInvalidArgumentException'' error on macOS.
 dependency_overrides:
   flutter_quill:

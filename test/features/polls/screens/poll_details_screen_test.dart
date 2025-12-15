@@ -15,7 +15,7 @@ import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/screens/poll_details_screen.dart';
 import 'package:zoe/features/polls/widgets/poll_widget.dart';
-import '../../../test-utils/mock_searchValue.dart';
+import '../../../test-utils/mock_search_value.dart';
 import '../../../test-utils/test_utils.dart';
 
 void main() {

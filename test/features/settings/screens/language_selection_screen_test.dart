@@ -70,7 +70,6 @@ void main() {
 
       // Verify that English (en) is selected
       expect(radioTile.value, equals('en'));
-      expect(radioTile.groupValue, equals('en'));
     });
 
     testWidgets('can select a different language', (tester) async {

@@ -13,7 +13,6 @@ import 'package:yaml/yaml.dart';
 
 import 'builder.dart';
 import 'environment.dart';
-import 'rustup.dart';
 
 final _log = Logger('options');
 

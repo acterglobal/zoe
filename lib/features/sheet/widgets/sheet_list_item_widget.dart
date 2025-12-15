@@ -10,6 +10,7 @@ import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
 class SheetListItemWidget extends ConsumerWidget {
   final String sheetId;
   final bool isCompact;
+
   const SheetListItemWidget({
     super.key,
     required this.sheetId,
@@ -28,7 +29,7 @@ class SheetListItemWidget extends ConsumerWidget {
 
     return GestureDetector(
       onTap: () {
-        if (context.canPop()) context.pop();
+        if (context.canPop() && isCompact) context.pop();
         context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id));
       },
       child: child,
@@ -86,7 +87,7 @@ class SheetListItemWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildContentSection(dynamic sheet, ThemeData theme) {
+  Widget _buildContentSection(SheetModel sheet, ThemeData theme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
