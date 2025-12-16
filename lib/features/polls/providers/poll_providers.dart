@@ -294,10 +294,10 @@ class ActivePollsWithPendingResponse extends _$ActivePollsWithPendingResponse {
   @override
   List<PollModel> build() {
     final activePollList = ref.watch(activePollListProvider);
-    final currentUser = ref.watch(currentUserProvider);
+    final currentUserAsync = ref.watch(currentUserProvider);
 
-    if (currentUser == null) return [];
-    final currentUserId = currentUser.id;
+    if (currentUserAsync.value == null) return [];
+    final currentUserId = currentUserAsync.value!.id;
 
     return activePollList.where((poll) {
       final hasVoted = poll.options.any(

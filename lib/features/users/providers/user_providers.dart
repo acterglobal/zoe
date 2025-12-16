@@ -51,12 +51,20 @@ class UserList extends _$UserList {
   }
 }
 
+/// Provider for the logged-in user ID
+@Riverpod(keepAlive: true)
+Future<String?> loggedInUser(Ref ref) async {
+  // Watch authProvider to get real-time auth state from Firebase
+  final authUser = ref.watch(authProvider);
+  return authUser?.id;
+}
+
 /// Provider for the current user model
 @riverpod
-UserModel? currentUser(Ref ref) {
-  final authUser = ref.watch(authProvider);
-  if (authUser == null) return null;
-  return ref.watch(getUserByIdProvider(authUser.id));
+Future<UserModel?> currentUser(Ref ref) async {
+  final userId = await ref.watch(loggedInUserProvider.future);
+  if (userId == null) return null;
+  return ref.watch(getUserByIdProvider(userId));
 }
 
 /// Provider for users in a specific sheet
@@ -92,11 +100,17 @@ List<String> userIdsFromUserModels(Ref ref, List<UserModel> userModels) {
 /// Provider for getting user display name
 @riverpod
 String userDisplayName(Ref ref, String userId) {
-  final currentUserId = ref.watch(currentUserProvider)?.id ?? '';
+  final currentUserId = ref.watch(loggedInUserProvider).value ?? '';
   final user = ref.watch(getUserByIdProvider(userId));
 
-  if (currentUserId == userId) return 'You';
-  if (user != null && user.name.isNotEmpty) return user.name;
+  if (currentUserId == userId) {
+    return 'You';
+  }
+
+  if (user != null && user.name.isNotEmpty) {
+    return user.name;
+  }
+
   return userId;
 }
 

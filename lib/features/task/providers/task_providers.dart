@@ -48,7 +48,7 @@ class TaskList extends _$TaskList {
     required String sheetId,
     int? orderIndex,
   }) async {
-    final userId = ref.read(currentUserProvider)?.id;
+    final userId = ref.read(loggedInUserProvider).value;
     if (userId == null) return;
 
     // Single pass optimization: collect parent tasks and determine new orderIndex

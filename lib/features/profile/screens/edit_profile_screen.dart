@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/validation_utils.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/error_state_widget.dart';
+import 'package:zoe/common/widgets/state_widgets/loading_state_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
@@ -31,7 +33,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final user = ref.read(currentUserProvider);
+      final user = ref.read(currentUserProvider).value;
       if (user != null) {
         _nameController.text = user.name;
         _bioController.text = user.bio ?? '';
@@ -48,15 +50,20 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(currentUserProvider);
-
-    return Scaffold(
-      appBar: _buildAppBar(context, user),
-      body: SafeArea(
-        child: user == null
-            ? Center(child: Text(L10n.of(context).userNotFound))
-            : _buildBody(user),
-      ),
+    final userAsync = ref.watch(currentUserProvider);
+    return userAsync.when(
+      data: (user) {
+        return Scaffold(
+          appBar: _buildAppBar(context, user),
+          body: SafeArea(
+            child: user == null
+                ? Center(child: Text(L10n.of(context).userNotFound))
+                : _buildBody(user),
+          ),
+        );
+      },
+      loading: () => const LoadingStateWidget(),
+      error: (error, stackTrace) => ErrorStateWidget(message: error.toString()),
     );
   }
 

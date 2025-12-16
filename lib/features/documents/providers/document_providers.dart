@@ -21,8 +21,8 @@ class DocumentList extends _$DocumentList {
     required String filePath,
     int? orderIndex,
   }) {
-    final userId = ref.read(currentUserProvider)?.id;
-    if (userId == null) return;
+    final userId = ref.read(loggedInUserProvider).value;
+    if(userId == null) return;
 
     // Extract filename without extension for title
     final extractedTitle = title.contains('.')
@@ -94,13 +94,13 @@ List<DocumentModel> documentListByParent(Ref ref, String parentId) {
 List<DocumentModel> documentListSearch(Ref ref) {
   final allDocuments = ref.watch(documentListProvider);
   final searchValue = ref.watch(searchValueProvider);
-  final currentUser = ref.watch(currentUserProvider);
+  final currentUserId = ref.watch(loggedInUserProvider).value;
 
-  if (currentUser == null || currentUser.id.isEmpty) return [];
+  if (currentUserId == null || currentUserId.isEmpty) return [];
 
   final memberDocs = allDocuments.where((d) {
     final sheet = ref.watch(sheetProvider(d.sheetId));
-    return sheet?.users.contains(currentUser.id) == true;
+    return sheet?.users.contains(currentUserId) == true;
   });
 
   if (searchValue.isEmpty) return memberDocs.toList();

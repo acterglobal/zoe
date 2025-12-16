@@ -31,7 +31,10 @@ class LinkList extends _$LinkList {
   void updateLinkUrl(String linkId, String url) {
     state = [
       for (final link in state)
-        if (link.id == linkId) link.copyWith(url: url) else link,
+        if (link.id == linkId)
+          link.copyWith(url: url)
+        else
+          link,
     ];
   }
 
@@ -69,21 +72,18 @@ List<LinkModel> linkByParent(Ref ref, String parentId) {
 List<LinkModel> linkListSearch(Ref ref) {
   final allLinks = ref.watch(linkListProvider);
   final searchValue = ref.watch(searchValueProvider);
-  final currentUser = ref.watch(currentUserProvider);
+  final currentUserId = ref.watch(loggedInUserProvider).value;
 
-  if (currentUser == null || currentUser.id.isEmpty) return [];
+  if (currentUserId == null || currentUserId.isEmpty) return [];
 
   final memberLinks = allLinks.where((l) {
     final sheet = ref.watch(sheetProvider(l.sheetId));
-    return sheet?.users.contains(currentUser.id) == true;
+    return sheet?.users.contains(currentUserId) == true;
   });
 
   if (searchValue.isEmpty) return memberLinks.toList();
   return memberLinks
-      .where(
-        (l) =>
-            l.title.toLowerCase().contains(searchValue.toLowerCase()) ||
-            l.url.toLowerCase().contains(searchValue.toLowerCase()),
-      )
+      .where((l) => l.title.toLowerCase().contains(searchValue.toLowerCase()) ||
+                    l.url.toLowerCase().contains(searchValue.toLowerCase()))
       .toList();
 }

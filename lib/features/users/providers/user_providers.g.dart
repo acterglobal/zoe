@@ -67,6 +67,44 @@ abstract class _$UserList extends $Notifier<List<UserModel>> {
   }
 }
 
+/// Provider for the logged-in user ID
+
+@ProviderFor(loggedInUser)
+const loggedInUserProvider = LoggedInUserProvider._();
+
+/// Provider for the logged-in user ID
+
+final class LoggedInUserProvider
+    extends $FunctionalProvider<AsyncValue<String?>, String?, FutureOr<String?>>
+    with $FutureModifier<String?>, $FutureProvider<String?> {
+  /// Provider for the logged-in user ID
+  const LoggedInUserProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'loggedInUserProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$loggedInUserHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<String?> create(Ref ref) {
+    return loggedInUser(ref);
+  }
+}
+
+String _$loggedInUserHash() => r'b0250a555a99db0cc699cd1697343ee35e5d3a7f';
+
 /// Provider for the current user model
 
 @ProviderFor(currentUser)
@@ -75,8 +113,13 @@ const currentUserProvider = CurrentUserProvider._();
 /// Provider for the current user model
 
 final class CurrentUserProvider
-    extends $FunctionalProvider<UserModel?, UserModel?, UserModel?>
-    with $Provider<UserModel?> {
+    extends
+        $FunctionalProvider<
+          AsyncValue<UserModel?>,
+          UserModel?,
+          FutureOr<UserModel?>
+        >
+    with $FutureModifier<UserModel?>, $FutureProvider<UserModel?> {
   /// Provider for the current user model
   const CurrentUserProvider._()
     : super(
@@ -94,24 +137,16 @@ final class CurrentUserProvider
 
   @$internal
   @override
-  $ProviderElement<UserModel?> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<UserModel?> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
   @override
-  UserModel? create(Ref ref) {
+  FutureOr<UserModel?> create(Ref ref) {
     return currentUser(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(UserModel? value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<UserModel?>(value),
-    );
   }
 }
 
-String _$currentUserHash() => r'75cd2615b59d8f3dafe271b78c4766c373305d49';
+String _$currentUserHash() => r'7ec33880494c002ad1428c0c641e2287c754010f';
 
 /// Provider for users in a specific sheet
 

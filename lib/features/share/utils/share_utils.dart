@@ -63,7 +63,7 @@ class ShareUtils {
     final sheet = ref.watch(sheetProvider(parentId));
     if (sheet == null) return buffer.toString();
 
-    final userName = ref.watch(currentUserProvider)?.name;
+    final userName = ref.watch(currentUserProvider).value?.name;
 
     final title = sheet.title;
     final description = sheet.description?.plainText;

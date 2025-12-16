@@ -104,7 +104,7 @@ void addNewTextContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
-  final userId = ref.read(currentUserProvider)?.id;
+  final userId = ref.read(loggedInUserProvider).value;
   if (userId == null) return;
 
   final orderIndex = _getNewOrderIndex(
@@ -130,7 +130,7 @@ void addNewEventContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
-  final userId = ref.read(currentUserProvider)?.id;
+  final userId = ref.read(loggedInUserProvider).value;
   if (userId == null) return;
 
   final orderIndex = _getNewOrderIndex(
@@ -158,7 +158,7 @@ void addNewBulletedListContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
-  final userId = ref.read(currentUserProvider)?.id;
+  final userId = ref.read(loggedInUserProvider).value;
   if (userId == null) return;
 
   final orderIndex = _getNewOrderIndex(
@@ -188,7 +188,7 @@ void addNewTaskListContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
-  final userId = ref.read(currentUserProvider)?.id;
+  final userId = ref.read(loggedInUserProvider).value;
   if (userId == null) return;
 
   final orderIndex = _getNewOrderIndex(
@@ -219,7 +219,7 @@ void addNewLinkContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
-  final userId = ref.read(currentUserProvider)?.id;
+  final userId = ref.read(loggedInUserProvider).value;
   if (userId == null) return;
 
   final orderIndex = _getNewOrderIndex(
@@ -245,7 +245,7 @@ void addNewDocumentContent({
   required String sheetId,
   bool addAtTop = false,
 }) {
-  final userId = ref.read(currentUserProvider)?.id;
+  final userId = ref.read(loggedInUserProvider).value;
   if (userId == null) return;
 
   final orderIndex = _getNewOrderIndex(
@@ -271,7 +271,7 @@ Future<void> addNewPollContent({
   required String sheetId,
   bool addAtTop = false,
 }) async {
-  final userId = ref.read(currentUserProvider)?.id;
+  final userId = ref.read(loggedInUserProvider).value;
   if (userId == null) return;
 
   final orderIndex = _getNewOrderIndex(

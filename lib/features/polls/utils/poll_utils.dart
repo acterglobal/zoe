@@ -78,12 +78,8 @@ class PollUtils {
 
   /// Get a color from option ID
   static Color getColorFromOptionId(String optionId, PollModel poll) {
-    final optionIndex = poll.options.indexWhere(
-      (option) => option.id == optionId,
-    );
-    return optionIndex >= 0
-        ? getColorFromOptionIndex(optionIndex)
-        : Colors.grey;
+    final optionIndex = poll.options.indexWhere((option) => option.id == optionId);
+    return optionIndex >= 0 ? getColorFromOptionIndex(optionIndex) : Colors.grey;
   }
 
   /// Get the maximum number of votes from all poll options
@@ -112,15 +108,11 @@ class PollUtils {
   }
 
   /// Check if a user has voted on a poll option
-  static bool isUserVoted(
-    PollModel poll,
-    PollOption pollOption,
-    WidgetRef ref,
-  ) {
-    final currentUser = ref.watch(currentUserProvider);
+  static bool isUserVoted(PollModel poll, PollOption pollOption, WidgetRef ref) {
+    final currentUserId = ref.watch(loggedInUserProvider).value;
     final isVoted =
-        currentUser != null &&
-        pollOption.votes.any((vote) => vote.userId == currentUser.id);
+        currentUserId != null &&
+        pollOption.votes.any((vote) => vote.userId == currentUserId); 
     return isVoted;
   }
 }

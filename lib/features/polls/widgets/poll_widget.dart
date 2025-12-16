@@ -186,8 +186,8 @@ class PollWidget extends ConsumerWidget {
         GestureDetector(
           onTap: () {
             if (PollUtils.isActive(poll)) {
-              final currentUser = ref.read(currentUserProvider);
-              if (currentUser != null) {
+              final currentUserId = ref.read(loggedInUserProvider).value;
+              if (currentUserId != null) {
                 // Get current state before voting
                 final currentStateOfActivePollsWithPendingResponse = ref.read(
                   activePollsWithPendingResponseProvider,
@@ -195,7 +195,7 @@ class PollWidget extends ConsumerWidget {
 
                 ref
                     .read(pollListProvider.notifier)
-                    .voteOnPoll(pollId, option.id, currentUser.id);
+                    .voteOnPoll(pollId, option.id, currentUserId);
 
                 // added cause need to remain the state same for home screen poll list to show current user voted pol
                 ref
