@@ -22,6 +22,7 @@ void main() {
   late ProviderContainer container;
   late SheetModel testSheet;
   late String testSheetId;
+  late UserModel testUser;
   late String testUserId;
   late MockGoRouter mockGoRouter;
 
@@ -37,12 +38,11 @@ void main() {
     // Get test sheet and user from container
     testSheet = getSheetByIndex(container);
     testSheetId = testSheet.id;
-    testUserId = getUserByIndex(container).id;
+    testUser = getUserByIndex(container);
+    testUserId = testUser.id;
 
     container = ProviderContainer.test(
-      overrides: [
-        loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-      ],
+      overrides: [currentUserProvider.overrideWithValue(testUser)],
     );
   });
 
@@ -351,7 +351,7 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithBoth],
             ),
@@ -393,7 +393,7 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
             getUserByNameProvider(
               sharingUser.name,
             ).overrideWith((ref) => sharingUser),
@@ -426,7 +426,7 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithoutSharedInfo],
             ),
@@ -456,9 +456,7 @@ void main() {
 
           final testContainer = ProviderContainer.test(
             overrides: [
-              loggedInUserProvider.overrideWithValue(
-                AsyncValue.data(testUserId),
-              ),
+              currentUserProvider.overrideWithValue(testUser),
               sheetListProvider.overrideWith(
                 () => SheetList()..state = [sheetWithEmptySharedBy],
               ),
@@ -489,9 +487,7 @@ void main() {
 
           final testContainer = ProviderContainer.test(
             overrides: [
-              loggedInUserProvider.overrideWithValue(
-                AsyncValue.data(testUserId),
-              ),
+              currentUserProvider.overrideWithValue(testUser),
               sheetListProvider.overrideWith(
                 () => SheetList()..state = [sheetWithEmptyMessage],
               ),
@@ -522,9 +518,7 @@ void main() {
 
           final testContainer = ProviderContainer.test(
             overrides: [
-              loggedInUserProvider.overrideWithValue(
-                AsyncValue.data(testUserId),
-              ),
+              currentUserProvider.overrideWithValue(testUser),
               sheetListProvider.overrideWith(
                 () => SheetList()..state = [sheetWithWhitespaceMessage],
               ),
@@ -555,7 +549,7 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithSharedInfo],
             ),

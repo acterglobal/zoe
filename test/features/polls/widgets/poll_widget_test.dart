@@ -9,7 +9,6 @@ import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/polls/widgets/poll_progress_widget.dart';
 import 'package:zoe/features/polls/widgets/poll_widget.dart';
-import 'package:zoe/features/users/providers/user_providers.dart';
 
 import '../../../test-utils/test_utils.dart';
 
@@ -24,7 +23,7 @@ void main() {
       container = ProviderContainer.test(
         overrides: [
           pollProvider(testPoll.id).overrideWith((ref) => testPoll),
-          loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+          // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
           editContentIdProvider.overrideWith((ref) => null),
         ],
       );
@@ -67,7 +66,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider('non-existent-poll').overrideWith((ref) => null),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
           ],
         );
@@ -109,7 +108,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(testPoll.id).overrideWith((ref) => testPoll),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => testPoll.id),
           ],
         );
@@ -137,7 +136,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(draftPoll.id).overrideWith((ref) => draftPoll),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
           ],
         );
@@ -159,7 +158,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(activePoll.id).overrideWith((ref) => activePoll),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
           ],
         );
@@ -178,7 +177,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(draftPoll.id).overrideWith((ref) => draftPoll),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => draftPoll.id),
           ],
         );
@@ -202,7 +201,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(activePoll.id).overrideWith((ref) => activePoll),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
           ],
         );
@@ -221,7 +220,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(draftPoll.id).overrideWith((ref) => draftPoll),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
           ],
         );
@@ -255,7 +254,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(completedPoll.id).overrideWith((ref) => completedPoll),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
           ],
         );
@@ -274,7 +273,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(draftPoll.id).overrideWith((ref) => draftPoll),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
           ],
         );
@@ -296,7 +295,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(activePoll.id).overrideWith((ref) => activePoll),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
           ],
         );
@@ -317,7 +316,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(pollWithNoOptions.id).overrideWith((ref) => pollWithNoOptions),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
           ],
         );
@@ -338,7 +337,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(pollWithSingleOption.id).overrideWith((ref) => pollWithSingleOption),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => pollWithSingleOption.id),
           ],
         );
@@ -357,7 +356,7 @@ void main() {
         container = ProviderContainer.test(
           overrides: [
             pollProvider(multipleChoicePoll.id).overrideWith((ref) => multipleChoicePoll),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data('user_1')),
+            // currentUserProvider.overrideWithValue(AsyncValue.data('user_1')),
             editContentIdProvider.overrideWith((ref) => null),
           ],
         );

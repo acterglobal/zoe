@@ -34,7 +34,7 @@ void main() {
       container = ProviderContainer.test(
         overrides: [
           // Override providers that might cause async operations
-          currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
+          currentUserProvider.overrideWithValue(null),
           // connectionStatusProvider.overrideWithValue(
           //   AsyncValue.data(
           //     OverallConnectionStatus(
@@ -277,7 +277,7 @@ void main() {
           overrides: [
             sheetListProvider.overrideWithValue([]),
             // Include the same overrides as main setup to prevent timer issues
-            currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
+            currentUserProvider.overrideWithValue(null),
             // connectionStatusProvider.overrideWithValue(
             //   AsyncValue.data(
             //     OverallConnectionStatus(

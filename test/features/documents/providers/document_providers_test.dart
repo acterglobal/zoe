@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/documents/data/document_data.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import '../../../test-utils/mock_search_value.dart';
@@ -11,7 +12,7 @@ import '../../users/utils/users_utils.dart';
 void main() {
   group('Document Providers Tests', () {
     late ProviderContainer container;
-    late String testUserId;
+    late UserModel testUser;
 
     setUp(() {
       container = ProviderContainer.test(
@@ -21,13 +22,13 @@ void main() {
       );
 
       // Get test user
-      testUserId = getUserByIndex(container).id;
+      testUser = getUserByIndex(container);
 
       // Override loggedInUserProvider for tests that depend on documentListSearchProvider
       container = ProviderContainer.test(
         overrides: [
           searchValueProvider.overrideWith(MockSearchValue.new),
-          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+          currentUserProvider.overrideWithValue(testUser),
         ],
       );
     });
@@ -182,7 +183,7 @@ void main() {
         // Get documents that the test user's sheets contain
         final userDocuments = allDocuments.where((d) {
           final sheet = container.read(sheetProvider(d.sheetId));
-          return sheet?.users.contains(testUserId) == true;
+          return sheet?.users.contains(testUser.id) == true;
         }).toList();
 
         final searchResults = container.read(documentListSearchProvider);
@@ -196,7 +197,7 @@ void main() {
         // Get documents that the test user's sheets contain
         final userDocuments = allDocuments.where((d) {
           final sheet = container.read(sheetProvider(d.sheetId));
-          return sheet?.users.contains(testUserId) == true;
+          return sheet?.users.contains(testUser.id) == true;
         }).toList();
 
         if (userDocuments.isNotEmpty) {

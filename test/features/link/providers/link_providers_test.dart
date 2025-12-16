@@ -4,6 +4,7 @@ import 'package:zoe/features/link/data/link_list.dart';
 import 'package:zoe/features/link/models/link_model.dart';
 import 'package:zoe/features/link/providers/link_providers.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import '../../../test-utils/mock_search_value.dart';
@@ -14,6 +15,7 @@ void main() {
   group('Link Providers Tests', () {
     late ProviderContainer container;
     late LinkModel testLink;
+    late UserModel testUser;
     late String testUserId;
 
     setUp(() {
@@ -22,13 +24,14 @@ void main() {
       );
 
       // Get test user
-      testUserId = getUserByIndex(container).id;
+      testUser = getUserByIndex(container);
+      testUserId = testUser.id;
 
       // Override loggedInUserProvider for tests that depend on linkListSearchProvider
       container = ProviderContainer.test(
         overrides: [
           searchValueProvider.overrideWith(MockSearchValue.new),
-          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+          currentUserProvider.overrideWithValue(testUser),
         ],
       );
 
@@ -190,7 +193,6 @@ void main() {
 
     group('LinkListSearch Provider', () {
       test('returns all links when search is empty', () {
-      
         // Get links that the test user's sheets contain
         final userLinks = getLinkList().where((l) {
           final sheet = container.read(sheetProvider(l.sheetId));
@@ -215,16 +217,18 @@ void main() {
         if (userLinks.isNotEmpty) {
           // Find a link with "zoe" in title or URL
           final testLinkWithSearchTerm = userLinks.firstWhere(
-            (l) => l.title.toLowerCase().contains('zoe') ||
-                   l.url.toLowerCase().contains('zoe'),
+            (l) =>
+                l.title.toLowerCase().contains('zoe') ||
+                l.url.toLowerCase().contains('zoe'),
             orElse: () => userLinks.first,
           );
 
-          final searchTerm = testLinkWithSearchTerm.title.toLowerCase().contains('zoe')
+          final searchTerm =
+              testLinkWithSearchTerm.title.toLowerCase().contains('zoe')
               ? 'zoe'
               : testLinkWithSearchTerm.url.toLowerCase().contains('zoe')
-                  ? 'zoe'
-                  : testLinkWithSearchTerm.title.substring(0, 3).toLowerCase();
+              ? 'zoe'
+              : testLinkWithSearchTerm.title.substring(0, 3).toLowerCase();
 
           // Set search value
           container.read(searchValueProvider.notifier).update(searchTerm);
@@ -243,7 +247,6 @@ void main() {
       });
 
       test('filters links by URL', () {
-        
         // Get links that the test user's sheets contain
         final userLinks = getLinkList().where((l) {
           final sheet = container.read(sheetProvider(l.sheetId));
@@ -255,8 +258,8 @@ void main() {
           final searchTerm = userLinks.first.url.toLowerCase().contains('docs')
               ? 'docs'
               : userLinks.first.url.toLowerCase().contains('http')
-                  ? 'http'
-                  : userLinks.first.url.substring(8, 13).toLowerCase();
+              ? 'http'
+              : userLinks.first.url.substring(8, 13).toLowerCase();
 
           // Set search value
           container.read(searchValueProvider.notifier).update(searchTerm);
@@ -275,7 +278,6 @@ void main() {
       });
 
       test('is case insensitive', () {
-        
         // Get links that the test user's sheets contain
         final userLinks = getLinkList().where((l) {
           final sheet = container.read(sheetProvider(l.sheetId));
@@ -286,7 +288,12 @@ void main() {
           // Find a search term from the links
           final testLink = userLinks.first;
           final searchTerm = testLink.title.isNotEmpty
-              ? testLink.title.substring(0, testLink.title.length > 8 ? 8 : testLink.title.length).toUpperCase()
+              ? testLink.title
+                    .substring(
+                      0,
+                      testLink.title.length > 8 ? 8 : testLink.title.length,
+                    )
+                    .toUpperCase()
               : testLink.url.substring(8, 16).toUpperCase();
 
           // Set search value
@@ -328,40 +335,45 @@ void main() {
         if (userLinks.isNotEmpty) {
           // Find a link with "documentation" or similar in title/URL
           final testLinkForSearch = userLinks.firstWhere(
-            (l) => l.title.toLowerCase().contains('documentation') ||
-                   l.url.toLowerCase().contains('documentation') ||
-                   l.title.toLowerCase().contains('doc') ||
-                   l.url.toLowerCase().contains('doc'),
+            (l) =>
+                l.title.toLowerCase().contains('documentation') ||
+                l.url.toLowerCase().contains('documentation') ||
+                l.title.toLowerCase().contains('doc') ||
+                l.url.toLowerCase().contains('doc'),
             orElse: () => userLinks.first,
           );
 
-          final searchTerm = testLinkForSearch.title.toLowerCase().contains('documentation')
+          final searchTerm =
+              testLinkForSearch.title.toLowerCase().contains('documentation')
               ? 'documentation'
               : testLinkForSearch.title.toLowerCase().contains('doc')
-                  ? 'doc'
-                  : testLinkForSearch.url.toLowerCase().contains('doc')
-                      ? 'doc'
-                      : testLinkForSearch.title.substring(0, 5).toLowerCase();
+              ? 'doc'
+              : testLinkForSearch.url.toLowerCase().contains('doc')
+              ? 'doc'
+              : testLinkForSearch.title.substring(0, 5).toLowerCase();
 
           // Set search for the term
           container.read(searchValueProvider.notifier).update(searchTerm);
           final initialResults = container.read(linkListSearchProvider);
-          
+
           if (initialResults.isNotEmpty) {
             // Update a link title to remove the search term
             container
                 .read(linkListProvider.notifier)
-                .updateLinkTitle(testLinkForSearch.id, 'New Title Without Search Term');
+                .updateLinkTitle(
+                  testLinkForSearch.id,
+                  'New Title Without Search Term',
+                );
 
             // Search should reflect the change
             final updatedResults = container.read(linkListSearchProvider);
-            expect(updatedResults.length, lessThanOrEqualTo(initialResults.length));
+            expect(
+              updatedResults.length,
+              lessThanOrEqualTo(initialResults.length),
+            );
           }
         }
       });
     });
-
   });
 }
-
-

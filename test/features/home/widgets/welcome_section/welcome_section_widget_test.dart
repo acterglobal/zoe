@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
-import 'package:zoe/common/widgets/state_widgets/error_state_widget.dart';
-import 'package:zoe/common/widgets/state_widgets/loading_state_widget.dart';
 import 'package:zoe/features/home/widgets/welcome_section/welcome_animation_widget.dart';
 import 'package:zoe/features/home/widgets/welcome_section/welcome_section_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
@@ -35,48 +33,12 @@ void main() {
       return L10n.of(tester.element(find.byType(WelcomeSectionWidget)));
     }
 
-    group('Loading State', () {
-      testWidgets('shows loading state when user data is loading', (
-        tester,
-      ) async {
-        container = ProviderContainer.test(
-          overrides: [
-            currentUserProvider.overrideWithValue(const AsyncValue.loading()),
-          ],
-        );
-
-        await pumpWelcomeSectionWidget(tester);
-
-        expect(find.byType(LoadingStateWidget), findsOneWidget);
-      });
-    });
-
-    group('Error State', () {
-      testWidgets('shows error state when user data fails to load', (
-        tester,
-      ) async {
-        const errorMessage = 'Failed to load user data';
-        container = ProviderContainer.test(
-          overrides: [
-            currentUserProvider.overrideWithValue(
-              AsyncValue.error(errorMessage, StackTrace.current),
-            ),
-          ],
-        );
-
-        await pumpWelcomeSectionWidget(tester);
-
-        expect(find.byType(ErrorStateWidget), findsOneWidget);
-        expect(find.text(errorMessage), findsOneWidget);
-      });
-    });
-
     group('Data State - With User', () {
       testWidgets('renders welcome section with user name', (tester) async {
         when(() => mockUser.name).thenReturn('John Doe');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 
@@ -98,7 +60,7 @@ void main() {
         when(() => mockUser.name).thenReturn('John');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 
@@ -112,7 +74,7 @@ void main() {
         when(() => mockUser.name).thenReturn('John Michael Smith Johnson');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 
@@ -129,7 +91,7 @@ void main() {
       ) async {
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
+            currentUserProvider.overrideWithValue(null),
           ],
         );
 
@@ -153,7 +115,7 @@ void main() {
           when(() => mockUser.name).thenReturn('');
           container = ProviderContainer.test(
             overrides: [
-              currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+              currentUserProvider.overrideWithValue(mockUser),
             ],
           );
 
@@ -171,7 +133,7 @@ void main() {
         when(() => mockUser.name).thenReturn('John Doe');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 
@@ -196,7 +158,7 @@ void main() {
         when(() => mockUser.name).thenReturn('John Doe');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 
@@ -228,7 +190,7 @@ void main() {
         when(() => mockUser.name).thenReturn('John Doe');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 
@@ -247,7 +209,7 @@ void main() {
         when(() => mockUser.name).thenReturn('John Doe');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 
@@ -268,7 +230,7 @@ void main() {
         when(() => mockUser.name).thenReturn('John Doe');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 
@@ -296,7 +258,7 @@ void main() {
         when(() => mockUser.name).thenReturn('John Doe');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 
@@ -314,7 +276,7 @@ void main() {
         when(() => mockUser.name).thenReturn('John Doe');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 
@@ -348,7 +310,7 @@ void main() {
           when(() => mockUser.name).thenReturn('John Doe');
           container = ProviderContainer.test(
             overrides: [
-              currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+              currentUserProvider.overrideWithValue(mockUser),
             ],
           );
 
@@ -374,7 +336,7 @@ void main() {
         when(() => mockUser.name).thenReturn('John Doe');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 
@@ -393,7 +355,7 @@ void main() {
         when(() => mockUser.name).thenReturn('John Doe');
         container = ProviderContainer.test(
           overrides: [
-            currentUserProvider.overrideWithValue(AsyncValue.data(mockUser)),
+            currentUserProvider.overrideWithValue(mockUser),
           ],
         );
 

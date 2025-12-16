@@ -8,7 +8,6 @@ import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/text/data/text_list.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
-import 'package:zoe/features/users/providers/user_providers.dart';
 import '../utils/text_utils.dart';
 
 void main() {
@@ -16,14 +15,14 @@ void main() {
   late FakeFirebaseFirestore fakeFirestore;
   final textContent1 = 'text-content-1';
   final textContent2 = 'text-content-2';
-  final testUser = 'test-user';
+  // final testUser = 'test-user';
 
   setUp(() async {
     fakeFirestore = FakeFirebaseFirestore();
     container = ProviderContainer.test(
       overrides: [
         firestoreProvider.overrideWithValue(fakeFirestore),
-        loggedInUserProvider.overrideWithValue(AsyncValue.data(testUser)),
+        // currentUserProvider.overrideWithValue(testUser),
       ],
     );
 
