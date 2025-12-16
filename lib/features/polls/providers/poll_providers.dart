@@ -8,6 +8,7 @@ import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/polls/models/poll_model.dart';
 import 'package:zoe/features/polls/utils/poll_utils.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
@@ -25,7 +26,13 @@ class PollList extends _$PollList {
   @override
   List<PollModel> build() {
     _subscription?.cancel();
-    _subscription = _collection.snapshots().listen(
+
+    final sheetIds = ref.watch(listOfSheetIdsProvider);
+    Query<Map<String, dynamic>> query = _collection.where(
+      Filter(FirestoreFieldConstants.sheetId, whereIn: sheetIds),
+    );
+
+    _subscription = query.snapshots().listen(
       (snapshot) {
         state = snapshot.docs
             .map((doc) => PollModel.fromJson(doc.data()))
@@ -37,10 +44,7 @@ class PollList extends _$PollList {
       ),*/
     );
 
-    ref.onDispose(() {
-      _subscription?.cancel();
-    });
-
+    ref.onDispose(() => _subscription?.cancel());
     return [];
   }
 

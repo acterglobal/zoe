@@ -197,6 +197,12 @@ SheetModel? sheet(Ref ref, String sheetId) {
   return ref.watch(sheetListProvider).where((s) => s.id == sheetId).firstOrNull;
 }
 
+/// Get List of Sheet Ids
+@riverpod
+List<String> listOfSheetIds(Ref ref) {
+  return ref.watch(sheetListProvider).map((s) => s.id).toList();
+}
+
 @riverpod
 Future<SheetModel?> getSheetById(Ref ref, String sheetId) async {
   return await ref.watch(sheetListProvider.notifier).getSheetById(sheetId);
