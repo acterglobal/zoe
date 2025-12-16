@@ -111,7 +111,7 @@ final class CurrentUserProvider
   }
 }
 
-String _$currentUserHash() => r'75cd2615b59d8f3dafe271b78c4766c373305d49';
+String _$currentUserHash() => r'06f30c9506a1d9172cad824cdeebfd56e7fb3e74';
 
 /// Provider for users in a specific sheet
 
@@ -213,7 +213,7 @@ final class GetUserByIdProvider
   /// Provider for getting a user by ID
   const GetUserByIdProvider._({
     required GetUserByIdFamily super.from,
-    required String super.argument,
+    required String? super.argument,
   }) : super(
          retry: null,
          name: r'getUserByIdProvider',
@@ -239,7 +239,7 @@ final class GetUserByIdProvider
 
   @override
   UserModel? create(Ref ref) {
-    final argument = this.argument as String;
+    final argument = this.argument as String?;
     return getUserById(ref, argument);
   }
 
@@ -262,12 +262,12 @@ final class GetUserByIdProvider
   }
 }
 
-String _$getUserByIdHash() => r'5ebe570241acdf3c577893d0ea0ed295a0faf1b9';
+String _$getUserByIdHash() => r'badf980b7f4ce7b14a16ee0a81f5cda5c0df89b7';
 
 /// Provider for getting a user by ID
 
 final class GetUserByIdFamily extends $Family
-    with $FunctionalFamilyOverride<UserModel?, String> {
+    with $FunctionalFamilyOverride<UserModel?, String?> {
   const GetUserByIdFamily._()
     : super(
         retry: null,
@@ -279,7 +279,7 @@ final class GetUserByIdFamily extends $Family
 
   /// Provider for getting a user by ID
 
-  GetUserByIdProvider call(String userId) =>
+  GetUserByIdProvider call(String? userId) =>
       GetUserByIdProvider._(argument: userId, from: this);
 
   @override
@@ -521,7 +521,7 @@ final class UserDisplayNameProvider
   }
 }
 
-String _$userDisplayNameHash() => r'0ce98b87fab93a5d7397d21a85bebc07d687a91b';
+String _$userDisplayNameHash() => r'3c693d62cbda8f449d458caa289ecd7df53f1bf6';
 
 /// Provider for getting user display name
 

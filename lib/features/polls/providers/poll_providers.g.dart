@@ -497,7 +497,7 @@ final class ActivePollsWithPendingResponseProvider
 }
 
 String _$activePollsWithPendingResponseHash() =>
-    r'd5d9f5fd04ce4361771949b5905025f22d07dce3';
+    r'84b7674ef646d8b27851c55e91a2f9988e7e8d8e';
 
 abstract class _$ActivePollsWithPendingResponse
     extends $Notifier<List<PollModel>> {
