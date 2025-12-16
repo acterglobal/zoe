@@ -67,7 +67,7 @@ class Auth extends _$Auth {
       if (firebaseUser == null) return;
       final user = UserModel.fromFirebaseUser(firebaseUser);
       await _prefsService.setLoginUserId(user.id);
-      state = ref.read(getUserByIdProvider(user.id));
+      state = ref.read(getUserByIdProvider(user.id)) ?? user;
       if (ref.mounted) ref.read(routerProvider).go(AppRoutes.home.route);
     } on FirebaseAuthException catch (e) {
       _logger.severe('Sign in error: $e');
