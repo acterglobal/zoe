@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
-import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_network_local_image_view.dart';
 import 'package:zoe/features/sheet/actions/sheet_actions.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
@@ -55,7 +54,7 @@ class SheetAppBar extends ConsumerWidget {
                 placeholderIconSize: 120,
               )
             : _buildColorGradient(primaryColor, secondaryColor),
-        if (isEditing) _buildCoverImageAction(context, ref, hasCoverImage),
+        // if (isEditing) _buildCoverImageAction(context, ref, hasCoverImage),
       ],
     );
   }
@@ -72,7 +71,7 @@ class SheetAppBar extends ConsumerWidget {
     );
   }
 
-  Widget _buildCoverImageAction(
+  /*Widget _buildCoverImageAction(
     BuildContext context,
     WidgetRef ref,
     bool hasCoverImage,
@@ -92,7 +91,7 @@ class SheetAppBar extends ConsumerWidget {
         padding: 10,
       ),
     );
-  }
+  }*/
 
   Widget _buildTitle(BuildContext context, WidgetRef ref) {
     return ZoeAppBar(
