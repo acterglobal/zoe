@@ -196,7 +196,7 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
     return ZoePrimaryButton(
       onPressed: () async {
         if (widget.isSheet) {
-          final currentUser = await ref.read(currentUserProvider.future);
+          final currentUser = ref.read(currentUserProvider);
           if (currentUser != null) {
             final userName = currentUser.name;
             ref

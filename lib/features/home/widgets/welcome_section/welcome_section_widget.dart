@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
-import 'package:zoe/common/widgets/state_widgets/error_state_widget.dart';
-import 'package:zoe/common/widgets/state_widgets/loading_state_widget.dart';
 import 'package:zoe/features/home/widgets/welcome_section/welcome_animation_widget.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -13,45 +11,38 @@ class WelcomeSectionWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final currentUserAsync = ref.watch(currentUserProvider);
+    final currentUser = ref.watch(currentUserProvider);
+    final userName = currentUser?.name ?? L10n.of(context).guest;
 
-    return currentUserAsync.when(
-      data: (user) {
-        final userName = user?.name ?? L10n.of(context).guest;
-
-        return Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: theme.colorScheme.primary.withValues(alpha: 0.25),
-                blurRadius: 20,
-                spreadRadius: 0,
-                offset: const Offset(0, 8),
-              ),
-            ],
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.primary.withValues(alpha: 0.25),
+            blurRadius: 20,
+            spreadRadius: 0,
+            offset: const Offset(0, 8),
           ),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: _buildWelcomeTextWidget(context, theme, userName),
-              ),
-              const SizedBox(width: 16),
-              Expanded(flex: 2, child: WelcomeAnimationWidget()),
-            ],
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: _buildWelcomeTextWidget(context, theme, userName),
           ),
-        );
-      },
-      loading: () => const LoadingStateWidget(),
-      error: (error, stackTrace) => ErrorStateWidget(message: error.toString()),
+          const SizedBox(width: 16),
+          Expanded(flex: 2, child: WelcomeAnimationWidget()),
+        ],
+      ),
     );
   }
 

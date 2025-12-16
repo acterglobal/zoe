@@ -16,7 +16,7 @@ class EventRsvpWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentRsvp = ref.watch(currentUserRsvpProvider(eventId));
-    final currentUser = ref.watch(loggedInUserProvider);
+    final currentUser = ref.watch(currentUserProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +27,7 @@ class EventRsvpWidget extends ConsumerWidget {
           context,
           ref,
           currentRsvp.value,
-          currentUser.value ?? '',
+          currentUser?.id ?? '',
         ),
       ],
     );
