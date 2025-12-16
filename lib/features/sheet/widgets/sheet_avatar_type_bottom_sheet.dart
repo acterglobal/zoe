@@ -147,14 +147,14 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
             onTap: () => selectIcon(context, ref),
           ),
           const SizedBox(height: 16),
-          BottomSheetOptionWidget(
-            icon: Icons.image_rounded,
-            title: l10n.image,
-            subtitle: l10n.chooseImageDescription,
-            color: AppColors.successColor,
-            onTap: () => selectImage(context, ref),
-          ),
-          const SizedBox(height: 16),
+          // BottomSheetOptionWidget(
+          //   icon: Icons.image_rounded,
+          //   title: l10n.image,
+          //   subtitle: l10n.chooseImageDescription,
+          //   color: AppColors.successColor,
+          //   onTap: () => selectImage(context, ref),
+          // ),
+          // const SizedBox(height: 16),
           BottomSheetOptionWidget(
             icon: Icons.emoji_emotions_rounded,
             title: l10n.emoji,

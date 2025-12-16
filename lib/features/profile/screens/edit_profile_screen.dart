@@ -6,7 +6,6 @@ import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
-import 'package:zoe/features/profile/actions/select_profile_actions.dart';
 import 'package:zoe/features/profile/widgets/profile_qr_code_widget.dart';
 import 'package:zoe/features/profile/widgets/profile_user_bio_widget.dart';
 import 'package:zoe/features/profile/widgets/profile_user_name_widget.dart';
@@ -111,7 +110,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   }
 
   Widget _buildAvatarSection(BuildContext context, UserModel user) {
-    final colorScheme = Theme.of(context).colorScheme;
+    // final colorScheme = Theme.of(context).colorScheme;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -121,19 +120,19 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           fontSize: 30,
           selectedImagePath: _selectedAvatarPath,
         ),
-        Positioned(
-          right: -4,
-          bottom: -4,
-          child: StyledIconContainer(
-            icon: Icons.camera_alt,
-            size: 32,
-            iconSize: 16,
-            borderRadius: BorderRadius.circular(16),
-            primaryColor: colorScheme.onSurface,
-            secondaryColor: colorScheme.primary,
-            onTap: () => _onAvatarChange(user),
-          ),
-        ),
+        // Positioned(
+        //   right: -4,
+        //   bottom: -4,
+        //   child: StyledIconContainer(
+        //     icon: Icons.camera_alt,
+        //     size: 32,
+        //     iconSize: 16,
+        //     borderRadius: BorderRadius.circular(16),
+        //     primaryColor: colorScheme.onSurface,
+        //     secondaryColor: colorScheme.primary,
+        //     onTap: () => _onAvatarChange(user),
+        //   ),
+        // ),
       ],
     );
   }
@@ -173,7 +172,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
   }
 
-  void _onAvatarChange(UserModel user) {
+  /*void _onAvatarChange(UserModel user) {
     selectProfileFileSource(
       context,
       user.id,
@@ -188,5 +187,5 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         ref.read(userListProvider.notifier).updateUser(user.id, updatedUser);
       },
     );
-  }
+  }*/
 }
