@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zoe/common/widgets/state_widgets/error_state_widget.dart';
-import 'package:zoe/common/widgets/state_widgets/loading_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/features/profile/screens/edit_profile_screen.dart';
@@ -28,7 +26,7 @@ void main() {
     users = [testUser];
     container = ProviderContainer(
       overrides: [
-        currentUserProvider.overrideWithValue(AsyncValue.data(testUser)),
+        currentUserProvider.overrideWithValue(testUser),
         userListProvider.overrideWith(() => TestUserList(users)),
       ],
     );
@@ -48,51 +46,21 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
   }
 
-  group('Loading and Error States', () {
-    testWidgets('shows loading state', (tester) async {
-      container = ProviderContainer(
-        overrides: [
-          currentUserProvider.overrideWithValue(const AsyncValue.loading()),
-          userListProvider.overrideWithValue([]),
-        ],
-      );
+  testWidgets('shows user not found message when user is null', (tester) async {
+    container = ProviderContainer(
+      overrides: [
+        currentUserProvider.overrideWithValue(null),
+        userListProvider.overrideWithValue([]),
+      ],
+    );
 
-      await pumpScreen(tester);
-      expect(find.byType(LoadingStateWidget), findsOneWidget);
-    });
-
-    testWidgets('shows error state', (tester) async {
-      container = ProviderContainer(
-        overrides: [
-          currentUserProvider.overrideWithValue(
-            AsyncValue.error('Test Error', StackTrace.empty),
-          ),
-          userListProvider.overrideWithValue([]),
-        ],
-      );
-
-      await pumpScreen(tester);
-      expect(find.byType(ErrorStateWidget), findsOneWidget);
-    });
-
-    testWidgets('shows user not found message when user is null', (
-      tester,
-    ) async {
-      container = ProviderContainer(
-        overrides: [
-          currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
-          userListProvider.overrideWithValue([]),
-        ],
-      );
-
-      await pumpScreen(tester);
-      expect(
-        find.text(
-          L10n.of(tester.element(find.byType(EditProfileScreen))).userNotFound,
-        ),
-        findsOneWidget,
-      );
-    });
+    await pumpScreen(tester);
+    expect(
+      find.text(
+        L10n.of(tester.element(find.byType(EditProfileScreen))).userNotFound,
+      ),
+      findsOneWidget,
+    );
   });
 
   group('Profile Content', () {

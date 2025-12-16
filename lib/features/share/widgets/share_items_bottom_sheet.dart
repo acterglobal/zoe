@@ -57,6 +57,7 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
         : _getContentShareMessage(ref);
 
     return MaxWidthWidget(
+      isBottomSheet: true,
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
         left: 16,
@@ -196,7 +197,7 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
     return ZoePrimaryButton(
       onPressed: () async {
         if (widget.isSheet) {
-          final currentUser = await ref.read(currentUserProvider.future);
+          final currentUser = ref.read(currentUserProvider);
           if (currentUser != null) {
             final userName = currentUser.name;
             ref

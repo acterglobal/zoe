@@ -126,14 +126,6 @@ void main() {
     });
   });
 
-  group('loggedInUser Provider', () {
-    test('provider exists and can be read', () {
-      final container = ProviderContainer();
-      expect(() => container.read(loggedInUserProvider), returnsNormally);
-      container.dispose();
-    });
-  });
-
   group('getUserById Provider', () {
     test('returns user when found', () {
       final userList = container.read(userListProvider);

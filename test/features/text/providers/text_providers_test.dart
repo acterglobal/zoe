@@ -5,20 +5,19 @@ import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
-import 'package:zoe/features/users/providers/user_providers.dart';
 import '../utils/mock_fakefirestore_text.dart';
 
 void main() {
   late ProviderContainer container;
   late FakeFirebaseFirestore fakeFirestore;
-  final testUser = 'test-user';
+  // final testUser = 'test-user';
 
   setUp(() async {
     fakeFirestore = FakeFirebaseFirestore();
     container = ProviderContainer.test(
       overrides: [
         firestoreProvider.overrideWithValue(fakeFirestore),
-        loggedInUserProvider.overrideWithValue(AsyncValue.data(testUser)),
+        // currentUserProvider.overrideWithValue(AsyncValue.data(testUser)),
       ],
     );
 

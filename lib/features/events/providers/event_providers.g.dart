@@ -559,7 +559,7 @@ final class CurrentUserRsvpProvider
   }
 }
 
-String _$currentUserRsvpHash() => r'3a14e5459c2e93c11f8b9701c128cda399e4a840';
+String _$currentUserRsvpHash() => r'f3ea61e93b91191f35de102f9bdcb5e3ab326fbe';
 
 /// Provider for current user's RSVP status
 

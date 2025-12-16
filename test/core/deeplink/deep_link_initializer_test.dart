@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:zoe/core/deeplink/deep_link_initializer.dart';
 import 'package:zoe/core/routing/app_router.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import '../../features/sheet/utils/sheet_utils.dart';
 import '../../features/users/utils/users_utils.dart';
@@ -46,7 +47,7 @@ void main() {
     late ProviderContainer container;
     late TestableAppLinks testableAppLinks;
     late SheetModel testSheet;
-    late String testUserId;
+    late UserModel testUser;
     late String testSheetId;
     late MockGoRouter mockGoRouter;
 
@@ -61,14 +62,14 @@ void main() {
       mockGoRouter = MockGoRouter();
       testSheet = getSheetByIndex(container);
       testSheetId = testSheet.id;
-      testUserId = getUserByIndex(container).id;
+      testUser = getUserByIndex(container);
 
       testableAppLinks = TestableAppLinks();
 
       container = ProviderContainer.test(
         overrides: [
           routerProvider.overrideWithValue(mockGoRouter),
-          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+          currentUserProvider.overrideWithValue(testUser),
           appLinksProvider.overrideWithValue(testableAppLinks),
         ],
       );
@@ -127,7 +128,7 @@ void main() {
         final containerWithThrowing = ProviderContainer.test(
           overrides: [
             routerProvider.overrideWithValue(mockGoRouter),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
             appLinksProvider.overrideWithValue(throwingLinks),
           ],
         );

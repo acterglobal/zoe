@@ -5,17 +5,22 @@ import 'package:zoe/features/events/data/event_list.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/events/widgets/event_rsvp_count_widget.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../test-utils/test_utils.dart';
+import '../../users/utils/users_utils.dart';
 
 void main() {
   group('EventRsvpCountWidget', () {
     late EventModel testEvent;
     late ProviderContainer container;
+    late UserModel testUser;
 
     setUp(() {
       testEvent = eventList.first;
+      // Get test user
+      testUser = getUserByIndex(container);
       container = ProviderContainer();
     });
 
@@ -204,7 +209,7 @@ void main() {
             eventListProvider.overrideWithValue([
               testEvent.copyWith(rsvpResponses: {'user_1': RsvpStatus.yes}),
             ]),
-            loggedInUserProvider.overrideWith((ref) => Future.value('user_1')),
+            currentUserProvider.overrideWith((ref) => testUser),
           ],
         );
 

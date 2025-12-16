@@ -24,7 +24,7 @@ void main() {
 
     container = ProviderContainer.test(
       overrides: [
-        loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+        currentUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
       ],
     );
 

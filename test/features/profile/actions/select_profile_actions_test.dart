@@ -37,7 +37,7 @@ void main() {
 
     container = ProviderContainer.test(
       overrides: [
-        currentUserProvider.overrideWithValue(AsyncValue.data(testUser)),
+        // currentUserProvider.overrideWithValue(AsyncValue.data(testUser)),
         userListProvider.overrideWith(() => TestUserList([testUser])),
       ],
     );
@@ -207,9 +207,7 @@ void main() {
       // Create a new container with the null-avatar user
       final testContainer = ProviderContainer.test(
         overrides: [
-          currentUserProvider.overrideWithValue(
-            AsyncValue.data(testUserWithNullAvatar),
-          ),
+          currentUserProvider.overrideWithValue(testUserWithNullAvatar),
           userListProvider.overrideWith(
             () => TestUserList([testUserWithNullAvatar]),
           ),

@@ -51,20 +51,11 @@ class UserList extends _$UserList {
   }
 }
 
-/// Provider for the logged-in user ID
-@Riverpod(keepAlive: true)
-Future<String?> loggedInUser(Ref ref) async {
-  // Watch authProvider to get real-time auth state from Firebase
-  final authUser = ref.watch(authProvider);
-  return authUser?.id;
-}
-
 /// Provider for the current user model
 @riverpod
-Future<UserModel?> currentUser(Ref ref) async {
-  final userId = await ref.watch(loggedInUserProvider.future);
-  if (userId == null) return null;
-  return ref.watch(getUserByIdProvider(userId));
+UserModel? currentUser(Ref ref) {
+  final authUser = ref.watch(authProvider);
+  return ref.watch(getUserByIdProvider(authUser?.id)) ?? authUser;
 }
 
 /// Provider for users in a specific sheet
@@ -79,7 +70,8 @@ List<UserModel> usersBySheetId(Ref ref, String sheetId) {
 
 /// Provider for getting a user by ID
 @riverpod
-UserModel? getUserById(Ref ref, String userId) {
+UserModel? getUserById(Ref ref, String? userId) {
+  if (userId == null) return null;
   final userList = ref.watch(userListProvider);
   return userList.where((u) => u.id == userId).firstOrNull;
 }
@@ -100,17 +92,11 @@ List<String> userIdsFromUserModels(Ref ref, List<UserModel> userModels) {
 /// Provider for getting user display name
 @riverpod
 String userDisplayName(Ref ref, String userId) {
-  final currentUserId = ref.watch(loggedInUserProvider).value ?? '';
+  final currentUserId = ref.watch(currentUserProvider)?.id ?? '';
   final user = ref.watch(getUserByIdProvider(userId));
 
-  if (currentUserId == userId) {
-    return 'You';
-  }
-
-  if (user != null && user.name.isNotEmpty) {
-    return user.name;
-  }
-
+  if (currentUserId == userId) return 'You';
+  if (user != null && user.name.isNotEmpty) return user.name;
   return userId;
 }
 

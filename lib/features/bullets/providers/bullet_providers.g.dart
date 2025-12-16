@@ -44,7 +44,7 @@ final class BulletListProvider
   }
 }
 
-String _$bulletListHash() => r'4848a931782874bc8dff57907f23814300e0d084';
+String _$bulletListHash() => r'3a33751012cc1f643eb0b3eeabe672043ec6c708';
 
 /// Main bullet list notifier with all bullet management functionality
 

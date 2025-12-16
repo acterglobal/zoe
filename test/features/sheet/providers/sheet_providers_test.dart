@@ -8,7 +8,6 @@ import 'package:zoe/common/widgets/zoe_icon_picker/models/zoe_icons.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
-import 'package:zoe/features/users/providers/user_providers.dart';
 
 void main() {
   group('SheetList Provider with Firebase', () {
@@ -58,7 +57,7 @@ void main() {
       container = ProviderContainer(
         overrides: [
           firestoreProvider.overrideWithValue(fakeFirestore),
-          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+          // currentUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
         ],
       );
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/media_selection_bottom_sheet.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-import 'package:zoe/features/users/models/user_model.dart';
 
 void selectProfileFileSource(
   BuildContext context,
@@ -32,16 +31,10 @@ void selectProfileFileSource(
 }
 
 void _updateUserAvatar(WidgetRef ref, String userId, String? imagePath) {
-  final currentUser = ref.read(currentUserProvider).value;
+  final currentUser = ref.read(currentUserProvider);
   if (currentUser != null) {
     // We use the constructor directly because copyWith ignores null values
-    final updatedUser = UserModel(
-      id: currentUser.id,
-      name: currentUser.name,
-      bio: currentUser.bio,
-      email: currentUser.email,
-      avatar: imagePath,
-    );
+    final updatedUser = currentUser.copyWith(avatar: imagePath);
     ref.read(userListProvider.notifier).updateUser(userId, updatedUser);
   }
 }

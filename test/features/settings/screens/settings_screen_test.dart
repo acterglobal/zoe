@@ -55,13 +55,11 @@ void main() {
       container = ProviderContainer(
         overrides: [
           currentUserProvider.overrideWith(
-            (ref) => Future<UserModel?>.value(
-              UserModel(
-                id: 'test-user-id',
-                email: 'john@gmail.com',
-                name: 'John Doe',
-                bio: 'Test Bio',
-              ),
+            (ref) => UserModel(
+              id: 'test-user-id',
+              email: 'john@gmail.com',
+              name: 'John Doe',
+              bio: 'Test Bio',
             ),
           ),
           appNameProvider.overrideWith((ref) => 'Test App'),

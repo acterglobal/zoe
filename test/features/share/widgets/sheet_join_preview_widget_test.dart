@@ -22,6 +22,7 @@ void main() {
   late ProviderContainer container;
   late SheetModel testSheet;
   late String testSheetId;
+  late UserModel testUser;
   late String testUserId;
   late MockGoRouter mockGoRouter;
 
@@ -37,24 +38,23 @@ void main() {
     // Get test sheet and user from container
     testSheet = getSheetByIndex(container);
     testSheetId = testSheet.id;
-    testUserId = getUserByIndex(container).id;
+    testUser = getUserByIndex(container);
+    testUserId = testUser.id;
 
     container = ProviderContainer.test(
-      overrides: [
-        loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-      ],
+      overrides: [currentUserProvider.overrideWithValue(testUser)],
     );
   });
 
   Future<void> pumpSheetJoinPreviewWidget(
     WidgetTester tester, {
-    required String parentId,
+    required SheetModel sheet,
     ProviderContainer? testContainer,
   }) async {
     await tester.pumpMaterialWidgetWithProviderScope(
       container: testContainer ?? container,
       router: mockGoRouter,
-      child: SheetJoinPreviewWidget(parentId: parentId),
+      child: SheetJoinPreviewWidget(sheet: sheet),
     );
   }
 
@@ -63,7 +63,7 @@ void main() {
       testWidgets('renders correctly with valid sheet and logged in user', (
         tester,
       ) async {
-        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
+        await pumpSheetJoinPreviewWidget(tester, sheet: testSheet);
 
         // Verify MaxWidthWidget is present
         expect(find.byType(MaxWidthWidget), findsOneWidget);
@@ -94,7 +94,7 @@ void main() {
 
         await pumpSheetJoinPreviewWidget(
           tester,
-          parentId: 'non-existent-sheet',
+          sheet: testSheet,
           testContainer: emptyContainer,
         );
 
@@ -106,7 +106,7 @@ void main() {
 
     group('Sheet Content Display', () {
       testWidgets('displays sheet title correctly', (tester) async {
-        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
+        await pumpSheetJoinPreviewWidget(tester, sheet: testSheet);
 
         expect(find.text(testSheet.title), findsOneWidget);
       });
@@ -127,7 +127,7 @@ void main() {
 
         await pumpSheetJoinPreviewWidget(
           tester,
-          parentId: testSheetId,
+          sheet: testSheet,
           testContainer: testContainer,
         );
 
@@ -156,7 +156,7 @@ void main() {
 
         await pumpSheetJoinPreviewWidget(
           tester,
-          parentId: testSheetId,
+          sheet: testSheet,
           testContainer: testContainer,
         );
 
@@ -180,7 +180,7 @@ void main() {
 
         await pumpSheetJoinPreviewWidget(
           tester,
-          parentId: testSheetId,
+          sheet: testSheet,
           testContainer: testContainer,
         );
 
@@ -193,7 +193,7 @@ void main() {
       testWidgets('displays join button with correct icon and text', (
         tester,
       ) async {
-        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
+        await pumpSheetJoinPreviewWidget(tester, sheet: testSheet);
 
         final joinButton = tester.widget<ZoePrimaryButton>(
           find.byType(ZoePrimaryButton),
@@ -211,7 +211,7 @@ void main() {
       testWidgets('join button adds user to sheet and navigates', (
         tester,
       ) async {
-        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
+        await pumpSheetJoinPreviewWidget(tester, sheet: testSheet);
 
         // Tap join button
         final joinButton = find.byType(ZoePrimaryButton);
@@ -229,7 +229,7 @@ void main() {
       testWidgets('join button pops navigator before pushing', (tester) async {
         when(() => mockGoRouter.canPop()).thenReturn(true);
 
-        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
+        await pumpSheetJoinPreviewWidget(tester, sheet: testSheet);
 
         final joinButton = find.byType(ZoePrimaryButton);
         await tester.tap(joinButton);
@@ -243,7 +243,7 @@ void main() {
 
     group('Widget Structure', () {
       testWidgets('has correct widget hierarchy', (tester) async {
-        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
+        await pumpSheetJoinPreviewWidget(tester, sheet: testSheet);
 
         // Verify MaxWidthWidget structure
         expect(find.byType(MaxWidthWidget), findsOneWidget);
@@ -272,7 +272,7 @@ void main() {
       });
 
       testWidgets('title has correct styling', (tester) async {
-        await pumpSheetJoinPreviewWidget(tester, parentId: testSheetId);
+        await pumpSheetJoinPreviewWidget(tester, sheet: testSheet);
 
         final l10n = WidgetTesterExtension.getL10n(
           tester,
@@ -302,7 +302,7 @@ void main() {
 
         await pumpSheetJoinPreviewWidget(
           tester,
-          parentId: testSheetId,
+          sheet: testSheet,
           testContainer: testContainer,
         );
 
@@ -328,7 +328,7 @@ void main() {
 
         await pumpSheetJoinPreviewWidget(
           tester,
-          parentId: testSheetId,
+          sheet: testSheet,
           testContainer: testContainer,
         );
 
@@ -351,7 +351,7 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithBoth],
             ),
@@ -361,7 +361,7 @@ void main() {
 
         await pumpSheetJoinPreviewWidget(
           tester,
-          parentId: testSheetId,
+          sheet: testSheet,
           testContainer: testContainer,
         );
 
@@ -393,7 +393,7 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
             getUserByNameProvider(
               sharingUser.name,
             ).overrideWith((ref) => sharingUser),
@@ -408,7 +408,7 @@ void main() {
 
         await pumpSheetJoinPreviewWidget(
           tester,
-          parentId: testSheetId,
+          sheet: testSheet,
           testContainer: testContainer,
         );
 
@@ -426,7 +426,7 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithoutSharedInfo],
             ),
@@ -438,7 +438,7 @@ void main() {
 
         await pumpSheetJoinPreviewWidget(
           tester,
-          parentId: testSheetId,
+          sheet: testSheet,
           testContainer: testContainer,
         );
 
@@ -456,9 +456,7 @@ void main() {
 
           final testContainer = ProviderContainer.test(
             overrides: [
-              loggedInUserProvider.overrideWithValue(
-                AsyncValue.data(testUserId),
-              ),
+              currentUserProvider.overrideWithValue(testUser),
               sheetListProvider.overrideWith(
                 () => SheetList()..state = [sheetWithEmptySharedBy],
               ),
@@ -470,7 +468,7 @@ void main() {
 
           await pumpSheetJoinPreviewWidget(
             tester,
-            parentId: testSheetId,
+            sheet: testSheet,
             testContainer: testContainer,
           );
 
@@ -489,9 +487,7 @@ void main() {
 
           final testContainer = ProviderContainer.test(
             overrides: [
-              loggedInUserProvider.overrideWithValue(
-                AsyncValue.data(testUserId),
-              ),
+              currentUserProvider.overrideWithValue(testUser),
               sheetListProvider.overrideWith(
                 () => SheetList()..state = [sheetWithEmptyMessage],
               ),
@@ -503,7 +499,7 @@ void main() {
 
           await pumpSheetJoinPreviewWidget(
             tester,
-            parentId: testSheetId,
+            sheet: testSheet,
             testContainer: testContainer,
           );
 
@@ -522,9 +518,7 @@ void main() {
 
           final testContainer = ProviderContainer.test(
             overrides: [
-              loggedInUserProvider.overrideWithValue(
-                AsyncValue.data(testUserId),
-              ),
+              currentUserProvider.overrideWithValue(testUser),
               sheetListProvider.overrideWith(
                 () => SheetList()..state = [sheetWithWhitespaceMessage],
               ),
@@ -536,7 +530,7 @@ void main() {
 
           await pumpSheetJoinPreviewWidget(
             tester,
-            parentId: testSheetId,
+            sheet: testSheet,
             testContainer: testContainer,
           );
 
@@ -555,7 +549,7 @@ void main() {
 
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithSharedInfo],
             ),
@@ -567,7 +561,7 @@ void main() {
 
         await pumpSheetJoinPreviewWidget(
           tester,
-          parentId: testSheetId,
+          sheet: testSheet,
           testContainer: testContainer,
         );
 

@@ -13,6 +13,7 @@ void main() {
   group('Poll Providers Tests', () {
     late ProviderContainer container;
     late PollModel testPoll;
+    late UserModel testUser;
     late String testUserId;
     late String testUserId2;
     late String testUserId3;
@@ -23,7 +24,8 @@ void main() {
       container = ProviderContainer.test();
 
       // Get test users
-      testUserId = getUserByIndex(container).id;
+      testUser = getUserByIndex(container);
+      testUserId = testUser.id;
       testUserId2 = getUserByIndex(container, index: 1).id;
       testUserId3 = getUserByIndex(container, index: 2).id;
 
@@ -31,9 +33,9 @@ void main() {
       container = ProviderContainer.test(
         overrides: [
           searchValueProvider.overrideWith(MockSearchValue.new),
-          currentUserProvider.overrideWith((ref) => Future.value(null)),
+          currentUserProvider.overrideWith((ref) => null),
           usersBySheetIdProvider('sheet-1').overrideWith((ref) => []),
-          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+          currentUserProvider.overrideWithValue(testUser),
         ],
       );
     });
@@ -70,7 +72,9 @@ void main() {
       });
 
       test('deletePoll removes poll from list', () {
-        final initialLength = container.read(pollListProvider).length;
+        final initialLength = container
+            .read(pollListProvider)
+            .length;
 
         container.read(pollListProvider.notifier).deletePoll(testPoll.id);
 
@@ -80,7 +84,9 @@ void main() {
       });
 
       test('deletePoll does nothing for non-existent poll', () {
-        final initialLength = container.read(pollListProvider).length;
+        final initialLength = container
+            .read(pollListProvider)
+            .length;
 
         container.read(pollListProvider.notifier).deletePoll('non-existent-id');
 
@@ -146,7 +152,7 @@ void main() {
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         final updatedOption = updatedPoll?.options.firstWhere(
-          (o) => o.id == optionId,
+              (o) => o.id == optionId,
         );
         expect(updatedOption?.title, equals(newText));
       });
@@ -213,13 +219,14 @@ void main() {
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         final updatedOption = updatedPoll?.options.firstWhere(
-          (o) => o.id == optionId,
+              (o) => o.id == optionId,
         );
         expect(updatedOption?.votes.length, equals(initialVotesCount + 1));
         expect(updatedOption?.votes.any((v) => v.userId == testUserId), isTrue);
       });
 
-      test('voteOnPoll removes vote if already voted (single choice)', () async {
+      test(
+          'voteOnPoll removes vote if already voted (single choice)', () async {
         // Find an option that the test user has already voted on, or vote on one first
         final optionId = testPoll.options.first.id;
 
@@ -235,7 +242,7 @@ void main() {
                 .firstWhere((o) => o.id == optionId)
                 .votes
                 .length ??
-            0;
+                0;
 
         // Vote again to remove the vote
         await container
@@ -244,7 +251,7 @@ void main() {
 
         final updatedPoll = container.read(pollProvider(testPoll.id));
         final updatedOption = updatedPoll?.options.firstWhere(
-          (o) => o.id == optionId,
+              (o) => o.id == optionId,
         );
         expect(updatedOption?.votes.length, equals(initialVotesCount - 1));
         expect(
@@ -255,7 +262,7 @@ void main() {
 
       test(
         'voteOnPoll removes previous votes when voting on different option (single choice)',
-        () async {
+            () async {
           final firstOptionId = testPoll.options.first.id;
           final secondOptionId = testPoll.options[1].id;
 
@@ -271,10 +278,10 @@ void main() {
 
           final updatedPoll = container.read(pollProvider(testPoll.id));
           final firstOption = updatedPoll?.options.firstWhere(
-            (o) => o.id == firstOptionId,
+                (o) => o.id == firstOptionId,
           );
           final secondOption = updatedPoll?.options.firstWhere(
-            (o) => o.id == secondOptionId,
+                (o) => o.id == secondOptionId,
           );
 
           expect(
@@ -290,10 +297,10 @@ void main() {
 
       test(
         'voteOnPoll allows multiple votes for multiple choice poll',
-        () async {
+            () async {
           // Use a test user who hasn't voted yet
           final multipleChoicePoll = polls.firstWhere(
-            (p) => p.isMultipleChoice,
+                (p) => p.isMultipleChoice,
           );
           final firstOptionId = multipleChoicePoll.options.first.id;
           final secondOptionId = multipleChoicePoll.options[1].id;
@@ -303,17 +310,17 @@ void main() {
             pollProvider(multipleChoicePoll.id),
           );
           final initialFirstOption = initialPoll?.options.firstWhere(
-            (o) => o.id == firstOptionId,
+                (o) => o.id == firstOptionId,
           );
           final initialSecondOption = initialPoll?.options.firstWhere(
-            (o) => o.id == secondOptionId,
+                (o) => o.id == secondOptionId,
           );
           final hadInitialVote1 =
               initialFirstOption?.votes.any((v) => v.userId == testUserId3) ??
-              false;
+                  false;
           final hadInitialVote2 =
               initialSecondOption?.votes.any((v) => v.userId == testUserId3) ??
-              false;
+                  false;
 
           // If user already has votes, remove them first to start clean
           if (hadInitialVote1) {
@@ -339,10 +346,10 @@ void main() {
             pollProvider(multipleChoicePoll.id),
           );
           final firstOption = updatedPoll?.options.firstWhere(
-            (o) => o.id == firstOptionId,
+                (o) => o.id == firstOptionId,
           );
           final secondOption = updatedPoll?.options.firstWhere(
-            (o) => o.id == secondOptionId,
+                (o) => o.id == secondOptionId,
           );
 
           // Verify both options have the vote
@@ -359,9 +366,9 @@ void main() {
 
       test(
         'voteOnPoll removes vote from specific option in multiple choice poll',
-        () async {
+            () async {
           final multipleChoicePoll = polls.firstWhere(
-            (p) => p.isMultipleChoice,
+                (p) => p.isMultipleChoice,
           );
           final optionId = multipleChoicePoll.options.first.id;
 
@@ -370,7 +377,7 @@ void main() {
             pollProvider(multipleChoicePoll.id),
           );
           final initialOption = initialPoll?.options.firstWhere(
-            (o) => o.id == optionId,
+                (o) => o.id == optionId,
           );
           final initialVotesCount = initialOption?.votes.length ?? 0;
           final hadInitialVote =
@@ -386,12 +393,12 @@ void main() {
             pollProvider(multipleChoicePoll.id),
           );
           final optionAfterFirst = pollAfterFirstVote?.options.firstWhere(
-            (o) => o.id == optionId,
+                (o) => o.id == optionId,
           );
           final votesAfterFirst = optionAfterFirst?.votes.length ?? 0;
           final hasVoteAfterFirst =
               optionAfterFirst?.votes.any((v) => v.userId == testUserId) ??
-              false;
+                  false;
 
           // Verify the toggle worked correctly
           if (hadInitialVote) {
@@ -412,7 +419,7 @@ void main() {
               pollProvider(multipleChoicePoll.id),
             );
             final finalOption = finalPoll?.options.firstWhere(
-              (o) => o.id == optionId,
+                  (o) => o.id == optionId,
             );
             expect(finalOption?.votes.length, equals(votesAfterFirst - 1));
             expect(
@@ -542,7 +549,7 @@ void main() {
       test('pollVotedMembers returns users who have voted', () {
         // Use a poll that has votes and users in the sheet
         final pollWithVotes = polls.firstWhere(
-          (p) => p.options.any((option) => option.votes.isNotEmpty),
+              (p) => p.options.any((option) => option.votes.isNotEmpty),
         );
 
         // Override usersBySheetId to return users who have voted
@@ -560,7 +567,7 @@ void main() {
         final containerWithVotedUsers = ProviderContainer.test(
           overrides: [
             searchValueProvider.overrideWith(MockSearchValue.new),
-            currentUserProvider.overrideWith((ref) => Future.value(null)),
+            currentUserProvider.overrideWith((ref) => null),
             usersBySheetIdProvider(
               pollWithVotes.sheetId,
             ).overrideWith((ref) => votedUsers),
@@ -575,7 +582,8 @@ void main() {
         // Verify that all returned users have actually voted
         for (final member in votedMembers) {
           final hasVoted = pollWithVotes.options.any(
-            (option) => option.votes.any((vote) => vote.userId == member.id),
+                (option) =>
+                option.votes.any((vote) => vote.userId == member.id),
           );
           expect(hasVoted, isTrue);
         }
@@ -617,7 +625,7 @@ void main() {
     group('Active Polls With Pending Response', () {
       test(
         'ActivePollsWithPendingResponse returns polls where current user has not voted',
-        () {
+            () {
           final pendingPolls = container.read(
             activePollsWithPendingResponseProvider,
           );
@@ -629,7 +637,7 @@ void main() {
 
       test(
         'ActivePollsWithPendingResponse excludes polls where current user has voted',
-        () {
+            () {
           // Since currentUser is null, this test verifies the logic works correctly
           final pendingPolls = container.read(
             activePollsWithPendingResponseProvider,
@@ -642,10 +650,10 @@ void main() {
 
       test(
         'ActivePollsWithPendingResponse returns empty list when no current user',
-        () {
+            () {
           final containerWithoutUser = ProviderContainer.test(
             overrides: [
-              currentUserProvider.overrideWith((ref) => Future.value(null)),
+              currentUserProvider.overrideWith((ref) => null),
             ],
           );
 

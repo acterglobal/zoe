@@ -78,7 +78,7 @@ class SettingsScreen extends ConsumerWidget {
 
   Widget _buildProfileSection(BuildContext context, WidgetRef ref) {
     final l10n = L10n.of(context);
-    final currentUser = ref.watch(currentUserProvider).value;
+    final currentUser = ref.watch(currentUserProvider);
 
     return SettingCardWidget(
       title: l10n.profile,

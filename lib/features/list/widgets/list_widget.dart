@@ -183,7 +183,7 @@ class ListWidget extends ConsumerWidget {
       padding: const EdgeInsets.only(top: 8, left: 24),
       child: GestureDetector(
         onTap: () {
-          final userId = ref.read(loggedInUserProvider).value;
+          final userId = ref.read(currentUserProvider)?.id;
           if (userId == null) return;
           switch (list.listType) {
             case ContentType.bullet:

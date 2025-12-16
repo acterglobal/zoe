@@ -39,7 +39,7 @@ void main() {
     // Create the container with currentUserProvider override
     container = ProviderContainer.test(
       overrides: [
-        currentUserProvider.overrideWithValue(AsyncValue.data(testUser)),
+        currentUserProvider.overrideWithValue(testUser),
       ],
     );
   });

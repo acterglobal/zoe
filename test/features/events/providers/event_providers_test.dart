@@ -4,6 +4,7 @@ import 'package:zoe/features/events/data/event_list.dart';
 import 'package:zoe/features/events/models/events_model.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import '../../users/utils/users_utils.dart';
@@ -11,6 +12,7 @@ import '../../users/utils/users_utils.dart';
 void main() {
   group('Event Providers', () {
     late ProviderContainer container;
+    late UserModel testUser;
     late String testUserId;
 
     ProviderContainer createTestContainer({
@@ -21,13 +23,12 @@ void main() {
 
     setUp(() {
       container = createTestContainer();
-      testUserId = getUserByIndex(container).id;
+      testUser = getUserByIndex(container);
+      testUserId = testUser.id;
 
       // Override loggedInUserProvider for tests that depend on eventsListProvider
       container = createTestContainer(
-        overrides: [
-          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-        ],
+        overrides: [currentUserProvider.overrideWithValue(testUser)],
       );
     });
 
@@ -103,7 +104,7 @@ void main() {
         container = createTestContainer(
           overrides: [
             eventListProvider.overrideWithValue(events),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
           ],
         );
 
@@ -145,7 +146,7 @@ void main() {
           overrides: [
             eventListProvider.overrideWithValue(events),
             searchValueProvider.overrideWithValue(searchQuery),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
           ],
         );
 
@@ -213,9 +214,7 @@ void main() {
         container = createTestContainer(
           overrides: [
             eventListProvider.overrideWithValue([eventWithRsvp]),
-            loggedInUserProvider.overrideWith(
-              (ref) => Future.value(testUserId),
-            ),
+            currentUserProvider.overrideWith((ref) => testUser),
           ],
         );
 
@@ -277,7 +276,7 @@ void main() {
         container = createTestContainer(
           overrides: [
             eventListProvider.overrideWithValue(eventList),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
           ],
         );
 
@@ -302,7 +301,7 @@ void main() {
           overrides: [
             eventListProvider.overrideWithValue(eventList),
             searchValueProvider.overrideWithValue(query),
-            loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+            currentUserProvider.overrideWithValue(testUser),
           ],
         );
 

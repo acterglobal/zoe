@@ -39,7 +39,7 @@ void main() {
           searchValueProvider.overrideWith(MockSearchValue.new),
           preferencesServiceProvider.overrideWithValue(mockPreferencesService),
           // Use the testUserId we just fetched
-          loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
+          currentUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
         ],
       );
 
@@ -403,7 +403,7 @@ void main() {
             preferencesServiceProvider.overrideWithValue(
               mockPreferencesService,
             ),
-            loggedInUserProvider.overrideWithValue(const AsyncValue.data(null)),
+            currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
           ],
         );
 
