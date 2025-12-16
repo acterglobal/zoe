@@ -75,7 +75,7 @@ Filter whereInFilter(String field, List<Object?> values) {
   Filter combined = Filter.or(filters[0], filters[1]);
 
   for (var i = 2; i < filters.length; i++) {
-    combined = Filter.and(combined, filters[i]);
+    combined = Filter.or(combined, filters[i]);
   }
 
   return combined;
