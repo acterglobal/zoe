@@ -49,6 +49,7 @@ class _ChooseColorBottomSheetState
     final primaryColor = Theme.of(context).colorScheme.primary;
 
     return MaxWidthWidget(
+      isBottomSheet: true,
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom + 20,
         left: 16,

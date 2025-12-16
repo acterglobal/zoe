@@ -105,18 +105,16 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
       router.go(AppRoutes.home.route);
 
       // Wait for navigation to complete before accessing context
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (!mounted) return;
 
         final currentUser = ref.read(currentUserProvider);
         final currentUserId = currentUser?.id ?? '';
-        final sheet = ref.read(sheetProvider(sheetId));
+        final sheet = await ref.read(getSheetByIdProvider(sheetId).future);
+        if (sheet == null || currentUser == null) return;
 
         final isMember =
-            currentUser != null &&
-            currentUserId.isNotEmpty &&
-            sheet != null &&
-            sheet.users.contains(currentUserId);
+            currentUserId.isNotEmpty && sheet.users.contains(currentUserId);
 
         final context = router.routerDelegate.navigatorKey.currentContext;
         if (context == null || !context.mounted) {
@@ -139,7 +137,7 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
         }
 
         if (!isMember) {
-          showJoinSheetBottomSheet(context: context, parentId: sheetId);
+          showJoinSheetBottomSheet(context: context, sheet: sheet);
         } else {
           router.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheetId));
         }

@@ -57,6 +57,7 @@ class _QrScanBottomSheetState extends State<QrScanBottomSheet> {
           ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w600),
         ),
         MaxWidthWidget(
+          isBottomSheet: true,
           padding: const EdgeInsets.all(16),
           child: SizedBox(
             height: height,

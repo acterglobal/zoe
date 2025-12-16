@@ -41,7 +41,7 @@ final class SheetListProvider
   }
 }
 
-String _$sheetListHash() => r'b0c9cc62dcaccf5d5bb951fd725e6ea2f0e7096e';
+String _$sheetListHash() => r'9565511e97bf8fa5df67ecca2d8c579d6555a157';
 
 abstract class _$SheetList extends $Notifier<List<SheetModel>> {
   List<SheetModel> build();
@@ -197,6 +197,81 @@ final class SheetFamily extends $Family
 
   @override
   String toString() => r'sheetProvider';
+}
+
+@ProviderFor(getSheetById)
+const getSheetByIdProvider = GetSheetByIdFamily._();
+
+final class GetSheetByIdProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<SheetModel?>,
+          SheetModel?,
+          FutureOr<SheetModel?>
+        >
+    with $FutureModifier<SheetModel?>, $FutureProvider<SheetModel?> {
+  const GetSheetByIdProvider._({
+    required GetSheetByIdFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'getSheetByIdProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$getSheetByIdHash();
+
+  @override
+  String toString() {
+    return r'getSheetByIdProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<SheetModel?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<SheetModel?> create(Ref ref) {
+    final argument = this.argument as String;
+    return getSheetById(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetSheetByIdProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$getSheetByIdHash() => r'2930bb64b53f50dd5551700d3814ae598c429f9a';
+
+final class GetSheetByIdFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<SheetModel?>, String> {
+  const GetSheetByIdFamily._()
+    : super(
+        retry: null,
+        name: r'getSheetByIdProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  GetSheetByIdProvider call(String sheetId) =>
+      GetSheetByIdProvider._(argument: sheetId, from: this);
+
+  @override
+  String toString() => r'getSheetByIdProvider';
 }
 
 /// Get Users of Sheet

@@ -4,6 +4,7 @@ class MaxWidthWidget extends StatelessWidget {
   final Widget child;
   final Alignment alignment;
   final bool isScrollable;
+  final bool isBottomSheet;
   final EdgeInsets? padding;
 
   const MaxWidthWidget({
@@ -11,12 +12,15 @@ class MaxWidthWidget extends StatelessWidget {
     required this.child,
     this.alignment = Alignment.center,
     this.isScrollable = false,
+    this.isBottomSheet = false,
     this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Align(alignment: alignment, child: _buildContentWidget());
+    return isBottomSheet
+        ? _buildContentWidget()
+        : Align(alignment: alignment, child: _buildContentWidget());
   }
 
   Widget _buildContentWidget() {

@@ -57,6 +57,7 @@ class _ShareItemsBottomSheetState extends ConsumerState<ShareItemsBottomSheet> {
         : _getContentShareMessage(ref);
 
     return MaxWidthWidget(
+      isBottomSheet: true,
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
         left: 16,
