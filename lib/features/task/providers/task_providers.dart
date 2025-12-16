@@ -194,15 +194,11 @@ class TaskList extends _$TaskList {
     );
   }
 
-  void addAssignee(String taskId, String userId) {
-    final task = state.firstWhere((t) => t.id == taskId);
-    final updatedAssignees = List<String>.from(task.assignedUsers)..add(userId);
-    updateTaskAssignees(taskId, FieldValue.arrayUnion(updatedAssignees));
-  }
+  void addAssignee(String taskId, String userId) =>
+      updateTaskAssignees(taskId, FieldValue.arrayUnion([userId]));
 
-  void removeAssignee(String taskId, String userId) {
-    updateTaskAssignees(taskId, FieldValue.arrayRemove([userId]));
-  }
+  void removeAssignee(String taskId, String userId) =>
+      updateTaskAssignees(taskId, FieldValue.arrayRemove([userId]));
 
   String? getFocusTaskId(String taskId) {
     // Get the task for the parent from current state
