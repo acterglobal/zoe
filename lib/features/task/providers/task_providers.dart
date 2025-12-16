@@ -184,33 +184,21 @@ class TaskList extends _$TaskList {
     );
   }
 
-  Future<void> updateTaskAssignees(
-    String taskId,
-    List<String> assignedUsers,
-  ) async {
+  Future<void> updateTaskAssignees(String taskId, FieldValue fieldValue) async {
     await runFirestoreOperation(
       ref,
       () => collection.doc(taskId).update({
-        FirestoreFieldConstants.assignedUsers: FieldValue.arrayUnion(
-          assignedUsers,
-        ),
+        FirestoreFieldConstants.assignedUsers: fieldValue,
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),
     );
   }
 
-  void addAssignee(String taskId, String userId) {
-    final task = state.firstWhere((t) => t.id == taskId);
-    final updatedAssignees = List<String>.from(task.assignedUsers)..add(userId);
-    updateTaskAssignees(taskId, updatedAssignees);
-  }
+  void addAssignee(String taskId, String userId) =>
+      updateTaskAssignees(taskId, FieldValue.arrayUnion([userId]));
 
-  void removeAssignee(String taskId, String userId) {
-    final task = state.firstWhere((t) => t.id == taskId);
-    final updatedAssignees = List<String>.from(task.assignedUsers)
-      ..remove(userId);
-    updateTaskAssignees(taskId, updatedAssignees);
-  }
+  void removeAssignee(String taskId, String userId) =>
+      updateTaskAssignees(taskId, FieldValue.arrayRemove([userId]));
 
   String? getFocusTaskId(String taskId) {
     // Get the task for the parent from current state
