@@ -69,7 +69,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
       child: ZoePrimaryButton(
         text: L10n.of(context).getStarted,
         onPressed: () async {
-          final currentUserId = await ref.read(loggedInUserProvider.future); 
+          final currentUserId = ref.read(currentUserProvider)?.id;
           if (mounted) {
             if (currentUserId != null) {
               context.go(AppRoutes.home.route);

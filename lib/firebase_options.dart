@@ -44,39 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDADOy17UkkYfISnstMwpz4KrK1iOeSe98',
-    appId: '1:762703988712:web:fb010b28b7d6035554465d',
-    messagingSenderId: '762703988712',
-    projectId: 'zoe-firebase-c9810',
-    authDomain: 'zoe-firebase-c9810.firebaseapp.com',
-    storageBucket: 'zoe-firebase-c9810.firebasestorage.app',
-    measurementId: 'G-G9GQ15FHT5',
+    apiKey: 'AIzaSyA67JsuoIJ51o2jvhM4TB8_WCNHcTgo4pA',
+    appId: '1:1010784888644:web:91ef143ad5e08e663e9911',
+    messagingSenderId: '1010784888644',
+    projectId: 'zoe-dev-178cd',
+    authDomain: 'zoe-dev-178cd.firebaseapp.com',
+    storageBucket: 'zoe-dev-178cd.firebasestorage.app',
+    measurementId: 'G-YE6KPE3K1F',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDKmwh8-Ktjdf2aNzeD6QBS6gaqF_zrOYw',
-    appId: '1:762703988712:android:6ef1c79ff8a5058f54465d',
-    messagingSenderId: '762703988712',
-    projectId: 'zoe-firebase-c9810',
-    storageBucket: 'zoe-firebase-c9810.firebasestorage.app',
+    apiKey: 'AIzaSyCVpsv0CaGjEI_7YEai8aizX42nSn2AxIg',
+    appId: '1:1010784888644:android:5c5e7c48c4ffe4d83e9911',
+    messagingSenderId: '1010784888644',
+    projectId: 'zoe-dev-178cd',
+    storageBucket: 'zoe-dev-178cd.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCpI_gWGWwFNITccqDjAleRnrX51sImFKM',
-    appId: '1:762703988712:ios:81e0fb0f4e1e32cd54465d',
-    messagingSenderId: '762703988712',
-    projectId: 'zoe-firebase-c9810',
-    storageBucket: 'zoe-firebase-c9810.firebasestorage.app',
+    apiKey: 'AIzaSyAT210PnhrV9InxrN1LGrO0Oer4sfsKaok',
+    appId: '1:1010784888644:ios:2490933ba2cf03e83e9911',
+    messagingSenderId: '1010784888644',
+    projectId: 'zoe-dev-178cd',
+    storageBucket: 'zoe-dev-178cd.firebasestorage.app',
     iosBundleId: 'app.hellozoe',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCpI_gWGWwFNITccqDjAleRnrX51sImFKM',
-    appId: '1:762703988712:ios:81e0fb0f4e1e32cd54465d',
-    messagingSenderId: '762703988712',
-    projectId: 'zoe-firebase-c9810',
-    storageBucket: 'zoe-firebase-c9810.firebasestorage.app',
+    apiKey: 'AIzaSyAT210PnhrV9InxrN1LGrO0Oer4sfsKaok',
+    appId: '1:1010784888644:ios:2490933ba2cf03e83e9911',
+    messagingSenderId: '1010784888644',
+    projectId: 'zoe-dev-178cd',
+    storageBucket: 'zoe-dev-178cd.firebasestorage.app',
     iosBundleId: 'app.hellozoe',
   );
-
 }

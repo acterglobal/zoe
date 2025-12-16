@@ -108,11 +108,12 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
 
-        final currentUserId = ref.read(loggedInUserProvider).value;
+        final currentUser = ref.read(currentUserProvider);
+        final currentUserId = currentUser?.id ?? '';
         final sheet = ref.read(sheetProvider(sheetId));
 
         final isMember =
-            currentUserId != null &&
+            currentUser != null &&
             currentUserId.isNotEmpty &&
             sheet != null &&
             sheet.users.contains(currentUserId);

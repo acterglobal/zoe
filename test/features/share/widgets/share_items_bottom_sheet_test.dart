@@ -20,6 +20,7 @@ import 'package:zoe/features/task/models/task_model.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/text/models/text_model.dart';
+import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import '../../../test-utils/test_utils.dart';
@@ -34,20 +35,17 @@ import '../../users/utils/users_utils.dart';
 
 void main() {
   late ProviderContainer container;
-  late String testUserId;
+  late UserModel testUser;
 
   setUp(() {
     // Create initial container to get test user
     final initialContainer = ProviderContainer.test();
-    testUserId = getUserByIndex(initialContainer).id;
+    testUser = getUserByIndex(initialContainer);
 
     // Create container with logged in user override
     container = ProviderContainer.test(
       overrides: [
-        loggedInUserProvider.overrideWithValue(AsyncValue.data(testUserId)),
-        currentUserProvider.overrideWithValue(
-          AsyncValue.data(getUserByIndex(initialContainer)),
-        ),
+        currentUserProvider.overrideWithValue(testUser),
       ],
     );
   });
@@ -369,8 +367,7 @@ void main() {
         // Create a container with null currentUser
         final testContainer = ProviderContainer.test(
           overrides: [
-            loggedInUserProvider.overrideWithValue(const AsyncValue.data(null)),
-            currentUserProvider.overrideWithValue(const AsyncValue.data(null)),
+            currentUserProvider.overrideWithValue(null),
           ],
         );
 

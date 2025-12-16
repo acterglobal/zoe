@@ -47,7 +47,7 @@ class BulletList extends _$BulletList {
     required String sheetId,
     int? orderIndex,
   }) async {
-    final userId = ref.read(loggedInUserProvider).value;
+    final userId = ref.read(currentUserProvider)?.id;
     if (userId == null) return;
 
     // Single pass optimization: collect parent bullets and determine new orderIndex

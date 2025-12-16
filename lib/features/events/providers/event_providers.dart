@@ -203,11 +203,11 @@ Future<RsvpStatus?> currentUserRsvp(Ref ref, String eventId) async {
   final event = eventList.where((e) => e.id == eventId).firstOrNull;
   if (event == null) return null;
 
-  // Get the current user ID from the loggedInUserProvider
-  final currentUserId = await ref.read(loggedInUserProvider.future);
-  if (currentUserId == null || currentUserId.isEmpty) return null;
+  // Get the current user ID from the currentUserProvider
+  final currentUser = ref.watch(currentUserProvider);
+  if (currentUser == null || currentUser.id.isEmpty) return null;
 
-  final rsvpResponse = event.rsvpResponses[currentUserId];
+  final rsvpResponse = event.rsvpResponses[currentUser.id];
   if (rsvpResponse == null) return null;
 
   return rsvpResponse;

@@ -160,14 +160,14 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
   }
 
   Widget _buildJoinButton(BuildContext context, WidgetRef ref) {
-    final currentUserId = ref.watch(loggedInUserProvider).value;
-    if (currentUserId == null) return const SizedBox.shrink();
+    final currentUser = ref.watch(currentUserProvider);
+    if (currentUser == null) return const SizedBox.shrink();
     return ZoePrimaryButton(
       onPressed: () async {
         try {
           await ref
               .read(sheetListProvider.notifier)
-              .addUserToSheet(parentId, currentUserId);
+              .addUserToSheet(parentId, currentUser.id);
           if (context.mounted) {
             Navigator.of(context).pop();
             context.push(

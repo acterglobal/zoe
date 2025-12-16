@@ -21,7 +21,7 @@ class SheetList extends _$SheetList {
 
   @override
   List<SheetModel> build() {
-    final userId = ref.watch(loggedInUserProvider).value;
+    final userId = ref.watch(currentUserProvider)?.id;
 
     _subscription?.cancel();
     _subscription = null;
@@ -66,7 +66,7 @@ class SheetList extends _$SheetList {
   // ─────────────────────────────────────
 
   Future<void> addSheet(SheetModel sheet) async {
-    final userId = ref.read(loggedInUserProvider).value;
+    final userId = ref.read(currentUserProvider)?.id;
     if (userId == null) return;
     await runFirestoreOperation(ref, () async {
       var newSheet = sheet;
