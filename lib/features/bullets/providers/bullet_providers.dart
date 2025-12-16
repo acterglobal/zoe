@@ -6,6 +6,7 @@ import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/constants/firestore_field_constants.dart';
@@ -25,7 +26,12 @@ class BulletList extends _$BulletList {
     _subscription?.cancel();
     _subscription = null;
 
-    _subscription = collection.snapshots().listen(
+    final sheetIds = ref.watch(listOfSheetIdsProvider);
+    Query<Map<String, dynamic>> query = collection.where(
+      Filter(FirestoreFieldConstants.sheetId, whereIn: sheetIds),
+    );
+
+    _subscription = query.snapshots().listen(
       (snapshot) {
         state = snapshot.docs
             .map((doc) => BulletModel.fromJson(doc.data()))
