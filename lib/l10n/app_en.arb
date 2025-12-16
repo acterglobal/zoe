@@ -637,5 +637,7 @@
     "permanentlyDeleteAccount": "Permanently delete your account",
     "@permanentlyDeleteAccount": {},
     "areYouSureYouWantToDeleteAccount": "Are you sure you want to permanently delete your account?",
-    "@areYouSureYouWantToDeleteAccount": {}
+    "@areYouSureYouWantToDeleteAccount": {},
+    "failedToJoinSheet": "Failed to join sheet {name}",
+    "@failedToJoinSheet": {}
 }

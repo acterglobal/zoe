@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/models/user_chip_type.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
@@ -170,19 +171,14 @@ class SheetJoinPreviewWidget extends ConsumerWidget {
           await ref
               .read(sheetListProvider.notifier)
               .addUserToSheet(sheet.id, currentUser.id);
-          if (context.mounted) {
-            Navigator.of(context).pop();
-            context.push(
-              AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id),
-            );
-          }
+          if (!context.mounted) return;
+          context.pop();
+          context.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheet.id));
         } catch (e) {
-          if (context.mounted) {
-            // Show error to user
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Failed to join sheet: $e')));
-          }
+          if (!context.mounted) return;
+          ref
+              .read(snackbarServiceProvider)
+              .show(L10n.of(context).failedToJoinSheet(sheet.title));
         }
       },
       icon: Icons.person_add_rounded,
