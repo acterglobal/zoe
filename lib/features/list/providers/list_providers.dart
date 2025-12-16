@@ -26,9 +26,12 @@ class Lists extends _$Lists {
     _subscription = null;
 
     final sheetIds = ref.watch(listOfSheetIdsProvider);
-    Query<Map<String, dynamic>> query = collection.where(
-      Filter(FirestoreFieldConstants.sheetId, whereIn: sheetIds),
-    );
+    Query<Map<String, dynamic>> query = collection;
+    if (sheetIds.isNotEmpty) {
+      query = query.where(
+        Filter(FirestoreFieldConstants.sheetId, whereIn: sheetIds),
+      );
+    }
 
     _subscription = query.snapshots().listen(
       (snapshot) {

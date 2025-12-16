@@ -28,9 +28,12 @@ class PollList extends _$PollList {
     _subscription?.cancel();
 
     final sheetIds = ref.watch(listOfSheetIdsProvider);
-    Query<Map<String, dynamic>> query = _collection.where(
-      Filter(FirestoreFieldConstants.sheetId, whereIn: sheetIds),
-    );
+    Query<Map<String, dynamic>> query = _collection;
+    if (sheetIds.isNotEmpty) {
+      query = query.where(
+        Filter(FirestoreFieldConstants.sheetId, whereIn: sheetIds),
+      );
+    }
 
     _subscription = query.snapshots().listen(
       (snapshot) {
