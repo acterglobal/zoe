@@ -55,8 +55,7 @@ class UserList extends _$UserList {
 @riverpod
 UserModel? currentUser(Ref ref) {
   final authUser = ref.watch(authProvider);
-  if (authUser == null) return null;
-  return ref.watch(getUserByIdProvider(authUser.id));
+  return ref.watch(getUserByIdProvider(authUser?.id ?? '')) ?? authUser;
 }
 
 /// Provider for users in a specific sheet
