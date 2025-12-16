@@ -58,8 +58,8 @@ class SettingsScreen extends ConsumerWidget {
         const SizedBox(height: 20),
 
         // Language Section
-        _buildLanguageSection(context, ref),
-        const SizedBox(height: 20),
+        // _buildLanguageSection(context, ref),
+        // const SizedBox(height: 20),
 
         // App Section
         _buildAppSection(context, ref),

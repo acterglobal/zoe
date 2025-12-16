@@ -9,6 +9,7 @@ import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 
@@ -57,6 +58,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             email: _emailController.text.trim(),
             password: _passwordController.text.trim(),
           );
+
+      // Add getting started sheet
+      final userId = ref.read(authProvider)?.id;
+      if (userId != null) {
+        await ref
+            .read(sheetListProvider.notifier)
+            .addNewUserGettingStartedSheet(userId);
+      }
     } catch (e) {
       setState(() => _errorMessage = e.toErrorMessage());
     } finally {
