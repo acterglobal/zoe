@@ -65,6 +65,11 @@ class SheetList extends _$SheetList {
   // CRUD Operations
   // ─────────────────────────────────────
 
+  Future<void> addNewUserGettingStartedSheet(String userId) async {
+    const gettingStartedSheetId = 'getting-started';
+    await addUserToSheet(gettingStartedSheetId, userId);
+  }
+
   Future<SheetModel?> getSheetById(String sheetId) async {
     return await runFirestoreOperation<SheetModel?>(ref, () async {
       final snapshot = await collection.doc(sheetId).get();
