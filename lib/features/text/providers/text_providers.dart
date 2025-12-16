@@ -29,7 +29,7 @@ class TextList extends _$TextList {
     Query<Map<String, dynamic>> query = collection;
     if (sheetIds.isNotEmpty) {
       query = query.where(
-        Filter(FirestoreFieldConstants.sheetId, whereIn: sheetIds),
+        whereInFilter(FirestoreFieldConstants.sheetId, sheetIds),
       );
     }
 

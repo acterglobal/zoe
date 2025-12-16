@@ -31,7 +31,7 @@ class PollList extends _$PollList {
     Query<Map<String, dynamic>> query = _collection;
     if (sheetIds.isNotEmpty) {
       query = query.where(
-        Filter(FirestoreFieldConstants.sheetId, whereIn: sheetIds),
+        whereInFilter(FirestoreFieldConstants.sheetId, sheetIds),
       );
     }
 
