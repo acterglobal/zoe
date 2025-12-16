@@ -43,3 +43,40 @@ Future<T?> runFirestoreOperation<T>(
     return null;
   }
 }
+
+const int _whereInLimit = 30;
+
+/// Creates a Firestore-safe whereIn filter for any list size.
+/// Enforces Firestore limits strictly.
+Filter whereInFilter(String field, List<Object?> values) {
+  assert(values.isNotEmpty, 'values must not be empty');
+
+  // Case 1: Simple whereIn
+  if (values.length <= _whereInLimit) {
+    return Filter(field, whereIn: values);
+  }
+
+  // Split into batches of 30
+  final filters = <Filter>[];
+  for (var i = 0; i < values.length; i += _whereInLimit) {
+    filters.add(
+      Filter(
+        field,
+        whereIn: values.sublist(
+          i,
+          i + _whereInLimit > values.length ? values.length : i + _whereInLimit,
+        ),
+      ),
+    );
+  }
+
+  assert(filters.length >= 2, 'At least two filters are required');
+
+  Filter combined = Filter.or(filters[0], filters[1]);
+
+  for (var i = 2; i < filters.length; i++) {
+    combined = Filter.or(combined, filters[i]);
+  }
+
+  return combined;
+}

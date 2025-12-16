@@ -41,7 +41,7 @@ final class PollListProvider
   }
 }
 
-String _$pollListHash() => r'2dcbaaefee91922fc4e7f3f0c57c46eb6aef6868';
+String _$pollListHash() => r'360cd9d4f9b2da332b7ddf4f278624b6ec2b8ab4';
 
 abstract class _$PollList extends $Notifier<List<PollModel>> {
   List<PollModel> build();

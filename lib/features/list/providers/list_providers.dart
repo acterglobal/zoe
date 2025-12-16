@@ -8,6 +8,7 @@ import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 
 part 'list_providers.g.dart';
 
@@ -24,7 +25,15 @@ class Lists extends _$Lists {
     _subscription?.cancel();
     _subscription = null;
 
-    _subscription = collection.snapshots().listen(
+    final sheetIds = ref.watch(listOfSheetIdsProvider);
+    Query<Map<String, dynamic>> query = collection;
+    if (sheetIds.isNotEmpty) {
+      query = query.where(
+        whereInFilter(FirestoreFieldConstants.sheetId, sheetIds),
+      );
+    }
+
+    _subscription = query.snapshots().listen(
       (snapshot) {
         state = snapshot.docs
             .map((doc) => ListModel.fromJson(doc.data()))

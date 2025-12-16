@@ -199,6 +199,52 @@ final class SheetFamily extends $Family
   String toString() => r'sheetProvider';
 }
 
+/// Get List of Sheet Ids
+
+@ProviderFor(listOfSheetIds)
+const listOfSheetIdsProvider = ListOfSheetIdsProvider._();
+
+/// Get List of Sheet Ids
+
+final class ListOfSheetIdsProvider
+    extends $FunctionalProvider<List<String>, List<String>, List<String>>
+    with $Provider<List<String>> {
+  /// Get List of Sheet Ids
+  const ListOfSheetIdsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'listOfSheetIdsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$listOfSheetIdsHash();
+
+  @$internal
+  @override
+  $ProviderElement<List<String>> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  List<String> create(Ref ref) {
+    return listOfSheetIds(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<String> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<String>>(value),
+    );
+  }
+}
+
+String _$listOfSheetIdsHash() => r'3aa6659fa860356f07dd1bf201d89b6605ffc0ab';
+
 @ProviderFor(getSheetById)
 const getSheetByIdProvider = GetSheetByIdFamily._();
 
