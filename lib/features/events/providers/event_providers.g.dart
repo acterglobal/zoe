@@ -44,7 +44,7 @@ final class EventListProvider
   }
 }
 
-String _$eventListHash() => r'f27516b492c29bef0e7108466e2724ccb0129ac2';
+String _$eventListHash() => r'dad13429e99e1617765b57ad8f5383d67ecde969';
 
 /// Main event list provider with all event management functionality
 
