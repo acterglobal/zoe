@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
@@ -11,6 +12,7 @@ import 'package:zoe/features/polls/utils/poll_utils.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 part 'poll_providers.g.dart';
 
@@ -225,12 +227,21 @@ class PollList extends _$PollList {
     );
   }
 
-  Future<void> startPoll(String pollId) async {
-    final poll = state.where((p) => p.id == pollId).firstOrNull;
-    if (poll == null) return;
+  Future<void> startPoll(BuildContext context, PollModel poll) async {
+    final l10n = L10n.of(context);
+    if (poll.title.isEmpty) {
+      CommonUtils.showSnackBar(context, l10n.pleaseAddPollTitle);
+      return;
+    }
+    final options = poll.options;
+    final hasEmptyOption = options.any((option) => option.title.isEmpty);
+    if (options.isEmpty || hasEmptyOption) {
+      CommonUtils.showSnackBar(context, l10n.pleaseAddPollOptions);
+      return;
+    }
     await runFirestoreOperation(
       ref,
-      () => _collection.doc(pollId).update({
+      () => _collection.doc(poll.id).update({
         FirestoreFieldConstants.startDate: Timestamp.fromDate(DateTime.now()),
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),

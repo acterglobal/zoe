@@ -24,7 +24,7 @@ void showPollMenu({
       subtitle: L10n.of(context).copyPollContent,
     ),
     ZoeCommonMenuItems.share(
-      onTapShare: () => PollActions.sharePoll(context, pollId),
+      onTapShare: () => PollActions.sharePoll(context, ref, pollId),
       subtitle: L10n.of(context).shareThisPoll,
     ),
     if (!isEditing)
@@ -59,7 +59,13 @@ class PollActions {
   }
 
   /// Shares poll content using the platform share functionality
-  static void sharePoll(BuildContext context, String pollId) {
+  static void sharePoll(BuildContext context, WidgetRef ref, String pollId) {
+    final pollContent = ref.read(pollProvider(pollId));
+    if (pollContent == null) return;
+    if (pollContent.title.isEmpty) {
+      CommonUtils.showSnackBar(context, L10n.of(context).pleaseAddPollTitle);
+      return;
+    }
     showShareItemsBottomSheet(context: context, parentId: pollId);
   }
 

@@ -147,6 +147,7 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
   /// Handle content changes from the QuillEditor
   void _handleContentChanged() {
     if (widget.onContentChanged != null && widget.isEditing) {
+      if (_editorManager.plainText.trim().isEmpty) return;
       // Delay the provider update to avoid modifying state during widget lifecycle
       Future.microtask(() {
         if (mounted) {
@@ -207,7 +208,8 @@ class _ZoeHtmlTextEditWidgetState extends ConsumerState<ZoeHtmlTextEditWidget> {
     } else {
       return GestureDetector(
         onTap: widget.onTap,
-        behavior: HitTestBehavior.opaque, // This ensures the gesture detector captures all touch events
+        behavior: HitTestBehavior.opaque,
+        // This ensures the gesture detector captures all touch events
         child: _buildViewWidget(),
       );
     }

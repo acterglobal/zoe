@@ -25,7 +25,7 @@ void showBulletMenu({
       subtitle: L10n.of(context).copyBulletContent,
     ),
     ZoeCommonMenuItems.share(
-      onTapShare: () => BulletActions.shareBullet(context, bulletId),
+      onTapShare: () => BulletActions.shareBullet(context, ref, bulletId),
       subtitle: L10n.of(context).shareThisBullet,
     ),
     if (!isEditing)
@@ -45,7 +45,7 @@ void showBulletMenu({
   ];
 
   ZoePopupMenuWidget.show(
-    context: context, 
+    context: context,
     items: menuItems,
     isAppBarAction: isAppBarAction,
   );
@@ -64,7 +64,17 @@ class BulletActions {
   }
 
   /// Shares bullet content using the platform share functionality
-  static void shareBullet(BuildContext context, String bulletId) {
+  static void shareBullet(
+    BuildContext context,
+    WidgetRef ref,
+    String bulletId,
+  ) {
+    final bulletContent = ref.read(bulletProvider(bulletId));
+    if (bulletContent == null) return;
+    if (bulletContent.title.isEmpty) {
+      CommonUtils.showSnackBar(context, L10n.of(context).pleaseAddBulletTitle);
+      return;
+    }
     showShareItemsBottomSheet(context: context, parentId: bulletId);
   }
 

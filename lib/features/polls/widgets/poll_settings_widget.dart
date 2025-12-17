@@ -36,7 +36,7 @@ Widget startPollButtonWidget(
 ) {
   final theme = Theme.of(context);
   return GestureDetector(
-    onTap: () => ref.read(pollListProvider.notifier).startPoll(poll.id),
+    onTap: () => ref.read(pollListProvider.notifier).startPoll(context, poll),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [

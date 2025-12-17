@@ -24,7 +24,7 @@ void showEventMenu({
       subtitle: L10n.of(context).copyEventContent,
     ),
     ZoeCommonMenuItems.share(
-      onTapShare: () => EventActions.shareEvent(context, eventId),
+      onTapShare: () => EventActions.shareEvent(context, ref, eventId),
       subtitle: L10n.of(context).shareThisEvent,
     ),
     if (!isEditing)
@@ -59,7 +59,13 @@ class EventActions {
   }
 
   /// Shares event content using the platform share functionality
-  static void shareEvent(BuildContext context, String eventId) {
+  static void shareEvent(BuildContext context, WidgetRef ref, String eventId) {
+    final eventContent = ref.read(eventProvider(eventId));
+    if (eventContent == null) return;
+    if (eventContent.title.isEmpty) {
+      CommonUtils.showSnackBar(context, L10n.of(context).pleaseAddEventTitle);
+      return;
+    }
     showShareItemsBottomSheet(context: context, parentId: eventId);
   }
 

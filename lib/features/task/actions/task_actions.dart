@@ -24,7 +24,7 @@ void showTaskMenu({
       subtitle: L10n.of(context).copyTaskContent,
     ),
     ZoeCommonMenuItems.share(
-      onTapShare: () => TaskActions.shareTask(context, taskId),
+      onTapShare: () => TaskActions.shareTask(context, ref, taskId),
       subtitle: L10n.of(context).shareThisTask,
     ),
     if (!isEditing)
@@ -59,7 +59,13 @@ class TaskActions {
   }
 
   /// Shares task content using the platform share functionality
-  static void shareTask(BuildContext context, String taskId) {
+  static void shareTask(BuildContext context, WidgetRef ref, String taskId) {
+    final taskContent = ref.read(taskProvider(taskId));
+    if (taskContent == null) return;
+    if (taskContent.title.isEmpty) {
+      CommonUtils.showSnackBar(context, L10n.of(context).pleaseAddTaskTitle);
+      return;
+    }
     showShareItemsBottomSheet(context: context, parentId: taskId);
   }
 

@@ -152,7 +152,7 @@ void main() {
           container: container,
           buttonText: buttonText,
           onPressed: (context, ref) =>
-              SheetActions.shareSheet(context, testSheet.id),
+              SheetActions.shareSheet(context, ref, testSheet.id),
         );
 
         // Tap the button to trigger share action
@@ -616,7 +616,7 @@ void main() {
         await tester.pumpActionsWidget(
           buttonText: buttonText,
           onPressed: (context, ref) =>
-              SheetActions.shareSheet(context, testSheet.id),
+              SheetActions.shareSheet(context, ref, testSheet.id),
           container: container,
         );
 

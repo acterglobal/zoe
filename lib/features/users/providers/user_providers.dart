@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/constants/firestore_collection_constants.dart';
 import 'package:zoe/constants/firestore_field_constants.dart';
 import 'package:zoe/features/auth/providers/auth_providers.dart';
@@ -32,6 +33,14 @@ class UserList extends _$UserList {
 
     ref.onDispose(() => _subscription?.cancel());
     return [];
+  }
+
+  Future<UserModel?> getUserById(String userId) async {
+    return await runFirestoreOperation<UserModel?>(ref, () async {
+      final snapshot = await collection.doc(userId).get();
+      final userData = snapshot.data();
+      return userData == null ? null : UserModel.fromJson(userData);
+    });
   }
 
   Future<void> addUser(UserModel user) async {
@@ -76,11 +85,10 @@ UserModel? getUserById(Ref ref, String? userId) {
   return userList.where((u) => u.id == userId).firstOrNull;
 }
 
-/// Provider for getting a user by name
+/// Provider for getting a user by ID as future
 @riverpod
-UserModel? getUserByName(Ref ref, String name) {
-  final userList = ref.watch(userListProvider);
-  return userList.where((u) => u.name == name).firstOrNull;
+Future<UserModel?> getUserByIdFuture(Ref ref, String userId) async {
+  return await ref.watch(userListProvider.notifier).getUserById(userId);
 }
 
 /// Provider for getting user IDs from a list of UserModel objects
