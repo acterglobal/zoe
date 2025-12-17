@@ -11,7 +11,6 @@ import 'package:zoe/l10n/generated/l10n.dart';
 import 'common/providers/common_providers.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
-import 'core/deeplink/deep_link_initializer.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -56,8 +55,8 @@ class MyApp extends ConsumerWidget {
         ...L10n.localizationsDelegates,
         FlutterQuillLocalizations.delegate,
       ],
-      builder: (context, child) =>
-          DeepLinkInitializer(child: child ?? SizedBox.shrink()),
+      // builder: (context, child) =>
+      //     DeepLinkInitializer(child: child ?? SizedBox.shrink()),
       supportedLocales: L10n.supportedLocales,
       scaffoldMessengerKey: ref.read(snackbarServiceProvider).messengerKey,
     );
