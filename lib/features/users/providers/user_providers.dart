@@ -85,7 +85,7 @@ UserModel? getUserById(Ref ref, String? userId) {
   return userList.where((u) => u.id == userId).firstOrNull;
 }
 
-/// Provider for getting a user by name
+/// Provider for getting a user by ID as future
 @riverpod
 Future<UserModel?> getUserByIdFuture(Ref ref, String userId) async {
   return await ref.watch(userListProvider.notifier).getUserById(userId);
