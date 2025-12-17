@@ -653,5 +653,7 @@
     "pleaseAddTaskTitle": "Please add a task title",
     "@pleaseAddTaskTitle": {},
     "pleaseAddPollTitle": "Please add a poll title",
-    "@pleaseAddPollTitle": {}
+    "@pleaseAddPollTitle": {},
+    "pleaseAddPollOptions": "Please add a poll options",
+    "@pleaseAddPollOptions": {}
 }
