@@ -44,7 +44,7 @@ final class UserListProvider
   }
 }
 
-String _$userListHash() => r'83b7366d9a9c832bee8187d39eae85691db02970';
+String _$userListHash() => r'6b081a550bb97e7f2592efc8b29686b6fc0e20bf';
 
 /// Main user list provider with all user management functionality
 
@@ -288,58 +288,55 @@ final class GetUserByIdFamily extends $Family
 
 /// Provider for getting a user by name
 
-@ProviderFor(getUserByName)
-const getUserByNameProvider = GetUserByNameFamily._();
+@ProviderFor(getUserByIdFuture)
+const getUserByIdFutureProvider = GetUserByIdFutureFamily._();
 
 /// Provider for getting a user by name
 
-final class GetUserByNameProvider
-    extends $FunctionalProvider<UserModel?, UserModel?, UserModel?>
-    with $Provider<UserModel?> {
+final class GetUserByIdFutureProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<UserModel?>,
+          UserModel?,
+          FutureOr<UserModel?>
+        >
+    with $FutureModifier<UserModel?>, $FutureProvider<UserModel?> {
   /// Provider for getting a user by name
-  const GetUserByNameProvider._({
-    required GetUserByNameFamily super.from,
+  const GetUserByIdFutureProvider._({
+    required GetUserByIdFutureFamily super.from,
     required String super.argument,
   }) : super(
          retry: null,
-         name: r'getUserByNameProvider',
+         name: r'getUserByIdFutureProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$getUserByNameHash();
+  String debugGetCreateSourceHash() => _$getUserByIdFutureHash();
 
   @override
   String toString() {
-    return r'getUserByNameProvider'
+    return r'getUserByIdFutureProvider'
         ''
         '($argument)';
   }
 
   @$internal
   @override
-  $ProviderElement<UserModel?> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<UserModel?> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
   @override
-  UserModel? create(Ref ref) {
+  FutureOr<UserModel?> create(Ref ref) {
     final argument = this.argument as String;
-    return getUserByName(ref, argument);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(UserModel? value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<UserModel?>(value),
-    );
+    return getUserByIdFuture(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetUserByNameProvider && other.argument == argument;
+    return other is GetUserByIdFutureProvider && other.argument == argument;
   }
 
   @override
@@ -348,16 +345,16 @@ final class GetUserByNameProvider
   }
 }
 
-String _$getUserByNameHash() => r'a42232953aef9f0e0776e5458de73e21901df49c';
+String _$getUserByIdFutureHash() => r'46101058435dfd385be80b95e70226a600aa3430';
 
 /// Provider for getting a user by name
 
-final class GetUserByNameFamily extends $Family
-    with $FunctionalFamilyOverride<UserModel?, String> {
-  const GetUserByNameFamily._()
+final class GetUserByIdFutureFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<UserModel?>, String> {
+  const GetUserByIdFutureFamily._()
     : super(
         retry: null,
-        name: r'getUserByNameProvider',
+        name: r'getUserByIdFutureProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
@@ -365,11 +362,11 @@ final class GetUserByNameFamily extends $Family
 
   /// Provider for getting a user by name
 
-  GetUserByNameProvider call(String name) =>
-      GetUserByNameProvider._(argument: name, from: this);
+  GetUserByIdFutureProvider call(String userId) =>
+      GetUserByIdFutureProvider._(argument: userId, from: this);
 
   @override
-  String toString() => r'getUserByNameProvider';
+  String toString() => r'getUserByIdFutureProvider';
 }
 
 /// Provider for getting user IDs from a list of UserModel objects

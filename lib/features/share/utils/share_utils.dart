@@ -63,7 +63,7 @@ class ShareUtils {
     final sheet = ref.watch(sheetProvider(parentId));
     if (sheet == null) return buffer.toString();
 
-    final userName = ref.watch(currentUserProvider)?.name;
+    final userId = ref.watch(currentUserProvider)?.id;
 
     final title = sheet.title;
     final description = sheet.description?.plainText;
@@ -81,7 +81,7 @@ class ShareUtils {
       buffer.write('\n\n$description');
     }
 
-    final link = getSheetDeepLinkUrl(parentId, userName, userMessage);
+    final link = getSheetDeepLinkUrl(parentId, userId, userMessage);
 
     buffer.write('\n\n$link');
     return buffer.toString();

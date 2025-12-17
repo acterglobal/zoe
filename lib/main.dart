@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:zoe/core/constants/app_constants.dart';
+import 'package:zoe/core/deeplink/deep_link_initializer.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/features/settings/providers/locale_provider.dart';
 import 'package:zoe/features/settings/providers/theme_provider.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-// import 'package:zoe_native/zoe_native.dart';
 import 'common/providers/common_providers.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
@@ -55,8 +55,8 @@ class MyApp extends ConsumerWidget {
         ...L10n.localizationsDelegates,
         FlutterQuillLocalizations.delegate,
       ],
-      // builder: (context, child) =>
-      //     DeepLinkInitializer(child: child ?? SizedBox.shrink()),
+      builder: (context, child) =>
+          DeepLinkInitializer(child: child ?? SizedBox.shrink()),
       supportedLocales: L10n.supportedLocales,
       scaffoldMessengerKey: ref.read(snackbarServiceProvider).messengerKey,
     );

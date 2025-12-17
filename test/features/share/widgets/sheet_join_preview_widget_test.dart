@@ -394,8 +394,8 @@ void main() {
         final testContainer = ProviderContainer.test(
           overrides: [
             currentUserProvider.overrideWithValue(testUser),
-            getUserByNameProvider(
-              sharingUser.name,
+            getUserByIdFutureProvider(
+              sharingUser.id,
             ).overrideWith((ref) => sharingUser),
             sheetListProvider.overrideWith(
               () => SheetList()..state = [sheetWithTrimmedMessage],
