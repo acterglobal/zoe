@@ -84,17 +84,8 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
       final currentUser = ref.read(authProvider);
       if (currentUser == null) return;
 
-      final router = ref.read(routerProvider);
-      router.go(AppRoutes.home.route);
-
-      final context = router.routerDelegate.navigatorKey.currentContext;
-      if (context == null || !context.mounted) {
-        _logger.severe('Context unavailable after navigation');
-        return;
-      }
-
       final sheet = await ref.read(getSheetByIdProvider(sheetId).future);
-      if (sheet == null || !context.mounted) {
+      if (sheet == null) {
         _logger.warning('Sheet not found or access denied: $sheetId');
         return;
       }
@@ -107,6 +98,15 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
               sharedBy: sharedBy,
               message: message,
             );
+      }
+
+      final router = ref.read(routerProvider);
+      router.go(AppRoutes.home.route);
+
+      final context = router.routerDelegate.navigatorKey.currentContext;
+      if (context == null || !context.mounted) {
+        _logger.severe('Context unavailable after navigation');
+        return;
       }
 
       final isMember = sheet.users.contains(currentUser.id);
