@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:zoe/core/routing/app_router.dart';
 import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/features/share/widgets/sheet_join_preview_widget.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
-import 'package:zoe/features/users/providers/user_providers.dart';
 
 final _logger = Logger('DeepLinkInitializer');
 
@@ -31,23 +31,7 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
   void initState() {
     super.initState();
     _appLinks = ref.read(appLinksProvider);
-    _initializeDeepLinks();
-  }
-
-  Future<void> _initializeDeepLinks() async {
-    await _handleInitialLink();
     _listenToIncomingLinks();
-  }
-
-  Future<void> _handleInitialLink() async {
-    try {
-      final initialLink = await _appLinks.getInitialLink();
-      if (initialLink != null && mounted) {
-        _handleUri(initialLink);
-      }
-    } catch (error) {
-      _logger.severe('Error getting initial link', error);
-    }
   }
 
   void _listenToIncomingLinks() {
@@ -59,12 +43,8 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
   void _handleUri(Uri uri) {
     try {
       final sheetId = _extractSheetId(uri);
-      if (sheetId == null || sheetId.isEmpty) {
-        _logger.severe('No sheet ID found in URI', uri.toString());
-        return;
-      }
+      if (sheetId == null || sheetId.isEmpty) return;
 
-      // Extract query parameters
       final sharedBy = uri.queryParameters['sharedBy'];
       final message = uri.queryParameters['message'];
 
@@ -95,55 +75,48 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
     return sheetId;
   }
 
-  void _navigateAndShowJoinSheet(
+  Future<void> _navigateAndShowJoinSheet(
     String sheetId, {
     String? sharedBy,
     String? message,
-  }) {
+  }) async {
     try {
+      final currentUser = ref.read(authProvider);
+      if (currentUser == null) return;
+
       final router = ref.read(routerProvider);
       router.go(AppRoutes.home.route);
 
-      // Wait for navigation to complete before accessing context
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        if (!mounted) return;
+      final context = router.routerDelegate.navigatorKey.currentContext;
+      if (context == null || !context.mounted) {
+        _logger.severe('Context unavailable after navigation');
+        return;
+      }
 
-        final currentUser = ref.read(currentUserProvider);
-        final currentUserId = currentUser?.id ?? '';
-        final sheet = await ref.read(getSheetByIdProvider(sheetId).future);
-        if (sheet == null || currentUser == null) return;
+      final sheet = await ref.read(getSheetByIdProvider(sheetId).future);
+      if (sheet == null || !context.mounted) {
+        _logger.warning('Sheet not found or access denied: $sheetId');
+        return;
+      }
 
-        final isMember =
-            currentUserId.isNotEmpty && sheet.users.contains(currentUserId);
+      if (sharedBy != null || message != null) {
+        ref
+            .read(sheetListProvider.notifier)
+            .updateSheetShareInfo(
+              sheetId: sheetId,
+              sharedBy: sharedBy,
+              message: message,
+            );
+      }
 
-        final context = router.routerDelegate.navigatorKey.currentContext;
-        if (context == null || !context.mounted) {
-          _logger.severe(
-            'Context unavailable for showing join dialog',
-            sheetId,
-          );
-          return;
-        }
-
-        // Save sharedBy and message to sheet model
-        if (sharedBy != null || message != null) {
-          ref
-              .read(sheetListProvider.notifier)
-              .updateSheetShareInfo(
-                sheetId: sheetId,
-                sharedBy: sharedBy,
-                message: message,
-              );
-        }
-
-        if (!isMember) {
-          showJoinSheetBottomSheet(context: context, sheet: sheet);
-        } else {
-          router.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheetId));
-        }
-      });
-    } catch (error) {
-      _logger.severe('Error navigating or showing join sheet', error);
+      final isMember = sheet.users.contains(currentUser.id);
+      if (!isMember) {
+        showJoinSheetBottomSheet(context: context, sheet: sheet);
+      } else {
+        router.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheetId));
+      }
+    } catch (error, stack) {
+      _logger.severe('Deep link navigation failed', error, stack);
     }
   }
 
