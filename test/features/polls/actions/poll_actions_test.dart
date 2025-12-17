@@ -72,7 +72,8 @@ void main() {
         await tester.pumpActionsWidget(
           container: container,
           buttonText: 'Share Poll',
-          onPressed: (context, ref) => PollActions.sharePoll(context, testPoll.id),
+          onPressed: (context, ref) =>
+              PollActions.sharePoll(context, ref, testPoll.id),
         );
 
         // Tap the button to trigger share action

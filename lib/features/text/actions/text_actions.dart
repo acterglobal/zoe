@@ -72,6 +72,12 @@ class TextActions {
 
   /// Shares text content using the platform share functionality
   static void shareText(BuildContext context, WidgetRef ref, String textId) {
+    final textContent = ref.read(textProvider(textId));
+    if (textContent == null) return;
+    if (textContent.title.isEmpty) {
+      CommonUtils.showSnackBar(context, L10n.of(context).pleaseAddTextTitle);
+      return;
+    }
     showShareItemsBottomSheet(
       context: context,
       parentId: textId,

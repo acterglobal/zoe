@@ -639,5 +639,19 @@
     "areYouSureYouWantToDeleteAccount": "Are you sure you want to permanently delete your account?",
     "@areYouSureYouWantToDeleteAccount": {},
     "failedToJoinSheet": "Failed to join sheet {name}",
-    "@failedToJoinSheet": {}
+    "@failedToJoinSheet": {},
+    "pleaseAddSheetTitle": "Please add a sheet title",
+    "@pleaseAddSheetTitle": {},
+    "pleaseAddTextTitle": "Please add a text title",
+    "@pleaseAddTextTitle": {},
+    "pleaseAddBulletTitle": "Please add a bullet title",
+    "@pleaseAddBulletTitle": {},
+    "pleaseAddEventTitle": "Please add a event title",
+    "@pleaseAddEventTitle": {},
+    "pleaseAddListTitle": "Please add a list title",
+    "@pleaseAddListTitle": {},
+    "pleaseAddTaskTitle": "Please add a task title",
+    "@pleaseAddTaskTitle": {},
+    "pleaseAddPollTitle": "Please add a poll title",
+    "@pleaseAddPollTitle": {}
 }

@@ -184,17 +184,17 @@ class ShareUtils {
     switch (listModel.listType) {
       case ContentType.task:
         final tasks = ref.watch(taskByParentProvider(listModel.id));
-        if (tasks.isNotEmpty) buffer.write('\n');
-        for (final task in tasks) {
-          buffer.write('\n☑️ ${task.title}');
-        }
+        final taskString = tasks
+            .map((task) => task.title.isEmpty ? '' : '☑️ ${task.title}')
+            .join('\n');
+        if (taskString.trim().isNotEmpty) buffer.write('\n$taskString');
         break;
       case ContentType.bullet:
         final bullets = ref.watch(bulletListByParentProvider(listModel.id));
-        if (bullets.isNotEmpty) buffer.write('\n');
-        for (final bullet in bullets) {
-          buffer.write('\n🔹 ${bullet.title}');
-        }
+        final bulletString = bullets
+            .map((bullet) => bullet.title.isEmpty ? '' : '🔹 ${bullet.title}')
+            .join('\n');
+        if (bulletString.trim().isNotEmpty) buffer.write('\n$bulletString');
         break;
       default:
         break;
@@ -294,7 +294,10 @@ class ShareUtils {
     buffer.write(title);
 
     // Poll options
-    buffer.write('\n\n${options.map((e) => '🔘 ${e.title}').join('\n')}');
+    final optionsString = options
+        .map((option) => option.title.isEmpty ? '' : '🔘 ${option.title}')
+        .join('\n');
+    if (optionsString.trim().isNotEmpty) buffer.write('\n\n$optionsString');
 
     // Link
     final link = getLinkPostfixUrl('poll/$parentId');

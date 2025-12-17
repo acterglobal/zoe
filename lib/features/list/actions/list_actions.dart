@@ -24,7 +24,7 @@ void showListMenu({
       subtitle: L10n.of(context).copyListContent,
     ),
     ZoeCommonMenuItems.share(
-      onTapShare: () => ListActions.shareList(context, listId),
+      onTapShare: () => ListActions.shareList(context, ref, listId),
       subtitle: L10n.of(context).shareThisList,
     ),
     if (!isEditing)
@@ -59,7 +59,13 @@ class ListActions {
   }
 
   /// Shares poll content using the platform share functionality
-  static void shareList(BuildContext context, String listId) {
+  static void shareList(BuildContext context, WidgetRef ref, String listId) {
+    final listContent = ref.read(listItemProvider(listId));
+    if (listContent == null) return;
+    if (listContent.title.isEmpty) {
+      CommonUtils.showSnackBar(context, L10n.of(context).pleaseAddListTitle);
+      return;
+    }
     showShareItemsBottomSheet(context: context, parentId: listId);
   }
 

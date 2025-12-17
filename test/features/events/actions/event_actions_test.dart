@@ -73,7 +73,8 @@ void main() {
         await tester.pumpActionsWidget(
           container: container,
           buttonText: 'Share Event',
-          onPressed: (context, ref) => EventActions.shareEvent(context, testEvent.id),
+          onPressed: (context, ref) =>
+              EventActions.shareEvent(context, ref, testEvent.id),
         );
 
         // Tap the button to trigger share action
@@ -87,12 +88,12 @@ void main() {
     });
 
     group('editEvent', () {
-
       testWidgets('sets correct event ID in edit provider', (tester) async {
         await tester.pumpActionsWidget(
           container: container,
           buttonText: 'Edit Event',
-          onPressed: (context, ref) => EventActions.editEvent(ref, testEvent.id),
+          onPressed: (context, ref) =>
+              EventActions.editEvent(ref, testEvent.id),
         );
 
         // Tap the button to trigger edit action
@@ -391,7 +392,8 @@ void main() {
       testWidgets('edit action works with real providers', (tester) async {
         await tester.pumpActionsWidget(
           buttonText: 'Edit',
-          onPressed: (context, ref) => EventActions.editEvent(ref, testEvent.id),
+          onPressed: (context, ref) =>
+              EventActions.editEvent(ref, testEvent.id),
           container: container,
         );
 
@@ -451,7 +453,8 @@ void main() {
 
         await tester.pumpActionsWidget(
           buttonText: 'Edit Empty',
-          onPressed: (context, ref) => EventActions.editEvent(ref, emptyEventId),
+          onPressed: (context, ref) =>
+              EventActions.editEvent(ref, emptyEventId),
           container: container,
         );
 
@@ -472,7 +475,8 @@ void main() {
 
         await tester.pumpActionsWidget(
           buttonText: 'Edit',
-          onPressed: (context, ref) => EventActions.editEvent(ref, testEvent.id),
+          onPressed: (context, ref) =>
+              EventActions.editEvent(ref, testEvent.id),
           container: container,
         );
 

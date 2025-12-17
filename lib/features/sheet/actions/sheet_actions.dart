@@ -36,7 +36,7 @@ void showSheetMenu({
       subtitle: L10n.of(context).copySheetContent,
     ),
     ZoeCommonMenuItems.share(
-      onTapShare: () => SheetActions.shareSheet(context, sheetId),
+      onTapShare: () => SheetActions.shareSheet(context, ref, sheetId),
       subtitle: L10n.of(context).shareThisSheet,
     ),
     if (!isEditing)
@@ -124,7 +124,13 @@ class SheetActions {
   }
 
   /// Shares sheet content using the platform share functionality
-  static void shareSheet(BuildContext context, String sheetId) {
+  static void shareSheet(BuildContext context, WidgetRef ref, String sheetId) {
+    final sheet = ref.read(sheetProvider(sheetId));
+    if (sheet == null) return;
+    if (sheet.title.isEmpty) {
+      CommonUtils.showSnackBar(context, L10n.of(context).pleaseAddSheetTitle);
+      return;
+    }
     showShareItemsBottomSheet(
       context: context,
       parentId: sheetId,
