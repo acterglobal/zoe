@@ -8,6 +8,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows the event menu popup using the generic component
@@ -18,6 +19,10 @@ void showEventMenu({
   required String eventId,
   bool isDetailScreen = false,
 }) {
+  final currentUserId = ref.read(currentUserProvider)?.id;
+  final createdBy = ref.read(eventProvider(eventId))?.createdBy;
+  final isOwner = currentUserId != null && currentUserId == createdBy;
+
   final menuItems = [
     ZoeCommonMenuItems.copy(
       onTapCopy: () => EventActions.copyEvent(context, ref, eventId),
@@ -27,20 +32,21 @@ void showEventMenu({
       onTapShare: () => EventActions.shareEvent(context, ref, eventId),
       subtitle: L10n.of(context).shareThisEvent,
     ),
-    if (!isEditing)
+    if (!isEditing && isOwner)
       ZoeCommonMenuItems.edit(
         onTapEdit: () => EventActions.editEvent(ref, eventId),
         subtitle: L10n.of(context).editThisEvent,
       ),
-    ZoeCommonMenuItems.delete(
-      onTapDelete: () {
-        EventActions.deleteEvent(context, ref, eventId);
-        if (context.mounted && context.canPop() && isDetailScreen) {
-          context.pop();
-        }
-      },
-      subtitle: L10n.of(context).deleteThisEvent,
-    ),
+    if (isOwner)
+      ZoeCommonMenuItems.delete(
+        onTapDelete: () {
+          EventActions.deleteEvent(context, ref, eventId);
+          if (context.mounted && context.canPop() && isDetailScreen) {
+            context.pop();
+          }
+        },
+        subtitle: L10n.of(context).deleteThisEvent,
+      ),
   ];
 
   ZoePopupMenuWidget.show(context: context, items: menuItems);

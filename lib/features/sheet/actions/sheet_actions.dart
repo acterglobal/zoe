@@ -13,6 +13,7 @@ import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/sheet/actions/delete_sheet.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows the sheet menu popup using the generic component
@@ -22,6 +23,10 @@ void showSheetMenu({
   required bool isEditing,
   required String sheetId,
 }) {
+  final currentUserId = ref.read(currentUserProvider)?.id;
+  final createdBy = ref.read(sheetProvider(sheetId))?.createdBy;
+  final isOwner = currentUserId != null && currentUserId == createdBy;
+
   final menuItems = [
     ZoeCommonMenuItems.connect(
       onTapConnect: () => SheetActions.connectSheet(context, sheetId),
@@ -39,7 +44,7 @@ void showSheetMenu({
       onTapShare: () => SheetActions.shareSheet(context, ref, sheetId),
       subtitle: L10n.of(context).shareThisSheet,
     ),
-    if (!isEditing)
+    if (!isEditing && isOwner)
       ZoeCommonMenuItems.edit(
         onTapEdit: () => SheetActions.editSheet(ref, sheetId),
         subtitle: L10n.of(context).editThisSheet,

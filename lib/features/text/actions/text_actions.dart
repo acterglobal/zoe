@@ -7,6 +7,7 @@ import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows the text menu popup using the generic component
@@ -17,6 +18,10 @@ void showTextMenu({
   required String textId,
   bool isDetailScreen = false,
 }) {
+  final currentUserId = ref.read(currentUserProvider)?.id;
+  final createdBy = ref.read(textProvider(textId))?.createdBy;
+  final isOwner = currentUserId != null && currentUserId == createdBy;
+
   final menuItems = [
     ZoeCommonMenuItems.copy(
       onTapCopy: () => TextActions.copyText(context, ref, textId),
@@ -26,20 +31,21 @@ void showTextMenu({
       onTapShare: () => TextActions.shareText(context, ref, textId),
       subtitle: L10n.of(context).shareThisText,
     ),
-    if (!isEditing)
+    if (!isEditing && isOwner)
       ZoeCommonMenuItems.edit(
         onTapEdit: () => TextActions.editText(context, ref, textId),
         subtitle: L10n.of(context).editThisText,
       ),
-    ZoeCommonMenuItems.delete(
-      onTapDelete: () {
-        TextActions.deleteText(context, ref, textId);
-        if (context.mounted && context.canPop() && isDetailScreen) {
-          context.pop();
-        }
-      },
-      subtitle: L10n.of(context).deleteThisText,
-    ),
+    if (isOwner)
+      ZoeCommonMenuItems.delete(
+        onTapDelete: () {
+          TextActions.deleteText(context, ref, textId);
+          if (context.mounted && context.canPop() && isDetailScreen) {
+            context.pop();
+          }
+        },
+        subtitle: L10n.of(context).deleteThisText,
+      ),
   ];
 
   ZoePopupMenuWidget.show(context: context, items: menuItems);
