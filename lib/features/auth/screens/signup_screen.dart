@@ -34,8 +34,22 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   bool _isLoading = false;
   String? _errorMessage;
 
+  late final TapGestureRecognizer _privacyPolicyRecognizer;
+  late final TapGestureRecognizer _termsRecognizer;
+
+  @override
+  void initState() {
+    super.initState();
+    _privacyPolicyRecognizer = TapGestureRecognizer()
+      ..onTap = () => CommonUtils.openPrivacyPolicyUrl(context);
+    _termsRecognizer = TapGestureRecognizer()
+      ..onTap = () => CommonUtils.openTermsAndConditionsUrl(context);
+  }
+
   @override
   void dispose() {
+    _privacyPolicyRecognizer.dispose();
+    _termsRecognizer.dispose();
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -273,8 +287,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   style: theme.textTheme.bodyMedium?.copyWith(
                     decoration: TextDecoration.underline,
                   ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () => CommonUtils.openPrivacyPolicyUrl(context),
+                  recognizer: _privacyPolicyRecognizer,
                 ),
                 TextSpan(text: ' ${l10n.and} '),
                 TextSpan(
@@ -282,9 +295,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   style: theme.textTheme.bodyMedium?.copyWith(
                     decoration: TextDecoration.underline,
                   ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () =>
-                        CommonUtils.openTermsAndConditionsUrl(context),
+                  recognizer: _termsRecognizer,
                 ),
                 const TextSpan(text: '.'),
               ],
