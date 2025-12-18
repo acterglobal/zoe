@@ -8,6 +8,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows the task menu popup using the generic component
@@ -18,6 +19,10 @@ void showTaskMenu({
   required String taskId,
   bool isDetailScreen = false,
 }) {
+  final currentUserId = ref.read(currentUserProvider)?.id;
+  final createdBy = ref.read(taskProvider(taskId))?.createdBy;
+  final isOwner = currentUserId == createdBy;
+
   final menuItems = [
     ZoeCommonMenuItems.copy(
       onTapCopy: () => TaskActions.copyTask(context, ref, taskId),
@@ -27,20 +32,21 @@ void showTaskMenu({
       onTapShare: () => TaskActions.shareTask(context, ref, taskId),
       subtitle: L10n.of(context).shareThisTask,
     ),
-    if (!isEditing)
+    if (!isEditing && isOwner)
       ZoeCommonMenuItems.edit(
         onTapEdit: () => TaskActions.editTask(ref, taskId),
         subtitle: L10n.of(context).editThisTask,
       ),
-    ZoeCommonMenuItems.delete(
-      onTapDelete: () {
-        TaskActions.deleteTask(context, ref, taskId);
-        if (context.mounted && context.canPop() && isDetailScreen) {
-          context.pop();
-        }
-      },
-      subtitle: L10n.of(context).deleteThisTask,
-    ),
+    if (isOwner)
+      ZoeCommonMenuItems.delete(
+        onTapDelete: () {
+          TaskActions.deleteTask(context, ref, taskId);
+          if (context.mounted && context.canPop() && isDetailScreen) {
+            context.pop();
+          }
+        },
+        subtitle: L10n.of(context).deleteThisTask,
+      ),
   ];
 
   ZoePopupMenuWidget.show(context: context, items: menuItems);

@@ -8,6 +8,7 @@ import 'package:zoe/common/widgets/toolkit/zoe_popup_menu_widget.dart';
 import 'package:zoe/features/bullets/providers/bullet_providers.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Shows the bullet menu popup using the generic component
@@ -19,6 +20,10 @@ void showBulletMenu({
   bool isDetailScreen = false,
   bool isAppBarAction = false,
 }) {
+  final currentUserId = ref.read(currentUserProvider)?.id;
+  final createdBy = ref.read(bulletProvider(bulletId))?.createdBy;
+  final isOwner = currentUserId == createdBy;
+
   final menuItems = [
     ZoeCommonMenuItems.copy(
       onTapCopy: () => BulletActions.copyBullet(context, ref, bulletId),
@@ -28,20 +33,21 @@ void showBulletMenu({
       onTapShare: () => BulletActions.shareBullet(context, ref, bulletId),
       subtitle: L10n.of(context).shareThisBullet,
     ),
-    if (!isEditing)
+    if (!isEditing && isOwner)
       ZoeCommonMenuItems.edit(
         onTapEdit: () => BulletActions.editBullet(ref, bulletId),
         subtitle: L10n.of(context).editThisBullet,
       ),
-    ZoeCommonMenuItems.delete(
-      onTapDelete: () {
-        BulletActions.deleteBullet(context, ref, bulletId);
-        if (context.mounted && context.canPop() && isDetailScreen) {
-          context.pop();
-        }
-      },
-      subtitle: L10n.of(context).deleteThisBullet,
-    ),
+    if (isOwner)
+      ZoeCommonMenuItems.delete(
+        onTapDelete: () {
+          BulletActions.deleteBullet(context, ref, bulletId);
+          if (context.mounted && context.canPop() && isDetailScreen) {
+            context.pop();
+          }
+        },
+        subtitle: L10n.of(context).deleteThisBullet,
+      ),
   ];
 
   ZoePopupMenuWidget.show(
