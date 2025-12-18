@@ -19,7 +19,7 @@ import 'package:zoe/features/quick-search/screens/quick_search_screen.dart';
 import 'package:zoe/features/settings/screens/settings_screen.dart';
 import 'package:zoe/features/settings/screens/language_selection_screen.dart';
 import 'package:zoe/features/settings/screens/developer_tools_screen.dart';
-// import 'package:zoe/features/settings/screens/systems_test_screen.dart';
+import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/features/sheet/screens/sheet_detail_screen.dart';
 import 'package:zoe/features/sheet/screens/sheet_list_screen.dart';
 import 'package:zoe/features/task/screens/task_detail_screen.dart';
@@ -42,6 +42,13 @@ final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: AppRoutes.welcome.route,
+    redirect: (context, state) {
+      final currentUser = ref.read(currentUserProvider);
+      if (currentUser != null && state.fullPath == AppRoutes.welcome.route) {
+        return AppRoutes.home.route;
+      }
+      return null;
+    },
     routes: [
       // Welcome route
       GoRoute(

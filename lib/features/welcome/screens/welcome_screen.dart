@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/widgets/animated_background_widget.dart';
 import 'package:zoe/common/widgets/app_icon_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/core/routing/app_routes.dart';
-import '../../../l10n/generated/l10n.dart';
-import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
-class WelcomeScreen extends ConsumerStatefulWidget {
+class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
-  @override
-  ConsumerState<WelcomeScreen> createState() => _WelcomeScreenState();
-}
-
-class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +18,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
           child: Center(
             child: MaxWidthWidget(
               padding: const EdgeInsets.all(24),
-              child: _buildWelcomeBodyUI(),
+              child: _buildWelcomeBodyUI(context),
             ),
           ),
         ),
@@ -33,29 +26,29 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
     );
   }
 
-  Widget _buildWelcomeBodyUI() {
+  Widget _buildWelcomeBodyUI(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const AppIconWidget(),
         const SizedBox(height: 32),
-        _buildAppTitle(),
+        _buildAppTitle(context),
         const SizedBox(height: 8),
-        _buildAppDescription(),
+        _buildAppDescription(context),
         const SizedBox(height: 32),
-        _buildGetStartedButton(),
+        _buildGetStartedButton(context),
       ],
     );
   }
 
-  Widget _buildAppTitle() {
+  Widget _buildAppTitle(BuildContext context) {
     return Text(
       L10n.of(context).welcomeToZoe,
       style: Theme.of(context).textTheme.headlineLarge,
     );
   }
 
-  Widget _buildAppDescription() {
+  Widget _buildAppDescription(BuildContext context) {
     return Text(
       L10n.of(context).yourPersonalWorkspace,
       textAlign: TextAlign.center,
@@ -63,19 +56,12 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
     );
   }
 
-  Widget _buildGetStartedButton() {
+  Widget _buildGetStartedButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ZoePrimaryButton(
         text: L10n.of(context).getStarted,
-        onPressed: () async {
-          final currentUser = ref.read(currentUserProvider);
-          if (currentUser != null) {
-            context.go(AppRoutes.home.route);
-          } else {
-            context.push(AppRoutes.login.route);
-          }
-        },
+        onPressed: () => context.push(AppRoutes.login.route),
       ),
     );
   }
