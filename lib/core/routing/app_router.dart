@@ -44,6 +44,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: AppRoutes.welcome.route,
     redirect: (context, state) {
       final currentUser = ref.read(currentUserProvider);
+      // Check if the user is already logged in and redirect to the home screen
       if (currentUser != null && state.fullPath == AppRoutes.welcome.route) {
         return AppRoutes.home.route;
       }
