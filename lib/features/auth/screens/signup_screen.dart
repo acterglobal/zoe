@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/utils/string_utils.dart';
 import 'package:zoe/common/utils/validation_utils.dart';
 import 'package:zoe/common/widgets/animated_background_widget.dart';
@@ -28,6 +30,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  bool _isAgreePrivacyAndTerms = false;
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -43,6 +46,13 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   Future<void> _handleSignUp() async {
     // Validate form first
     if (_formKey.currentState?.validate() == false) return;
+    if (!_isAgreePrivacyAndTerms) {
+      CommonUtils.showSnackBar(
+        context,
+        L10n.of(context).pleaseAgreePrivacyAndTerms,
+      );
+      return;
+    }
 
     // Clear any previous errors and set loading state
     setState(() {
@@ -124,7 +134,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             const SizedBox(height: 8),
             _buildErrorMessage(),
           ],
-          const SizedBox(height: 24),
+          const SizedBox(height: 12),
+          _buildPrivacyAndTermsView(),
+          const SizedBox(height: 12),
           _buildSignUpButton(),
           const SizedBox(height: 16),
           _buildSignInLink(),
@@ -235,6 +247,51 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white),
         textAlign: TextAlign.center,
       ),
+    );
+  }
+
+  Widget _buildPrivacyAndTermsView() {
+    final theme = Theme.of(context);
+    final l10n = L10n.of(context);
+    return Row(
+      children: [
+        Checkbox(
+          value: _isAgreePrivacyAndTerms,
+          checkColor: Colors.white,
+          onChanged: (value) => setState(
+            () => _isAgreePrivacyAndTerms = value ?? _isAgreePrivacyAndTerms,
+          ),
+        ),
+        Expanded(
+          child: RichText(
+            text: TextSpan(
+              style: theme.textTheme.bodyMedium,
+              children: [
+                TextSpan(text: '${l10n.agreePrefix} '),
+                TextSpan(
+                  text: l10n.privacyPolicy,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    decoration: TextDecoration.underline,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => CommonUtils.openPrivacyPolicyUrl(context),
+                ),
+                TextSpan(text: ' ${l10n.and} '),
+                TextSpan(
+                  text: l10n.termsAndConditions,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    decoration: TextDecoration.underline,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () =>
+                        CommonUtils.openTermsAndConditionsUrl(context),
+                ),
+                const TextSpan(text: '.'),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
