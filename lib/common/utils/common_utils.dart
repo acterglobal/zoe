@@ -100,6 +100,18 @@ class CommonUtils {
   // EXTERNAL LINK & SHARE UTILITIES
   // Handles navigation to Stores, Legal Docs, and Sharing
   //-----------------------------------------------------------#
+  static void shareApp(BuildContext context) {
+    final l10n = L10n.of(context);
+    return shareText(
+      l10n.shareAppMessage(
+        AppConstants.playStoreUrl,
+        AppConstants.appName,
+        AppConstants.appStoreUrl,
+      ),
+      subject: l10n.share,
+    );
+  }
+
   static Future<bool> openStoreUrl(BuildContext context) async {
     return await openUrl(AppConstants.storeUrl, context);
   }

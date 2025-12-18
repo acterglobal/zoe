@@ -135,7 +135,7 @@ class SettingsScreen extends ConsumerWidget {
           subtitle: L10n.of(context).tellYourFriendsAboutZoe,
           icon: Icons.share_rounded,
           iconColor: const Color(0xFF3B82F6),
-          onTap: () {},
+          onTap: () => CommonUtils.shareApp(context),
         ),
         const Divider(height: 1),
         SettingItemWidget(
