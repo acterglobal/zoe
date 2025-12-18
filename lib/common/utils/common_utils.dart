@@ -104,8 +104,8 @@ class CommonUtils {
     final l10n = L10n.of(context);
     return shareText(
       l10n.shareAppMessage(
-        AppConstants.playStoreUrl,
         AppConstants.appName,
+        AppConstants.playStoreUrl,
         AppConstants.appStoreUrl,
       ),
       subject: l10n.share,

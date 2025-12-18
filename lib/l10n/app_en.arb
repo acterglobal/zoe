@@ -670,6 +670,6 @@
     "@and": {"description": "Connector word between terms and privacy policy"},
     "pleaseAgreePrivacyAndTerms": "Please agree to the privacy policy and terms of service.",
     "@pleaseAgreePrivacyAndTerms": {},
-    "shareAppMessage": "Introducing {appName} a simple and efficient solution built for everyday use.\n\nAvailable on:\n\nAndroid: {androidUrl}\n\niOS: {iosUrl}",
+    "shareAppMessage": "Introducing {aAppName} a simple and efficient solution built for everyday use.\n\nAvailable on:\n\nAndroid: {bAndroidUrl}\n\niOS: {cIosUrl}",
     "@shareAppMessage": {}
 }
