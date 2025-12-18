@@ -43,10 +43,20 @@ final routerProvider = Provider<GoRouter>((ref) {
     navigatorKey: _rootNavigatorKey,
     initialLocation: AppRoutes.welcome.route,
     redirect: (context, state) {
+      final isAuthRoute = [
+        AppRoutes.welcome.route,
+        AppRoutes.login.route,
+        AppRoutes.signup.route,
+      ].contains(state.fullPath);
+
       final currentUser = ref.read(currentUserProvider);
       // Check if the user is already logged in and redirect to the home screen
-      if (currentUser != null && state.fullPath == AppRoutes.welcome.route) {
+      if (currentUser != null && isAuthRoute) {
         return AppRoutes.home.route;
+      }
+      // Redirect unauthenticated users to welcome screen
+      else if (currentUser == null && !isAuthRoute) {
+        return AppRoutes.welcome.route;
       }
       return null;
     },
