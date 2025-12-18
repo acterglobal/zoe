@@ -95,15 +95,14 @@ class SheetList extends _$SheetList {
   }
 
   Future<void> deleteSheet(SheetModel sheet) async {
+    final userId = ref.read(currentUserProvider)?.id;
+    if (userId == null) return;
+
     await runFirestoreOperation(ref, () async {
-      final userId = ref.read(currentUserProvider)?.id;
       final isOwner = sheet.createdBy == userId;
       final sheetId = sheet.id;
 
       if (isOwner) {
-        // If the user is the owner, deleting the sheet should remove it for all users
-        await collection.doc(sheetId).delete();
-
         // Delete all content documents related to the sheet
         await Future.wait([
           // Delete all texts documents
@@ -143,6 +142,9 @@ class SheetList extends _$SheetList {
             sheetId: sheetId,
           ),
         ]);
+
+        // If the user is the owner, deleting the sheet should remove it for all users
+        await collection.doc(sheetId).delete();
       } else {
         // If the user is not the owner, delete the sheet only for that user
         await collection.doc(sheetId).update({
