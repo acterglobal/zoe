@@ -3,6 +3,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoe/common/utils/validation_utils.dart';
+import 'package:zoe/core/constants/app_constants.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
 class CommonUtils {
@@ -20,6 +21,7 @@ class CommonUtils {
   static Future<bool> openUrl(
     String url,
     BuildContext context, {
+    bool isCheckProtocols = true,
     LaunchMode mode = LaunchMode.externalApplication,
   }) async {
     try {
@@ -27,7 +29,7 @@ class CommonUtils {
         showSnackBar(context, L10n.of(context).couldNotOpenLink);
         return false;
       }
-      final uri = Uri.parse(getUrlWithProtocol(url));
+      final uri = Uri.parse(isCheckProtocols ? getUrlWithProtocol(url) : url);
       return await launchUrl(uri, mode: mode);
     } catch (e) {
       return false;
@@ -92,5 +94,38 @@ class CommonUtils {
   static bool isKeyboardOpen(BuildContext context) {
     final viewInsets = MediaQuery.of(context).viewInsets;
     return viewInsets.bottom > 0;
+  }
+
+  //-----------------------------------------------------------#
+  // EXTERNAL LINK & SHARE UTILITIES
+  // Handles navigation to Stores, Legal Docs, and Sharing
+  //-----------------------------------------------------------#
+  static void shareApp(BuildContext context) {
+    final l10n = L10n.of(context);
+    return shareText(
+      l10n.shareAppMessage(
+        AppConstants.appName,
+        AppConstants.playStoreUrl,
+        AppConstants.appStoreUrl,
+      ),
+      subject: l10n.share,
+    );
+  }
+
+  static Future<bool> openStoreUrl(BuildContext context) async {
+    return await openUrl(AppConstants.storeUrl, context);
+  }
+
+  static Future<bool> openPrivacyPolicyUrl(BuildContext context) async {
+    return await openUrl(AppConstants.privacyPolicyUrl, context);
+  }
+
+  static Future<bool> openTermsAndConditionsUrl(BuildContext context) async {
+    return await openUrl(AppConstants.termsAndConditionsUrl, context);
+  }
+
+  static Future<bool> openContactEmail(BuildContext context) async {
+    final url = 'mailto:${AppConstants.contactEmail}';
+    return await openUrl(url, context, isCheckProtocols: false);
   }
 }

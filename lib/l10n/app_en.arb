@@ -655,5 +655,21 @@
     "pleaseAddPollTitle": "Please add a poll title",
     "@pleaseAddPollTitle": {},
     "pleaseAddPollOptions": "Please add a poll options",
-    "@pleaseAddPollOptions": {}
+    "@pleaseAddPollOptions": {},
+    "agreePrefix": "I understand and agree with the",
+    "@agreePrefix": {"description": "Prefix text before terms and privacy policy links"},
+    "termsAndConditions": "Terms & Conditions",
+    "@termsAndConditions": {"description": "Terms and Conditions link text"},
+    "termsAndConditionsDescription": "The rules for using our services",
+    "@termsAndConditionsDescription": {},
+    "privacyPolicy": "Privacy Policy",
+    "@privacyPolicy": {"description": "Privacy Policy link text"},
+    "privacyPolicyDescription": "Your privacy and data rights",
+    "@privacyPolicyDescription": {},
+    "and": "and",
+    "@and": {"description": "Connector word between terms and privacy policy"},
+    "pleaseAgreePrivacyAndTerms": "Please agree to the privacy policy and terms of service.",
+    "@pleaseAgreePrivacyAndTerms": {},
+    "shareAppMessage": "Introducing {aAppName} a simple and efficient solution built for everyday use.\n\nAvailable on:\n\nAndroid: {bAndroidUrl}\n\niOS: {cIosUrl}",
+    "@shareAppMessage": {}
 }

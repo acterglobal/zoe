@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
-import 'package:zoe/constants/firestore_collection_constants.dart';
+import 'package:zoe/core/constants/firestore_collection_constants.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/text/data/text_list.dart';
 import 'package:zoe/features/text/models/text_model.dart';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zoe/common/providers/package_info_provider.dart';
+import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/dialogs/info_dialog_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -134,7 +135,7 @@ class SettingsScreen extends ConsumerWidget {
           subtitle: L10n.of(context).tellYourFriendsAboutZoe,
           icon: Icons.share_rounded,
           iconColor: const Color(0xFF3B82F6),
-          onTap: () {},
+          onTap: () => CommonUtils.shareApp(context),
         ),
         const Divider(height: 1),
         SettingItemWidget(
@@ -142,7 +143,23 @@ class SettingsScreen extends ConsumerWidget {
           subtitle: L10n.of(context).rateUsOnTheAppStore,
           icon: Icons.star_rounded,
           iconColor: const Color(0xFFF59E0B),
-          onTap: () {},
+          onTap: () => CommonUtils.openStoreUrl(context),
+        ),
+        const Divider(height: 1),
+        SettingItemWidget(
+          title: L10n.of(context).privacyPolicy,
+          subtitle: L10n.of(context).privacyPolicyDescription,
+          icon: Icons.shield_outlined,
+          iconColor: const Color(0xFF008000),
+          onTap: () => CommonUtils.openPrivacyPolicyUrl(context),
+        ),
+        const Divider(height: 1),
+        SettingItemWidget(
+          title: L10n.of(context).termsAndConditions,
+          subtitle: L10n.of(context).termsAndConditionsDescription,
+          icon: Icons.insert_drive_file_outlined,
+          iconColor: const Color(0xFF8B5CF6),
+          onTap: () => CommonUtils.openTermsAndConditionsUrl(context),
         ),
         const Divider(height: 1),
         SettingItemWidget(
@@ -150,7 +167,7 @@ class SettingsScreen extends ConsumerWidget {
           subtitle: L10n.of(context).getHelpOrSendFeedback,
           icon: Icons.mail_outline_rounded,
           iconColor: const Color(0xFFEF4444),
-          onTap: () {},
+          onTap: () => CommonUtils.openContactEmail(context),
         ),
       ],
     );
@@ -164,7 +181,7 @@ class SettingsScreen extends ConsumerWidget {
           title: L10n.of(context).appName,
           subtitle: ref.watch(appNameProvider),
           icon: Icons.apps_rounded,
-          iconColor: const Color(0xFF8B5CF6),
+          iconColor: const Color(0xFF10B981),
           onTap: () {},
         ),
         const Divider(height: 1),

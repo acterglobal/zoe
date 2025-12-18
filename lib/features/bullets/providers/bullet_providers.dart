@@ -8,8 +8,8 @@ import 'package:zoe/features/bullets/model/bullet_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-import 'package:zoe/constants/firestore_collection_constants.dart';
-import 'package:zoe/constants/firestore_field_constants.dart';
+import 'package:zoe/core/constants/firestore_collection_constants.dart';
+import 'package:zoe/core/constants/firestore_field_constants.dart';
 
 part 'bullet_providers.g.dart';
 
