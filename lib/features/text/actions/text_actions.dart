@@ -20,7 +20,7 @@ void showTextMenu({
 }) {
   final currentUserId = ref.read(currentUserProvider)?.id;
   final createdBy = ref.read(textProvider(textId))?.createdBy;
-  final isOwner = currentUserId == createdBy;
+  final isOwner = currentUserId != null && currentUserId == createdBy;
 
   final menuItems = [
     ZoeCommonMenuItems.copy(

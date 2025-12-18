@@ -22,7 +22,7 @@ void showBulletMenu({
 }) {
   final currentUserId = ref.read(currentUserProvider)?.id;
   final createdBy = ref.read(bulletProvider(bulletId))?.createdBy;
-  final isOwner = currentUserId == createdBy;
+  final isOwner = currentUserId != null && currentUserId == createdBy;
 
   final menuItems = [
     ZoeCommonMenuItems.copy(

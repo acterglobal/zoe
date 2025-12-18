@@ -25,7 +25,7 @@ void showSheetMenu({
 }) {
   final currentUserId = ref.read(currentUserProvider)?.id;
   final createdBy = ref.read(sheetProvider(sheetId))?.createdBy;
-  final isOwner = currentUserId == createdBy;
+  final isOwner = currentUserId != null && currentUserId == createdBy;
 
   final menuItems = [
     ZoeCommonMenuItems.connect(
