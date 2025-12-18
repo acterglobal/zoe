@@ -104,7 +104,7 @@ void main() {
     test('deleteSheet removes sheet from list', () async {
       final initialLength = container.read(sheetListProvider).length;
 
-      await notifier.deleteSheet(testSheet1.id);
+      await notifier.deleteSheet(testSheet1);
 
       final updatedList = container.read(sheetListProvider);
       expect(updatedList.length, equals(initialLength - 1));
