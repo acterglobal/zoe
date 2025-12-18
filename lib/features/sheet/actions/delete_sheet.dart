@@ -21,7 +21,7 @@ void showDeleteSheetConfirmation(
     builder: (context) => DeleteSheetBottomSheet(
       sheet: sheet,
       onConfirm: () {
-        ref.read(sheetListProvider.notifier).deleteSheet(sheetId);
+        ref.read(sheetListProvider.notifier).deleteSheet(sheet);
         Navigator.of(context).pop();
         Navigator.of(context).pop();
       },

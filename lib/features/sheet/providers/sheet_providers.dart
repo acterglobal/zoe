@@ -6,8 +6,14 @@ import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/core/constants/firestore_collection_constants.dart';
 import 'package:zoe/core/constants/firestore_field_constants.dart';
+import 'package:zoe/features/bullets/providers/bullet_providers.dart';
+import 'package:zoe/features/events/providers/event_providers.dart';
+import 'package:zoe/features/list/providers/list_providers.dart';
+import 'package:zoe/features/polls/providers/poll_providers.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/task/providers/task_providers.dart';
+import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'sheet_providers.g.dart';
@@ -88,8 +94,64 @@ class SheetList extends _$SheetList {
     });
   }
 
-  Future<void> deleteSheet(String sheetId) async {
-    await runFirestoreOperation(ref, () => collection.doc(sheetId).delete());
+  Future<void> deleteSheet(SheetModel sheet) async {
+    final userId = ref.read(currentUserProvider)?.id;
+    if (userId == null) return;
+
+    await runFirestoreOperation(ref, () async {
+      final isOwner = sheet.createdBy == userId;
+      final sheetId = sheet.id;
+
+      if (isOwner) {
+        // Delete all content documents related to the sheet
+        await Future.wait([
+          // Delete all texts documents
+          deleteDocumentsBySheetId(
+            ref: ref,
+            collectionName: FirestoreCollections.texts,
+            sheetId: sheetId,
+          ),
+          // Delete all events documents
+          deleteDocumentsBySheetId(
+            ref: ref,
+            collectionName: FirestoreCollections.events,
+            sheetId: sheetId,
+          ),
+          // Delete all lists documents
+          deleteDocumentsBySheetId(
+            ref: ref,
+            collectionName: FirestoreCollections.lists,
+            sheetId: sheetId,
+          ),
+          // Delete all tasks documents
+          deleteDocumentsBySheetId(
+            ref: ref,
+            collectionName: FirestoreCollections.tasks,
+            sheetId: sheetId,
+          ),
+          // Delete all bullets documents
+          deleteDocumentsBySheetId(
+            ref: ref,
+            collectionName: FirestoreCollections.bullets,
+            sheetId: sheetId,
+          ),
+          // Delete all polls documents
+          deleteDocumentsBySheetId(
+            ref: ref,
+            collectionName: FirestoreCollections.polls,
+            sheetId: sheetId,
+          ),
+        ]);
+
+        // If the user is the owner, deleting the sheet should remove it for all users
+        await collection.doc(sheetId).delete();
+      } else {
+        // If the user is not the owner, delete the sheet only for that user
+        await collection.doc(sheetId).update({
+          FirestoreFieldConstants.users: FieldValue.arrayRemove([userId]),
+        });
+      }
+    });
   }
 
   Future<void> updateSheetTitle(String sheetId, String title) async {

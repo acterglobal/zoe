@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
-
-import '../providers/common_providers.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/core/constants/firestore_field_constants.dart';
 
 final log = Logger('ZoeApp-FireStore');
 
@@ -42,6 +42,29 @@ Future<T?> runFirestoreOperation<T>(
     snackbar.show('Something went wrong.');
     return null;
   }
+}
+
+Future<void> deleteDocumentsBySheetId({
+  required Ref ref,
+  required String collectionName,
+  required String sheetId,
+}) async {
+  final firestore = ref.read(firestoreProvider);
+
+  // Get all documents with the given sheetId
+  final docsData = await firestore
+      .collection(collectionName)
+      .where(Filter(FirestoreFieldConstants.sheetId, isEqualTo: sheetId))
+      .get();
+  final docsList = docsData.docs;
+  if (docsList.isEmpty) return;
+
+  // Delete all documents
+  final batch = firestore.batch();
+  for (final doc in docsList) {
+    batch.delete(doc.reference);
+  }
+  await batch.commit();
 }
 
 const int _whereInLimit = 30;
