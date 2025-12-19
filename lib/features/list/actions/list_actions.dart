@@ -25,20 +25,24 @@ void showListMenu({
 
   final menuItems = [
     ZoeCommonMenuItems.copy(
+      context: context,
       onTapCopy: () => ListActions.copyList(context, ref, listId),
       subtitle: L10n.of(context).copyListContent,
     ),
     ZoeCommonMenuItems.share(
+      context: context,
       onTapShare: () => ListActions.shareList(context, ref, listId),
       subtitle: L10n.of(context).shareThisList,
     ),
     if (!isEditing && isOwner)
       ZoeCommonMenuItems.edit(
+        context: context,
         onTapEdit: () => ListActions.editList(ref, listId),
         subtitle: L10n.of(context).editThisList,
       ),
     if (isOwner)
       ZoeCommonMenuItems.delete(
+        context: context,
         onTapDelete: () {
           ListActions.deleteList(context, ref, listId);
           if (context.mounted && context.canPop() && isDetailScreen) {

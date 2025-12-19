@@ -21,12 +21,13 @@ class ImageUtils {
   static const String copyLinkIosDark = '$_basePath/copy_link_ios_dark.png';
   static const String copyLinkIosLight = '$_basePath/copy_link_ios_light.png';
 
-  static const String permissonAndroidDark =
-      '$_basePath/permisson_android_dark.png';
-  static const String permissonAndroidLight =
-      '$_basePath/permisson_android_light.png';
-  static const String permissonIosDark = '$_basePath/permisson_ios_dark.png';
-  static const String permissonIosLight = '$_basePath/permisson_ios_light.png';
+  static const String permissionAndroidDark =
+      '$_basePath/permission_android_dark.png';
+  static const String permissionAndroidLight =
+      '$_basePath/permission_android_light.png';
+  static const String permissionIosDark = '$_basePath/permission_ios_dark.png';
+  static const String permissionIosLight =
+      '$_basePath/permission_ios_light.png';
 
   static const String inviteLinkAndroidDark =
       '$_basePath/invite_link_android_dark.png';
@@ -60,9 +61,9 @@ class ImageUtils {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final isIOS = Platform.isIOS || Platform.isMacOS;
     if (isDarkMode) {
-      return isIOS ? permissonIosDark : permissonAndroidDark;
+      return isIOS ? permissionIosDark : permissionAndroidDark;
     } else {
-      return isIOS ? permissonIosLight : permissonAndroidLight;
+      return isIOS ? permissionIosLight : permissionAndroidLight;
     }
   }
 

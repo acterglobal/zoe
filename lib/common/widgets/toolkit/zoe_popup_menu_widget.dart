@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 /// Generic popup menu item data model
 class ZoePopupMenuItem {
@@ -151,93 +152,100 @@ class ZoePopupMenuWidget extends StatelessWidget {
 class ZoeCommonMenuItems {
   /// Connect menu item
   static ZoePopupMenuItem connect({
+    required BuildContext context,
     VoidCallback? onTapConnect,
-    String title = 'Connect',
-    String subtitle = 'Connect with WhatsApp Group',
+    String? title,
+    String? subtitle,
   }) => ZoePopupMenuItem(
     id: 'connect',
     icon: Icons.link_rounded,
-    title: title,
-    subtitle: subtitle,
+    title: title ?? L10n.of(context).connect,
+    subtitle: subtitle ?? L10n.of(context).connectToWhatsAppGroup,
     onTap: onTapConnect,
   );
 
   /// Remove cover image menu item
   static ZoePopupMenuItem removeCoverImage({
+    required BuildContext context,
     VoidCallback? onTapRemoveCoverImage,
-    String title = 'Remove cover image',
-    String subtitle = 'Remove the cover image for this sheet',
+    String? title,
+    String? subtitle,
   }) => ZoePopupMenuItem(
     id: 'remove_cover_image',
     icon: Icons.delete_rounded,
-    title: title,
-    subtitle: subtitle,
+    title: title ?? L10n.of(context).removeCoverImage,
+    subtitle: subtitle ?? L10n.of(context).removeCoverImageDescription,
     onTap: onTapRemoveCoverImage,
   );
 
   /// Copy menu item
   static ZoePopupMenuItem copy({
+    required BuildContext context,
     VoidCallback? onTapCopy,
-    String title = 'Copy',
-    String subtitle = 'Copy content to clipboard',
+    String? title,
+    String? subtitle,
   }) => ZoePopupMenuItem(
     id: 'copy',
     icon: Icons.copy_rounded,
-    title: title,
-    subtitle: subtitle,
+    title: title ?? L10n.of(context).copy,
+    subtitle: subtitle ?? L10n.of(context).copyContentToClipboard,
     onTap: onTapCopy,
   );
 
   /// Share menu item
   static ZoePopupMenuItem share({
+    required BuildContext context,
     VoidCallback? onTapShare,
-    String title = 'Share',
-    String subtitle = 'Share this content',
+    String? title,
+    String? subtitle,
   }) => ZoePopupMenuItem(
     id: 'share',
     icon: Icons.share_rounded,
-    title: title,
-    subtitle: subtitle,
+    title: title ?? L10n.of(context).share,
+    subtitle: subtitle ?? L10n.of(context).shareThisContent,
     onTap: onTapShare,
   );
 
   /// Edit menu item
   static ZoePopupMenuItem edit({
+    required BuildContext context,
     VoidCallback? onTapEdit,
-    String title = 'Edit',
-    String subtitle = 'Edit this content',
+    String? title,
+    String? subtitle,
   }) => ZoePopupMenuItem(
     id: 'edit',
     icon: Icons.edit_rounded,
-    title: title,
-    subtitle: subtitle,
+    title: title ?? L10n.of(context).edit,
+    subtitle: subtitle ?? L10n.of(context).editThisContent,
     onTap: onTapEdit,
   );
 
   /// Delete menu item
   static ZoePopupMenuItem delete({
+    required BuildContext context,
     VoidCallback? onTapDelete,
-    String title = 'Delete',
-    String subtitle = 'Delete this content',
+    String? title,
+    String? subtitle,
   }) => ZoePopupMenuItem(
     id: 'delete',
     icon: Icons.delete_rounded,
-    title: title,
-    subtitle: subtitle,
+    title: title ?? L10n.of(context).delete,
+    subtitle: subtitle ?? L10n.of(context).deleteThisContent,
     isDestructive: true,
     onTap: onTapDelete,
   );
 
-  /// Copy sheet menu item
+  /// Choose theme menu item
   static ZoePopupMenuItem chooseTheme({
+    required BuildContext context,
     VoidCallback? onTapChooseTheme,
-    String title = 'Choose theme',
-    String subtitle = 'Choose a theme for this sheet',
+    String? title,
+    String? subtitle,
   }) => ZoePopupMenuItem(
     id: 'choose_theme',
     icon: Icons.color_lens,
-    title: title,
-    subtitle: subtitle,
+    title: title ?? L10n.of(context).chooseTheme,
+    subtitle: subtitle ?? L10n.of(context).chooseThemeForSheet,
     onTap: onTapChooseTheme,
   );
 }

@@ -16,15 +16,18 @@ void showLinkMenu({
 }) {
   final menuItems = [
     ZoeCommonMenuItems.copy(
+      context: context,
       onTapCopy: () => LinkActions.copyLink(context, ref, linkId),
       subtitle: L10n.of(context).copyLinkContent,
     ),
     if (!isEditing)
       ZoeCommonMenuItems.edit(
+        context: context,
         onTapEdit: () => LinkActions.editLink(ref, linkId),
         subtitle: L10n.of(context).editThisLink,
       ),
     ZoeCommonMenuItems.delete(
+      context: context,
       onTapDelete: () => LinkActions.deleteLink(context, ref, linkId),
       subtitle: L10n.of(context).deleteThisLink,
     ),

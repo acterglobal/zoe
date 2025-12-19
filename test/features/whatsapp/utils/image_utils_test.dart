@@ -27,12 +27,12 @@ void main() {
     });
 
     test('permission image paths are correct', () {
-      expect(ImageUtils.permissonAndroidDark,
-          '$basePath/permisson_android_dark.png');
-      expect(ImageUtils.permissonAndroidLight,
-          '$basePath/permisson_android_light.png');
-      expect(ImageUtils.permissonIosDark, '$basePath/permisson_ios_dark.png');
-      expect(ImageUtils.permissonIosLight, '$basePath/permisson_ios_light.png');
+      expect(ImageUtils.permissionAndroidDark,
+          '$basePath/permission_android_dark.png');
+      expect(ImageUtils.permissionAndroidLight,
+          '$basePath/permission_android_light.png');
+      expect(ImageUtils.permissionIosDark, '$basePath/permission_ios_dark.png');
+      expect(ImageUtils.permissionIosLight, '$basePath/permission_ios_light.png');
     });
 
     test('invite link image paths are correct', () {
@@ -123,7 +123,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text(ImageUtils.permissonIosDark), findsOneWidget);
+      expect(find.text(ImageUtils.permissionIosDark), findsOneWidget);
 
       // Test light theme
       await tester.pumpWidget(
@@ -137,7 +137,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text(ImageUtils.permissonIosLight), findsOneWidget);
+      expect(find.text(ImageUtils.permissionIosLight), findsOneWidget);
     });
 
     testWidgets('getInviteLinkImagePath returns correct paths',

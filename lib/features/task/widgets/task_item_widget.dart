@@ -63,7 +63,8 @@ class TaskWidget extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildTaskItemTitle(context, ref, task, shouldFocus),
-                  if (task.assignedUsers.isNotEmpty && userDisplayType.showInRow)
+                  if (task.assignedUsers.isNotEmpty &&
+                      userDisplayType.showInRow)
                     _buildUserDisplay(context, ref, task),
                 ],
               ),
@@ -77,7 +78,8 @@ class TaskWidget extends ConsumerWidget {
                   ],
                 ],
               ),
-              if (userDisplayType.showBelow && task.assignedUsers.isNotEmpty) ...[
+              if (userDisplayType.showBelow &&
+                  task.assignedUsers.isNotEmpty) ...[
                 const SizedBox(height: 10),
                 TaskAssigneeHeaderWidget(
                   isEditing: false,
@@ -184,45 +186,44 @@ class TaskWidget extends ConsumerWidget {
 
     return switch (userDisplayType) {
       ZoeUserDisplayType.avatarOnly => ZoeUserChipWidget(
-          user: validUsers.first,
-          type: ZoeUserChipType.userNameWithAvatarChip,
-        ),
+        user: validUsers.first,
+        type: ZoeUserChipType.userNameWithAvatarChip,
+      ),
       ZoeUserDisplayType.stackedAvatars => GestureDetector(
-          onTap: () => _buildTaskAssigneesBottomSheet(context, ref, validUsers),
-          child: ZoeStackedAvatarsWidget(users: validUsers),
-        ),
+        onTap: () => _buildTaskAssigneesBottomSheet(context, ref, validUsers),
+        child: ZoeStackedAvatarsWidget(users: validUsers),
+      ),
       ZoeUserDisplayType.nameChipBelow => ZoeUserChipWidget(
-          user: validUsers.first,
-          type: ZoeUserChipType.userNameChip,
-        ),
+        user: validUsers.first,
+        type: ZoeUserChipType.userNameChip,
+      ),
       ZoeUserDisplayType.nameChipsWrap => Wrap(
-          spacing: 1,
-          runSpacing: 4,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            ...validUsers.take(2).map(
-                  (user) => ZoeUserChipWidget(
-                    user: user,
-                    type: ZoeUserChipType.userNameChip,
-                  ),
-                ),
-            if (validUsers.length > 2)
-              GestureDetector(
-                onTap: () =>
-                    _buildTaskAssigneesBottomSheet(context, ref, validUsers),
-                child: Text(
-                  'view +${validUsers.length - 2}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.4),
-                        decoration: TextDecoration.underline,
-                      ),
+        spacing: 1,
+        runSpacing: 4,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          ...validUsers.take(2).map((user) {
+            return ZoeUserChipWidget(
+              user: user,
+              type: ZoeUserChipType.userNameChip,
+            );
+          }),
+          if (validUsers.length > 2)
+            GestureDetector(
+              onTap: () =>
+                  _buildTaskAssigneesBottomSheet(context, ref, validUsers),
+              child: Text(
+                L10n.of(context).viewPlusWithCount(validUsers.length - 2),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.4),
+                  decoration: TextDecoration.underline,
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
+      ),
     };
   }
 
@@ -236,7 +237,9 @@ class TaskWidget extends ConsumerWidget {
           child: Icon(
             Icons.edit,
             size: 16,
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.4),
           ),
         ),
         const SizedBox(width: 6),
