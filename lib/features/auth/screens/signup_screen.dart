@@ -2,8 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/common_utils.dart';
-import 'package:zoe/common/utils/string_utils.dart';
 import 'package:zoe/common/utils/validation_utils.dart';
 import 'package:zoe/common/widgets/animated_background_widget.dart';
 import 'package:zoe/common/widgets/animated_textfield_widget.dart';
@@ -32,7 +32,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   bool _obscureConfirmPassword = true;
   bool _isAgreePrivacyAndTerms = false;
   bool _isLoading = false;
-  String? _errorMessage;
 
   late final TapGestureRecognizer _privacyPolicyRecognizer;
   late final TapGestureRecognizer _termsRecognizer;
@@ -61,18 +60,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     // Validate form first
     if (_formKey.currentState?.validate() == false) return;
     if (!_isAgreePrivacyAndTerms) {
-      CommonUtils.showSnackBar(
-        context,
-        L10n.of(context).pleaseAgreePrivacyAndTerms,
-      );
+      ref
+          .read(snackbarServiceProvider)
+          .show(L10n.of(context).pleaseAgreePrivacyAndTerms);
       return;
     }
 
-    // Clear any previous errors and set loading state
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
+    // Set loading state
+    setState(() => _isLoading = true);
 
     try {
       await ref
@@ -91,7 +86,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             .addNewUserGettingStartedSheet(userId);
       }
     } catch (e) {
-      setState(() => _errorMessage = e.toErrorMessage());
+      debugPrint("Sign up error: $e");
     } finally {
       setState(() => _isLoading = false);
     }
@@ -143,11 +138,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           _buildPasswordField(),
           const SizedBox(height: 16),
           _buildConfirmPasswordField(),
-          const SizedBox(height: 8),
-          if (_errorMessage != null) ...[
-            const SizedBox(height: 8),
-            _buildErrorMessage(),
-          ],
           const SizedBox(height: 12),
           _buildPrivacyAndTermsView(),
           const SizedBox(height: 12),
@@ -245,22 +235,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         },
       ),
       onSubmitted: _handleSignUp,
-    );
-  }
-
-  Widget _buildErrorMessage() {
-    final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.errorContainer,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        _errorMessage!,
-        style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white),
-        textAlign: TextAlign.center,
-      ),
     );
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/services/snackbar_service.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/common/widgets/dialogs/loading_dialog_widget.dart';
 import 'package:zoe/core/constants/firestore_constants.dart';
@@ -27,6 +28,10 @@ class Auth extends _$Auth {
   );
 
   late final AuthService _authService = ref.watch(authServiceProvider);
+
+  late final SnackbarService _snackBarService = ref.read(
+    snackbarServiceProvider,
+  );
 
   @override
   UserModel? build() {
@@ -61,7 +66,10 @@ class Auth extends _$Auth {
       if (ref.mounted) ref.read(routerProvider).go(AppRoutes.home.route);
     } on FirebaseAuthException catch (e) {
       _logger.severe('Sign up error: $e');
-      rethrow;
+      _snackBarService.show(getFirebaseErrorMessage(e));
+    } catch (e) {
+      _logger.severe('Sign up error: $e');
+      _snackBarService.show('Sign up failed.');
     }
   }
 
@@ -77,7 +85,10 @@ class Auth extends _$Auth {
       if (ref.mounted) ref.read(routerProvider).go(AppRoutes.home.route);
     } on FirebaseAuthException catch (e) {
       _logger.severe('Sign in error: $e');
-      rethrow;
+      _snackBarService.show(getFirebaseErrorMessage(e));
+    } catch (e) {
+      _logger.severe('Sign in error: $e');
+      _snackBarService.show('Sign in failed.');
     }
   }
 
@@ -89,9 +100,12 @@ class Auth extends _$Auth {
       state = null;
       if (!ref.mounted) return;
       ref.read(routerProvider).go(AppRoutes.welcome.route);
+    } on FirebaseAuthException catch (e) {
+      _logger.severe('Sign out error: $e');
+      _snackBarService.show(getFirebaseErrorMessage(e));
     } catch (e) {
       _logger.severe('Sign out error: $e');
-      rethrow;
+      _snackBarService.show('Sign out failed.');
     }
   }
 
@@ -101,15 +115,14 @@ class Auth extends _$Auth {
       final user = _authService.currentUser;
       if (user == null || user.email == null) return;
 
+      // Show loading dialog
       LoadingDialogWidget.show(context);
 
-      final authCredentials = await runFirestoreOperation(ref, () async {
-        // Reauthentication with email and password
-        return await user.reauthenticateWithCredential(
-          EmailAuthProvider.credential(email: user.email!, password: password),
-        );
-      });
-      if (authCredentials == null || authCredentials.user == null) return;
+      // Re-authenticate user with password
+      final authCredentials = await user.reauthenticateWithCredential(
+        EmailAuthProvider.credential(email: user.email!, password: password),
+      );
+      if (authCredentials.user == null) return;
 
       final userId = authCredentials.user!.uid;
       // Delete all content created by the user
@@ -183,10 +196,14 @@ class Auth extends _$Auth {
       state = null;
       if (!ref.mounted) return;
       ref.read(routerProvider).go(AppRoutes.welcome.route);
+    } on FirebaseAuthException catch (e) {
+      _logger.severe('Delete account error: $e');
+      _snackBarService.show(getFirebaseErrorMessage(e));
     } catch (e) {
       _logger.severe('Delete account error: $e');
-      rethrow;
+      _snackBarService.show('Delete account failed.');
     } finally {
+      // Hide loading dialog
       if (context.mounted) LoadingDialogWidget.hide(context);
     }
   }

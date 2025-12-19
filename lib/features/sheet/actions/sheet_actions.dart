@@ -28,14 +28,16 @@ void showSheetMenu({
   final isOwner = currentUserId != null && currentUserId == createdBy;
 
   final menuItems = [
-    ZoeCommonMenuItems.connect(
-      onTapConnect: () => SheetActions.connectSheet(context, sheetId),
-      subtitle: L10n.of(context).connectWithWhatsAppGroup,
-    ),
-    ZoeCommonMenuItems.chooseTheme(
-      onTapChooseTheme: () => SheetActions.chooseTheme(context, ref, sheetId),
-      subtitle: L10n.of(context).chooseTheme,
-    ),
+    if (isOwner)
+      ZoeCommonMenuItems.connect(
+        onTapConnect: () => SheetActions.connectSheet(context, sheetId),
+        subtitle: L10n.of(context).connectWithWhatsAppGroup,
+      ),
+    if (isOwner)
+      ZoeCommonMenuItems.chooseTheme(
+        onTapChooseTheme: () => SheetActions.chooseTheme(context, ref, sheetId),
+        subtitle: L10n.of(context).chooseTheme,
+      ),
     ZoeCommonMenuItems.copy(
       onTapCopy: () => SheetActions.copySheet(context, ref, sheetId),
       subtitle: L10n.of(context).copySheetContent,
