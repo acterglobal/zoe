@@ -23,6 +23,7 @@ Future<T?> runFirestoreOperation<T>(
     switch (e.code) {
       case 'invalid-credential':
         snackbar.show('Invalid credentials.');
+        break;
       case 'permission-denied':
         snackbar.show('You do not have permission.');
         break;

@@ -109,7 +109,10 @@ class Auth extends _$Auth {
           EmailAuthProvider.credential(email: user.email!, password: password),
         );
       });
-      if (authCredentials == null || authCredentials.user == null) return;
+      if (authCredentials == null || authCredentials.user == null) {
+        if (context.mounted) LoadingDialogWidget.hide(context);
+        return;
+      }
 
       final userId = authCredentials.user!.uid;
       // Delete all content created by the user
@@ -165,13 +168,16 @@ class Auth extends _$Auth {
           isEqualTo: userId,
         ),
         // Remove user from getting started sheet
-        ref
-            .read(firestoreProvider)
-            .collection(FirestoreCollections.sheets)
-            .doc(gettingStartedSheetId)
-            .update({
-              FirestoreFieldConstants.users: FieldValue.arrayRemove([userId]),
-            }),
+        runFirestoreOperation(
+          ref,
+          () => ref
+              .read(firestoreProvider)
+              .collection(FirestoreCollections.sheets)
+              .doc(gettingStartedSheetId)
+              .update({
+                FirestoreFieldConstants.users: FieldValue.arrayRemove([userId]),
+              }),
+        ),
       ]);
 
       await ref.read(userListProvider.notifier).deleteUser(userId);

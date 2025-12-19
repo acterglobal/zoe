@@ -78,13 +78,13 @@ class InfoDialogWidget extends StatefulWidget {
 }
 
 class _InfoDialogWidgetState extends State<InfoDialogWidget> {
-  final formKey = GlobalKey<FormState>();
-  final valueController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _valueController = TextEditingController();
+  bool _obscureText = true;
 
   @override
   void dispose() {
-    formKey.currentState?.dispose();
-    valueController.dispose();
+    _valueController.dispose();
     super.dispose();
   }
 
@@ -117,11 +117,19 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
               SizedBox(height: 30),
               if (widget.isShowTextField) ...[
                 Form(
-                  key: formKey,
+                  key: _formKey,
                   child: AnimatedTextField(
-                    controller: valueController,
+                    controller: _valueController,
                     labelText: widget.labelText,
                     hintText: widget.hintText ?? L10n.of(context).typeSomething,
+                    obscureText: _obscureText,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () =>
+                          setState(() => _obscureText = !_obscureText),
+                    ),
                     textInputAction: TextInputAction.done,
                     validator: (value) =>
                         ValidationUtils.validatePassword(context, value),
@@ -132,12 +140,12 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
               ZoePrimaryButton(
                 onPressed: () {
                   if (widget.isShowTextField && widget.isFieldRequired) {
-                    if (formKey.currentState?.validate() == false) return;
+                    if (_formKey.currentState?.validate() == false) return;
                     context.pop();
-                    widget.onPrimary(valueController.text);
+                    widget.onPrimary(_valueController.text);
                   } else {
                     context.pop();
-                    widget.onPrimary(valueController.text);
+                    widget.onPrimary(_valueController.text);
                   }
                 },
                 text: widget.primaryButtonText ?? L10n.of(context).confirm,

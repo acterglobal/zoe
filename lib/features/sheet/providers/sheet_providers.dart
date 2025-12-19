@@ -146,7 +146,7 @@ class SheetList extends _$SheetList {
         await collection.doc(sheetId).delete();
       } else {
         // If the user is not the owner, delete the sheet only for that user
-        collection.doc(sheetId).update({
+        await collection.doc(sheetId).update({
           FirestoreFieldConstants.users: FieldValue.arrayRemove([userId]),
         });
       }
