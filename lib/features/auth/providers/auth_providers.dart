@@ -109,10 +109,7 @@ class Auth extends _$Auth {
           EmailAuthProvider.credential(email: user.email!, password: password),
         );
       });
-      if (authCredentials == null || authCredentials.user == null) {
-        if (context.mounted) LoadingDialogWidget.hide(context);
-        return;
-      }
+      if (authCredentials == null || authCredentials.user == null) return;
 
       final userId = authCredentials.user!.uid;
       // Delete all content created by the user
