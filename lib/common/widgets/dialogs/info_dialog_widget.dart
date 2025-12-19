@@ -14,6 +14,8 @@ class InfoDialogWidget extends StatefulWidget {
   final String description;
   final bool isShowTextField;
   final bool isFieldRequired;
+  final String? labelText;
+  final String? hintText;
   final String? primaryButtonText;
   final Function(String) onPrimary;
   final String? secondaryButtonText;
@@ -27,6 +29,8 @@ class InfoDialogWidget extends StatefulWidget {
     required this.description,
     required this.isShowTextField,
     required this.isFieldRequired,
+    this.labelText,
+    this.hintText,
     this.primaryButtonText,
     required this.onPrimary,
     this.secondaryButtonText,
@@ -42,6 +46,8 @@ class InfoDialogWidget extends StatefulWidget {
     bool barrierDismissible = true,
     bool isShowTextField = false,
     bool isFieldRequired = false,
+    String? labelText,
+    String? hintText,
     String? primaryButtonText,
     required Function(String) onPrimary,
     String? secondaryButtonText,
@@ -57,6 +63,8 @@ class InfoDialogWidget extends StatefulWidget {
         description: description,
         isShowTextField: isShowTextField,
         isFieldRequired: isFieldRequired,
+        labelText: labelText,
+        hintText: hintText,
         primaryButtonText: primaryButtonText,
         onPrimary: onPrimary,
         secondaryButtonText: secondaryButtonText,
@@ -83,7 +91,6 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final l10n = L10n.of(context);
 
     return MaxWidthWidget(
       child: Dialog(
@@ -113,8 +120,8 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
                   key: formKey,
                   child: AnimatedTextField(
                     controller: valueController,
-                    labelText: l10n.password,
-                    hintText: l10n.passwordDescription,
+                    labelText: widget.labelText,
+                    hintText: widget.hintText ?? L10n.of(context).typeSomething,
                     textInputAction: TextInputAction.done,
                     validator: (value) =>
                         ValidationUtils.validatePassword(context, value),

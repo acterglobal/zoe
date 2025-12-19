@@ -248,6 +248,8 @@ class SettingsScreen extends ConsumerWidget {
             description: l10n.areYouSureYouWantToDeleteAccount,
             isShowTextField: true,
             isFieldRequired: true,
+            labelText: l10n.password,
+            hintText: l10n.passwordDescription,
             onPrimary: (password) async =>
                 await authController.deleteAccount(context, password),
             onSecondary: () => context.pop(),
