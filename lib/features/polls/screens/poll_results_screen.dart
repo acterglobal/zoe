@@ -188,7 +188,7 @@ class _PollResultsScreenState extends ConsumerState<PollResultsScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final color = PollUtils.getColorFromOptionId(pollOption.id, poll);
-    final voteCount = pollOption.votes.length > 1
+    final voteCount = pollOption.votes.length == 1
         ? l10n.votesCount(pollOption.votes.length)
         : l10n.voteCount(pollOption.votes.length);
 
