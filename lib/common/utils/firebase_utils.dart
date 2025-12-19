@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/core/constants/firestore_field_constants.dart';
 
 final log = Logger('ZoeApp-FireStore');
 
@@ -22,6 +21,8 @@ Future<T?> runFirestoreOperation<T>(
     );
 
     switch (e.code) {
+      case 'invalid-credential':
+        snackbar.show('Invalid credentials.');
       case 'permission-denied':
         snackbar.show('You do not have permission.');
         break;
@@ -44,17 +45,19 @@ Future<T?> runFirestoreOperation<T>(
   }
 }
 
-Future<void> deleteDocumentsBySheetId({
+// Delete content documents related to field name and isEqualTo
+Future<void> runFirestoreDeleteContentOperation({
   required Ref ref,
   required String collectionName,
-  required String sheetId,
+  required String fieldName,
+  required String isEqualTo,
 }) async {
   final firestore = ref.read(firestoreProvider);
 
   // Get all documents with the given sheetId
   final docsData = await firestore
       .collection(collectionName)
-      .where(Filter(FirestoreFieldConstants.sheetId, isEqualTo: sheetId))
+      .where(Filter(fieldName, isEqualTo: isEqualTo))
       .get();
   final docsList = docsData.docs;
   if (docsList.isEmpty) return;

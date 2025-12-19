@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zoe/common/utils/validation_utils.dart';
+import 'package:zoe/common/widgets/animated_textfield_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_primary_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_secondary_button.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
-class InfoDialogWidget extends StatelessWidget {
+class InfoDialogWidget extends StatefulWidget {
   final double iconSize;
   final IconData? icon;
   final String title;
   final String description;
+  final bool isShowTextField;
+  final bool isFieldRequired;
   final String? primaryButtonText;
-  final VoidCallback onPrimary;
+  final Function(String) onPrimary;
   final String? secondaryButtonText;
   final VoidCallback? onSecondary;
 
@@ -21,6 +25,8 @@ class InfoDialogWidget extends StatelessWidget {
     this.icon,
     required this.title,
     required this.description,
+    required this.isShowTextField,
+    required this.isFieldRequired,
     this.primaryButtonText,
     required this.onPrimary,
     this.secondaryButtonText,
@@ -34,8 +40,10 @@ class InfoDialogWidget extends StatelessWidget {
     required String title,
     required String description,
     bool barrierDismissible = true,
+    bool isShowTextField = false,
+    bool isFieldRequired = false,
     String? primaryButtonText,
-    required VoidCallback onPrimary,
+    required Function(String) onPrimary,
     String? secondaryButtonText,
     VoidCallback? onSecondary,
   }) async {
@@ -47,6 +55,8 @@ class InfoDialogWidget extends StatelessWidget {
         icon: icon,
         title: title,
         description: description,
+        isShowTextField: isShowTextField,
+        isFieldRequired: isFieldRequired,
         primaryButtonText: primaryButtonText,
         onPrimary: onPrimary,
         secondaryButtonText: secondaryButtonText,
@@ -56,8 +66,24 @@ class InfoDialogWidget extends StatelessWidget {
   }
 
   @override
+  State<InfoDialogWidget> createState() => _InfoDialogWidgetState();
+}
+
+class _InfoDialogWidgetState extends State<InfoDialogWidget> {
+  final formKey = GlobalKey<FormState>();
+  final valueController = TextEditingController();
+
+  @override
+  void dispose() {
+    formKey.currentState?.dispose();
+    valueController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = L10n.of(context);
 
     return MaxWidthWidget(
       child: Dialog(
@@ -66,32 +92,55 @@ class InfoDialogWidget extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (icon != null) ...[_iconWithGlow(theme), SizedBox(height: 24)],
+              if (widget.icon != null) ...[
+                _iconWithGlow(theme),
+                SizedBox(height: 24),
+              ],
               Text(
-                title,
+                widget.title,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.headlineLarge,
               ),
               SizedBox(height: 24),
               Text(
-                description,
+                widget.description,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.titleLarge,
               ),
               SizedBox(height: 30),
+              if (widget.isShowTextField) ...[
+                Form(
+                  key: formKey,
+                  child: AnimatedTextField(
+                    controller: valueController,
+                    labelText: l10n.password,
+                    hintText: l10n.passwordDescription,
+                    textInputAction: TextInputAction.done,
+                    validator: (value) =>
+                        ValidationUtils.validatePassword(context, value),
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
               ZoePrimaryButton(
                 onPressed: () {
-                  context.pop();
-                  onPrimary.call();
+                  if (widget.isShowTextField && widget.isFieldRequired) {
+                    if (formKey.currentState?.validate() == false) return;
+                    context.pop();
+                    widget.onPrimary(valueController.text);
+                  } else {
+                    context.pop();
+                    widget.onPrimary(valueController.text);
+                  }
                 },
-                text: primaryButtonText ?? L10n.of(context).confirm,
+                text: widget.primaryButtonText ?? L10n.of(context).confirm,
               ),
-              if (onSecondary != null) ...[
+              if (widget.onSecondary != null) ...[
                 SizedBox(height: 20),
                 ZoeSecondaryButton(
                   borderWidth: 2,
-                  onPressed: onSecondary!,
-                  text: secondaryButtonText ?? L10n.of(context).cancel,
+                  onPressed: widget.onSecondary!,
+                  text: widget.secondaryButtonText ?? L10n.of(context).cancel,
                 ),
               ],
             ],
@@ -103,8 +152,8 @@ class InfoDialogWidget extends StatelessWidget {
 
   Widget _iconWithGlow(ThemeData theme) {
     return Container(
-      width: iconSize,
-      height: iconSize,
+      width: widget.iconSize,
+      height: widget.iconSize,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: theme.colorScheme.primary.withValues(alpha: 0.15),
@@ -116,7 +165,11 @@ class InfoDialogWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: Icon(icon, size: iconSize / 2, color: theme.colorScheme.primary),
+      child: Icon(
+        widget.icon,
+        size: widget.iconSize / 2,
+        color: theme.colorScheme.primary,
+      ),
     );
   }
 }

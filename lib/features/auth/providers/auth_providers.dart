@@ -1,14 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/common/widgets/dialogs/loading_dialog_widget.dart';
 import 'package:zoe/core/constants/firestore_constants.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/core/routing/app_router.dart';
 import 'package:zoe/core/routing/app_routes.dart';
-import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/common/providers/service_providers.dart';
@@ -95,20 +96,25 @@ class Auth extends _$Auth {
   }
 
   /// Delete account of the current user
-  Future<void> deleteAccount(BuildContext context) async {
+  Future<void> deleteAccount(BuildContext context, String password) async {
     try {
-      final userId = _authService.currentUser?.uid;
-      if (userId == null) return;
+      final user = _authService.currentUser;
+      if (user == null || user.email == null) return;
 
       LoadingDialogWidget.show(context);
 
+      final authCredentials = await runFirestoreOperation(ref, () async {
+        // Reauthentication with email and password
+        return await user.reauthenticateWithCredential(
+          EmailAuthProvider.credential(email: user.email!, password: password),
+        );
+      });
+      if (authCredentials == null || authCredentials.user == null) return;
+
+      final userId = authCredentials.user!.uid;
       // Delete all content created by the user
       final fieldName = FirestoreFieldConstants.createdBy;
       await Future.wait([
-        // Remove user from getting started sheet
-        ref
-            .read(sheetListProvider.notifier)
-            .removeUserGettingStartedSheet(userId),
         // Delete all sheets documents
         runFirestoreDeleteContentOperation(
           ref: ref,
@@ -158,6 +164,14 @@ class Auth extends _$Auth {
           fieldName: fieldName,
           isEqualTo: userId,
         ),
+        // Remove user from getting started sheet
+        ref
+            .read(firestoreProvider)
+            .collection(FirestoreCollections.sheets)
+            .doc(gettingStartedSheetId)
+            .update({
+              FirestoreFieldConstants.users: FieldValue.arrayRemove([userId]),
+            }),
       ]);
 
       await ref.read(userListProvider.notifier).deleteUser(userId);

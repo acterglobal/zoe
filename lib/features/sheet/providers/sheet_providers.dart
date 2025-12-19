@@ -68,10 +68,6 @@ class SheetList extends _$SheetList {
     await addUserToSheet(gettingStartedSheetId, userId);
   }
 
-  Future<void> removeUserGettingStartedSheet(String userId) async {
-    await removeUserToSheet(gettingStartedSheetId, userId);
-  }
-
   Future<SheetModel?> getSheetById(String sheetId) async {
     return await runFirestoreOperation<SheetModel?>(ref, () async {
       final snapshot = await collection.doc(sheetId).get();
@@ -150,7 +146,9 @@ class SheetList extends _$SheetList {
         await collection.doc(sheetId).delete();
       } else {
         // If the user is not the owner, delete the sheet only for that user
-        await removeUserToSheet(sheetId, userId);
+        collection.doc(sheetId).update({
+          FirestoreFieldConstants.users: FieldValue.arrayRemove([userId]),
+        });
       }
     });
   }
@@ -211,16 +209,6 @@ class SheetList extends _$SheetList {
       ref,
       () => collection.doc(sheetId).update({
         FirestoreFieldConstants.users: FieldValue.arrayUnion([userId]),
-        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-      }),
-    );
-  }
-
-  Future<void> removeUserToSheet(String sheetId, String userId) async {
-    await runFirestoreOperation(
-      ref,
-      () => collection.doc(sheetId).update({
-        FirestoreFieldConstants.users: FieldValue.arrayRemove([userId]),
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),
     );
