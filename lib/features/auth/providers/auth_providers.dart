@@ -29,7 +29,9 @@ class Auth extends _$Auth {
 
   late final AuthService _authService = ref.watch(authServiceProvider);
 
-  late final SnackbarService _snackBarService = ref.read(snackbarServiceProvider);
+  late final SnackbarService _snackBarService = ref.read(
+    snackbarServiceProvider,
+  );
 
   @override
   UserModel? build() {
@@ -65,6 +67,9 @@ class Auth extends _$Auth {
     } on FirebaseAuthException catch (e) {
       _logger.severe('Sign up error: $e');
       _snackBarService.show(getFirebaseErrorMessage(e));
+    } catch (e) {
+      _logger.severe('Sign up error: $e');
+      _snackBarService.show('Sign up failed.');
     }
   }
 
@@ -81,6 +86,9 @@ class Auth extends _$Auth {
     } on FirebaseAuthException catch (e) {
       _logger.severe('Sign in error: $e');
       _snackBarService.show(getFirebaseErrorMessage(e));
+    } catch (e) {
+      _logger.severe('Sign in error: $e');
+      _snackBarService.show('Sign in failed.');
     }
   }
 
