@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zoe/common/utils/string_utils.dart';
 import 'package:zoe/common/utils/validation_utils.dart';
 import 'package:zoe/common/widgets/animated_background_widget.dart';
 import 'package:zoe/common/widgets/animated_textfield_widget.dart';
@@ -25,7 +24,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _isLoading = false;
-  String? _errorMessage;
 
   @override
   void dispose() {
@@ -38,11 +36,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     // Validate form first
     if (_formKey.currentState?.validate() == false) return;
 
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
+    setState(() => _isLoading = true);
     try {
       await ref
           .read(authProvider.notifier)
@@ -51,7 +45,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             password: _passwordController.text.trim(),
           );
     } catch (e) {
-      setState(() => _errorMessage = e.toErrorMessage());
+      debugPrint("Sign in error: $e");
     } finally {
       setState(() => _isLoading = false);
     }
@@ -99,11 +93,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           _buildEmailField(),
           const SizedBox(height: 16),
           _buildPasswordField(),
-          const SizedBox(height: 8),
-          if (_errorMessage != null) ...[
-            const SizedBox(height: 8),
-            _buildErrorMessage(),
-          ],
           const SizedBox(height: 24),
           _buildSignInButton(),
           const SizedBox(height: 16),
@@ -157,22 +146,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         },
       ),
       onSubmitted: _handleSignIn,
-    );
-  }
-
-  Widget _buildErrorMessage() {
-    final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.errorContainer,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        _errorMessage!,
-        style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white),
-        textAlign: TextAlign.center,
-      ),
     );
   }
 

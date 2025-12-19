@@ -1,6 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+
+/// Provider for AuthService
+final authServiceProvider = Provider<AuthService>((ref) {
+  final firebaseAuth = ref.watch(firebaseAuthProvider);
+  return AuthService(firebaseAuth);
+});
 
 /// Service for handling Firebase Authentication operations
 class AuthService {
@@ -37,7 +44,7 @@ class AuthService {
       return userCredential;
     } on FirebaseAuthException catch (e) {
       _logger.warning('Sign up failed: ${e.code} - ${e.message}');
-      throw _handleAuthException(e);
+      rethrow;
     } catch (e) {
       _logger.severe('Unexpected error during sign up: $e');
       rethrow;
@@ -59,7 +66,7 @@ class AuthService {
       return userCredential;
     } on FirebaseAuthException catch (e) {
       _logger.warning('Sign in failed: ${e.code} - ${e.message}');
-      throw _handleAuthException(e);
+      rethrow;
     } catch (e) {
       _logger.severe('Unexpected error during sign in: $e');
       rethrow;
@@ -74,7 +81,7 @@ class AuthService {
       _logger.info('Successfully signed out');
     } on FirebaseAuthException catch (e) {
       _logger.warning('Signing out failed: ${e.code} - ${e.message}');
-      throw _handleAuthException(e);
+      rethrow;
     } catch (e) {
       _logger.severe('Error during sign out: $e');
       rethrow;
@@ -97,47 +104,10 @@ class AuthService {
       _logger.info('Successfully deleted account');
     } on FirebaseAuthException catch (e) {
       _logger.warning('Delete account failed: ${e.code} - ${e.message}');
-      throw _handleAuthException(e);
+      rethrow;
     } catch (e) {
       _logger.severe('Error during deleting account: $e');
       rethrow;
     }
   }
-
-  /// Handle Firebase Auth exceptions and convert to user-friendly messages
-  Exception _handleAuthException(FirebaseAuthException e) {
-    switch (e.code) {
-      case 'weak-password':
-        return Exception(
-          'The password is too weak. Please use a stronger password.',
-        );
-      case 'email-already-in-use':
-        return Exception('An account already exists with this email.');
-      case 'invalid-email':
-        return Exception('The email address is not valid.');
-      case 'user-not-found':
-        return Exception('No account found with this email.');
-      case 'wrong-password':
-        return Exception('Incorrect password. Please try again.');
-      case 'user-disabled':
-        return Exception('This account has been disabled.');
-      case 'too-many-requests':
-        return Exception('Too many attempts. Please try again later.');
-      case 'operation-not-allowed':
-        return Exception('Email/password sign-in is not enabled.');
-      default:
-        return Exception(e.message);
-    }
-  }
 }
-
-/// Provider for FirebaseAuth instance
-final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
-  return FirebaseAuth.instance;
-});
-
-/// Provider for AuthService
-final authServiceProvider = Provider<AuthService>((ref) {
-  final firebaseAuth = ref.watch(firebaseAuthProvider);
-  return AuthService(firebaseAuth);
-});

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -17,12 +18,17 @@ class SearchValue extends _$SearchValue {
 
 final editContentIdProvider = StateProvider<String?>((ref) => null);
 
+/// Provider for FirebaseAuth instance
+final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
+  return FirebaseAuth.instance;
+});
+
 /// Firebase reference
 final firestoreProvider = Provider<FirebaseFirestore>((ref) {
   return FirebaseFirestore.instance;
 });
 
 /// Snackbar service provider
-final snackbarServiceProvider = Provider<SnackbarService>((ref) {
-  return SnackbarService();
-});
+final snackbarServiceProvider = Provider<SnackbarService>(
+  (ref) => SnackbarService(),
+);
