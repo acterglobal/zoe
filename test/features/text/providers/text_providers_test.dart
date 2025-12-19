@@ -2,7 +2,7 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/core/constants/firestore_collection_constants.dart';
+import 'package:zoe/core/constants/firestore_constants.dart';
 import 'package:zoe/features/text/models/text_model.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
 import '../utils/mock_fakefirestore_text.dart';

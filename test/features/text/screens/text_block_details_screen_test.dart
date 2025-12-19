@@ -11,7 +11,7 @@ import 'package:zoe/common/widgets/state_widgets/empty_state_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_html_inline_text_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_inline_text_edit_widget.dart';
-import 'package:zoe/core/constants/firestore_collection_constants.dart';
+import 'package:zoe/core/constants/firestore_constants.dart';
 import 'package:zoe/features/content/widgets/content_widget.dart';
 import 'package:zoe/features/text/data/text_list.dart';
 import 'package:zoe/features/text/providers/text_providers.dart';
