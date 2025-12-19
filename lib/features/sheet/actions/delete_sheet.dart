@@ -35,7 +35,8 @@ class DeleteSheetBottomSheet extends StatelessWidget {
   final VoidCallback onConfirm;
   final VoidCallback onCancel;
 
-  const DeleteSheetBottomSheet({super.key, 
+  const DeleteSheetBottomSheet({
+    super.key,
     required this.sheet,
     required this.onConfirm,
     required this.onCancel,

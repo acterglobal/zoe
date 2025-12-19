@@ -246,7 +246,7 @@ class SettingsScreen extends ConsumerWidget {
             icon: Icons.delete_outline,
             title: L10n.of(context).deleteAccount,
             description: l10n.areYouSureYouWantToDeleteAccount,
-            onPrimary: () async => await authController.deleteAccount(),
+            onPrimary: () async => await authController.deleteAccount(context),
             onSecondary: () => context.pop(),
           ),
         ),

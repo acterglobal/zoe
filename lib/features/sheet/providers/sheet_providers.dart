@@ -4,16 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
-import 'package:zoe/core/constants/firestore_collection_constants.dart';
-import 'package:zoe/core/constants/firestore_field_constants.dart';
-import 'package:zoe/features/bullets/providers/bullet_providers.dart';
-import 'package:zoe/features/events/providers/event_providers.dart';
-import 'package:zoe/features/list/providers/list_providers.dart';
-import 'package:zoe/features/polls/providers/poll_providers.dart';
+import 'package:zoe/core/constants/firestore_constants.dart';
 import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
-import 'package:zoe/features/task/providers/task_providers.dart';
-import 'package:zoe/features/text/providers/text_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 
 part 'sheet_providers.g.dart';
@@ -72,8 +65,11 @@ class SheetList extends _$SheetList {
   // ─────────────────────────────────────
 
   Future<void> addNewUserGettingStartedSheet(String userId) async {
-    const gettingStartedSheetId = 'getting-started';
     await addUserToSheet(gettingStartedSheetId, userId);
+  }
+
+  Future<void> removeUserGettingStartedSheet(String userId) async {
+    await removeUserToSheet(gettingStartedSheetId, userId);
   }
 
   Future<SheetModel?> getSheetById(String sheetId) async {
@@ -104,42 +100,49 @@ class SheetList extends _$SheetList {
 
       if (isOwner) {
         // Delete all content documents related to the sheet
+        final fieldName = FirestoreFieldConstants.sheetId;
         await Future.wait([
           // Delete all texts documents
-          deleteDocumentsBySheetId(
+          runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.texts,
-            sheetId: sheetId,
+            fieldName: fieldName,
+            isEqualTo: sheetId,
           ),
           // Delete all events documents
-          deleteDocumentsBySheetId(
+          runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.events,
-            sheetId: sheetId,
+            fieldName: fieldName,
+            isEqualTo: sheetId,
           ),
           // Delete all lists documents
-          deleteDocumentsBySheetId(
+          runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.lists,
-            sheetId: sheetId,
+            fieldName: fieldName,
+            isEqualTo: sheetId,
           ),
           // Delete all tasks documents
-          deleteDocumentsBySheetId(
+          runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.tasks,
-            sheetId: sheetId,
+            fieldName: fieldName,
+            isEqualTo: sheetId,
           ),
           // Delete all bullets documents
-          deleteDocumentsBySheetId(
+          runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.bullets,
-            sheetId: sheetId,
+            fieldName: fieldName,
+            isEqualTo: sheetId,
           ),
           // Delete all polls documents
-          deleteDocumentsBySheetId(
+          runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.polls,
-            sheetId: sheetId,
+            fieldName: fieldName,
+            isEqualTo: sheetId,
           ),
         ]);
 
@@ -147,9 +150,7 @@ class SheetList extends _$SheetList {
         await collection.doc(sheetId).delete();
       } else {
         // If the user is not the owner, delete the sheet only for that user
-        await collection.doc(sheetId).update({
-          FirestoreFieldConstants.users: FieldValue.arrayRemove([userId]),
-        });
+        await removeUserToSheet(sheetId, userId);
       }
     });
   }
@@ -210,6 +211,16 @@ class SheetList extends _$SheetList {
       ref,
       () => collection.doc(sheetId).update({
         FirestoreFieldConstants.users: FieldValue.arrayUnion([userId]),
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
+    );
+  }
+
+  Future<void> removeUserToSheet(String sheetId, String userId) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(sheetId).update({
+        FirestoreFieldConstants.users: FieldValue.arrayRemove([userId]),
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       }),
     );

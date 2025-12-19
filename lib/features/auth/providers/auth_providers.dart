@@ -1,9 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/common/utils/firebase_utils.dart';
+import 'package:zoe/common/widgets/dialogs/loading_dialog_widget.dart';
+import 'package:zoe/core/constants/firestore_constants.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/core/routing/app_router.dart';
 import 'package:zoe/core/routing/app_routes.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/common/providers/service_providers.dart';
@@ -90,10 +95,71 @@ class Auth extends _$Auth {
   }
 
   /// Delete account of the current user
-  Future<void> deleteAccount() async {
+  Future<void> deleteAccount(BuildContext context) async {
     try {
       final userId = _authService.currentUser?.uid;
       if (userId == null) return;
+
+      LoadingDialogWidget.show(context);
+
+      // Delete all content created by the user
+      final fieldName = FirestoreFieldConstants.createdBy;
+      await Future.wait([
+        // Remove user from getting started sheet
+        ref
+            .read(sheetListProvider.notifier)
+            .removeUserGettingStartedSheet(userId),
+        // Delete all sheets documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.sheets,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all texts documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.texts,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all events documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.events,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all lists documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.lists,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all tasks documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.tasks,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all bullets documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.bullets,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all polls documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.polls,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+      ]);
+
       await ref.read(userListProvider.notifier).deleteUser(userId);
       await _authService.deleteAccount();
       await _prefsService.clearLoginUserId();
@@ -103,6 +169,8 @@ class Auth extends _$Auth {
     } catch (e) {
       _logger.severe('Delete account error: $e');
       rethrow;
+    } finally {
+      if (context.mounted) LoadingDialogWidget.hide(context);
     }
   }
 }
