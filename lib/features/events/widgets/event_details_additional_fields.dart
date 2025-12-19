@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/utils/date_time_utils.dart';
 import 'package:zoe/features/events/actions/update_event_time_actions.dart';
 import 'package:zoe/features/events/models/events_model.dart';
+import 'package:zoe/l10n/generated/l10n.dart';
 
 class EventDetailsAdditionalFields extends ConsumerWidget {
   final EventModel event;
@@ -22,12 +23,13 @@ class EventDetailsAdditionalFields extends ConsumerWidget {
     final startTimeText = DateTimeUtils.formatTime(startDate);
     final endDateText = DateTimeUtils.formatDate(endDate);
     final endTimeText = DateTimeUtils.formatTime(endDate);
+    final l10n = L10n.of(context);
 
     return Column(
       children: [
         _buildDateTimeCard(
           context: context,
-          title: 'Start',
+          title: l10n.start,
           icon: Icons.play_circle_outline,
           dateText: startDateText,
           timeText: startTimeText,
@@ -41,7 +43,7 @@ class EventDetailsAdditionalFields extends ConsumerWidget {
         const SizedBox(height: 12),
         _buildDateTimeCard(
           context: context,
-          title: 'End',
+          title: l10n.end,
           icon: Icons.stop_circle_outlined,
           dateText: endDateText,
           timeText: endTimeText,
@@ -65,6 +67,8 @@ class EventDetailsAdditionalFields extends ConsumerWidget {
     VoidCallback? onDateTap,
     VoidCallback? onTimeTap,
   }) {
+    final l10n = L10n.of(context);
+
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.3),
@@ -101,7 +105,7 @@ class EventDetailsAdditionalFields extends ConsumerWidget {
                 child: _buildFieldItem(
                   context: context,
                   icon: Icons.calendar_today_outlined,
-                  label: 'Date',
+                  label: l10n.date,
                   value: dateText,
                   onTap: onDateTap,
                 ),
@@ -111,7 +115,7 @@ class EventDetailsAdditionalFields extends ConsumerWidget {
                 child: _buildFieldItem(
                   context: context,
                   icon: Icons.access_time,
-                  label: 'Time',
+                  label: l10n.time,
                   value: timeText,
                   onTap: onTimeTap,
                 ),

@@ -58,7 +58,7 @@ void main() {
       expect(firstGuideStep.stepNumber, 1);
       expect(firstGuideStep.title, l10n.groupPermissions);
       expect(firstGuideStep.description, l10n.navigateToGroupPermissionsDescription);
-      expect(firstGuideStep.imagePath, ImageUtils.permissonIosLight);
+      expect(firstGuideStep.imagePath, ImageUtils.permissionIosLight);
 
       // Verify second guide step
       final secondGuideStep = tester.widget<GuideStepWidget>(
