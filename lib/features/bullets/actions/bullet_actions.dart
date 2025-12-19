@@ -26,20 +26,24 @@ void showBulletMenu({
 
   final menuItems = [
     ZoeCommonMenuItems.copy(
+      context: context,
       onTapCopy: () => BulletActions.copyBullet(context, ref, bulletId),
       subtitle: L10n.of(context).copyBulletContent,
     ),
     ZoeCommonMenuItems.share(
+      context: context,
       onTapShare: () => BulletActions.shareBullet(context, ref, bulletId),
       subtitle: L10n.of(context).shareThisBullet,
     ),
     if (!isEditing && isOwner)
       ZoeCommonMenuItems.edit(
+        context: context,
         onTapEdit: () => BulletActions.editBullet(ref, bulletId),
         subtitle: L10n.of(context).editThisBullet,
       ),
     if (isOwner)
       ZoeCommonMenuItems.delete(
+        context: context,
         onTapDelete: () {
           BulletActions.deleteBullet(context, ref, bulletId);
           if (context.mounted && context.canPop() && isDetailScreen) {

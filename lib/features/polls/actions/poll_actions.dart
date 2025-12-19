@@ -25,20 +25,24 @@ void showPollMenu({
 
   final menuItems = [
     ZoeCommonMenuItems.copy(
+      context: context,
       onTapCopy: () => PollActions.copyPoll(context, ref, pollId),
       subtitle: L10n.of(context).copyPollContent,
     ),
     ZoeCommonMenuItems.share(
+      context: context,
       onTapShare: () => PollActions.sharePoll(context, ref, pollId),
       subtitle: L10n.of(context).shareThisPoll,
     ),
     if (!isEditing && isOwner)
       ZoeCommonMenuItems.edit(
+        context: context,
         onTapEdit: () => PollActions.editPoll(ref, pollId),
         subtitle: L10n.of(context).editThisPoll,
       ),
     if (isOwner)
       ZoeCommonMenuItems.delete(
+        context: context,
         onTapDelete: () {
           PollActions.deletePoll(context, ref, pollId);
           if (context.mounted && context.canPop() && isDetailScreen) {

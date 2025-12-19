@@ -30,28 +30,32 @@ void showSheetMenu({
   final menuItems = [
     if (isOwner)
       ZoeCommonMenuItems.connect(
+        context: context,
         onTapConnect: () => SheetActions.connectSheet(context, sheetId),
-        subtitle: L10n.of(context).connectWithWhatsAppGroup,
       ),
     if (isOwner)
       ZoeCommonMenuItems.chooseTheme(
+        context: context,
         onTapChooseTheme: () => SheetActions.chooseTheme(context, ref, sheetId),
-        subtitle: L10n.of(context).chooseTheme,
       ),
     ZoeCommonMenuItems.copy(
+      context: context,
       onTapCopy: () => SheetActions.copySheet(context, ref, sheetId),
       subtitle: L10n.of(context).copySheetContent,
     ),
     ZoeCommonMenuItems.share(
+      context: context,
       onTapShare: () => SheetActions.shareSheet(context, ref, sheetId),
       subtitle: L10n.of(context).shareThisSheet,
     ),
     if (!isEditing && isOwner)
       ZoeCommonMenuItems.edit(
+        context: context,
         onTapEdit: () => SheetActions.editSheet(ref, sheetId),
         subtitle: L10n.of(context).editThisSheet,
       ),
     ZoeCommonMenuItems.delete(
+      context: context,
       onTapDelete: () => SheetActions.deleteSheet(context, ref, sheetId),
       subtitle: L10n.of(context).deleteThisSheet,
     ),

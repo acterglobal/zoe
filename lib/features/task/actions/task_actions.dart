@@ -25,20 +25,24 @@ void showTaskMenu({
 
   final menuItems = [
     ZoeCommonMenuItems.copy(
+      context: context,
       onTapCopy: () => TaskActions.copyTask(context, ref, taskId),
       subtitle: L10n.of(context).copyTaskContent,
     ),
     ZoeCommonMenuItems.share(
+      context: context,
       onTapShare: () => TaskActions.shareTask(context, ref, taskId),
       subtitle: L10n.of(context).shareThisTask,
     ),
     if (!isEditing && isOwner)
       ZoeCommonMenuItems.edit(
+        context: context,
         onTapEdit: () => TaskActions.editTask(ref, taskId),
         subtitle: L10n.of(context).editThisTask,
       ),
     if (isOwner)
       ZoeCommonMenuItems.delete(
+        context: context,
         onTapDelete: () {
           TaskActions.deleteTask(context, ref, taskId);
           if (context.mounted && context.canPop() && isDetailScreen) {

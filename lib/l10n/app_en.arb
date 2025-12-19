@@ -671,5 +671,17 @@
     "pleaseAgreePrivacyAndTerms": "Please agree to the privacy policy and terms and conditions.",
     "@pleaseAgreePrivacyAndTerms": {},
     "shareAppMessage": "Introducing {aAppName} a simple and efficient solution built for everyday use.\n\nAvailable on:\n\nAndroid: {bAndroidUrl}\n\niOS: {cIosUrl}",
-    "@shareAppMessage": {}
+    "@shareAppMessage": {},
+    "connectToWhatsAppGroup": "Connect with WhatsApp Group",
+    "@connectToWhatsAppGroup": {},
+    "removeCoverImage": "Remove cover image",
+    "@removeCoverImage": {},
+    "removeCoverImageDescription": "Remove the cover image for this sheet",
+    "@removeCoverImageDescription": {},
+    "copy": "Copy",
+    "@copy": {},
+    "copyContentToClipboard": "Copy content to clipboard",
+    "@copyContentToClipboard": {},
+    "chooseThemeForSheet": "Choose a theme for this sheet",
+    "@chooseThemeForSheet": {}
 }
