@@ -20,28 +20,10 @@ Future<T?> runFirestoreOperation<T>(
       e,
       stackTrace,
     );
-
-    switch (e.code) {
-      case 'invalid-credential':
-        snackbar.show('Invalid credentials.');
-        break;
-      case 'permission-denied':
-        snackbar.show('You do not have permission.');
-        break;
-      case 'not-found':
-        snackbar.show('Document not found.');
-        break;
-      case 'unavailable':
-        snackbar.show('Network unavailable.');
-        break;
-      default:
-        snackbar.show('Unexpected Firestore error.');
-    }
-
+    snackbar.show(getFirebaseErrorMessage(e));
     return null;
   } catch (e, stackTrace) {
     log.severe('Unknown non-Firebase error', e, stackTrace);
-
     snackbar.show('Something went wrong.');
     return null;
   }
