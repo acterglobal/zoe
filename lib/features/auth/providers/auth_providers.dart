@@ -1,6 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/common/utils/firebase_utils.dart';
+import 'package:zoe/common/widgets/dialogs/loading_dialog_widget.dart';
+import 'package:zoe/core/constants/firestore_constants.dart';
 import 'package:zoe/core/preference_service/preferences_service.dart';
 import 'package:zoe/core/routing/app_router.dart';
 import 'package:zoe/core/routing/app_routes.dart';
@@ -90,10 +96,87 @@ class Auth extends _$Auth {
   }
 
   /// Delete account of the current user
-  Future<void> deleteAccount() async {
+  Future<void> deleteAccount(BuildContext context, String password) async {
     try {
-      final userId = _authService.currentUser?.uid;
-      if (userId == null) return;
+      final user = _authService.currentUser;
+      if (user == null || user.email == null) return;
+
+      LoadingDialogWidget.show(context);
+
+      final authCredentials = await runFirestoreOperation(ref, () async {
+        // Reauthentication with email and password
+        return await user.reauthenticateWithCredential(
+          EmailAuthProvider.credential(email: user.email!, password: password),
+        );
+      });
+      if (authCredentials == null || authCredentials.user == null) return;
+
+      final userId = authCredentials.user!.uid;
+      // Delete all content created by the user
+      final fieldName = FirestoreFieldConstants.createdBy;
+      await Future.wait([
+        // Delete all sheets documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.sheets,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all texts documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.texts,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all events documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.events,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all lists documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.lists,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all tasks documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.tasks,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all bullets documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.bullets,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Delete all polls documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.polls,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Remove user from getting started sheet
+        runFirestoreOperation(
+          ref,
+          () => ref
+              .read(firestoreProvider)
+              .collection(FirestoreCollections.sheets)
+              .doc(gettingStartedSheetId)
+              .update({
+                FirestoreFieldConstants.users: FieldValue.arrayRemove([userId]),
+              }),
+        ),
+      ]);
+
       await ref.read(userListProvider.notifier).deleteUser(userId);
       await _authService.deleteAccount();
       await _prefsService.clearLoginUserId();
@@ -103,6 +186,8 @@ class Auth extends _$Auth {
     } catch (e) {
       _logger.severe('Delete account error: $e');
       rethrow;
+    } finally {
+      if (context.mounted) LoadingDialogWidget.hide(context);
     }
   }
 }

@@ -93,6 +93,7 @@ class AuthService {
       }
       _logger.info('Deleting account of user: ${user.uid}');
       await user.delete();
+      await _firebaseAuth.signOut();
       _logger.info('Successfully deleted account');
     } on FirebaseAuthException catch (e) {
       _logger.warning('Delete account failed: ${e.code} - ${e.message}');

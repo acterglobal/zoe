@@ -43,7 +43,7 @@ final class ListsProvider extends $NotifierProvider<Lists, List<ListModel>> {
   }
 }
 
-String _$listsHash() => r'0eaec35da36de0f85a04b82cc2ae0a42a2e6dd04';
+String _$listsHash() => r'd1d5fcff7be1bf94249f73fbc5582774ffb60ed2';
 
 /// Main list provider with all list management functionality
 

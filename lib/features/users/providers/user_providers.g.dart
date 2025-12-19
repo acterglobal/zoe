@@ -286,12 +286,12 @@ final class GetUserByIdFamily extends $Family
   String toString() => r'getUserByIdProvider';
 }
 
-/// Provider for getting a user by name
+/// Provider for getting a user by ID as future
 
 @ProviderFor(getUserByIdFuture)
 const getUserByIdFutureProvider = GetUserByIdFutureFamily._();
 
-/// Provider for getting a user by name
+/// Provider for getting a user by ID as future
 
 final class GetUserByIdFutureProvider
     extends
@@ -301,7 +301,7 @@ final class GetUserByIdFutureProvider
           FutureOr<UserModel?>
         >
     with $FutureModifier<UserModel?>, $FutureProvider<UserModel?> {
-  /// Provider for getting a user by name
+  /// Provider for getting a user by ID as future
   const GetUserByIdFutureProvider._({
     required GetUserByIdFutureFamily super.from,
     required String super.argument,
@@ -347,7 +347,7 @@ final class GetUserByIdFutureProvider
 
 String _$getUserByIdFutureHash() => r'46101058435dfd385be80b95e70226a600aa3430';
 
-/// Provider for getting a user by name
+/// Provider for getting a user by ID as future
 
 final class GetUserByIdFutureFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<UserModel?>, String> {
@@ -360,7 +360,7 @@ final class GetUserByIdFutureFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// Provider for getting a user by name
+  /// Provider for getting a user by ID as future
 
   GetUserByIdFutureProvider call(String userId) =>
       GetUserByIdFutureProvider._(argument: userId, from: this);
