@@ -5,6 +5,8 @@ import 'package:zoe/common/widgets/drawer/drawer_header_widget.dart';
 import 'package:zoe/common/widgets/drawer/drawer_sheet_list_widget.dart';
 import 'package:zoe/common/widgets/drawer/drawer_settings_widget.dart';
 import 'package:zoe/common/widgets/drawer/hamburger_drawer_widget.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
+import '../../../features/sheet/mocks/mock_sheet.dart';
 import '../../../test-utils/mock_gorouter.dart';
 import '../../../test-utils/test_utils.dart';
 
@@ -13,11 +15,16 @@ void main() {
   late MockGoRouter mockGoRouter;
 
   setUp(() {
-    container = ProviderContainer.test();
+    container = ProviderContainer.test(
+      overrides: [sheetListProvider.overrideWith(() => MockSheetList())],
+    );
     mockGoRouter = MockGoRouter();
   });
 
-  Future<void> pumpHamburgerDrawerWidget(WidgetTester tester, {ThemeData? theme}) async {
+  Future<void> pumpHamburgerDrawerWidget(
+    WidgetTester tester, {
+    ThemeData? theme,
+  }) async {
     await tester.pumpMaterialWidgetWithProviderScope(
       container: container,
       router: mockGoRouter,
@@ -27,9 +34,7 @@ void main() {
   }
 
   group('HamburgerDrawerWidget', () {
-    testWidgets('renders hamburger drawer widget correctly', (
-      tester,
-    ) async {
+    testWidgets('renders hamburger drawer widget correctly', (tester) async {
       await pumpHamburgerDrawerWidget(tester);
 
       // Verify drawer is present in the widget tree
@@ -85,4 +90,3 @@ void main() {
     });
   });
 }
-

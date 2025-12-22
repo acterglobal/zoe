@@ -247,6 +247,7 @@ class SettingsScreen extends ConsumerWidget {
             title: L10n.of(context).deleteAccount,
             description: l10n.areYouSureYouWantToDeleteAccount,
             isShowTextField: true,
+            isPasswordField: true,
             isFieldRequired: true,
             labelText: l10n.password,
             hintText: l10n.passwordDescription,

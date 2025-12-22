@@ -13,6 +13,7 @@ class InfoDialogWidget extends StatefulWidget {
   final String title;
   final String description;
   final bool isShowTextField;
+  final bool isPasswordField;
   final bool isFieldRequired;
   final String? labelText;
   final String? hintText;
@@ -28,6 +29,7 @@ class InfoDialogWidget extends StatefulWidget {
     required this.title,
     required this.description,
     required this.isShowTextField,
+    required this.isPasswordField,
     required this.isFieldRequired,
     this.labelText,
     this.hintText,
@@ -45,6 +47,7 @@ class InfoDialogWidget extends StatefulWidget {
     required String description,
     bool barrierDismissible = true,
     bool isShowTextField = false,
+    bool isPasswordField = false,
     bool isFieldRequired = false,
     String? labelText,
     String? hintText,
@@ -62,6 +65,7 @@ class InfoDialogWidget extends StatefulWidget {
         title: title,
         description: description,
         isShowTextField: isShowTextField,
+        isPasswordField: isPasswordField,
         isFieldRequired: isFieldRequired,
         labelText: labelText,
         hintText: hintText,
@@ -122,17 +126,20 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
                     controller: _valueController,
                     labelText: widget.labelText,
                     hintText: widget.hintText ?? L10n.of(context).typeSomething,
-                    obscureText: _obscureText,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText ? Icons.visibility : Icons.visibility_off,
-                      ),
-                      onPressed: () =>
-                          setState(() => _obscureText = !_obscureText),
-                    ),
+                    obscureText: widget.isPasswordField && _obscureText,
+                    suffixIcon: widget.isPasswordField
+                        ? IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () =>
+                                setState(() => _obscureText = !_obscureText),
+                          )
+                        : null,
                     textInputAction: TextInputAction.done,
-                    validator: (value) =>
-                        ValidationUtils.validatePassword(context, value),
+                    validator: _validateTextField,
                   ),
                 ),
                 SizedBox(height: 20),
@@ -163,6 +170,17 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
         ),
       ),
     );
+  }
+
+  String? _validateTextField(String? value) {
+    if (widget.isFieldRequired) {
+      if (widget.isPasswordField) {
+        return ValidationUtils.validatePassword(context, value);
+      } else if (value == null || value.trim().isEmpty) {
+        return L10n.of(context).fieldIsRequired;
+      }
+    }
+    return null;
   }
 
   Widget _iconWithGlow(ThemeData theme) {

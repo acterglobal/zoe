@@ -8,7 +8,7 @@ import 'package:zoe/common/widgets/zoe_icon_picker/widgets/color_selector_widget
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
-
+import '../../features/sheet/mocks/mock_sheet.dart';
 import '../../test-utils/test_utils.dart';
 import '../../features/sheet/utils/sheet_utils.dart';
 
@@ -16,7 +16,9 @@ void main() {
   late ProviderContainer container;
 
   setUp(() {
-    container = ProviderContainer.test();
+    container = ProviderContainer(
+      overrides: [sheetListProvider.overrideWith(MockSheetList.new)],
+    );
   });
 
   Future<void> pumpChooseColorBottomSheet(
@@ -102,7 +104,8 @@ void main() {
         );
 
         // Update the sheet in the provider
-        container.read(sheetListProvider.notifier).state = [testSheet];
+        (container.read(sheetListProvider.notifier) as MockSheetList)
+            .updateSheet(testSheet);
 
         await pumpChooseColorBottomSheet(tester, sheetId: testSheet.id);
         await tester.pump();
@@ -120,7 +123,8 @@ void main() {
           final testSheet = getSheetByIndex(container).copyWith(theme: null);
 
           // Update the sheet in the provider
-          container.read(sheetListProvider.notifier).state = [testSheet];
+          (container.read(sheetListProvider.notifier) as MockSheetList)
+              .updateSheet(testSheet);
 
           await pumpChooseColorBottomSheet(tester, sheetId: testSheet.id);
           await tester.pump();
@@ -251,7 +255,8 @@ void main() {
 
       testWidgets('handles sheet with null theme', (tester) async {
         final testSheet = getSheetByIndex(container).copyWith(theme: null);
-        container.read(sheetListProvider.notifier).state = [testSheet];
+        (container.read(sheetListProvider.notifier) as MockSheetList)
+            .updateSheet(testSheet);
 
         await pumpChooseColorBottomSheet(tester, sheetId: testSheet.id);
         await tester.pump();
@@ -337,7 +342,7 @@ void main() {
         );
 
         // First, select a custom color
-        final customColor = Colors.blue;
+        final customColor = Colors.amber;
         colorSelector.onColorChanged(customColor);
         await tester.pump();
 
@@ -374,7 +379,8 @@ void main() {
           ),
         );
 
-        container.read(sheetListProvider.notifier).state = [testSheet];
+        (container.read(sheetListProvider.notifier) as MockSheetList)
+            .updateSheet(testSheet);
 
         await pumpChooseColorBottomSheet(tester, sheetId: testSheet.id);
         await tester.pump();
