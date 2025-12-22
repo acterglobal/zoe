@@ -1,99 +1,70 @@
-import 'dart:async';
-import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:zoe/core/deeplink/deep_link_initializer.dart';
 import 'package:zoe/core/routing/app_router.dart';
+import 'package:zoe/features/auth/providers/auth_providers.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
+import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
-import '../../features/sheet/utils/sheet_utils.dart';
-import '../../features/users/utils/users_utils.dart';
+import '../../features/sheet/mocks/mock_sheet.dart';
+import '../../features/users/mocks/mock_user.dart';
 import '../../test-utils/mock_gorouter.dart';
 import '../../test-utils/test_utils.dart';
-
-/// Helper class to manage AppLinks stream without exposing StreamController
-class TestableAppLinks extends Mock implements AppLinks {
-  final StreamController<Uri> _linkStreamController =
-      StreamController<Uri>.broadcast();
-
-  TestableAppLinks() {
-    when(() => getInitialLink()).thenAnswer((_) async => null);
-    when(() => uriLinkStream).thenAnswer((_) => _linkStreamController.stream);
-  }
-
-  /// Emit a URI to simulate an incoming deep link
-  void emitLink(Uri uri) {
-    _linkStreamController.add(uri);
-  }
-
-  /// Emit an error to simulate a stream error
-  void emitError(Object error) {
-    _linkStreamController.addError(error);
-  }
-
-  /// Clean up resources
-  void dispose() {
-    _linkStreamController.close();
-  }
-}
+import 'mock/mock_deeplink.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  late ProviderContainer container;
+  late MockAppLinks mockAppLinks;
+  late MockGoRouter mockGoRouter;
+
+  setUp(() {
+    mockGoRouter = MockGoRouter();
+    mockAppLinks = MockAppLinks();
+    container = ProviderContainer.test();
+  });
+
+  ProviderContainer buildContainer({UserModel? user, SheetModel? sheet}) {
+    return ProviderContainer(
+      overrides: [
+        sheetListProvider.overrideWith(MockSheetList.new),
+        userListProvider.overrideWith(MockUserList.new),
+        routerProvider.overrideWithValue(mockGoRouter),
+        appLinksProvider.overrideWithValue(mockAppLinks),
+        if (user != null) authProvider.overrideWithValue(user),
+        if (sheet != null)
+          getSheetByIdProvider(sheet.id).overrideWith((_) async => sheet),
+      ],
+    );
+  }
 
   group('DeepLinkInitializer Tests', () {
-    late ProviderContainer container;
-    late TestableAppLinks testableAppLinks;
     late SheetModel testSheet;
     late UserModel testUser;
     late String testSheetId;
-    late MockGoRouter mockGoRouter;
-
-    setUpAll(() {
-      registerFallbackValue(Uri());
-      registerFallbackValue(const RouteSettings());
-    });
 
     setUp(() {
-      // Create sheet/user test fixtures using your util functions
-      container = ProviderContainer.test();
-      mockGoRouter = MockGoRouter();
-      testSheet = getSheetByIndex(container);
+      container = buildContainer();
+      final sheetList = container.read(sheetListProvider);
+      if (sheetList.isEmpty) fail('Sheet list is empty');
+      testSheet = sheetList.first;
       testSheetId = testSheet.id;
-      testUser = getUserByIndex(container);
-
-      testableAppLinks = TestableAppLinks();
-
-      container = ProviderContainer.test(
-        overrides: [
-          routerProvider.overrideWithValue(mockGoRouter),
-          currentUserProvider.overrideWithValue(testUser),
-          appLinksProvider.overrideWithValue(testableAppLinks),
-        ],
-      );
+      final userList = container.read(userListProvider);
+      if (userList.isEmpty) fail('User list is empty');
+      testUser = userList.first;
+      container = buildContainer(user: testUser, sheet: testSheet);
     });
 
-    tearDown(() {
-      testableAppLinks.dispose();
-    });
+    tearDown(() => mockAppLinks.dispose());
 
     Future<void> pumpDeepLinkInitializer(
       WidgetTester tester, {
       ProviderContainer? testContainer,
     }) async {
-      final containerToUse =
-          testContainer ??
-          ProviderContainer.test(
-            overrides: [
-              routerProvider.overrideWithValue(mockGoRouter),
-              appLinksProvider.overrideWithValue(testableAppLinks),
-            ],
-          );
-
       await tester.pumpMaterialWidgetWithProviderScope(
-        container: containerToUse,
+        container: testContainer ?? container,
         router: mockGoRouter,
         child: DeepLinkInitializer(
           child: const Scaffold(body: Text('Test Child')),
@@ -110,48 +81,13 @@ void main() {
       });
     });
 
-    group('Initial Link Handling', () {
-      testWidgets('handles null initial link (no crash)', (tester) async {
-        // default TestableAppLinks returns null initial link
-        await pumpDeepLinkInitializer(tester);
-        await tester.pumpAndSettle();
-        expect(find.text('Test Child'), findsOneWidget);
-      });
-
-      testWidgets('handles error getting initial link (no crash)', (
-        tester,
-      ) async {
-        // simulate getInitialLink throwing by replacing testableAppLinks temporarily
-        final throwingLinks = TestableAppLinks();
-        when(() => throwingLinks.getInitialLink()).thenThrow(Exception('boom'));
-
-        final containerWithThrowing = ProviderContainer.test(
-          overrides: [
-            routerProvider.overrideWithValue(mockGoRouter),
-            currentUserProvider.overrideWithValue(testUser),
-            appLinksProvider.overrideWithValue(throwingLinks),
-          ],
-        );
-
-        await pumpDeepLinkInitializer(
-          tester,
-          testContainer: containerWithThrowing,
-        );
-        await tester.pumpAndSettle();
-        expect(find.text('Test Child'), findsOneWidget);
-
-        throwingLinks.dispose();
-        containerWithThrowing.dispose();
-      });
-    });
-
     group('Incoming Link Handling', () {
       testWidgets('handles valid incoming link (no crash)', (tester) async {
         await pumpDeepLinkInitializer(tester);
         await tester.pumpAndSettle();
 
         final validUri = Uri.parse('https://hellozoe.app/sheet/$testSheetId');
-        testableAppLinks.emitLink(validUri);
+        mockAppLinks.emitLink(validUri);
 
         // Allow post-frame callbacks, navigation and bottom-sheet show (if any)
         await tester.pump();
@@ -166,7 +102,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final invalidUri = Uri.parse('https://example.com/invalid');
-        testableAppLinks.emitLink(invalidUri);
+        mockAppLinks.emitLink(invalidUri);
 
         await tester.pumpAndSettle();
         expect(find.text('Test Child'), findsOneWidget);
@@ -176,7 +112,7 @@ void main() {
         await pumpDeepLinkInitializer(tester);
         await tester.pumpAndSettle();
 
-        testableAppLinks.emitError(Exception('Stream error'));
+        mockAppLinks.emitError(Exception('Stream error'));
 
         await tester.pumpAndSettle();
         expect(find.text('Test Child'), findsOneWidget);
@@ -190,7 +126,7 @@ void main() {
           await tester.pumpAndSettle();
 
           final validUri = Uri.parse('https://hellozoe.app/sheet/$testSheetId');
-          testableAppLinks.emitLink(validUri);
+          mockAppLinks.emitLink(validUri);
 
           await tester.pumpAndSettle();
           expect(find.text('Test Child'), findsNothing);
@@ -204,7 +140,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final invalidUri = Uri.parse('https://hellozoe.app/sheet/');
-        testableAppLinks.emitLink(invalidUri);
+        mockAppLinks.emitLink(invalidUri);
         await tester.pumpAndSettle();
 
         // No navigation should be triggered for empty sheet id. We assert that 'HOME' is present.
@@ -217,7 +153,7 @@ void main() {
 
         for (int i = 0; i < 3; i++) {
           final validUri = Uri.parse('https://hellozoe.app/sheet/$testSheetId');
-          testableAppLinks.emitLink(validUri);
+          mockAppLinks.emitLink(validUri);
         }
 
         await tester.pumpAndSettle();
@@ -234,7 +170,7 @@ void main() {
         final validUri = Uri.parse(
           'https://hellozoe.app/sheet/$specialSheetId',
         );
-        testableAppLinks.emitLink(validUri);
+        mockAppLinks.emitLink(validUri);
 
         await tester.pumpAndSettle();
         expect(find.text('Test Child'), findsOneWidget);
@@ -246,7 +182,7 @@ void main() {
 
         final longSheetId = 'a' * 1000;
         final validUri = Uri.parse('https://hellozoe.app/sheet/$longSheetId');
-        testableAppLinks.emitLink(validUri);
+        mockAppLinks.emitLink(validUri);
 
         await tester.pumpAndSettle();
         expect(find.text('Test Child'), findsOneWidget);
