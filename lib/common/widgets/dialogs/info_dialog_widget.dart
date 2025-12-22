@@ -173,10 +173,12 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
   }
 
   String? _validateTextField(String? value) {
-    if (widget.isFieldRequired && widget.isPasswordField) {
-      return ValidationUtils.validatePassword(context, value);
-    } else if (widget.isFieldRequired) {
-      return L10n.of(context).fieldIsRequired;
+    if (widget.isFieldRequired) {
+      if (widget.isPasswordField) {
+        return ValidationUtils.validatePassword(context, value);
+      } else if (value == null || value.trim().isEmpty) {
+        return L10n.of(context).fieldIsRequired;
+      }
     }
     return null;
   }
