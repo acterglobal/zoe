@@ -8,27 +8,24 @@ import 'package:zoe/features/sheet/models/sheet_avatar.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_avatar_widget.dart';
-
-import '../../features/sheet/utils/sheet_utils.dart';
+import '../../features/sheet/mocks/mock_sheet.dart';
 import '../../test-utils/test_utils.dart';
 
 void main() {
   late ProviderContainer container;
 
-  setUp(() {
-    container = ProviderContainer.test();
-  });
+  setUp(() => container = ProviderContainer.test());
 
   group('DisplaySheetNameWidget Tests -', () {
     late SheetModel testSheet;
 
     setUp(() {
-      testSheet = getSheetByIndex(container);
       container = ProviderContainer(
-        overrides: [
-          sheetListProvider.overrideWithValue([testSheet]),
-        ],
+        overrides: [sheetListProvider.overrideWith(MockSheetList.new)],
       );
+      final sheetList = container.read(sheetListProvider);
+      if (sheetList.isEmpty) assert(false, 'Sheet list is empty');
+      testSheet = sheetList.first;
     });
 
     Future<void> pumpDisplaySheetNameWidget(
