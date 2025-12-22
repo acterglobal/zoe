@@ -4,9 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:zoe/common/widgets/drawer/drawer_sheet_list_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/sheet/widgets/sheet_list_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
+import '../../../features/sheet/mocks/sheet_mocks.dart';
 import '../../../test-utils/mock_gorouter.dart';
 import '../../../test-utils/test_utils.dart';
 
@@ -14,13 +16,19 @@ void main() {
   late ProviderContainer container;
   late MockGoRouter mockGoRouter;
 
+  setUpAll(() => registerFallbackValue(SheetModel()));
+
   setUp(() {
-    container = ProviderContainer.test();
+    container = ProviderContainer.test(
+      overrides: [sheetListProvider.overrideWith(() => MockSheetList())],
+    );
     mockGoRouter = MockGoRouter();
     when(() => mockGoRouter.push(any())).thenAnswer((_) async => true);
     when(() => mockGoRouter.canPop()).thenReturn(true);
     when(() => mockGoRouter.pop());
   });
+
+  tearDown(() => resetMocktailState());
 
   Future<void> pumpDrawerSheetListWidget(
     WidgetTester tester, {
