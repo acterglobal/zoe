@@ -691,5 +691,7 @@
     "time": "Time",
     "@time": {},
     "viewPlusWithCount": "view +{count}",
-    "@viewPlusWithCount": {}
+    "@viewPlusWithCount": {},
+    "fieldIsRequired": "Field is required",
+    "@fieldIsRequired": {}
 }

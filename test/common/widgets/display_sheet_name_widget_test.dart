@@ -24,7 +24,7 @@ void main() {
         overrides: [sheetListProvider.overrideWith(MockSheetList.new)],
       );
       final sheetList = container.read(sheetListProvider);
-      if (sheetList.isEmpty) assert(false, 'Sheet list is empty');
+      if (sheetList.isEmpty) fail('Sheet list is empty');
       testSheet = sheetList.first;
     });
 

@@ -139,8 +139,7 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
                           )
                         : null,
                     textInputAction: TextInputAction.done,
-                    validator: (value) =>
-                        ValidationUtils.validatePassword(context, value),
+                    validator: _validateTextField,
                   ),
                 ),
                 SizedBox(height: 20),
@@ -171,6 +170,15 @@ class _InfoDialogWidgetState extends State<InfoDialogWidget> {
         ),
       ),
     );
+  }
+
+  String? _validateTextField(String? value) {
+    if (widget.isFieldRequired && widget.isPasswordField) {
+      return ValidationUtils.validatePassword(context, value);
+    } else if (widget.isFieldRequired) {
+      return L10n.of(context).fieldIsRequired;
+    }
+    return null;
   }
 
   Widget _iconWithGlow(ThemeData theme) {
