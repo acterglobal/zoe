@@ -96,12 +96,16 @@ class ZoeUserAvatarWidget extends StatelessWidget {
   }
 
   Widget _buildPlaceholderAvatar(Color color, {bool showError = false}) {
+    final isCircle = shape == BoxShape.circle;
+    final borderRadius = isCircle ? 0.0 : this.borderRadius;
+
     return Container(
       width: size ?? 24,
       height: size ?? 24,
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.2),
-        shape: BoxShape.circle,
+        shape: shape,
+        borderRadius: isCircle ? null : BorderRadius.circular(borderRadius),
         border: Border.all(color: color, width: 0.3),
       ),
       child: Center(
