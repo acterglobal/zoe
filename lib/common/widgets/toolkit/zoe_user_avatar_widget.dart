@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/loading_indicator_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 
 /// A widget that displays a user's avatar.
@@ -9,6 +11,7 @@ import 'package:zoe/features/users/models/user_model.dart';
 /// Otherwise shows a circle with the first letter of user's name.
 class ZoeUserAvatarWidget extends StatelessWidget {
   final UserModel user;
+  final bool isLoading;
   final double? size;
   final double? fontSize;
   final String? selectedImagePath;
@@ -16,6 +19,7 @@ class ZoeUserAvatarWidget extends StatelessWidget {
   const ZoeUserAvatarWidget({
     super.key,
     required this.user,
+    this.isLoading = false,
     this.size,
     this.fontSize,
     this.selectedImagePath,
@@ -26,11 +30,26 @@ class ZoeUserAvatarWidget extends StatelessWidget {
     final randomColor = CommonUtils().getRandomColorFromName(user.name);
     final imagePath = selectedImagePath ?? user.avatar;
 
-    if (imagePath != null) {
+    if (isLoading) {
+      return _buildLoadingAvatar(context);
+    } else if (imagePath != null) {
       return _buildImageAvatar(imagePath, context);
+    } else {
+      return _buildPlaceholderAvatar(randomColor);
     }
+  }
 
-    return _buildPlaceholderAvatar(randomColor);
+  Widget _buildLoadingAvatar(BuildContext context) {
+    return Container(
+      width: size ?? 24,
+      height: size ?? 24,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Theme.of(context).colorScheme.surface,
+      ),
+      child: LoadingIndicatorWidget(type: LoadingIndicatorType.circular),
+    );
   }
 
   Widget _buildImageAvatar(String path, BuildContext context) {
@@ -44,25 +63,18 @@ class ZoeUserAvatarWidget extends StatelessWidget {
       ),
       child: ClipOval(
         child: path.startsWith('http')
-            ? Image.network(
-                path,
+            ? CachedNetworkImage(
+                imageUrl: path,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return _buildPlaceholderAvatar(
-                    randomColor,
-                    showError: true,
-                  );
-                },
+                placeholder: (_, _) => _buildPlaceholderAvatar(randomColor),
+                errorWidget: (_, _, _) =>
+                    _buildPlaceholderAvatar(randomColor, showError: true),
               )
             : Image.file(
                 File(path),
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return _buildPlaceholderAvatar(
-                    randomColor,
-                    showError: true,
-                  );
-                },
+                errorBuilder: (_, _, _) =>
+                    _buildPlaceholderAvatar(randomColor, showError: true),
               ),
       ),
     );

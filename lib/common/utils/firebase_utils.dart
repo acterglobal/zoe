@@ -1,11 +1,17 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
+import 'package:path/path.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 
-final log = Logger('ZoeApp-FireStore');
+final log = Logger('Firebase-Utils');
 
+// Helper function to run Firestore operations
 Future<T?> runFirestoreOperation<T>(
   Ref ref,
   Future<T> Function() operation,
@@ -29,6 +35,7 @@ Future<T?> runFirestoreOperation<T>(
   }
 }
 
+// Helper function to get Firebase error message
 String getFirebaseErrorMessage(Object e) {
   // 1. Handle Authentication Errors
   if (e is FirebaseAuthException) {
@@ -71,6 +78,50 @@ String getFirebaseErrorMessage(Object e) {
   return 'An unexpected error occurred.';
 }
 
+// Helper function to upload a file to Firebase Storage
+Future<String?> uploadFileToStorage({
+  required Ref ref,
+  required String bucketName,
+  required XFile file,
+}) async {
+  final snackbar = ref.read(snackbarServiceProvider);
+  final firebaseStorage = ref.read(firebaseStorageProvider);
+
+  try {
+    final fileName = basename(file.path);
+
+    // Create a reference to the file
+    final storageRef = firebaseStorage.ref().child('$bucketName/$fileName');
+
+    // Wait for the upload to complete
+    final TaskSnapshot snapshot = await storageRef.putFile(File(file.path));
+
+    // Get the download URL
+    return await snapshot.ref.getDownloadURL();
+  } on FirebaseException catch (e) {
+    snackbar.show(getFirebaseErrorMessage(e));
+    return null;
+  }
+}
+
+// Helper function to delete a file from Firebase Storage
+Future<void> deleteFileFromStorage({
+  required Ref ref,
+  required String fileUrl,
+}) async {
+  final snackbar = ref.read(snackbarServiceProvider);
+  final firebaseStorage = ref.read(firebaseStorageProvider);
+
+  try {
+    // Create a reference to the file using its download URL
+    final storageRef = firebaseStorage.refFromURL(fileUrl);
+    // Delete the file
+    await storageRef.delete();
+  } on FirebaseException catch (e) {
+    snackbar.show(getFirebaseErrorMessage(e));
+  }
+}
+
 // Delete content documents related to field name and isEqualTo
 Future<void> runFirestoreDeleteContentOperation({
   required Ref ref,
@@ -96,27 +147,26 @@ Future<void> runFirestoreDeleteContentOperation({
   await batch.commit();
 }
 
-const int _whereInLimit = 30;
-
 /// Creates a Firestore-safe whereIn filter for any list size.
 /// Enforces Firestore limits strictly.
 Filter whereInFilter(String field, List<Object?> values) {
   assert(values.isNotEmpty, 'values must not be empty');
+  const int whereInLimit = 30;
 
   // Case 1: Simple whereIn
-  if (values.length <= _whereInLimit) {
+  if (values.length <= whereInLimit) {
     return Filter(field, whereIn: values);
   }
 
   // Split into batches of 30
   final filters = <Filter>[];
-  for (var i = 0; i < values.length; i += _whereInLimit) {
+  for (var i = 0; i < values.length; i += whereInLimit) {
     filters.add(
       Filter(
         field,
         whereIn: values.sublist(
           i,
-          i + _whereInLimit > values.length ? values.length : i + _whereInLimit,
+          i + whereInLimit > values.length ? values.length : i + whereInLimit,
         ),
       ),
     );

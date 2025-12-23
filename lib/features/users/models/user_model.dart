@@ -29,14 +29,14 @@ class UserModel {
     String? name,
     String? email,
     String? bio,
-    String? avatar,
+    String? avatar = '',
   }) {
     return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
       bio: bio ?? this.bio,
-      avatar: avatar ?? this.avatar,
+      avatar: avatar?.trim() == '' ? this.avatar : avatar,
     );
   }
 
@@ -46,8 +46,8 @@ class UserModel {
       'id': id,
       'name': name,
       'email': email,
-      if (bio != null) 'bio': bio,
-      if (avatar != null) 'avatar': avatar,
+      'bio': bio,
+      'avatar': avatar,
     };
   }
 
