@@ -2,14 +2,7 @@ import 'dart:io';
 
 import 'package:zoe/features/documents/models/document_model.dart';
 
-enum DocumentFileType { 
-  unknown, 
-  image, 
-  video, 
-  music, 
-  pdf, 
-  text
-}
+enum DocumentFileType { unknown, image, video, music, pdf, text }
 
 String fileSizeFormat(int bytes) {
   if (bytes < 1024) {
@@ -33,7 +26,7 @@ DocumentFileType getDocumentType(DocumentModel document) {
 }
 
 String getFileType(String filePath) {
-  return filePath.split('.').last.toLowerCase();
+  return filePath.split('.').last.split('?').first.toLowerCase();
 }
 
 String getFileSize(String filePath) {
@@ -64,8 +57,35 @@ bool isPdfDocument(DocumentModel document) {
 bool isTextDocument(DocumentModel document) {
   final fileType = getFileType(document.filePath).toLowerCase();
   return [
-    'txt', 'md', 'json', 'xml', 'html', 'htm', 'css', 'js', 'dart', 'py', 
-    'java', 'cpp', 'c', 'h', 'cs', 'php', 'rb', 'go', 'rs', 'swift', 'kt',
-    'sql', 'yaml', 'yml', 'ini', 'cfg', 'conf', 'log', 'csv', 'tsv'
+    'txt',
+    'md',
+    'json',
+    'xml',
+    'html',
+    'htm',
+    'css',
+    'js',
+    'dart',
+    'py',
+    'java',
+    'cpp',
+    'c',
+    'h',
+    'cs',
+    'php',
+    'rb',
+    'go',
+    'rs',
+    'swift',
+    'kt',
+    'sql',
+    'yaml',
+    'yml',
+    'ini',
+    'cfg',
+    'conf',
+    'log',
+    'csv',
+    'tsv',
   ].contains(fileType);
 }

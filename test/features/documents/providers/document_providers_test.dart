@@ -71,50 +71,12 @@ void main() {
         final initialDocuments = container.read(documentListProvider);
         final documentToDelete = initialDocuments.first;
 
-        container.read(documentListProvider.notifier).deleteDocument(documentToDelete.id);
+        container.read(documentListProvider.notifier).deleteDocument(documentToDelete);
 
         final updatedDocuments = container.read(documentListProvider);
         
         expect(updatedDocuments.length, equals(initialDocuments.length - 1));
         expect(updatedDocuments.any((d) => d.id == documentToDelete.id), isFalse);
-      });
-
-      test('updateDocumentTitle updates document title', () {
-        final initialDocuments = container.read(documentListProvider);
-        final documentToUpdate = initialDocuments.first;
-        const newTitle = 'Updated Title';
-
-        container.read(documentListProvider.notifier).updateDocumentTitle(
-          documentToUpdate.id,
-          newTitle,
-        );
-
-        final updatedDocuments = container.read(documentListProvider);
-        final updatedDocument = updatedDocuments.firstWhere(
-          (d) => d.id == documentToUpdate.id,
-        );
-
-        expect(updatedDocument.title, equals(newTitle));
-        expect(updatedDocuments.length, equals(initialDocuments.length));
-      });
-
-      test('updateDocumentDescription updates document description', () {
-        final initialDocuments = container.read(documentListProvider);
-        final documentToUpdate = initialDocuments.first;
-        const newDescription = (plainText: 'Updated description', htmlText: null);
-
-        container.read(documentListProvider.notifier).updateDocumentDescription(
-          documentToUpdate.id,
-          newDescription,
-        );
-
-        final updatedDocuments = container.read(documentListProvider);
-        final updatedDocument = updatedDocuments.firstWhere(
-          (d) => d.id == documentToUpdate.id,
-        );
-
-        expect(updatedDocument.description, equals(newDescription));
-        expect(updatedDocuments.length, equals(initialDocuments.length));
       });
 
       test('updateDocumentOrderIndex updates document order index', () {

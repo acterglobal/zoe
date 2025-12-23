@@ -9,6 +9,7 @@ class FirestoreCollections {
   static const String bullets = 'bullets';
   static const String tasks = 'tasks';
   static const String polls = 'polls';
+  static const String documents = 'documents';
 }
 
 class FirestoreFieldConstants {

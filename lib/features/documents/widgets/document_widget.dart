@@ -212,7 +212,7 @@ class DocumentWidget extends ConsumerWidget {
         size: 12,
       ),
       onTap: () {
-        ref.read(documentListProvider.notifier).deleteDocument(document.id);
+        ref.read(documentListProvider.notifier).deleteDocument(document);
       },
     );
   }

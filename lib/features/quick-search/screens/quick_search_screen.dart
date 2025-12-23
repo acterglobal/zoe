@@ -5,6 +5,8 @@ import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_search_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_glassy_tab_widget.dart';
+import 'package:zoe/features/documents/providers/document_providers.dart';
+import 'package:zoe/features/documents/widgets/document_list_widget.dart';
 import 'package:zoe/features/events/providers/event_providers.dart';
 import 'package:zoe/features/events/widgets/event_list_widget.dart';
 import 'package:zoe/features/polls/providers/poll_providers.dart';
@@ -92,7 +94,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
       lang.events,
       lang.tasks,
       // lang.links,
-      // lang.documents,
+      lang.documents,
       lang.polls,
     ];
 
@@ -150,7 +152,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
               maxItems: 3,
               showSectionHeader: true,
             ),
-          ],
+          ],*/
           if (quickSearchFilters.value == QuickSearchFilters.all ||
               quickSearchFilters.value == QuickSearchFilters.documents) ...[
             const SizedBox(height: 10),
@@ -161,7 +163,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
               isVertical: true,
               showSectionHeader: true,
             ),
-          ],*/
+          ],
           if (quickSearchFilters.value == QuickSearchFilters.all ||
               quickSearchFilters.value == QuickSearchFilters.polls) ...[
             const SizedBox(height: 16),
