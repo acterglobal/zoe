@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/widgets/loading_indicator_widget.dart';
 import 'package:zoe/features/users/models/user_model.dart';
 
 /// A widget that displays a user's avatar.
@@ -9,72 +11,101 @@ import 'package:zoe/features/users/models/user_model.dart';
 /// Otherwise shows a circle with the first letter of user's name.
 class ZoeUserAvatarWidget extends StatelessWidget {
   final UserModel user;
+  final bool isLoading;
   final double? size;
   final double? fontSize;
   final String? selectedImagePath;
+  final double borderRadius;
+  final BoxShape shape;
 
   const ZoeUserAvatarWidget({
     super.key,
     required this.user,
+    this.isLoading = false,
     this.size,
     this.fontSize,
     this.selectedImagePath,
+    this.borderRadius = 10,
+    this.shape = BoxShape.circle,
   });
 
   @override
   Widget build(BuildContext context) {
     final randomColor = CommonUtils().getRandomColorFromName(user.name);
-    final imagePath = selectedImagePath ?? user.avatar;
+    final url = selectedImagePath ?? user.avatar;
 
-    if (imagePath != null) {
-      return _buildImageAvatar(imagePath, context);
+    if (isLoading) {
+      return _buildLoadingAvatar(context);
+    } else if (url != null) {
+      return _buildImageAvatar(url, context);
+    } else {
+      return _buildPlaceholderAvatar(randomColor);
     }
-
-    return _buildPlaceholderAvatar(randomColor);
   }
 
-  Widget _buildImageAvatar(String path, BuildContext context) {
-    final randomColor = CommonUtils().getRandomColorFromName(user.name);
+  Widget _buildLoadingAvatar(BuildContext context) {
     return Container(
       width: size ?? 24,
       height: size ?? 24,
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Theme.of(context).colorScheme.surface,
       ),
-      child: ClipOval(
-        child: path.startsWith('http')
-            ? Image.network(
-                path,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return _buildPlaceholderAvatar(
-                    randomColor,
-                    showError: true,
-                  );
-                },
-              )
-            : Image.file(
-                File(path),
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return _buildPlaceholderAvatar(
-                    randomColor,
-                    showError: true,
-                  );
-                },
-              ),
-      ),
+      child: LoadingIndicatorWidget(type: LoadingIndicatorType.circular),
     );
   }
 
+  Widget _buildImageAvatar(String url, BuildContext context) {
+    final isCircle = shape == BoxShape.circle;
+    final borderRadius = isCircle ? 0.0 : this.borderRadius;
+
+    return Container(
+      width: size ?? 24,
+      height: size ?? 24,
+      decoration: BoxDecoration(
+        shape: shape,
+        borderRadius: isCircle ? null : BorderRadius.circular(borderRadius),
+        color: Theme.of(context).colorScheme.surface,
+      ),
+      child: isCircle
+          ? ClipOval(child: _buildImageView(url))
+          : ClipRRect(
+              borderRadius: BorderRadius.circular(borderRadius),
+              child: _buildImageView(url),
+            ),
+    );
+  }
+
+  Widget _buildImageView(String url) {
+    final randomColor = CommonUtils().getRandomColorFromName(user.name);
+    return url.startsWith('http')
+        ? CachedNetworkImage(
+            imageUrl: url,
+            fit: BoxFit.cover,
+            placeholder: (_, _) => _buildPlaceholderAvatar(randomColor),
+            errorWidget: (_, _, _) =>
+                _buildPlaceholderAvatar(randomColor, showError: true),
+          )
+        : Image.file(
+            File(url),
+            fit: BoxFit.cover,
+            errorBuilder: (_, _, _) =>
+                _buildPlaceholderAvatar(randomColor, showError: true),
+          );
+  }
+
   Widget _buildPlaceholderAvatar(Color color, {bool showError = false}) {
+    final isCircle = shape == BoxShape.circle;
+    final borderRadius = isCircle ? 0.0 : this.borderRadius;
+
     return Container(
       width: size ?? 24,
       height: size ?? 24,
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.2),
-        shape: BoxShape.circle,
+        shape: shape,
+        borderRadius: isCircle ? null : BorderRadius.circular(borderRadius),
         border: Border.all(color: color, width: 0.3),
       ),
       child: Center(

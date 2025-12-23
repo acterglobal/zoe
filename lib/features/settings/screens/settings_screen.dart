@@ -5,6 +5,7 @@ import 'package:zoe/common/providers/package_info_provider.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/widgets/dialogs/info_dialog_widget.dart';
 import 'package:zoe/common/widgets/max_width_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
 import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/core/theme/colors/app_colors.dart';
@@ -85,6 +86,13 @@ class SettingsScreen extends ConsumerWidget {
         SettingItemWidget(
           title: currentUser?.name ?? l10n.guest,
           subtitle: currentUser?.email ?? '',
+          leadingWidget: currentUser == null
+              ? null
+              : ZoeUserAvatarWidget(
+                  user: currentUser,
+                  size: 48,
+                  shape: BoxShape.rectangle,
+                ),
           icon: Icons.person_rounded,
           iconColor: AppColors.brightMagentaColor,
           onTap: () => context.push(AppRoutes.settingsProfile.route),

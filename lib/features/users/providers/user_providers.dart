@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
@@ -56,6 +57,30 @@ class UserList extends _$UserList {
 
   Future<void> updateUser(String userId, UserModel updatedUser) async {
     await collection.doc(userId).update(updatedUser.toJson());
+  }
+
+  Future<void> updateUserAvatar({required UserModel user, XFile? file}) async {
+    await runFirestoreOperation(ref, () async {
+      UserModel updatedUser = user;
+      if (file != null) {
+        final userAvatarUrl = await uploadFileToStorage(
+          ref: ref,
+          userId: user.id,
+          bucketName: FirestoreBucketNames.userAvatars,
+          file: file,
+        );
+        if (userAvatarUrl == null) return;
+        if (user.avatar != null) {
+          await deleteFileFromStorage(ref: ref, fileUrl: user.avatar!);
+        }
+        await ref.read(authProvider.notifier).updatePhotoUrl(userAvatarUrl);
+        updatedUser = updatedUser.copyWith(avatar: userAvatarUrl);
+      } else if (user.avatar != null) {
+        await deleteFileFromStorage(ref: ref, fileUrl: user.avatar!);
+        updatedUser = updatedUser.copyWith(avatar: null);
+      }
+      await collection.doc(user.id).update(updatedUser.toJson());
+    });
   }
 }
 

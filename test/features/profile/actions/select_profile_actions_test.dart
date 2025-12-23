@@ -69,8 +69,7 @@ void main() {
           child: Consumer(
             builder: (context, ref, _) {
               return TextButton(
-                onPressed: () =>
-                    selectProfileFileSource(context, testUser.id, ref),
+                onPressed: () => selectProfileFileSource(context),
                 child: const Text('Select Profile'),
               );
             },
@@ -109,11 +108,9 @@ void main() {
               return TextButton(
                 onPressed: () => selectProfileFileSource(
                   context,
-                  testUser.id,
-                  ref,
-                  onImageSelected: (path) {
+                  onImageSelected: (file) {
                     callbackCalled = true;
-                    selectedPath = path;
+                    selectedPath = file?.path;
                   },
                 ),
                 child: const Text('Select Profile'),
@@ -162,11 +159,9 @@ void main() {
               return TextButton(
                 onPressed: () => selectProfileFileSource(
                   context,
-                  testUser.id,
-                  ref,
-                  onImageSelected: (path) {
+                  onImageSelected: (file) {
                     callbackCalled = true;
-                    selectedPath = path;
+                    selectedPath = file?.path;
                   },
                 ),
                 child: const Text('Select Profile'),
@@ -232,8 +227,6 @@ void main() {
               return TextButton(
                 onPressed: () => selectProfileFileSource(
                   context,
-                  testUserWithNullAvatar.id,
-                  ref,
                   onImageSelected: (_) => callbackCalled = true,
                 ),
                 child: const Text('Select Profile'),
@@ -276,12 +269,8 @@ void main() {
             child: Consumer(
               builder: (context, ref, _) {
                 return TextButton(
-                  onPressed: () => selectProfileFileSource(
-                    context,
-                    testUser.id,
-                    ref,
-                    hasAvatar: true,
-                  ),
+                  onPressed: () =>
+                      selectProfileFileSource(context, hasAvatar: true),
                   child: const Text('Select Profile'),
                 );
               },

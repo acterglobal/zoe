@@ -88,7 +88,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     } catch (e) {
       debugPrint("Sign up error: $e");
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 

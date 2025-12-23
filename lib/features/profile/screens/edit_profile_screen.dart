@@ -6,6 +6,7 @@ import 'package:zoe/common/widgets/max_width_widget.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_user_avatar_widget.dart';
+import 'package:zoe/features/profile/actions/select_profile_actions.dart';
 import 'package:zoe/features/profile/widgets/profile_qr_code_widget.dart';
 import 'package:zoe/features/profile/widgets/profile_user_bio_widget.dart';
 import 'package:zoe/features/profile/widgets/profile_user_name_widget.dart';
@@ -23,8 +24,7 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
-
-  String? _selectedAvatarPath;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final user = ref.watch(currentUserProvider);
 
     return Scaffold(
-      appBar: _buildAppBar(context, user),
+      appBar: _buildAppBar(user),
       body: SafeArea(
         child: user == null
             ? Center(child: Text(L10n.of(context).userNotFound))
@@ -59,7 +59,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
   }
 
-  AppBar _buildAppBar(BuildContext context, UserModel? user) {
+  AppBar _buildAppBar(UserModel? user) {
     return AppBar(
       automaticallyImplyLeading: false,
       title: ZoeAppBar(
@@ -86,20 +86,20 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          Expanded(child: _buildProfileContent(context, user)),
+          Expanded(child: _buildProfileContent(user)),
           _buildActionButton(user),
         ],
       ),
     );
   }
 
-  Widget _buildProfileContent(BuildContext context, UserModel user) {
+  Widget _buildProfileContent(UserModel user) {
     return Center(
       child: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 20),
-            _buildAvatarSection(context, user),
+            _buildAvatarSection(user),
             const SizedBox(height: 32),
             _buildProfileInfoSection(),
             const SizedBox(height: 20),
@@ -109,8 +109,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
   }
 
-  Widget _buildAvatarSection(BuildContext context, UserModel user) {
-    // final colorScheme = Theme.of(context).colorScheme;
+  Widget _buildAvatarSection(UserModel user) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -118,21 +118,21 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           user: user,
           size: 100,
           fontSize: 30,
-          selectedImagePath: _selectedAvatarPath,
+          isLoading: _isLoading,
         ),
-        // Positioned(
-        //   right: -4,
-        //   bottom: -4,
-        //   child: StyledIconContainer(
-        //     icon: Icons.camera_alt,
-        //     size: 32,
-        //     iconSize: 16,
-        //     borderRadius: BorderRadius.circular(16),
-        //     primaryColor: colorScheme.onSurface,
-        //     secondaryColor: colorScheme.primary,
-        //     onTap: () => _onAvatarChange(user),
-        //   ),
-        // ),
+        Positioned(
+          right: -4,
+          bottom: -4,
+          child: StyledIconContainer(
+            icon: Icons.camera_alt,
+            size: 32,
+            iconSize: 16,
+            borderRadius: BorderRadius.circular(16),
+            primaryColor: colorScheme.onSurface,
+            secondaryColor: colorScheme.primary,
+            onTap: () => _onAvatarChange(user),
+          ),
+        ),
       ],
     );
   }
@@ -172,20 +172,25 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
   }
 
-  /*void _onAvatarChange(UserModel user) {
+  void _onAvatarChange(UserModel user) {
     selectProfileFileSource(
       context,
-      user.id,
-      ref,
       hasAvatar: user.avatar != null,
-      onImageSelected: (path) {
-        setState(() {
-          _selectedAvatarPath = path;
-        });
+      onImageSelected: (file) async {
+        try {
+          setState(() => _isLoading = true);
 
-        final updatedUser = user.copyWith(id: user.id, avatar: path);
-        ref.read(userListProvider.notifier).updateUser(user.id, updatedUser);
+          await ref
+              .read(userListProvider.notifier)
+              .updateUserAvatar(user: user, file: file);
+        } catch (e) {
+          debugPrint('Fail upload user avatar: $e');
+        } finally {
+          if (mounted) {
+            setState(() => _isLoading = false);
+          }
+        }
       },
     );
-  }*/
+  }
 }

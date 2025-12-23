@@ -4,16 +4,18 @@ import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 class SettingItemWidget extends StatelessWidget {
   final String title;
   final String subtitle;
-  final IconData icon;
-  final Color iconColor;
+  final Widget? leadingWidget;
+  final IconData? icon;
+  final Color? iconColor;
   final VoidCallback onTap;
 
   const SettingItemWidget({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.icon,
-    required this.iconColor,
+    this.leadingWidget,
+    this.icon,
+    this.iconColor,
     required this.onTap,
   });
 
@@ -23,15 +25,7 @@ class SettingItemWidget extends StatelessWidget {
 
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      leading: StyledIconContainer(
-        icon: icon,
-        primaryColor: iconColor,
-        size: 48,
-        iconSize: 24,
-        backgroundOpacity: 0.1,
-        borderOpacity: 0.15,
-        shadowOpacity: 0.12,
-      ),
+      leading: _buildLeadingWidget(),
       title: Text(
         title,
         style: theme.textTheme.titleMedium?.copyWith(
@@ -55,5 +49,21 @@ class SettingItemWidget extends StatelessWidget {
       ),
       onTap: onTap,
     );
+  }
+
+  Widget? _buildLeadingWidget() {
+    if (leadingWidget != null) return leadingWidget;
+    if (icon != null) {
+      return StyledIconContainer(
+        icon: icon!,
+        primaryColor: iconColor,
+        size: 48,
+        iconSize: 24,
+        backgroundOpacity: 0.1,
+        borderOpacity: 0.15,
+        shadowOpacity: 0.12,
+      );
+    }
+    return null;
   }
 }
