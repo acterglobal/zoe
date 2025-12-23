@@ -26,19 +26,14 @@ void updateSheetDescription(
 /// Updates the sheet icon, image and emoji
 void updateSheetAvatar({
   required WidgetRef ref,
-  required String sheetId,
+  required SheetModel sheet,
   required AvatarType type,
   required String data,
   Color? color,
 }) {
   ref
       .read(sheetListProvider.notifier)
-      .updateSheetAvatar(
-        sheetId: sheetId,
-        type: type,
-        data: data,
-        color: color,
-      );
+      .updateSheetAvatar(sheet: sheet, type: type, data: data, color: color);
 }
 
 /// Updates the theme colors of the sheet

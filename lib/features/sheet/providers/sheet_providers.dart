@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
@@ -205,15 +206,43 @@ class SheetList extends _$SheetList {
   }
 
   Future<void> updateSheetAvatar({
-    required String sheetId,
+    required SheetModel sheet,
     required AvatarType type,
     required String data,
     Color? color,
   }) async {
     await runFirestoreOperation(ref, () async {
-      final updatedAvatar = SheetAvatar(type: type, data: data, color: color);
-      await collection.doc(sheetId).update({
-        FirestoreFieldConstants.sheetAvatar: updatedAvatar.toJson(),
+      // Check if the previous type was an image
+      final previousAvatarData = sheet.sheetAvatar.data;
+      final isPreviousTypeImage =
+          sheet.sheetAvatar.type == AvatarType.image &&
+          previousAvatarData.startsWith('http');
+
+      SheetAvatar updatedSheetAvatar = sheet.sheetAvatar.copyWith(
+        type: type,
+        data: data,
+        color: color,
+      );
+
+      if (type == AvatarType.image) {
+        if (!(await File(data).exists())) return;
+        final uploadedUrl = await uploadFileToStorage(
+          ref: ref,
+          bucketName: FirestoreBucketNames.sheet,
+          subFolderName: FirestoreBucketNames.avatars,
+          file: XFile(data),
+        );
+        if (uploadedUrl == null) return;
+        if (isPreviousTypeImage) {
+          await deleteFileFromStorage(ref: ref, fileUrl: data);
+        }
+        updatedSheetAvatar = updatedSheetAvatar.copyWith(data: uploadedUrl);
+      } else if (isPreviousTypeImage) {
+        await deleteFileFromStorage(ref: ref, fileUrl: previousAvatarData);
+      }
+
+      await collection.doc(sheet.id).update({
+        FirestoreFieldConstants.sheetAvatar: updatedSheetAvatar.toJson(),
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
       });
     });
