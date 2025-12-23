@@ -63,11 +63,14 @@ class UserList extends _$UserList {
     await runFirestoreOperation(ref, () async {
       UserModel updatedUser = user;
       if (file != null) {
+        await deleteFileFromStorage(ref: ref, fileUrl: user.avatar!);
         final userAvatarUrl = await uploadFileToStorage(
           ref: ref,
           bucketName: FirestoreBucketNames.userAvatars,
           file: file,
         );
+        if (userAvatarUrl == null) return;
+        await ref.read(authProvider.notifier).updatePhotoUrl(userAvatarUrl);
         updatedUser = updatedUser.copyWith(avatar: userAvatarUrl);
       } else if (user.avatar != null) {
         await deleteFileFromStorage(ref: ref, fileUrl: user.avatar!);

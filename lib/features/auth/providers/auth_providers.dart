@@ -44,6 +44,15 @@ class Auth extends _$Auth {
         : UserModel.fromFirebaseUser(firebaseUser);
   }
 
+  /// Update the user's photo URL
+  Future<void> updatePhotoUrl(String photoUrl) async {
+    try {
+      await _authService.currentUser?.updatePhotoURL(photoUrl);
+    } on FirebaseAuthException catch (e) {
+      _logger.severe('Update photo URL error: $e');
+    }
+  }
+
   /// Sign up with email and password
   Future<void> signUp({
     required String name,
@@ -113,6 +122,7 @@ class Auth extends _$Auth {
   Future<void> deleteAccount(BuildContext context, String password) async {
     try {
       final user = _authService.currentUser;
+      final userAvatar = user?.photoURL;
       if (user == null || user.email == null) return;
 
       // Show loading dialog
@@ -177,6 +187,8 @@ class Auth extends _$Auth {
           fieldName: fieldName,
           isEqualTo: userId,
         ),
+        if (userAvatar != null)
+          deleteFileFromStorage(ref: ref, fileUrl: userAvatar),
         // Remove user from getting started sheet
         runFirestoreOperation(
           ref,
