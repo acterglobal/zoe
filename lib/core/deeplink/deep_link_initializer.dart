@@ -48,14 +48,8 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
       final sharedBy = uri.queryParameters['sharedBy'];
       final message = uri.queryParameters['message'];
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        _navigateAndShowJoinSheet(
-          sheetId,
-          sharedBy: sharedBy,
-          message: message,
-        );
-      });
+      if (!mounted) return;
+      _navigateAndShowJoinSheet(sheetId, sharedBy: sharedBy, message: message);
     } catch (error) {
       _logger.severe('Error handling URI: $uri', error);
     }
@@ -87,14 +81,8 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
       final router = ref.read(routerProvider);
       router.go(AppRoutes.home.route);
 
-      final context = router.routerDelegate.navigatorKey.currentContext;
-      if (context == null || !context.mounted) {
-        _logger.severe('Context unavailable after navigation');
-        return;
-      }
-
       final sheet = await ref.read(getSheetByIdProvider(sheetId).future);
-      if (sheet == null || !context.mounted) {
+      if (sheet == null) {
         _logger.warning('Sheet not found or access denied: $sheetId');
         return;
       }
@@ -111,6 +99,13 @@ class _DeepLinkInitializerState extends ConsumerState<DeepLinkInitializer> {
 
       final isMember = sheet.users.contains(currentUser.id);
       if (!isMember) {
+        final context = router.routerDelegate.navigatorKey.currentContext;
+        if (context == null || !context.mounted) {
+          _logger.severe(
+            'Context unavailable for showing join sheet bottom sheet',
+          );
+          return;
+        }
         showJoinSheetBottomSheet(context: context, sheet: sheet);
       } else {
         router.push(AppRoutes.sheet.route.replaceAll(':sheetId', sheetId));
