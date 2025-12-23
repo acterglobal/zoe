@@ -36,4 +36,19 @@ class MockSheetList extends SheetList {
           s,
     ];
   }
+
+  @override
+  Future<void> updateSheetShareInfo({
+    required String sheetId,
+    String? sharedBy,
+    String? message,
+  }) async {
+    state = [
+      for (final s in state)
+        if (s.id == sheetId)
+          s.copyWith(sharedBy: sharedBy, message: message)
+        else
+          s,
+    ];
+  }
 }

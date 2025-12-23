@@ -11,6 +11,8 @@ class MockGoRouter extends Mock implements GoRouter {
   }
 }
 
+class MockGoRouterDelegate extends Mock implements GoRouterDelegate {}
+
 Future<MockGoRouter> mockAnyPushGoRouter() async {
   final mockGoRouter = MockGoRouter();
   when(() => mockGoRouter.push(any())).thenAnswer((_) async {
