@@ -65,8 +65,7 @@ class UserList extends _$UserList {
       if (file != null) {
         final userAvatarUrl = await uploadFileToStorage(
           ref: ref,
-          userId: user.id,
-          bucketName: FirestoreBucketNames.userAvatars,
+          bucketName: FirestoreBucketNames.users,
           file: file,
         );
         if (userAvatarUrl == null) return;

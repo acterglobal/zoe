@@ -81,8 +81,8 @@ String getFirebaseErrorMessage(Object e) {
 // Helper function to upload a file to Firebase Storage
 Future<String?> uploadFileToStorage({
   required Ref ref,
-  required String userId,
   required String bucketName,
+  String? subFolderName,
   required XFile file,
 }) async {
   final snackbar = ref.read(snackbarServiceProvider);
@@ -94,7 +94,7 @@ Future<String?> uploadFileToStorage({
 
     // Create a reference to the file
     final storageRef = firebaseStorage.ref().child(
-      '$bucketName/$userId/$fileName',
+      '$bucketName${subFolderName != null ? '/$subFolderName' : ''}/$fileName',
     );
 
     // Wait for the upload to complete
