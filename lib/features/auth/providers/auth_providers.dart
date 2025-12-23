@@ -50,6 +50,10 @@ class Auth extends _$Auth {
       await _authService.currentUser?.updatePhotoURL(photoUrl);
     } on FirebaseAuthException catch (e) {
       _logger.severe('Update photo URL error: $e');
+      _snackBarService.show(getFirebaseErrorMessage(e));
+    } catch (e) {
+      _logger.severe('Update photo URL error: $e');
+      _snackBarService.show('Failed to update profile photo.');
     }
   }
 

@@ -63,9 +63,6 @@ class UserList extends _$UserList {
     await runFirestoreOperation(ref, () async {
       UserModel updatedUser = user;
       if (file != null) {
-        if (user.avatar != null) {
-          await deleteFileFromStorage(ref: ref, fileUrl: user.avatar!);
-        }
         final userAvatarUrl = await uploadFileToStorage(
           ref: ref,
           userId: user.id,
@@ -73,6 +70,9 @@ class UserList extends _$UserList {
           file: file,
         );
         if (userAvatarUrl == null) return;
+        if (user.avatar != null) {
+          await deleteFileFromStorage(ref: ref, fileUrl: user.avatar!);
+        }
         await ref.read(authProvider.notifier).updatePhotoUrl(userAvatarUrl);
         updatedUser = updatedUser.copyWith(avatar: userAvatarUrl);
       } else if (user.avatar != null) {
