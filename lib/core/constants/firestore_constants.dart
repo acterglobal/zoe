@@ -41,9 +41,9 @@ class FirestoreFieldConstants {
 }
 
 class FirestoreBucketNames {
-  static const String users = 'users';
-  static const String sheets = 'sheets';
-  static const String sheetAvatars = 'sheetAvatars';
-  static const String sheetBanners = 'sheetBanners';
+  static const String user = 'user';
+  static const String sheet = 'sheet';
+  static const String avatars = 'avatars';
+  static const String banners = 'banners';
   static const String documents = 'documents';
 }

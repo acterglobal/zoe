@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:zoe/common/widgets/content_menu_button.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_icon_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_network_local_image_view.dart';
 import 'package:zoe/features/sheet/actions/sheet_actions.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 
 class SheetAppBar extends ConsumerWidget {
@@ -54,7 +56,8 @@ class SheetAppBar extends ConsumerWidget {
                 placeholderIconSize: 120,
               )
             : _buildColorGradient(primaryColor, secondaryColor),
-        // if (isEditing) _buildCoverImageAction(context, ref, hasCoverImage),
+        if (isEditing)
+          _buildCoverImageAction(context, ref, sheet, hasCoverImage),
       ],
     );
   }
@@ -71,27 +74,31 @@ class SheetAppBar extends ConsumerWidget {
     );
   }
 
-  /*Widget _buildCoverImageAction(
+  Widget _buildCoverImageAction(
     BuildContext context,
     WidgetRef ref,
+    SheetModel? sheet,
     bool hasCoverImage,
   ) {
     return Positioned(
       bottom: 16,
       right: 16,
       child: ZoeIconButtonWidget(
-        onTap: () => SheetActions.addOrUpdateCoverImage(
-          context,
-          ref,
-          sheetId,
-          hasCoverImage,
-        ),
+        onTap: () {
+          if (sheet == null) return;
+          SheetActions.addOrUpdateCoverImage(
+            context,
+            ref,
+            sheet,
+            hasCoverImage,
+          );
+        },
         icon: Icons.photo_library,
         size: 22,
         padding: 10,
       ),
     );
-  }*/
+  }
 
   Widget _buildTitle(BuildContext context, WidgetRef ref) {
     return ZoeAppBar(

@@ -12,6 +12,7 @@ import 'package:zoe/core/routing/app_routes.dart';
 import 'package:zoe/features/share/utils/share_utils.dart';
 import 'package:zoe/features/share/widgets/share_items_bottom_sheet.dart';
 import 'package:zoe/features/sheet/actions/delete_sheet.dart';
+import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -84,7 +85,7 @@ class SheetActions {
   static Future<void> addOrUpdateCoverImage(
     BuildContext context,
     WidgetRef ref,
-    String sheetId,
+    SheetModel sheet,
     bool hasCoverImage,
   ) async {
     final l10n = L10n.of(context);
@@ -96,13 +97,13 @@ class SheetActions {
       onTapCamera: (image) => selectedImage = image,
       onTapGallery: (images) => selectedImage = images.first,
       onTapRemoveImage: hasCoverImage
-          ? () => SheetActions.removeCoverImage(context, ref, sheetId)
+          ? () => SheetActions.removeCoverImage(context, ref, sheet)
           : null,
     );
     if (selectedImage != null && context.mounted) {
       ref
           .read(sheetListProvider.notifier)
-          .updateSheetCoverImage(sheetId, selectedImage!.path);
+          .updateSheetCoverImage(sheet, selectedImage);
     }
   }
 
@@ -110,16 +111,15 @@ class SheetActions {
   static void removeCoverImage(
     BuildContext context,
     WidgetRef ref,
-    String sheetId,
+    SheetModel sheet,
   ) {
     final theme = Theme.of(context);
     final sheetListNotifier = ref.read(sheetListProvider.notifier);
-    final sheet = ref.read(sheetProvider(sheetId));
-    sheetListNotifier.updateSheetCoverImage(sheetId, null);
+    sheetListNotifier.updateSheetCoverImage(sheet, null);
     sheetListNotifier.updateSheetTheme(
-      sheetId: sheetId,
-      primary: sheet?.theme?.primary ?? theme.colorScheme.primary,
-      secondary: sheet?.theme?.secondary ?? theme.colorScheme.secondary,
+      sheetId: sheet.id,
+      primary: sheet.theme?.primary ?? theme.colorScheme.primary,
+      secondary: sheet.theme?.secondary ?? theme.colorScheme.secondary,
     );
     Navigator.of(context).pop();
   }

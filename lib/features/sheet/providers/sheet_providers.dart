@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
@@ -163,17 +164,31 @@ class SheetList extends _$SheetList {
     );
   }
 
-  Future<void> updateSheetCoverImage(String sheetId, String? url) async {
-    await runFirestoreOperation(
-      ref,
-      () => collection.doc(sheetId).update({
-        if (url == null)
-          FirestoreFieldConstants.coverImageUrl: null
-        else
-          FirestoreFieldConstants.coverImageUrl: url,
+  Future<void> updateSheetCoverImage(SheetModel sheet, XFile? image) async {
+    await runFirestoreOperation(ref, () async {
+      String? url = sheet.coverImageUrl;
+      if (image != null) {
+        final uploadedUrl = await uploadFileToStorage(
+          ref: ref,
+          bucketName: FirestoreBucketNames.sheet,
+          subFolderName: FirestoreBucketNames.banners,
+          file: image,
+        );
+        if (uploadedUrl == null) return;
+        if (url != null && url.isNotEmpty) {
+          await deleteFileFromStorage(ref: ref, fileUrl: url);
+        }
+        url = uploadedUrl;
+      } else if (image == null && url != null && url.isNotEmpty) {
+        await deleteFileFromStorage(ref: ref, fileUrl: url);
+        url = null;
+      }
+
+      await collection.doc(sheet.id).update({
+        FirestoreFieldConstants.coverImageUrl: url,
         FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
-      }),
-    );
+      });
+    });
   }
 
   Future<void> updateSheetDescription(String sheetId, Description desc) async {
