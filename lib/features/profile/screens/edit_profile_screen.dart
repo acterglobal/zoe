@@ -186,7 +186,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         } catch (e) {
           debugPrint('Fail upload user avatar: $e');
         } finally {
-          setState(() => _isLoading = false);
+          if (mounted) {
+            setState(() => _isLoading = false);
+          }
         }
       },
     );

@@ -81,6 +81,7 @@ String getFirebaseErrorMessage(Object e) {
 // Helper function to upload a file to Firebase Storage
 Future<String?> uploadFileToStorage({
   required Ref ref,
+  required String userId,
   required String bucketName,
   required XFile file,
 }) async {
@@ -88,10 +89,13 @@ Future<String?> uploadFileToStorage({
   final firebaseStorage = ref.read(firebaseStorageProvider);
 
   try {
-    final fileName = basename(file.path);
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final fileName = '${timestamp}_${basename(file.path)}';
 
     // Create a reference to the file
-    final storageRef = firebaseStorage.ref().child('$bucketName/$fileName');
+    final storageRef = firebaseStorage.ref().child(
+      '$bucketName/$userId/$fileName',
+    );
 
     // Wait for the upload to complete
     final TaskSnapshot snapshot = await storageRef.putFile(File(file.path));
