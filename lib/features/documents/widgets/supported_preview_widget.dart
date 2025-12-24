@@ -3,7 +3,6 @@ import 'package:zoe/common/utils/file_utils.dart';
 import 'package:zoe/common/widgets/styled_icon_container_widget.dart';
 import 'package:zoe/features/documents/actions/select_document_actions.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
-import 'package:zoe/l10n/generated/l10n.dart';
 
 class SupportedPreviewWidget extends StatelessWidget {
   final DocumentModel document;

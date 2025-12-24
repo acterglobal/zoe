@@ -62,11 +62,15 @@ dependencies:
   uuid: ^4.5.1
   flutter_keyboard_visibility: ^6.0.0
   
+  # Network requests
+  dio: ^5.9.0
+
   # File handling
   file_picker: ^10.3.2
   image_picker: ^1.2.0
   path: ^1.9.1
   mime: ^2.0.0
+  downloadsfolder: ^1.2.0
 
   # Settings and sharing
   url_launcher: ^6.3.2

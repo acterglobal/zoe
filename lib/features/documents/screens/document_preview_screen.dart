@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/services/media_service.dart';
 import 'package:zoe/common/utils/file_utils.dart';
 import 'package:zoe/features/documents/actions/select_document_actions.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
@@ -23,7 +23,6 @@ class DocumentPreviewScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final document = ref.watch(documentProvider(documentId));
-
     if (document == null) {
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -43,9 +42,9 @@ class DocumentPreviewScreen extends ConsumerWidget {
           title: document.title,
           actions: [
             DocumentActionButtons(
-              onDownload: () => CommonUtils.showSnackBar(
+              onDownload: () => MediaService.instance.downloadMedia(
                 context,
-                L10n.of(context).downloadingWillBeAvailableSoon,
+                document.filePath,
               ),
               onShare: () => shareDocument(context, document),
             ),

@@ -66,7 +66,9 @@ class CommonUtils {
 
   static void showSnackBar(BuildContext context, String message) {
     final theme = Theme.of(context);
-    ScaffoldMessenger.of(context).showSnackBar(
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    scaffoldMessenger.hideCurrentSnackBar();
+    scaffoldMessenger.showSnackBar(
       SnackBar(
         backgroundColor: theme.colorScheme.surface,
         content: Text(

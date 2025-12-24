@@ -693,5 +693,11 @@
     "viewPlusWithCount": "view +{count}",
     "@viewPlusWithCount": {},
     "fieldIsRequired": "Field is required",
-    "@fieldIsRequired": {}
+    "@fieldIsRequired": {},
+    "downloadingStarted": "Downloading started.",
+    "@downloadingStarted": {},
+    "downloadCompletedSuccessfully": "Download completed successfully.",
+    "@downloadCompletedSuccessfully": {},
+    "downloadFailed": "Download failed.",
+    "@downloadFailed": {}
 }

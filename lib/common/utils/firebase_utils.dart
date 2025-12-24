@@ -94,7 +94,7 @@ Future<String?> uploadFileToStorage({
 
     // Create a reference to the file
     final storageRef = firebaseStorage.ref().child(
-      '$bucketName${subFolderName != null ? '/$subFolderName' : ''}/$fileName',
+      '$bucketName/${subFolderName != null ? '$subFolderName/' : ''}$fileName',
     );
 
     // Wait for the upload to complete
