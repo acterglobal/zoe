@@ -40,7 +40,7 @@ void main() {
     }
 
     void testUpdateSheetAvatar({
-      required String sheetId,
+      required SheetModel sheet,
       required AvatarType type,
       required String data,
       Color? color,
@@ -48,7 +48,7 @@ void main() {
       container
           .read(sheetListProvider.notifier)
           .updateSheetAvatar(
-            sheetId: sheetId,
+            sheet: sheet,
             type: type,
             data: data,
             color: color,
@@ -296,7 +296,7 @@ void main() {
       test('updates sheet emoji successfully', () {
         // Update the emoji
         testUpdateSheetAvatar(
-          sheetId: testSheet.id,
+          sheet: testSheet,
           type: AvatarType.emoji,
           data: '🎉',
         );
@@ -312,7 +312,7 @@ void main() {
       test('handles empty emoji', () {
         // Update with empty emoji
         testUpdateSheetAvatar(
-          sheetId: testSheet.id,
+          sheet: testSheet,
           type: AvatarType.emoji,
           data: '',
         );
@@ -329,7 +329,7 @@ void main() {
         // Update with special characters
         const specialEmoji = r'@#$%^&*()_+-=[]{}|;:,.<>?';
         testUpdateSheetAvatar(
-          sheetId: testSheet.id,
+          sheet: testSheet,
           type: AvatarType.emoji,
           data: specialEmoji,
         );
@@ -348,7 +348,7 @@ void main() {
 
         // Update only first sheet emoji
         testUpdateSheetAvatar(
-          sheetId: testSheet.id,
+          sheet: testSheet,
           type: AvatarType.emoji,
           data: '🎉',
         );

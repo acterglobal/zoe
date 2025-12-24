@@ -39,7 +39,7 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
       onIconSelection: (color, icon) {
         updateSheetAvatar(
           ref: ref,
-          sheetId: sheetId,
+          sheet: sheet,
           type: AvatarType.icon,
           data: icon.name,
           color: color,
@@ -50,6 +50,8 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
   }
 
   Future<void> selectImage(BuildContext context, WidgetRef ref) async {
+    final sheet = ref.read(sheetProvider(sheetId));
+    if (sheet == null) return;
     final l10n = L10n.of(context);
 
     await showMediaSelectionBottomSheet(
@@ -59,7 +61,7 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
       onTapCamera: (image) {
         updateSheetAvatar(
           ref: ref,
-          sheetId: sheetId,
+          sheet: sheet,
           type: AvatarType.image,
           data: image.path,
         );
@@ -69,7 +71,7 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
         if (images.isNotEmpty) {
           updateSheetAvatar(
             ref: ref,
-            sheetId: sheetId,
+            sheet: sheet,
             type: AvatarType.image,
             data: images.first.path,
           );
@@ -80,13 +82,15 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
   }
 
   void selectEmoji(BuildContext context, WidgetRef ref) {
+    final sheet = ref.read(sheetProvider(sheetId));
+    if (sheet == null) return;
     showCustomEmojiPicker(
       context,
       ref,
       onEmojiSelected: (emoji) {
         updateSheetAvatar(
           ref: ref,
-          sheetId: sheetId,
+          sheet: sheet,
           type: AvatarType.emoji,
           data: emoji,
         );
@@ -96,9 +100,11 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
   }
 
   void removeAvatar(BuildContext context, WidgetRef ref) {
+    final sheet = ref.read(sheetProvider(sheetId));
+    if (sheet == null) return;
     updateSheetAvatar(
       ref: ref,
-      sheetId: sheetId,
+      sheet: sheet,
       type: AvatarType.icon,
       data: 'file',
       color: null,
@@ -147,14 +153,14 @@ class SheetAvatarTypeBottomSheet extends ConsumerWidget {
             onTap: () => selectIcon(context, ref),
           ),
           const SizedBox(height: 16),
-          // BottomSheetOptionWidget(
-          //   icon: Icons.image_rounded,
-          //   title: l10n.image,
-          //   subtitle: l10n.chooseImageDescription,
-          //   color: AppColors.successColor,
-          //   onTap: () => selectImage(context, ref),
-          // ),
-          // const SizedBox(height: 16),
+          BottomSheetOptionWidget(
+            icon: Icons.image_rounded,
+            title: l10n.image,
+            subtitle: l10n.chooseImageDescription,
+            color: AppColors.successColor,
+            onTap: () => selectImage(context, ref),
+          ),
+          const SizedBox(height: 16),
           BottomSheetOptionWidget(
             icon: Icons.emoji_emotions_rounded,
             title: l10n.emoji,

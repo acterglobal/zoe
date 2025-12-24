@@ -44,12 +44,16 @@ class ZoeUserAvatarWidget extends StatelessWidget {
   }
 
   Widget _buildLoadingAvatar(BuildContext context) {
+    final isCircle = shape == BoxShape.circle;
+    final borderRadius = isCircle ? 0.0 : this.borderRadius;
+
     return Container(
       width: size ?? 24,
       height: size ?? 24,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
+        shape: shape,
+        borderRadius: isCircle ? null : BorderRadius.circular(borderRadius),
         color: Theme.of(context).colorScheme.surface,
       ),
       child: LoadingIndicatorWidget(type: LoadingIndicatorType.circular),
