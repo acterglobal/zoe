@@ -95,6 +95,10 @@ class SheetList extends _$SheetList {
     await runFirestoreOperation(ref, () async {
       final isOwner = sheet.createdBy == userId;
       final sheetId = sheet.id;
+      final coverImageUrl = sheet.coverImageUrl ?? '';
+      final isAvatarAsImage =
+          sheet.sheetAvatar.type == AvatarType.image &&
+          sheet.sheetAvatar.data.startsWith('http');
 
       if (isOwner) {
         // Delete all content documents related to the sheet
@@ -142,6 +146,10 @@ class SheetList extends _$SheetList {
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
+          if (coverImageUrl.isNotEmpty)
+            deleteFileFromStorage(ref: ref, fileUrl: coverImageUrl),
+          if (isAvatarAsImage)
+            deleteFileFromStorage(ref: ref, fileUrl: sheet.sheetAvatar.data),
         ]);
 
         // If the user is the owner, deleting the sheet should remove it for all users
