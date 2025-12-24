@@ -147,12 +147,12 @@ class SheetList extends _$SheetList {
             isEqualTo: sheetId,
           ),
           // Delete all documents
-          runFirestoreDeleteContentOperation(
-            ref: ref,
-            collectionName: FirestoreCollections.documents,
-            fieldName: fieldName,
-            isEqualTo: sheetId,
-          ),
+          // runFirestoreDeleteContentOperation(
+          //   ref: ref,
+          //   collectionName: FirestoreCollections.documents,
+          //   fieldName: fieldName,
+          //   isEqualTo: sheetId,
+          // ),
           if (coverImageUrl.isNotEmpty)
             deleteFileFromStorage(ref: ref, fileUrl: coverImageUrl),
           if (isAvatarAsImage)

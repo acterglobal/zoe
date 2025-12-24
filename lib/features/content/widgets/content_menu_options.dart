@@ -67,13 +67,13 @@ class ContentMenuOptions extends StatelessWidget {
           //   description: L10n.of(context).addALink,
           //   onTap: onTapLink,
           // ),
-          _buildAddContentOption(
-            context,
-            icon: Icons.file_present,
-            title: L10n.of(context).document,
-            description: L10n.of(context).addADocument,
-            onTap: onTapDocument,
-          ),
+          // _buildAddContentOption(
+          //   context,
+          //   icon: Icons.file_present,
+          //   title: L10n.of(context).document,
+          //   description: L10n.of(context).addADocument,
+          //   onTap: onTapDocument,
+          // ),
           _buildAddContentOption(
             context,
             icon: Icons.poll_outlined,

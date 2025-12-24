@@ -94,7 +94,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
       lang.events,
       lang.tasks,
       // lang.links,
-      lang.documents,
+      // lang.documents,
       lang.polls,
     ];
 
@@ -152,7 +152,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
               maxItems: 3,
               showSectionHeader: true,
             ),
-          ],*/
+          ],
           if (quickSearchFilters.value == QuickSearchFilters.all ||
               quickSearchFilters.value == QuickSearchFilters.documents) ...[
             const SizedBox(height: 10),
@@ -163,7 +163,7 @@ class _QuickSearchScreenState extends ConsumerState<QuickSearchScreen> {
               isVertical: true,
               showSectionHeader: true,
             ),
-          ],
+          ],*/
           if (quickSearchFilters.value == QuickSearchFilters.all ||
               quickSearchFilters.value == QuickSearchFilters.polls) ...[
             const SizedBox(height: 16),
