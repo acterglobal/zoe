@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -42,9 +41,6 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
 
   /// Audio Player Setup
   Future<void> _initializeAudioPlayer() async {
-    final file = File(widget.document.filePath);
-    if (!file.existsSync()) return;
-
     _audioPlayer = AudioPlayer();
 
     _audioPlayer.onPositionChanged.listen((pos) {
@@ -68,7 +64,7 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
       }
     });
 
-    await _audioPlayer.setSource(DeviceFileSource(widget.document.filePath));
+    await _audioPlayer.setSource(UrlSource(widget.document.filePath));
     setState(() => _isInitialized = true);
   }
 
@@ -92,7 +88,7 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
   Future<void> _resetAndPlay() async {
     try {
       await _audioPlayer.stop();
-      await _audioPlayer.setSource(DeviceFileSource(widget.document.filePath));
+      await _audioPlayer.setSource(UrlSource(widget.document.filePath));
       await _audioPlayer.resume();
       setState(() => _position = Duration.zero);
     } catch (_) {
@@ -131,7 +127,6 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: GlassyContainer(
         borderRadius: BorderRadius.circular(20),
@@ -147,7 +142,7 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
 
   Widget _buildContent(BuildContext context) {
     if (!_isInitialized) return _buildLoading(context);
-    if (!File(widget.document.filePath).existsSync()) return _buildError(context);
+    if (widget.document.filePath.isEmpty) return _buildError(context);
 
     return _buildPlayer(context);
   }

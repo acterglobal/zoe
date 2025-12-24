@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
@@ -59,18 +60,24 @@ class DocumentList extends _$DocumentList {
           ? title.substring(0, title.lastIndexOf('.'))
           : title;
 
+      final file = XFile(filePath);
       final uploadedFileUrl = await uploadFileToStorage(
         ref: ref,
         bucketName: FirestoreBucketNames.documents,
-        file: XFile(filePath),
+        file: file,
       );
       if (uploadedFileUrl == null) return;
+
+      final fileSize = await file.length();
+      final mimeType = lookupMimeType(filePath) ?? '';
 
       final newDocument = DocumentModel(
         parentId: parentId,
         title: extractedTitle,
         sheetId: sheetId,
         filePath: uploadedFileUrl,
+        fileSize: fileSize,
+        mimeType: mimeType,
         orderIndex: orderIndex ?? 0,
         createdBy: userId,
       );

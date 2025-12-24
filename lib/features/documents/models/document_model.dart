@@ -4,6 +4,8 @@ import 'package:zoe/features/sheet/models/sheet_model.dart';
 
 class DocumentModel extends ContentModel {
   final String filePath;
+  final int fileSize;
+  final String mimeType;
 
   DocumentModel({
     /// ContentModel properties
@@ -19,6 +21,8 @@ class DocumentModel extends ContentModel {
 
     /// DocumentModel properties
     required this.filePath,
+    required this.fileSize,
+    required this.mimeType,
   }) : super(type: ContentType.document, emoji: null);
 
   DocumentModel copyWith({
@@ -35,6 +39,8 @@ class DocumentModel extends ContentModel {
 
     /// DocumentModel properties
     String? filePath,
+    int? fileSize,
+    String? mimeType,
   }) {
     return DocumentModel(
       /// ContentModel properties
@@ -50,6 +56,8 @@ class DocumentModel extends ContentModel {
 
       /// DocumentModel properties
       filePath: filePath ?? this.filePath,
+      fileSize: fileSize ?? this.fileSize,
+      mimeType: mimeType ?? this.mimeType,
     );
   }
 
@@ -67,6 +75,8 @@ class DocumentModel extends ContentModel {
       },
       'emoji': emoji,
       'filePath': filePath,
+      'fileSize': fileSize,
+      'mimeType': mimeType,
       'createdBy': createdBy,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': Timestamp.fromDate(updatedAt),
@@ -90,6 +100,8 @@ class DocumentModel extends ContentModel {
             )
           : null,
       filePath: json['filePath'],
+      fileSize: json['fileSize'],
+      mimeType: json['mimeType'],
       createdBy: json['createdBy'],
       createdAt: json['createdAt'] != null
           ? (json['createdAt'] as Timestamp).toDate()

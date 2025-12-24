@@ -9,6 +9,8 @@ final documentList = [
     sheetId: 'sheet-1',
     filePath: 'path/to/project_proposal.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 524288,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-2',
@@ -17,6 +19,8 @@ final documentList = [
     sheetId: 'sheet-1',
     filePath: 'path/to/meeting_notes.docx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 262144,
+    mimeType: 'application/msword',
   ),
   DocumentModel(
     id: 'document-3',
@@ -25,6 +29,8 @@ final documentList = [
     sheetId: 'sheet-1',
     filePath: 'path/to/budget.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1572864,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-4',
@@ -33,6 +39,8 @@ final documentList = [
     sheetId: 'sheet-1',
     filePath: 'path/to/design_mockups.png',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 2097152,
+    mimeType: 'image/png',
   ),
   // Trip Planning Documents
   DocumentModel(
@@ -42,6 +50,8 @@ final documentList = [
     sheetId: 'sheet-2',
     filePath: 'path/to/trip_itinerary.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 614400,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-6',
@@ -50,6 +60,8 @@ final documentList = [
     sheetId: 'sheet-2',
     filePath: 'path/to/hotel_confirmation.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 512000,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-7',
@@ -58,6 +70,8 @@ final documentList = [
     sheetId: 'sheet-2',
     filePath: 'path/to/flight_tickets.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 768000,
+    mimeType: 'application/pdf',
   ),
   // Christmas Planning Documents
   DocumentModel(
@@ -67,6 +81,8 @@ final documentList = [
     sheetId: 'sheet-3',
     filePath: 'path/to/christmas_guest_list.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1572864,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-12',
@@ -75,6 +91,8 @@ final documentList = [
     sheetId: 'sheet-3',
     filePath: 'path/to/christmas_menu.docx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 307200,
+    mimeType: 'application/msword',
   ),
   DocumentModel(
     id: 'document-13',
@@ -83,6 +101,8 @@ final documentList = [
     sheetId: 'sheet-3',
     filePath: 'path/to/secret_santa_list.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 460800,
+    mimeType: 'application/pdf',
   ),
   // Community Management Documents
   DocumentModel(
@@ -92,6 +112,8 @@ final documentList = [
     sheetId: 'sheet-4',
     filePath: 'path/to/vip_client_database.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 2097152,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-24',
@@ -100,6 +122,8 @@ final documentList = [
     sheetId: 'sheet-4',
     filePath: 'path/to/community_guidelines.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 614400,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-25',
@@ -108,6 +132,8 @@ final documentList = [
     sheetId: 'sheet-4',
     filePath: 'path/to/notification_system.docx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 358400,
+    mimeType: 'application/msword',
   ),
   // Exhibition Planning Documents
   DocumentModel(
@@ -117,6 +143,8 @@ final documentList = [
     sheetId: 'sheet-5',
     filePath: 'path/to/exhibition_checklist.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 716800,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-36',
@@ -125,6 +153,8 @@ final documentList = [
     sheetId: 'sheet-5',
     filePath: 'path/to/food_vendors.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1835008,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-37',
@@ -133,6 +163,8 @@ final documentList = [
     sheetId: 'sheet-5',
     filePath: 'path/to/guest_list.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1703936,
+    mimeType: 'application/vnd.ms-excel',
   ),
   // School Fundraiser Documents
   DocumentModel(
@@ -142,6 +174,8 @@ final documentList = [
     sheetId: 'sheet-6',
     filePath: 'path/to/fundraiser_checklist.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 716800,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-42',
@@ -150,6 +184,8 @@ final documentList = [
     sheetId: 'sheet-6',
     filePath: 'path/to/cupcake_list.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1572864,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-43',
@@ -158,6 +194,8 @@ final documentList = [
     sheetId: 'sheet-6',
     filePath: 'path/to/ticket_tracker.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1703936,
+    mimeType: 'application/vnd.ms-excel',
   ),
   // BBQ Planning Documents
   DocumentModel(
@@ -167,6 +205,8 @@ final documentList = [
     sheetId: 'sheet-7',
     filePath: 'path/to/bbq_checklist.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 768000,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-48',
@@ -175,6 +215,8 @@ final documentList = [
     sheetId: 'sheet-7',
     filePath: 'path/to/bbq_coordination.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1835008,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-49',
@@ -183,6 +225,8 @@ final documentList = [
     sheetId: 'sheet-7',
     filePath: 'path/to/dietary_tracker.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1966080,
+    mimeType: 'application/vnd.ms-excel',
   ),
   // University Hangout Documents
   DocumentModel(
@@ -192,6 +236,8 @@ final documentList = [
     sheetId: 'sheet-8',
     filePath: 'path/to/university_hangout_checklist.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 819200,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-54',
@@ -200,6 +246,8 @@ final documentList = [
     sheetId: 'sheet-8',
     filePath: 'path/to/schedule_coordination.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1572864,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-55',
@@ -208,6 +256,8 @@ final documentList = [
     sheetId: 'sheet-8',
     filePath: 'path/to/campus_spots.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1703936,
+    mimeType: 'application/vnd.ms-excel',
   ),
   // Book Club Documents
   DocumentModel(
@@ -217,6 +267,8 @@ final documentList = [
     sheetId: 'sheet-9',
     filePath: 'path/to/bookclub_checklist.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 716800,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-60',
@@ -225,6 +277,8 @@ final documentList = [
     sheetId: 'sheet-9',
     filePath: 'path/to/meeting_schedule.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1572864,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-61',
@@ -233,6 +287,8 @@ final documentList = [
     sheetId: 'sheet-9',
     filePath: 'path/to/reading_list.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1441792,
+    mimeType: 'application/vnd.ms-excel',
   ),
   // Softball Club BBQ Party Documents
   DocumentModel(
@@ -242,6 +298,8 @@ final documentList = [
     sheetId: 'sheet-10',
     filePath: 'path/to/softball_bbq_checklist.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 819200,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-66',
@@ -250,6 +308,8 @@ final documentList = [
     sheetId: 'sheet-10',
     filePath: 'path/to/date_coordination.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1703936,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-67',
@@ -258,6 +318,8 @@ final documentList = [
     sheetId: 'sheet-10',
     filePath: 'path/to/bbq_menu.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1835008,
+    mimeType: 'application/vnd.ms-excel',
   ),
   // Bachelorette Party Documents
   DocumentModel(
@@ -267,6 +329,8 @@ final documentList = [
     sheetId: 'sheet-11',
     filePath: 'path/to/bachelorette_checklist.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 768000,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-72',
@@ -275,6 +339,8 @@ final documentList = [
     sheetId: 'sheet-11',
     filePath: 'path/to/budget_planning.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1966080,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-73',
@@ -283,6 +349,8 @@ final documentList = [
     sheetId: 'sheet-11',
     filePath: 'path/to/theme_planning.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1703936,
+    mimeType: 'application/vnd.ms-excel',
   ),
   // Church Summer Fest 2026 Documents
   DocumentModel(
@@ -292,6 +360,8 @@ final documentList = [
     sheetId: 'sheet-12',
     filePath: 'path/to/church_fest_checklist.pdf',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 819200,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-75',
@@ -300,6 +370,8 @@ final documentList = [
     sheetId: 'sheet-12',
     filePath: 'path/to/food_budget_planning.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1835008,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-76',
@@ -308,6 +380,8 @@ final documentList = [
     sheetId: 'sheet-12',
     filePath: 'path/to/equipment_setup_guide.xlsx',
     createdBy: CommonUtils.generateRandomId(),
+    fileSize: 1703936,
+    mimeType: 'application/vnd.ms-excel',
   ),
   // PTA Bake Sale Documents
   DocumentModel(
@@ -324,6 +398,8 @@ final documentList = [
     ),
     filePath: '/documents/pta-bake-sale-planning-guide.pdf',
     createdBy: 'user_1',
+    fileSize: 819200,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-78',
@@ -339,6 +415,8 @@ final documentList = [
     ),
     filePath: '/documents/baking-assignment-coordination-template.xlsx',
     createdBy: 'user_2',
+    fileSize: 1572864,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-79',
@@ -354,6 +432,8 @@ final documentList = [
     ),
     filePath: '/documents/pta-budget-planning-worksheet.xlsx',
     createdBy: 'user_3',
+    fileSize: 1703936,
+    mimeType: 'application/vnd.ms-excel',
   ),
   // Halloween Planning Documents
   DocumentModel(
@@ -370,6 +450,8 @@ final documentList = [
     ),
     filePath: '/documents/halloween-planning-guide.pdf',
     createdBy: 'user_1',
+    fileSize: 768000,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-81',
@@ -385,6 +467,8 @@ final documentList = [
     ),
     filePath: '/documents/location-coordination-maps-template.xlsx',
     createdBy: 'user_2',
+    fileSize: 1441792,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-82',
@@ -400,6 +484,8 @@ final documentList = [
     ),
     filePath: '/documents/halloween-event-coordination-worksheet.xlsx',
     createdBy: 'user_3',
+    fileSize: 1572864,
+    mimeType: 'application/vnd.ms-excel',
   ),
   // Summer Camp Sign-ups Documents
   DocumentModel(
@@ -416,6 +502,8 @@ final documentList = [
     ),
     filePath: '/documents/summer-camp-signups-planning-guide.pdf',
     createdBy: 'user_1',
+    fileSize: 819200,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-84',
@@ -431,6 +519,8 @@ final documentList = [
     ),
     filePath: '/documents/form-submission-registration-template.xlsx',
     createdBy: 'user_2',
+    fileSize: 1703936,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-85',
@@ -446,6 +536,8 @@ final documentList = [
     ),
     filePath: '/documents/summer-camp-equipment-supplies-worksheet.xlsx',
     createdBy: 'user_3',
+    fileSize: 1835008,
+    mimeType: 'application/vnd.ms-excel',
   ),
   // Thanksgiving Planning Documents
   DocumentModel(
@@ -462,6 +554,8 @@ final documentList = [
     ),
     filePath: '/documents/thanksgiving-planning-guide.pdf',
     createdBy: 'user_1',
+    fileSize: 768000,
+    mimeType: 'application/pdf',
   ),
   DocumentModel(
     id: 'document-87',
@@ -477,6 +571,8 @@ final documentList = [
     ),
     filePath: '/documents/cooking-assignment-recipe-coordination-template.xlsx',
     createdBy: 'user_2',
+    fileSize: 1572864,
+    mimeType: 'application/vnd.ms-excel',
   ),
   DocumentModel(
     id: 'document-88',
@@ -492,5 +588,7 @@ final documentList = [
     ),
     filePath: '/documents/thanksgiving-workload-distribution-worksheet.xlsx',
     createdBy: 'user_3',
+    fileSize: 1703936,
+    mimeType: 'application/vnd.ms-excel',
   ),
 ];

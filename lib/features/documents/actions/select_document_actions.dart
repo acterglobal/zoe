@@ -17,7 +17,7 @@ void selectDocumentSource(
   String sheetId,
 ) {
   final l10n = L10n.of(context);
-  
+
   showMediaSelectionBottomSheet(
     context,
     title: l10n.selectDocument,
@@ -44,7 +44,7 @@ Future<void> _handleDocumentCameraSelection(
   String listId,
   String sheetId,
 ) async {
-  ref
+  await ref
       .read(documentListProvider.notifier)
       .addDocument(
         parentId: listId,
@@ -69,7 +69,7 @@ Future<void> _handleDocumentGallerySelection(
   String sheetId,
 ) async {
   for (final img in images) {
-    ref
+    await ref
         .read(documentListProvider.notifier)
         .addDocument(
           parentId: listId,
@@ -93,7 +93,7 @@ Future<void> _handleDocumentFileChooserSelection(
   String sheetId,
 ) async {
   for (final file in files) {
-    ref
+    await ref
         .read(documentListProvider.notifier)
         .addDocument(
           parentId: listId,
@@ -109,8 +109,8 @@ Future<void> _handleDocumentFileChooserSelection(
   );
 }
 
-Color getFileTypeColor(String filePath) {
-  final ext = getFileType(filePath);
+Color getFileTypeColor(String mimeType) {
+  final ext = getFileType(mimeType);
   return switch (ext) {
     'pdf' => Colors.red,
     'doc' || 'docx' => Colors.blue,
@@ -145,8 +145,8 @@ Color getFileTypeColor(String filePath) {
   };
 }
 
-IconData getFileTypeIcon(String filePath) {
-  final ext = getFileType(filePath);
+IconData getFileTypeIcon(String mimeType) {
+  final ext = getFileType(mimeType);
   return switch (ext) {
     'pdf' => Icons.picture_as_pdf,
     'doc' || 'docx' => Icons.description,

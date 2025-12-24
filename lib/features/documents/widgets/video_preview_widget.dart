@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
@@ -39,10 +38,9 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
 
   /// Video Player Setup
   Future<void> _initializeVideoPlayer() async {
-    final file = File(widget.document.filePath);
-    if (!file.existsSync()) return;
-
-    final controller = VideoPlayerController.file(file);
+    final controller = VideoPlayerController.networkUrl(
+      Uri.parse(widget.document.filePath),
+    );
     await controller.initialize();
 
     controller.addListener(() {
@@ -94,7 +92,10 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
     if (controller == null || !controller.value.isInitialized) return;
 
     await MediaControllerUtils.executeOperation(() async {
-      final validated = DocumentMediaUtils.validateSeekPosition(position, _duration);
+      final validated = DocumentMediaUtils.validateSeekPosition(
+        position,
+        _duration,
+      );
       await controller.seekTo(validated);
     });
   }
@@ -120,7 +121,6 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: GlassyContainer(
         borderRadius: BorderRadius.circular(20),
@@ -138,7 +138,9 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
     final controller = _videoPlayerController;
 
     if (controller == null) return _buildLoading(context);
-    if (!File(widget.document.filePath).existsSync()) return DocumentErrorWidget(errorName:L10n.of(context).failedToLoadVideo);
+    if (widget.document.filePath.isEmpty) {
+      return DocumentErrorWidget(errorName: L10n.of(context).failedToLoadVideo);
+    }
 
     return _buildPlayer(controller, context);
   }
@@ -161,7 +163,6 @@ class _VideoPreviewWidgetState extends ConsumerState<VideoPreviewWidget> {
   }
 
   Widget _buildPlayer(VideoPlayerController controller, BuildContext context) {
-   
     return GlassyContainer(
       width: double.infinity,
       child: Stack(
