@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/core/constants/firestore_constants.dart';
+import 'package:zoe/features/content/models/content_model.dart';
 import 'package:zoe/features/list/models/list_model.dart';
 import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
@@ -55,8 +56,41 @@ class Lists extends _$Lists {
     );
   }
 
-  Future<void> deleteList(String listId) async {
-    await runFirestoreOperation(ref, () => collection.doc(listId).delete());
+  Future<void> deleteList(ListModel list) async {
+    await runFirestoreOperation(ref, () async {
+      final listId = list.id;
+
+      // Delete all content related to the list
+      final fieldName = FirestoreFieldConstants.parentId;
+      await Future.wait([
+        if (list.listType == ContentType.task)
+          // Delete all tasks
+          runFirestoreDeleteContentOperation(
+            ref: ref,
+            collectionName: FirestoreCollections.tasks,
+            fieldName: fieldName,
+            isEqualTo: listId,
+          ),
+        if (list.listType == ContentType.bullet)
+          // Delete all bullets
+          runFirestoreDeleteContentOperation(
+            ref: ref,
+            collectionName: FirestoreCollections.bullets,
+            fieldName: fieldName,
+            isEqualTo: listId,
+          ),
+        // if (list.listType == ContentType.document)
+        //   // Delete all documents
+        //   runFirestoreDeleteContentOperation(
+        //     ref: ref,
+        //     collectionName: FirestoreCollections.documents,
+        //     fieldName: fieldName,
+        //     isEqualTo: listId,
+        //   ),
+      ]);
+
+      await collection.doc(listId).delete();
+    });
   }
 
   Future<void> updateListTitle(String listId, String title) async {

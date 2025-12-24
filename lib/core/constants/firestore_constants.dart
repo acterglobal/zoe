@@ -39,6 +39,7 @@ class FirestoreFieldConstants {
   static const String isMultipleChoice = 'isMultipleChoice';
   static const String name = 'name';
   static const String sheetId = 'sheetId';
+  static const String parentId = 'parentId';
 }
 
 class FirestoreBucketNames {
