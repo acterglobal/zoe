@@ -44,7 +44,7 @@ final class DocumentListProvider
   }
 }
 
-String _$documentListHash() => r'b4cfe37c24467bf2ae551f5931c2bfd7c5325e74';
+String _$documentListHash() => r'0dd896a3c1a5c86c41093691c2296cc9df55832f';
 
 /// Main document list provider with all document management functionality
 
