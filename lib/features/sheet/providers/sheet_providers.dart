@@ -234,7 +234,7 @@ class SheetList extends _$SheetList {
         );
         if (uploadedUrl == null) return;
         if (isPreviousTypeImage) {
-          await deleteFileFromStorage(ref: ref, fileUrl: data);
+          await deleteFileFromStorage(ref: ref, fileUrl: previousAvatarData);
         }
         updatedSheetAvatar = updatedSheetAvatar.copyWith(data: uploadedUrl);
       } else if (isPreviousTypeImage) {
