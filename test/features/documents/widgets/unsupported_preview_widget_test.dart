@@ -80,7 +80,7 @@ void main() {
           find.text(
             L10n.of(
               tester.element(find.byType(UnsupportedPreviewWidget)),
-            ).thisFileIsNotSupported,
+            ).thisFilePreviewIsNotSupported,
           ),
           findsOneWidget,
         );
