@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:zoe/common/providers/common_providers.dart';
+import 'package:zoe/core/constants/firestore_constants.dart';
+import 'package:zoe/features/documents/models/document_model.dart';
 
 final log = Logger('Firebase-Utils');
 
@@ -123,6 +125,45 @@ Future<void> deleteFileFromStorage({
     await storageRef.delete();
   } on FirebaseException catch (e) {
     snackbar.show(getFirebaseErrorMessage(e));
+  }
+}
+
+// Helper function to delete a files from Firebase Storage by Parent Id
+Future<void> deleteFilesFromStorageByParentId({
+  required Ref ref,
+  String filterParam = FirestoreFieldConstants.parentId,
+  required String isEqualToId,
+}) async {
+  final snackbar = ref.read(snackbarServiceProvider);
+  final firestore = ref.read(firestoreProvider);
+
+  try {
+    final docsData = await firestore
+        .collection(FirestoreCollections.documents)
+        .where(Filter(filterParam, isEqualTo: isEqualToId))
+        .get();
+    final docsList = docsData.docs;
+    if (docsList.isEmpty) return;
+    final documentsList = docsList
+        .map((doc) => DocumentModel.fromJson(doc.data()))
+        .toList();
+
+    await Future.wait(
+      documentsList
+          .map((doc) => deleteFileFromStorage(ref: ref, fileUrl: doc.filePath))
+          .toList(),
+    );
+
+    // Delete all documents from collection
+    final batch = firestore.batch();
+    for (final doc in docsList) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
+  } on FirebaseException catch (e) {
+    snackbar.show(getFirebaseErrorMessage(e));
+  } catch (e, stackTrace) {
+    log.severe('Unknown non-Firebase error', e, stackTrace);
   }
 }
 

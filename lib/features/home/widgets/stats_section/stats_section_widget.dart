@@ -74,10 +74,10 @@ class StatsSectionWidget extends ConsumerWidget {
             ),
           ],
         ),
-        // const SizedBox(height: 12),
+        const SizedBox(height: 12),
 
         // Documents and Polls
-        /*Row(
+        Row(
           children: [
             Expanded(
               child: StatsWidget(
@@ -100,7 +100,7 @@ class StatsSectionWidget extends ConsumerWidget {
             //   ),
             // ),
           ],
-        ),*/
+        ),
       ],
     );
   }

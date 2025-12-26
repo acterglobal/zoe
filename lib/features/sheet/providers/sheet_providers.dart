@@ -101,60 +101,61 @@ class SheetList extends _$SheetList {
           sheet.sheetAvatar.data.startsWith('http');
 
       if (isOwner) {
-        // Delete all content documents related to the sheet
+        // Delete all contents related to the sheet
         final fieldName = FirestoreFieldConstants.sheetId;
         await Future.wait([
-          // Delete all texts documents
+          // Texts
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.texts,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
-          // Delete all events documents
+          // Events
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.events,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
-          // Delete all lists documents
+          // Lists
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.lists,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
-          // Delete all tasks documents
+          // Tasks
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.tasks,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
-          // Delete all bullets documents
+          // Bullets
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.bullets,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
-          // Delete all polls documents
+          // Polls
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.polls,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
-          // Delete all documents
-          // runFirestoreDeleteContentOperation(
-          //   ref: ref,
-          //   collectionName: FirestoreCollections.documents,
-          //   fieldName: fieldName,
-          //   isEqualTo: sheetId,
-          // ),
+          // Documents
+          deleteFilesFromStorageByParentId(
+            ref: ref,
+            filterParam: FirestoreFieldConstants.sheetId,
+            isEqualToId: sheetId,
+          ),
+          // Sheet cover image
           if (coverImageUrl.isNotEmpty)
             deleteFileFromStorage(ref: ref, fileUrl: coverImageUrl),
+          // Sheet avatar image
           if (isAvatarAsImage)
             deleteFileFromStorage(ref: ref, fileUrl: sheet.sheetAvatar.data),
         ]);

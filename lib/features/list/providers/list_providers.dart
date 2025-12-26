@@ -62,32 +62,33 @@ class Lists extends _$Lists {
 
       // Delete all content related to the list
       final fieldName = FirestoreFieldConstants.parentId;
-      await Future.wait([
-        if (list.listType == ContentType.task)
-          // Delete all tasks
-          runFirestoreDeleteContentOperation(
+      switch (list.listType) {
+        case ContentType.task:
+          await runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.tasks,
             fieldName: fieldName,
             isEqualTo: listId,
-          ),
-        if (list.listType == ContentType.bullet)
-          // Delete all bullets
-          runFirestoreDeleteContentOperation(
+          );
+          break;
+        case ContentType.bullet:
+          await runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.bullets,
             fieldName: fieldName,
             isEqualTo: listId,
-          ),
-        // if (list.listType == ContentType.document)
-        //   // Delete all documents
-        //   runFirestoreDeleteContentOperation(
-        //     ref: ref,
-        //     collectionName: FirestoreCollections.documents,
-        //     fieldName: fieldName,
-        //     isEqualTo: listId,
-        //   ),
-      ]);
+          );
+          break;
+        case ContentType.document:
+          await deleteFilesFromStorageByParentId(ref: ref, isEqualToId: listId);
+          break;
+        case ContentType.text:
+        case ContentType.event:
+        case ContentType.list:
+        case ContentType.link:
+        case ContentType.poll:
+          break;
+      }
 
       await collection.doc(listId).delete();
     });
