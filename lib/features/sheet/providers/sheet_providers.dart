@@ -4,6 +4,8 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/common/actions/firebase_storage_actions.dart';
+import 'package:zoe/common/actions/firestore_actions.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/core/constants/firestore_constants.dart';
@@ -95,53 +97,68 @@ class SheetList extends _$SheetList {
     await runFirestoreOperation(ref, () async {
       final isOwner = sheet.createdBy == userId;
       final sheetId = sheet.id;
+      final coverImageUrl = sheet.coverImageUrl ?? '';
+      final isAvatarAsImage = sheet.sheetAvatar.isNetworkImage();
 
       if (isOwner) {
-        // Delete all content documents related to the sheet
+        // Delete all contents related to the sheet
         final fieldName = FirestoreFieldConstants.sheetId;
         await Future.wait([
-          // Delete all texts documents
+          // Texts
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.texts,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
-          // Delete all events documents
+          // Events
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.events,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
-          // Delete all lists documents
+          // Lists
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.lists,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
-          // Delete all tasks documents
+          // Tasks
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.tasks,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
-          // Delete all bullets documents
+          // Bullets
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.bullets,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
-          // Delete all polls documents
+          // Polls
           runFirestoreDeleteContentOperation(
             ref: ref,
             collectionName: FirestoreCollections.polls,
             fieldName: fieldName,
             isEqualTo: sheetId,
           ),
+          // Documents
+          runFirestoreDeleteContentOperation(
+            ref: ref,
+            collectionName: FirestoreCollections.documents,
+            fieldName: fieldName,
+            isEqualTo: sheetId,
+          ),
+          // Sheet cover image
+          if (coverImageUrl.isNotEmpty)
+            deleteFileFromStorage(ref: ref, fileUrl: coverImageUrl),
+          // Sheet avatar image
+          if (isAvatarAsImage)
+            deleteFileFromStorage(ref: ref, fileUrl: sheet.sheetAvatar.data),
         ]);
 
         // If the user is the owner, deleting the sheet should remove it for all users

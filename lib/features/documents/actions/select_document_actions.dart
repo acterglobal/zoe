@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/utils/file_utils.dart';
 import 'package:zoe/common/widgets/media_selection_bottom_sheet.dart';
-import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -17,7 +14,7 @@ void selectDocumentSource(
   String sheetId,
 ) {
   final l10n = L10n.of(context);
-  
+
   showMediaSelectionBottomSheet(
     context,
     title: l10n.selectDocument,
@@ -44,7 +41,7 @@ Future<void> _handleDocumentCameraSelection(
   String listId,
   String sheetId,
 ) async {
-  ref
+  await ref
       .read(documentListProvider.notifier)
       .addDocument(
         parentId: listId,
@@ -69,7 +66,7 @@ Future<void> _handleDocumentGallerySelection(
   String sheetId,
 ) async {
   for (final img in images) {
-    ref
+    await ref
         .read(documentListProvider.notifier)
         .addDocument(
           parentId: listId,
@@ -93,7 +90,8 @@ Future<void> _handleDocumentFileChooserSelection(
   String sheetId,
 ) async {
   for (final file in files) {
-    ref
+    if (!context.mounted) return;
+    await ref
         .read(documentListProvider.notifier)
         .addDocument(
           parentId: listId,
@@ -109,8 +107,8 @@ Future<void> _handleDocumentFileChooserSelection(
   );
 }
 
-Color getFileTypeColor(String filePath) {
-  final ext = getFileType(filePath);
+Color getFileTypeColor(String mimeType) {
+  final ext = getFileType(mimeType);
   return switch (ext) {
     'pdf' => Colors.red,
     'doc' || 'docx' => Colors.blue,
@@ -145,8 +143,8 @@ Color getFileTypeColor(String filePath) {
   };
 }
 
-IconData getFileTypeIcon(String filePath) {
-  final ext = getFileType(filePath);
+IconData getFileTypeIcon(String mimeType) {
+  final ext = getFileType(mimeType);
   return switch (ext) {
     'pdf' => Icons.picture_as_pdf,
     'doc' || 'docx' => Icons.description,
@@ -179,35 +177,4 @@ IconData getFileTypeIcon(String filePath) {
     'yml' => Icons.text_fields,
     _ => Icons.insert_drive_file,
   };
-}
-
-Future<void> shareDocument(BuildContext context, DocumentModel document) async {
-  final fileType = isImageDocument(document)
-      ? 'image'
-      : isVideoDocument(document)
-      ? 'video'
-      : isMusicDocument(document)
-      ? 'audio'
-      : isPdfDocument(document)
-      ? 'PDF'
-      : isTextDocument(document)
-      ? 'text'
-      : 'file';
-  try {
-    final file = File(document.filePath);
-    if (file.existsSync()) {
-      final params = ShareParams(
-        files: [XFile(document.filePath)],
-        fileNameOverrides: [document.title],
-      );
-      SharePlus.instance.share(params);
-    }
-  } catch (e) {
-    if (context.mounted) {
-      CommonUtils.showSnackBar(
-        context,
-        L10n.of(context).failedToShare(fileType),
-      );
-    }
-  }
 }

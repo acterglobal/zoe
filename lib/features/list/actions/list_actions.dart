@@ -86,7 +86,9 @@ class ListActions {
 
   /// Deletes the specified list content
   static void deleteList(BuildContext context, WidgetRef ref, String listId) {
-    ref.read(listsProvider.notifier).deleteList(listId);
+    final listContent = ref.read(listItemProvider(listId));
+    if (listContent == null) return;
+    ref.read(listsProvider.notifier).deleteList(listContent);
     CommonUtils.showSnackBar(context, L10n.of(context).listDeleted);
   }
 }

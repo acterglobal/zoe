@@ -37,8 +37,8 @@ class DocumentWidget extends ConsumerWidget {
 
   Widget _buildDocumentItem(BuildContext context, DocumentModel document) {
     final theme = Theme.of(context);
-    final fileTypeColor = getFileTypeColor(document.filePath);
-    final fileTypeIcon = getFileTypeIcon(document.filePath);
+    final fileTypeColor = getFileTypeColor(document.mimeType);
+    final fileTypeIcon = getFileTypeIcon(document.mimeType);
 
     return GlassyContainer(
       margin: const EdgeInsets.only(bottom: 8),
@@ -78,7 +78,7 @@ class DocumentWidget extends ConsumerWidget {
             ],
             const SizedBox(width: 4),
             Text(
-              '${getFileSize(document.filePath)}  •  ${getFileType(document.filePath).toUpperCase()}',
+              '${getFileSize(document.fileSize)}  •  ${getFileType(document.mimeType).toUpperCase()}',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
@@ -140,10 +140,9 @@ class DocumentWidget extends ConsumerWidget {
   }
 
   Widget _buildDocumentIcon(DocumentModel document) {
-    final fileTypeColor = getFileTypeColor(document.filePath);
     return StyledIconContainer(
-      icon: getFileTypeIcon(document.filePath),
-      primaryColor: fileTypeColor,
+      icon: getFileTypeIcon(document.mimeType),
+      primaryColor: getFileTypeColor(document.mimeType),
       size: 32,
       iconSize: 16,
       backgroundOpacity: 0.1,
@@ -182,7 +181,7 @@ class DocumentWidget extends ConsumerWidget {
       borderOpacity: 0.08,
       shadowOpacity: 0.05,
       child: Text(
-        getFileType(document.filePath).toUpperCase(),
+        getFileType(document.mimeType).toUpperCase(),
         style: theme.textTheme.labelSmall?.copyWith(
           color: theme.colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w500,
@@ -212,7 +211,7 @@ class DocumentWidget extends ConsumerWidget {
         size: 12,
       ),
       onTap: () {
-        ref.read(documentListProvider.notifier).deleteDocument(document.id);
+        ref.read(documentListProvider.notifier).deleteDocument(document);
       },
     );
   }

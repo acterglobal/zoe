@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:zoe/common/utils/common_utils.dart';
+import 'package:zoe/common/services/media_service.dart';
 import 'package:zoe/common/utils/file_utils.dart';
-import 'package:zoe/features/documents/actions/select_document_actions.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/features/documents/widgets/document_action_button_widget.dart';
 import 'package:zoe/common/widgets/toolkit/zoe_app_bar_widget.dart';
@@ -11,8 +9,7 @@ import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/widgets/document_error_widget.dart';
 import 'package:zoe/features/documents/widgets/image_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/music_preview_widget.dart';
-import 'package:zoe/features/documents/widgets/pdf_preview_widget.dart';
-import 'package:zoe/features/documents/widgets/text_preview_widget.dart';
+import 'package:zoe/features/documents/widgets/supported_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/unsupported_preview_widget.dart';
 import 'package:zoe/features/documents/widgets/video_preview_widget.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
@@ -20,15 +17,11 @@ import 'package:zoe/l10n/generated/l10n.dart';
 class DocumentPreviewScreen extends ConsumerWidget {
   final String documentId;
 
-  const DocumentPreviewScreen({
-    super.key,
-    required this.documentId,
-  });
+  const DocumentPreviewScreen({super.key, required this.documentId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final document = ref.watch(documentProvider(documentId));
-
     if (document == null) {
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -48,11 +41,12 @@ class DocumentPreviewScreen extends ConsumerWidget {
           title: document.title,
           actions: [
             DocumentActionButtons(
-              onDownload: () => CommonUtils.showSnackBar(
-                context,
-                L10n.of(context).downloadingWillBeAvailableSoon,
+              onDownload: () => MediaService.instance.downloadDocumentMedia(
+                context: context,
+                url: document.filePath,
               ),
-              onShare: () => shareDocument(context, document),
+              onShare: () =>
+                  MediaService.instance.shareDocument(context, document),
             ),
           ],
         ),
@@ -62,22 +56,19 @@ class DocumentPreviewScreen extends ConsumerWidget {
   }
 
   Widget _buildBody(BuildContext context, DocumentModel document) {
-    final file = File(document.filePath);
-    
-    if (!file.existsSync()) {
+    if (document.filePath.isEmpty) {
       return DocumentErrorWidget(errorName: L10n.of(context).failedToLoadFile);
     }
-    
+
     final fileType = getDocumentType(document);
-    
     return switch (fileType) {
       DocumentFileType.image => ImagePreviewWidget(document: document),
       DocumentFileType.video => VideoPreviewWidget(document: document),
       DocumentFileType.music => MusicPreviewWidget(document: document),
-      DocumentFileType.pdf => PdfPreviewWidget(document: document),
-      DocumentFileType.text => TextPreviewWidget(document: document),
+      DocumentFileType.svg ||
+      DocumentFileType.pdf ||
+      DocumentFileType.text => SupportedPreviewWidget(document: document),
       DocumentFileType.unknown => UnsupportedPreviewWidget(document: document),
     };
   }
 }
-

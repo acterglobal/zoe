@@ -1,77 +1,120 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/common/actions/firebase_storage_actions.dart';
+import 'package:zoe/common/actions/firestore_actions.dart';
 import 'package:zoe/common/providers/common_providers.dart';
-import 'package:zoe/features/documents/data/document_data.dart';
+import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
-import 'package:zoe/features/sheet/models/sheet_model.dart';
 import 'package:zoe/features/sheet/providers/sheet_providers.dart';
 import 'package:zoe/features/users/providers/user_providers.dart';
+import 'package:zoe/core/constants/firestore_constants.dart';
 
 part 'document_providers.g.dart';
 
 /// Main document list provider with all document management functionality
 @Riverpod(keepAlive: true)
 class DocumentList extends _$DocumentList {
-  @override
-  List<DocumentModel> build() => documentList;
+  StreamSubscription? _subscription;
 
-  void addDocument({
+  CollectionReference<Map<String, dynamic>> get collection =>
+      ref.read(firestoreProvider).collection(FirestoreCollections.documents);
+
+  @override
+  List<DocumentModel> build() {
+    _subscription?.cancel();
+    _subscription = null;
+
+    final sheetIds = ref.watch(listOfSheetIdsProvider);
+    Query<Map<String, dynamic>> query = collection;
+    if (sheetIds.isNotEmpty) {
+      query = query.where(
+        whereInFilter(FirestoreFieldConstants.sheetId, sheetIds),
+      );
+    }
+
+    _subscription = query.snapshots().listen((snapshot) {
+      state = snapshot.docs
+          .map((doc) => DocumentModel.fromJson(doc.data()))
+          .toList();
+    });
+
+    ref.onDispose(() => _subscription?.cancel());
+    return [];
+  }
+
+  Future<void> addDocument({
     required String title,
     required String parentId,
     required String sheetId,
     required String filePath,
     int? orderIndex,
-  }) {
+  }) async {
     final userId = ref.read(currentUserProvider)?.id;
     if (userId == null) return;
 
-    // Extract filename without extension for title
-    final extractedTitle = title.contains('.')
-        ? title.substring(0, title.lastIndexOf('.'))
-        : title;
+    await runFirestoreOperation(ref, () async {
+      // Extract filename without extension for title
+      final extractedTitle = title.contains('.')
+          ? title.substring(0, title.lastIndexOf('.'))
+          : title;
 
-    final newDocument = DocumentModel(
-      parentId: parentId,
-      title: extractedTitle,
-      sheetId: sheetId,
-      filePath: filePath,
-      orderIndex: orderIndex ?? 0,
-      createdBy: userId,
+      final file = XFile(filePath);
+      final uploadedFileUrl = await uploadFileToStorage(
+        ref: ref,
+        bucketName: FirestoreBucketNames.documents,
+        file: file,
+      );
+      if (uploadedFileUrl == null) return;
+
+      final fileSize = await file.length();
+      final mimeType = lookupMimeType(filePath) ?? '';
+
+      final newDocument = DocumentModel(
+        parentId: parentId,
+        title: extractedTitle,
+        sheetId: sheetId,
+        filePath: uploadedFileUrl,
+        fileSize: fileSize,
+        mimeType: mimeType,
+        orderIndex: orderIndex ?? 0,
+        createdBy: userId,
+      );
+
+      try {
+        await collection.doc(newDocument.id).set(newDocument.toJson());
+      } catch (e) {
+        // Clean up orphaned storage file
+        await deleteFileFromStorage(ref: ref, fileUrl: uploadedFileUrl);
+        rethrow;
+      }
+    });
+  }
+
+  Future<void> deleteDocument(DocumentModel document) async {
+    await runFirestoreOperation(ref, () async {
+      final documentUrl = document.filePath;
+      await collection.doc(document.id).delete();
+      if (documentUrl.isNotEmpty) {
+        await deleteFileFromStorage(ref: ref, fileUrl: documentUrl);
+      }
+    });
+  }
+
+  Future<void> updateDocumentOrderIndex(
+    String documentId,
+    int orderIndex,
+  ) async {
+    await runFirestoreOperation(
+      ref,
+      () => collection.doc(documentId).update({
+        FirestoreFieldConstants.orderIndex: orderIndex,
+        FirestoreFieldConstants.updatedAt: FieldValue.serverTimestamp(),
+      }),
     );
-    state = [...state, newDocument];
-  }
-
-  void deleteDocument(String documentId) {
-    state = state.where((d) => d.id != documentId).toList();
-  }
-
-  void updateDocumentTitle(String documentId, String title) {
-    state = [
-      for (final document in state)
-        if (document.id == documentId)
-          document.copyWith(title: title)
-        else
-          document,
-    ];
-  }
-
-  void updateDocumentDescription(String documentId, Description description) {
-    state = [
-      for (final document in state)
-        if (document.id == documentId)
-          document.copyWith(description: description)
-        else
-          document,
-    ];
-  }
-
-  void updateDocumentOrderIndex(String documentId, int orderIndex) {
-    state = [
-      for (final document in state)
-        if (document.id == documentId)
-          document.copyWith(orderIndex: orderIndex)
-        else
-          document,
-    ];
   }
 }
 

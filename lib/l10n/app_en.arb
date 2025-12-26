@@ -345,8 +345,8 @@
     "@checkOutThis": {},
     "failedToShare": "Failed to share {fileType}",
     "@failedToShare": {},
-    "thisFileIsNotSupported": "This file is not supported",
-    "@thisFileIsNotSupported": {},
+    "thisFilePreviewIsNotSupported": "This file preview is not supported",
+    "@thisFilePreviewIsNotSupported": {},
     "downloadingWillBeAvailableSoon": "Downloading will be available soon",
     "@downloadingWillBeAvailableSoon": {},
     "videoFileNotFound": "Video file not found: {filePath}",
@@ -693,5 +693,11 @@
     "viewPlusWithCount": "view +{count}",
     "@viewPlusWithCount": {},
     "fieldIsRequired": "Field is required",
-    "@fieldIsRequired": {}
+    "@fieldIsRequired": {},
+    "downloadingStarted": "Downloading started.",
+    "@downloadingStarted": {},
+    "downloadCompletedSuccessfully": "Download completed successfully.",
+    "@downloadCompletedSuccessfully": {},
+    "downloadFailed": "Download failed.",
+    "@downloadFailed": {}
 }

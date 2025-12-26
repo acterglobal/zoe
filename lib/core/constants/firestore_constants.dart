@@ -9,6 +9,7 @@ class FirestoreCollections {
   static const String bullets = 'bullets';
   static const String tasks = 'tasks';
   static const String polls = 'polls';
+  static const String documents = 'documents';
 }
 
 class FirestoreFieldConstants {
@@ -38,6 +39,7 @@ class FirestoreFieldConstants {
   static const String isMultipleChoice = 'isMultipleChoice';
   static const String name = 'name';
   static const String sheetId = 'sheetId';
+  static const String parentId = 'parentId';
 }
 
 class FirestoreBucketNames {

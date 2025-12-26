@@ -1199,10 +1199,12 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.37):
     - BoringSSL-GRPC/Interface (= 0.0.37)
   - BoringSSL-GRPC/Interface (0.0.37)
-  - cloud_firestore (6.1.0):
+  - cloud_firestore (6.1.1):
     - Firebase/CoreOnly (~> 12.6.0)
     - Firebase/Firestore (~> 12.6.0)
     - firebase_core
+    - FlutterMacOS
+  - downloadsfolder (0.0.1):
     - FlutterMacOS
   - emoji_picker_flutter (0.0.1):
     - FlutterMacOS
@@ -1430,6 +1432,7 @@ DEPENDENCIES:
   - app_links (from `Flutter/ephemeral/.symlinks/plugins/app_links/macos`)
   - audioplayers_darwin (from `Flutter/ephemeral/.symlinks/plugins/audioplayers_darwin/darwin`)
   - cloud_firestore (from `Flutter/ephemeral/.symlinks/plugins/cloud_firestore/macos`)
+  - downloadsfolder (from `Flutter/ephemeral/.symlinks/plugins/downloadsfolder/macos`)
   - emoji_picker_flutter (from `Flutter/ephemeral/.symlinks/plugins/emoji_picker_flutter/macos`)
   - file_picker (from `Flutter/ephemeral/.symlinks/plugins/file_picker/macos`)
   - file_selector_macos (from `Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos`)
@@ -1476,6 +1479,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/audioplayers_darwin/darwin
   cloud_firestore:
     :path: Flutter/ephemeral/.symlinks/plugins/cloud_firestore/macos
+  downloadsfolder:
+    :path: Flutter/ephemeral/.symlinks/plugins/downloadsfolder/macos
   emoji_picker_flutter:
     :path: Flutter/ephemeral/.symlinks/plugins/emoji_picker_flutter/macos
   file_picker:
@@ -1514,7 +1519,8 @@ SPEC CHECKSUMS:
   app_links: 05a6ec2341985eb05e9f97dc63f5837c39895c3f
   audioplayers_darwin: 4f9ca89d92d3d21cec7ec580e78ca888e5fb68bd
   BoringSSL-GRPC: dded2a44897e45f28f08ae87a55ee4bcd19bc508
-  cloud_firestore: 4343729bf0a865c369028560909a15b0d98a25c5
+  cloud_firestore: 3b149b14c2e8aec6bd5896c9cb093d58870dfa92
+  downloadsfolder: 9a9a5fb6eee0abe38756e788bb248d1c21490a6e
   emoji_picker_flutter: 51ca408e289d84d1e460016b2a28721ec754fcf7
   file_picker: 7584aae6fa07a041af2b36a2655122d42f578c1a
   file_selector_macos: 6280b52b459ae6c590af5d78fc35c7267a3c4b31
