@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/common/actions/firebase_storage_actions.dart';
+import 'package:zoe/common/actions/firestore_actions.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/services/snackbar_service.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
@@ -142,52 +144,59 @@ class Auth extends _$Auth {
       // Delete all content created by the user
       final fieldName = FirestoreFieldConstants.createdBy;
       await Future.wait([
-        // Delete all sheets documents
+        // Sheets
         runFirestoreDeleteContentOperation(
           ref: ref,
           collectionName: FirestoreCollections.sheets,
           fieldName: fieldName,
           isEqualTo: userId,
         ),
-        // Delete all texts documents
+        // Texts
         runFirestoreDeleteContentOperation(
           ref: ref,
           collectionName: FirestoreCollections.texts,
           fieldName: fieldName,
           isEqualTo: userId,
         ),
-        // Delete all events documents
+        // Events
         runFirestoreDeleteContentOperation(
           ref: ref,
           collectionName: FirestoreCollections.events,
           fieldName: fieldName,
           isEqualTo: userId,
         ),
-        // Delete all lists documents
+        // Lists
         runFirestoreDeleteContentOperation(
           ref: ref,
           collectionName: FirestoreCollections.lists,
           fieldName: fieldName,
           isEqualTo: userId,
         ),
-        // Delete all tasks documents
+        // Tasks
         runFirestoreDeleteContentOperation(
           ref: ref,
           collectionName: FirestoreCollections.tasks,
           fieldName: fieldName,
           isEqualTo: userId,
         ),
-        // Delete all bullets documents
+        // Bullets
         runFirestoreDeleteContentOperation(
           ref: ref,
           collectionName: FirestoreCollections.bullets,
           fieldName: fieldName,
           isEqualTo: userId,
         ),
-        // Delete all polls documents
+        // Polls
         runFirestoreDeleteContentOperation(
           ref: ref,
           collectionName: FirestoreCollections.polls,
+          fieldName: fieldName,
+          isEqualTo: userId,
+        ),
+        // Documents
+        runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: FirestoreCollections.documents,
           fieldName: fieldName,
           isEqualTo: userId,
         ),

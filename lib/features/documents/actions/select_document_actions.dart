@@ -90,6 +90,7 @@ Future<void> _handleDocumentFileChooserSelection(
   String sheetId,
 ) async {
   for (final file in files) {
+    if (!context.mounted) return;
     await ref
         .read(documentListProvider.notifier)
         .addDocument(

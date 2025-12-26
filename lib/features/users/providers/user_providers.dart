@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/common/actions/firebase_storage_actions.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/core/constants/firestore_constants.dart';

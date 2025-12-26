@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/common/actions/firestore_actions.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/core/constants/firestore_constants.dart';
@@ -59,35 +60,25 @@ class Lists extends _$Lists {
   Future<void> deleteList(ListModel list) async {
     await runFirestoreOperation(ref, () async {
       final listId = list.id;
+      final listType = list.listType;
 
-      // Delete all content related to the list
-      final fieldName = FirestoreFieldConstants.parentId;
-      switch (list.listType) {
-        case ContentType.task:
-          await runFirestoreDeleteContentOperation(
-            ref: ref,
-            collectionName: FirestoreCollections.tasks,
-            fieldName: fieldName,
-            isEqualTo: listId,
-          );
-          break;
-        case ContentType.bullet:
-          await runFirestoreDeleteContentOperation(
-            ref: ref,
-            collectionName: FirestoreCollections.bullets,
-            fieldName: fieldName,
-            isEqualTo: listId,
-          );
-          break;
-        case ContentType.document:
-          await deleteFilesFromStorageByParentId(ref: ref, isEqualToId: listId);
-          break;
-        case ContentType.text:
-        case ContentType.event:
-        case ContentType.list:
-        case ContentType.link:
-        case ContentType.poll:
-          break;
+      String? collectionName;
+      if (listType == ContentType.task) {
+        collectionName = FirestoreCollections.tasks;
+      } else if (listType == ContentType.bullet) {
+        collectionName = FirestoreCollections.bullets;
+      } else if (listType == ContentType.document) {
+        collectionName = FirestoreCollections.documents;
+      }
+
+      if (collectionName != null) {
+        // Delete all content related to the list
+        await runFirestoreDeleteContentOperation(
+          ref: ref,
+          collectionName: collectionName,
+          fieldName: FirestoreFieldConstants.parentId,
+          isEqualTo: listId,
+        );
       }
 
       await collection.doc(listId).delete();

@@ -4,6 +4,8 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:zoe/common/actions/firebase_storage_actions.dart';
+import 'package:zoe/common/actions/firestore_actions.dart';
 import 'package:zoe/common/providers/common_providers.dart';
 import 'package:zoe/common/utils/firebase_utils.dart';
 import 'package:zoe/core/constants/firestore_constants.dart';
@@ -96,9 +98,7 @@ class SheetList extends _$SheetList {
       final isOwner = sheet.createdBy == userId;
       final sheetId = sheet.id;
       final coverImageUrl = sheet.coverImageUrl ?? '';
-      final isAvatarAsImage =
-          sheet.sheetAvatar.type == AvatarType.image &&
-          sheet.sheetAvatar.data.startsWith('http');
+      final isAvatarAsImage = sheet.sheetAvatar.isNetworkImage();
 
       if (isOwner) {
         // Delete all contents related to the sheet
@@ -147,10 +147,11 @@ class SheetList extends _$SheetList {
             isEqualTo: sheetId,
           ),
           // Documents
-          deleteFilesFromStorageByParentId(
+          runFirestoreDeleteContentOperation(
             ref: ref,
-            filterParam: FirestoreFieldConstants.sheetId,
-            isEqualToId: sheetId,
+            collectionName: FirestoreCollections.documents,
+            fieldName: fieldName,
+            isEqualTo: sheetId,
           ),
           // Sheet cover image
           if (coverImageUrl.isNotEmpty)

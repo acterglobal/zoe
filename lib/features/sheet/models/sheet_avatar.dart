@@ -18,6 +18,8 @@ class SheetAvatar {
     );
   }
 
+  bool isNetworkImage() => type == AvatarType.image && data.startsWith('http');
+
   /// Convert to JSON for Firestore
   Map<String, dynamic> toJson() {
     return {
