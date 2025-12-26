@@ -40,7 +40,7 @@ dependencies:
   
   # State management
   flutter_riverpod: ^3.0.0
-  riverpod_annotation: ^3.0.0
+  riverpod_annotation: ^3.0.3
   
   # Routing
   go_router: ^16.2.0
@@ -67,7 +67,7 @@ dependencies:
 
   # File handling
   file_picker: ^10.3.2
-  image_picker: ^1.2.0
+  image_picker: ^1.2.1
   path: ^1.9.1
   mime: ^2.0.0
   path_provider: ^2.1.5
@@ -113,7 +113,7 @@ dependencies:
   # Firebase
   firebase_core: ^4.2.1
   firebase_auth: ^6.1.2
-  cloud_firestore: ^6.1.0
+  cloud_firestore: ^6.1.1
   fake_cloud_firestore: ^4.0.0
   firebase_storage: ^13.0.5
 
