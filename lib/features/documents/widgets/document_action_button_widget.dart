@@ -30,20 +30,20 @@ class DocumentActionButtons extends ConsumerWidget {
             shadowOpacity: 0.1,
           ),
         ),
-        // SizedBox(width: 10),
-        // GestureDetector(
-        //   onTap: () => onShare?.call(),
-        //   child: StyledIconContainer(
-        //     icon: Icons.share,
-        //     size: 40,
-        //     iconSize: 20,
-        //     primaryColor: primaryColor,
-        //     secondaryColor: primaryColor,
-        //     backgroundOpacity: 0.08,
-        //     borderOpacity: 0.15,
-        //     shadowOpacity: 0.1,
-        //   ),
-        // ),
+        SizedBox(width: 10),
+        GestureDetector(
+          onTap: () => onShare?.call(),
+          child: StyledIconContainer(
+            icon: Icons.share,
+            size: 40,
+            iconSize: 20,
+            primaryColor: primaryColor,
+            secondaryColor: primaryColor,
+            backgroundOpacity: 0.08,
+            borderOpacity: 0.15,
+            shadowOpacity: 0.1,
+          ),
+        ),
       ],
     );
   }

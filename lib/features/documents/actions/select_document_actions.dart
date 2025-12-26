@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zoe/common/utils/common_utils.dart';
 import 'package:zoe/common/utils/file_utils.dart';
 import 'package:zoe/common/widgets/media_selection_bottom_sheet.dart';
-import 'package:zoe/features/documents/models/document_model.dart';
 import 'package:zoe/features/documents/providers/document_providers.dart';
 import 'package:zoe/l10n/generated/l10n.dart';
 
@@ -179,35 +176,4 @@ IconData getFileTypeIcon(String mimeType) {
     'yml' => Icons.text_fields,
     _ => Icons.insert_drive_file,
   };
-}
-
-Future<void> shareDocument(BuildContext context, DocumentModel document) async {
-  final fileType = isImageDocument(document)
-      ? 'image'
-      : isVideoDocument(document)
-      ? 'video'
-      : isMusicDocument(document)
-      ? 'audio'
-      : isPdfDocument(document)
-      ? 'PDF'
-      : isTextDocument(document)
-      ? 'text'
-      : 'file';
-  try {
-    final file = File(document.filePath);
-    if (file.existsSync()) {
-      final params = ShareParams(
-        files: [XFile(document.filePath)],
-        fileNameOverrides: [document.title],
-      );
-      SharePlus.instance.share(params);
-    }
-  } catch (e) {
-    if (context.mounted) {
-      CommonUtils.showSnackBar(
-        context,
-        L10n.of(context).failedToShare(fileType),
-      );
-    }
-  }
 }

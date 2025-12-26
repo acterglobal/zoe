@@ -70,6 +70,7 @@ dependencies:
   image_picker: ^1.2.0
   path: ^1.9.1
   mime: ^2.0.0
+  path_provider: ^2.1.5
   downloadsfolder: ^1.2.0
 
   # Settings and sharing

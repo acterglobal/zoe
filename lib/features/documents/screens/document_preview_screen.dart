@@ -42,11 +42,12 @@ class DocumentPreviewScreen extends ConsumerWidget {
           title: document.title,
           actions: [
             DocumentActionButtons(
-              onDownload: () => MediaService.instance.downloadMedia(
-                context,
-                document.filePath,
+              onDownload: () => MediaService.instance.downloadDocumentMedia(
+                context: context,
+                url: document.filePath,
               ),
-              onShare: () => shareDocument(context, document),
+              onShare: () =>
+                  MediaService.instance.shareDocument(context, document),
             ),
           ],
         ),
