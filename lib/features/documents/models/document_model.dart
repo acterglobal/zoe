@@ -100,8 +100,8 @@ class DocumentModel extends ContentModel {
             )
           : null,
       filePath: json['filePath'],
-      fileSize: json['fileSize'],
-      mimeType: json['mimeType'],
+      fileSize: json['fileSize'] ?? 0,
+      mimeType: json['mimeType'] ?? '',
       createdBy: json['createdBy'],
       createdAt: json['createdAt'] != null
           ? (json['createdAt'] as Timestamp).toDate()
