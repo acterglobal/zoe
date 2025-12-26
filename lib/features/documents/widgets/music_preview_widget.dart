@@ -64,8 +64,14 @@ class _MusicPreviewWidgetState extends ConsumerState<MusicPreviewWidget> {
       }
     });
 
-    await _audioPlayer.setSource(UrlSource(widget.document.filePath));
-    setState(() => _isInitialized = true);
+    try {
+      if (widget.document.filePath.isNotEmpty) {
+        await _audioPlayer.setSource(UrlSource(widget.document.filePath));
+        setState(() => _isInitialized = true);
+      }
+    } catch (e) {
+      debugPrint('Error initializing audio player: $e');
+    }
   }
 
   /// Controls audio player
