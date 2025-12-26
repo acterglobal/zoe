@@ -96,10 +96,11 @@ class DocumentList extends _$DocumentList {
 
   Future<void> deleteDocument(DocumentModel document) async {
     await runFirestoreOperation(ref, () async {
-      if (document.filePath.isNotEmpty) {
-        await deleteFileFromStorage(ref: ref, fileUrl: document.filePath);
-      }
+      final documentUrl = document.filePath;
       await collection.doc(document.id).delete();
+      if (documentUrl.isNotEmpty) {
+        await deleteFileFromStorage(ref: ref, fileUrl: documentUrl);
+      }
     });
   }
 
