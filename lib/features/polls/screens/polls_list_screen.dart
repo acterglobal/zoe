@@ -55,8 +55,8 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
       title: ZoeAppBar(title: L10n.of(context).polls),
       bottom: ZoeGlassyTabWidget(
         tabTexts: [
-          PollStatus.draft.name,
           PollStatus.active.name,
+          PollStatus.draft.name,
           PollStatus.completed.name,
         ],
         selectedIndex: _tabController.index,
@@ -89,8 +89,8 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildNotActivePollsTab(),
                 _buildActivePollsTab(),
+                _buildNotActivePollsTab(),
                 _buildCompletedPollsTab(),
               ],
             ),
@@ -107,7 +107,11 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
         pollsProvider: notActivePollListProvider,
         isEditing: false,
         shrinkWrap: false,
-        emptyState: EmptyStateListWidget(message: L10n.of(context).noPollsFound, color: AppColors.brightMagentaColor, contentType: ContentType.poll),
+        emptyState: EmptyStateListWidget(
+          message: L10n.of(context).noPollsFound,
+          color: AppColors.brightMagentaColor,
+          contentType: ContentType.poll,
+        ),
       ),
     );
   }
@@ -119,7 +123,11 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
         pollsProvider: activePollListProvider,
         isEditing: false,
         shrinkWrap: false,
-        emptyState: EmptyStateListWidget(message: L10n.of(context).noPollsFound, color: AppColors.brightMagentaColor, contentType: ContentType.poll),
+        emptyState: EmptyStateListWidget(
+          message: L10n.of(context).noPollsFound,
+          color: AppColors.brightMagentaColor,
+          contentType: ContentType.poll,
+        ),
       ),
     );
   }
@@ -131,7 +139,11 @@ class _PollsListScreenState extends ConsumerState<PollsListScreen>
         pollsProvider: completedPollListProvider,
         isEditing: false,
         shrinkWrap: false,
-        emptyState: EmptyStateListWidget(message: L10n.of(context).noPollsFound, color: AppColors.brightMagentaColor, contentType: ContentType.poll),
+        emptyState: EmptyStateListWidget(
+          message: L10n.of(context).noPollsFound,
+          color: AppColors.brightMagentaColor,
+          contentType: ContentType.poll,
+        ),
       ),
     );
   }
