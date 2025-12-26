@@ -84,7 +84,13 @@ class DocumentList extends _$DocumentList {
         createdBy: userId,
       );
 
-      await collection.doc(newDocument.id).set(newDocument.toJson());
+      try {
+        await collection.doc(newDocument.id).set(newDocument.toJson());
+      } catch (e) {
+        // Clean up orphaned storage file
+        await deleteFileFromStorage(ref: ref, fileUrl: uploadedFileUrl);
+        rethrow;
+      }
     });
   }
 
