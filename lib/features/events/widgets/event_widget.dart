@@ -17,13 +17,14 @@ class EventWidget extends ConsumerWidget {
   final String eventId;
   final EdgeInsetsGeometry? margin;
   final bool showSheetName;
+  final bool isTitleLongPressEnabled;
 
   const EventWidget({
     super.key,
     required this.eventId,
     this.margin,
     this.showSheetName = true,
-  });
+  }) : isTitleLongPressEnabled = !showSheetName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -106,14 +107,14 @@ class EventWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.eventDetail.route.replaceAll(':eventId', eventId),
       ),
-      onTapLongPressText: showSheetName
-          ? null
-          : () => showEventMenu(
+      onTapLongPressText: isTitleLongPressEnabled
+          ? () => showEventMenu(
               context: context,
               ref: ref,
               isEditing: isEditing,
               eventId: eventId,
-            ),
+            )
+          : null,
     );
   }
 
