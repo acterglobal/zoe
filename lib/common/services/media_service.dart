@@ -57,10 +57,14 @@ class MediaService {
     try {
       CommonUtils.showSnackBar(context, l10n.downloadingStarted);
 
-      await _downloadMedia(url: url, isDownloadDirectory: true);
+      final file = await _downloadMedia(url: url, isDownloadDirectory: true);
 
       if (!context.mounted) return;
-      CommonUtils.showSnackBar(context, l10n.downloadCompletedSuccessfully);
+      if (file != null && file.existsSync()) {
+        CommonUtils.showSnackBar(context, l10n.downloadCompletedSuccessfully);
+      } else {
+        CommonUtils.showSnackBar(context, l10n.downloadFailed);
+      }
     } catch (e) {
       debugPrint("Download error: $e");
       CommonUtils.showSnackBar(context, l10n.downloadFailed);
@@ -73,7 +77,15 @@ class MediaService {
   ) async {
     try {
       final file = await _downloadMedia(url: document.filePath);
-      if (file == null || !file.existsSync()) return;
+      if (file == null || !file.existsSync()) {
+        if (!context.mounted) return;
+        CommonUtils.showSnackBar(
+          context,
+          L10n.of(context).failedToShare(getFileType(document.mimeType)),
+        );
+        return;
+      }
+
       final params = ShareParams(
         files: [XFile(file.path)],
         fileNameOverrides: [document.title],
