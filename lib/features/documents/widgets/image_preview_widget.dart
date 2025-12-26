@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:zoe/common/widgets/glassy_container_widget.dart';
+import 'package:zoe/common/widgets/toolkit/zoe_network_local_image_view.dart';
 import 'package:zoe/features/documents/models/document_model.dart';
 
 class ImagePreviewWidget extends StatelessWidget {
@@ -10,14 +10,20 @@ class ImagePreviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderRadius = 20.0;
+
     return GlassyContainer(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(borderRadius),
       width: double.infinity,
       padding: const EdgeInsets.all(8),
       margin: const EdgeInsets.all(16),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: CachedNetworkImage(imageUrl: document.filePath),
+      child: ZoeNetworkLocalImageView(
+        imageUrl: document.filePath,
+        borderRadius: borderRadius,
+        width: double.infinity,
+        height: double.infinity,
+        fit: BoxFit.contain,
+        placeholderIconSize: 200,
       ),
     );
   }
