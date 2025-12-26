@@ -106,12 +106,14 @@ class EventWidget extends ConsumerWidget {
       onTapText: () => context.push(
         AppRoutes.eventDetail.route.replaceAll(':eventId', eventId),
       ),
-      onTapLongPressText: () => showEventMenu(
-        context: context,
-        ref: ref,
-        isEditing: isEditing,
-        eventId: eventId,
-      ),
+      onTapLongPressText: showSheetName
+          ? null
+          : () => showEventMenu(
+              context: context,
+              ref: ref,
+              isEditing: isEditing,
+              eventId: eventId,
+            ),
     );
   }
 

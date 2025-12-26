@@ -121,13 +121,15 @@ class PollWidget extends ConsumerWidget {
                   );
                 }
               },
-              onTapLongPressText: () => showPollMenu(
-                context: context,
-                ref: ref,
-                isEditing: isEditing,
-                pollId: pollId,
-                isDetailScreen: isDetailScreen,
-              ),
+              onTapLongPressText: isDetailScreen
+                  ? () => showPollMenu(
+                      context: context,
+                      ref: ref,
+                      isEditing: isEditing,
+                      pollId: pollId,
+                      isDetailScreen: isDetailScreen,
+                    )
+                  : null,
             ),
           ),
           if (isEditing)

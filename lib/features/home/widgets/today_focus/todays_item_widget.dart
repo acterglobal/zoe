@@ -51,7 +51,7 @@ class TodaysItemWidget extends StatelessWidget {
             shape: BoxShape.circle,
             color: color.withValues(alpha: 0.2),
           ),
-          child: Icon(Icons.event_rounded, color: color, size: 18),
+          child: Icon(icon, color: color, size: 18),
         ),
         const SizedBox(width: 12),
         Text(
